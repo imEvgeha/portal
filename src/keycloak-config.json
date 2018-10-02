@@ -1,0 +1,12 @@
+{
+  "realm": "Vubiquity",
+  "auth-server-url": "http://usla-amm-d001.dev.vubiquity.com:8080/auth",
+  "ssl-required": "external",
+  "resource": "vehicle-ui-client",
+  "credentials": {
+    "secret": "487cade0-d8d2-4629-9450-fa2d93050edd"
+  },
+  "use-resource-role-mappings": true,
+  "confidential-port": 0,
+  "policy-enforcer": {}
+}

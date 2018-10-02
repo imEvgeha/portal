@@ -1,0 +1,144 @@
+ol, ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+content {
+  display: block;
+  width: 98%;
+}
+
+body {
+  font-family: 'Muli', sans-serif;
+  padding: 0;
+  -webkit-text-size-adjust: none;
+  font-size: 1em;
+}
+
+a {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #F63;
+  text-decoration: none;
+
+}
+
+img {
+  max-width: 100%;
+}
+
+a img {
+  border: 0;
+  outline: 0;
+}
+
+.navbar-NEXUS {
+  background-color: #fff;
+  font-size: 1.1em !important;
+}
+
+.main-content {
+  margin-top: 40px;
+}
+
+.header-logo {
+  padding-top: 13.5rem;
+  text-align: center;
+}
+
+.Nlogo {
+  width: 138px;
+  height: 30px;
+  background: url('img/NEXUS-logo.png') no-repeat;
+  display: block;
+  margin: 8px 18px 0 0;
+  opacity: 1;
+  text-align: center;
+}
+
+.nav-container {
+  margin: 0px 8px;
+}
+
+//.navActive {
+//  background-color: #1a1a1a;
+//  //height: 20px;
+//  border-radius: 28px;
+//  //margin-top: 15px;
+//}
+//
+//.navActive a {
+//  color: #fff;
+//  //margin-top: -15px;
+//}
+
+.navActive {
+  padding-bottom: 2px;
+  border-bottom: solid 2px black;
+}
+
+.leftSide-filterBox {
+  background-color: #d5d5d5;
+  min-height: 1100px;
+  width: 200px;
+  /*max-width: 488px;*/
+  padding: 14px 14px;
+}
+
+.rightSide-content {
+  padding: 4px 14px;
+}
+
+.stylish-input-group .input-group-addon {
+  background: white !important;
+  border-radius: 0px 28px 28px 0px;
+}
+
+.stylish-input-group .form-control {
+  border-right: 0;
+  box-shadow: 0 0 0;
+  border-radius: 28px;
+  border-color: #ccc;
+}
+
+.stylish-input-group button {
+  border: 0;
+  background: transparent;
+}
+
+.search-bar {
+  margin-top: 70px;
+  width: 96% !important;
+}
+
+.results-text {
+  margin: 10px 0;
+}
+
+#base-login {
+  margin: auto;
+}
+
+.base-login-input {
+  width: 288px;
+  border-radius: 28px;
+  margin: 15px;
+}
+
+.forgot {
+  margin: 15px;
+}
+
+.login-image {
+  margin-top: 150px;
+  margin-bottom: 33px;
+}
+
+.btn-login {
+  border-radius: 28px;
+  min-width: 100px;
+}
