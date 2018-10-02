@@ -1,4 +1,4 @@
 import {
-    SAMPLE_ACTION} from "../constants/action-types";
+  LOAD_PROFILE_INFO} from "../constants/action-types";
 
-export const actionName = data => ({ type: SAMPLE_ACTION, payload: data });
+export const loadProfileInfo = profileInfo => ({ type: LOAD_PROFILE_INFO, payload: profileInfo });

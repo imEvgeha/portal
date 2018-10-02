@@ -1,26 +1,23 @@
 import React from 'react'
 
-import CarContainer from './car/CarContainer'
-import BoatContainer from './boat/BoatContainer'
 import {
   BrowserRouter as Router,
+  Redirect,
   Route
 } from 'react-router-dom';
-import Navbar from '../components/Navbar'
+import Navbar from './Navbar'
+import DashboardContainer from './dashboard/DashboardContainer'
 
 export default class App extends React.Component {
 
   render() {
-
-    // console.log(Object.keys(Keycloak));
     return (
         <Router>
           <div>
             <Navbar/>
             <div className="container">
-              <Route exact path="/" component={CarContainer}/>
-              <Route path="/cars" component={CarContainer}/>
-              <Route path="/boats" component={BoatContainer}/>
+              <Route exact path="/" render={() => <Redirect to="/dashboard"/> }/>
+              <Route path="/dashboard" component={DashboardContainer}/>
             </div>
           </div>
         </Router>

@@ -1,14 +1,12 @@
 import './bootstrap.scss'
 import './WeAre138.scss'
 
-// import Keycloak from "keycloak-js"
 import React from 'react'
 import {render} from 'react-dom'
 import { Provider } from 'react-redux'
 
 import Keycloak from './util/keycloak'
 import store from './stores/index'
-// import { store } from './app/util/AuthStore'
 
 import App from './containers/App'
 import {loadProfileInfo} from "./actions";
@@ -34,10 +32,8 @@ const keycloakConfig = {
 export const keycloak = Keycloak(keycloakConfig);
 
 keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
-// keycloak.init({ onLoad: 'login-required'}).success(authenticated => {
     if (authenticated) {
         console.log('LOGGED :) ');
-        // store.getState().keycloak = kc;
         setInterval(() => {
             keycloak.updateToken(10).error(() => keycloak.logout());
         }, 10000);
@@ -58,8 +54,6 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
         );
     } else {
         console.log('NEED LOGIN :( ');
-
-// show possibly other page here…
         keycloak.login();
     }
 

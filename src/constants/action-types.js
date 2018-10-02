@@ -1,1 +1,1 @@
-export const SAMPLE_ACTION = "SAMPLE_ACTION";
+export const LOAD_PROFILE_INFO = "LOAD_PROFILE_INFO";
