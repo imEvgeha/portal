@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {keycloak} from '../index'
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
+import FontAwesome from 'react-fontawesome'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 
 const mapStateToProps = state => {
@@ -61,6 +62,7 @@ class NavbarConnect extends React.Component {
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
                       inNavbar={true} nav={true}>
               <DropdownToggle caret nav={true} id="navbar-dropdown-btn">
+                <FontAwesome name='user-circle' style={{marginRight: '5px'}}/>
                 {this.props.profileInfo.name}
               </DropdownToggle>
               <DropdownMenu>
@@ -79,7 +81,7 @@ class NavbarConnect extends React.Component {
                 <DropdownItem>Another Action</DropdownItem>
                 <DropdownItem divider/>
                 <DropdownItem>
-                  <a href="#" onClick={keycloak.logout} id="logout-btn">logout</a>
+                  <a href="#" onClick={keycloak.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
