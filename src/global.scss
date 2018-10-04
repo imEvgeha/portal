@@ -1,0 +1,26 @@
+.ReactTable.-striped .rt-tr.-odd {
+  background: rgba(161, 161, 161, 1);
+}
+
+.ReactTable.-striped .rt-tr {
+  background: rgba(215, 215, 215, 1);
+}
+
+.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
+  background: rgba(0, 0, 0, 0.5)
+}
+
+.ReactTable .rt-thead {
+  color: white;
+}
+
+.ReactTable .rt-thead .rt-th {
+  background: rgba(5, 5, 5, 1);
+  height: 3em;
+  padding-top: 10px;
+}
+
+.ReactTable .rt-td {
+  border: 2px solid white;
+  border-bottom: none;
+}

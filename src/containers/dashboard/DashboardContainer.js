@@ -3,6 +3,7 @@ import './DashboardContainer.scss'
 import React from 'react'
 import {connect} from "react-redux";
 import FreeTextSearch from "../../components/FreeTextSearch";
+import AvailsResultTable from "./components/AvailsResultTable";
 
 const mapState = state => {
     return {
@@ -24,22 +25,23 @@ class DashboardContainer extends React.Component {
                 <div className="search-bar container-fluid">
                     <div className="row">
                         <table style={{width: '100%'}}>
-                            <tr>
-                                <td>
-                                    <FreeTextSearch containerId={'dashboard-avails'}/>
-                                </td>
-                                <td style={{width: "20px"}}>
-                                    <button className="btn btn-outline-secondary" style={{borderRadius: "40px"}} title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"}>
-                                        <i className="fas fa-ellipsis-h" style={{fontSize: "1em"}}></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <FreeTextSearch containerId={'dashboard-avails'}/>
+                                    </td>
+                                    <td style={{width: "20px"}}>
+                                        <button className="btn btn-outline-secondary" style={{borderRadius: "40px"}} title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"}>
+                                            <i className="fas fa-ellipsis-h" style={{fontSize: "1em"}}></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
                 <br/>
-                <h2>Dashboard</h2>
-                <p>Content</p>
+                <AvailsResultTable/>
             </div>
         );
     }

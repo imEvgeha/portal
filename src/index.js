@@ -1,5 +1,6 @@
 import './bootstrap.scss'
 import './WeAre138.scss'
+import './global.scss'
 
 import React from 'react'
 import {render} from 'react-dom'
