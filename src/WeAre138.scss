@@ -13,7 +13,7 @@ body {
   font-family: 'Muli', sans-serif;
   padding: 0;
   -webkit-text-size-adjust: none;
-  font-size: 1em;
+  font-size: 1.1em;
 }
 
 a {
@@ -38,7 +38,7 @@ a img {
 
 .navbar-NEXUS {
   background-color: #fff;
-  font-size: 1.1em !important;
+  font-size: 1.0em !important;
 }
 
 .main-content {
@@ -155,4 +155,8 @@ a img {
 .btn-login {
   border-radius: 28px;
   min-width: 100px;
+}
+
+.nx-container-margin {
+  margin: 0 16px;
 }

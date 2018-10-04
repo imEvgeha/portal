@@ -76,7 +76,9 @@ class AvailsResultTable extends React.Component {
     render() {
         return (
             <div id="dashboard-result-table">
-                Search result: {this.state.startPageSize}
+                <span className={'nx-container-margin'} id={'dashboard-result-number'}>
+                    Search result: {this.state.startPageSize}
+                </span>
                 <InfiniteScrollTable
                     columns = {columns}
                     startPageSize = {this.state.startPageSize}
