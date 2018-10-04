@@ -93,9 +93,23 @@ a img {
   padding: 4px 14px;
 }
 
-.stylish-input-group .input-group-addon {
+.stylish-input-group .input-group-append {
   background: white !important;
-  border-radius: 0px 28px 28px 0px;
+  border-radius: 0 28px 28px 0;
+  border: 1px solid #ccc;
+}
+
+.stylish-input-group .input-group-append button {
+  color:gray;
+}
+
+.stylish-input-group .input-group-append button:hover {
+  color:black;
+}
+
+.stylish-input-group .input-group-append button:active, .stylish-input-group .input-group-append button:focus {
+  outline: none !important;
+  box-shadow: none;
 }
 
 .stylish-input-group .form-control {
@@ -111,7 +125,7 @@ a img {
 }
 
 .search-bar {
-  margin-top: 70px;
+  margin-top: 10px;
   width: 96% !important;
 }
 

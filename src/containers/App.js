@@ -15,7 +15,7 @@ export default class App extends React.Component {
         <Router>
           <div>
             <Navbar/>
-            <div className="container">
+            <div >
               <Route exact path="/" render={() => <Redirect to="/dashboard"/> }/>
               <Route path="/dashboard" component={DashboardContainer}/>
             </div>
