@@ -31,8 +31,10 @@ class InfiniteScrollTable extends React.Component {
 
         tbody.addEventListener("scroll", () => {
             let isTimeToLoad = (tbody.scrollTop + tbody.clientHeight) >= (tbody.scrollHeight * this.state.scrollSliderLoadPercent);
-            if (isTimeToLoad && !this.state.loading) {
-                console.log("GOT!");
+            let isScrollDown = this.oldScroll < tbody.scrollTop;
+            this.oldScroll = tbody.scrollTop;
+
+            if (isTimeToLoad && isScrollDown && !this.state.loading) {
                 this.loadMoreItems();
             }
         });
