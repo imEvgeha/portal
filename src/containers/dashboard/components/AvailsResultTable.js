@@ -2,19 +2,11 @@ import React from "react";
 import InfiniteScrollTable from "../../../components/table/InfiniteScrollTable";
 
 const columns = [
-    {accessor: 'id', Header: 'id', Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
-    {accessor: 'brand', Header: 'brand'},
-    {accessor: 'model', Header: 'model'},
-    {accessor: 'vin', Header: 'vin'},
-    {accessor: 'owner', Header: 'owner'}
-    ];
-
-const columnsOriginal = [
-    {accessor: 'id', Header: 'ID'},
-    {accessor: 'title', Header: 'title'},
-    {accessor: 'studio', Header: 'studio'},
-    {accessor: 'territory', Header: 'territory'},
-    {accessor: 'genre', Header: 'genre'},
+    {accessor: 'id', Header: 'ID', Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
+    {accessor: 'title', Header: 'Title'},
+    {accessor: 'studio', Header: 'Studio'},
+    {accessor: 'territory', Header: 'Territory'},
+    {accessor: 'genre', Header: 'Genre'},
     {accessor: 'availStartDate', Header: 'Avail Start Date'},
     {accessor: 'availEndDate', Header: 'Avail End Date'}
 ];
@@ -51,7 +43,7 @@ class AvailsResultTable extends React.Component {
 
     makeData(len = 150) {
         return this.range(len).map(d => {
-            return  {id: d, brand: 'Test' + d, model: 'Test', vin: 'Test', owner: 'Test'};
+            return  {id: d, title: 'Test' + d, studio: 'Test', territory: 'Test', genre: 'Test', availStartDate: 'Test', availEndDate: 'Test'};
         });
     }
 
