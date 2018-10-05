@@ -46,3 +46,30 @@
 .rt-thead .rt-tr {
   padding-right: 15px;
 }
+
+.nx-stylish input {
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 28px;
+  border: 1px solid #ccc;
+}
+
+.nx-stylish label {
+  font-size: small;
+  padding-left: 10px;
+  margin: 0;
+}
+
+.react-datepicker__input-container input {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 28px;
+  border: 1px solid #ccc;
+}

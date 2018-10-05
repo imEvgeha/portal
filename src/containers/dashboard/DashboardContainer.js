@@ -4,14 +4,19 @@ import React from 'react'
 import {connect} from "react-redux";
 import FreeTextSearch from "../../components/FreeTextSearch";
 import AvailsResultTable from "./components/AvailsResultTable";
+import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
+import {dashboardUpdateSearchForm} from "../../actions";
 
 const mapState = state => {
     return {
         profileInfo: state.profileInfo,
+        dashboardSearchCriteria: state.dashboardSearchCriteria
     };
 };
 
-const mapActions = {};
+const mapActions = {
+    dashboardUpdateSearchForm
+};
 
 class DashboardContainer extends React.Component {
 
@@ -41,6 +46,7 @@ class DashboardContainer extends React.Component {
                     </div>
                 </div>
                 <br/>
+                <AdvancedSearchPanel/>
                 <AvailsResultTable/>
             </div>
         );
