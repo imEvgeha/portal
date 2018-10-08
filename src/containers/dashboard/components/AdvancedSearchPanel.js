@@ -139,9 +139,9 @@ class AdvancedSearchPanel extends React.Component {
                         {/*<Button outline color="secondary">clear</Button>*/}
                     {/*</div>*/}
                     <div className="col col-lg-2">
-                        <Button outline color="secondary" onClick={this.handleClear}>clear</Button>
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}>clear</Button>
                         {' '}
-                        <Button outline color="secondary">filter</Button>
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} >filter</Button>
                     </div>
                 </div>
             </div>

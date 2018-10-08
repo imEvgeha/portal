@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {keycloak} from '../index'
-import {confirmModal} from "../components/share/ConfirmModal";
 import {errorModal} from "../components/share/ErrorModal";
 
 

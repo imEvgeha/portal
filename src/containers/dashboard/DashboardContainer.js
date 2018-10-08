@@ -6,6 +6,8 @@ import FreeTextSearch from "../../components/FreeTextSearch";
 import AvailsResultTable from "./components/AvailsResultTable";
 import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
 import {dashboardUpdateSearchForm} from "../../actions";
+import DashboardDropableCard from "./components/DashboardDropableCard";
+import DashboardCard from "./components/DashboardCard";
 
 const mapState = state => {
     return {
@@ -32,6 +34,10 @@ class DashboardContainer extends React.Component {
         this.setState({showAdvancedSearch: !this.state.showAdvancedSearch})
     }
 
+    viewErrors() {
+        console.log("Error ")
+    }
+
     render() {
         return (
             <div>
@@ -44,17 +50,23 @@ class DashboardContainer extends React.Component {
                                         <FreeTextSearch containerId={'dashboard-avails'}/>
                                     </td>
                                     <td style={{width: "20px"}}>
-                                        <button className="btn btn-outline-secondary" style={{borderRadius: "40px"}} title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"} onClick={this.toggleAdvancedSearch}>
-                                            <i className="fas fa-ellipsis-h" style={{fontSize: "1em"}}></i>
+                                        <button className="btn btn-outline-secondary advanced-search-btn" title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"} onClick={this.toggleAdvancedSearch}>
+                                            <i className="fas fa-ellipsis-h" style={{fontSize: "1em"}}> </i>
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <br/>
+                    { this.state.showAdvancedSearch && <AdvancedSearchPanel/>}
+                    <div className="row">
+                        <DashboardDropableCard/>
+                        <DashboardCard title="ManageAvailsErrors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>
+                        <DashboardCard title="Create New Edit Version" action={this.viewErrors} actionName={'Create'} iconClass={'fas fa-file-alt'}/>
+                    </div>
                 </div>
-                <br/>
-                { this.state.showAdvancedSearch && <AdvancedSearchPanel/>}
+
                 <AvailsResultTable/>
             </div>
         );
