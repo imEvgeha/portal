@@ -1,20 +1,28 @@
 import React from "react";
 import ReactDOM from 'react-dom'
 import ReactTable from "react-table";
+import {dashboardResultPageUpdate} from "../../actions";
+import connect from "react-redux/es/connect/connect";
+
+const mapState = state => {
+    return {
+        dashboardAvailTabPage: state.dashboardAvailTabPage
+    };
+};
+
+const mapActions = {
+    dashboardResultPageUpdate
+};
 
 class InfiniteScrollTable extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
-            loading: false,
-            pages: 1,
-            pageSize: this.props.startPageSize,
+            loading: this.props.loading ? this.props.loading : false,
             scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75
         };
 
-        this.loadInitItems();
         this.ref = React.createRef();
     }
 
@@ -23,43 +31,59 @@ class InfiniteScrollTable extends React.Component {
 
         tbody.addEventListener("scroll", () => {
             let isTimeToLoad = (tbody.scrollTop + tbody.clientHeight) >= (tbody.scrollHeight * this.state.scrollSliderLoadPercent);
-            if (isTimeToLoad && !this.state.loading) {
+            let isScrollDown = this.oldScroll < tbody.scrollTop;
+            this.oldScroll = tbody.scrollTop;
+
+            if (isTimeToLoad && isScrollDown && !this.state.loading) {
                 this.loadMoreItems();
             }
         });
     }
 
+    componentWillMount() {
+        this.loadInitItems();
+    }
+
     loadInitItems() {
+        this.setState({loading: true});
         this.props.renderData(0, this.props.startPageSize, this.props.pageIncrement)
             .then(response => {
-                    console.log(response);
-                    this.setState({data: response})
+                    this.props.dashboardResultPageUpdate({
+                        pages: 1,
+                        avails: response,
+                        pageSize: response.length,
+                    });
+                    this.setState({loading: false});
                 }
-            ).catch(() => {
+            ).catch((error) => {
+            this.setState({loading: false});
             console.log("Unexpected error");
+            console.log(error);
         });
     }
 
     loadMoreItems() {
         this.setState({loading: true});
-        this.props.renderData(this.state.pages, this.props.startPageSize, this.props.pageIncrement)
+        this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.startPageSize, this.props.pageIncrement)
             .then(response => {
-                this.setLoadedItems(response)
-            }).catch(() => {
+                console.log("Response");
+                console.log(this.props.dashboardAvailTabPage.pages);
+                this.addLoadedItems(response);
+                this.setState({loading: false});
+            }).catch((error) => {
+            this.setState({loading: false});
             console.log("Unexpected error");
+            console.log(error);
         });
     }
 
-    setLoadedItems(items) {
+    addLoadedItems(items) {
         if (items.length > 0) {
-            this.setState((state) => ({
-                data: state.data.concat(items),
-                pageSize: state.pageSize + items.length,
-                pages: state.pages + 1,
-                loading: false
-            }));
-        } else {
-            this.setState({loading: false});
+            this.props.dashboardResultPageUpdate({
+                pages: this.props.dashboardAvailTabPage.pages + 1,
+                avails: this.props.dashboardAvailTabPage.avails.concat(items),
+                pageSize: this.props.dashboardAvailTabPage.pageSize + items.length,
+            });
         }
     }
 
@@ -67,15 +91,16 @@ class InfiniteScrollTable extends React.Component {
         return (
             <ReactTable ref={this.ref}
                         showPagination={false}
-                        data={this.state.data}
                         columns={this.props.columns}
-                        pageSize={this.state.pageSize}
+                        data={this.props.dashboardAvailTabPage.avails}
+                        pageSize={this.props.dashboardAvailTabPage.pageSize}
                         style={this.props.style ? this.props.style : {}}
-                        className = {'-striped -highlight'}
+                        manual={!!this.props.fetchData}
+                        onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
             />
         );
     }
 }
 
-export default InfiniteScrollTable;
+export default connect(mapState, mapActions)(InfiniteScrollTable);
 
