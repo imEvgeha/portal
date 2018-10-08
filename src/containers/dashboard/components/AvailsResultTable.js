@@ -33,7 +33,7 @@ class AvailsResultTable extends React.Component {
             pageIncrement: 30,
             scrollSliderLoadPercent: 0.5,
             style: {
-                height: "600px" // This will force the table body to overflow and scroll, since there is not enough room
+                height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
             }
         };
 

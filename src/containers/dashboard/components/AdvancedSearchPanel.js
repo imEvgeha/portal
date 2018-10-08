@@ -77,7 +77,7 @@ class AdvancedSearchPanel extends React.Component {
     render() {
         return (
             <div className="nx-stylish container-fluid"
-                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
+                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em', marginTop: '7px'}}>
                 <div className="row">
                     <div className="col">
                         <div className="form-group">

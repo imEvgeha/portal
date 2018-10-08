@@ -58,7 +58,6 @@ class DashboardContainer extends React.Component {
                             </tbody>
                         </table>
                     </div>
-                    <br/>
                     { this.state.showAdvancedSearch && <AdvancedSearchPanel/>}
                     <div className="row">
                         <DashboardDropableCard/>

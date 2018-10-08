@@ -20,7 +20,7 @@ export default class DashboardDropableCard extends React.Component {
                 <div className="dashboard-card-title">
                     {this.props.title}
                 </div>
-                <button className="btn btn-primary">{this.props.actionName}</button>
+                <button className="btn btn-primary dashboard-card-btn">{this.props.actionName}</button>
             </div>
         )
     }

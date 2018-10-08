@@ -32,7 +32,7 @@ export default class DashboardDropableCard extends React.Component {
         return (
                 <Dropzone
                     className="dashboard-card-container"
-                    accept=".txt"
+                    accept=".xls, .xlsx"
                     disableClick={true}
                     ref={(ref) => {this.dropZoneRef = ref;}}
                     onDrop={this.onDrop}>
@@ -42,7 +42,7 @@ export default class DashboardDropableCard extends React.Component {
                     <div className="dashboard-card-title">
                         Drag files to upload or
                     </div>
-                    <button className="btn btn-primary" onClick={() => this.dropZoneRef.open()}>Browse files</button>
+                    <button className="btn btn-primary dashboard-card-btn" onClick={() => this.dropZoneRef.open()}>Browse files</button>
                 </Dropzone>
         )
     }
