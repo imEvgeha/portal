@@ -47,7 +47,13 @@
   padding-right: 15px;
 }
 
-.nx-stylish input {
+.nx-stylish input, .nx-stylish select {
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 28px;
+  border: 1px solid #ccc;
+}
+
+.nx-stylish option {
   background-color: rgba(255,255,255,0.4);
   border-radius: 28px;
   border: 1px solid #ccc;

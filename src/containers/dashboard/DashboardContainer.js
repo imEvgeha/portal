@@ -22,6 +22,14 @@ class DashboardContainer extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showAdvancedSearch: false
+        };
+        this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
+    }
+
+    toggleAdvancedSearch() {
+        this.setState({showAdvancedSearch: !this.state.showAdvancedSearch})
     }
 
     render() {
@@ -36,7 +44,7 @@ class DashboardContainer extends React.Component {
                                         <FreeTextSearch containerId={'dashboard-avails'}/>
                                     </td>
                                     <td style={{width: "20px"}}>
-                                        <button className="btn btn-outline-secondary" style={{borderRadius: "40px"}} title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"}>
+                                        <button className="btn btn-outline-secondary" style={{borderRadius: "40px"}} title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"} onClick={this.toggleAdvancedSearch}>
                                             <i className="fas fa-ellipsis-h" style={{fontSize: "1em"}}></i>
                                         </button>
                                     </td>
@@ -46,7 +54,7 @@ class DashboardContainer extends React.Component {
                     </div>
                 </div>
                 <br/>
-                <AdvancedSearchPanel/>
+                { this.state.showAdvancedSearch && <AdvancedSearchPanel/>}
                 <AvailsResultTable/>
             </div>
         );

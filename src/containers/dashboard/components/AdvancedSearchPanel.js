@@ -28,7 +28,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     setupAvailStartDate() {
-        if (!this.state.availStartDate) {
+        if (!this.props.dashboardSearchCriteria.availStartDate) {
             this.props.dashboardUpdateSearchForm({
                 availStartDate: moment()
             });
@@ -42,7 +42,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     setupAvailEndDate() {
-        if (!this.state.availEndDate) {
+        if (!this.props.dashboardSearchCriteria.availEndDate) {
             this.props.dashboardUpdateSearchForm({
                 availEndDate: moment()
             });
@@ -94,12 +94,18 @@ class AdvancedSearchPanel extends React.Component {
                         <div className="form-group">
                             <label
                                 htmlFor="dashboard-avails-search-studio-text">Studio</label>
-                            <input type="text" className="form-control"
-                                   id="dashboard-avails-search-studio-text"
-                                   placeholder="Enter Studio"
-                                   name="studio"
-                                   value={this.props.dashboardSearchCriteria.studio}
-                                   onChange={this.handleInputChange}/>
+                            <select className="form-control"
+                                    id="dashboard-avails-search-studio-text"
+                                    placeholder="Enter Studio"
+                                    name="studio"
+                                    value={this.props.dashboardSearchCriteria.studio}
+                                    onChange={this.handleInputChange}>
+                                <option>none</option>
+                                <option>Warner Bros</option>
+                                <option>Disney</option>
+                                <option>CBS Films</option>
+                                <option>Paramount Pictures</option>
+                            </select>
                         </div>
                     </div>
                     <div className="col">
