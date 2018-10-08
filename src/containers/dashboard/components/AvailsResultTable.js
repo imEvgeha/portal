@@ -1,5 +1,7 @@
 import React from "react";
-import InfiniteScrollTable from "../../../components/table/InfiniteScrollTable";
+import SortableColumnTable from "../../../components/table/SortableColumnTable";
+import {getAvails} from "../ServerSideSimulationService";
+import connect from "react-redux/es/connect/connect";
 
 const columns = [
     {accessor: 'id', Header: 'ID', Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
@@ -15,8 +17,12 @@ const columns = [
  * Advance Search -
  * title, studio Avail Start Date, Avail End Date
  */
-
-let data;
+const mapState = state => {
+    return {
+        dashboardAvailTabPage: state.dashboardAvailTabPage,
+        dashboardAvailTabPageSort: state.dashboardAvailTabPageSort
+    };
+};
 
 class AvailsResultTable extends React.Component {
 
@@ -27,51 +33,24 @@ class AvailsResultTable extends React.Component {
             pageIncrement: 30,
             scrollSliderLoadPercent: 0.5,
             style: {
-                height: "400px" // This will force the table body to overflow and scroll, since there is not enough room
+                height: "600px" // This will force the table body to overflow and scroll, since there is not enough room
             }
         };
-        data = this.makeData();
-    }
 
-    range = len => {
-        const arr = [];
-        for (let i = 0; i < len; i++) {
-            arr.push(i);
-        }
-        return arr;
-    };
-
-    makeData(len = 150) {
-        return this.range(len).map(d => {
-            return  {id: d, title: 'Test' + d, studio: 'Test', territory: 'Test', genre: 'Test', availStartDate: 'Test', availEndDate: 'Test'};
-        });
+        this.renderData = this.renderData.bind(this);
     }
 
     renderData(page, startPageSize, pageSizeIncrement) {
-        return new Promise((resolve, reject) => {
-            setTimeout(function() {
-                let from;
-                let to;
-                if(page === 0) {
-                    from = 0;
-                    to = startPageSize;
-                } else {
-                    from = startPageSize + (page - 1) * pageSizeIncrement;
-                    to = from + pageSizeIncrement;
-                }
-                console.log("From: " + from + " To: " + to);
-                resolve(data.slice(from, to));
-            }, 2000);
-        })
+        return getAvails(page, startPageSize, pageSizeIncrement, this.props.dashboardAvailTabPageSort);
     }
 
     render() {
         return (
             <div id="dashboard-result-table">
                 <span className={'nx-container-margin'} id={'dashboard-result-number'}>
-                    Search result: {this.state.startPageSize}
+                    Results: {this.props.dashboardAvailTabPage.pageSize}
                 </span>
-                <InfiniteScrollTable
+                <SortableColumnTable
                     columns = {columns}
                     startPageSize = {this.state.startPageSize}
                     pageIncrement = {this.state.pageIncrement}
@@ -84,4 +63,4 @@ class AvailsResultTable extends React.Component {
     }
 }
 
-export default AvailsResultTable;
+export default connect(mapState)(AvailsResultTable);

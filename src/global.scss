@@ -46,3 +46,11 @@
 .rt-thead .rt-tr {
   padding-right: 15px;
 }
+
+.ReactTable .rt-thead .rt-th.-sort-asc, .ReactTable .rt-thead .rt-td.-sort-asc {
+  box-shadow: inset 0 3px 0 1px white;
+}
+
+.ReactTable .rt-thead .rt-th.-sort-desc, .ReactTable .rt-thead .rt-td.-sort-desc {
+  box-shadow: inset 0 -3px 0 0 white;
+}

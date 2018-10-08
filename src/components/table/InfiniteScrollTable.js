@@ -19,7 +19,7 @@ class InfiniteScrollTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: this.props.loading ? this.props.loading : false,
+            loading: false,
             scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75
         };
 
@@ -97,6 +97,7 @@ class InfiniteScrollTable extends React.Component {
                         style={this.props.style ? this.props.style : {}}
                         manual={!!this.props.fetchData}
                         onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
+                        loading={this.props.sortLoading}
             />
         );
     }
