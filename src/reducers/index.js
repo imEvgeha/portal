@@ -1,7 +1,8 @@
 import {
     LOAD_PROFILE_INFO,
     DASHBOARD_UPDATE_SEARCH_FORM,
-    DASHBOARD_RESULT_PAGE_UPDATE
+    DASHBOARD_RESULT_PAGE_UPDATE,
+    DASHBOARD_RESULT_PAGE_SORT
 } from "../constants/action-types";
 
 const initialState = {
@@ -16,7 +17,11 @@ const initialState = {
         pages: 0,
         avails: [],
         pageSize: 0,
-    }
+    },
+    dashboardAvailTabPageSort: {
+        sortBy: undefined,
+        desc: undefined
+    },
 };
 
 const rootReducer = ( state = initialState, action) => {
@@ -27,6 +32,8 @@ const rootReducer = ( state = initialState, action) => {
             return { ...state, dashboardSearchCriteria: {...state.dashboardSearchCriteria, ...action.searchCriteria}};
         case DASHBOARD_RESULT_PAGE_UPDATE:
             return { ...state, dashboardAvailTabPage: action.payload};
+        case DASHBOARD_RESULT_PAGE_SORT:
+            return { ...state, dashboardAvailTabPageSort: action.payload};
         default:
             return state;
     }
