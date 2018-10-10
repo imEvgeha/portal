@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from 'react-dom'
 import ReactTable from "react-table";
-
-import {dashboardResultPageUpdate} from "../../actions";
+import checkboxHOC from "react-table/lib/hoc/selectTable";
 import connect from "react-redux/es/connect/connect";
 
-import checkboxHOC from "react-table/lib/hoc/selectTable";
+import {dashboardResultPageUpdate} from "../../actions";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
@@ -92,23 +91,21 @@ class InfiniteScrollTable extends React.Component {
         }
     }
 
-    onSelectRow(state, rowInfo) {
-        console.log(rowInfo);
+    getTrProps = (state, rowInfo) => {
         if (rowInfo && rowInfo.row) {
+            const selected = this.isSelected(rowInfo.original.id);
             return {
                 onClick: (e) => {
-                    that.setState({
-                        selected: rowInfo.index
-                    })
+                    console.log("click")
                 },
                 style: {
-                    background: rowInfo.index === this.state.selected ? 'rgba(0,0,0,0.5)' : '',
+                    backgroundColor: selected ? "rgba(0,0,0,0.5)" : ""
                 }
-            }
+            };
         } else {
             return {}
         }
-    }
+    };
 
     toggleSelection = (key, shift, row) => {
         let selection = [...this.state.selection];
@@ -121,7 +118,7 @@ class InfiniteScrollTable extends React.Component {
         } else {
             selection.push(key);
         }
-        this.setState({ selection });
+        this.setState({selection});
     };
 
     toggleAll = () => {
@@ -134,7 +131,7 @@ class InfiniteScrollTable extends React.Component {
                 selection.push(item._original.id);
             });
         }
-        this.setState({ selectAll, selection });
+        this.setState({selectAll, selection});
     };
 
     isSelected = key => {
@@ -146,9 +143,8 @@ class InfiniteScrollTable extends React.Component {
     };
 
     render() {
-
-        const { toggleSelection, toggleAll, isSelected, logSelection } = this;
-        const { selectAll } = this.state;
+        const {toggleSelection, toggleAll, isSelected, logSelection, getTrProps} = this;
+        const {selectAll} = this.state;
 
         const checkboxProps = {
             selectAll,
@@ -156,17 +152,7 @@ class InfiniteScrollTable extends React.Component {
             toggleSelection,
             toggleAll,
             selectType: "checkbox",
-            getTrProps: (state, rowInfo) => {
-                const selected = this.isSelected(rowInfo.original.id);
-                return {
-                    onClick: (e) => {
-                        console.log("click")
-                    },
-                    style: {
-                        backgroundColor: selected ? "rgba(0,0,0,0.5)" : ""
-                    }
-                };
-            }
+            getTrProps
         };
 
         return (
@@ -178,11 +164,9 @@ class InfiniteScrollTable extends React.Component {
                     showPagination={false}
                     columns={this.props.columns}
                     //Add _id key for CheckboxTable purpose
-                    data={this.props.dashboardAvailTabPage.avails
-                        .map(item => {
-                            const _id = item.id;
-                            return { _id, ...item };
-                        })}
+                    data={this.props.dashboardAvailTabPage.avails.map(item => {
+                        return {_id: item.id, ...item};
+                    })}
                     pageSize={this.props.dashboardAvailTabPage.pageSize}
                     style={this.props.style ? this.props.style : {}}
                     manual={!!this.props.fetchData}
