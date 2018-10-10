@@ -20,7 +20,7 @@ class DashboardTab extends React.Component {
         super(props);
         this.state = {
             ingestedCount: '-'
-        }
+        };
         this.viewErrors = this.viewErrors.bind(this);
 
     }

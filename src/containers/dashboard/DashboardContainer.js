@@ -9,6 +9,7 @@ import {dashboardUpdateSearchForm} from "../../actions";
 import DashboardDropableCard from "./components/DashboardDropableCard";
 import DashboardCard from "./components/DashboardCard";
 import DashboardTab from "./DashboardTab";
+import SearchResultsTab from "./SearchResultsTab";
 
 const mapState = state => {
     return {
@@ -71,7 +72,7 @@ class DashboardContainer extends React.Component {
                 { this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsSerach}/>}
 
                 { !this.state.showSearchResults && <DashboardTab/> }
-                { this.state.showSearchResults && <AvailsResultTable/> }
+                { this.state.showSearchResults && <SearchResultsTab/> }
             </div>
         );
     }
