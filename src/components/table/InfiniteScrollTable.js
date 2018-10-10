@@ -138,12 +138,8 @@ class InfiniteScrollTable extends React.Component {
         return this.state.selection.includes(key);
     };
 
-    logSelection = () => {
-        console.log("selection:", this.state.selection);
-    };
-
     render() {
-        const {toggleSelection, toggleAll, isSelected, logSelection, getTrProps} = this;
+        const {toggleSelection, toggleAll, isSelected, getTrProps} = this;
         const {selectAll} = this.state;
 
         const checkboxProps = {
@@ -156,25 +152,22 @@ class InfiniteScrollTable extends React.Component {
         };
 
         return (
-            <div>
-                <button onClick={logSelection}>Log Selection</button>
-                <CheckboxTable
-                    ref={this.ref}
-                    className={'-striped -highlight'}
-                    showPagination={false}
-                    columns={this.props.columns}
-                    //Add _id key for CheckboxTable purpose
-                    data={this.props.dashboardAvailTabPage.avails.map(item => {
-                        return {_id: item.id, ...item};
-                    })}
-                    pageSize={this.props.dashboardAvailTabPage.pageSize}
-                    style={this.props.style ? this.props.style : {}}
-                    manual={!!this.props.fetchData}
-                    onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
-                    loading={this.props.sortLoading}
-                    {...checkboxProps}
-                />
-            </div>
+            <CheckboxTable
+                ref={this.ref}
+                className={'-striped -highlight'}
+                showPagination={false}
+                columns={this.props.columns}
+                //Add _id key for CheckboxTable purpose
+                data={this.props.dashboardAvailTabPage.avails.map(item => {
+                    return {_id: item.id, ...item};
+                })}
+                pageSize={this.props.dashboardAvailTabPage.pageSize}
+                style={this.props.style ? this.props.style : {}}
+                manual={!!this.props.fetchData}
+                onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
+                loading={this.props.sortLoading}
+                {...checkboxProps}
+            />
         );
     }
 }
