@@ -1,7 +1,7 @@
 import Http from "../../util/Http";
 
-const http = Http.create({baseURL: 'http://localhost:9090/vehicle/api/v2'});
+const http = Http.create({baseURL: 'http://localhost:8081/avails-api/v1'});
 
 export const dashboardService = {
-    list: () => http.get('/cars'),
-}
+    ingestedAvailsCount: () => http.get('/avails', {params: {start: 0, size: 1}}),
+};

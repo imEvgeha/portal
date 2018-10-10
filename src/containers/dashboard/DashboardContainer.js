@@ -8,6 +8,7 @@ import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
 import {dashboardUpdateSearchForm} from "../../actions";
 import DashboardDropableCard from "./components/DashboardDropableCard";
 import DashboardCard from "./components/DashboardCard";
+import DashboardTab from "./DashboardTab";
 
 const mapState = state => {
     return {
@@ -25,29 +26,36 @@ class DashboardContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showAdvancedSearch: false
+            showAdvancedSearch: false,
+            showSearchResults: false
         };
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
+        this.handleAvailsSerach = this.handleAvailsSerach.bind(this);
+        this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
     }
 
     toggleAdvancedSearch() {
         this.setState({showAdvancedSearch: !this.state.showAdvancedSearch})
     }
 
-    viewErrors() {
-        console.log("Error ")
+    handleAvailsSerach() {
+        this.setState({showSearchResults: true});
+    }
+
+    handleBackToDashboard() {
+        this.setState({showSearchResults: false, showAdvancedSearch: false});
     }
 
     render() {
         return (
             <div>
-                <div className="search-bar container-fluid">
-                    <div className="row">
+                <div className="container-fluid">
+                    <div >
                         <table style={{width: '100%'}}>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <FreeTextSearch containerId={'dashboard-avails'}/>
+                                        <FreeTextSearch containerId={'dashboard-avails'} onSearch={this.handleAvailsSerach}/>
                                     </td>
                                     <td style={{width: "20px"}}>
                                         <button className="btn btn-outline-secondary advanced-search-btn" title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"} onClick={this.toggleAdvancedSearch}>
@@ -58,15 +66,12 @@ class DashboardContainer extends React.Component {
                             </tbody>
                         </table>
                     </div>
-                    { this.state.showAdvancedSearch && <AdvancedSearchPanel/>}
-                    <div className="row">
-                        <DashboardDropableCard/>
-                        <DashboardCard title="ManageAvailsErrors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>
-                        <DashboardCard title="Create New Edit Version" action={this.viewErrors} actionName={'Create'} iconClass={'fas fa-file-alt'}/>
-                    </div>
+                    { this.state.showSearchResults && <a href={'#'} onClick={this.handleBackToDashboard}>Back to Dashboard</a> }
                 </div>
+                { this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsSerach}/>}
 
-                <AvailsResultTable/>
+                { !this.state.showSearchResults && <DashboardTab/> }
+                { this.state.showSearchResults && <AvailsResultTable/> }
             </div>
         );
     }

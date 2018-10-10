@@ -4,6 +4,7 @@ import moment from 'moment';
 import {Button} from 'reactstrap';
 import {dashboardUpdateSearchForm} from "../../../actions";
 import connect from "react-redux/es/connect/connect";
+import t from "prop-types";
 
 const mapState = state => {
     return {
@@ -16,10 +17,14 @@ const mapActions = {
 };
 
 class AdvancedSearchPanel extends React.Component {
+    static propTypes = {
+        onSearch: t.func,
+    };
 
     constructor (props) {
         super(props);
         this.handleClear = this.handleClear.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
         this.setupAvailStartDate = this.setupAvailStartDate.bind(this);
         this.handleChangeAvailStartDate = this.handleChangeAvailStartDate.bind(this);
         this.setupAvailEndDate = this.setupAvailEndDate.bind(this);
@@ -72,6 +77,10 @@ class AdvancedSearchPanel extends React.Component {
             studio: '',
             title: ''
         });
+    }
+
+    handleSearch() {
+        this.props.onSearch();
     }
 
     render() {
@@ -141,7 +150,7 @@ class AdvancedSearchPanel extends React.Component {
                     <div className="col col-lg-2">
                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}>clear</Button>
                         {' '}
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} >filter</Button>
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}>filter</Button>
                     </div>
                 </div>
             </div>
