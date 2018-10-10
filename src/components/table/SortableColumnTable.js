@@ -46,7 +46,6 @@ class SortableColumnTable extends React.Component {
                 let sortData = state.sorted[0];
                 sortAvails(sortData.id, sortData.desc, this.props.startPageSize)
                     .then(response => {
-                        console.log("Sorted");
                         this.props.dashboardResultPageUpdate({
                             pages: 1,
                             avails: response,
@@ -68,14 +67,14 @@ class SortableColumnTable extends React.Component {
 
     render() {
         return (
-            <InfiniteScrollTable ref={this.ref}
-                                 columns={this.props.columns}
-                                 startPageSize={this.props.startPageSize}
-                                 pageIncrement={this.props.pageIncrement}
-                                 renderData={this.props.renderData}
-                                 fetchData={this.fetchData}
-                                 style={this.props.style ? this.props.style : {}}
-                                 sortLoading={this.state.loading}
+            <InfiniteScrollTable
+                columns={this.props.columns}
+                startPageSize={this.props.startPageSize}
+                pageIncrement={this.props.pageIncrement}
+                renderData={this.props.renderData}
+                fetchData={this.fetchData}
+                style={this.props.style ? this.props.style : {}}
+                sortLoading={this.state.loading}
             />
         );
     }
