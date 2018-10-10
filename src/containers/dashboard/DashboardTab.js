@@ -32,7 +32,7 @@ class DashboardTab extends React.Component {
     componentWillMount() {
         dashboardService.ingestedAvailsCount().then( (res) => {
             console.log(res);
-            this.setState({ingestedCount: res.total})
+            this.setState({ingestedCount: res.data.total})
         });
     }
 

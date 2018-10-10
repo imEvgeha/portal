@@ -70,7 +70,6 @@ class DashboardContainer extends React.Component {
                     { this.state.showSearchResults && <a href={'#'} onClick={this.handleBackToDashboard}>Back to Dashboard</a> }
                 </div>
                 { this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsSerach}/>}
-
                 { !this.state.showSearchResults && <DashboardTab/> }
                 { this.state.showSearchResults && <SearchResultsTab/> }
             </div>
