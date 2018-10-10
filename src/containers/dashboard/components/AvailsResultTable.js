@@ -4,13 +4,13 @@ import {getAvails} from "../ServerSideSimulationService";
 import connect from "react-redux/es/connect/connect";
 
 const columns = [
-    {accessor: 'id', Header: 'ID', Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
-    {accessor: 'title', Header: 'Title'},
-    {accessor: 'studio', Header: 'Studio'},
-    {accessor: 'territory', Header: 'Territory'},
-    {accessor: 'genre', Header: 'Genre'},
-    {accessor: 'availStartDate', Header: 'Avail Start Date'},
-    {accessor: 'availEndDate', Header: 'Avail End Date'}
+    {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
+    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
+    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
+    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
+    {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
+    {accessor: 'availStartDate', Header: <span id={'dashboard-result-table-header-avail-start-date'}>Avail Start Date</span>},
+    {accessor: 'availEndDate', Header: <span id={'dashboard-result-table-header-avail-end-date'}>Avail End Date</span>}
 ];
 
 /**
