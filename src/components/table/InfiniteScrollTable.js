@@ -52,7 +52,7 @@ class InfiniteScrollTable extends React.Component {
 
     loadInitItems() {
         this.setState({loading: true});
-        this.props.renderData(0, this.props.startPageSize, this.props.pageIncrement)
+        this.props.renderData(0, this.props.pageSize)
             .then(response => {
                     this.props.dashboardResultPageUpdate({
                         pages: 1,
@@ -70,7 +70,7 @@ class InfiniteScrollTable extends React.Component {
 
     loadMoreItems() {
         this.setState({loading: true});
-        this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.startPageSize, this.props.pageIncrement)
+        this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.pageSize)
             .then(response => {
                 this.addLoadedItems(response);
                 this.setState({loading: false});

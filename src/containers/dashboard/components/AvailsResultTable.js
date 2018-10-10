@@ -2,6 +2,7 @@ import React from "react";
 import SortableColumnTable from "../../../components/table/SortableColumnTable";
 import {getAvails} from "../ServerSideSimulationService";
 import connect from "react-redux/es/connect/connect";
+import {dashboardService} from "../DashboardService";
 
 const columns = [
     {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
@@ -29,8 +30,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            startPageSize: 50,
-            pageIncrement: 30,
+            pageSize: 50,
             scrollSliderLoadPercent: 0.5,
             style: {
                 height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
@@ -40,8 +40,9 @@ class AvailsResultTable extends React.Component {
         this.renderData = this.renderData.bind(this);
     }
 
-    renderData(page, startPageSize, pageSizeIncrement) {
-        return getAvails(page, startPageSize, pageSizeIncrement, this.props.dashboardAvailTabPageSort);
+    renderData(page, pageSize) {
+        // return dashboardService.getAvails(page, pageSize, this.props.dashboardAvailTabPageSort);
+        return getAvails(page, pageSize, this.props.dashboardAvailTabPageSort);
     }
 
     render() {
@@ -52,8 +53,7 @@ class AvailsResultTable extends React.Component {
                 </span>
                 <SortableColumnTable
                     columns = {columns}
-                    startPageSize = {this.state.startPageSize}
-                    pageIncrement = {this.state.pageIncrement}
+                    pageSize = {this.state.pageSize}
                     renderData = {this.renderData}
                     style = {this.state.style}
                     scrollSliderLoadPercent = {this.state.scrollSliderLoadPercent}

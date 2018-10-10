@@ -69,8 +69,7 @@ class SortableColumnTable extends React.Component {
         return (
             <InfiniteScrollTable
                 columns={this.props.columns}
-                startPageSize={this.props.startPageSize}
-                pageIncrement={this.props.pageIncrement}
+                pageSize={this.props.pageSize}
                 renderData={this.props.renderData}
                 fetchData={this.fetchData}
                 style={this.props.style ? this.props.style : {}}
