@@ -1,8 +1,13 @@
 import React from "react";
 import ReactDOM from 'react-dom'
 import ReactTable from "react-table";
+
 import {dashboardResultPageUpdate} from "../../actions";
 import connect from "react-redux/es/connect/connect";
+
+import checkboxHOC from "react-table/lib/hoc/selectTable";
+
+const CheckboxTable = checkboxHOC(ReactTable);
 
 const mapState = state => {
     return {
@@ -20,7 +25,9 @@ class InfiniteScrollTable extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75
+            scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75,
+            selection: [],
+            selectAll: false
         };
 
         this.ref = React.createRef();
@@ -66,8 +73,6 @@ class InfiniteScrollTable extends React.Component {
         this.setState({loading: true});
         this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.startPageSize, this.props.pageIncrement)
             .then(response => {
-                console.log("Response");
-                console.log(this.props.dashboardAvailTabPage.pages);
                 this.addLoadedItems(response);
                 this.setState({loading: false});
             }).catch((error) => {
@@ -87,18 +92,105 @@ class InfiniteScrollTable extends React.Component {
         }
     }
 
+    onSelectRow(state, rowInfo) {
+        console.log(rowInfo);
+        if (rowInfo && rowInfo.row) {
+            return {
+                onClick: (e) => {
+                    that.setState({
+                        selected: rowInfo.index
+                    })
+                },
+                style: {
+                    background: rowInfo.index === this.state.selected ? 'rgba(0,0,0,0.5)' : '',
+                }
+            }
+        } else {
+            return {}
+        }
+    }
+
+    toggleSelection = (key, shift, row) => {
+        let selection = [...this.state.selection];
+        const keyIndex = selection.indexOf(key);
+        if (keyIndex >= 0) {
+            selection = [
+                ...selection.slice(0, keyIndex),
+                ...selection.slice(keyIndex + 1)
+            ];
+        } else {
+            selection.push(key);
+        }
+        this.setState({ selection });
+    };
+
+    toggleAll = () => {
+        const selectAll = !this.state.selectAll;
+        const selection = [];
+        if (selectAll) {
+            const wrappedInstance = this.ref.current.getWrappedInstance();
+            const currentRecords = wrappedInstance.getResolvedState().sortedData;
+            currentRecords.forEach(item => {
+                selection.push(item._original.id);
+            });
+        }
+        this.setState({ selectAll, selection });
+    };
+
+    isSelected = key => {
+        return this.state.selection.includes(key);
+    };
+
+    logSelection = () => {
+        console.log("selection:", this.state.selection);
+    };
+
     render() {
+
+        const { toggleSelection, toggleAll, isSelected, logSelection } = this;
+        const { selectAll } = this.state;
+
+        const checkboxProps = {
+            selectAll,
+            isSelected,
+            toggleSelection,
+            toggleAll,
+            selectType: "checkbox",
+            getTrProps: (state, rowInfo) => {
+                const selected = this.isSelected(rowInfo.original.id);
+                return {
+                    onClick: (e) => {
+                        console.log("click")
+                    },
+                    style: {
+                        backgroundColor: selected ? "rgba(0,0,0,0.5)" : ""
+                    }
+                };
+            }
+        };
+
         return (
-            <ReactTable ref={this.ref}
-                        showPagination={false}
-                        columns={this.props.columns}
-                        data={this.props.dashboardAvailTabPage.avails}
-                        pageSize={this.props.dashboardAvailTabPage.pageSize}
-                        style={this.props.style ? this.props.style : {}}
-                        manual={!!this.props.fetchData}
-                        onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
-                        loading={this.props.sortLoading}
-            />
+            <div>
+                <button onClick={logSelection}>Log Selection</button>
+                <CheckboxTable
+                    ref={this.ref}
+                    className={'-striped -highlight'}
+                    showPagination={false}
+                    columns={this.props.columns}
+                    //Add _id key for CheckboxTable purpose
+                    data={this.props.dashboardAvailTabPage.avails
+                        .map(item => {
+                            const _id = item.id;
+                            return { _id, ...item };
+                        })}
+                    pageSize={this.props.dashboardAvailTabPage.pageSize}
+                    style={this.props.style ? this.props.style : {}}
+                    manual={!!this.props.fetchData}
+                    onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
+                    loading={this.props.sortLoading}
+                    {...checkboxProps}
+                />
+            </div>
         );
     }
 }
