@@ -46,42 +46,56 @@ class AvailDetails extends React.Component{
 
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false}>
-                <ModalHeader toggle={this.toggle}>Avail Details: {this.props.avail.title}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>Avail Details</ModalHeader>
                 <div className="list-group">
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>ID:</span>
-                        <span >{this.props.avail.id}</span>
+                        <div className="row">
+                            <div className="col-4">ID:</div>
+                            <div className="col">{this.props.avail.id}</div>
+                        </div>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>Title:</span>
-                        <span >{this.props.avail.title}</span>
+                        <div className="row">
+                            <div className="col-4">Title:</div>
+                            <div className="col">{this.props.avail.title}</div>
+                        </div>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>Studio:</span>
-                        <span >{this.props.avail.studio}</span>
+                        <div className="row">
+                            <div className="col-4">Studio:</div>
+                            <div className="col">{this.props.avail.studio}</div>
+                        </div>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>Territory:</span>
-                        <span >{this.props.avail.territory}</span>
+                        <div className="row">
+                            <div className="col-4">Territory:</div>
+                            <div className="col">{this.props.avail.territory}</div>
+                        </div>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>Genre:</span>
-                        <span >{this.props.avail.genre}</span>
+                        <div className="row">
+                            <div className="col-4">Genre:</div>
+                            <div className="col">{this.props.avail.genre}</div>
+                        </div>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>Avail Start Date:</span>
-                        <span >{this.props.avail.availStart}</span>
+                        <div className="row">
+                            <div className="col-4">Avail Start Date:</div>
+                            <div className="col">{this.props.avail.availStart}</div>
+                        </div>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '35%', display: 'inline-block'}}>Avail End Date:</span>
-                        <span >{this.props.avail.availEnd}</span>
+                        <div className="row">
+                            <div className="col-4">Avail End Date:</div>
+                            <div className="col">{this.props.avail.availEnd}</div>
+                        </div>
                     </a>
                 </div>
                 <ModalFooter>

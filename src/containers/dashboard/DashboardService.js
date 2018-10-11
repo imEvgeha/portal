@@ -1,16 +1,23 @@
 import Http from "../../util/Http";
 
-const http = Http.create({baseURL: 'http://localhost:8081/avails-api/v1'});
-// const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8082'});
+// const http = Http.create({baseURL: 'http://localhost:8081/avails-api/v1'});
+const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8081/avails-api/v1'});
 
 export const dashboardService = {
 
-    ingestedAvailsCount: () => http.get('/avails', {params: {start: 0, size: 1}}),
+    ingestedAvailsCount: () => http.get('/avails', {params: {page: 0, size: 1}}),
 
-    getAvails: (page, pageSize, sortedParams) => {
+    getAvails: (searchCriteria, page, pageSize, sortedParams) => {
+        console.log(searchCriteria);
         console.log(sortedParams);
         // let sortOptions = sortedParams ? sortedParams.
-        return http.get('/avails' + '', {params: {start: page, size: pageSize}});
+        const params = {};
+        for (let key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]){
+                params[key] = searchCriteria[key];
+            }
+        }
+        return http.get('/avails' + '', {params: {...params, page: page, size: pageSize}});
     }
 
 };

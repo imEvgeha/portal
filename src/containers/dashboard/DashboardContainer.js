@@ -3,23 +3,26 @@ import './DashboardContainer.scss'
 import React from 'react'
 import {connect} from "react-redux";
 import FreeTextSearch from "../../components/FreeTextSearch";
-import AvailsResultTable from "./components/AvailsResultTable";
 import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
-import {dashboardUpdateSearchForm} from "../../actions";
-import DashboardDropableCard from "./components/DashboardDropableCard";
-import DashboardCard from "./components/DashboardCard";
+import {
+    dashboardResultPageUpdate,
+    dashboardUpdateSearchForm
+} from "../../actions";
 import DashboardTab from "./DashboardTab";
 import SearchResultsTab from "./SearchResultsTab";
+import {dashboardService} from "./DashboardService";
 
 const mapState = state => {
     return {
         profileInfo: state.profileInfo,
-        dashboardSearchCriteria: state.dashboardSearchCriteria
+        dashboardSearchCriteria: state.dashboardSearchCriteria,
+        dashboardAvailTabPageSort: state.dashboardAvailTabPageSort
     };
 };
 
 const mapActions = {
-    dashboardUpdateSearchForm
+    dashboardUpdateSearchForm,
+    dashboardResultPageUpdate
 };
 
 class DashboardContainer extends React.Component {
@@ -39,12 +42,27 @@ class DashboardContainer extends React.Component {
         this.setState({showAdvancedSearch: !this.state.showAdvancedSearch})
     }
 
-    handleAvailsSerach() {
+    handleAvailsSerach(searchCriteria) {
+        this.availSearch(searchCriteria);
         this.setState({showSearchResults: true});
     }
 
     handleBackToDashboard() {
         this.setState({showSearchResults: false, showAdvancedSearch: false});
+    }
+
+    availSearch(searchCriteria) {
+        dashboardService.getAvails(searchCriteria ,0, 20, this.props.dashboardAvailTabPageSort)
+        .then(response => {
+                this.props.dashboardResultPageUpdate({
+                    pages: 1,
+                    avails: response.data.data,
+                    pageSize: response.data.data.length,
+                });
+            }
+        ).catch((error) => {
+            console.log("Unexpected error");
+        });
     }
 
     render() {

@@ -44,7 +44,7 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
 
         keycloak.loadUserInfo().success(profileInfo => {
             console.log(profileInfo);
-            store.subscribe( () => console.log('Look me'));
+            // store.subscribe( () => console.log('Look me'));
             store.dispatch( loadProfileInfo(profileInfo));
             console.log(store.getState());
             store.username = profileInfo.username;

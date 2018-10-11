@@ -86,7 +86,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSearch() {
-        this.props.onSearch();
+        this.props.onSearch(this.props.dashboardSearchCriteria);
     }
 
     render() {
@@ -118,6 +118,7 @@ class AdvancedSearchPanel extends React.Component {
                                     onChange={this.handleInputChange}
                                     onKeyPress={this._handleKeyPress} >
                                 <option>none</option>
+                                <option>Elevation Pictures</option>
                                 <option>Warner Bros</option>
                                 <option>Disney</option>
                                 <option>CBS Films</option>

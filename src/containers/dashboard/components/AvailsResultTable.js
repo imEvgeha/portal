@@ -3,6 +3,8 @@ import SortableColumnTable from "../../../components/table/SortableColumnTable";
 import connect from "react-redux/es/connect/connect";
 import {dashboardService} from "../DashboardService";
 
+import './AvailResultTable.scss'
+
 const columns = [
     {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
     {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
@@ -20,7 +22,8 @@ const columns = [
 const mapState = state => {
     return {
         dashboardAvailTabPage: state.dashboardAvailTabPage,
-        dashboardAvailTabPageSort: state.dashboardAvailTabPageSort
+        dashboardAvailTabPageSort: state.dashboardAvailTabPageSort,
+        dashboardSearchCriteria: state.dashboardSearchCriteria,
     };
 };
 
@@ -29,7 +32,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageSize: 50,
+            pageSize: 20,
             scrollSliderLoadPercent: 0.5,
             style: {
                 height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
@@ -40,15 +43,22 @@ class AvailsResultTable extends React.Component {
     }
 
     renderData(page, pageSize) {
-        return dashboardService.getAvails(page, pageSize, this.props.dashboardAvailTabPageSort);
+        return dashboardService.getAvails(this.props.dashboardSearchCriteria, page, pageSize, this.props.dashboardAvailTabPageSort);
     }
 
     render() {
         return (
             <div id="dashboard-result-table">
-                <span className={'nx-container-margin'} id={'dashboard-result-number'}>
-                    Results: {this.props.dashboardAvailTabPage.pageSize}
-                </span>
+                <div className="row justify-content-between">
+                    <span className="col-4 nx-container-margin" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
+                        Results: {this.props.dashboardAvailTabPage.pageSize}
+                    </span>
+                    <div className="col-1">
+                        <i className={'fas fa-filter table-top-icon'}> </i>
+                        <i className={'fas fa-th table-top-icon'}> </i>
+                        <i className={'fas fa-download table-top-icon'}> </i>
+                    </div>
+                </div>
                 <SortableColumnTable
                     columns = {columns}
                     pageSize = {this.state.pageSize}

@@ -8,6 +8,7 @@ import {
 const initialState = {
     profileInfo: {},
     dashboardSearchCriteria: {
+        searchText: '',
         availStartDate: null,
         availEndDate: null,
         title: '',
