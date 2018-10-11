@@ -121,8 +121,9 @@ class AdvancedSearchPanel extends React.Component {
                         <div className="form-group">
                             <label htmlFor="dashboard-avails-search-start-date-text">Avail Start
                                 Date</label>
-                            <span onClick={this.setupAvailStartDate} id="dashboard-avails-search-start-date-text">
+                            <span onClick={this.setupAvailStartDate}>
                                 <DatePicker
+                                    id="dashboard-avails-search-start-date-text"
                                     selected={this.props.dashboardSearchCriteria.availStartDate}
                                     onChange={this.handleChangeAvailStartDate}
                                 />
@@ -133,8 +134,9 @@ class AdvancedSearchPanel extends React.Component {
                         <div className="form-group">
                             <label htmlFor="dashboard-avails-search-end-date-text">Avail End
                                 Date</label>
-                            <span onClick={this.setupAvailEndDate} id="dashboard-avails-search-end-date-text">
+                            <span onClick={this.setupAvailEndDate}>
                                 <DatePicker
+                                    id="dashboard-avails-search-end-date-text"
                                     selected={this.props.dashboardSearchCriteria.availEndDate}
                                     onChange={this.handleChangeAvailEndDate}
                                 />

@@ -2,7 +2,8 @@ import {
     LOAD_PROFILE_INFO,
     DASHBOARD_UPDATE_SEARCH_FORM,
     DASHBOARD_RESULT_PAGE_UPDATE,
-    DASHBOARD_RESULT_PAGE_SORT
+    DASHBOARD_RESULT_PAGE_SORT,
+    DASHBOARD_RESULT_PAGE_SELECT
 } from "../constants/action-types";
 
 const initialState = {
@@ -22,6 +23,7 @@ const initialState = {
         sortBy: undefined,
         desc: undefined
     },
+    dashboardAvailTabPageSelected: []
 };
 
 const rootReducer = ( state = initialState, action) => {
@@ -34,6 +36,8 @@ const rootReducer = ( state = initialState, action) => {
             return { ...state, dashboardAvailTabPage: action.payload};
         case DASHBOARD_RESULT_PAGE_SORT:
             return { ...state, dashboardAvailTabPageSort: action.payload};
+        case DASHBOARD_RESULT_PAGE_SELECT:
+            return { ...state, dashboardAvailTabPageSelected: action.payload};
         default:
             return state;
     }
