@@ -2,6 +2,7 @@ import React from "react";
 import SortableColumnTable from "../../../components/table/SortableColumnTable";
 import connect from "react-redux/es/connect/connect";
 import {dashboardService} from "../DashboardService";
+import {confirmModal} from "../../../components/share/ConfirmModal"
 
 import './AvailResultTable.scss'
 
@@ -24,6 +25,7 @@ const mapState = state => {
         dashboardAvailTabPage: state.dashboardAvailTabPage,
         dashboardAvailTabPageSort: state.dashboardAvailTabPageSort,
         dashboardSearchCriteria: state.dashboardSearchCriteria,
+        dashboardResultPageSelected: state.dashboardAvailTabPageSelected
     };
 };
 
@@ -46,6 +48,13 @@ class AvailsResultTable extends React.Component {
         return dashboardService.getAvails(this.props.dashboardSearchCriteria, page, pageSize, this.props.dashboardAvailTabPageSort);
     }
 
+    exportAvails = () => {
+        confirmModal.open("Confirm export",
+            () => {},
+            () => {},
+            {description: `You have select ${this.props.dashboardResultPageSelected.length} avails.`});
+    };
+
     render() {
         return (
             <div id="dashboard-result-table">
@@ -53,10 +62,13 @@ class AvailsResultTable extends React.Component {
                     <span className="col-4 nx-container-margin" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
                         Results: {this.props.dashboardAvailTabPage.pageSize}
                     </span>
+                    <span className={'nx-container-margin'} id={'dashboard-result-number'}>
+                    Selected items: {this.props.dashboardResultPageSelected.length}
+                </span>
                     <div className="col-1">
                         <i className={'fas fa-filter table-top-icon'}> </i>
                         <i className={'fas fa-th table-top-icon'}> </i>
-                        <i className={'fas fa-download table-top-icon'}> </i>
+                        <i className={'fas fa-download table-top-icon'}  onClick={this.exportAvails}> </i>
                     </div>
                 </div>
                 <SortableColumnTable
@@ -65,6 +77,8 @@ class AvailsResultTable extends React.Component {
                     renderData = {this.renderData}
                     style = {this.state.style}
                     scrollSliderLoadPercent = {this.state.scrollSliderLoadPercent}
+                    selection={this.state.selection}
+                    setSelection={this.setSelection}
                 />
             </div>
         );

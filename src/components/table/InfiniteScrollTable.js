@@ -4,19 +4,21 @@ import ReactTable from "react-table";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 import connect from "react-redux/es/connect/connect";
 
-import {dashboardResultPageUpdate} from "../../actions";
+import {dashboardResultPageUpdate, dashboardResultPageSelect} from "../../actions";
 import {availDetailsModal} from "../../containers/dashboard/components/AvailDetailsModal";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
 const mapState = state => {
     return {
-        dashboardAvailTabPage: state.dashboardAvailTabPage
+        dashboardAvailTabPage: state.dashboardAvailTabPage,
+        dashboardResultPageSelected: state.dashboardAvailTabPageSelected
     };
 };
 
 const mapActions = {
-    dashboardResultPageUpdate
+    dashboardResultPageUpdate,
+    dashboardResultPageSelect
 };
 
 class InfiniteScrollTable extends React.Component {
@@ -26,7 +28,6 @@ class InfiniteScrollTable extends React.Component {
         this.state = {
             loading: false,
             scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75,
-            selection: [],
             selectAll: false
         };
 
@@ -109,7 +110,7 @@ class InfiniteScrollTable extends React.Component {
     };
 
     toggleSelection = (key, shift, row) => {
-        let selection = [...this.state.selection];
+        let selection = [...this.props.dashboardResultPageSelected];
         const keyIndex = selection.indexOf(key);
         if (keyIndex >= 0) {
             selection = [
@@ -119,7 +120,7 @@ class InfiniteScrollTable extends React.Component {
         } else {
             selection.push(key);
         }
-        this.setState({selection});
+        this.props.dashboardResultPageSelect(selection);
     };
 
     toggleAll = () => {
@@ -132,11 +133,12 @@ class InfiniteScrollTable extends React.Component {
                 selection.push(item._original.id);
             });
         }
-        this.setState({selectAll, selection});
+        this.setState({selectAll});
+        this.props.dashboardResultPageSelect(selection);
     };
 
     isSelected = key => {
-        return this.state.selection.includes(key);
+        return this.props.dashboardResultPageSelected.includes(key);
     };
 
     render() {
