@@ -5,6 +5,7 @@ import checkboxHOC from "react-table/lib/hoc/selectTable";
 import connect from "react-redux/es/connect/connect";
 
 import {dashboardResultPageUpdate} from "../../actions";
+import {availDetailsModal} from "../../containers/dashboard/components/AvailDetailsModal";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
@@ -56,8 +57,8 @@ class InfiniteScrollTable extends React.Component {
             .then(response => {
                     this.props.dashboardResultPageUpdate({
                         pages: 1,
-                        avails: response,
-                        pageSize: response.length,
+                        avails: response.data.data,
+                        pageSize: response.data.data.length,
                     });
                     this.setState({loading: false});
                 }
@@ -72,7 +73,7 @@ class InfiniteScrollTable extends React.Component {
         this.setState({loading: true});
         this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.pageSize)
             .then(response => {
-                this.addLoadedItems(response);
+                this.addLoadedItems(response.data.data);
                 this.setState({loading: false});
             }).catch((error) => {
             this.setState({loading: false});
@@ -96,7 +97,7 @@ class InfiniteScrollTable extends React.Component {
             const selected = this.isSelected(rowInfo.original.id);
             return {
                 onClick: (e) => {
-                    console.log("click")
+                    availDetailsModal.open(rowInfo.original, () => {});
                 },
                 style: {
                     backgroundColor: selected ? "rgba(0,0,0,0.5)" : ""

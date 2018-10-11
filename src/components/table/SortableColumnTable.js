@@ -44,16 +44,16 @@ class SortableColumnTable extends React.Component {
             if (this.isTimeToSort(state.sorted)) {
                 this.setState({loading: true});
                 let sortData = state.sorted[0];
-                sortAvails(sortData.id, sortData.desc, this.props.startPageSize)
-                    .then(response => {
+                this.props.dashboardResultPageSort({
+                    sortBy: sortData.id,
+                    desc: sortData.desc
+                });
+                this.props.renderData(0, this.props.pageSize)
+                .then(response => {
                         this.props.dashboardResultPageUpdate({
                             pages: 1,
-                            avails: response,
-                            pageSize: response.length,
-                        });
-                        this.props.dashboardResultPageSort({
-                            sortBy: sortData.id,
-                            desc: sortData.desc
+                            avails: response.data.data,
+                            pageSize: response.data.data.length,
                         });
                         this.setState({loading: false});
                     }).catch((error) => {

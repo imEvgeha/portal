@@ -1,6 +1,5 @@
 import React from "react";
 import SortableColumnTable from "../../../components/table/SortableColumnTable";
-import {getAvails} from "../ServerSideSimulationService";
 import connect from "react-redux/es/connect/connect";
 import {dashboardService} from "../DashboardService";
 
@@ -10,8 +9,8 @@ const columns = [
     {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
     {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
     {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
-    {accessor: 'availStartDate', Header: <span id={'dashboard-result-table-header-avail-start-date'}>Avail Start Date</span>},
-    {accessor: 'availEndDate', Header: <span id={'dashboard-result-table-header-avail-end-date'}>Avail End Date</span>}
+    {accessor: 'availStart', Header: <span id={'dashboard-result-table-header-avail-start-date'}>Avail Start Date</span>},
+    {accessor: 'availEnd', Header: <span id={'dashboard-result-table-header-avail-end-date'}>Avail End Date</span>}
 ];
 
 /**
@@ -41,8 +40,7 @@ class AvailsResultTable extends React.Component {
     }
 
     renderData(page, pageSize) {
-        // return dashboardService.getAvails(page, pageSize, this.props.dashboardAvailTabPageSort);
-        return getAvails(page, pageSize, this.props.dashboardAvailTabPageSort);
+        return dashboardService.getAvails(page, pageSize, this.props.dashboardAvailTabPageSort);
     }
 
     render() {

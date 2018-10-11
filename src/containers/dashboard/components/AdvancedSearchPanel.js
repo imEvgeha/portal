@@ -21,6 +21,12 @@ class AdvancedSearchPanel extends React.Component {
         onSearch: t.func,
     };
 
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.handleSearch();
+        }
+    };
+
     constructor (props) {
         super(props);
         this.handleClear = this.handleClear.bind(this);
@@ -96,7 +102,8 @@ class AdvancedSearchPanel extends React.Component {
                                    placeholder="Enter Title"
                                    name="title"
                                    value={this.props.dashboardSearchCriteria.title}
-                                   onChange={this.handleInputChange}/>
+                                   onChange={this.handleInputChange}
+                                   onKeyPress={this._handleKeyPress} />
                         </div>
                     </div>
                     <div className="col">
@@ -108,7 +115,8 @@ class AdvancedSearchPanel extends React.Component {
                                     placeholder="Enter Studio"
                                     name="studio"
                                     value={this.props.dashboardSearchCriteria.studio}
-                                    onChange={this.handleInputChange}>
+                                    onChange={this.handleInputChange}
+                                    onKeyPress={this._handleKeyPress} >
                                 <option>none</option>
                                 <option>Warner Bros</option>
                                 <option>Disney</option>

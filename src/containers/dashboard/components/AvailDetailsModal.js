@@ -8,7 +8,7 @@ class AvailDetails extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            modal: true
+            modal: true,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -45,43 +45,43 @@ class AvailDetails extends React.Component{
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false}>
                 <ModalHeader toggle={this.toggle}>Avail Details: {this.props.avail.title}</ModalHeader>
                 <div className="list-group">
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>ID:</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>ID:</span>
                         <span >{this.props.avail.id}</span>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>Title:</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>Title:</span>
                         <span >{this.props.avail.title}</span>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>Studio:</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>Studio:</span>
                         <span >{this.props.avail.studio}</span>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>Territory:</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>Territory:</span>
                         <span >{this.props.avail.territory}</span>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>Genre:</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>Genre:</span>
                         <span >{this.props.avail.genre}</span>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>Avail Start Date:</span>
-                        <span >{this.props.avail.startDate}</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>Avail Start Date:</span>
+                        <span >{this.props.avail.availStart}</span>
                     </a>
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
-                        <span style={{width: '30%', display: 'inline-block'}}>Avail End Date:</span>
-                        <span >{this.props.avail.endDate}</span>
+                        <span style={{width: '35%', display: 'inline-block'}}>Avail End Date:</span>
+                        <span >{this.props.avail.availEnd}</span>
                     </a>
                 </div>
                 <ModalFooter>

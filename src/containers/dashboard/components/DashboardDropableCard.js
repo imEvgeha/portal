@@ -4,6 +4,7 @@ import './DashboardCard.scss'
 import Dropzone from 'react-dropzone'
 import {dashboardService} from "../DashboardService";
 import {Progress} from "reactstrap";
+import {tmpUploadService} from "../TmpUploadService";
 
 export default class DashboardDropableCard extends React.Component {
     static propTypes = {
@@ -48,7 +49,7 @@ export default class DashboardDropableCard extends React.Component {
     }
 
     uploadFile(file) {
-        dashboardService.ingestedAvailsCount().then((res) => {
+        tmpUploadService.uploadAvail(file).then((res) => {
             setTimeout(() => this.sendNextFile(), 1000);
         })
     }
@@ -67,7 +68,7 @@ export default class DashboardDropableCard extends React.Component {
                     </div>
                     <div className="dashboard-card-title">
                         { !this.state.uploading && 'Drag files to upload or'}
-                        { this.state.uploading && (this.state.files.length > 0 ? 'Uploading: ' + this.state.file.name : 'Upload finished')}
+                        { this.state.uploading && (this.state.file ? 'Uploading: ' + this.state.file.name : 'Upload finished')}
                     </div>
                     { this.state.uploading && <Progress animated={!!this.state.file} value={100 - this.state.files.length * 100 / this.state.total} />}
                     { !this.state.uploading && <button className="btn btn-primary dashboard-card-btn" onClick={() => this.dropZoneRef.open()}>Browse files</button>}
