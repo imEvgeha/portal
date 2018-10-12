@@ -4,19 +4,14 @@ import ReactTable from "react-table";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 import connect from "react-redux/es/connect/connect";
 
-import {dashboardResultPageUpdate} from "../../actions";
 import {availDetailsModal} from "../../containers/dashboard/components/AvailDetailsModal";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
 const mapState = state => {
     return {
-        dashboardAvailTabPage: state.dashboardAvailTabPage
+        dashboardAvailTabPage: state.dashboardAvailTabPage,
     };
-};
-
-const mapActions = {
-    dashboardResultPageUpdate
 };
 
 class InfiniteScrollTable extends React.Component {
@@ -26,7 +21,7 @@ class InfiniteScrollTable extends React.Component {
         this.state = {
             loading: false,
             scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75,
-            selection: [],
+            // selection: [],
             selectAll: false
         };
 
@@ -47,50 +42,12 @@ class InfiniteScrollTable extends React.Component {
         });
     }
 
-    componentWillMount() {
-        this.loadInitItems();
-    }
-
-    loadInitItems() {
-        this.setState({loading: true});
-        this.props.renderData(0, this.props.pageSize)
-            .then(response => {
-                    this.props.dashboardResultPageUpdate({
-                        pages: 1,
-                        avails: response.data.data,
-                        pageSize: response.data.data.length,
-                    });
-                    this.setState({loading: false});
-                }
-            ).catch((error) => {
-            this.setState({loading: false});
-            console.log("Unexpected error");
-            console.log(error);
-        });
-    }
-
-    // loadMoreItems() {
-    //     this.setState({loading: true});
-    //     this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.pageSize)
-    //         .then(response => {
-    //             this.addLoadedItems(response.data.data);
-    //             this.setState({loading: false});
-    //         }).catch((error) => {
-    //         this.setState({loading: false});
-    //         console.log("Unexpected error");
-    //         console.log(error);
-    //     });
-    // }
-    //
-    // addLoadedItems(items) {
-    //     if (items.length > 0) {
-    //         this.props.dashboardResultPageUpdate({
-    //             pages: this.props.dashboardAvailTabPage.pages + 1,
-    //             avails: this.props.dashboardAvailTabPage.avails.concat(items),
-    //             pageSize: this.props.dashboardAvailTabPage.pageSize + items.length,
-    //         });
-    //     }
-    // }
+    fetchData = (state, instance) => {
+        console.log(state);
+        if (state.sortable) {
+            this.props.onSort(state.sorted);
+        }
+    };
 
     getTrProps = (state, rowInfo) => {
         if (rowInfo && rowInfo.row) {
@@ -109,7 +66,7 @@ class InfiniteScrollTable extends React.Component {
     };
 
     toggleSelection = (key, shift, row) => {
-        let selection = [...this.state.selection];
+        let selection = [...this.props.selection];
         const keyIndex = selection.indexOf(key);
         if (keyIndex >= 0) {
             selection = [
@@ -119,7 +76,7 @@ class InfiniteScrollTable extends React.Component {
         } else {
             selection.push(key);
         }
-        this.setState({selection});
+        this.props.onSelection(selection)
     };
 
     toggleAll = () => {
@@ -132,11 +89,12 @@ class InfiniteScrollTable extends React.Component {
                 selection.push(item._original.id);
             });
         }
-        this.setState({selectAll, selection});
+        this.setState({selectAll});
+        this.props.onSelection(selection);
     };
 
     isSelected = key => {
-        return this.state.selection.includes(key);
+        return this.props.selection.includes(key);
     };
 
     render() {
@@ -159,10 +117,10 @@ class InfiniteScrollTable extends React.Component {
                 showPagination={false}
                 columns={this.props.columns}
                 //Add _id key for CheckboxTable purpose
-                data={this.props.dashboardAvailTabPage.avails.map(item => {
+                data={this.props.data.map(item => {
                     return {_id: item.id, ...item};
                 })}
-                pageSize={this.props.dashboardAvailTabPage.pageSize}
+                pageSize={this.props.pageSize}
                 style={this.props.style ? this.props.style : {}}
                 manual={!!this.props.fetchData}
                 onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
@@ -173,5 +131,5 @@ class InfiniteScrollTable extends React.Component {
     }
 }
 
-export default connect(mapState, mapActions)(InfiniteScrollTable);
+export default connect(mapState)(InfiniteScrollTable);
 
