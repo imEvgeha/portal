@@ -2,6 +2,7 @@ import React from "react";
 import InfiniteScrollTable from "../../../components/table/InfiniteScrollTable";
 import connect from "react-redux/es/connect/connect";
 import {dashboardService} from "../DashboardService";
+import {confirmModal} from "../../../components/share/ConfirmModal"
 
 import './AvailResultTable.scss'
 import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect} from "../../../actions";
@@ -41,7 +42,7 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: 20,
-            scrollSliderLoadPercent: 0.8,
+            scrollSliderLoadPercent: 0.5,
             style: {
                 height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
             },
@@ -125,17 +126,29 @@ class AvailsResultTable extends React.Component {
         return dashboardService.getAvails(this.props.dashboardSearchCriteria, page, pageSize, this.props.dashboardAvailTabPageSort);
     }
 
+    exportAvails = () => {
+        confirmModal.open("Confirm export",
+            () => {},
+            () => {},
+            {description: `You have select ${this.props.dashboardResultPageSelected.length} avails.`});
+    };
+
     render() {
         return (
             <div id="dashboard-result-table">
                 <div className="row justify-content-between">
-                    <span className="col-4 nx-container-margin" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                        Results: {this.props.dashboardAvailTabPage.pageSize}
-                    </span>
+                    <div className="col-4 align-bottom">
+                        <span className="nx-container-margin table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
+                            Results: {this.props.dashboardAvailTabPage.pageSize}
+                        </span>
+                        <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
+                            Selected items: {this.props.dashboardResultPageSelected.length}
+                        </span>
+                    </div>
                     <div className="col-1">
                         <i className={'fas fa-filter table-top-icon'}> </i>
                         <i className={'fas fa-th table-top-icon'}> </i>
-                        <i className={'fas fa-download table-top-icon'}> </i>
+                        <i className={'fas fa-download table-top-icon'}  onClick={this.exportAvails}> </i>
                     </div>
                 </div>
                 <InfiniteScrollTable

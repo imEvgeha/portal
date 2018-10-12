@@ -58,6 +58,7 @@ class DashboardContainer extends React.Component {
                     pages: 1,
                     avails: response.data.data,
                     pageSize: response.data.data.length,
+                    total: response.data.total
                 });
             }
         ).catch((error) => {

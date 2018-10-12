@@ -10,7 +10,7 @@ const CheckboxTable = checkboxHOC(ReactTable);
 
 const mapState = state => {
     return {
-        dashboardAvailTabPage: state.dashboardAvailTabPage,
+        dashboardAvailTabPage: state.dashboardAvailTabPage
     };
 };
 
