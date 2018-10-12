@@ -130,7 +130,7 @@ class AvailsResultTable extends React.Component {
         confirmModal.open("Confirm export",
             () => {},
             () => {},
-            {description: `You have select ${this.props.dashboardResultPageSelected.length} avails.`});
+            {description: `You have select ${this.props.dashboardAvailTabPageSelected.length} avails.`});
     };
 
     render() {
@@ -142,7 +142,7 @@ class AvailsResultTable extends React.Component {
                             Results: {this.props.dashboardAvailTabPage.pageSize}
                         </span>
                         <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
-                            Selected items: {this.props.dashboardResultPageSelected.length}
+                            Selected items: {this.props.dashboardAvailTabPageSelected.length}
                         </span>
                     </div>
                     <div className="col-1">

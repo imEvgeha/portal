@@ -2,17 +2,10 @@ import React from "react";
 import ReactDOM from 'react-dom'
 import ReactTable from "react-table";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
-import connect from "react-redux/es/connect/connect";
 
 import {availDetailsModal} from "../../containers/dashboard/components/AvailDetailsModal";
 
 const CheckboxTable = checkboxHOC(ReactTable);
-
-const mapState = state => {
-    return {
-        dashboardAvailTabPage: state.dashboardAvailTabPage
-    };
-};
 
 class InfiniteScrollTable extends React.Component {
 
@@ -21,7 +14,6 @@ class InfiniteScrollTable extends React.Component {
         this.state = {
             loading: false,
             scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75,
-            // selection: [],
             selectAll: false
         };
 
@@ -131,5 +123,5 @@ class InfiniteScrollTable extends React.Component {
     }
 }
 
-export default connect(mapState)(InfiniteScrollTable);
+export default InfiniteScrollTable;
 
