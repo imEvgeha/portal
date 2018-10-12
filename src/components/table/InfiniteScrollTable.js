@@ -42,7 +42,7 @@ class InfiniteScrollTable extends React.Component {
             this.oldScroll = tbody.scrollTop;
 
             if (isTimeToLoad && isScrollDown && !this.state.loading) {
-                this.loadMoreItems();
+                this.props.onLoadMoreItems();
             }
         });
     }
@@ -69,28 +69,28 @@ class InfiniteScrollTable extends React.Component {
         });
     }
 
-    loadMoreItems() {
-        this.setState({loading: true});
-        this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.pageSize)
-            .then(response => {
-                this.addLoadedItems(response.data.data);
-                this.setState({loading: false});
-            }).catch((error) => {
-            this.setState({loading: false});
-            console.log("Unexpected error");
-            console.log(error);
-        });
-    }
-
-    addLoadedItems(items) {
-        if (items.length > 0) {
-            this.props.dashboardResultPageUpdate({
-                pages: this.props.dashboardAvailTabPage.pages + 1,
-                avails: this.props.dashboardAvailTabPage.avails.concat(items),
-                pageSize: this.props.dashboardAvailTabPage.pageSize + items.length,
-            });
-        }
-    }
+    // loadMoreItems() {
+    //     this.setState({loading: true});
+    //     this.props.renderData(this.props.dashboardAvailTabPage.pages, this.props.pageSize)
+    //         .then(response => {
+    //             this.addLoadedItems(response.data.data);
+    //             this.setState({loading: false});
+    //         }).catch((error) => {
+    //         this.setState({loading: false});
+    //         console.log("Unexpected error");
+    //         console.log(error);
+    //     });
+    // }
+    //
+    // addLoadedItems(items) {
+    //     if (items.length > 0) {
+    //         this.props.dashboardResultPageUpdate({
+    //             pages: this.props.dashboardAvailTabPage.pages + 1,
+    //             avails: this.props.dashboardAvailTabPage.avails.concat(items),
+    //             pageSize: this.props.dashboardAvailTabPage.pageSize + items.length,
+    //         });
+    //     }
+    // }
 
     getTrProps = (state, rowInfo) => {
         if (rowInfo && rowInfo.row) {

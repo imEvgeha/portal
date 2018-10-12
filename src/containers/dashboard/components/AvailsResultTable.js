@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {dashboardService} from "../DashboardService";
 
 import './AvailResultTable.scss'
+import {dashboardResultPageUpdate} from "../../../actions";
 
 const columns = [
     {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
@@ -27,6 +28,10 @@ const mapState = state => {
     };
 };
 
+const mapActions = {
+    dashboardResultPageUpdate
+};
+
 class AvailsResultTable extends React.Component {
 
     constructor(props) {
@@ -36,10 +41,38 @@ class AvailsResultTable extends React.Component {
             scrollSliderLoadPercent: 0.5,
             style: {
                 height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
-            }
+            },
+            requestLoading: false
         };
 
         this.renderData = this.renderData.bind(this);
+        this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
+    }
+
+    onLoadMoreItems() {
+        if(!this.state.requestLoading) {
+            this.setState({requestLoading: true});
+            dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort)
+                .then(response => {
+                    console.log(response);
+                    this.addLoadedItems(response.data.data);
+                    this.setState({requestLoading: false});
+                }).catch((error) => {
+                this.setState({requestLoading: false});
+                console.log("Unexpected error");
+                console.log(error);
+            });
+        }
+    }
+
+    addLoadedItems(items) {
+        if (items.length > 0) {
+            this.props.dashboardResultPageUpdate({
+                pages: this.props.dashboardAvailTabPage.pages + 1,
+                avails: this.props.dashboardAvailTabPage.avails.concat(items),
+                pageSize: this.props.dashboardAvailTabPage.pageSize + items.length,
+            });
+        }
     }
 
     renderData(page, pageSize) {
@@ -65,10 +98,12 @@ class AvailsResultTable extends React.Component {
                     renderData = {this.renderData}
                     style = {this.state.style}
                     scrollSliderLoadPercent = {this.state.scrollSliderLoadPercent}
+
+                    onLoadMoreItems={this.onLoadMoreItems}
                 />
             </div>
         );
     }
 }
 
-export default connect(mapState)(AvailsResultTable);
+export default connect(mapState, mapActions) (AvailsResultTable);

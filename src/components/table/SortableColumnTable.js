@@ -74,6 +74,8 @@ class SortableColumnTable extends React.Component {
                 fetchData={this.fetchData}
                 style={this.props.style ? this.props.style : {}}
                 sortLoading={this.state.loading}
+
+                onLoadMoreItems={this.props.onLoadMoreItems}
             />
         );
     }
