@@ -59,12 +59,14 @@ class AvailsResultTable extends React.Component {
         return (
             <div id="dashboard-result-table">
                 <div className="row justify-content-between">
-                    <span className="col-4 nx-container-margin" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                        Results: {this.props.dashboardAvailTabPage.pageSize}
-                    </span>
-                    <span className={'nx-container-margin'} id={'dashboard-result-number'}>
-                    Selected items: {this.props.dashboardResultPageSelected.length}
-                </span>
+                    <div className="col-4 align-bottom">
+                        <span className="nx-container-margin table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
+                            Results: {this.props.dashboardAvailTabPage.pageSize}
+                        </span>
+                        <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
+                            Selected items: {this.props.dashboardResultPageSelected.length}
+                        </span>
+                    </div>
                     <div className="col-1">
                         <i className={'fas fa-filter table-top-icon'}> </i>
                         <i className={'fas fa-th table-top-icon'}> </i>
