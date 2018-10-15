@@ -21,6 +21,11 @@ class AdvancedSearchPanel extends React.Component {
         onSearch: t.func,
     };
 
+    validateDate(date) {
+        const parsed = new Date(date);
+        return (parsed instanceof Date && ! isNaN(parsed.getTime())) ? parsed : false;
+    }
+
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.handleSearch();
@@ -29,12 +34,18 @@ class AdvancedSearchPanel extends React.Component {
 
     constructor (props) {
         super(props);
+        this.state = {
+            invalidStartDate: '',
+            invalidEndDate: '',
+        };
         this.handleClear = this.handleClear.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.setupAvailStartDate = this.setupAvailStartDate.bind(this);
         this.handleChangeAvailStartDate = this.handleChangeAvailStartDate.bind(this);
+        this.handleChangeRawAvailStartDate = this.handleChangeRawAvailStartDate.bind(this);
         this.setupAvailEndDate = this.setupAvailEndDate.bind(this);
         this.handleChangeAvailEndDate = this.handleChangeAvailEndDate.bind(this);
+        this.handleChangeRawAvailEndDate = this.handleChangeRawAvailEndDate.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
@@ -50,6 +61,11 @@ class AdvancedSearchPanel extends React.Component {
         this.props.dashboardUpdateSearchForm({
             availStartDate: date
         });
+        this.wrongDateRange(this.props.dashboardSearchCriteria.availEndDate && this.props.dashboardSearchCriteria.availEndDate < date);
+    }
+
+    handleChangeRawAvailStartDate(date) {
+        this.setState({invalidStartDate: !this.validateDate(date)});
     }
 
     setupAvailEndDate() {
@@ -61,9 +77,33 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleChangeAvailEndDate(date) {
+        console.log('Start: ' + this.props.dashboardSearchCriteria.availStartDate);
+        console.log('End: ' + date);
+        console.log('compare: ' + this.props.dashboardSearchCriteria.availStartDate > date);
         this.props.dashboardUpdateSearchForm({
             availEndDate: date
         });
+        this.wrongDateRange(this.props.dashboardSearchCriteria.availStartDate && this.props.dashboardSearchCriteria.availStartDate > date);
+    }
+
+    wrongDateRange(wrong) {
+        if (wrong) {
+            this.setState({invalidStartDate: 'Wrong date range', invalidEndDate: 'Wrong date range'});
+        } else {
+            this.setState({invalidStartDate: '', invalidEndDate: ''});
+        }
+    }
+
+    handleChangeRawAvailEndDate(date) {
+        date = this.validateDate(date.target.value);
+        if (date) {
+            console.log('Valid Date: ' + date);
+            console.log('moment: ' +  moment(date));
+
+            this.handleChangeAvailEndDate(moment(date));
+        } else {
+            this.setState({invalidEndDate: 'Invalid date'});
+        }
     }
 
     handleInputChange(event) {
@@ -128,27 +168,33 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-start-date-text">Avail Start
+                            <label htmlFor="dashboard-avails-search-start-date-text" className={this.state.invalidStartDate ? 'text-danger' : ''}>Avail Start
                                 Date</label>
                             <span onClick={this.setupAvailStartDate}>
                                 <DatePicker
                                     id="dashboard-avails-search-start-date-text"
                                     selected={this.props.dashboardSearchCriteria.availStartDate}
                                     onChange={this.handleChangeAvailStartDate}
+                                    onChangeRaw={this.handleChangeRawAvailStartDate}
+                                    todayButton={'Today'}
                                 />
+                                { this.state.invalidStartDate && <small className="text-danger m-2" style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small> }
                             </span>
                         </div>
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-end-date-text">Avail End
+                            <label htmlFor="dashboard-avails-search-end-date-text"  className={this.state.invalidEndDate ? 'text-danger' : ''}>Avail End
                                 Date</label>
                             <span onClick={this.setupAvailEndDate}>
                                 <DatePicker
                                     id="dashboard-avails-search-end-date-text"
                                     selected={this.props.dashboardSearchCriteria.availEndDate}
                                     onChange={this.handleChangeAvailEndDate}
+                                    onChangeRaw={this.handleChangeRawAvailEndDate}
+                                    todayButton={'Today'}
                                 />
+                                { this.state.invalidEndDate && <small className="text-danger m-2" style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small> }
                         </span>
                         </div>
                     </div>
