@@ -4,15 +4,29 @@ import ReactTable from "react-table";
 import checkboxHOC from "react-table/lib/hoc/selectTable";
 
 import {availDetailsModal} from "../../containers/dashboard/components/AvailDetailsModal";
+import t from "prop-types";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
+const startPageSize = 9;
+
 class InfiniteScrollTable extends React.Component {
+
+    static propTypes = {
+        loading: t.bool,
+        style: t.object,
+        columns: t.array,
+        data: t.array,
+        pageSize:t.number,
+        selection: t.array,
+        onLoadMoreItems: t.func,
+        onSort: t.func,
+        onSelection: t.func
+    };
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
             scrollSliderLoadPercent: this.props.scrollSliderLoadPercent ? this.props.scrollSliderLoadPercent : 0.75,
             selectAll: false
         };
@@ -28,14 +42,13 @@ class InfiniteScrollTable extends React.Component {
             let isScrollDown = this.oldScroll < tbody.scrollTop;
             this.oldScroll = tbody.scrollTop;
 
-            if (isTimeToLoad && isScrollDown && !this.state.loading) {
+            if (isTimeToLoad && isScrollDown) {
                 this.props.onLoadMoreItems();
             }
         });
     }
 
     fetchData = (state, instance) => {
-        console.log(state);
         if (state.sortable) {
             this.props.onSort(state.sorted);
         }
@@ -90,7 +103,7 @@ class InfiniteScrollTable extends React.Component {
     };
 
     render() {
-        const {toggleSelection, toggleAll, isSelected, getTrProps} = this;
+        const {toggleSelection, toggleAll, isSelected, getTrProps, fetchData} = this;
         const {selectAll} = this.state;
 
         const checkboxProps = {
@@ -112,11 +125,11 @@ class InfiniteScrollTable extends React.Component {
                 data={this.props.data.map(item => {
                     return {_id: item.id, ...item};
                 })}
-                pageSize={this.props.pageSize < 10 ? 10 : this.props.pageSize}
+                pageSize={this.props.pageSize < startPageSize ? startPageSize : this.props.pageSize}
                 style={this.props.style ? this.props.style : {}}
-                manual={!!this.props.fetchData}
-                onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
-                loading={this.props.sortLoading}
+                manual
+                onFetchData={fetchData}
+                loading={this.props.loading}
                 {...checkboxProps}
             />
         );

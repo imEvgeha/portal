@@ -3,7 +3,8 @@ import {
     DASHBOARD_UPDATE_SEARCH_FORM,
     DASHBOARD_RESULT_PAGE_UPDATE,
     DASHBOARD_RESULT_PAGE_SORT,
-    DASHBOARD_RESULT_PAGE_SELECT
+    DASHBOARD_RESULT_PAGE_SELECT,
+    DASHBOARD_RESULT_PAGE_LOADING
 } from "../constants/action-types";
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
     },
     dashboardAvailTabPage: {
         pages: 0,
-        avails: [],
+        avails: [{}],
         pageSize: 0,
         total: 0
     },
@@ -25,7 +26,8 @@ const initialState = {
         sortBy: null,
         desc: null
     },
-    dashboardAvailTabPageSelected: []
+    dashboardAvailTabPageSelected: [],
+    dashboardAvailTabPageLoading: false
 };
 
 const rootReducer = ( state = initialState, action) => {
@@ -40,6 +42,8 @@ const rootReducer = ( state = initialState, action) => {
             return { ...state, dashboardAvailTabPageSort: action.payload};
         case DASHBOARD_RESULT_PAGE_SELECT:
             return { ...state, dashboardAvailTabPageSelected: action.payload};
+        case DASHBOARD_RESULT_PAGE_LOADING:
+            return { ...state, dashboardAvailTabPageLoading: action.payload};
         default:
             return state;
     }

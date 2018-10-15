@@ -5,7 +5,7 @@ import {dashboardService} from "../DashboardService";
 import {confirmModal} from "../../../components/share/ConfirmModal"
 
 import './AvailResultTable.scss'
-import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect} from "../../../actions";
+import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect, dashboardResultPageLoading} from "../../../actions";
 
 const columns = [
     {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
@@ -26,14 +26,21 @@ const mapState = state => {
         dashboardAvailTabPage: state.dashboardAvailTabPage,
         dashboardAvailTabPageSort: state.dashboardAvailTabPageSort,
         dashboardSearchCriteria: state.dashboardSearchCriteria,
-        dashboardAvailTabPageSelected: state.dashboardAvailTabPageSelected
+        dashboardAvailTabPageSelected: state.dashboardAvailTabPageSelected,
+        dashboardAvailTabPageLoading: state.dashboardAvailTabPageLoading
     };
 };
 
 const mapActions = {
     dashboardResultPageUpdate,
     dashboardResultPageSort,
-    dashboardResultPageSelect
+    dashboardResultPageSelect,
+    dashboardResultPageLoading
+};
+
+const scrollSliderLoadPercent = 0.5;
+const style= {
+    height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
 };
 
 class AvailsResultTable extends React.Component {
@@ -42,15 +49,9 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: 20,
-            scrollSliderLoadPercent: 0.5,
-            style: {
-                height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
-            },
             requestLoading: false,
-            sortLoading: false
         };
 
-        this.renderData = this.renderData.bind(this);
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
         this.onSort = this.onSort.bind(this);
         this.onSelection = this.onSelection.bind(this);
@@ -61,7 +62,6 @@ class AvailsResultTable extends React.Component {
             this.setState({requestLoading: true});
             dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort)
                 .then(response => {
-                    console.log(response);
                     this.addLoadedItems(response.data.data);
                     this.setState({requestLoading: false});
                 }).catch((error) => {
@@ -84,23 +84,25 @@ class AvailsResultTable extends React.Component {
 
     onSort(sortProps) {
         if (this.isTimeToSort(sortProps)) {
-            this.setState({sortLoading: false});
+            this.props.dashboardResultPageLoading(true);
+
+            let sortData = sortProps[0];
             let dashboardAvailTabPageSort = {
-                sortBy: sortProps.id,
-                desc: sortProps.desc
+                sortBy: sortData.id,
+                desc: sortData.desc
             };
             this.props.dashboardResultPageSort(dashboardAvailTabPageSort);
-
             dashboardService.getAvails(this.props.dashboardSearchCriteria, 0, this.state.pageSize, dashboardAvailTabPageSort)
                 .then(response => {
+                    console.log(response);
                     this.props.dashboardResultPageUpdate({
                         pages: 1,
                         avails: response.data.data,
                         pageSize: response.data.data.length,
                     });
-                    this.setState({sortLoading: false});
+                    this.props.dashboardResultPageLoading(false);
                 }).catch((error) => {
-                this.setState({sortLoading: false});
+                this.props.dashboardResultPageLoading(false);
                 console.log("Unexpected error");
                 console.log(error);
             })
@@ -120,10 +122,6 @@ class AvailsResultTable extends React.Component {
 
     onSelection(selected) {
         this.props.dashboardResultPageSelect(selected);
-    }
-
-    renderData(page, pageSize) {
-        return dashboardService.getAvails(this.props.dashboardSearchCriteria, page, pageSize, this.props.dashboardAvailTabPageSort);
     }
 
     exportAvails = () => {
@@ -157,10 +155,9 @@ class AvailsResultTable extends React.Component {
                     columns = {columns}
                     data = {this.props.dashboardAvailTabPage.avails}
                     pageSize = {this.props.dashboardAvailTabPage.pageSize}
-                    renderData = {this.renderData}
-                    style = {this.state.style}
-                    scrollSliderLoadPercent = {this.state.scrollSliderLoadPercent}
-                    sortLoading = {this.state.sortLoading}
+                    style = {style}
+                    scrollSliderLoadPercent = {scrollSliderLoadPercent}
+                    loading = {this.props.dashboardAvailTabPageLoading}
                     selection = {this.props.dashboardAvailTabPageSelected}
 
                     onLoadMoreItems = {this.onLoadMoreItems}
