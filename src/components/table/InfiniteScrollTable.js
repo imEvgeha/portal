@@ -7,6 +7,8 @@ import {availDetailsModal} from "../../containers/dashboard/components/AvailDeta
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
+const startPageSize = 9;
+
 class InfiniteScrollTable extends React.Component {
 
     constructor(props) {
@@ -90,7 +92,7 @@ class InfiniteScrollTable extends React.Component {
     };
 
     render() {
-        const {toggleSelection, toggleAll, isSelected, getTrProps} = this;
+        const {toggleSelection, toggleAll, isSelected, getTrProps, fetchData} = this;
         const {selectAll} = this.state;
 
         const checkboxProps = {
@@ -112,11 +114,11 @@ class InfiniteScrollTable extends React.Component {
                 data={this.props.data.map(item => {
                     return {_id: item.id, ...item};
                 })}
-                pageSize={this.props.pageSize < 10 ? 10 : this.props.pageSize}
+                pageSize={this.props.pageSize < startPageSize ? startPageSize : this.props.pageSize}
                 style={this.props.style ? this.props.style : {}}
-                manual={!!this.props.fetchData}
-                onFetchData={this.props.fetchData ? this.props.fetchData : () => null}
-                loading={this.props.sortLoading}
+                manual
+                onFetchData={fetchData}
+                loading={this.props.loading}
                 {...checkboxProps}
             />
         );
