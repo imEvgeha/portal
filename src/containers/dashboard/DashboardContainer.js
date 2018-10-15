@@ -6,7 +6,8 @@ import FreeTextSearch from "../../components/FreeTextSearch";
 import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
 import {
     dashboardResultPageUpdate,
-    dashboardUpdateSearchForm
+    dashboardUpdateSearchForm,
+    dashboardResultPageLoading
 } from "../../actions";
 import DashboardTab from "./DashboardTab";
 import SearchResultsTab from "./SearchResultsTab";
@@ -22,7 +23,8 @@ const mapState = state => {
 
 const mapActions = {
     dashboardUpdateSearchForm,
-    dashboardResultPageUpdate
+    dashboardResultPageUpdate,
+    dashboardResultPageLoading
 };
 
 class DashboardContainer extends React.Component {
@@ -52,6 +54,7 @@ class DashboardContainer extends React.Component {
     }
 
     availSearch(searchCriteria) {
+        this.props.dashboardResultPageLoading(true);
         dashboardService.getAvails(searchCriteria ,0, 20, this.props.dashboardAvailTabPageSort)
         .then(response => {
                 this.props.dashboardResultPageUpdate({
@@ -60,8 +63,10 @@ class DashboardContainer extends React.Component {
                     pageSize: response.data.data.length,
                     total: response.data.total
                 });
+            this.props.dashboardResultPageLoading(false);
             }
         ).catch((error) => {
+            this.props.dashboardResultPageLoading(false);
             console.log("Unexpected error");
         });
     }

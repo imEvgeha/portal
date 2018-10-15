@@ -5,7 +5,7 @@ import {dashboardService} from "../DashboardService";
 import {confirmModal} from "../../../components/share/ConfirmModal"
 
 import './AvailResultTable.scss'
-import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect} from "../../../actions";
+import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect, dashboardResultPageLoading} from "../../../actions";
 
 const columns = [
     {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
@@ -26,14 +26,16 @@ const mapState = state => {
         dashboardAvailTabPage: state.dashboardAvailTabPage,
         dashboardAvailTabPageSort: state.dashboardAvailTabPageSort,
         dashboardSearchCriteria: state.dashboardSearchCriteria,
-        dashboardAvailTabPageSelected: state.dashboardAvailTabPageSelected
+        dashboardAvailTabPageSelected: state.dashboardAvailTabPageSelected,
+        dashboardAvailTabPageLoading: state.dashboardAvailTabPageLoading
     };
 };
 
 const mapActions = {
     dashboardResultPageUpdate,
     dashboardResultPageSort,
-    dashboardResultPageSelect
+    dashboardResultPageSelect,
+    dashboardResultPageLoading
 };
 
 const scrollSliderLoadPercent = 0.5;
@@ -48,7 +50,6 @@ class AvailsResultTable extends React.Component {
         this.state = {
             pageSize: 20,
             requestLoading: false,
-            loading: false
         };
 
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
@@ -83,7 +84,7 @@ class AvailsResultTable extends React.Component {
 
     onSort(sortProps) {
         if (this.isTimeToSort(sortProps)) {
-            this.setState({loading: true});
+            this.props.dashboardResultPageLoading(true);
 
             let sortData = sortProps[0];
             let dashboardAvailTabPageSort = {
@@ -99,9 +100,9 @@ class AvailsResultTable extends React.Component {
                         avails: response.data.data,
                         pageSize: response.data.data.length,
                     });
-                    this.setState({loading: false});
+                    this.props.dashboardResultPageLoading(false);
                 }).catch((error) => {
-                this.setState({loading: false});
+                this.props.dashboardResultPageLoading(false);
                 console.log("Unexpected error");
                 console.log(error);
             })
@@ -154,7 +155,7 @@ class AvailsResultTable extends React.Component {
                     pageSize = {this.props.dashboardAvailTabPage.pageSize}
                     style = {style}
                     scrollSliderLoadPercent = {scrollSliderLoadPercent}
-                    loading = {this.state.loading}
+                    loading = {this.props.dashboardAvailTabPageLoading}
                     selection = {this.props.dashboardAvailTabPageSelected}
 
                     onLoadMoreItems = {this.onLoadMoreItems}
