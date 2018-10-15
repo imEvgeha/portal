@@ -57,7 +57,7 @@ class AvailsResultTable extends React.Component {
     }
 
     onLoadMoreItems() {
-        if(!this.state.requestLoading) {
+        if(!this.state.requestLoading && this.props.dashboardAvailTabPage.avails.length < this.props.dashboardAvailTabPage.total) {
             this.setState({requestLoading: true});
             dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort)
                 .then(response => {
@@ -139,7 +139,7 @@ class AvailsResultTable extends React.Component {
                 <div className="row justify-content-between">
                     <div className="col-4 align-bottom">
                         <span className="nx-container-margin table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                            Results: {this.props.dashboardAvailTabPage.pageSize}
+                            Results: {this.props.dashboardAvailTabPage.total}
                         </span>
                         <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
                             Selected items: {this.props.dashboardAvailTabPageSelected.length}

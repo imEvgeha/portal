@@ -112,7 +112,7 @@ class InfiniteScrollTable extends React.Component {
                 data={this.props.data.map(item => {
                     return {_id: item.id, ...item};
                 })}
-                pageSize={this.props.pageSize}
+                pageSize={this.props.pageSize < 10 ? 10 : this.props.pageSize}
                 style={this.props.style ? this.props.style : {}}
                 manual={!!this.props.fetchData}
                 onFetchData={this.props.fetchData ? this.props.fetchData : () => null}

@@ -19,6 +19,7 @@ const initialState = {
         pages: 0,
         avails: [],
         pageSize: 0,
+        total: 0
     },
     dashboardAvailTabPageSort: {
         sortBy: null,
@@ -34,7 +35,7 @@ const rootReducer = ( state = initialState, action) => {
         case DASHBOARD_UPDATE_SEARCH_FORM:
             return { ...state, dashboardSearchCriteria: {...state.dashboardSearchCriteria, ...action.searchCriteria}};
         case DASHBOARD_RESULT_PAGE_UPDATE:
-            return { ...state, dashboardAvailTabPage: action.payload};
+            return { ...state, dashboardAvailTabPage: {...state.dashboardAvailTabPage, ...action.payload}};
         case DASHBOARD_RESULT_PAGE_SORT:
             return { ...state, dashboardAvailTabPageSort: action.payload};
         case DASHBOARD_RESULT_PAGE_SELECT:
