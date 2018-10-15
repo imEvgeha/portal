@@ -136,19 +136,21 @@ class AvailsResultTable extends React.Component {
     render() {
         return (
             <div id="dashboard-result-table">
-                <div className="row justify-content-between">
-                    <div className="col-4 align-bottom">
-                        <span className="nx-container-margin table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                            Results: {this.props.dashboardAvailTabPage.total}
-                        </span>
-                        <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
-                            Selected items: {this.props.dashboardAvailTabPageSelected.length}
-                        </span>
-                    </div>
-                    <div className="col-1">
-                        <i className={'fas fa-filter table-top-icon'}> </i>
-                        <i className={'fas fa-th table-top-icon'}> </i>
-                        <i className={'fas fa-download table-top-icon'}  onClick={this.exportAvails}> </i>
+                <div className={'container-fluid'}>
+                    <div className="row justify-content-between">
+                        <div className="col-4 align-bottom">
+                            <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
+                                Results: {this.props.dashboardAvailTabPage.total}
+                            </span>
+                            <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
+                                Selected items: {this.props.dashboardAvailTabPageSelected.length}
+                            </span>
+                        </div>
+                        <div className="col-2">
+                            <i className={'fas fa-download table-top-icon float-right'}  onClick={this.exportAvails}> </i>
+                            <i className={'fas fa-th table-top-icon float-right'}> </i>
+                            <i className={'fas fa-filter table-top-icon float-right'}> </i>
+                        </div>
                     </div>
                 </div>
                 <InfiniteScrollTable
