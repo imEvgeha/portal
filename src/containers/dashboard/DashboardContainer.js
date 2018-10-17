@@ -7,6 +7,7 @@ import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
 import {
     dashboardResultPageUpdate,
     dashboardResultPageLoading
+    dashboardResultPageSort
 } from "../../actions/index";
 import {
     searchFormShowAdvancedSearch
@@ -28,6 +29,7 @@ const mapActions = {
     dashboardResultPageUpdate,
     dashboardResultPageLoading,
     searchFormShowAdvancedSearch,
+    dashboardResultPageSort
 };
 
 class DashboardContainer extends React.Component {
@@ -50,6 +52,7 @@ class DashboardContainer extends React.Component {
 
     handleAvailsFreeTextSearch(searchCriteria) {
         this.props.dashboardResultPageLoading(true);
+        this.props.dashboardResultPageSort([]);
         dashboardService.freeTextSearch(searchCriteria ,0, 20, this.props.dashboardAvailTabPageSort)
         .then(response => {
                 this.processResponse(response);
@@ -64,6 +67,7 @@ class DashboardContainer extends React.Component {
 
     handleAvailsAdvancedSearch(searchCriteria) {
         this.props.dashboardResultPageLoading(true);
+        this.props.dashboardResultPageSort([]);
         dashboardService.advancedSearch(searchCriteria ,0, 20, this.props.dashboardAvailTabPageSort)
         .then(response => {
                 this.processResponse(response);

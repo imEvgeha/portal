@@ -14,10 +14,7 @@ const initialState = {
         pageSize: 0,
         total: 0
     },
-    dashboardAvailTabPageSort: {
-        sortBy: null,
-        desc: null
-    },
+    dashboardAvailTabPageSort: [],
     dashboardAvailTabPageSelected: [],
     dashboardAvailTabPageLoading: false
 };

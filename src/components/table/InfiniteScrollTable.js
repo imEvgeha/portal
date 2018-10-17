@@ -19,8 +19,9 @@ class InfiniteScrollTable extends React.Component {
         data: t.array,
         pageSize:t.number,
         selection: t.array,
+        sorted: t.array,
         onLoadMoreItems: t.func,
-        onSort: t.func,
+        onSortedChange: t.func,
         onSelection: t.func
     };
 
@@ -47,12 +48,6 @@ class InfiniteScrollTable extends React.Component {
             }
         });
     }
-
-    fetchData = (state, instance) => {
-        if (state.sortable) {
-            this.props.onSort(state.sorted);
-        }
-    };
 
     getTrProps = (state, rowInfo) => {
         if (rowInfo && rowInfo.row) {
@@ -103,7 +98,7 @@ class InfiniteScrollTable extends React.Component {
     };
 
     render() {
-        const {toggleSelection, toggleAll, isSelected, getTrProps, fetchData} = this;
+        const {toggleSelection, toggleAll, isSelected, getTrProps} = this;
         const {selectAll} = this.state;
 
         const checkboxProps = {
@@ -125,10 +120,11 @@ class InfiniteScrollTable extends React.Component {
                 data={this.props.data.map(item => {
                     return {_id: item.id, ...item};
                 })}
+                sorted={this.props.sorted}
                 pageSize={this.props.pageSize < startPageSize ? startPageSize : this.props.pageSize}
                 style={this.props.style ? this.props.style : {}}
                 manual
-                onFetchData={fetchData}
+                onSortedChange={this.props.onSortedChange}
                 loading={this.props.loading}
                 {...checkboxProps}
             />
