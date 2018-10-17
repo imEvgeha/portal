@@ -6,7 +6,7 @@ export const tmpUploadService = {
     uploadAvail: (file) => {
         const formData = new FormData();
         formData.append("avail", file);
-        return http.post('/avail', formData,  {headers: {'Content-Type': 'multipart/form-data'}});
+        return http.post('/avails', formData,  {headers: {'Content-Type': 'multipart/form-data'}});
     },
 
 };

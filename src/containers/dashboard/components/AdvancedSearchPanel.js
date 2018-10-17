@@ -2,18 +2,18 @@ import React from 'react'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Button} from 'reactstrap';
-import {dashboardUpdateSearchForm} from "../../../actions";
+import {searchFormUpdateSearchCriteria} from "../../../actions/dashboard";
 import connect from "react-redux/es/connect/connect";
 import t from "prop-types";
 
 const mapState = state => {
     return {
-        dashboardSearchCriteria: state.dashboardSearchCriteria
+        dashboardSearchCriteria: state.dashboard.searchCriteria
     };
 };
 
 const mapActions = {
-    dashboardUpdateSearchForm
+    searchFormUpdateSearchCriteria
 };
 
 class AdvancedSearchPanel extends React.Component {
@@ -51,14 +51,14 @@ class AdvancedSearchPanel extends React.Component {
 
     setupAvailStartDate() {
         if (!this.props.dashboardSearchCriteria.availStartDate) {
-            this.props.dashboardUpdateSearchForm({
+            this.props.searchFormUpdateSearchCriteria({
                 availStartDate: moment()
             });
         }
     }
 
     handleChangeAvailStartDate(date) {
-        this.props.dashboardUpdateSearchForm({
+        this.props.searchFormUpdateSearchCriteria({
             availStartDate: date
         });
         this.wrongDateRange(this.props.dashboardSearchCriteria.availEndDate && this.props.dashboardSearchCriteria.availEndDate < date);
@@ -70,7 +70,7 @@ class AdvancedSearchPanel extends React.Component {
 
     setupAvailEndDate() {
         if (!this.props.dashboardSearchCriteria.availEndDate) {
-            this.props.dashboardUpdateSearchForm({
+            this.props.searchFormUpdateSearchCriteria({
                 availEndDate: moment()
             });
         }
@@ -80,7 +80,7 @@ class AdvancedSearchPanel extends React.Component {
         console.log('Start: ' + this.props.dashboardSearchCriteria.availStartDate);
         console.log('End: ' + date);
         console.log('compare: ' + this.props.dashboardSearchCriteria.availStartDate > date);
-        this.props.dashboardUpdateSearchForm({
+        this.props.searchFormUpdateSearchCriteria({
             availEndDate: date
         });
         this.wrongDateRange(this.props.dashboardSearchCriteria.availStartDate && this.props.dashboardSearchCriteria.availStartDate > date);
@@ -111,13 +111,13 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        this.props.dashboardUpdateSearchForm({
+        this.props.searchFormUpdateSearchCriteria({
             [name]: value
         });
     }
 
     handleClear() {
-        this.props.dashboardUpdateSearchForm({
+        this.props.searchFormUpdateSearchCriteria({
             availStartDate: null,
             availEndDate: null,
             studio: '',

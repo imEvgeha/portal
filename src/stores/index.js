@@ -1,6 +1,12 @@
-import { createStore } from 'redux';
-import rootReducer from '../reducers/index'
+import {combineReducers, createStore} from 'redux';
+import root from '../reducers/index'
+import dashboard from '../reducers/dashboard'
 
-const store = createStore(rootReducer);
+const reducers = combineReducers({
+    root,
+    dashboard
+});
+
+const store = createStore(reducers);
 
 export default store;

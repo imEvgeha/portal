@@ -7,7 +7,17 @@ export const dashboardService = {
 
     ingestedAvailsCount: () => http.get('/avails', {params: {page: 0, size: 1}}),
 
-    getAvails: (searchCriteria, page, pageSize, sortedParams) => {
+    freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
+        console.log(searchCriteria);
+        console.log(sortedParams);
+        const params = {};
+        if (searchCriteria.text) {
+            params.text = searchCriteria.text;
+        }
+        return http.get('/avails/search' + '', {params: {...params, page: page, size: pageSize}});
+    },
+
+    advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         console.log(searchCriteria);
         console.log(sortedParams);
         // let sortOptions = sortedParams ? sortedParams.

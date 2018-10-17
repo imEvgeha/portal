@@ -6,7 +6,7 @@ import FontAwesome from 'react-fontawesome'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 
 const mapStateToProps = state => {
-  return {profileInfo: state.profileInfo};
+  return {profileInfo: state.root.profileInfo};
 };
 
 class NavbarConnect extends React.Component {

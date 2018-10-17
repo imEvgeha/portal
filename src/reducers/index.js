@@ -1,6 +1,5 @@
 import {
     LOAD_PROFILE_INFO,
-    DASHBOARD_UPDATE_SEARCH_FORM,
     DASHBOARD_RESULT_PAGE_UPDATE,
     DASHBOARD_RESULT_PAGE_SORT,
     DASHBOARD_RESULT_PAGE_SELECT,
@@ -9,13 +8,6 @@ import {
 
 const initialState = {
     profileInfo: {},
-    dashboardSearchCriteria: {
-        searchText: '',
-        availStartDate: null,
-        availEndDate: null,
-        title: '',
-        studio: ''
-    },
     dashboardAvailTabPage: {
         pages: 0,
         avails: [{}],
@@ -30,12 +22,10 @@ const initialState = {
     dashboardAvailTabPageLoading: false
 };
 
-const rootReducer = ( state = initialState, action) => {
+const root = ( state = initialState, action) => {
     switch (action.type) {
         case LOAD_PROFILE_INFO:
             return { ...state, profileInfo: action.payload};
-        case DASHBOARD_UPDATE_SEARCH_FORM:
-            return { ...state, dashboardSearchCriteria: {...state.dashboardSearchCriteria, ...action.searchCriteria}};
         case DASHBOARD_RESULT_PAGE_UPDATE:
             return { ...state, dashboardAvailTabPage: {...state.dashboardAvailTabPage, ...action.payload}};
         case DASHBOARD_RESULT_PAGE_SORT:
@@ -49,4 +39,4 @@ const rootReducer = ( state = initialState, action) => {
     }
 };
 
-export default rootReducer;
+export default root;

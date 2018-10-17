@@ -1,17 +1,18 @@
 import React from 'react'
 import t from "prop-types";
-import {dashboardUpdateSearchForm} from "../actions";
+import {searchFormUpdateTextSearch} from "../../../actions/dashboard";
 import connect from "react-redux/es/connect/connect";
 
 
 const mapState = state => {
     return {
-        dashboardSearchCriteria: state.dashboardSearchCriteria
+        freeTextSearch: state.dashboard.freeTextSearch,
+        useAdvancedSearch: state.dashboard.useAdvancedSearch,
     };
 };
 
 const mapActions = {
-    dashboardUpdateSearchForm
+    searchFormUpdateTextSearch
 };
 
 class FreeTextSearch extends React.Component {
@@ -37,28 +38,28 @@ class FreeTextSearch extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        this.props.dashboardUpdateSearchForm({
+        this.props.searchFormUpdateTextSearch({
             [name]: value
         });
     }
 
     handleSerach() {
-        this.props.onSearch(this.props.dashboardSearchCriteria);
+        this.props.onSearch(this.props.freeTextSearch);
     }
 
     render() {
         return (<div className="input-group stylish-input-group">
             <input type="text" className="form-control" placeholder="Search"
-                   name={'searchText'}
-                   value={this.props.dashboardSearchCriteria.searchText}
+                   name={'text'}
+                   disabled={this.props.useAdvancedSearch}
+                   value={this.props.freeTextSearch.text}
                    onChange={this.handleInputChange}
                    id={this.props.containerId + '-freetext-search-text'}
                    onKeyPress={this._handleKeyPress} />
-
             <div className="input-group-append">
                 <button
                     type="button"
-                    className="btn"
+                    disabled={this.props.useAdvancedSearch}
                     onClick={this.handleSerach}
                     id={this.props.containerId + '-freetext-search-btn'}>
                     <i className="fas fa-search"> </i>

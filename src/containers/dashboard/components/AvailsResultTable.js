@@ -23,11 +23,11 @@ const columns = [
  */
 const mapState = state => {
     return {
-        dashboardAvailTabPage: state.dashboardAvailTabPage,
-        dashboardAvailTabPageSort: state.dashboardAvailTabPageSort,
-        dashboardSearchCriteria: state.dashboardSearchCriteria,
-        dashboardAvailTabPageSelected: state.dashboardAvailTabPageSelected,
-        dashboardAvailTabPageLoading: state.dashboardAvailTabPageLoading
+        dashboardAvailTabPage: state.root.dashboardAvailTabPage,
+        dashboardAvailTabPageSort: state.root.dashboardAvailTabPageSort,
+        dashboardSearchCriteria: state.dashboard.searchCriteria,
+        dashboardAvailTabPageSelected: state.root.dashboardAvailTabPageSelected,
+        dashboardAvailTabPageLoading: state.root.dashboardAvailTabPageLoading
     };
 };
 
@@ -58,18 +58,18 @@ class AvailsResultTable extends React.Component {
     }
 
     onLoadMoreItems() {
-        if(!this.state.requestLoading && this.props.dashboardAvailTabPage.avails.length < this.props.dashboardAvailTabPage.total) {
-            this.setState({requestLoading: true});
-            dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort)
-                .then(response => {
-                    this.addLoadedItems(response.data.data);
-                    this.setState({requestLoading: false});
-                }).catch((error) => {
-                this.setState({requestLoading: false});
-                console.log("Unexpected error");
-                console.log(error);
-            });
-        }
+        // if(!this.state.requestLoading && this.props.dashboardAvailTabPage.avails.length < this.props.dashboardAvailTabPage.total) {
+        //     this.setState({requestLoading: true});
+        //     dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort)
+        //         .then(response => {
+        //             this.addLoadedItems(response.data.data);
+        //             this.setState({requestLoading: false});
+        //         }).catch((error) => {
+        //         this.setState({requestLoading: false});
+        //         console.log("Unexpected error");
+        //         console.log(error);
+        //     });
+        // }
     }
 
     addLoadedItems(items) {
@@ -92,20 +92,20 @@ class AvailsResultTable extends React.Component {
                 desc: sortData.desc
             };
             this.props.dashboardResultPageSort(dashboardAvailTabPageSort);
-            dashboardService.getAvails(this.props.dashboardSearchCriteria, 0, this.state.pageSize, dashboardAvailTabPageSort)
-                .then(response => {
-                    console.log(response);
-                    this.props.dashboardResultPageUpdate({
-                        pages: 1,
-                        avails: response.data.data,
-                        pageSize: response.data.data.length,
-                    });
-                    this.props.dashboardResultPageLoading(false);
-                }).catch((error) => {
-                this.props.dashboardResultPageLoading(false);
-                console.log("Unexpected error");
-                console.log(error);
-            })
+            // dashboardService.getAvails(this.props.dashboardSearchCriteria, 0, this.state.pageSize, dashboardAvailTabPageSort)
+            //     .then(response => {
+            //         console.log(response);
+            //         this.props.dashboardResultPageUpdate({
+            //             pages: 1,
+            //             avails: response.data.data,
+            //             pageSize: response.data.data.length,
+            //         });
+            //         this.props.dashboardResultPageLoading(false);
+            //     }).catch((error) => {
+            //     this.props.dashboardResultPageLoading(false);
+            //     console.log("Unexpected error");
+            //     console.log(error);
+            // })
         }
     }
 
