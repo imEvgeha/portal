@@ -1,7 +1,11 @@
 import {
     DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH,
     DASHBOARD_SEARCH_FORM__UPDATE_SEARCH_CRITERIA,
-    DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH
+    DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH,
+    DASHBOARD_RESULT_PAGE__UPDATE,
+    DASHBOARD_RESULT_PAGE__SORT,
+    DASHBOARD_RESULT_PAGE__SELECT_ROW,
+    DASHBOARD_RESULT_PAGE__LOADING
 } from "../constants/action-types";
 
 const initialState = {
@@ -14,7 +18,16 @@ const initialState = {
         availEndDate: null,
         title: '',
         studio: ''
-    }
+    },
+    availTabPage: {
+        pages: 0,
+        avails: [{}],
+        pageSize: 0,
+        total: 0
+    },
+    availTabPageSort: [],
+    availTabPageSelected: [],
+    availTabPageLoading: false
 };
 
 const dashboard = ( state = initialState, action) => {
@@ -23,8 +36,16 @@ const dashboard = ( state = initialState, action) => {
             return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
         case DASHBOARD_SEARCH_FORM__UPDATE_SEARCH_CRITERIA:
             return { ...state, searchCriteria: {...state.searchCriteria, ...action.payload}};
-        case DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH:
+        case DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH:
             return { ...state, useAdvancedSearch: action.payload};
+        case DASHBOARD_RESULT_PAGE__UPDATE:
+            return { ...state, availTabPage: {...state.dashboardAvailTabPage, ...action.payload}};
+        case DASHBOARD_RESULT_PAGE__SORT:
+            return { ...state, availTabPageSort: action.payload};
+        case DASHBOARD_RESULT_PAGE__SELECT_ROW:
+            return { ...state, availTabPageSelected: action.payload};
+        case DASHBOARD_RESULT_PAGE__LOADING:
+            return { ...state, availTabPageLoading: action.payload};
         default:
             return state;
     }

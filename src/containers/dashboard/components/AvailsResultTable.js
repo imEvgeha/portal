@@ -5,10 +5,14 @@ import {dashboardService} from "../DashboardService";
 import {confirmModal} from "../../../components/share/ConfirmModal"
 
 import './AvailResultTable.scss'
-import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect, dashboardResultPageLoading} from "../../../actions";
+import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from "../../../actions/dashboard";
 
 const columns = [
-    {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
+    {
+        accessor: 'id',
+        Header: <span id={'dashboard-result-table-header-id'}>ID</span>,
+        Cell: row => (<span id={'dashboard-result-table-cell-' + row.value}>{row.value}</span>)
+    },
     {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
     {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
     {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
@@ -23,23 +27,25 @@ const columns = [
  */
 const mapState = state => {
     return {
-        dashboardAvailTabPage: state.dashboardAvailTabPage,
-        dashboardAvailTabPageSort: state.dashboardAvailTabPageSort,
-        dashboardSearchCriteria: state.dashboardSearchCriteria,
-        dashboardAvailTabPageSelected: state.dashboardAvailTabPageSelected,
-        dashboardAvailTabPageLoading: state.dashboardAvailTabPageLoading
+        availTabPage: state.dashboard.availTabPage,
+        availTabPageSort: state.dashboard.availTabPageSort,
+        searchCriteria: state.dashboard.searchCriteria,
+        useAdvancedSearch: state.dashboard.useAdvancedSearch,
+        freeTextSearch: state.dashboard.freeTextSearch,
+        availTabPageSelected: state.dashboard.availTabPageSelected,
+        availTabPageLoading: state.dashboard.availTabPageLoading
     };
 };
 
 const mapActions = {
-    dashboardResultPageUpdate,
-    dashboardResultPageSort,
-    dashboardResultPageSelect,
-    dashboardResultPageLoading
+    resultPageUpdate,
+    resultPageSort,
+    resultPageSelect,
+    resultPageLoading
 };
 
 const scrollSliderLoadPercent = 0.5;
-const style= {
+const style = {
     height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
 };
 
@@ -58,13 +64,13 @@ class AvailsResultTable extends React.Component {
     }
 
     onLoadMoreItems() {
-        if(!this.state.requestLoading && this.props.dashboardAvailTabPage.avails.length < this.props.dashboardAvailTabPage.total) {
+        if (!this.state.requestLoading && this.props.availTabPage.avails.length < this.props.availTabPage.total) {
             this.setState({requestLoading: true});
-            dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort[0])
-                .then(response => {
-                    this.addLoadedItems(response.data.data);
-                    this.setState({requestLoading: false});
-                }).catch((error) => {
+            this.doSearch(this.props.searchCriteria, this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
+            .then(response => {
+                this.addLoadedItems(response.data.data);
+                this.setState({requestLoading: false});
+            }).catch((error) => {
                 this.setState({requestLoading: false});
                 console.log("Unexpected error");
                 console.log(error);
@@ -74,50 +80,55 @@ class AvailsResultTable extends React.Component {
 
     addLoadedItems(items) {
         if (items.length > 0) {
-            this.props.dashboardResultPageUpdate({
-                pages: this.props.dashboardAvailTabPage.pages + 1,
-                avails: this.props.dashboardAvailTabPage.avails.concat(items),
-                pageSize: this.props.dashboardAvailTabPage.pageSize + items.length,
+            this.props.resultPageUpdate({
+                pages: this.props.availTabPage.pages + 1,
+                avails: this.props.availTabPage.avails.concat(items),
+                pageSize: this.props.availTabPage.pageSize + items.length,
             });
         }
     }
 
     onSortedChange(newSorted, column, shiftKey) {
-        this.props.dashboardResultPageSort(newSorted);
+        this.props.resultPageSort(newSorted);
         this.sortData(newSorted);
     }
 
     sortData(sortProps) {
-        this.props.dashboardResultPageLoading(true);
-        let sortData = sortProps[0];
-        let sortParams = {
-            sortBy: sortData.id,
-            desc: sortData.desc
-        };
-        dashboardService.getAvails(this.props.dashboardSearchCriteria, 0, this.state.pageSize, sortParams)
-            .then(response => {
-                this.props.dashboardResultPageUpdate({
-                    pages: 1,
-                    avails: response.data.data,
-                    pageSize: response.data.data.length,
-                });
-                this.props.dashboardResultPageLoading(false);
-            }).catch((error) => {
-            this.props.dashboardResultPageLoading(false);
+        this.props.resultPageLoading(true);
+        this.doSearch(this.props.searchCriteria, 0, this.state.pageSize, sortProps)
+        .then(response => {
+            this.props.resultPageUpdate({
+                pages: 1,
+                avails: response.data.data,
+                pageSize: response.data.data.length,
+            });
+            this.props.resultPageLoading(false);
+        }).catch((error) => {
+            this.props.resultPageLoading(false);
             console.log("Unexpected error");
             console.log(error);
         })
     }
 
+    doSearch(searchCriteria, page, pageSize, sortedParams) {
+        if (this.props.useAdvancedSearch) {
+            return dashboardService.advancedSearch(searchCriteria, page, pageSize, sortedParams);
+        } else {
+            return dashboardService.freeTextSearch(searchCriteria, page, pageSize, sortedParams);
+        }
+    }
+
     onSelection(selected) {
-        this.props.dashboardResultPageSelect(selected);
+        this.props.resultPageSelect(selected);
     }
 
     exportAvails = () => {
         confirmModal.open("Confirm export",
-            () => {},
-            () => {},
-            {description: `You have select ${this.props.dashboardAvailTabPageSelected.length} avails.`});
+            () => {
+            },
+            () => {
+            },
+            {description: `You have select ${this.props.availTabPageSelected.length} avails.`});
     };
 
     render() {
@@ -127,37 +138,37 @@ class AvailsResultTable extends React.Component {
                     <div className="row justify-content-between">
                         <div className="col-4 align-bottom">
                             <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                                Results: {this.props.dashboardAvailTabPage.total}
+                                Results: {this.props.availTabPage.total}
                             </span>
                             <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
-                                Selected items: {this.props.dashboardAvailTabPageSelected.length}
+                                Selected items: {this.props.availTabPageSelected.length}
                             </span>
                         </div>
                         <div className="col-2">
-                            <i className={'fas fa-download table-top-icon float-right'}  onClick={this.exportAvails}> </i>
+                            <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
                             <i className={'fas fa-th table-top-icon float-right'}> </i>
                             <i className={'fas fa-filter table-top-icon float-right'}> </i>
                         </div>
                     </div>
                 </div>
                 <InfiniteScrollTable
-                    columns = {columns}
-                    data = {this.props.dashboardAvailTabPage.avails}
-                    pageSize = {this.props.dashboardAvailTabPage.pageSize}
-                    style = {style}
-                    scrollSliderLoadPercent = {scrollSliderLoadPercent}
-                    loading = {this.props.dashboardAvailTabPageLoading}
-                    selection = {this.props.dashboardAvailTabPageSelected}
+                    columns={columns}
+                    data={this.props.availTabPage.avails}
+                    pageSize={this.props.availTabPage.pageSize}
+                    style={style}
+                    scrollSliderLoadPercent={scrollSliderLoadPercent}
+                    loading={this.props.availTabPageLoading}
+                    selection={this.props.availTabPageSelected}
 
-                    sorted={this.props.dashboardAvailTabPageSort}
+                    sorted={this.props.availTabPageSort}
 
-                    onLoadMoreItems = {this.onLoadMoreItems}
-                    onSortedChange = {this.onSortedChange}
-                    onSelection = {this.onSelection}
+                    onLoadMoreItems={this.onLoadMoreItems}
+                    onSortedChange={this.onSortedChange}
+                    onSelection={this.onSelection}
                 />
             </div>
         );
     }
 }
 
-export default connect(mapState, mapActions) (AvailsResultTable);
+export default connect(mapState, mapActions)(AvailsResultTable);

@@ -7,9 +7,7 @@ import connect from "react-redux/es/connect/connect";
 import t from "prop-types";
 
 const mapState = state => {
-    return {
-        dashboardSearchCriteria: state.dashboard.searchCriteria
-    };
+    return {};
 };
 
 const mapActions = {
@@ -23,7 +21,7 @@ class AdvancedSearchPanel extends React.Component {
 
     validateDate(date) {
         const parsed = new Date(date);
-        return (parsed instanceof Date && ! isNaN(parsed.getTime())) ? parsed : false;
+        return (parsed instanceof Date && !isNaN(parsed.getTime())) ? parsed : false;
     }
 
     _handleKeyPress = (e) => {
@@ -32,9 +30,15 @@ class AdvancedSearchPanel extends React.Component {
         }
     };
 
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
+            searchCriteria: {
+                availStartDate: null,
+                availEndDate: null,
+                title: '',
+                studio: ''
+            },
             invalidStartDate: '',
             invalidEndDate: '',
         };
@@ -50,18 +54,18 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     setupAvailStartDate() {
-        if (!this.props.dashboardSearchCriteria.availStartDate) {
-            this.props.searchFormUpdateSearchCriteria({
-                availStartDate: moment()
+        if (!this.state.searchCriteria.availStartDate) {
+            this.setState({
+                searchCriteria: {...this.state.searchCriteria, availStartDate: moment()}
             });
         }
     }
 
     handleChangeAvailStartDate(date) {
-        this.props.searchFormUpdateSearchCriteria({
-            availStartDate: date
+        this.setState({
+            searchCriteria: {...this.state.searchCriteria, availStartDate: date}
         });
-        this.wrongDateRange(this.props.dashboardSearchCriteria.availEndDate && this.props.dashboardSearchCriteria.availEndDate < date);
+        this.wrongDateRange(this.state.searchCriteria.availEndDate && this.state.searchCriteria.availEndDate < date);
     }
 
     handleChangeRawAvailStartDate(date) {
@@ -69,21 +73,21 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     setupAvailEndDate() {
-        if (!this.props.dashboardSearchCriteria.availEndDate) {
-            this.props.searchFormUpdateSearchCriteria({
-                availEndDate: moment()
+        if (!this.state.searchCriteria.availEndDate) {
+            this.setState({
+                searchCriteria: {...this.state.searchCriteria, availEndDate: moment()}
             });
         }
     }
 
     handleChangeAvailEndDate(date) {
-        console.log('Start: ' + this.props.dashboardSearchCriteria.availStartDate);
+        console.log('Start: ' + this.state.searchCriteria.availStartDate);
         console.log('End: ' + date);
-        console.log('compare: ' + this.props.dashboardSearchCriteria.availStartDate > date);
-        this.props.searchFormUpdateSearchCriteria({
-            availEndDate: date
+        console.log('compare: ' + this.state.searchCriteria.availStartDate > date);
+        this.setState({
+            searchCriteria: {...this.state.searchCriteria, availEndDate: date}
         });
-        this.wrongDateRange(this.props.dashboardSearchCriteria.availStartDate && this.props.dashboardSearchCriteria.availStartDate > date);
+        this.wrongDateRange(this.state.searchCriteria.availStartDate && this.state.searchCriteria.availStartDate > date);
     }
 
     wrongDateRange(wrong) {
@@ -98,7 +102,7 @@ class AdvancedSearchPanel extends React.Component {
         date = this.validateDate(date.target.value);
         if (date) {
             console.log('Valid Date: ' + date);
-            console.log('moment: ' +  moment(date));
+            console.log('moment: ' + moment(date));
 
             this.handleChangeAvailEndDate(moment(date));
         } else {
@@ -111,22 +115,28 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        this.props.searchFormUpdateSearchCriteria({
-            [name]: value
+        this.setState({
+            searchCriteria: {
+                ...this.state.searchCriteria,
+                [name]: value
+            }
         });
     }
 
     handleClear() {
-        this.props.searchFormUpdateSearchCriteria({
-            availStartDate: null,
-            availEndDate: null,
-            studio: '',
-            title: ''
+        this.setState({
+            searchCriteria: {
+                availStartDate: null,
+                availEndDate: null,
+                studio: '',
+                title: ''
+            }
         });
     }
 
     handleSearch() {
-        this.props.onSearch(this.props.dashboardSearchCriteria);
+        this.props.searchFormUpdateSearchCriteria(this.state.searchCriteria);
+        this.props.onSearch(this.state.searchCriteria);
     }
 
     render() {
@@ -141,9 +151,9 @@ class AdvancedSearchPanel extends React.Component {
                                    id="dashboard-avails-search-title-text"
                                    placeholder="Enter Title"
                                    name="title"
-                                   value={this.props.dashboardSearchCriteria.title}
+                                   value={this.state.searchCriteria.title}
                                    onChange={this.handleInputChange}
-                                   onKeyPress={this._handleKeyPress} />
+                                   onKeyPress={this._handleKeyPress}/>
                         </div>
                     </div>
                     <div className="col">
@@ -154,9 +164,9 @@ class AdvancedSearchPanel extends React.Component {
                                     id="dashboard-avails-search-studio-text"
                                     placeholder="Enter Studio"
                                     name="studio"
-                                    value={this.props.dashboardSearchCriteria.studio}
+                                    value={this.state.searchCriteria.studio}
                                     onChange={this.handleInputChange}
-                                    onKeyPress={this._handleKeyPress} >
+                                    onKeyPress={this._handleKeyPress}>
                                 <option>none</option>
                                 <option>Elevation Pictures</option>
                                 <option>Warner Bros</option>
@@ -173,37 +183,36 @@ class AdvancedSearchPanel extends React.Component {
                             <span onClick={this.setupAvailStartDate}>
                                 <DatePicker
                                     id="dashboard-avails-search-start-date-text"
-                                    selected={this.props.dashboardSearchCriteria.availStartDate}
+                                    selected={this.state.searchCriteria.availStartDate}
                                     onChange={this.handleChangeAvailStartDate}
                                     onChangeRaw={this.handleChangeRawAvailStartDate}
                                     todayButton={'Today'}
                                 />
-                                { this.state.invalidStartDate && <small className="text-danger m-2" style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small> }
+                                {this.state.invalidStartDate && <small className="text-danger m-2"
+                                                                       style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
                             </span>
                         </div>
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-end-date-text"  className={this.state.invalidEndDate ? 'text-danger' : ''}>Avail End
+                            <label htmlFor="dashboard-avails-search-end-date-text" className={this.state.invalidEndDate ? 'text-danger' : ''}>Avail End
                                 Date</label>
                             <span onClick={this.setupAvailEndDate}>
                                 <DatePicker
                                     id="dashboard-avails-search-end-date-text"
-                                    selected={this.props.dashboardSearchCriteria.availEndDate}
+                                    selected={this.state.searchCriteria.availEndDate}
                                     onChange={this.handleChangeAvailEndDate}
                                     onChangeRaw={this.handleChangeRawAvailEndDate}
                                     todayButton={'Today'}
                                 />
-                                { this.state.invalidEndDate && <small className="text-danger m-2" style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small> }
+                                {this.state.invalidEndDate && <small className="text-danger m-2"
+                                                                     style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
                         </span>
                         </div>
                     </div>
                 </div>
 
                 <div className="row justify-content-md-end">
-                    {/*<div className="col col-lg-1">*/}
-                        {/*<Button outline color="secondary">clear</Button>*/}
-                    {/*</div>*/}
                     <div className="col col-lg-2">
                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}>clear</Button>
                         {' '}

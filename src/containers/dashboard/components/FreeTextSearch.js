@@ -3,12 +3,8 @@ import t from "prop-types";
 import {searchFormUpdateTextSearch} from "../../../actions/dashboard";
 import connect from "react-redux/es/connect/connect";
 
-
 const mapState = state => {
-    return {
-        freeTextSearch: state.dashboard.freeTextSearch,
-        useAdvancedSearch: state.dashboard.useAdvancedSearch,
-    };
+    return {};
 };
 
 const mapActions = {
@@ -19,18 +15,22 @@ class FreeTextSearch extends React.Component {
 
     static propTypes = {
         onSearch: t.func,
-        containerId: t.string
+        containerId: t.string,
+        disabled: t.bool
     };
 
-    constructor (props) {
+    constructor(props) {
         super(props);
+        this.state = {
+            text: '',
+        };
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSerach = this.handleSerach.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            this.handleSerach();
+            this.handleSearch();
         }
     };
 
@@ -38,37 +38,38 @@ class FreeTextSearch extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        this.props.searchFormUpdateTextSearch({
+        this.setState({
             [name]: value
         });
     }
 
-    handleSerach() {
-        this.props.onSearch(this.props.freeTextSearch);
+    handleSearch() {
+        this.props.searchFormUpdateTextSearch({
+            text: this.state.text
+        });
+        this.props.onSearch({text: this.state.text});
     }
 
     render() {
         return (<div className="input-group stylish-input-group">
             <input type="text" className="form-control" placeholder="Search"
                    name={'text'}
-                   disabled={this.props.useAdvancedSearch}
-                   value={this.props.freeTextSearch.text}
+                   disabled={this.props.disabled}
+                   value={this.state.text}
                    onChange={this.handleInputChange}
                    id={this.props.containerId + '-freetext-search-text'}
-                   onKeyPress={this._handleKeyPress} />
+                   onKeyPress={this._handleKeyPress}/>
             <div className="input-group-append">
                 <button
                     type="button"
-                    disabled={this.props.useAdvancedSearch}
-                    onClick={this.handleSerach}
+                    disabled={this.props.disabled}
+                    onClick={this.handleSearch}
                     id={this.props.containerId + '-freetext-search-btn'}>
                     <i className="fas fa-search"> </i>
                 </button>
-                {/*<span className="input-group-text" id="basic-addon">.00</span>*/}
             </div>
         </div>)
     }
 }
-
 
 export default connect(mapState, mapActions)(FreeTextSearch)
