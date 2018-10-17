@@ -101,6 +101,7 @@ class AvailsResultTable extends React.Component {
                 pages: 1,
                 avails: response.data.data,
                 pageSize: response.data.data.length,
+                total: response.data.total
             });
             this.props.resultPageLoading(false);
         }).catch((error) => {
