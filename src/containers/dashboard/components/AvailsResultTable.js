@@ -58,7 +58,6 @@ class AvailsResultTable extends React.Component {
         };
 
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
-        this.onSort = this.onSort.bind(this);
         this.onSortedChange = this.onSortedChange.bind(this);
         this.onSelection = this.onSelection.bind(this);
     }
@@ -90,12 +89,7 @@ class AvailsResultTable extends React.Component {
 
     onSortedChange(newSorted, column, shiftKey) {
         this.props.dashboardResultPageSort(newSorted);
-    }
-
-    onSort(sortProps) {
-        if (this.isTimeToSort(sortProps)) {
-            this.sortData(sortProps);
-        }
+        this.sortData(newSorted);
     }
 
     sortData(sortProps) {
@@ -118,18 +112,6 @@ class AvailsResultTable extends React.Component {
             console.log("Unexpected error");
             console.log(error);
         })
-    }
-
-    isTimeToSort(sortProps) {
-        if (this.state.loading) {
-            return false
-        }
-        if (sortProps.length < 1) {
-            return false
-        }
-
-        return sortProps.length === this.props.dashboardAvailTabPageSort.length
-            && sortProps.every((value, index) => value === this.props.dashboardAvailTabPageSort[index]);
     }
 
     onSelection(selected) {
@@ -173,7 +155,6 @@ class AvailsResultTable extends React.Component {
                     sorted={this.props.dashboardAvailTabPageSort}
 
                     onLoadMoreItems = {this.onLoadMoreItems}
-                    onSort = {this.onSort}
                     onSortedChange = {this.onSortedChange}
                     onSelection = {this.onSelection}
                 />

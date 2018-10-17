@@ -38,7 +38,7 @@ class DashboardContainer extends React.Component {
             showSearchResults: false
         };
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
-        this.handleAvailsSerach = this.handleAvailsSerach.bind(this);
+        this.handleAvailsSearch = this.handleAvailsSearch.bind(this);
         this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
     }
 
@@ -46,7 +46,7 @@ class DashboardContainer extends React.Component {
         this.setState({showAdvancedSearch: !this.state.showAdvancedSearch})
     }
 
-    handleAvailsSerach(searchCriteria) {
+    handleAvailsSearch(searchCriteria) {
         this.availSearch(searchCriteria);
         this.setState({showSearchResults: true});
     }
@@ -83,7 +83,7 @@ class DashboardContainer extends React.Component {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <FreeTextSearch containerId={'dashboard-avails'} onSearch={this.handleAvailsSerach}/>
+                                        <FreeTextSearch containerId={'dashboard-avails'} onSearch={this.handleAvailsSearch}/>
                                     </td>
                                     <td style={{width: "20px"}}>
                                         <button className="btn btn-outline-secondary advanced-search-btn" title={"Advanced search"} id={"dashboard-avails-advanced-search-btn"} onClick={this.toggleAdvancedSearch}>
@@ -96,7 +96,7 @@ class DashboardContainer extends React.Component {
                     </div>
                     { this.state.showSearchResults && <a href={'#'} onClick={this.handleBackToDashboard}>Back to Dashboard</a> }
                 </div>
-                { this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsSerach}/>}
+                { this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsSearch}/>}
                 { !this.state.showSearchResults && <DashboardTab/> }
                 { this.state.showSearchResults && <SearchResultsTab/> }
             </div>
