@@ -5,7 +5,12 @@ import {dashboardService} from "../DashboardService";
 import {confirmModal} from "../../../components/share/ConfirmModal"
 
 import './AvailResultTable.scss'
-import {dashboardResultPageUpdate, dashboardResultPageSort, dashboardResultPageSelect, dashboardResultPageLoading} from "../../../actions";
+import {
+    dashboardResultPageLoading,
+    dashboardResultPageSelect,
+    dashboardResultPageSort,
+    dashboardResultPageUpdate
+} from "../../../actions";
 
 const columns = [
     {accessor: 'id', Header: <span id={'dashboard-result-table-header-id'}>ID</span>, Cell: row => (<span id={'dashboard-result-table-cell-'+row.value}>{row.value}</span>)},
@@ -49,18 +54,19 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: 20,
-            requestLoading: false,
+            requestLoading: false
         };
 
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
         this.onSort = this.onSort.bind(this);
+        this.onSortedChange = this.onSortedChange.bind(this);
         this.onSelection = this.onSelection.bind(this);
     }
 
     onLoadMoreItems() {
         if(!this.state.requestLoading && this.props.dashboardAvailTabPage.avails.length < this.props.dashboardAvailTabPage.total) {
             this.setState({requestLoading: true});
-            dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort)
+            dashboardService.getAvails(this.props.dashboardSearchCriteria, this.props.dashboardAvailTabPage.pages, this.state.pageSize, this.props.dashboardAvailTabPageSort[0])
                 .then(response => {
                     this.addLoadedItems(response.data.data);
                     this.setState({requestLoading: false});
@@ -82,31 +88,36 @@ class AvailsResultTable extends React.Component {
         }
     }
 
+    onSortedChange(newSorted, column, shiftKey) {
+        this.props.dashboardResultPageSort(newSorted);
+    }
+
     onSort(sortProps) {
         if (this.isTimeToSort(sortProps)) {
-            this.props.dashboardResultPageLoading(true);
-
-            let sortData = sortProps[0];
-            let dashboardAvailTabPageSort = {
-                sortBy: sortData.id,
-                desc: sortData.desc
-            };
-            this.props.dashboardResultPageSort(dashboardAvailTabPageSort);
-            dashboardService.getAvails(this.props.dashboardSearchCriteria, 0, this.state.pageSize, dashboardAvailTabPageSort)
-                .then(response => {
-                    console.log(response);
-                    this.props.dashboardResultPageUpdate({
-                        pages: 1,
-                        avails: response.data.data,
-                        pageSize: response.data.data.length,
-                    });
-                    this.props.dashboardResultPageLoading(false);
-                }).catch((error) => {
-                this.props.dashboardResultPageLoading(false);
-                console.log("Unexpected error");
-                console.log(error);
-            })
+            this.sortData(sortProps);
         }
+    }
+
+    sortData(sortProps) {
+        this.props.dashboardResultPageLoading(true);
+        let sortData = sortProps[0];
+        let sortParams = {
+            sortBy: sortData.id,
+            desc: sortData.desc
+        };
+        dashboardService.getAvails(this.props.dashboardSearchCriteria, 0, this.state.pageSize, sortParams)
+            .then(response => {
+                this.props.dashboardResultPageUpdate({
+                    pages: 1,
+                    avails: response.data.data,
+                    pageSize: response.data.data.length,
+                });
+                this.props.dashboardResultPageLoading(false);
+            }).catch((error) => {
+            this.props.dashboardResultPageLoading(false);
+            console.log("Unexpected error");
+            console.log(error);
+        })
     }
 
     isTimeToSort(sortProps) {
@@ -116,8 +127,9 @@ class AvailsResultTable extends React.Component {
         if (sortProps.length < 1) {
             return false
         }
-        let sortData = sortProps[0];
-        return !(this.props.dashboardAvailTabPageSort.sortBy === sortData.id && this.props.dashboardAvailTabPageSort.desc === sortData.desc);
+
+        return sortProps.length === this.props.dashboardAvailTabPageSort.length
+            && sortProps.every((value, index) => value === this.props.dashboardAvailTabPageSort[index]);
     }
 
     onSelection(selected) {
@@ -158,8 +170,11 @@ class AvailsResultTable extends React.Component {
                     loading = {this.props.dashboardAvailTabPageLoading}
                     selection = {this.props.dashboardAvailTabPageSelected}
 
+                    sorted={this.props.dashboardAvailTabPageSort}
+
                     onLoadMoreItems = {this.onLoadMoreItems}
                     onSort = {this.onSort}
+                    onSortedChange = {this.onSortedChange}
                     onSelection = {this.onSelection}
                 />
             </div>

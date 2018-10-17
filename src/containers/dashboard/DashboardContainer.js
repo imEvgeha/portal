@@ -7,7 +7,8 @@ import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
 import {
     dashboardResultPageUpdate,
     dashboardUpdateSearchForm,
-    dashboardResultPageLoading
+    dashboardResultPageLoading,
+    dashboardResultPageSort
 } from "../../actions";
 import DashboardTab from "./DashboardTab";
 import SearchResultsTab from "./SearchResultsTab";
@@ -24,7 +25,8 @@ const mapState = state => {
 const mapActions = {
     dashboardUpdateSearchForm,
     dashboardResultPageUpdate,
-    dashboardResultPageLoading
+    dashboardResultPageLoading,
+    dashboardResultPageSort
 };
 
 class DashboardContainer extends React.Component {
@@ -55,6 +57,7 @@ class DashboardContainer extends React.Component {
 
     availSearch(searchCriteria) {
         this.props.dashboardResultPageLoading(true);
+        this.props.dashboardResultPageSort([]);
         dashboardService.getAvails(searchCriteria ,0, 20, this.props.dashboardAvailTabPageSort)
         .then(response => {
                 this.props.dashboardResultPageUpdate({
