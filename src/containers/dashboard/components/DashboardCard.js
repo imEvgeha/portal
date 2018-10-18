@@ -1,6 +1,6 @@
-import t from 'prop-types'
-import React from 'react'
-import './DashboardCard.scss'
+import t from 'prop-types';
+import React from 'react';
+import './DashboardCard.scss';
 
 export default class DashboardDropableCard extends React.Component {
     static propTypes = {
@@ -22,6 +22,6 @@ export default class DashboardDropableCard extends React.Component {
                 </div>
                 {this.props.actionName && <button className="btn btn-primary dashboard-card-btn">{this.props.actionName}</button>}
             </div>
-        )
+        );
     }
 }

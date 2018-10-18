@@ -1,18 +1,9 @@
-import './DashboardContainer.scss'
+import './DashboardContainer.scss';
 
-import React from 'react'
-import {connect} from "react-redux";
-import AvailsResultTable from "./components/AvailsResultTable";
+import React from 'react';
+import AvailsResultTable from './components/AvailsResultTable';
 
-const mapState = state => {
-    return {
-    };
-};
-
-const mapActions = {
-};
-
-class SearchResultsTab extends React.Component {
+export default class SearchResultsTab extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,5 +19,3 @@ class SearchResultsTab extends React.Component {
         );
     }
 }
-
-export default connect(mapState, mapActions)(SearchResultsTab)

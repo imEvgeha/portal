@@ -1,20 +1,21 @@
-import './DashboardContainer.scss'
+import './DashboardContainer.scss';
 
-import React from 'react'
-import {connect} from "react-redux";
-import FreeTextSearch from "./components/FreeTextSearch";
-import AdvancedSearchPanel from "./components/AdvancedSearchPanel";
+import React from 'react';
+import {connect} from 'react-redux';
+import FreeTextSearch from './components/FreeTextSearch';
+import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
     searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate
-} from "../../actions/dashboard"
-import DashboardTab from "./DashboardTab";
-import SearchResultsTab from "./SearchResultsTab";
-import {dashboardService} from "./DashboardService";
+} from '../../actions/dashboard';
+import DashboardTab from './DashboardTab';
+import SearchResultsTab from './SearchResultsTab';
+import {dashboardService} from './DashboardService';
+import t from 'prop-types';
 
-const mapState = state => {
+const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         dashboardSearchCriteria: state.dashboard.searchCriteria,
@@ -23,7 +24,7 @@ const mapState = state => {
     };
 };
 
-const mapActions = {
+const mapDispatchToProps = {
     searchFormShowAdvancedSearch: searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
@@ -31,6 +32,12 @@ const mapActions = {
 };
 
 class DashboardContainer extends React.Component {
+    static propTypes = {
+        searchFormShowAdvancedSearch: t.func,
+        resultPageLoading: t.func,
+        resultPageSort: t.func,
+        resultPageUpdate: t.func,
+    };
 
     defaultPageSort = [];
 
@@ -68,7 +75,7 @@ class DashboardContainer extends React.Component {
         this.props.resultPageLoading(true);
         this.props.resultPageSort(this.defaultPageSort);
         searchFn(searchCriteria, 0, 20, this.defaultPageSort)
-        .then(response => {
+            .then(response => {
                 this.props.resultPageLoading(false);
                 this.props.resultPageUpdate({
                     pages: 1,
@@ -77,10 +84,10 @@ class DashboardContainer extends React.Component {
                     total: response.data.total
                 });
             }
-        ).catch(() => {
-            this.props.resultPageLoading(false);
-            console.log("Unexpected error");
-        });
+            ).catch(() => {
+                this.props.resultPageLoading(false);
+                console.log('Unexpected error');
+            });
         this.setState({showSearchResults: true});
     }
 
@@ -91,18 +98,18 @@ class DashboardContainer extends React.Component {
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <FreeTextSearch disabled={this.state.showAdvancedSearch} containerId={'dashboard-avails'}
-                                                    onSearch={this.handleAvailsFreeTextSearch}/>
-                                </td>
-                                <td style={{width: "20px", paddingLeft: '8px'}}>
-                                    <button className="btn btn-outline-secondary advanced-search-btn" title={"Advanced search"}
-                                            id={"dashboard-avails-advanced-search-btn"} onClick={this.toggleAdvancedSearch}>
-                                        <i className="fas fa-ellipsis-h" style={{fontSize: "1em"}}> </i>
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <FreeTextSearch disabled={this.state.showAdvancedSearch} containerId={'dashboard-avails'}
+                                            onSearch={this.handleAvailsFreeTextSearch}/>
+                                    </td>
+                                    <td style={{width: '20px', paddingLeft: '8px'}}>
+                                        <button className="btn btn-outline-secondary advanced-search-btn" title={'Advanced search'}
+                                            id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
+                                            <i className="fas fa-ellipsis-h" style={{fontSize: '1em'}}> </i>
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -116,4 +123,4 @@ class DashboardContainer extends React.Component {
     }
 }
 
-export default connect(mapState, mapActions)(DashboardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

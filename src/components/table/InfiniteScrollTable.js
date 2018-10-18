@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from 'react-dom'
-import ReactTable from "react-table";
-import checkboxHOC from "react-table/lib/hoc/selectTable";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactTable from 'react-table';
+import checkboxHOC from 'react-table/lib/hoc/selectTable';
 
-import {availDetailsModal} from "../../containers/dashboard/components/AvailDetailsModal";
-import t from "prop-types";
+import {availDetailsModal} from '../../containers/dashboard/components/AvailDetailsModal';
+import t from 'prop-types';
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
@@ -36,9 +36,9 @@ class InfiniteScrollTable extends React.Component {
     }
 
     componentDidMount() {
-        let tbody = ReactDOM.findDOMNode(this.ref.current).getElementsByClassName("rt-tbody")[0];
+        let tbody = ReactDOM.findDOMNode(this.ref.current).getElementsByClassName('rt-tbody')[0];
 
-        tbody.addEventListener("scroll", () => {
+        tbody.addEventListener('scroll', () => {
             let isTimeToLoad = (tbody.scrollTop + tbody.clientHeight) >= (tbody.scrollHeight * this.state.scrollSliderLoadPercent);
             let isScrollDown = this.oldScroll < tbody.scrollTop;
             this.oldScroll = tbody.scrollTop;
@@ -53,19 +53,19 @@ class InfiniteScrollTable extends React.Component {
         if (rowInfo && rowInfo.row) {
             const selected = this.isSelected(rowInfo.original.id);
             return {
-                onClick: (e) => {
+                onClick: () => {
                     availDetailsModal.open(rowInfo.original, () => {});
                 },
                 style: {
-                    backgroundColor: selected ? "rgba(0,0,0,0.5)" : ""
+                    backgroundColor: selected ? 'rgba(0,0,0,0.5)' : ''
                 }
             };
         } else {
-            return {}
+            return {};
         }
     };
 
-    toggleSelection = (key, shift, row) => {
+    toggleSelection = (key) => {
         let selection = [...this.props.selection];
         const keyIndex = selection.indexOf(key);
         if (keyIndex >= 0) {
@@ -76,7 +76,7 @@ class InfiniteScrollTable extends React.Component {
         } else {
             selection.push(key);
         }
-        this.props.onSelection(selection)
+        this.props.onSelection(selection);
     };
 
     toggleAll = () => {
@@ -106,7 +106,7 @@ class InfiniteScrollTable extends React.Component {
             isSelected,
             toggleSelection,
             toggleAll,
-            selectType: "checkbox",
+            selectType: 'checkbox',
             getTrProps
         };
 

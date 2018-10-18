@@ -1,11 +1,12 @@
-import React from "react";
-import InfiniteScrollTable from "../../../components/table/InfiniteScrollTable";
-import connect from "react-redux/es/connect/connect";
-import {dashboardService} from "../DashboardService";
-import {confirmModal} from "../../../components/share/ConfirmModal"
+import React from 'react';
+import InfiniteScrollTable from '../../../components/table/InfiniteScrollTable';
+import connect from 'react-redux/es/connect/connect';
+import {dashboardService} from '../DashboardService';
+import {confirmModal} from '../../../components/share/ConfirmModal';
 
-import './AvailResultTable.scss'
-import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from "../../../actions/dashboard";
+import './AvailResultTable.scss';
+import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
+import t from 'prop-types';
 
 const columns = [
     {
@@ -25,7 +26,7 @@ const columns = [
  * Advance Search -
  * title, studio Avail Start Date, Avail End Date
  */
-const mapState = state => {
+const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         availTabPageSort: state.dashboard.availTabPageSort,
@@ -37,7 +38,7 @@ const mapState = state => {
     };
 };
 
-const mapActions = {
+const mapDispatchToProps = {
     resultPageUpdate,
     resultPageSort,
     resultPageSelect,
@@ -46,10 +47,23 @@ const mapActions = {
 
 const scrollSliderLoadPercent = 0.5;
 const style = {
-    height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
+    height: '500px' // This will force the table body to overflow and scroll, since there is not enough room
 };
 
 class AvailsResultTable extends React.Component {
+    static propTypes = {
+        availTabPage: t.object,
+        availTabPageSort: t.object,
+        searchCriteria: t.object,
+        useAdvancedSearch: t.object,
+        freeTextSearch: t.object,
+        availTabPageSelected: t.object,
+        availTabPageLoading: t.object,
+        resultPageUpdate: t.func,
+        resultPageSort: t.func,
+        resultPageSelect: t.func,
+        resultPageLoading: t.func,
+    };
 
     constructor(props) {
         super(props);
@@ -72,7 +86,7 @@ class AvailsResultTable extends React.Component {
                 this.setState({requestLoading: false});
             }).catch((error) => {
                 this.setState({requestLoading: false});
-                console.log("Unexpected error");
+                console.log('Unexpected error');
                 console.log(error);
             });
         }
@@ -88,14 +102,14 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    onSortedChange(newSorted, column, shiftKey) {
+    onSortedChange(newSorted) {
         this.props.resultPageSort(newSorted);
         this.sortData(newSorted);
     }
 
     sortData(sortProps) {
         this.props.resultPageLoading(true);
-        this.doSearch(this.props.searchCriteria, 0, this.state.pageSize, sortProps)
+        this.doSearch(0, this.state.pageSize, sortProps)
         .then(response => {
             this.props.resultPageUpdate({
                 pages: 1,
@@ -106,16 +120,16 @@ class AvailsResultTable extends React.Component {
             this.props.resultPageLoading(false);
         }).catch((error) => {
             this.props.resultPageLoading(false);
-            console.log("Unexpected error");
+            console.log('Unexpected error');
             console.log(error);
-        })
+        });
     }
 
     doSearch(searchCriteria, page, pageSize, sortedParams) {
         if (this.props.useAdvancedSearch) {
-            return dashboardService.advancedSearch(searchCriteria, page, pageSize, sortedParams);
+            return dashboardService.advancedSearch(this.props.searchCriteria, page, pageSize, sortedParams);
         } else {
-            return dashboardService.freeTextSearch(searchCriteria, page, pageSize, sortedParams);
+            return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
         }
     }
 
@@ -124,7 +138,7 @@ class AvailsResultTable extends React.Component {
     }
 
     exportAvails = () => {
-        confirmModal.open("Confirm export",
+        confirmModal.open('Confirm export',
             () => {
             },
             () => {
@@ -172,4 +186,4 @@ class AvailsResultTable extends React.Component {
     }
 }
 
-export default connect(mapState, mapActions)(AvailsResultTable);
+export default connect(mapStateToProps, mapDispatchToProps)(AvailsResultTable);

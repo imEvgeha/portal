@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {keycloak} from '../index'
-import {errorModal} from "../components/share/ErrorModal";
+import {keycloak} from '../index';
+import {errorModal} from '../components/share/ErrorModal';
 
 
 const Http = {
@@ -40,7 +40,7 @@ const Http = {
                               ', uri: ' + error.response.config.url +
                               ', method: ' + error.response.config.method.toUpperCase();
                         }
-                        errorModal.open("Access denied", () => {
+                        errorModal.open('Access denied', () => {
                         }, {description: description});
 
                     } else if (500 === error.response.status) {
@@ -48,7 +48,7 @@ const Http = {
                         if (error.response.data) {
                             description = JSON.stringify(error.response.data);
                         }
-                        errorModal.open("Server error", () => {
+                        errorModal.open('Server error', () => {
                         }, {description: description});
 
                     }

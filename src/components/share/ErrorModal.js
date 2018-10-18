@@ -1,9 +1,18 @@
-import React from 'react'
-import {Component} from 'react'
+import React from 'react';
+import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from "reactstrap";
+import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import t from 'prop-types';
 
 class ErrorModal extends React.Component{
+
+    static propTypes = {
+        description: t.string,
+        className: t.string,
+        message: t.string,
+        buttonLabel: t.string,
+        accept: t.func
+    };
 
     constructor(props) {
         super(props);
@@ -59,7 +68,7 @@ export const errorModal = {
         const props = {
             ...options,
             message: message,
-            accept: () => { cleanup();onApprove()}
+            accept: () => { cleanup();onApprove();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
         render(<ErrorModal {...props}/>, wrapper);
@@ -72,4 +81,4 @@ export const errorModal = {
     }
 };
 
- export default ErrorModal;
+export default ErrorModal;

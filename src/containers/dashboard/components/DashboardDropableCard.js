@@ -1,9 +1,9 @@
-import t from 'prop-types'
-import React from 'react'
-import './DashboardCard.scss'
-import Dropzone from 'react-dropzone'
-import {Progress} from "reactstrap";
-import {tmpUploadService} from "../TmpUploadService";
+import t from 'prop-types';
+import React from 'react';
+import './DashboardCard.scss';
+import Dropzone from 'react-dropzone';
+import {Progress} from 'reactstrap';
+import {tmpUploadService} from '../TmpUploadService';
 
 
 export default class DashboardDropableCard extends React.Component {
@@ -47,10 +47,10 @@ export default class DashboardDropableCard extends React.Component {
     }
 
     uploadFile(file) {
-        tmpUploadService.uploadAvail(file).then((res) => {
+        tmpUploadService.uploadAvail(file).then(() => {
             setTimeout(() => this.sendNextFile(), 1000);
         }).catch(() => {
-            console.log("Unexpected error");
+            console.log('Unexpected error');
             this.setState({
                 error: 'Upload error',
                 files: [],
@@ -90,6 +90,6 @@ export default class DashboardDropableCard extends React.Component {
                 { this.state.uploading && <Progress animated={!!this.state.file} value={100 - this.state.files.length * 100 / this.state.total} />}
                 { !this.state.uploading && !this.state.error && <button className="btn btn-primary dashboard-card-btn" onClick={() => this.dropZoneRef.open()}>Browse files</button>}
             </Dropzone>
-        )
+        );
     }
 }

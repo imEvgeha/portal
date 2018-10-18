@@ -6,7 +6,7 @@ import {
     DASHBOARD_RESULT_PAGE__SORT,
     DASHBOARD_RESULT_PAGE__SELECT_ROW,
     DASHBOARD_RESULT_PAGE__LOADING
-} from "../constants/action-types";
+} from '../constants/action-types';
 
 export const searchFormUpdateTextSearch = textSearch => ({type: DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH, payload: textSearch});
 export const searchFormUpdateSearchCriteria = searchCriteria => ({type: DASHBOARD_SEARCH_FORM__UPDATE_SEARCH_CRITERIA, payload: searchCriteria});

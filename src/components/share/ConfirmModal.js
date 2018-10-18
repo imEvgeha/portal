@@ -1,9 +1,20 @@
-import React from 'react'
-import {Component} from 'react'
+import React from 'react';
+import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from "reactstrap";
+import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import t from 'prop-types';
 
 class Confirm extends React.Component{
+
+    static propTypes = {
+        description: t.string,
+        className: t.string,
+        message: t.string,
+        confirmLabel: t.string,
+        abortLabel: t.string,
+        reject: t.func,
+        resolve: t.func,
+    };
 
     constructor(props) {
         super(props);
@@ -66,8 +77,8 @@ export const confirmModal = {
         const props = {
             ...options,
             message: message,
-            resolve: () => { cleanup();onApprove()},
-            reject: () => { cleanup();onCancel()}
+            resolve: () => { cleanup();onApprove();},
+            reject: () => { cleanup();onCancel();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
         render(<Confirm {...props}/>, wrapper);
@@ -79,5 +90,3 @@ export const confirmModal = {
         };
     }
 };
-
- export default Confirm;

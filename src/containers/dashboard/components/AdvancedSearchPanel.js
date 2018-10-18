@@ -1,22 +1,19 @@
-import React from 'react'
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Button} from 'reactstrap';
-import {searchFormUpdateSearchCriteria} from "../../../actions/dashboard";
-import connect from "react-redux/es/connect/connect";
-import t from "prop-types";
+import {searchFormUpdateSearchCriteria} from '../../../actions/dashboard';
+import connect from 'react-redux/es/connect/connect';
+import t from 'prop-types';
 
-const mapState = state => {
-    return {};
-};
-
-const mapActions = {
+const mapDispatchToProps = {
     searchFormUpdateSearchCriteria
 };
 
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
         onSearch: t.func,
+        searchFormUpdateSearchCriteria: t.func,
     };
 
     validateDate(date) {
@@ -142,18 +139,18 @@ class AdvancedSearchPanel extends React.Component {
     render() {
         return (
             <div className="nx-stylish container-fluid"
-                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em', marginTop: '7px'}}>
+                style={{background: 'rgba(0,0,0,0.1)', padding: '1em', marginTop: '7px'}}>
                 <div className="row">
                     <div className="col">
                         <div className="form-group">
                             <label htmlFor="dashboard-avails-search-title-text">Title</label>
                             <input type="text" className="form-control"
-                                   id="dashboard-avails-search-title-text"
-                                   placeholder="Enter Title"
-                                   name="title"
-                                   value={this.state.searchCriteria.title}
-                                   onChange={this.handleInputChange}
-                                   onKeyPress={this._handleKeyPress}/>
+                                id="dashboard-avails-search-title-text"
+                                placeholder="Enter Title"
+                                name="title"
+                                value={this.state.searchCriteria.title}
+                                onChange={this.handleInputChange}
+                                onKeyPress={this._handleKeyPress}/>
                         </div>
                     </div>
                     <div className="col">
@@ -161,12 +158,12 @@ class AdvancedSearchPanel extends React.Component {
                             <label
                                 htmlFor="dashboard-avails-search-studio-text">Studio</label>
                             <select className="form-control"
-                                    id="dashboard-avails-search-studio-text"
-                                    placeholder="Enter Studio"
-                                    name="studio"
-                                    value={this.state.searchCriteria.studio}
-                                    onChange={this.handleInputChange}
-                                    onKeyPress={this._handleKeyPress}>
+                                id="dashboard-avails-search-studio-text"
+                                placeholder="Enter Studio"
+                                name="studio"
+                                value={this.state.searchCriteria.studio}
+                                onChange={this.handleInputChange}
+                                onKeyPress={this._handleKeyPress}>
                                 <option>none</option>
                                 <option>Elevation Pictures</option>
                                 <option>Warner Bros</option>
@@ -189,7 +186,7 @@ class AdvancedSearchPanel extends React.Component {
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidStartDate && <small className="text-danger m-2"
-                                                                       style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
+                                    style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
                             </span>
                         </div>
                     </div>
@@ -206,8 +203,8 @@ class AdvancedSearchPanel extends React.Component {
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidEndDate && <small className="text-danger m-2"
-                                                                     style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
-                        </span>
+                                    style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -220,8 +217,8 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-export default connect(mapState, mapActions)(AdvancedSearchPanel)
+export default connect(null, mapDispatchToProps)(AdvancedSearchPanel);
