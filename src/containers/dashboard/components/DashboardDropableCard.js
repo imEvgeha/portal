@@ -3,7 +3,7 @@ import React from 'react';
 import './DashboardCard.scss';
 import Dropzone from 'react-dropzone';
 import {Progress} from 'reactstrap';
-import {tmpUploadService} from '../TmpUploadService';
+import {dashboardService} from '../DashboardService';
 
 
 export default class DashboardDropableCard extends React.Component {
@@ -47,7 +47,7 @@ export default class DashboardDropableCard extends React.Component {
     }
 
     uploadFile(file) {
-        tmpUploadService.uploadAvail(file).then(() => {
+        dashboardService.uploadAvail(file).then(() => {
             setTimeout(() => this.sendNextFile(), 1000);
         }).catch(() => {
             console.log('Unexpected error');

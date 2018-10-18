@@ -1,11 +1,11 @@
 import Http from '../../util/Http';
 
 // const http = Http.create({baseURL: 'http://localhost:8081/avails-api/v1'});
-const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8081/avails-api/v1'});
+const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8082/avails-api/v1'});
 
 const prepareSortMatrixParam = function (sortedParams) {
     let matrix = '';
-    console.log('sortedParams');
+    console.log('sortedParams ');
     console.log(sortedParams);
     sortedParams.forEach((entry) => {
         matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
@@ -18,8 +18,6 @@ export const dashboardService = {
     ingestedAvailsCount: () => http.get('/avails', {params: {page: 0, size: 1}}),
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        console.log(searchCriteria);
-        console.log(sortedParams);
         const params = {};
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
@@ -35,6 +33,12 @@ export const dashboardService = {
             }
         }
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+    },
+
+    uploadAvail: (file) => {
+        const formData = new FormData();
+        formData.append('avail', file);
+        return http.post('/avails', formData,  {headers: {'Content-Type': 'multipart/form-data'}});
     },
 
 };

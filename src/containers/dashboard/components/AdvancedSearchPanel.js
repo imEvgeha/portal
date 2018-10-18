@@ -10,6 +10,9 @@ const mapDispatchToProps = {
     searchFormUpdateSearchCriteria
 };
 
+const INVALID_DATE = 'Invalid Date';
+const INVALID_RANGE = 'Start date should be before end date';
+
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
         onSearch: t.func,
@@ -48,6 +51,9 @@ class AdvancedSearchPanel extends React.Component {
         this.handleChangeAvailEndDate = this.handleChangeAvailEndDate.bind(this);
         this.handleChangeRawAvailEndDate = this.handleChangeRawAvailEndDate.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.refDatePickerStart = React.createRef();
+        this.refDatePickerEnd = React.createRef();
     }
 
     setupAvailStartDate() {
@@ -59,14 +65,21 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleChangeAvailStartDate(date) {
-        this.setState({
-            searchCriteria: {...this.state.searchCriteria, availStartDate: date}
-        });
-        this.wrongDateRange(this.state.searchCriteria.availEndDate && this.state.searchCriteria.availEndDate < date);
+        if (date) {
+            this.setState({
+                searchCriteria: {...this.state.searchCriteria, availStartDate: date}
+            });
+        }
+        this.wrongDateRange(date && this.state.searchCriteria.availEndDate && this.state.searchCriteria.availEndDate < date);
     }
 
     handleChangeRawAvailStartDate(date) {
-        this.setState({invalidStartDate: !this.validateDate(date)});
+        if (moment(date).isValid()) {
+            this.handleChangeAvailStartDate(moment(date));
+            this.setState({invalidStartDate: ''});
+        } else {
+            this.setState({invalidStartDate: INVALID_DATE});
+        }
     }
 
     setupAvailEndDate() {
@@ -78,32 +91,30 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleChangeAvailEndDate(date) {
-        console.log('Start: ' + this.state.searchCriteria.availStartDate);
-        console.log('End: ' + date);
-        console.log('compare: ' + this.state.searchCriteria.availStartDate > date);
-        this.setState({
-            searchCriteria: {...this.state.searchCriteria, availEndDate: date}
-        });
-        this.wrongDateRange(this.state.searchCriteria.availStartDate && this.state.searchCriteria.availStartDate > date);
+        if (date) {
+            this.setState({
+                searchCriteria: {...this.state.searchCriteria, availEndDate: date}
+            });
+        }
+        this.wrongDateRange(date && this.state.searchCriteria.availStartDate && this.state.searchCriteria.availStartDate > date);
     }
 
     wrongDateRange(wrong) {
         if (wrong) {
-            this.setState({invalidStartDate: 'Wrong date range', invalidEndDate: 'Wrong date range'});
-        } else {
+            this.setState({invalidStartDate: INVALID_RANGE, invalidEndDate: INVALID_RANGE});
+        } else if (this.state.invalidStartDate === INVALID_RANGE && this.state.invalidEndDate === INVALID_RANGE) {
             this.setState({invalidStartDate: '', invalidEndDate: ''});
         }
     }
 
-    handleChangeRawAvailEndDate(date) {
-        date = this.validateDate(date.target.value);
+    handleChangeRawAvailEndDate(value) {
+        const date = this.validateDate(value);
+        console.log(date);
         if (date) {
-            console.log('Valid Date: ' + date);
-            console.log('moment: ' + moment(date));
-
             this.handleChangeAvailEndDate(moment(date));
+            this.setState({invalidEndDate: ''});
         } else {
-            this.setState({invalidEndDate: 'Invalid date'});
+            this.setState({invalidEndDate: INVALID_DATE});
         }
     }
 
@@ -129,6 +140,8 @@ class AdvancedSearchPanel extends React.Component {
                 title: ''
             }
         });
+        this.refDatePickerStart.current.clear();
+        this.refDatePickerEnd.current.clear();
     }
 
     handleSearch() {
@@ -175,14 +188,16 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-start-date-text" className={this.state.invalidStartDate ? 'text-danger' : ''}>Avail Start
+                            <label htmlFor="dashboard-avails-search-start-date-text" >Avail Start
                                 Date</label>
                             <span onClick={this.setupAvailStartDate}>
                                 <DatePicker
+                                    ref={this.refDatePickerStart}
+                                    className={this.state.invalidStartDate ? 'text-danger' : ''}
                                     id="dashboard-avails-search-start-date-text"
                                     selected={this.state.searchCriteria.availStartDate}
                                     onChange={this.handleChangeAvailStartDate}
-                                    onChangeRaw={this.handleChangeRawAvailStartDate}
+                                    onChangeRaw={(event) => this.handleChangeRawAvailStartDate(event.target.value)}
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidStartDate && <small className="text-danger m-2"
@@ -192,14 +207,16 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-end-date-text" className={this.state.invalidEndDate ? 'text-danger' : ''}>Avail End
+                            <label htmlFor="dashboard-avails-search-end-date-text" >Avail End
                                 Date</label>
                             <span onClick={this.setupAvailEndDate}>
                                 <DatePicker
+                                    ref={this.refDatePickerEnd}
+                                    className={this.state.invalidEndDate ? 'text-danger' : ''}
                                     id="dashboard-avails-search-end-date-text"
                                     selected={this.state.searchCriteria.availEndDate}
                                     onChange={this.handleChangeAvailEndDate}
-                                    onChangeRaw={this.handleChangeRawAvailEndDate}
+                                    onChangeRaw={(event) => this.handleChangeRawAvailEndDate(event.target.value)}
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidEndDate && <small className="text-danger m-2"

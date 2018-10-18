@@ -48,7 +48,7 @@ class ErrorModal extends React.Component{
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger">
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={false}>
                 <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.toggle}>{this.props.message}</ModalHeader>
                 {modalBody}
                 <ModalFooter>

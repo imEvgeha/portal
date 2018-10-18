@@ -2,7 +2,6 @@ import React from 'react';
 import InfiniteScrollTable from '../../../components/table/InfiniteScrollTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from '../DashboardService';
-import {confirmModal} from '../../../components/share/ConfirmModal';
 
 import './AvailResultTable.scss';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
@@ -53,12 +52,12 @@ const style = {
 class AvailsResultTable extends React.Component {
     static propTypes = {
         availTabPage: t.object,
-        availTabPageSort: t.object,
+        availTabPageSort: t.array,
         searchCriteria: t.object,
-        useAdvancedSearch: t.object,
+        useAdvancedSearch: t.bool,
         freeTextSearch: t.object,
-        availTabPageSelected: t.object,
-        availTabPageLoading: t.object,
+        availTabPageSelected: t.array,
+        availTabPageLoading: t.bool,
         resultPageUpdate: t.func,
         resultPageSort: t.func,
         resultPageSelect: t.func,
@@ -80,7 +79,7 @@ class AvailsResultTable extends React.Component {
     onLoadMoreItems() {
         if (!this.state.requestLoading && this.props.availTabPage.avails.length < this.props.availTabPage.total) {
             this.setState({requestLoading: true});
-            this.doSearch(this.props.searchCriteria, this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
+            this.doSearch(this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
             .then(response => {
                 this.addLoadedItems(response.data.data);
                 this.setState({requestLoading: false});
@@ -125,7 +124,7 @@ class AvailsResultTable extends React.Component {
         });
     }
 
-    doSearch(searchCriteria, page, pageSize, sortedParams) {
+    doSearch(page, pageSize, sortedParams) {
         if (this.props.useAdvancedSearch) {
             return dashboardService.advancedSearch(this.props.searchCriteria, page, pageSize, sortedParams);
         } else {
@@ -137,51 +136,23 @@ class AvailsResultTable extends React.Component {
         this.props.resultPageSelect(selected);
     }
 
-    exportAvails = () => {
-        confirmModal.open('Confirm export',
-            () => {
-            },
-            () => {
-            },
-            {description: `You have select ${this.props.availTabPageSelected.length} avails.`});
-    };
-
     render() {
         return (
-            <div id="dashboard-result-table">
-                <div className={'container-fluid'}>
-                    <div className="row justify-content-between">
-                        <div className="col-4 align-bottom">
-                            <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                                Results: {this.props.availTabPage.total}
-                            </span>
-                            <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
-                                Selected items: {this.props.availTabPageSelected.length}
-                            </span>
-                        </div>
-                        <div className="col-2">
-                            <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
-                            <i className={'fas fa-th table-top-icon float-right'}> </i>
-                            <i className={'fas fa-filter table-top-icon float-right'}> </i>
-                        </div>
-                    </div>
-                </div>
-                <InfiniteScrollTable
-                    columns={columns}
-                    data={this.props.availTabPage.avails}
-                    pageSize={this.props.availTabPage.pageSize}
-                    style={style}
-                    scrollSliderLoadPercent={scrollSliderLoadPercent}
-                    loading={this.props.availTabPageLoading}
-                    selection={this.props.availTabPageSelected}
+            <InfiniteScrollTable
+                columns={columns}
+                data={this.props.availTabPage.avails}
+                pageSize={this.props.availTabPage.pageSize}
+                style={style}
+                scrollSliderLoadPercent={scrollSliderLoadPercent}
+                loading={this.props.availTabPageLoading}
+                selection={this.props.availTabPageSelected}
 
-                    sorted={this.props.availTabPageSort}
+                sorted={this.props.availTabPageSort}
 
-                    onLoadMoreItems={this.onLoadMoreItems}
-                    onSortedChange={this.onSortedChange}
-                    onSelection={this.onSelection}
-                />
-            </div>
+                onLoadMoreItems={this.onLoadMoreItems}
+                onSortedChange={this.onSortedChange}
+                onSelection={this.onSelection}
+            />
         );
     }
 }

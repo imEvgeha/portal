@@ -77,6 +77,10 @@
   margin: 0;
 }
 
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+
 .react-datepicker__input-container input {
   display: block;
   width: 100%;

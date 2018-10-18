@@ -117,7 +117,7 @@ class DashboardContainer extends React.Component {
                 </div>
                 {this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsAdvancedSearch}/>}
                 {!this.state.showSearchResults && <DashboardTab/>}
-                {this.state.showSearchResults && <SearchResultsTab/>}
+                {this.state.showSearchResults && <SearchResultsTab onTogleAdvancedSearch={this.toggleAdvancedSearch}/>}
             </div>
         );
     }
