@@ -6,6 +6,9 @@ export const tmpUploadService = {
     uploadAvail: (file) => {
         const formData = new FormData();
         formData.append('avail', file);
+
+        http.defaults.timeout = 30000;
+
         return http.post('/avails/upload', formData,  {headers: {'Content-Type': 'multipart/form-data'}});
     },
 };
