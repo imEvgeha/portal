@@ -1,7 +1,7 @@
 import Http from '../../util/Http';
 
 // const http = Http.create({baseURL: 'http://localhost:8081/avails-api/v1'});
-const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8081/avails-api/v1'});
+const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8082/avails-api/v1'});
 
 const prepareSortMatrixParam = function (sortedParams) {
     let matrix = '';
