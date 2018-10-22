@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Button} from 'reactstrap';
 import {searchFormUpdateSearchCriteria} from '../../../actions/dashboard';
+import {validateDate} from '../../../util/Validation';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 
@@ -15,11 +16,6 @@ class AdvancedSearchPanel extends React.Component {
         onSearch: t.func,
         searchFormUpdateSearchCriteria: t.func,
     };
-
-    validateDate(date) {
-        const parsed = new Date(date);
-        return (parsed instanceof Date && !isNaN(parsed.getTime())) ? parsed : false;
-    }
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -66,7 +62,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleChangeRawAvailStartDate(date) {
-        this.setState({invalidStartDate: !this.validateDate(date)});
+        this.setState({invalidStartDate: !validateDate(date)});
     }
 
     setupAvailEndDate() {
@@ -96,7 +92,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleChangeRawAvailEndDate(date) {
-        date = this.validateDate(date.target.value);
+        date = validateDate(date.target.value);
         if (date) {
             console.log('Valid Date: ' + date);
             console.log('moment: ' + moment(date));

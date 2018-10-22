@@ -53,12 +53,12 @@ const style = {
 class AvailsResultTable extends React.Component {
     static propTypes = {
         availTabPage: t.object,
-        availTabPageSort: t.object,
+        availTabPageSort: t.array,
         searchCriteria: t.object,
-        useAdvancedSearch: t.object,
+        useAdvancedSearch: t.bool,
         freeTextSearch: t.object,
-        availTabPageSelected: t.object,
-        availTabPageLoading: t.object,
+        availTabPageSelected: t.array,
+        availTabPageLoading: t.bool,
         resultPageUpdate: t.func,
         resultPageSort: t.func,
         resultPageSelect: t.func,
