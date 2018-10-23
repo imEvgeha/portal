@@ -152,7 +152,7 @@ class AvailsResultTable extends React.Component {
 
     onEdit(editable, availDetailModal) {
         let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-        dashboardService.updateAvailsSucc(updatedAvail)
+        dashboardService.updateAvails(updatedAvail)
             .then(res => {
                 availDetailModal.setState({
                     avail: res,

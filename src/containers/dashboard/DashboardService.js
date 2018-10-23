@@ -37,20 +37,12 @@ export const dashboardService = {
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
-    updateAvailsSucc: (avail) => {
-        return new Promise((resolve) => {
-            setTimeout(function () {
-                resolve(avail);
-            }, 2000);
-        });
-    },
-
-    updateAvailsFail: (avail) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(function () {
-                reject(avail);
-            }, 2000);
-        });
+    updateAvails: (avail) => {
+        return http.put(`/avails/${avail.id}`, avail);
+        // return new Promise((resolve) => {
+        //     setTimeout(function () {
+        //         resolve(avail);
+        //     }, 2000);
+        // });
     }
-
 };
