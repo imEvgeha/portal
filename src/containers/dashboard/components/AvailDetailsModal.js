@@ -13,7 +13,8 @@ class AvailDetails extends React.Component{
         className: t.string,
         abortLabel: t.string,
         reject: t.func,
-        resolve: t.func
+        resolve: t.func,
+        onEdit: t.func
     };
 
     static defaultProps = {
@@ -27,7 +28,6 @@ class AvailDetails extends React.Component{
         this.state = {
             modal: true,
             avail: this.props.avail,
-            availLastEditSucceed: true,
             errorMessage: ''
         };
 
@@ -36,8 +36,7 @@ class AvailDetails extends React.Component{
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
-        this.handleSubmitSucc = this.handleSubmitSucc.bind(this);
-        this.handleSubmitFail = this.handleSubmitFail.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
         this.validateStartDateFormat = this.validateStartDateFormat.bind(this);
         this.validateEndDateFormat = this.validateEndDateFormat.bind(this);
@@ -57,52 +56,8 @@ class AvailDetails extends React.Component{
         return this.props.resolve();
     }
 
-    handleSubmitSucc(editable) {
-        console.log(editable);
-        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value};
-        console.log(updatedAvail);
-        this.updateAvailsSucc(updatedAvail).then(res => {
-            this.setState({
-                avail: res,
-                availLastEditSucceed: true
-            });
-            console.log(res);
-        });
-    }
-
-    handleSubmitFail(editable) {
-        console.log(editable);
-        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value};
-        this.updateAvailsFail(updatedAvail).then(res => {
-            this.setState({
-                avail: res
-            });
-        }).catch(() => {
-            editable.setState({availLastEditSucceed: false});
-            this.setState({
-                availLastEditSucceed: false,
-                errorMessage: 'Avail edit failed'});
-            editable.value = this.state.avail[editable.props.title];
-            editable.newValue = this.state.avail[editable.props.title];
-
-            console.log(this.state.avail);
-        });
-    }
-
-    updateAvailsSucc(avail) {
-        return new Promise((resolve) => {
-            setTimeout(function () {
-                resolve(avail);
-            }, 2000);
-        });
-    }
-
-    updateAvailsFail(avail) {
-        return new Promise((resolve, reject) => {
-            setTimeout(function () {
-                reject(avail);
-            }, 2000);
-        });
+    handleSubmit(editable) {
+        this.props.onEdit(editable, this);
     }
 
     validateStartDateFormat(date) {
@@ -148,7 +103,7 @@ class AvailDetails extends React.Component{
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
-                                    handleSubmit={this.handleSubmitSucc}
+                                    handleSubmit={this.handleSubmit}
                                 />
                             </div>
                         </div>
@@ -163,7 +118,7 @@ class AvailDetails extends React.Component{
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
-                                    handleSubmit={this.handleSubmitFail}
+                                    handleSubmit={this.handleSubmit}
                                 />
                                 </div>
                         </div>
@@ -178,7 +133,7 @@ class AvailDetails extends React.Component{
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
-                                    handleSubmit={this.handleSubmitSucc}
+                                    handleSubmit={this.handleSubmit}
                                 />
                             </div>
                         </div>
@@ -193,7 +148,7 @@ class AvailDetails extends React.Component{
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
-                                    handleSubmit={this.handleSubmitSucc}
+                                    handleSubmit={this.handleSubmit}
                                 />
                             </div>
                         </div>
@@ -208,7 +163,7 @@ class AvailDetails extends React.Component{
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
-                                    handleSubmit={this.handleSubmitSucc}
+                                    handleSubmit={this.handleSubmit}
                                     validate={this.validateStartDateFormat}
                                 />
                             </div>
@@ -224,7 +179,7 @@ class AvailDetails extends React.Component{
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
-                                    handleSubmit={this.handleSubmitSucc}
+                                    handleSubmit={this.handleSubmit}
                                     validate={this.validateEndDateFormat}
                                 />
                             </div>
@@ -232,7 +187,7 @@ class AvailDetails extends React.Component{
                     </div>
                 </div>
                 <ModalFooter>
-                    <Label hidden = {!this.state.availLastEditSucceed}>{this.state.errorMessage}</Label>
+                    <Label className="text-danger">{this.state.errorMessage}</Label>
                     <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
                 </ModalFooter>
             </Modal>

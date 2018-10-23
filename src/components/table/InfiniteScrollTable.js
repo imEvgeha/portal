@@ -22,7 +22,8 @@ class InfiniteScrollTable extends React.Component {
         sorted: t.array,
         onLoadMoreItems: t.func,
         onSortedChange: t.func,
-        onSelection: t.func
+        onSelection: t.func,
+        onEdit: t.func
     };
 
     constructor(props) {
@@ -54,7 +55,7 @@ class InfiniteScrollTable extends React.Component {
             const selected = this.isSelected(rowInfo.original.id);
             return {
                 onClick: () => {
-                    availDetailsModal.open(rowInfo.original, () => {});
+                    availDetailsModal.open(rowInfo.original, () => {}, () => {}, {onEdit: this.props.onEdit});
                 },
                 style: {
                     backgroundColor: selected ? 'rgba(0,0,0,0.5)' : ''
