@@ -35,7 +35,6 @@ export default class DashboardTab extends React.Component {
                     <DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>
                     <DashboardCard title="Create New Edit Version" action={this.viewErrors} actionName={'Create'} iconClass={'fas fa-file-alt'}/>
                     <DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>
-                    <DashboardCard title={'Ingested Avails: ' + this.state.ingestedCount} iconClass={'fas fa-check-circle'}/>
                 </div>
                 <div className="row">
 

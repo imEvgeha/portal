@@ -35,10 +35,4 @@ export const dashboardService = {
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
-    uploadAvail: (file) => {
-        const formData = new FormData();
-        formData.append('avail', file);
-        return http.post('/avails', formData,  {headers: {'Content-Type': 'multipart/form-data'}});
-    },
-
 };
