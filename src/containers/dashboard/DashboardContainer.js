@@ -103,21 +103,20 @@ class DashboardContainer extends React.Component {
                                         <FreeTextSearch disabled={this.state.showAdvancedSearch} containerId={'dashboard-avails'}
                                             onSearch={this.handleAvailsFreeTextSearch}/>
                                     </td>
-                                    <td style={{width: '20px', paddingLeft: '8px'}}>
-                                        <button className="btn btn-outline-secondary advanced-search-btn" title={'Advanced search'}
+                                    <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
+                                        <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
                                             id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
-                                            <i className="fas fa-ellipsis-h" style={{fontSize: '1em'}}> </i>
+                                            <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
                                         </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    {this.state.showSearchResults && <a href={'#'} onClick={this.handleBackToDashboard}>Back to Dashboard</a>}
                 </div>
                 {this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsAdvancedSearch}/>}
                 {!this.state.showSearchResults && <DashboardTab/>}
-                {this.state.showSearchResults && <SearchResultsTab onTogleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                {this.state.showSearchResults && <SearchResultsTab onBackToDashboard={this.handleBackToDashboard}/>}
             </div>
         );
     }

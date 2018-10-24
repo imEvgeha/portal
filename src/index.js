@@ -62,5 +62,3 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
     }
 
 });
-
-

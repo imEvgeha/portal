@@ -18,7 +18,7 @@ class SearchResultsTab extends React.Component {
     static propTypes = {
         availTabPage: t.object,
         availTabPageSelected: t.array,
-        onTogleAdvancedSearch: t.func
+        onBackToDashboard: t.func,
     };
 
     constructor(props) {
@@ -51,8 +51,7 @@ class SearchResultsTab extends React.Component {
                         </div>
                         <div className="col-2">
                             <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
-                            <i className={'fas fa-th table-top-icon float-right'}> </i>
-                            <i className={'fas fa-filter table-top-icon float-right'} onClick={this.props.onTogleAdvancedSearch}> </i>
+                            <i className={'fas fa-th table-top-icon float-right'} onClick={this.props.onBackToDashboard}> </i>
                         </div>
                     </div>
                     <AvailsResultTable/>
