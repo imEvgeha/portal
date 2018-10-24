@@ -37,4 +37,7 @@ export const dashboardService = {
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
+    createAvail: (avail) => {
+        return http.post('/avails', avail);
+    }
 };
