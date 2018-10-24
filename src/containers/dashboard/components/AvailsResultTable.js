@@ -18,8 +18,8 @@ const columns = [
     {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
     {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
     {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
-    {accessor: 'availStart', Header: <span id={'dashboard-result-table-header-avail-start-date'}>Avail Start Date</span>},
-    {accessor: 'availEnd', Header: <span id={'dashboard-result-table-header-avail-end-date'}>Avail End Date</span>}
+    {accessor: 'availStart', Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>},
+    {accessor: 'availEnd', Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>}
 ];
 
 /**

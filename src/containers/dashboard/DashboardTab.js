@@ -4,6 +4,7 @@ import React from 'react';
 import DashboardDropableCard from './components/DashboardDropableCard';
 import DashboardCard from './components/DashboardCard';
 import {dashboardService} from './DashboardService';
+import {availCreateModal} from './components/AvailCreateModal';
 
 export default class DashboardTab extends React.Component {
 
@@ -21,11 +22,15 @@ export default class DashboardTab extends React.Component {
     }
 
     componentDidMount() {
-        dashboardService.ingestedAvailsCount().then( (res) => {
+        dashboardService.ingestedAvailsCount().then((res) => {
             console.log(res);
             this.setState({ingestedCount: res.data.total});
         });
     }
+
+    createAvail = () => {
+        availCreateModal.open(() => {}, () => {});
+    };
 
     render() {
         return (
@@ -33,7 +38,7 @@ export default class DashboardTab extends React.Component {
                 <div className="row">
                     <DashboardDropableCard/>
                     <DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>
-                    <DashboardCard title="Create New Edit Version" action={this.viewErrors} actionName={'Create'} iconClass={'fas fa-file-alt'}/>
+                    <DashboardCard title="Create New Edit Version" action={this.createAvail} actionName={'Create'} iconClass={'fas fa-file-alt'}/>
                     <DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>
                 </div>
                 <div className="row">
