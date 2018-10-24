@@ -75,6 +75,8 @@ class AvailsResultTable extends React.Component {
         this.onSortedChange = this.onSortedChange.bind(this);
         this.onSelection = this.onSelection.bind(this);
         this.requestFile = this.requestFile.bind(this);
+        this.onEdit = this.onEdit.bind(this);
+        this.editAvail = this.editAvail.bind(this);
     }
 
     onLoadMoreItems() {
@@ -82,7 +84,7 @@ class AvailsResultTable extends React.Component {
             this.setState({requestLoading: true});
             this.doSearch(this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
             .then(response => {
-                this.addLoadedItems(response.data.data);
+                this.addLoadedItems(response.data);
                 this.setState({requestLoading: false});
             }).catch((error) => {
                 this.setState({requestLoading: false});
@@ -92,12 +94,14 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    addLoadedItems(items) {
+    addLoadedItems(data) {
+        let items = data.data;
         if (items.length > 0) {
             this.props.resultPageUpdate({
                 pages: this.props.availTabPage.pages + 1,
                 avails: this.props.availTabPage.avails.concat(items),
                 pageSize: this.props.availTabPage.pageSize + items.length,
+                total: data.total
             });
         }
     }
@@ -110,15 +114,15 @@ class AvailsResultTable extends React.Component {
     sortData(sortProps) {
         this.props.resultPageLoading(true);
         this.doSearch(0, this.state.pageSize, sortProps)
-        .then(response => {
-            this.props.resultPageUpdate({
-                pages: 1,
-                avails: response.data.data,
-                pageSize: response.data.data.length,
-                total: response.data.total
-            });
-            this.props.resultPageLoading(false);
-        }).catch((error) => {
+            .then(response => {
+                this.props.resultPageUpdate({
+                    pages: 1,
+                    avails: response.data.data,
+                    pageSize: response.data.data.length,
+                    total: response.data.total
+                });
+                this.props.resultPageLoading(false);
+            }).catch((error) => {
             this.props.resultPageLoading(false);
             console.log('Unexpected error');
             console.log(error);
@@ -135,6 +139,40 @@ class AvailsResultTable extends React.Component {
 
     onSelection(selected) {
         this.props.resultPageSelect(selected);
+    }
+
+    editAvail(newAvail) {
+        let copiedAvails = this.props.availTabPage.avails.slice();
+        let avail = copiedAvails.find(b => b.id === newAvail.id);
+        if (avail) {
+            for(let availField in newAvail) avail[availField] = newAvail[availField];
+        }
+        return copiedAvails;
+    }
+
+    onEdit(editable, availDetailModal) {
+        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
+        dashboardService.updateAvails(updatedAvail)
+            .then(res => {
+                availDetailModal.setState({
+                    avail: res,
+                    errorMessage: ''
+                });
+                this.props.resultPageUpdate({
+                    pages: this.props.availTabPage.pages,
+                    avails: this.editAvail(res),
+                    pageSize: this.props.availTabPage.pageSize,
+                    total: this.props.availTabPage.total
+                });
+            })
+            .catch(() => {
+                editable.setState({availLastEditSucceed: false});
+                availDetailModal.setState({
+                    errorMessage: 'Avail edit failed'
+                });
+                editable.value = availDetailModal.state.avail[editable.props.title];
+                editable.newValue = availDetailModal.state.avail[editable.props.title];
+            });
     }
 
     exportAvails = () => {
@@ -189,6 +227,7 @@ class AvailsResultTable extends React.Component {
                 onLoadMoreItems={this.onLoadMoreItems}
                 onSortedChange={this.onSortedChange}
                 onSelection={this.onSelection}
+                onEdit={this.onEdit}
             />
         );
     }

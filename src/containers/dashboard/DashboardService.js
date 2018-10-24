@@ -5,7 +5,7 @@ const http = Http.create({baseURL: 'http://usla-amm-d001.dev.vubiquity.com:8082/
 
 const prepareSortMatrixParam = function (sortedParams) {
     let matrix = '';
-    console.log('sortedParams ');
+    console.log('sortedParams');
     console.log(sortedParams);
     sortedParams.forEach((entry) => {
         matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
@@ -33,6 +33,10 @@ export const dashboardService = {
             }
         }
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+    },
+
+    updateAvails: (avail) => {
+        return http.put(`/avails/${avail.id}`, avail);
     },
 
      downloadAvails: (availIDs) => {

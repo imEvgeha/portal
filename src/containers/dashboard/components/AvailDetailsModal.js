@@ -1,7 +1,10 @@
 import React from 'react';
 import {Component} from 'react';
+import moment from 'moment';
+import Editable from 'react-x-editable';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import {ModalFooter, ModalHeader, Modal, Button, Label} from 'reactstrap';
+import {validateDate} from '../../../util/Validation';
 import t from 'prop-types';
 
 class AvailDetails extends React.Component{
@@ -10,7 +13,8 @@ class AvailDetails extends React.Component{
         className: t.string,
         abortLabel: t.string,
         reject: t.func,
-        resolve: t.func
+        resolve: t.func,
+        onEdit: t.func
     };
 
     static defaultProps = {
@@ -23,11 +27,19 @@ class AvailDetails extends React.Component{
         super(props);
         this.state = {
             modal: true,
+            avail: this.props.avail,
+            errorMessage: ''
         };
+
+        this.emptyValueText = 'Empty field';
 
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.validateStartDateFormat = this.validateStartDateFormat.bind(this);
+        this.validateEndDateFormat = this.validateEndDateFormat.bind(this);
     }
 
     toggle() {
@@ -44,63 +56,138 @@ class AvailDetails extends React.Component{
         return this.props.resolve();
     }
 
-    render() {
+    handleSubmit(editable) {
+        this.props.onEdit(editable, this);
+    }
 
+    validateStartDateFormat(date) {
+        let valid = validateDate(date);
+        console.log(valid);
+        if(!valid) {
+            return 'Incorrect date';
+        }
+        if(moment(date) > moment(this.state.avail.availEnd)) {
+            return 'Start date must be before end date';
+        }
+    }
+
+    validateEndDateFormat(date) {
+        let valid = validateDate(date);
+        console.log(valid);
+        if(!valid) {
+            return 'Incorrect date';
+        }
+        if(moment(date) < moment(this.state.avail.availStart)) {
+            return 'End date must be before end start';
+        }
+    }
+
+    render() {
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false}>
                 <ModalHeader toggle={this.toggle}>Avail Details</ModalHeader>
                 <div className="list-group">
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">ID:</div>
                             <div className="col">{this.props.avail.id}</div>
                         </div>
-                    </a>
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Title:</div>
-                            <div className="col">{this.props.avail.title}</div>
+                            <div className="col">
+                                <Editable
+                                    title = "title"
+                                    value = {this.state.avail.title}
+                                    dataType = "text"
+                                    mode = "inline"
+                                    emptyValueText = {this.emptyValueText}
+                                    handleSubmit={this.handleSubmit}
+                                />
+                            </div>
                         </div>
-                    </a>
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Studio:</div>
-                            <div className="col">{this.props.avail.studio}</div>
+                            <div className="col">
+                                <Editable
+                                    title = "studio"
+                                    value = {this.state.avail.studio}
+                                    dataType = "text"
+                                    mode = "inline"
+                                    emptyValueText = {this.emptyValueText}
+                                    handleSubmit={this.handleSubmit}
+                                />
+                                </div>
                         </div>
-                    </a>
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Territory:</div>
-                            <div className="col">{this.props.avail.territory}</div>
+                            <div className="col">
+                                <Editable
+                                    title = "territory"
+                                    value = {this.state.avail.territory}
+                                    dataType = "text"
+                                    mode = "inline"
+                                    emptyValueText = {this.emptyValueText}
+                                    handleSubmit={this.handleSubmit}
+                                />
+                            </div>
                         </div>
-                    </a>
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Genre:</div>
-                            <div className="col">{this.props.avail.genre}</div>
+                            <div className="col">
+                                <Editable
+                                    title = "genre"
+                                    value = {this.state.avail.genre}
+                                    dataType = "text"
+                                    mode = "inline"
+                                    emptyValueText = {this.emptyValueText}
+                                    handleSubmit={this.handleSubmit}
+                                />
+                            </div>
                         </div>
-                    </a>
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Avail Start Date:</div>
-                            <div className="col">{this.props.avail.availStart}</div>
+                            <div className="col">
+                                <Editable
+                                    title = "availStart"
+                                    value = {this.state.avail.availStart}
+                                    dataType = "text"
+                                    mode = "inline"
+                                    emptyValueText = {this.emptyValueText}
+                                    handleSubmit={this.handleSubmit}
+                                    validate={this.validateStartDateFormat}
+                                />
+                            </div>
                         </div>
-                    </a>
-                    <a href="#"
-                        className="list-group-item list-group-item-action flex-column align-items-start">
+                    </div>
+                    <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Avail End Date:</div>
-                            <div className="col">{this.props.avail.availEnd}</div>
+                            <div className="col">
+                                <Editable
+                                    title = "availEnd"
+                                    value = {this.state.avail.availEnd}
+                                    dataType = "text"
+                                    mode = "inline"
+                                    emptyValueText = {this.emptyValueText}
+                                    handleSubmit={this.handleSubmit}
+                                    validate={this.validateEndDateFormat}
+                                />
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 <ModalFooter>
+                    <Label className="text-danger">{this.state.errorMessage}</Label>
                     <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
                 </ModalFooter>
             </Modal>

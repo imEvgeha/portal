@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Button} from 'reactstrap';
 import {searchFormUpdateSearchCriteria} from '../../../actions/dashboard';
+import {validateDate} from '../../../util/Validation';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 
@@ -18,11 +19,6 @@ class AdvancedSearchPanel extends React.Component {
         onSearch: t.func,
         searchFormUpdateSearchCriteria: t.func,
     };
-
-    validateDate(date) {
-        const parsed = new Date(date);
-        return (parsed instanceof Date && !isNaN(parsed.getTime())) ? parsed : false;
-    }
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
