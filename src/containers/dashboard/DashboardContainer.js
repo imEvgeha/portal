@@ -94,7 +94,7 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <div className="container-fluid">
+                <div className={'container-fluid vu-free-text-search ' + (this.state.showAdvancedSearch ? 'hide': '')}>
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
@@ -114,7 +114,7 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                {this.state.showAdvancedSearch && <AdvancedSearchPanel onSearch={this.handleAvailsAdvancedSearch}/>}
+                {<AdvancedSearchPanel hide={!this.state.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
                 {!this.state.showSearchResults && <DashboardTab/>}
                 {this.state.showSearchResults && <SearchResultsTab onBackToDashboard={this.handleBackToDashboard}/>}
             </div>

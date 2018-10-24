@@ -186,8 +186,15 @@ class AvailDetails extends React.Component{
                         </div>
                     </div>
                 </div>
+                {
+                    this.state.errorMessage &&
+                    <ModalFooter>
+                        <div className="alert alert-danger w-100 m-0" role="alert">
+                            {this.state.errorMessage}
+                        </div>
+                    </ModalFooter>
+                }
                 <ModalFooter>
-                    <Label className="text-danger">{this.state.errorMessage}</Label>
                     <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
                 </ModalFooter>
             </Modal>

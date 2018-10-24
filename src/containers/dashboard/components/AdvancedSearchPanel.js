@@ -3,7 +3,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Button} from 'reactstrap';
 import {searchFormUpdateSearchCriteria} from '../../../actions/dashboard';
-import {validateDate} from '../../../util/Validation';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 
@@ -18,6 +17,8 @@ class AdvancedSearchPanel extends React.Component {
     static propTypes = {
         onSearch: t.func,
         searchFormUpdateSearchCriteria: t.func,
+        onToggleAdvancedSearch: t.func,
+        hide: t.bool
     };
 
     _handleKeyPress = (e) => {
@@ -147,8 +148,11 @@ class AdvancedSearchPanel extends React.Component {
 
     render() {
         return (
-            <div className="nx-stylish container-fluid"
-                style={{background: 'rgba(0,0,0,0.1)', padding: '1em', marginTop: '7px'}}>
+            <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide': '')}
+                style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
+                <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div className="row">
                     <div className="col">
                         <div className="form-group">

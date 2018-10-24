@@ -5,9 +5,32 @@
 }
 
 .dashboard-tab {
+  z-index: 500;
   margin-left: 30px;
 }
 
 .red {
   color: green;
+}
+
+.vu-free-text-search {
+  z-index: 100;
+  transition: margin 700ms;
+}
+
+.vu-free-text-search.hide {
+  margin-top: -50px;
+  transition: margin 700ms;
+}
+
+.vu-advanced-search-panel {
+  z-index: 100;
+  transition: margin 700ms;
+  margin-bottom: 0;
+}
+
+.vu-advanced-search-panel.hide {
+  margin-top: -240px;
+  margin-bottom: 66px;
+  transition: margin 700ms;
 }

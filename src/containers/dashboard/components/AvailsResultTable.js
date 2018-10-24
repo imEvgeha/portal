@@ -6,6 +6,7 @@ import {dashboardService} from '../DashboardService';
 import './AvailResultTable.scss';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
 import t from 'prop-types';
+import {confirmModal} from '../../../components/share/ConfirmModal';
 
 const columns = [
     {
@@ -173,42 +174,6 @@ class AvailsResultTable extends React.Component {
                 editable.value = availDetailModal.state.avail[editable.props.title];
                 editable.newValue = availDetailModal.state.avail[editable.props.title];
             });
-    }
-
-    exportAvails = () => {
-        if(this.props.availTabPageSelected.length==0){
-            return;
-        }
-        confirmModal.open('Confirm download',
-            this.requestFile,
-            () => {
-            },
-            {description: `You have selected ${this.props.availTabPageSelected.length} avails for download.`});
-    };
-
-    requestFile() {
-        dashboardService.downloadAvails(this.props.availTabPageSelected)
-        .then(function(response) {
-            console.log('avails received');
-
-            //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
-            //for now we recreate the filename using the same syntax as server
-            const currentTime = new Date();
-            var filename = 'avails_';
-            filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate() + '_';
-            filename += currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds();
-            filename += '.xlsx';
-
-            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/octet-stream'}));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', filename);
-            link.click();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
     }
 
     render() {
