@@ -75,7 +75,6 @@ class AvailsResultTable extends React.Component {
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
         this.onSortedChange = this.onSortedChange.bind(this);
         this.onSelection = this.onSelection.bind(this);
-        this.requestFile = this.requestFile.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.editAvail = this.editAvail.bind(this);
     }

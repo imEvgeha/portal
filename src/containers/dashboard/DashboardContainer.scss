@@ -16,10 +16,12 @@
 .vu-free-text-search {
   z-index: 100;
   transition: margin 700ms;
+  margin-bottom: 26px;
 }
 
 .vu-free-text-search.hide {
   margin-top: -50px;
+  margin-bottom: 0;
   transition: margin 700ms;
 }
 
