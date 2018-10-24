@@ -43,12 +43,12 @@ const Http = {
                         errorModal.open('Access denied', () => {
                         }, {description: description});
 
-                    } else if (500 === error.response.status) {
+                    } else{
                         let description;
                         if (error.response.data) {
                             description = JSON.stringify(error.response.data);
                         }
-                        errorModal.open('Server error', () => {
+                        errorModal.open('Unexpected error occured. Please try again later.', () => {
                         }, {description: description});
 
                     }

@@ -35,4 +35,8 @@ export const dashboardService = {
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
+     downloadAvails: (availIDs) => {
+            return http.post('/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs});
+        },
+
 };
