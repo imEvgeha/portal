@@ -14,20 +14,11 @@ import App from './containers/App';
 import {loadProfileInfo} from './actions';
 
 const keycloakConfig = {
-    // "clientId": "test-client",
-    // "realm": "Vubiquity1",
     'clientId': 'vehicle-public',
     'realm': 'Vubiquity',
     'auth-server-url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
     'url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
     'ssl-required': 'external',
-    // "credentials": {
-    //     "secret": "8d010863-9e07-494d-b801-b345a3d2abee"
-    // },
-    // For Vubiquity1:test-client
-    // "credentials": {
-    //     "secret": "96baae18-3610-4ede-8726-f180ba21d477"
-    // },
     'use-resource-role-mappings': true,
     'confidential-port': 0,
     'policy-enforcer': {}
