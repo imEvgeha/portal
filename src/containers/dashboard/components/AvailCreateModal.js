@@ -96,20 +96,16 @@ class AvailCreate extends React.Component {
         });
     }
 
-    abort(e) {
-        console.log(e);
+    abort() {
         return this.props.reject();
     }
 
     setDisableCreate(avail, errorMessage) {
         if (errorMessage) {
-            console.log('error');
             this.setState({disableCreateBtn: true});
         } else if (this.isAnyEmptyField(avail)) {
-            console.log('empty');
             this.setState({disableCreateBtn: true});
         } else {
-            console.log('OK');
             this.setState({disableCreateBtn: false});
         }
     }
@@ -117,8 +113,6 @@ class AvailCreate extends React.Component {
     isAnyEmptyField(avail) {
         for (let availField in avail) {
             if (!avail[availField]) {
-                console.log(availField);
-                console.log(avail[availField]);
                 return true;
             }
         }
@@ -128,7 +122,11 @@ class AvailCreate extends React.Component {
     confirm() {
         console.log(this.state.avail);
         this.setState({loading: true, showCreatedMessage: false});
-        dashboardService.createAvail(this.state.avail).then(() => this.setState({loading: false, showCreatedMessage: true}))
+        dashboardService.createAvail(this.state.avail).then(() => {
+            this.setState({loading: false, showCreatedMessage: true});
+            let thatAbort = this.abort;
+            setTimeout(function(){ thatAbort(); }, 1000);
+        })
             .catch(() => this.setState({loading: false, errorMessage: 'Avail creation Failed'}));
         return this.props.resolve();
     }
