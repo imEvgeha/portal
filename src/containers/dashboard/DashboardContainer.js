@@ -53,11 +53,6 @@ class DashboardContainer extends React.Component {
         this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
     }
 
-    componentDidUpdate(previousProps, previousState) {
-        if (previousState.showAdvancedSearch || previousState.showSearchResults) {
-            this.handleBackToDashboard();
-        }
-    }
 
     handleBackToDashboard() {
         this.setState({showSearchResults: false, showAdvancedSearch: false});
