@@ -4,7 +4,7 @@ import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
 import t from 'prop-types';
 
-class ErrorModal extends React.Component{
+class AlertModal extends React.Component{
 
     static propTypes = {
         description: t.string,
@@ -48,11 +48,11 @@ class ErrorModal extends React.Component{
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={false}>
-                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.toggle}>{this.props.message}</ModalHeader>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} color="dark" backdrop={false}>
+                <ModalHeader style={{backgroundColor: 'primary'}} toggle={this.toggle}>{this.props.message}</ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                    <Button color="dark" onClick={this.accept}>{this.props.buttonLabel}</Button>
                 </ModalFooter>
             </Modal>
         );
@@ -60,7 +60,7 @@ class ErrorModal extends React.Component{
 }
 
 
-export const errorModal = {
+export const alertModal = {
     open: (message, onApprove, options) =>{
         if (options == null) {
             options = {};
@@ -71,7 +71,7 @@ export const errorModal = {
             accept: () => { cleanup();onApprove();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<ErrorModal {...props}/>, wrapper);
+        render(<AlertModal {...props}/>, wrapper);
         const cleanup = function() {
             unmountComponentAtNode(wrapper);
             return setTimeout(function() {
@@ -81,4 +81,4 @@ export const errorModal = {
     }
 };
 
-export default ErrorModal;
+export default AlertModal;

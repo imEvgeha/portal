@@ -1,6 +1,7 @@
 import './DashboardContainer.scss';
 
 import React from 'react';
+import {alertModal} from '../../components/share/AlertModal';
 import {confirmModal} from '../../components/share/ConfirmModal';
 import t from 'prop-types';
 import AvailsResultTable from './components/AvailsResultTable';
@@ -31,13 +32,14 @@ class SearchResultsTab extends React.Component {
 
     exportAvails = () => {
         if(this.props.availTabPageSelected.length===0){
-            return;
+            alertModal.open('Action required', () => {}, {description: "Please select at least one avail"});
+        }else{
+            confirmModal.open('Confirm download',
+                this.requestFile,
+                () => {
+                },
+                {description: `You have selected ${this.props.availTabPageSelected.length} avails for download.`});
         }
-        confirmModal.open('Confirm download',
-            this.requestFile,
-            () => {
-            },
-            {description: `You have selected ${this.props.availTabPageSelected.length} avails for download.`});
     };
 
     requestFile() {
@@ -48,7 +50,7 @@ class SearchResultsTab extends React.Component {
             //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
             //for now we recreate the filename using the same syntax as server
             const currentTime = new Date();
-            var filename = 'avails_';
+            let filename = 'avails_';
             filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate() + '_';
             filename += currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds();
             filename += '.xlsx';
