@@ -14,8 +14,8 @@ const initialState = {
         text: ''
     },
     searchCriteria: {
-        availStartDate: null,
-        availEndDate: null,
+        vodStartDate: null,
+        vodEndDate: null,
         title: '',
         studio: ''
     },

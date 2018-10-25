@@ -34,8 +34,8 @@ class AvailCreate extends React.Component {
                 studio: null,
                 territory: null,
                 genre: null,
-                availStart: null,
-                availEnd: null
+                vodStart: null,
+                vodEnd: null
             }
         };
 
@@ -43,15 +43,15 @@ class AvailCreate extends React.Component {
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangeAvailStartDate = this.handleChangeAvailStartDate.bind(this);
-        this.handleChangeAvailEndDate = this.handleChangeAvailEndDate.bind(this);
+        this.handleChangeVodStartDate = this.handleChangeVodStartDate.bind(this);
+        this.handleChangeVodEndDate = this.handleChangeVodEndDate.bind(this);
     }
 
-    handleChangeAvailStartDate(date) {
-        let newAvail = {...this.state.avail, availStart: date};
+    handleChangeVodStartDate(date) {
+        let newAvail = {...this.state.avail, vodStart: date};
         let errorMessage = '';
 
-        if (this.state.avail.availEnd && this.state.avail.availEnd < date) {
+        if (this.state.avail.vodEnd && this.state.avail.vodEnd < date) {
             errorMessage = 'Start date must be before end date';
         }
 
@@ -63,11 +63,11 @@ class AvailCreate extends React.Component {
         this.setDisableCreate(newAvail, errorMessage);
     }
 
-    handleChangeAvailEndDate(date) {
-        let newAvail = {...this.state.avail, availEnd: date};
+    handleChangeVodEndDate(date) {
+        let newAvail = {...this.state.avail, vodEnd: date};
         let errorMessage = '';
 
-        if (this.state.avail.availStart && this.state.avail.availStart > date) {
+        if (this.state.avail.vodStart && this.state.avail.vodStart > date) {
             errorMessage = 'End date must be after start date';
         }
         this.setState({
@@ -180,12 +180,12 @@ class AvailCreate extends React.Component {
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
-                            <div className="col-4">Avail Start Date:</div>
+                            <div className="col-4">VOD Start:</div>
                             <div className="col">
                                 <DatePicker
                                     id="dashboard-avails-create-modal-start-date-text"
-                                    selected={this.state.avail.availStart}
-                                    onChange={this.handleChangeAvailStartDate}
+                                    selected={this.state.avail.vodStart}
+                                    onChange={this.handleChangeVodStartDate}
                                     todayButton={'Today'}
                                 />
                             </div>
@@ -194,12 +194,12 @@ class AvailCreate extends React.Component {
                     <a href="#"
                        className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
-                            <div className="col-4">Avail End Date:</div>
+                            <div className="col-4">VOD End:</div>
                             <div className="col">
                                 <DatePicker
                                     id="dashboard-avails-create-modal-end-date-text"
-                                    selected={this.state.avail.availEnd}
-                                    onChange={this.handleChangeAvailEndDate}
+                                    selected={this.state.avail.vodEnd}
+                                    onChange={this.handleChangeVodEndDate}
                                     todayButton={'Today'}
                                 />
                             </div>

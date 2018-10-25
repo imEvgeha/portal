@@ -54,12 +54,34 @@ class InfiniteScrollTable extends React.Component {
         if (rowInfo && rowInfo.row) {
             const selected = this.isSelected(rowInfo.original.id);
             return {
-                onClick: () => {
-                    availDetailsModal.open(rowInfo.original, () => {}, () => {}, {onEdit: this.props.onEdit});
-                },
+                // onClick: () => {
+                //     availDetailsModal.open(rowInfo.original, () => {}, () => {}, {onEdit: this.props.onEdit});
+                // },
                 style: {
                     backgroundColor: selected ? 'rgba(0,0,0,0.5)' : ''
                 }
+            };
+        } else {
+            return {};
+        }
+    };
+
+    getTdProps = (state, rowInfo, column, instance) => {
+        if (column.id === 'title' || column.id === 'id') {
+            return {
+                onClick: (e) => {
+                    console.log('Cell - onMouseEnter', {
+                        state,
+                        rowInfo,
+                        column,
+                        instance,
+                        event: e
+                    });
+                    availDetailsModal.open(rowInfo.original, () => {
+                    }, () => {
+                    }, {onEdit: this.props.onEdit});
+                },
+                className: 'pointer'
             };
         } else {
             return {};
@@ -99,7 +121,7 @@ class InfiniteScrollTable extends React.Component {
     };
 
     render() {
-        const {toggleSelection, toggleAll, isSelected, getTrProps} = this;
+        const {toggleSelection, toggleAll, isSelected, getTrProps, getTdProps} = this;
         const {selectAll} = this.state;
 
         const checkboxProps = {
@@ -108,7 +130,8 @@ class InfiniteScrollTable extends React.Component {
             toggleSelection,
             toggleAll,
             selectType: 'checkbox',
-            getTrProps
+            getTrProps,
+            getTdProps
         };
 
         return (

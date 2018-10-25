@@ -31,8 +31,8 @@ class AdvancedSearchPanel extends React.Component {
         super(props);
         this.state = {
             searchCriteria: {
-                availStartDate: null,
-                availEndDate: null,
+                vodStart: null,
+                vodEnd: null,
                 title: '',
                 studio: ''
             },
@@ -41,59 +41,59 @@ class AdvancedSearchPanel extends React.Component {
         };
         this.handleClear = this.handleClear.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.setupAvailStartDate = this.setupAvailStartDate.bind(this);
-        this.handleChangeAvailStartDate = this.handleChangeAvailStartDate.bind(this);
-        this.handleChangeRawAvailStartDate = this.handleChangeRawAvailStartDate.bind(this);
-        this.setupAvailEndDate = this.setupAvailEndDate.bind(this);
-        this.handleChangeAvailEndDate = this.handleChangeAvailEndDate.bind(this);
-        this.handleChangeRawAvailEndDate = this.handleChangeRawAvailEndDate.bind(this);
+        this.setupVodStartDate = this.setupVodStartDate.bind(this);
+        this.handleChangeVodStartDate = this.handleChangeVodStartDate.bind(this);
+        this.handleChangeRawVodStartDate = this.handleChangeRawVodStartDate.bind(this);
+        this.setupVodEndDate = this.setupVodEndDate.bind(this);
+        this.handleChangeVodEndDate = this.handleChangeVodEndDate.bind(this);
+        this.handleChangeRawVodEndDate = this.handleChangeRawVodEndDate.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 
         this.refDatePickerStart = React.createRef();
         this.refDatePickerEnd = React.createRef();
     }
 
-    setupAvailStartDate() {
-        if (!this.state.searchCriteria.availStartDate) {
+    setupVodStartDate() {
+        if (!this.state.searchCriteria.vodStart) {
             this.setState({
-                searchCriteria: {...this.state.searchCriteria, availStartDate: moment()}
+                searchCriteria: {...this.state.searchCriteria, vodStart: moment()}
             });
         }
     }
 
-    handleChangeAvailStartDate(date) {
+    handleChangeVodStartDate(date) {
         if (date) {
             this.setState({
-                searchCriteria: {...this.state.searchCriteria, availStartDate: date}
+                searchCriteria: {...this.state.searchCriteria, vodStart: date}
             });
         }
-        this.wrongDateRange(date && this.state.searchCriteria.availEndDate && this.state.searchCriteria.availEndDate < date);
+        this.wrongDateRange(date && this.state.searchCriteria.vodEnd && this.state.searchCriteria.vodEnd < date);
     }
 
-    handleChangeRawAvailStartDate(date) {
+    handleChangeRawVodStartDate(date) {
         if (moment(date).isValid()) {
-            this.handleChangeAvailStartDate(moment(date));
+            this.handleChangeVodStartDate(moment(date));
             this.setState({invalidStartDate: ''});
         } else {
             this.setState({invalidStartDate: INVALID_DATE});
         }
     }
 
-    setupAvailEndDate() {
-        if (!this.state.searchCriteria.availEndDate) {
+    setupVodEndDate() {
+        if (!this.state.searchCriteria.vodEnd) {
             this.setState({
-                searchCriteria: {...this.state.searchCriteria, availEndDate: moment()}
+                searchCriteria: {...this.state.searchCriteria, vodEnd: moment()}
             });
         }
     }
 
-    handleChangeAvailEndDate(date) {
+    handleChangeVodEndDate(date) {
         if (date) {
             this.setState({
-                searchCriteria: {...this.state.searchCriteria, availEndDate: date}
+                searchCriteria: {...this.state.searchCriteria, vodEnd: date}
             });
         }
-        this.wrongDateRange(date && this.state.searchCriteria.availStartDate && this.state.searchCriteria.availStartDate > date);
+        this.wrongDateRange(date && this.state.searchCriteria.vodStart && this.state.searchCriteria.vodStart > date);
     }
 
     wrongDateRange(wrong) {
@@ -104,11 +104,11 @@ class AdvancedSearchPanel extends React.Component {
         }
     }
 
-    handleChangeRawAvailEndDate(value) {
+    handleChangeRawVodEndDate(value) {
         const date = this.validateDate(value);
         console.log(date);
         if (date) {
-            this.handleChangeAvailEndDate(moment(date));
+            this.handleChangeVodEndDate(moment(date));
             this.setState({invalidEndDate: ''});
         } else {
             this.setState({invalidEndDate: INVALID_DATE});
@@ -131,8 +131,8 @@ class AdvancedSearchPanel extends React.Component {
     handleClear() {
         this.setState({
             searchCriteria: {
-                availStartDate: null,
-                availEndDate: null,
+                vodStart: null,
+                vodEnd: null,
                 studio: '',
                 title: ''
             }
@@ -170,34 +170,26 @@ class AdvancedSearchPanel extends React.Component {
                         <div className="form-group">
                             <label
                                 htmlFor="dashboard-avails-search-studio-text">Studio</label>
-                            <select className="form-control"
-                                id="dashboard-avails-search-studio-text"
-                                placeholder="Enter Studio"
-                                name="studio"
-                                value={this.state.searchCriteria.studio}
-                                onChange={this.handleInputChange}
-                                onKeyPress={this._handleKeyPress}>
-                                <option>none</option>
-                                <option>Elevation Pictures</option>
-                                <option>Warner Bros</option>
-                                <option>Disney</option>
-                                <option>CBS Films</option>
-                                <option>Paramount Pictures</option>
-                            </select>
+                            <input type="text" className="form-control"
+                                   id="dashboard-avails-search-studio-text"
+                                   placeholder="Enter Studio"
+                                   name="studio"
+                                   value={this.state.searchCriteria.studio}
+                                   onChange={this.handleInputChange}
+                                   onKeyPress={this._handleKeyPress}/>
                         </div>
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-start-date-text" >Avail Start
-                                Date</label>
-                            <span onClick={this.setupAvailStartDate}>
+                            <label htmlFor="dashboard-avails-search-start-date-text" >VOD Start</label>
+                            <span onClick={this.setupVodStartDate}>
                                 <DatePicker
                                     ref={this.refDatePickerStart}
                                     className={this.state.invalidStartDate ? 'text-danger' : ''}
                                     id="dashboard-avails-search-start-date-text"
-                                    selected={this.state.searchCriteria.availStartDate}
-                                    onChange={this.handleChangeAvailStartDate}
-                                    onChangeRaw={(event) => this.handleChangeRawAvailStartDate(event.target.value)}
+                                    selected={this.state.searchCriteria.vodStart}
+                                    onChange={this.handleChangeVodStartDate}
+                                    onChangeRaw={(event) => this.handleChangeRawVodStartDate(event.target.value)}
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidStartDate && <small className="text-danger m-2"
@@ -207,16 +199,15 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-end-date-text" >Avail End
-                                Date</label>
-                            <span onClick={this.setupAvailEndDate}>
+                            <label htmlFor="dashboard-avails-search-end-date-text" >VOD End</label>
+                            <span onClick={this.setupVodEndDate}>
                                 <DatePicker
                                     ref={this.refDatePickerEnd}
                                     className={this.state.invalidEndDate ? 'text-danger' : ''}
                                     id="dashboard-avails-search-end-date-text"
-                                    selected={this.state.searchCriteria.availEndDate}
-                                    onChange={this.handleChangeAvailEndDate}
-                                    onChangeRaw={(event) => this.handleChangeRawAvailEndDate(event.target.value)}
+                                    selected={this.state.searchCriteria.vodEnd}
+                                    onChange={this.handleChangeVodEndDate}
+                                    onChangeRaw={(event) => this.handleChangeRawVodEndDate(event.target.value)}
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidEndDate && <small className="text-danger m-2"

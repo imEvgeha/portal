@@ -6,7 +6,7 @@ import {dashboardService} from '../DashboardService';
 import './AvailResultTable.scss';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
 import t from 'prop-types';
-import {confirmModal} from '../../../components/share/ConfirmModal';
+import {AVAILS_PAGE_SIZE} from '../../../constants/config';
 
 const columns = [
     {
@@ -18,13 +18,16 @@ const columns = [
     {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
     {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
     {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
-    {accessor: 'availStart', Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>},
-    {accessor: 'availEnd', Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>}
+    {
+        accessor: 'vodStart',
+        Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,
+    },
+    {accessor: 'vodEnd', Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>}
 ];
 
 /**
  * Advance Search -
- * title, studio Avail Start Date, Avail End Date
+ * title, studio Vod Start Date, Vod End Date
  */
 const mapStateToProps = state => {
     return {
@@ -68,7 +71,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageSize: 20,
+            pageSize: AVAILS_PAGE_SIZE,
             requestLoading: false,
         };
 

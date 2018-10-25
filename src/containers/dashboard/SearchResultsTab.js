@@ -48,7 +48,7 @@ class SearchResultsTab extends React.Component {
             //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
             //for now we recreate the filename using the same syntax as server
             const currentTime = new Date();
-            var filename = 'avails_';
+            let filename = 'avails_';
             filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate() + '_';
             filename += currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds();
             filename += '.xlsx';
@@ -81,7 +81,7 @@ class SearchResultsTab extends React.Component {
                         </div>
                         <div className="col-2">
                             <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
-                            <i className={'fas fa-th table-top-icon float-right'} onClick={this.props.onBackToDashboard}> </i>
+                            <i className={'fas fa-th table-top-icon float-right'}> </i>
                         </div>
                     </div>
                     <AvailsResultTable/>

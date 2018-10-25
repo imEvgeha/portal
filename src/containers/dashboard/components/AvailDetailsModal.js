@@ -66,7 +66,7 @@ class AvailDetails extends React.Component{
         if(!valid) {
             return 'Incorrect date';
         }
-        if(moment(date) > moment(this.state.avail.availEnd)) {
+        if(moment(date) > moment(this.state.avail.vodEnd)) {
             return 'Start date must be before end date';
         }
     }
@@ -77,7 +77,7 @@ class AvailDetails extends React.Component{
         if(!valid) {
             return 'Incorrect date';
         }
-        if(moment(date) < moment(this.state.avail.availStart)) {
+        if(moment(date) < moment(this.state.avail.vodStart)) {
             return 'End date must be before end start';
         }
     }
@@ -155,11 +155,11 @@ class AvailDetails extends React.Component{
                     </div>
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
-                            <div className="col-4">Avail Start Date:</div>
-                            <div className={'col' +  (this.state.avail.availStart ? '' : ' empty')}>
+                            <div className="col-4">Vod Start:</div>
+                            <div className={'col' +  (this.state.avail.vodStart ? '' : ' empty')}>
                                 <Editable
-                                    title = "availStart"
-                                    value = {this.state.avail.availStart}
+                                    title = "vodStart"
+                                    value = {this.state.avail.vodStart}
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}
@@ -171,11 +171,11 @@ class AvailDetails extends React.Component{
                     </div>
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
-                            <div className="col-4">Avail End Date:</div>
-                            <div className={'col' +  (this.state.avail.availEnd ? '' : ' empty')}>
+                            <div className="col-4">Vod End:</div>
+                            <div className={'col' +  (this.state.avail.vodEnd ? '' : ' empty')}>
                                 <Editable
-                                    title = "availEnd"
-                                    value = {this.state.avail.availEnd}
+                                    title = "vodEnd"
+                                    value = {this.state.avail.vodEnd}
                                     dataType = "text"
                                     mode = "inline"
                                     emptyValueText = {this.emptyValueText}

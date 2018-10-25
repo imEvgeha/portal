@@ -4,6 +4,7 @@ import './DashboardCard.scss';
 import Dropzone from 'react-dropzone';
 import {Progress} from 'reactstrap';
 import {uploadService} from '../UploadService';
+import {AVAILS_UPLOAD_EXTENSIONS} from '../../../constants/config';
 
 
 export default class DashboardDropableCard extends React.Component {
@@ -77,7 +78,7 @@ export default class DashboardDropableCard extends React.Component {
         return (
             <Dropzone
                 className="dashboard-card-container"
-                accept=".xls, .xlsx"
+                accept={AVAILS_UPLOAD_EXTENSIONS}
                 disableClick={true}
                 ref={(ref) => {this.dropZoneRef = ref;}}
                 onDrop={this.handleUpload}>
