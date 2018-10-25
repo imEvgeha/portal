@@ -34,6 +34,7 @@ export const dashboardService = {
         }
         return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
+
     createAvail: (avail) => {
         return http.post('/avails', avail);
     },
@@ -42,8 +43,8 @@ export const dashboardService = {
         return http.put(`/avails/${avail.id}`, avail);
     },
 
-     downloadAvails: (availIDs) => {
-            return http.post('/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs});
-        },
+    downloadAvails: (availIDs) => {
+        return http.post('/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs});
+    },
 
 };

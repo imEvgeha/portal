@@ -96,7 +96,7 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Title:</div>
-                            <div className="col">
+                            <div className={'col' +  (this.state.avail.title ? '' : ' empty')}>
                                 <Editable
                                     title = "title"
                                     value = {this.state.avail.title}
@@ -111,7 +111,7 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Studio:</div>
-                            <div className="col">
+                            <div className={'col' +  (this.state.avail.studio ? '' : ' empty')}>
                                 <Editable
                                     title = "studio"
                                     value = {this.state.avail.studio}
@@ -126,7 +126,7 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Territory:</div>
-                            <div className="col">
+                            <div className={'col' +  (this.state.avail.territory ? '' : ' empty')}>
                                 <Editable
                                     title = "territory"
                                     value = {this.state.avail.territory}
@@ -141,7 +141,7 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Genre:</div>
-                            <div className="col">
+                            <div className={'col' +  (this.state.avail.genre ? '' : ' empty')}>
                                 <Editable
                                     title = "genre"
                                     value = {this.state.avail.genre}
@@ -156,7 +156,7 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Avail Start Date:</div>
-                            <div className="col">
+                            <div className={'col' +  (this.state.avail.availStart ? '' : ' empty')}>
                                 <Editable
                                     title = "availStart"
                                     value = {this.state.avail.availStart}
@@ -172,7 +172,7 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Avail End Date:</div>
-                            <div className="col">
+                            <div className={'col' +  (this.state.avail.availEnd ? '' : ' empty')}>
                                 <Editable
                                     title = "availEnd"
                                     value = {this.state.avail.availEnd}
