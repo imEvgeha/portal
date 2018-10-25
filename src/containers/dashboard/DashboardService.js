@@ -44,7 +44,7 @@ export const dashboardService = {
     },
 
     downloadAvails: (availIDs) => {
-        return http.post('/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs});
+        return http.post('/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
     },
 
 };
