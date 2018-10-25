@@ -154,13 +154,14 @@ class AvailsResultTable extends React.Component {
         let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
         dashboardService.updateAvails(updatedAvail)
             .then(res => {
+                let editedAvail = res.data;
                 availDetailModal.setState({
-                    avail: res,
+                    avail: editedAvail,
                     errorMessage: ''
                 });
                 this.props.resultPageUpdate({
                     pages: this.props.availTabPage.pages,
-                    avails: this.editAvail(res),
+                    avails: this.editAvail(editedAvail),
                     pageSize: this.props.availTabPage.pageSize,
                     total: this.props.availTabPage.total
                 });
