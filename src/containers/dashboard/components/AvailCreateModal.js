@@ -32,6 +32,7 @@ class AvailCreate extends React.Component {
             errorMessage: {
                 startDate: '',
                 endDate: '',
+                range: '',
                 other: ''
             },
             avail: {
@@ -56,12 +57,12 @@ class AvailCreate extends React.Component {
 
     handleChangeVodStartDate(date) {
         let newAvail = {...this.state.avail, vodStart: date};
-        let errorMessage = {...this.state.errorMessage, startDate: ''};
+        let errorMessage = {...this.state.errorMessage, range: '', startDate: ''};
 
         console.log(date);
 
         if (this.state.avail.vodEnd && date && this.state.avail.vodEnd < date) {
-            errorMessage.startDate = 'Start date must be before end date';
+            errorMessage.range = 'Start date must be before end date';
         }
 
         this.setState({
@@ -74,10 +75,10 @@ class AvailCreate extends React.Component {
 
     handleChangeVodEndDate(date) {
         let newAvail = {...this.state.avail, vodEnd: date};
-        let errorMessage = {...this.state.errorMessage, endDate: ''};
+        let errorMessage = {...this.state.errorMessage, range: '', endDate: ''};
 
         if (this.state.avail.vodStart && date && this.state.avail.vodStart > date) {
-            errorMessage.endDate = 'End date must be after start date';
+            errorMessage.range = 'End date must be after start date';
         }
         this.setState({
             avail: newAvail,
@@ -253,7 +254,7 @@ class AvailCreate extends React.Component {
                     <Label id="dashboard-avails-create-modal-error-message"
                            className="text-success w-100">{this.state.showCreatedMessage && 'Avails created'}</Label>
                     <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
-                        {this.state.errorMessage.other} {this.state.errorMessage.startDate} {this.state.errorMessage.endDate}
+                        {this.state.errorMessage.other} {this.state.errorMessage.startDate} {this.state.errorMessage.endDate} {this.state.errorMessage.range}
                     </Label>
                     <Button id="dashboard-avails-create-modal-create-btn" color="primary" disabled={this.state.disableCreateBtn}
                             onClick={this.confirm}>{this.props.confirmLabel}</Button>
