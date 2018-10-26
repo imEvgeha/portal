@@ -104,10 +104,8 @@ class AdvancedSearchPanel extends React.Component {
         }
     }
 
-    handleChangeRawVodEndDate(value) {
-        const date = this.validateDate(value);
-        console.log(date);
-        if (date) {
+    handleChangeRawVodEndDate(date) {
+        if (moment(date).isValid()) {
             this.handleChangeVodEndDate(moment(date));
             this.setState({invalidEndDate: ''});
         } else {
@@ -134,7 +132,9 @@ class AdvancedSearchPanel extends React.Component {
                 vodStart: null,
                 vodEnd: null,
                 studio: '',
-                title: ''
+                title: '',
+                invalidStartDate: null,
+                invalidEndDate: null,
             }
         });
         this.refDatePickerStart.current.clear();
