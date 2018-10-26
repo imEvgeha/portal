@@ -23,7 +23,7 @@ class InfiniteScrollTable extends React.Component {
         onLoadMoreItems: t.func,
         onSortedChange: t.func,
         onSelection: t.func,
-        onEdit: t.func
+        onDetailsClick: t.func
     };
 
     constructor(props) {
@@ -77,9 +77,10 @@ class InfiniteScrollTable extends React.Component {
                         instance,
                         event: e
                     });
-                    availDetailsModal.open(rowInfo.original, () => {
-                    }, () => {
-                    }, {onEdit: this.props.onEdit});
+                    this.props.onDetailsClick(rowInfo.original);
+                    // availDetailsModal.open(rowInfo.original, () => {
+                    // }, () => {
+                    // }, {onEdit: this.props.onEdit});
                 },
                 className: 'pointer'
             };

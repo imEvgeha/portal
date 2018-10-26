@@ -8,6 +8,7 @@ import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} f
 import t from 'prop-types';
 import {AVAILS_PAGE_SIZE} from '../../../constants/config';
 import moment from 'moment';
+import {availDetailsModal} from './AvailDetailsModal';
 
 const columns = [
     {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
@@ -79,8 +80,7 @@ class AvailsResultTable extends React.Component {
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
         this.onSortedChange = this.onSortedChange.bind(this);
         this.onSelection = this.onSelection.bind(this);
-        this.onEdit = this.onEdit.bind(this);
-        this.editAvail = this.editAvail.bind(this);
+        this.onDetailsClick = this.onDetailsClick.bind(this);
     }
 
     onLoadMoreItems() {
@@ -145,39 +145,10 @@ class AvailsResultTable extends React.Component {
         this.props.resultPageSelect(selected);
     }
 
-    editAvail(newAvail) {
-        let copiedAvails = this.props.availTabPage.avails.slice();
-        let avail = copiedAvails.find(b => b.id === newAvail.id);
-        if (avail) {
-            for(let availField in newAvail) avail[availField] = newAvail[availField];
-        }
-        return copiedAvails;
-    }
-
-    onEdit(editable, availDetailModal) {
-        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                availDetailModal.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
-                this.props.resultPageUpdate({
-                    pages: this.props.availTabPage.pages,
-                    avails: this.editAvail(editedAvail),
-                    pageSize: this.props.availTabPage.pageSize,
-                    total: this.props.availTabPage.total
-                });
-            })
-            .catch(() => {
-                editable.setState({availLastEditSucceed: false});
-                availDetailModal.setState({
-                    errorMessage: 'Avail edit failed'
-                });
-                editable.value = availDetailModal.state.avail[editable.props.title];
-                editable.newValue = availDetailModal.state.avail[editable.props.title];
-            });
+    onDetailsClick(row) {
+        availDetailsModal.open(row, () => {
+        }, () => {
+        });
     }
 
     render() {
@@ -196,7 +167,7 @@ class AvailsResultTable extends React.Component {
                 onLoadMoreItems={this.onLoadMoreItems}
                 onSortedChange={this.onSortedChange}
                 onSelection={this.onSelection}
-                onEdit={this.onEdit}
+                onDetailsClick={this.onDetailsClick}
             />
         );
     }

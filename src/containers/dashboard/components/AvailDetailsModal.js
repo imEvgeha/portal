@@ -7,6 +7,20 @@ import {ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
 import {validateDate} from '../../../util/Validation';
 import t from 'prop-types';
 
+import connect from 'react-redux/es/connect/connect';
+import {dashboardService} from '../DashboardService';
+import {resultPageUpdate} from '../../../actions/dashboard';
+
+const mapStateToProps = state => {
+    return {
+        availTabPage: state.dashboard.availTabPage,
+    };
+};
+
+const mapDispatchToProps = {
+    resultPageUpdate
+};
+
 class AvailDetails extends React.Component {
     static propTypes = {
         avail: t.object,
@@ -14,7 +28,8 @@ class AvailDetails extends React.Component {
         abortLabel: t.string,
         reject: t.func,
         resolve: t.func,
-        onEdit: t.func
+        availTabPage: t.object,
+        resultPageUpdate: t.func,
     };
 
     static defaultProps = {
@@ -40,6 +55,8 @@ class AvailDetails extends React.Component {
 
         this.validateStartDateFormat = this.validateStartDateFormat.bind(this);
         this.validateEndDateFormat = this.validateEndDateFormat.bind(this);
+        this.onEdit = this.onEdit.bind(this);
+        this.editAvail = this.editAvail.bind(this);
     }
 
     componentDidMount() {
@@ -77,7 +94,44 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        this.props.onEdit(editable, this);
+        this.onEdit(editable);
+    }
+
+    editAvail(newAvail) {
+        let copiedAvails = this.props.availTabPage.avails.slice();
+        let avail = copiedAvails.find(b => b.id === newAvail.id);
+        if (avail) {
+            for(let availField in newAvail) avail[availField] = newAvail[availField];
+        }
+        return copiedAvails;
+    }
+
+    onEdit(editable) {
+        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value};
+        console.log(this.props.availTabPage);
+        dashboardService.updateAvails(updatedAvail)
+            .then(res => {
+                console.log(res);
+                let editedAvail = res.data;
+                this.setState({
+                    avail: editedAvail,
+                    errorMessage: ''
+                });
+                this.props.resultPageUpdate({
+                    pages: this.props.availTabPage.pages,
+                    avails: this.editAvail(editedAvail),
+                    pageSize: this.props.availTabPage.pageSize,
+                    total: this.props.availTabPage.total
+                });
+            })
+            .catch(() => {
+                editable.setState({availLastEditSucceed: false});
+                this.setState({
+                    errorMessage: 'Avail edit failed'
+                });
+                editable.value = this.state.avail[editable.props.title];
+                editable.newValue = this.state.avail[editable.props.title];
+            });
     }
 
     validateStartDateFormat(date) {
@@ -224,6 +278,7 @@ class AvailDetails extends React.Component {
     }
 }
 
+// export default connect(mapStateToProps, mapDispatchToProps)(AvailDetails);
 
 export const availDetailsModal = {
     open: (avail, onApprove, onCancel, options) => {
@@ -252,5 +307,3 @@ export const availDetailsModal = {
         };
     }
 };
-
-export default AvailDetails;
