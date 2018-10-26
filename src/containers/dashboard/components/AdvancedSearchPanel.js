@@ -71,11 +71,16 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleChangeRawVodStartDate(date) {
-        if (moment(date).isValid()) {
-            this.handleChangeVodStartDate(moment(date));
-            this.setState({invalidStartDate: ''});
+        if (date) {
+            if (moment(date).isValid()) {
+                this.handleChangeVodStartDate(moment(date));
+                this.setState({invalidStartDate: ''});
+            } else {
+                this.setState({invalidStartDate: INVALID_DATE});
+            }
         } else {
-            this.setState({invalidStartDate: INVALID_DATE});
+            this.setState({invalidStartDate: ''});
+            this.setState({invalidEndDate: ''});
         }
     }
 
@@ -99,17 +104,29 @@ class AdvancedSearchPanel extends React.Component {
     wrongDateRange(wrong) {
         if (wrong) {
             this.setState({invalidStartDate: INVALID_RANGE, invalidEndDate: INVALID_RANGE});
-        } else if (this.state.invalidStartDate === INVALID_RANGE && this.state.invalidEndDate === INVALID_RANGE) {
-            this.setState({invalidStartDate: '', invalidEndDate: ''});
+        } else {
+            let state = {};
+            if (this.state.invalidStartDate === INVALID_RANGE) {
+                state.invalidStartDate = '';
+            }
+            if (this.state.invalidEndDate === INVALID_RANGE) {
+                state.invalidEndDate = '';
+            }
+            this.setState(state);
         }
     }
 
     handleChangeRawVodEndDate(date) {
-        if (moment(date).isValid()) {
-            this.handleChangeVodEndDate(moment(date));
-            this.setState({invalidEndDate: ''});
+        if (date) {
+            if (moment(date).isValid()) {
+                this.handleChangeVodEndDate(moment(date));
+                this.setState({invalidEndDate: ''});
+            } else {
+                this.setState({invalidEndDate: INVALID_DATE});
+            }
         } else {
-            this.setState({invalidEndDate: INVALID_DATE});
+            this.setState({invalidStartDate: ''});
+            this.setState({invalidEndDate: ''});
         }
     }
 
@@ -127,18 +144,18 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleClear() {
+        this.refDatePickerStart.current.clear();
+        this.refDatePickerEnd.current.clear();
         this.setState({
             searchCriteria: {
                 vodStart: null,
                 vodEnd: null,
                 studio: '',
                 title: '',
-                invalidStartDate: null,
-                invalidEndDate: null,
-            }
+            },
+            invalidStartDate: '',
+            invalidEndDate: '',
         });
-        this.refDatePickerStart.current.clear();
-        this.refDatePickerEnd.current.clear();
     }
 
     handleSearch() {
