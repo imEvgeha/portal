@@ -8,7 +8,7 @@ import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} f
 import t from 'prop-types';
 import {AVAILS_PAGE_SIZE} from '../../../constants/config';
 import moment from 'moment';
-import {availDetailsModal} from "./AvailDetailsModal";
+import {availDetailsModal} from './AvailDetailsModal';
 
 const columns = [
     {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
