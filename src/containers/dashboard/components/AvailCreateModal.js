@@ -5,6 +5,7 @@ import {ModalFooter, ModalHeader, Modal, Button, Label, Input, Progress} from 'r
 import t from 'prop-types';
 import DatePicker from 'react-datepicker/es';
 import {dashboardService} from '../DashboardService';
+import moment from 'moment';
 
 class AvailCreate extends React.Component {
     static propTypes = {
@@ -28,7 +29,11 @@ class AvailCreate extends React.Component {
             disableCreateBtn: true,
             showCreatedMessage: false,
             loading: false,
-            errorMessage: '',
+            errorMessage: {
+                startDate: '',
+                endDate: '',
+                other: ''
+            },
             avail: {
                 title: null,
                 studio: null,
@@ -45,14 +50,18 @@ class AvailCreate extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVodStartDate = this.handleChangeVodStartDate.bind(this);
         this.handleChangeVodEndDate = this.handleChangeVodEndDate.bind(this);
+        this.handleChangeRawVodStartDate = this.handleChangeRawVodStartDate.bind(this);
+        this.handleChangeRawVodEndDate = this.handleChangeRawVodEndDate.bind(this);
     }
 
     handleChangeVodStartDate(date) {
         let newAvail = {...this.state.avail, vodStart: date};
-        let errorMessage = '';
+        let errorMessage = {...this.state.errorMessage, startDate: ''};
 
-        if (this.state.avail.vodEnd && this.state.avail.vodEnd < date) {
-            errorMessage = 'Start date must be before end date';
+        console.log(date);
+
+        if (this.state.avail.vodEnd && date && this.state.avail.vodEnd < date) {
+            errorMessage.startDate = 'Start date must be before end date';
         }
 
         this.setState({
@@ -65,10 +74,10 @@ class AvailCreate extends React.Component {
 
     handleChangeVodEndDate(date) {
         let newAvail = {...this.state.avail, vodEnd: date};
-        let errorMessage = '';
+        let errorMessage = {...this.state.errorMessage, endDate: ''};
 
-        if (this.state.avail.vodStart && this.state.avail.vodStart > date) {
-            errorMessage = 'End date must be after start date';
+        if (this.state.avail.vodStart && date && this.state.avail.vodStart > date) {
+            errorMessage.endDate = 'End date must be after start date';
         }
         this.setState({
             avail: newAvail,
@@ -76,6 +85,22 @@ class AvailCreate extends React.Component {
         });
 
         this.setDisableCreate(newAvail, errorMessage);
+    }
+
+    handleChangeRawVodStartDate(date) {
+        if (moment(date).isValid() || !date) {
+            this.handleChangeVodStartDate(moment(date));
+        } else {
+            this.setState({errorMessage: {...this.state.errorMessage, startDate: 'Invalid start date'}});
+        }
+    }
+
+    handleChangeRawVodEndDate(date) {
+        if (moment(date).isValid() || !date) {
+            this.handleChangeVodEndDate(moment(date));
+        } else {
+            this.setState({errorMessage: {...this.state.errorMessage, endDate: 'Invalid end date'}});
+        }
     }
 
     handleChange({target}) {
@@ -101,21 +126,36 @@ class AvailCreate extends React.Component {
     }
 
     setDisableCreate(avail, errorMessage) {
-        if (errorMessage) {
+        if (this.isAnyErrors(errorMessage)) {
             this.setState({disableCreateBtn: true});
-        } else if (this.isAnyEmptyField(avail)) {
+        } else if (this.areMandatoryFieldsEmpty(avail)) {
             this.setState({disableCreateBtn: true});
         } else {
             this.setState({disableCreateBtn: false});
         }
     }
 
-    isAnyEmptyField(avail) {
-        for (let availField in avail) {
-            if (!avail[availField]) {
-                return true;
-            }
+    isAnyErrors(errorMessage) {
+        if(errorMessage.startDate) {
+            return true;
         }
+        if(errorMessage.endDate) {
+            return true;
+        }
+        if(errorMessage.other) {
+            return true;
+        }
+        return false;
+    }
+
+    areMandatoryFieldsEmpty(avail) {
+        if (!avail.title) {
+            return true;
+        }
+        if (!avail.studio) {
+            return true;
+        }
+
         return false;
     }
 
@@ -125,9 +165,11 @@ class AvailCreate extends React.Component {
         dashboardService.createAvail(this.state.avail).then(() => {
             this.setState({loading: false, showCreatedMessage: true});
             let thatAbort = this.abort;
-            setTimeout(function(){ thatAbort(); }, 1000);
+            setTimeout(function () {
+                thatAbort();
+            }, 1000);
         })
-            .catch(() => this.setState({loading: false, errorMessage: 'Avail creation Failed'}));
+            .catch(() => this.setState({loading: false, errorMessage: {...this.state.errorMessage, other: 'Avail creation Failed'}}));
         return this.props.resolve();
     }
 
@@ -184,6 +226,7 @@ class AvailCreate extends React.Component {
                                     id="dashboard-avails-create-modal-start-date-text"
                                     selected={this.state.avail.vodStart}
                                     onChange={this.handleChangeVodStartDate}
+                                    onChangeRaw={(event) => this.handleChangeRawVodStartDate(event.target.value)}
                                     todayButton={'Today'}
                                 />
                             </div>
@@ -198,6 +241,7 @@ class AvailCreate extends React.Component {
                                     id="dashboard-avails-create-modal-end-date-text"
                                     selected={this.state.avail.vodEnd}
                                     onChange={this.handleChangeVodEndDate}
+                                    onChangeRaw={(event) => this.handleChangeRawVodEndDate(event.target.value)}
                                     todayButton={'Today'}
                                 />
                             </div>
@@ -206,8 +250,11 @@ class AvailCreate extends React.Component {
                 </div>
                 {this.state.loading && <Progress animated value={100}/>}
                 <ModalFooter>
-                    <Label id="dashboard-avails-create-modal-error-message" className="text-success w-100">{this.state.showCreatedMessage && 'Avails created'}</Label>
-                    <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">{this.state.errorMessage}</Label>
+                    <Label id="dashboard-avails-create-modal-error-message"
+                           className="text-success w-100">{this.state.showCreatedMessage && 'Avails created'}</Label>
+                    <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
+                        {this.state.errorMessage.other} {this.state.errorMessage.startDate} {this.state.errorMessage.endDate}
+                    </Label>
                     <Button id="dashboard-avails-create-modal-create-btn" color="primary" disabled={this.state.disableCreateBtn}
                             onClick={this.confirm}>{this.props.confirmLabel}</Button>
                     <Button id="dashboard-avails-create-modal-cancel-btn" color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
