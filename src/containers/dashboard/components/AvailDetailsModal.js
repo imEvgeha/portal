@@ -110,6 +110,12 @@ class AvailDetails extends React.Component {
         }
     }
 
+    validateNotEmpty(data) {
+        if (!data) {
+            return 'Field can not be empty';
+        }
+    }
+
     render() {
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false}>
@@ -126,6 +132,7 @@ class AvailDetails extends React.Component {
                                     mode="inline"
                                     emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
+                                    validate={this.validateNotEmpty}
                                 />
                             </div>
                         </div>
@@ -141,6 +148,7 @@ class AvailDetails extends React.Component {
                                     mode="inline"
                                     emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
+                                    validate={this.validateNotEmpty}
                                 />
                             </div>
                         </div>
