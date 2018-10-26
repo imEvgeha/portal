@@ -11,7 +11,7 @@ const mapDispatchToProps = {
 };
 
 const INVALID_DATE = 'Invalid Date';
-const INVALID_RANGE = 'Start date should be before end date';
+const INVALID_RANGE = 'VOD start should be before VOD end';
 
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
