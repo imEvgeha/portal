@@ -3,11 +3,11 @@ import {Component} from 'react';
 import moment from 'moment';
 import Editable from 'react-x-editable';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalFooter, ModalHeader, Modal, Button, Label} from 'reactstrap';
+import {ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
 import {validateDate} from '../../../util/Validation';
 import t from 'prop-types';
 
-class AvailDetails extends React.Component{
+class AvailDetails extends React.Component {
     static propTypes = {
         avail: t.object,
         className: t.string,
@@ -43,13 +43,23 @@ class AvailDetails extends React.Component{
     }
 
     componentDidMount() {
-        this.setState({
-            avail: {
-                ...this.state.avail,
-                vodStart: moment(this.state.avail.vodStart).format('L'),
-                vodEnd: moment(this.state.avail.vodEnd).format('L')
-            }
-        });
+        if (this.state.avail.vodStart) {
+            this.setState({
+                avail: {
+                    ...this.state.avail,
+                    vodStart: moment(this.state.avail.vodStart).format('L'),
+                }
+            });
+
+        }
+        if (this.state.avail.vodEnd) {
+            this.setState({
+                avail: {
+                    ...this.state.avail,
+                    vodEnd: moment(this.state.avail.vodEnd).format('L')
+                }
+            });
+        }
     }
 
     toggle() {
@@ -71,24 +81,32 @@ class AvailDetails extends React.Component{
     }
 
     validateStartDateFormat(date) {
-        let valid = validateDate(date);
-        console.log(valid);
-        if(!valid) {
-            return 'Incorrect date';
-        }
-        if(moment(date) > moment(this.state.avail.vodEnd)) {
-            return 'Start date must be before end date';
+        if (date) {
+            let valid = validateDate(date);
+            console.log(valid);
+            if (!valid) {
+                return 'Incorrect date';
+            }
+            if (this.state.avail.vodEnd) {
+                if (moment(date) > moment(this.state.avail.vodEnd)) {
+                    return 'Start date must be before end date';
+                }
+            }
         }
     }
 
     validateEndDateFormat(date) {
-        let valid = validateDate(date);
-        console.log(valid);
-        if(!valid) {
-            return 'Incorrect date';
-        }
-        if(moment(date) < moment(this.state.avail.vodStart)) {
-            return 'End date must be before end start';
+        if (date) {
+            let valid = validateDate(date);
+            console.log(valid);
+            if (!valid) {
+                return 'Incorrect date';
+            }
+            if (this.state.avail.vodStart) {
+                if (moment(date) < moment(this.state.avail.vodStart)) {
+                    return 'End date must be before start date';
+                }
+            }
         }
     }
 
@@ -99,20 +117,14 @@ class AvailDetails extends React.Component{
                 <div className="list-group">
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
-                            <div className="col-4">ID:</div>
-                            <div className="col">{this.props.avail.id}</div>
-                        </div>
-                    </div>
-                    <div className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
                             <div className="col-4">Title:</div>
-                            <div className={'col' +  (this.state.avail.title ? '' : ' empty')}>
+                            <div className={'col' + (this.state.avail.title ? '' : ' empty')}>
                                 <Editable
-                                    title = "title"
-                                    value = {this.state.avail.title}
-                                    dataType = "text"
-                                    mode = "inline"
-                                    emptyValueText = {this.emptyValueText}
+                                    title="title"
+                                    value={this.state.avail.title}
+                                    dataType="text"
+                                    mode="inline"
+                                    emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
                                 />
                             </div>
@@ -121,28 +133,28 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Studio:</div>
-                            <div className={'col' +  (this.state.avail.studio ? '' : ' empty')}>
+                            <div className={'col' + (this.state.avail.studio ? '' : ' empty')}>
                                 <Editable
-                                    title = "studio"
-                                    value = {this.state.avail.studio}
-                                    dataType = "text"
-                                    mode = "inline"
-                                    emptyValueText = {this.emptyValueText}
+                                    title="studio"
+                                    value={this.state.avail.studio}
+                                    dataType="text"
+                                    mode="inline"
+                                    emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
                                 />
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Territory:</div>
-                            <div className={'col' +  (this.state.avail.territory ? '' : ' empty')}>
+                            <div className={'col' + (this.state.avail.territory ? '' : ' empty')}>
                                 <Editable
-                                    title = "territory"
-                                    value = {this.state.avail.territory}
-                                    dataType = "text"
-                                    mode = "inline"
-                                    emptyValueText = {this.emptyValueText}
+                                    title="territory"
+                                    value={this.state.avail.territory}
+                                    dataType="text"
+                                    mode="inline"
+                                    emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
                                 />
                             </div>
@@ -151,13 +163,13 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Genre:</div>
-                            <div className={'col' +  (this.state.avail.genre ? '' : ' empty')}>
+                            <div className={'col' + (this.state.avail.genre ? '' : ' empty')}>
                                 <Editable
-                                    title = "genre"
-                                    value = {this.state.avail.genre}
-                                    dataType = "text"
-                                    mode = "inline"
-                                    emptyValueText = {this.emptyValueText}
+                                    title="genre"
+                                    value={this.state.avail.genre}
+                                    dataType="text"
+                                    mode="inline"
+                                    emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
                                 />
                             </div>
@@ -166,13 +178,13 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Vod Start:</div>
-                            <div className={'col' +  (this.state.avail.vodStart ? '' : ' empty')}>
+                            <div className={'col' + (this.state.avail.vodStart ? '' : ' empty')}>
                                 <Editable
-                                    title = "vodStart"
-                                    value = {this.state.avail.vodStart}
-                                    dataType = "text"
-                                    mode = "inline"
-                                    emptyValueText = {this.emptyValueText}
+                                    title="vodStart"
+                                    value={this.state.avail.vodStart}
+                                    dataType="text"
+                                    mode="inline"
+                                    emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
                                     validate={this.validateStartDateFormat}
                                 />
@@ -182,13 +194,13 @@ class AvailDetails extends React.Component{
                     <div className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="row">
                             <div className="col-4">Vod End:</div>
-                            <div className={'col' +  (this.state.avail.vodEnd ? '' : ' empty')}>
+                            <div className={'col' + (this.state.avail.vodEnd ? '' : ' empty')}>
                                 <Editable
-                                    title = "vodEnd"
-                                    value = {this.state.avail.vodEnd}
-                                    dataType = "text"
-                                    mode = "inline"
-                                    emptyValueText = {this.emptyValueText}
+                                    title="vodEnd"
+                                    value={this.state.avail.vodEnd}
+                                    dataType="text"
+                                    mode="inline"
+                                    emptyValueText={this.emptyValueText}
                                     handleSubmit={this.handleSubmit}
                                     validate={this.validateEndDateFormat}
                                 />
@@ -214,21 +226,27 @@ class AvailDetails extends React.Component{
 
 
 export const availDetailsModal = {
-    open: (avail, onApprove, onCancel, options) =>{
+    open: (avail, onApprove, onCancel, options) => {
         if (options == null) {
             options = {};
         }
         const props = {
             ...options,
             avail: avail,
-            resolve: () => { cleanup();onApprove();},
-            reject: () => { cleanup();onCancel();}
+            resolve: () => {
+                cleanup();
+                onApprove();
+            },
+            reject: () => {
+                cleanup();
+                onCancel();
+            }
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
         render(<AvailDetails {...props}/>, wrapper);
-        const cleanup = function() {
+        const cleanup = function () {
             unmountComponentAtNode(wrapper);
-            return setTimeout(function() {
+            return setTimeout(function () {
                 return wrapper.remove();
             });
         };

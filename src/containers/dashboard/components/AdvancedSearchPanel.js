@@ -104,10 +104,8 @@ class AdvancedSearchPanel extends React.Component {
         }
     }
 
-    handleChangeRawVodEndDate(value) {
-        const date = this.validateDate(value);
-        console.log(date);
-        if (date) {
+    handleChangeRawVodEndDate(date) {
+        if (moment(date).isValid()) {
             this.handleChangeVodEndDate(moment(date));
             this.setState({invalidEndDate: ''});
         } else {
@@ -134,7 +132,9 @@ class AdvancedSearchPanel extends React.Component {
                 vodStart: null,
                 vodEnd: null,
                 studio: '',
-                title: ''
+                title: '',
+                invalidStartDate: null,
+                invalidEndDate: null,
             }
         });
         this.refDatePickerStart.current.clear();
@@ -143,13 +143,17 @@ class AdvancedSearchPanel extends React.Component {
 
     handleSearch() {
         this.props.searchFormUpdateSearchCriteria(this.state.searchCriteria);
-        this.props.onSearch(this.state.searchCriteria);
+        this.props.onSearch({
+            ...this.state.searchCriteria,
+            vodStart: this.state.searchCriteria.vodStart && this.state.searchCriteria.vodStart.format(),
+            vodEnd: this.state.searchCriteria.vodEnd && this.state.searchCriteria.vodEnd.format()
+        });
     }
 
     render() {
         return (
-            <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide': '')}
-                style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
+            <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
+                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -158,12 +162,12 @@ class AdvancedSearchPanel extends React.Component {
                         <div className="form-group">
                             <label htmlFor="dashboard-avails-search-title-text">Title</label>
                             <input type="text" className="form-control"
-                                id="dashboard-avails-search-title-text"
-                                placeholder="Enter Title"
-                                name="title"
-                                value={this.state.searchCriteria.title}
-                                onChange={this.handleInputChange}
-                                onKeyPress={this._handleKeyPress}/>
+                                   id="dashboard-avails-search-title-text"
+                                   placeholder="Enter Title"
+                                   name="title"
+                                   value={this.state.searchCriteria.title}
+                                   onChange={this.handleInputChange}
+                                   onKeyPress={this._handleKeyPress}/>
                         </div>
                     </div>
                     <div className="col">
@@ -181,7 +185,7 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-start-date-text" >VOD Start</label>
+                            <label htmlFor="dashboard-avails-search-start-date-text">VOD Start</label>
                             <span onClick={this.setupVodStartDate}>
                                 <DatePicker
                                     ref={this.refDatePickerStart}
@@ -193,13 +197,13 @@ class AdvancedSearchPanel extends React.Component {
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidStartDate && <small className="text-danger m-2"
-                                    style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
+                                                                       style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
                             </span>
                         </div>
                     </div>
                     <div className="col">
                         <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-end-date-text" >VOD End</label>
+                            <label htmlFor="dashboard-avails-search-end-date-text">VOD End</label>
                             <span onClick={this.setupVodEndDate}>
                                 <DatePicker
                                     ref={this.refDatePickerEnd}
@@ -211,18 +215,20 @@ class AdvancedSearchPanel extends React.Component {
                                     todayButton={'Today'}
                                 />
                                 {this.state.invalidEndDate && <small className="text-danger m-2"
-                                    style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
+                                                                     style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
                             </span>
                         </div>
                     </div>
                 </div>
 
                 <div className="row justify-content-md-end">
-                    <div className="col col-lg-2">
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear} style={{width: '68px', marginRight: '10px'}}>clear</Button>
-                        {' '}
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch} style={{width: '68px', marginRight: '10px'}}>filter</Button>
-                    </div>
+
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
+                                style={{width: '68px', marginRight: '10px'}}>clear</Button>
+
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                                style={{width: '68px', marginRight: '60px'}}>filter</Button>
+
                 </div>
             </div>
         );
