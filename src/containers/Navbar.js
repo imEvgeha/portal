@@ -39,7 +39,7 @@ class NavbarConnect extends React.Component {
                 <ul className="navbar-nav">
                     <li className="">
                         <span className="nav-link" href="#">
-                            <NavLink activeClassName="navActive" to="/dashboard"  id="dashboard-tab">Avails Dashboard</NavLink>
+                            <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Avails Dashboard</NavLink>
                         </span>
                     </li>
                     <li className="nav-item">

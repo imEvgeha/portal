@@ -219,9 +219,9 @@ class AdvancedSearchPanel extends React.Component {
 
                 <div className="row justify-content-md-end">
                     <div className="col col-lg-2">
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}>clear</Button>
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear} style={{width: '68px', marginRight: '10px'}}>clear</Button>
                         {' '}
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}>filter</Button>
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch} style={{width: '68px', marginRight: '10px'}}>filter</Button>
                     </div>
                 </div>
             </div>

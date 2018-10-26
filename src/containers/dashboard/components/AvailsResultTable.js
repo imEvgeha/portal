@@ -7,6 +7,7 @@ import './AvailResultTable.scss';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
 import t from 'prop-types';
 import {AVAILS_PAGE_SIZE} from '../../../constants/config';
+import moment from 'moment';
 
 const columns = [
     {
@@ -21,8 +22,13 @@ const columns = [
     {
         accessor: 'vodStart',
         Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,
+        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
     },
-    {accessor: 'vodEnd', Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>}
+    {
+        accessor: 'vodEnd',
+        Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>,
+        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
+    }
 ];
 
 /**

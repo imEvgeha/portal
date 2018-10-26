@@ -42,6 +42,16 @@ class AvailDetails extends React.Component{
         this.validateEndDateFormat = this.validateEndDateFormat.bind(this);
     }
 
+    componentDidMount() {
+        this.setState({
+            avail: {
+                ...this.state.avail,
+                vodStart: moment(this.state.avail.vodStart).format('L'),
+                vodEnd: moment(this.state.avail.vodEnd).format('L')
+            }
+        });
+    }
+
     toggle() {
         this.setState({
             modal: !this.state.modal
