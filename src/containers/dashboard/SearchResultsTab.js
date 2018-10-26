@@ -25,15 +25,15 @@ class SearchResultsTab extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
         this.requestFile = this.requestFile.bind(this);
     }
 
     exportAvails = () => {
-        if(this.props.availTabPageSelected.length===0){
-            alertModal.open('Action required', () => {}, {description: "Please select at least one avail"});
-        }else{
+        if (this.props.availTabPageSelected.length === 0) {
+            alertModal.open('Action required', () => {
+            }, {description: 'Please select at least one avail'});
+        } else {
             confirmModal.open('Confirm download',
                 this.requestFile,
                 () => {
@@ -44,7 +44,7 @@ class SearchResultsTab extends React.Component {
 
     requestFile() {
         dashboardService.downloadAvails(this.props.availTabPageSelected)
-        .then(function(response) {
+        .then(function (response) {
             console.log('avails received');
 
             //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
@@ -62,11 +62,17 @@ class SearchResultsTab extends React.Component {
             link.click();
             window.URL.revokeObjectURL(url);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log(error);
         });
     }
 
+    selectedItemsComponent() {
+        if (this.props.availTabPageSelected.length) {
+            return <span className={'nx-container-margin table-top-text'}
+                         id={'dashboard-result-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+        }
+    }
 
     render() {
         return (
@@ -77,9 +83,7 @@ class SearchResultsTab extends React.Component {
                             <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
                                 Results: {this.props.availTabPage.total}
                             </span>
-                            <span className={'nx-container-margin table-top-text'} id={'dashboard-result-number'}>
-                                Selected items: {this.props.availTabPageSelected.length}
-                            </span>
+                            {this.selectedItemsComponent()}
                         </div>
                         <div className="col-2">
                             <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>

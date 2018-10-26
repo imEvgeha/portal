@@ -10,11 +10,6 @@ import {AVAILS_PAGE_SIZE} from '../../../constants/config';
 import moment from 'moment';
 
 const columns = [
-    {
-        accessor: 'id',
-        Header: <span id={'dashboard-result-table-header-id'}>ID</span>,
-        Cell: row => (<span id={'dashboard-result-table-cell-' + row.value}>{row.value}</span>)
-    },
     {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
     {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
     {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},

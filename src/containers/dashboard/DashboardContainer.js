@@ -14,6 +14,7 @@ import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import {dashboardService} from './DashboardService';
 import t from 'prop-types';
+import {AVAILS_PAGE_SIZE} from '../../constants/config';
 
 const mapStateToProps = state => {
     return {
@@ -75,7 +76,7 @@ class DashboardContainer extends React.Component {
     doSearch(searchCriteria, searchFn) {
         this.props.resultPageLoading(true);
         this.props.resultPageSort(this.defaultPageSort);
-        searchFn(searchCriteria, 0, 20, this.defaultPageSort)
+        searchFn(searchCriteria, 0, AVAILS_PAGE_SIZE, this.defaultPageSort)
             .then(response => {
                 this.props.resultPageLoading(false);
                 this.props.resultPageUpdate({

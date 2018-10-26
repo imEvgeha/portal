@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const htmlPlugin = new HtmlWebPackPlugin({
     template: "./src/index.html",
@@ -39,7 +40,11 @@ module.exports = {
         ],
     },
     plugins: [
-        htmlPlugin
+        htmlPlugin,
+        new CopyWebpackPlugin([
+            // relative path is from src
+            { from: 'src/favicon.ico' }, // <- your path to favicon
+        ])
     ],
     devServer: {
         port: 3000,
