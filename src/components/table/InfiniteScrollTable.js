@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTable from 'react-table';
 import checkboxHOC from 'react-table/lib/hoc/selectTable';
-
-import {availDetailsModal} from '../../containers/dashboard/components/AvailDetailsModal';
 import t from 'prop-types';
 
 const CheckboxTable = checkboxHOC(ReactTable);
@@ -23,7 +21,7 @@ class InfiniteScrollTable extends React.Component {
         onLoadMoreItems: t.func,
         onSortedChange: t.func,
         onSelection: t.func,
-        onDetailsClick: t.func
+        onCellClick: t.func
     };
 
     constructor(props) {
@@ -77,10 +75,7 @@ class InfiniteScrollTable extends React.Component {
                         instance,
                         event: e
                     });
-                    this.props.onDetailsClick(rowInfo.original);
-                    // availDetailsModal.open(rowInfo.original, () => {
-                    // }, () => {
-                    // }, {onEdit: this.props.onEdit});
+                    this.props.onCellClick(rowInfo.original);
                 },
                 className: 'pointer'
             };
