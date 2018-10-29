@@ -8,6 +8,7 @@ import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} f
 import t from 'prop-types';
 import config from 'react-global-configuration';
 import moment from 'moment';
+import {availDetailsModal} from './AvailDetailsModal';
 
 const columns = [
     {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
@@ -81,6 +82,7 @@ class AvailsResultTable extends React.Component {
         this.onSelection = this.onSelection.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.editAvail = this.editAvail.bind(this);
+        this.onCellClick = this.onCellClick.bind(this);
     }
 
     onLoadMoreItems() {
@@ -154,6 +156,12 @@ class AvailsResultTable extends React.Component {
         return copiedAvails;
     }
 
+    onCellClick(row) {
+        availDetailsModal.open(row, () => {
+        }, () => {
+        }, {onEdit: this.onEdit});
+    }
+
     onEdit(editable, availDetailModal) {
         let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
         dashboardService.updateAvails(updatedAvail)
@@ -196,7 +204,7 @@ class AvailsResultTable extends React.Component {
                 onLoadMoreItems={this.onLoadMoreItems}
                 onSortedChange={this.onSortedChange}
                 onSelection={this.onSelection}
-                onEdit={this.onEdit}
+                onCellClick={this.onCellClick}
             />
         );
     }

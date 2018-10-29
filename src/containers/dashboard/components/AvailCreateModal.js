@@ -249,7 +249,7 @@ class AvailCreate extends React.Component {
                         </div>
                     </a>
                 </div>
-                {this.state.loading && <Progress animated value={100}/>}
+                {this.state.loading && <Progress className={'custom-progress'} animated value={100}/>}
                 <ModalFooter>
                     <Label id="dashboard-avails-create-modal-error-message"
                            className="text-success w-100">{this.state.showCreatedMessage && 'Avails created'}</Label>
