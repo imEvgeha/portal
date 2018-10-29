@@ -1,7 +1,7 @@
 import Http from '../../util/Http';
-import {BASE_PATH, GATEWAY_URL} from '../../constants/config';
+import {BASE_URL} from '../../index';
 
-const http = Http.create({baseURL: GATEWAY_URL + BASE_PATH});
+const http = Http.create();
 
 const prepareSortMatrixParam = function (sortedParams) {
     let matrix = '';
@@ -15,14 +15,12 @@ const prepareSortMatrixParam = function (sortedParams) {
 
 export const dashboardService = {
 
-    ingestedAvailsCount: () => http.get('/avails', {params: {page: 0, size: 1}}),
-
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-        return http.get('/avails/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(BASE_URL +'/avails/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -32,19 +30,19 @@ export const dashboardService = {
                 params[key] = searchCriteria[key];
             }
         }
-        return http.get('/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(BASE_URL +'/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     createAvail: (avail) => {
-        return http.post('/avails', avail);
+        return http.post(BASE_URL +'/avails', avail);
     },
 
     updateAvails: (avail) => {
-        return http.put(`/avails/${avail.id}`, avail);
+        return http.put(BASE_URL +`/avails/${avail.id}`, avail);
     },
 
     downloadAvails: (availIDs) => {
-        return http.post('/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
+        return http.post(BASE_URL +'/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
     },
 
 };

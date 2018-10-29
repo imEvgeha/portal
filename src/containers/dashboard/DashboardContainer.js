@@ -1,5 +1,6 @@
 import './DashboardContainer.scss';
 
+import config from 'react-global-configuration';
 import React from 'react';
 import {connect} from 'react-redux';
 import FreeTextSearch from './components/FreeTextSearch';
@@ -14,7 +15,6 @@ import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import {dashboardService} from './DashboardService';
 import t from 'prop-types';
-import {AVAILS_PAGE_SIZE} from '../../constants/config';
 
 const mapStateToProps = state => {
     return {
@@ -76,7 +76,7 @@ class DashboardContainer extends React.Component {
     doSearch(searchCriteria, searchFn) {
         this.props.resultPageLoading(true);
         this.props.resultPageSort(this.defaultPageSort);
-        searchFn(searchCriteria, 0, AVAILS_PAGE_SIZE, this.defaultPageSort)
+        searchFn(searchCriteria, 0, config.get('avails.page.size'), this.defaultPageSort)
             .then(response => {
                 this.props.resultPageLoading(false);
                 this.props.resultPageUpdate({

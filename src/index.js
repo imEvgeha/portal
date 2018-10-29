@@ -1,7 +1,17 @@
 import './bootstrap.scss';
-// import './bootstrap-theme.scss'
 import './WeAre138.scss';
 import './global.scss';
+
+import axios from 'axios';
+import config from 'react-global-configuration';
+import {defaultConfiguration} from './config';
+
+config.set(defaultConfiguration, {freeze: false});
+axios.get('config.js').then(response => {
+    config.set(response, {assign: true, freeze: true});
+}).catch(() =>
+    console.warn('Unexpected Error during load environment configuration')
+);
 
 import React from 'react';
 import {render} from 'react-dom';
@@ -13,31 +23,18 @@ import store from './stores/index';
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
 
-const keycloakConfig = {
-    'clientId': 'vehicle-public',
-    'realm': 'Vubiquity',
-    'auth-server-url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
-    'url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
-    'ssl-required': 'external',
-    'use-resource-role-mappings': true,
-    'confidential-port': 0,
-    'policy-enforcer': {}
-};
 
-export const keycloak = Keycloak(keycloakConfig);
+
+export const keycloak = Keycloak(config.get('keycloak'));
 
 keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
     if (authenticated) {
-        console.log('LOGGED :) ');
         setInterval(() => {
             keycloak.updateToken(10).error(() => keycloak.logout());
         }, 10000);
 
         keycloak.loadUserInfo().success(profileInfo => {
-            console.log(profileInfo);
-            // store.subscribe( () => console.log('Look me'));
             store.dispatch( loadProfileInfo(profileInfo));
-            console.log(store.getState());
             store.username = profileInfo.username;
         }) ;
 
@@ -48,8 +45,11 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
             document.querySelector('#app')
         );
     } else {
-        console.log('NEED LOGIN :( ');
         keycloak.login();
     }
 
 });
+
+export const GATEWAY_URL = config.get('gateway.url');
+export const BASE_PATH = '/avails-api/v1';
+export const BASE_URL = GATEWAY_URL + config.get('base.path');

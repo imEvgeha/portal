@@ -162,8 +162,8 @@ class AdvancedSearchPanel extends React.Component {
         this.props.searchFormUpdateSearchCriteria(this.state.searchCriteria);
         this.props.onSearch({
             ...this.state.searchCriteria,
-            vodStart: this.state.searchCriteria.vodStart && this.state.searchCriteria.vodStart.format(),
-            vodEnd: this.state.searchCriteria.vodEnd && this.state.searchCriteria.vodEnd.format()
+            vodStart: this.state.searchCriteria.vodStart && this.state.searchCriteria.vodStart.toISOString(),
+            vodEnd: this.state.searchCriteria.vodEnd && this.state.searchCriteria.vodEnd.toISOString()
         });
     }
 

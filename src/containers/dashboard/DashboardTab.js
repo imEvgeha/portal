@@ -3,7 +3,6 @@ import './DashboardContainer.scss';
 import React from 'react';
 import DashboardDropableCard from './components/DashboardDropableCard';
 import DashboardCard from './components/DashboardCard';
-import {dashboardService} from './DashboardService';
 import {availCreateModal} from './components/AvailCreateModal';
 
 export default class DashboardTab extends React.Component {
@@ -19,13 +18,6 @@ export default class DashboardTab extends React.Component {
 
     viewErrors() {
         console.log('Error ');
-    }
-
-    componentDidMount() {
-        dashboardService.ingestedAvailsCount().then((res) => {
-            console.log(res);
-            this.setState({ingestedCount: res.data.total});
-        });
     }
 
     createAvail = () => {

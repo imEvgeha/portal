@@ -6,7 +6,7 @@ import {dashboardService} from '../DashboardService';
 import './AvailResultTable.scss';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
 import t from 'prop-types';
-import {AVAILS_PAGE_SIZE} from '../../../constants/config';
+import config from 'react-global-configuration';
 import moment from 'moment';
 
 const columns = [
@@ -72,7 +72,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageSize: AVAILS_PAGE_SIZE,
+            pageSize: config.get('avails.page.size'),
             requestLoading: false,
         };
 
