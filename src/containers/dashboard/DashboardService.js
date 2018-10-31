@@ -1,5 +1,6 @@
 import Http from '../../util/Http';
-import {BASE_URL} from '../../index';
+import config from 'react-global-configuration';
+
 
 const http = Http.create();
 
@@ -20,7 +21,7 @@ export const dashboardService = {
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-        return http.get(BASE_URL +'/avails/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('base.path') +'/avails/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -30,19 +31,19 @@ export const dashboardService = {
                 params[key] = searchCriteria[key];
             }
         }
-        return http.get(BASE_URL +'/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('base.path') +'/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     createAvail: (avail) => {
-        return http.post(BASE_URL +'/avails', avail);
+        return http.post(config.get('gateway.url') + config.get('base.path') +'/avails', avail);
     },
 
     updateAvails: (avail) => {
-        return http.put(BASE_URL +`/avails/${avail.id}`, avail);
+        return http.put(config.get('gateway.url') + config.get('base.path') +`/avails/${avail.id}`, avail);
     },
 
     downloadAvails: (availIDs) => {
-        return http.post(BASE_URL +'/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
+        return http.post(config.get('gateway.url') + config.get('base.path') +'/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
     },
 
 };
