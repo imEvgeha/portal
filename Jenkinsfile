@@ -1,19 +1,9 @@
 pipeline {
     agent { label 'usla-jknd-p002' }
     stages {
-        stage('test') {
+        stage('build prod') {
             steps {
-                sh './gradlew test'
-            }
-        }
-        stage('build') {
-            steps {
-                sh './gradlew build'
-            }
-        }
-        stage('build docker') {
-            steps {
-                sh './gradlew build docker'
+                sh 'yarn build prod'
             }
         }
     }
