@@ -4,8 +4,35 @@ import React from 'react';
 import DashboardDropableCard from './components/DashboardDropableCard';
 import DashboardCard from './components/DashboardCard';
 import {availCreateModal} from './components/AvailCreateModal';
+import {resultPageLoading, resultPageSort, resultPageUpdate, searchFormUseAdvancedSearch} from '../../actions/dashboard';
+import {loadAvailsMapping} from '../../actions';
+import connect from 'react-redux/es/connect/connect';
+import t from 'prop-types';
 
-export default class DashboardTab extends React.Component {
+const mapStateToProps = state => {
+    return {
+        profileInfo: state.profileInfo,
+        availsMapping: state.root.availsMapping,
+    };
+};
+
+const mapDispatchToProps = {
+    searchFormShowAdvancedSearch: searchFormUseAdvancedSearch,
+    resultPageLoading,
+    resultPageSort,
+    resultPageUpdate,
+    loadAvailsMapping
+};
+
+class DashboardTab extends React.Component {
+    static propTypes = {
+        availsMapping: t.any,
+        searchFormShowAdvancedSearch: t.func,
+        resultPageLoading: t.func,
+        resultPageSort: t.func,
+        resultPageUpdate: t.func,
+        loadAvailsMapping: t.func,
+    };
 
     constructor(props) {
         super(props);
@@ -21,7 +48,7 @@ export default class DashboardTab extends React.Component {
     }
 
     createAvail = () => {
-        availCreateModal.open(() => {}, () => {});
+        availCreateModal.open(() => {}, () => {}, {availsMapping: this.props.availsMapping});
     };
 
     render() {
@@ -29,9 +56,9 @@ export default class DashboardTab extends React.Component {
             <div className={'dashboard-tab'}>
                 <div className="row">
                     <DashboardDropableCard/>
-                    <DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>
+                    {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
                     <DashboardCard title="Create New Edit Version" action={this.createAvail} actionName={'Create'} iconClass={'fas fa-file-alt'}/>
-                    <DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>
+                    {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                 </div>
                 <div className="row">
 
@@ -40,3 +67,5 @@ export default class DashboardTab extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardTab);

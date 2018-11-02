@@ -38,8 +38,9 @@ const mapStateToProps = state => {
         searchCriteria: state.dashboard.searchCriteria,
         useAdvancedSearch: state.dashboard.useAdvancedSearch,
         freeTextSearch: state.dashboard.freeTextSearch,
-        availTabPageSelected: state.dashboard.availTabPageSelected,
-        availTabPageLoading: state.dashboard.availTabPageLoading
+        availTabPageSelected: state.session.availTabPageSelected,
+        availTabPageLoading: state.dashboard.availTabPageLoading,
+        availsMapping: state.root.availsMapping,
     };
 };
 
@@ -57,6 +58,7 @@ const style = {
 
 class AvailsResultTable extends React.Component {
     static propTypes = {
+        availsMapping: t.any,
         availTabPage: t.object,
         availTabPageSort: t.array,
         searchCriteria: t.object,
@@ -159,7 +161,7 @@ class AvailsResultTable extends React.Component {
     onCellClick(row) {
         availDetailsModal.open(row, () => {
         }, () => {
-        }, {onEdit: this.onEdit});
+        }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
     }
 
     onEdit(editable, availDetailModal) {
@@ -180,7 +182,7 @@ class AvailsResultTable extends React.Component {
             })
             .catch(() => {
                 editable.setState({availLastEditSucceed: false});
-                availDetailModal.setState({
+                availDetailModal.setState({vailsMapping: t.any,
                     errorMessage: 'Avail edit failed'
                 });
                 editable.value = availDetailModal.state.avail[editable.props.title];

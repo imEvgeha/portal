@@ -13,7 +13,8 @@ class AvailCreate extends React.Component {
         abortLabel: t.string,
         confirmLabel: t.string,
         reject: t.func,
-        resolve: t.func
+        resolve: t.func,
+        availsMapping: t.any,
     };
 
     static defaultProps = {
@@ -30,8 +31,7 @@ class AvailCreate extends React.Component {
             showCreatedMessage: false,
             loading: false,
             errorMessage: {
-                startDate: '',
-                endDate: '',
+                date: '',
                 range: '',
                 other: ''
             },
@@ -49,63 +49,12 @@ class AvailCreate extends React.Component {
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangeVodStartDate = this.handleChangeVodStartDate.bind(this);
-        this.handleChangeVodEndDate = this.handleChangeVodEndDate.bind(this);
-        this.handleChangeRawVodStartDate = this.handleChangeRawVodStartDate.bind(this);
-        this.handleChangeRawVodEndDate = this.handleChangeRawVodEndDate.bind(this);
-    }
-
-    handleChangeVodStartDate(date) {
-        let newAvail = {...this.state.avail, vodStart: date};
-        let errorMessage = {...this.state.errorMessage, range: '', startDate: ''};
-
-        console.log(date);
-
-        if (this.state.avail.vodEnd && date && this.state.avail.vodEnd < date) {
-            errorMessage.range = 'Start date must be before end date';
-        }
-
-        this.setState({
-            avail: newAvail,
-            errorMessage: errorMessage
-        });
-
-        this.setDisableCreate(newAvail, errorMessage);
-    }
-
-    handleChangeVodEndDate(date) {
-        let newAvail = {...this.state.avail, vodEnd: date};
-        let errorMessage = {...this.state.errorMessage, range: '', endDate: ''};
-
-        if (this.state.avail.vodStart && date && this.state.avail.vodStart > date) {
-            errorMessage.range = 'End date must be after start date';
-        }
-        this.setState({
-            avail: newAvail,
-            errorMessage: errorMessage
-        });
-
-        this.setDisableCreate(newAvail, errorMessage);
-    }
-
-    handleChangeRawVodStartDate(date) {
-        if (moment(date).isValid() || !date) {
-            this.handleChangeVodStartDate(moment(date));
-        } else {
-            this.setState({errorMessage: {...this.state.errorMessage, startDate: 'Invalid start date'}});
-        }
-    }
-
-    handleChangeRawVodEndDate(date) {
-        if (moment(date).isValid() || !date) {
-            this.handleChangeVodEndDate(moment(date));
-        } else {
-            this.setState({errorMessage: {...this.state.errorMessage, endDate: 'Invalid end date'}});
-        }
+        this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
+        this.handleDatepickerRawChange = this.handleDatepickerRawChange.bind(this);
     }
 
     handleChange({target}) {
-        const value = target.value;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
         let newAvail = {...this.state.avail, [name]: value};
@@ -114,6 +63,43 @@ class AvailCreate extends React.Component {
         });
 
         this.setDisableCreate(newAvail, this.state.errorMessage);
+    }
+
+    handleDatepickerChange(name, displayName, date) {
+        let newAvail = {...this.state.avail};
+        newAvail[name] = date;
+        let errorMessage = {...this.state.errorMessage, range: '', date: ''};
+
+        let startDate, endDate, rangeError;
+
+        if (name.endsWith('Start') && this.state.avail[name.replace('Start', 'End')]) {
+            startDate = date;
+            endDate = this.state.avail[name.replace('Start', 'End')];
+            rangeError = displayName + ' must be before corresponding end date';
+        } else if (name.endsWith('End') && this.state.avail[name.replace('End', 'Start')]) {
+            startDate = this.state.avail[name.replace('End', 'Start')];
+            endDate = date;
+            rangeError = displayName + ' must be after corresponding end date';
+        }
+
+        if (startDate && endDate && endDate < startDate) {
+            errorMessage.range = rangeError;
+        }
+
+        this.setState({
+            avail: newAvail,
+            errorMessage: errorMessage
+        });
+
+        this.setDisableCreate(newAvail, errorMessage);
+    }
+
+    handleDatepickerRawChange(name, displayName, date) {
+        if (moment(date).isValid() || !date) {
+            this.handleDatepickerChange(name, displayName, moment(date));
+        } else {
+            this.setState({errorMessage: {...this.state.errorMessage, date: 'Invalid date: ' + displayName}});
+        }
     }
 
     toggle() {
@@ -137,31 +123,14 @@ class AvailCreate extends React.Component {
     }
 
     isAnyErrors(errorMessage) {
-        if(errorMessage.startDate) {
-            return true;
-        }
-        if(errorMessage.endDate) {
-            return true;
-        }
-        if(errorMessage.other) {
-            return true;
-        }
-        return false;
+        return !!(errorMessage.other || errorMessage.date);
     }
 
     areMandatoryFieldsEmpty(avail) {
-        if (!avail.title) {
-            return true;
-        }
-        if (!avail.studio) {
-            return true;
-        }
-
-        return false;
+        return !(avail.title && avail.studio);
     }
 
     confirm() {
-        console.log(this.state.avail);
         this.setState({loading: true, showCreatedMessage: false});
         dashboardService.createAvail(this.state.avail).then(() => {
             this.setState({loading: false, showCreatedMessage: true});
@@ -174,87 +143,93 @@ class AvailCreate extends React.Component {
         return this.props.resolve();
     }
 
+
+
     render() {
+        const rowsOnLeft = this.props.availsMapping.mappings.length/2;
+
+        const renderFieldTemplate = (name, displayName, content) => {
+            return (
+                <a href="#" key={name}
+                   className="list-group-item list-group-item-action flex-column align-items-start">
+                    <div className="row">
+                        <div className="col-4">{displayName}:</div>
+                        <div className="col">
+                            {content}
+                        </div>
+                    </div>
+                </a>
+            );
+        };
+
+        const renderTextField = (name, displayName) => {
+            return renderFieldTemplate(name, displayName, (
+                <Input type="text" name={name} id={'dashboard-avails-create-modal-' + name + '-text'} placeholder={'Enter ' + displayName}
+                       onChange={this.handleChange}/>
+            ));
+        };
+
+        const renderBooleanField = (name, displayName) => {
+            return renderFieldTemplate(name, displayName, (
+                <select className="form-control"
+                        name={name}
+                        id={'dashboard-avails-create-modal-' + name + '-select'}
+                        placeholder={'Enter ' + displayName}
+                        value={this.state.avail[name]}
+                        onChange={this.handleChange}>
+                    <option value="">None selected</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            ));
+        };
+
+        const renderDatepickerField = (name, displayName) => {
+            return renderFieldTemplate(name, displayName, (
+                <DatePicker
+                    id={'dashboard-avails-create-modal-' + name + '-text'}
+                    name={name}
+                    selected={this.state.avail[name]}
+                    onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
+                    onChangeRaw={(event) => this.handleDatepickerRawChange(name, displayName, event.target.value)}
+                    todayButton={'Today'}
+                />
+            ));
+        };
+
+        const renderFields = (mappings) => {
+            return mappings.map((mapping)=> {
+                switch (mapping.dataType) {
+                    case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                    case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
+                    case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                    default:
+                        console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                }
+            });
+        };
+
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false} size={'lg'}>
                 <ModalHeader toggle={this.toggle}>Create Avail</ModalHeader>
-                <div className="nx-stylish list-group">
-                    <a href="#"
-                       className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
-                            <div className="col-4">Title:</div>
-                            <div className="col">
-                                <Input type="text" name="title" id="dashboard-avails-create-modal-title" placeholder="Enter title"
-                                       onChange={this.handleChange}/>
-                            </div>
+                <div className={'row'}>
+                    <div className={'col-6'}>
+                        <div className="nx-stylish list-group">
+                            {renderFields(this.props.availsMapping.mappings.slice(0, rowsOnLeft))}
                         </div>
-                    </a>
-                    <a href="#"
-                       className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
-                            <div className="col-4">Studio:</div>
-                            <div className="col">
-                                <Input type="text" name="studio" id="avail-create-modal-studio" placeholder="Enter studio" onChange={this.handleChange}/>
-                            </div>
+                    </div>
+                    <div className={'col-6'}>
+                        <div className="nx-stylish list-group">
+                            {renderFields(this.props.availsMapping.mappings.slice(rowsOnLeft))}
                         </div>
-                    </a>
-                    <a href="#"
-                       className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
-                            <div className="col-4">Territory:</div>
-                            <div className="col">
-                                <Input type="text" name="territory" id="dashboard-avails-create-modal-territory" placeholder="Enter territory"
-                                       onChange={this.handleChange}/>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#"
-                       className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
-                            <div className="col-4">Genre:</div>
-                            <div className="col">
-                                <Input type="text" name="genre" id="dashboard-avails-create-modal-genre" placeholder="Enter genre"
-                                       onChange={this.handleChange}/>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#"
-                       className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
-                            <div className="col-4">VOD Start:</div>
-                            <div className="col">
-                                <DatePicker
-                                    id="dashboard-avails-create-modal-start-date-text"
-                                    selected={this.state.avail.vodStart}
-                                    onChange={this.handleChangeVodStartDate}
-                                    onChangeRaw={(event) => this.handleChangeRawVodStartDate(event.target.value)}
-                                    todayButton={'Today'}
-                                />
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#"
-                       className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="row">
-                            <div className="col-4">VOD End:</div>
-                            <div className="col">
-                                <DatePicker
-                                    id="dashboard-avails-create-modal-end-date-text"
-                                    selected={this.state.avail.vodEnd}
-                                    onChange={this.handleChangeVodEndDate}
-                                    onChangeRaw={(event) => this.handleChangeRawVodEndDate(event.target.value)}
-                                    todayButton={'Today'}
-                                />
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
                 {this.state.loading && <Progress className={'custom-progress'} animated value={100}/>}
                 <ModalFooter>
                     <Label id="dashboard-avails-create-modal-error-message"
                            className="text-success w-100">{this.state.showCreatedMessage && 'Avails created'}</Label>
                     <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
-                        {this.state.errorMessage.other} {this.state.errorMessage.startDate} {this.state.errorMessage.endDate} {this.state.errorMessage.range}
+                        {this.state.errorMessage.other} {this.state.errorMessage.date} {this.state.errorMessage.range}
                     </Label>
                     <Button id="dashboard-avails-create-modal-create-btn" color="primary" disabled={this.state.disableCreateBtn}
                             onClick={this.confirm}>{this.props.confirmLabel}</Button>
