@@ -39,29 +39,29 @@ class NavbarConnect extends React.Component {
                 <ul className="navbar-nav">
                     <li className="">
                         <span className="nav-link" href="#">
-                            <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Avails Dashboard</NavLink>
+                            <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
                         </span>
                     </li>
-                    <li className="nav-item">
-                        <span className="nav-link" href="#">
-                            <NavLink activeClassName="navActive" to="/upload" id="upload-avails-tab">Upload Avails</NavLink>
-                        </span>
-                    </li>
-                    <li className="nav-item">
-                        <span className="nav-link" href="#">
-                            <NavLink activeClassName="navActive" to="/registry" id="title-registry-tab">Title Registry</NavLink>
-                        </span>
-                    </li>
-                    <li className="nav-item">
-                        <span className="nav-link" href="#">
-                            <NavLink activeClassName="navActive" to="/services" id="profile-services-tab">Profile Services</NavLink>
-                        </span>
-                    </li>
-                    <li className="nav-item">
-                        <span className="nav-link" href="#">
-                            <NavLink activeClassName="navActive" to="/admin" id="admin-tab">Admin</NavLink>
-                        </span>
-                    </li>
+                    {/*<li className="nav-item">*/}
+                        {/*<span className="nav-link" href="#">*/}
+                            {/*<NavLink activeClassName="navActive" to="/upload" id="upload-avails-tab">Avails</NavLink>*/}
+                        {/*</span>*/}
+                    {/*</li>*/}
+                    {/*<li className="nav-item">*/}
+                        {/*<span className="nav-link" href="#">*/}
+                            {/*<NavLink activeClassName="navActive" to="/registry" id="title-registry-tab">Title Registry</NavLink>*/}
+                        {/*</span>*/}
+                    {/*</li>*/}
+                    {/*<li className="nav-item">*/}
+                        {/*<span className="nav-link" href="#">*/}
+                            {/*<NavLink activeClassName="navActive" to="/services" id="profile-services-tab">Profile Services</NavLink>*/}
+                        {/*</span>*/}
+                    {/*</li>*/}
+                    {/*<li className="nav-item">*/}
+                        {/*<span className="nav-link" href="#">*/}
+                            {/*<NavLink activeClassName="navActive" to="/admin" id="admin-tab">Admin</NavLink>*/}
+                        {/*</span>*/}
+                    {/*</li>*/}
                 </ul>
                 <ul className="nav navbar-nav ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
@@ -81,9 +81,9 @@ class NavbarConnect extends React.Component {
                   && keycloak.hasResourceRole(
                       'manage') ? 'user' : ''}
                             </DropdownItem>
-                            <DropdownItem divider/>
-                            <DropdownItem disabled>Action</DropdownItem>
-                            <DropdownItem>Another Action</DropdownItem>
+                            {/*<DropdownItem divider/>*/}
+                            {/*<DropdownItem disabled>Action</DropdownItem>*/}
+                            {/*<DropdownItem>Another Action</DropdownItem>*/}
                             <DropdownItem divider/>
                             <DropdownItem>
                                 <a href="#" onClick={keycloak.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>

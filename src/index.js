@@ -23,6 +23,7 @@ import store from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
+import {loadState} from './stores';
 
 
 
@@ -36,7 +37,7 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
 
         keycloak.loadUserInfo().success(profileInfo => {
             store.dispatch( loadProfileInfo(profileInfo));
-            store.username = profileInfo.username;
+            loadState();
         }) ;
 
         render(

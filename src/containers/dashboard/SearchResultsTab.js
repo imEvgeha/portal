@@ -11,7 +11,7 @@ import {dashboardService} from './DashboardService';
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        availTabPageSelected: state.dashboard.availTabPageSelected,
+        availTabPageSelected: state.session.availTabPageSelected,
     };
 };
 

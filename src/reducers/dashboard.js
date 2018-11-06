@@ -4,7 +4,6 @@ import {
     DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH,
     DASHBOARD_RESULT_PAGE__UPDATE,
     DASHBOARD_RESULT_PAGE__SORT,
-    DASHBOARD_RESULT_PAGE__SELECT_ROW,
     DASHBOARD_RESULT_PAGE__LOADING
 } from '../constants/action-types';
 
@@ -26,7 +25,6 @@ const initialState = {
         total: 0
     },
     availTabPageSort: [],
-    availTabPageSelected: [],
     availTabPageLoading: false
 };
 
@@ -42,8 +40,6 @@ const dashboard = ( state = initialState, action) => {
         return { ...state, availTabPage: {...state.dashboardAvailTabPage, ...action.payload}};
     case DASHBOARD_RESULT_PAGE__SORT:
         return { ...state, availTabPageSort: action.payload};
-    case DASHBOARD_RESULT_PAGE__SELECT_ROW:
-        return { ...state, availTabPageSelected: action.payload};
     case DASHBOARD_RESULT_PAGE__LOADING:
         return { ...state, availTabPageLoading: action.payload};
     default:
