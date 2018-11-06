@@ -1,0 +1,107 @@
+import React from 'react';
+import {render, unmountComponentAtNode} from 'react-dom';
+import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import t from 'prop-types';
+
+class CustomModal extends React.Component {
+
+    static propTypes = {
+        reportName: t.string,
+        reject: t.func,
+        resolve: t.func,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            modal: true,
+            reportName: ''
+        };
+
+        this.toggle = this.toggle.bind(this);
+        this.abort = this.abort.bind(this);
+        this.confirm = this.confirm.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    toggle() {
+        this.setState({
+            modal: !this.state.modal
+        });
+    }
+
+    abort() {
+        return this.props.reject();
+    }
+
+    confirm() {
+        return this.props.resolve(this.state.reportName);
+    }
+
+    _handleKeyPress = (e) => {
+        switch (e.key) {
+            case 'Enter' :
+                this.confirm();
+                return;
+            case 'Esc' :
+                this.abort();
+                return;
+        }
+    };
+
+    handleInputChange(event) {
+        const value = event.target.value;
+        this.setState({reportName: value});
+    }
+
+    render() {
+        return (
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={'nx-stylish'} fade={false} backdrop={false}>
+                <ModalHeader toggle={this.toggle}>Save report</ModalHeader>
+                <ModalBody>
+                    <div className="form-group">
+                        <label
+                            htmlFor="dashboard-avails-report-name-text">Report name</label>
+                        <input type="text" className="form-control"
+                               id="dashboard-avails-report-name-text"
+                               placeholder="Enter report name"
+                               value={this.state.reportName}
+                               onChange={this.handleInputChange}
+                               onKeyPress={this._handleKeyPress}/>
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={this.confirm}>Save</Button>{' '}
+                    <Button color="secondary" onClick={this.abort}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+        );
+    }
+}
+
+export const saveReportModal = {
+    open: (onApprove, onCancel, options) => {
+        if (options == null) {
+            options = {};
+        }
+        const props = {
+            ...options,
+            resolve: () => {
+                cleanup();
+                onApprove();
+            },
+            reject: () => {
+                cleanup();
+                onCancel();
+            }
+        };
+        const wrapper = document.body.appendChild(document.createElement('div'));
+        render(<CustomModal {...props}/>, wrapper);
+        const cleanup = function () {
+            unmountComponentAtNode(wrapper);
+            return setTimeout(function () {
+                return wrapper.remove();
+            });
+        };
+    }
+};

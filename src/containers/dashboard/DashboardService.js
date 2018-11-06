@@ -45,5 +45,4 @@ export const dashboardService = {
     downloadAvails: (availIDs) => {
         return http.post(config.get('gateway.url') + config.get('base.path') +'/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
     },
-
 };

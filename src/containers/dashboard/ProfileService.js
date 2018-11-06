@@ -1,5 +1,11 @@
 import Http from '../../util/Http';
 import config from 'react-global-configuration';
+import store from '../../stores';
+import {loadAvailsMapping, loadReports, setReportName} from '../../actions';
+import {searchFormUpdateSearchCriteria} from '../../actions/dashboard';
+import {errorModal} from '../../components/share/ErrorModal';
+import {dashboardService} from './DashboardService';
+import {advancedSearchHelper} from './AdvancedSearchHelper';
 
 
 const mockedResponeAvailsMapping = {
@@ -175,17 +181,134 @@ const mockedResponeAvailsMapping = {
     ]
 };
 
+const mockedConfiguration = {
+    'avails': {
+        'reports': [
+            {
+                'name': 'Batman report 1',
+                'filter': {
+                    'title': 'Batman',
+                    'studio': 'Warner'
+                },
+                'columns': [
+                    'title',
+                    'studio',
+                    'vodStart',
+                    'vodEnd'
+                ],
+                'sortedBy': [
+                    {
+                        'column': 'title',
+                        'order': 'ASC'
+                    },
+                    {
+                        'column': 'vodEnd',
+                        'order': 'DESC'
+                    }
+                ]
+            },
+            {
+                'name': 'Batman report 2',
+                'filter': {
+                    'rowInvalid': true
+                },
+                'columns': [
+                    'vodStart',
+                    'title'
+                ]
+            }
+        ]
+    }
+};
+
 
 const http = Http.create();
 
+
+const loadReportToStore = (report) => {
+    console.log(report);
+    store.dispatch(setReportName(report.name));
+    advancedSearchHelper.loadAdvancedSearchForm(report.filter);
+    advancedSearchHelper.advancedSearch(report.filter);
+};
+
+const readReportFromStore = () => {
+    const report = {
+        name: store.getState().session.reportName,
+        filters: store.getState().dashboard.searchCriteria
+    };
+    return report;
+};
+
+const getReports = () => {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve({data: mockedConfiguration});
+        }, 300);
+    });
+};
+
+const getAvailsMapping = () => {
+    return http.get(config.get('gateway.url') + config.get('base.path') +'/avails/mapping-data');
+    // return new Promise(function(resolve, reject) {
+    //     setTimeout(function() {
+    //         resolve({data: mockedResponeAvailsMapping});
+    //     }, 300);
+    // });
+};
+
 export const profileService = {
-    getAvailsMapping: () => {
-        // return http.get(config.get('gateway.url') + config.get('base.path') +'/avails/mapping-data');
-        return new Promise(function(resolve, reject) {
-            setTimeout(function() {
-                resolve({data: mockedResponeAvailsMapping});
-            }, 300);
-        });
+    initAvailsMapping: (forceReload) => {
+        if (forceReload || !store.getState().root.availsMapping) {
+            getAvailsMapping().then( (response) => {
+                store.dispatch(loadAvailsMapping(response.data));
+            }). catch((error) => {
+                console.error('Unable to load AvailsMapping');
+                console.error(error);
+            });
+        }
     },
+
+    initConfiguration: (forceReload) => {
+        if (forceReload || !store.getState().root.reports) {
+            getReports().then( (response) => {
+                if (response.data && response.data.avails && response.data.avails.reports){
+                    store.dispatch(loadReports(response.data.avails.reports));
+                } else {
+                    console.error('Unable to find reports in configuration');
+                    console.error(response.data);
+                }
+            }). catch((error) => {
+                console.error('Unable to load AvailsMapping');
+                console.error(error);
+            });
+        }
+    },
+
+
+    getReportsNames: () => {
+        return store.getState().root.reports.map((report) => (report.name));
+    },
+
+    changeReport: (reportName) => {
+        const reports = store.getState().root.reports;
+        const report = reports.find((report) => {
+           return report.name === reportName;
+        });
+        if (report) {
+            loadReportToStore(report);
+        } else {
+            errorModal.open('Cannot find report: ' + reportName);
+
+        }
+    },
+
+    saveReport: (reportName) => {
+
+    },
+
+    deleteReport: (reportName) => {
+
+    }
 
 };

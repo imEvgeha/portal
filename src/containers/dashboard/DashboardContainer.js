@@ -1,6 +1,5 @@
 import './DashboardContainer.scss';
 
-import config from 'react-global-configuration';
 import React from 'react';
 import {connect} from 'react-redux';
 import FreeTextSearch from './components/FreeTextSearch';
@@ -13,10 +12,10 @@ import {
 } from '../../actions/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
-import {dashboardService} from './DashboardService';
 import t from 'prop-types';
 import {loadAvailsMapping} from '../../actions';
 import {profileService} from './ProfileService';
+import {advancedSearchHelper} from './AdvancedSearchHelper';
 
 const mapStateToProps = state => {
     return {
@@ -43,8 +42,6 @@ class DashboardContainer extends React.Component {
         loadAvailsMapping: t.func,
     };
 
-    defaultPageSort = [];
-
     constructor(props) {
         super(props);
         this.state = {
@@ -58,14 +55,16 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidMount() {
-        if (!this.props.availsMapping) {
-            profileService.getAvailsMapping().then( (response) => {
-                this.props.loadAvailsMapping(response.data);
-            }). catch((error) => {
-               console.error('Unable to load AvailsMapping');
-               console.error(error);
-            });
-        }
+        // if (!this.props.availsMapping) {
+        //     profileService.getAvailsMapping().then( (response) => {
+        //         this.props.loadAvailsMapping(response.data);
+        //     }). catch((error) => {
+        //        console.error('Unable to load AvailsMapping');
+        //        console.error(error);
+        //     });
+        // }
+        profileService.initAvailsMapping();
+        profileService.initConfiguration();
     }
 
     handleBackToDashboard() {
@@ -73,36 +72,19 @@ class DashboardContainer extends React.Component {
     }
 
     toggleAdvancedSearch() {
+        console.log(profileService.getReportsNames());
         this.setState({showAdvancedSearch: !this.state.showAdvancedSearch});
     }
 
     handleAvailsFreeTextSearch(searchCriteria) {
         this.props.searchFormShowAdvancedSearch(false);
-        this.doSearch(searchCriteria, dashboardService.freeTextSearch);
+        advancedSearchHelper.freeTextSearch(searchCriteria);
+        this.setState({showSearchResults: true});
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
         this.props.searchFormShowAdvancedSearch(true);
-        this.doSearch(searchCriteria, dashboardService.advancedSearch);
-    }
-
-    doSearch(searchCriteria, searchFn) {
-        this.props.resultPageLoading(true);
-        this.props.resultPageSort(this.defaultPageSort);
-        searchFn(searchCriteria, 0, config.get('avails.page.size'), this.defaultPageSort)
-            .then(response => {
-                this.props.resultPageLoading(false);
-                this.props.resultPageUpdate({
-                    pages: 1,
-                    avails: response.data.data,
-                    pageSize: response.data.data.length,
-                    total: response.data.total
-                });
-            }
-            ).catch(() => {
-                this.props.resultPageLoading(false);
-                console.log('Unexpected error');
-            });
+        advancedSearchHelper.advancedSearch(searchCriteria);
         this.setState({showSearchResults: true});
     }
 

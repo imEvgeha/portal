@@ -4,7 +4,7 @@ import {
     DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH,
     DASHBOARD_RESULT_PAGE__UPDATE,
     DASHBOARD_RESULT_PAGE__SORT,
-    DASHBOARD_RESULT_PAGE__LOADING
+    DASHBOARD_RESULT_PAGE__LOADING, DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA
 } from '../constants/action-types';
 
 const initialState = {
@@ -12,11 +12,19 @@ const initialState = {
     freeTextSearch: {
         text: ''
     },
+    advancedSearchCriteria: {
+        // vodStartFrom: null,
+        // vodStartTo: null,
+        // vodEndFrom: null,
+        // vodEndTo: null,
+        // title: '',
+        // studio: ''
+    },
+    columns: [],
+    sortedBy: [],
+
     searchCriteria: {
-        vodStartDate: null,
-        vodEndDate: null,
-        title: '',
-        studio: ''
+
     },
     availTabPage: {
         pages: 0,
@@ -32,6 +40,8 @@ const dashboard = ( state = initialState, action) => {
     switch (action.type) {
     case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
         return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
+    case DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA:
+        return { ...state, advancedSearchCriteria: {...state.advancedSearchCriteria, ...action.payload}};
     case DASHBOARD_SEARCH_FORM__UPDATE_SEARCH_CRITERIA:
         return { ...state, searchCriteria: {...state.searchCriteria, ...action.payload}};
     case DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH:
