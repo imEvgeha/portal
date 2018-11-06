@@ -4,7 +4,8 @@ pipeline {
          stage('build') {
              steps {
                script {
-                 tagTime = sh(returnStdout: true, script: '$(date +%Y%m%d)').trim()
+                 tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
+                 imageTag = "${tagTime}.${BUILD_NUMBER}"
                }
                sh 'yarn'
                sh 'yarn build:prod'
@@ -12,12 +13,12 @@ pipeline {
          }
          stage('docker build') {
              steps {
-               sh "docker build -t nexus.vubiquity.com:8445/portal:${tagTime} ."
+               sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
              }
          }
          stage('docker push') {
              steps {
-               sh "docker push nexus.vubiquity.com:8445/portal:${tagTime}"
+               sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
          }
      }
