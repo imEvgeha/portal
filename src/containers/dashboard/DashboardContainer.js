@@ -15,13 +15,13 @@ import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import {dashboardService} from './DashboardService';
 import t from 'prop-types';
+import {loadAvailsMapping} from '../../actions';
+import {profileService} from './ProfileService';
 
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
-        dashboardSearchCriteria: state.dashboard.searchCriteria,
-        useAdvancedSearch: state.dashboard.useAdvancedSearch,
-        availTabPageSort: state.dashboard.availTabPageSort
+        availsMapping: state.root.availsMapping,
     };
 };
 
@@ -29,15 +29,18 @@ const mapDispatchToProps = {
     searchFormShowAdvancedSearch: searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
-    resultPageUpdate
+    resultPageUpdate,
+    loadAvailsMapping
 };
 
 class DashboardContainer extends React.Component {
     static propTypes = {
+        availsMapping: t.any,
         searchFormShowAdvancedSearch: t.func,
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
+        loadAvailsMapping: t.func,
     };
 
     defaultPageSort = [];
@@ -54,6 +57,16 @@ class DashboardContainer extends React.Component {
         this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
     }
 
+    componentDidMount() {
+        if (!this.props.availsMapping) {
+            profileService.getAvailsMapping().then( (response) => {
+                this.props.loadAvailsMapping(response.data);
+            }). catch((error) => {
+               console.error('Unable to load AvailsMapping');
+               console.error(error);
+            });
+        }
+    }
 
     handleBackToDashboard() {
         this.setState({showSearchResults: false, showAdvancedSearch: false});

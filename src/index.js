@@ -8,10 +8,11 @@ import {defaultConfiguration} from './config';
 
 config.set(defaultConfiguration, {freeze: false});
 axios.get('config.js').then(response => {
-    config.set(response, {assign: true, freeze: true});
-}).catch(() =>
-    console.warn('Unexpected Error during load environment configuration')
-);
+    config.set(response.data, {assign: true, freeze: true});
+}).catch((error) => {
+    console.warn('Unexpected Error during load environment configuration');
+    console.log(error);
+});
 
 import React from 'react';
 import {render} from 'react-dom';
@@ -22,6 +23,7 @@ import store from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
+import {loadState} from './stores';
 
 
 
@@ -35,7 +37,7 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
 
         keycloak.loadUserInfo().success(profileInfo => {
             store.dispatch( loadProfileInfo(profileInfo));
-            store.username = profileInfo.username;
+            loadState();
         }) ;
 
         render(
@@ -49,7 +51,3 @@ keycloak.init({onLoad: 'check-sso'}).success(authenticated => {
     }
 
 });
-
-export const GATEWAY_URL = config.get('gateway.url');
-export const BASE_PATH = '/avails-api/v1';
-export const BASE_URL = GATEWAY_URL + config.get('base.path');
