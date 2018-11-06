@@ -1,16 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import connect from 'react-redux/es/connect/connect';
 import InfiniteScrollTable from './InfiniteScrollTable';
+import t from 'prop-types';
+
+import {
+    resultPageUpdateColumnsOrder
+} from '../../actions/dashboard';
+
+const mapStateToProps = state => {
+    return {
+        columnsOrder: state.dashboard.columns
+    };
+};
+
+const mapDispatchToProps = {
+    resultPageUpdateColumnsOrder: resultPageUpdateColumnsOrder
+};
 
 class DragDropTable extends React.Component {
+
+    static propTypes = {
+        columnsOrder: t.array,
+        resultPageUpdateColumnsOrder: t.func,
+    };
 
     constructor(props) {
         super(props);
 
         this.state=this.state || {};
 
-        const { columns } = this.props;
-        this.state.columns = columns;
         this.state.columnX = 0;
         this.state.columnY = 0;
         this.state.dragging = false;
@@ -20,12 +39,12 @@ class DragDropTable extends React.Component {
         return {
             onDragStart: (e) => {
                 e.stopPropagation();
-                console.log('Dragging Column Info:', {state, rowInfo, column, instance, event: e});
+                //console.log('Dragging Column Info:', {state, rowInfo, column, instance, event: e});
                 let header = this._closestTag(e.target, 'rt-th');
 
                 let newState = {};
                 newState.dragColumn = this._createColumnTemplate(e.target);
-                newState.dragging = true;
+                //newState.dragging = true;
                 newState.dragged = column.id;
                 newState.columnWidth = header.getBoundingClientRect().width;
                 newState.columnX = e.clientX;
@@ -48,15 +67,14 @@ class DragDropTable extends React.Component {
                 e.preventDefault();
                 const { target, dataTransfer } = e;
                 if(column.id != this.state.dragged){
-                    let pos1, pos2;
-                    this.state.columns.map((col, index) => {
-                        if(col.accessor === column.id) pos1 = index;
-                        if(col.accessor === this.state.dragged) pos2 = index;
-                    });
-                    let col = this.state.columns[pos1];
-                    this.state.columns[pos1] = this.state.columns[pos2];
-                    this.state.columns[pos2] = col;
+
+                    let pos1 = this.props.columnsOrder.indexOf(column.id);
+                    let pos2 = this.props.columnsOrder.indexOf(this.state.dragged);
+
+                    this.props.columnsOrder[pos1] = this.state.dragged;
+                    this.props.columnsOrder[pos2] = column.id;
                 }
+                this.props.resultPageUpdateColumnsOrder(this.props.columnsOrder);
                 this.setState({ trigger: Math.random() });
                 //onDragEnd(e);
             },
@@ -178,7 +196,7 @@ class DragDropTable extends React.Component {
 
     // Transverse up to find a table cell.
     _closestTag (element, target) {
-        console.log('FIND CLOSEST TAG FOR: ', element, target);
+        //console.log('FIND CLOSEST TAG FOR: ', element, target);
         if (!element || element.tagName.toLowerCase() === 'body') {
             //console.log('no parent');
             return 'Error: no parent #{target} found';
@@ -219,12 +237,17 @@ class DragDropTable extends React.Component {
             getTheadThProps
         };
         const { rows, columns } = this.props;
-        const cols = this.state.columns.map(col => ({
-              ...col,
-               //Header: <span className="draggable-header">{col.Header}</span>
-        }));
 
-        console.log(cols);
+        let accessors = [];
+        columns.map(col => {
+            accessors.push(col.accessor);
+        });
+
+        let cols=[];
+        this.props.columnsOrder.map(acc => {
+            cols.push(columns[accessors.indexOf(acc)]);
+        });
+
         return this.dragContainer(
                 <InfiniteScrollTable
                       {...this.props}
@@ -235,4 +258,4 @@ class DragDropTable extends React.Component {
     }
 }
 
-export default DragDropTable;
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropTable);

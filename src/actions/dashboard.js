@@ -5,7 +5,8 @@ import {
     DASHBOARD_RESULT_PAGE__UPDATE,
     DASHBOARD_RESULT_PAGE__SORT,
     DASHBOARD_RESULT_PAGE__SELECT_ROW,
-    DASHBOARD_RESULT_PAGE__LOADING
+    DASHBOARD_RESULT_PAGE__LOADING,
+    DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER
 } from '../constants/action-types';
 
 export const searchFormUpdateTextSearch = textSearch => ({type: DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH, payload: textSearch});
@@ -16,3 +17,4 @@ export const resultPageUpdate = results => ({ type: DASHBOARD_RESULT_PAGE__UPDAT
 export const resultPageSort = sortCriteria => ({ type: DASHBOARD_RESULT_PAGE__SORT, payload: sortCriteria });
 export const resultPageSelect = selection => ({ type: DASHBOARD_RESULT_PAGE__SELECT_ROW, payload: selection });
 export const resultPageLoading = loading => ({ type: DASHBOARD_RESULT_PAGE__LOADING, payload: loading });
+export const resultPageUpdateColumnsOrder = results => ({ type: DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER, payload: results });
