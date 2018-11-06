@@ -1,5 +1,5 @@
-import Http from '../../util/Http';
-import config from 'react-global-configuration';
+//import Http from '../../util/Http';
+//import config from 'react-global-configuration';
 
 
 const mockedResponeAvailsMapping = {
@@ -181,7 +181,7 @@ const http = Http.create();
 export const profileService = {
     getAvailsMapping: () => {
         // return http.get(config.get('gateway.url') + config.get('base.path') +'/avails/mapping-data');
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) { //, reject) {
             setTimeout(function() {
                 resolve({data: mockedResponeAvailsMapping});
             }, 300);
