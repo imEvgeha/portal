@@ -52,9 +52,6 @@ const mapDispatchToProps = {
 };
 
 const scrollSliderLoadPercent = 0.5;
-const style = {
-    height: '500px' // This will force the table body to overflow and scroll, since there is not enough room
-};
 
 class AvailsResultTable extends React.Component {
     static propTypes = {
@@ -85,6 +82,20 @@ class AvailsResultTable extends React.Component {
         this.onEdit = this.onEdit.bind(this);
         this.editAvail = this.editAvail.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        this.setState({ height: (window.innerHeight - 157) + 'px' });
     }
 
     onLoadMoreItems() {
@@ -191,6 +202,9 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
+        // This will force the table body to overflow and scroll, since there is not enough room
+        let style = {height : this.state.height};
+        
         return (
             <InfiniteScrollTable
                 columns={columns}
