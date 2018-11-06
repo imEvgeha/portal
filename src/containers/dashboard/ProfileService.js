@@ -176,7 +176,7 @@ const mockedResponeAvailsMapping = {
 };
 
 
-const http = Http.create();
+// const http = Http.create();
 
 export const profileService = {
     getAvailsMapping: () => {
