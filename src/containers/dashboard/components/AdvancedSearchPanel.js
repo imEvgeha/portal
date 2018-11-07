@@ -11,6 +11,8 @@ import RangeDatapicker from '../../../components/fields/RangeDatapicker';
 import {configurationService} from '../ConfigurationService';
 import {alertModal} from '../../../components/share/AlertModal';
 import {confirmModal} from '../../../components/share/ConfirmModal';
+import {dashboardService} from '../DashboardService';
+import {downloadFile} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -51,6 +53,7 @@ class AdvancedSearchPanel extends React.Component {
             reportName: '',
         };
         this.handleBulkExport = this.handleBulkExport.bind(this);
+        this.bulkExport = this.bulkExport.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -84,20 +87,29 @@ class AdvancedSearchPanel extends React.Component {
             }, {description: 'You have more that 50000 avails, please change filters'});
         } else {
             confirmModal.open('Confirm download',
-                this.requestFile,
+                this.bulkExport,
                 () => {
                 },
                 {description: `You have ${this.props.availTabPage.total} avails for download.`});
         }
     }
 
-    requestFile() {
-
+    bulkExport() {
+        dashboardService.exportAvails(this.props.searchCriteria)
+        .then(function (response) {
+            console.log('avails received');
+            downloadFile(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     handleDelete() {
         confirmModal.open('Confirm delete',
-            this.requestFile,
+            () => {
+                configurationService.deleteReport(this.props.reportName);
+            },
             () => {
             },
             {description: `Do you want to delete ${this.props.reportName} report.`});

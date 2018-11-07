@@ -34,6 +34,7 @@ const defaultPageSort = [];
 
 export const advancedSearchHelper = {
 
+    //TODO: Support mapping
     loadAdvancedSearchForm: (filter) => {
         store.dispatch(searchFormUpdateAdvancedSearchCriteria({
             vodStartFrom: filter.vodStartFrom ? moment(filter.vodStartFrom) : null,
@@ -42,6 +43,7 @@ export const advancedSearchHelper = {
             vodEndTo: filter.vodEndTo ? moment(filter.vodEndTo) : null,
             studio: filter.studio ? filter.studio : '',
             title: filter.title ? filter.title : '',
+            rowInvalid: filter.rowInvalid ? filter.rowInvalid : false,
         }));
     },
 
@@ -59,12 +61,12 @@ export const advancedSearchHelper = {
 
     clearAdvancedSearchForm: () => {
         console.log('CLEAR');
-        console.log(store.getState().dashboard.advancedSearchCriteria);
         store.dispatch(searchFormUpdateAdvancedSearchCriteria({
             vodStartFrom: null,
             vodStartTo: null,
             vodEndFrom: null,
             vodEndTo: null,
+            rowInvalid: false,
             studio: '',
             title: '',
         }));

@@ -80,17 +80,21 @@ const putConfiguration = (configuration) => {
     return http.put(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration', configuration);
 };
 
+const loadConfiguration = (configuration) => {
+    if (configuration && configuration.avails && configuration.avails.reports){
+        store.dispatch(loadReports(configuration.avails.reports));
+    } else {
+        store.dispatch(loadReports([]));
+        console.error('Unable to find reports in configuration');
+        console.error(configuration);
+    }
+};
+
 export const configurationService = {
     initConfiguration: (forceReload) => {
         if (forceReload || !store.getState().root.reports) {
             getConfiguration().then( (response) => {
-                if (response.data && response.data.avails && response.data.avails.reports){
-                    store.dispatch(loadReports(response.data.avails.reports));
-                } else {
-                    store.dispatch(loadReports([]));
-                    console.error('Unable to find reports in configuration');
-                    console.error(response.data);
-                }
+                loadConfiguration(response.data);
             }). catch((error) => {
                 console.error('Unable to load AvailsMapping');
                 console.error(error);
@@ -130,12 +134,24 @@ export const configurationService = {
             newReport.name = reportName;
             reports.push(newReport);
         }
-        putConfiguration({'avails': {'reports': reports}});
+        putConfiguration({'avails': {'reports': reports}}).then( (response) => {
+            loadConfiguration(response.data);
+            store.dispatch(setReportName(reportName));
+        }). catch((error) => {
+            console.error('Unable to Save Report');
+            console.error(error);
+        });
     },
 
     deleteReport: (reportName) => {
         const reports = store.getState().root.reports.filter((report) => {return report.name !== reportName;});
-        putConfiguration({'avails': {'reports': reports}});
+        putConfiguration({'avails': {'reports': reports}}).then( (response) => {
+            loadConfiguration(response.data);
+            store.dispatch(setReportName(''));
+        }). catch((error) => {
+            console.error('Unable to Delete Report');
+            console.error(error);
+        });
     }
 
 };
