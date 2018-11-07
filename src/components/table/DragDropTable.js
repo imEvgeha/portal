@@ -57,8 +57,7 @@ class DragDropTable extends React.Component {
                     let pos1 = this.props.columnsOrder.indexOf(column.id);
                     let pos2 = this.props.columnsOrder.indexOf(this.state.dragged);
 
-                    this.props.columnsOrder[pos1] = this.state.dragged;
-                    this.props.columnsOrder[pos2] = column.id;
+                    this.props.columnsOrder.splice(pos1, 0, this.props.columnsOrder.splice(pos2, 1)[0]);
                 }
                 this.props.resultPageUpdateColumnsOrder(this.props.columnsOrder);
             },
