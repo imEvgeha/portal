@@ -15,7 +15,7 @@ class CustomModal extends React.Component {
         super(props);
         this.state = {
             modal: true,
-            reportName: ''
+            reportName: props.reportName
         };
 
         this.toggle = this.toggle.bind(this);
@@ -86,9 +86,9 @@ export const saveReportModal = {
         }
         const props = {
             ...options,
-            resolve: () => {
+            resolve: (reportName) => {
                 cleanup();
-                onApprove();
+                onApprove(reportName);
             },
             reject: () => {
                 cleanup();

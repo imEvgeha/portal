@@ -23,9 +23,10 @@ const doSearch = (searchCriteria, searchFn) => {
                 total: response.data.total
             }));
         }
-    ).catch(() => {
+    ).catch((error) => {
         store.dispatch(resultPageLoading(false));
         console.log('Unexpected error');
+        console.error(error);
     });
 };
 
@@ -33,12 +34,14 @@ const defaultPageSort = [];
 
 export const advancedSearchHelper = {
 
-    loadAdvancedSearchForm: (filters) => {
+    loadAdvancedSearchForm: (filter) => {
         store.dispatch(searchFormUpdateAdvancedSearchCriteria({
-            vodStart: filters.vodStart ? moment(filters.vodStart) : null,
-            vodEnd: filters.vodEnd ? moment(filters.vodEnd) : null,
-            studio: filters.studio ? filters.studio : '',
-            title: filters.title ? filters.title : '',
+            vodStartFrom: filter.vodStartFrom ? moment(filter.vodStartFrom) : null,
+            vodStartTo: filter.vodStartTo ? moment(filter.vodStartTo) : null,
+            vodEndFrom: filter.vodEndFrom ? moment(filter.vodEndFrom) : null,
+            vodEndTo: filter.vodEndTo ? moment(filter.vodEndTo) : null,
+            studio: filter.studio ? filter.studio : '',
+            title: filter.title ? filter.title : '',
         }));
     },
 

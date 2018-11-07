@@ -1,6 +1,7 @@
 import {
-    DASHBOARD_RESULT_PAGE__SELECT_ROW, LOAD_REPORTS,
-    LOAD_SESSION, SET_REPORT_NAME,
+    LOAD_SESSION,
+    SET_REPORT_NAME,
+    DASHBOARD_RESULT_PAGE__SELECT_ROW,
 } from '../constants/action-types';
 import {saveState} from '../stores';
 

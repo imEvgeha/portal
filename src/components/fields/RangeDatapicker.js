@@ -118,7 +118,7 @@ export default class RangeDatapicker extends React.Component {
             <div className="form-group">
                 <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
                 <div className={'row justify-content-around'}>
-                    <div style={{width: '40%'}}>
+                    <div style={{width: '45%', paddingLeft: '8px'}}>
                         <DatePicker
                             ref={this.refDatePickerStart}
                             className={this.state.invalidStartDate ? 'text-danger' : ''}
@@ -135,7 +135,7 @@ export default class RangeDatapicker extends React.Component {
                                                                style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidRange}</small>}
                     </div>
                     <div>_</div>
-                    <div style={{width: '40%'}}>
+                    <div style={{width: '45%', paddingRight: '8px'}}>
                         <DatePicker
                             ref={this.refDatePickerEnd}
                             className={this.state.invalidEndDate ? 'text-danger' : ''}

@@ -8,9 +8,13 @@ import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
 import {advancedSearchHelper} from '../AdvancedSearchHelper';
 import RangeDatapicker from '../../../components/fields/RangeDatapicker';
+import {configurationService} from '../ConfigurationService';
+import {alertModal} from '../../../components/share/AlertModal';
+import {confirmModal} from '../../../components/share/ConfirmModal';
 
 const mapStateToProps = state => {
     return {
+        availTabPage: state.dashboard.availTabPage,
         reportName: state.session.reportName,
         searchCriteria: state.dashboard.advancedSearchCriteria,
     };
@@ -23,6 +27,7 @@ const mapDispatchToProps = {
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
+        availTabPage: t.object,
         onSearch: t.func,
         searchFormUpdateAdvancedSearchCriteria: t.func,
         onToggleAdvancedSearch: t.func,
@@ -44,8 +49,8 @@ class AdvancedSearchPanel extends React.Component {
             invalidEndDate: '',
             invalid: {},
             reportName: '',
-            showInvalid: false
         };
+        this.handleBulkExport = this.handleBulkExport.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -53,7 +58,6 @@ class AdvancedSearchPanel extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDateValidate = this.handleDateValidate.bind(this);
-        this.toggleShowInvalid = this.toggleShowInvalid.bind(this);
     }
 
     handleInputChange(event) {
@@ -71,7 +75,32 @@ class AdvancedSearchPanel extends React.Component {
         this.setState({invalid: {...this.state.invalid, [name]: value}});
     }
 
+    handleBulkExport() {
+        if (!this.props.availTabPage.total) {
+            alertModal.open('Action required', () => {
+            }, {description: 'There is no result of search, please change filters.'});
+        } else if (this.props.availTabPage.total > 50000) {
+            alertModal.open('Action required', () => {
+            }, {description: 'You have more that 50000 avails, please change filters'});
+        } else {
+            confirmModal.open('Confirm download',
+                this.requestFile,
+                () => {
+                },
+                {description: `You have ${this.props.availTabPage.total} avails for download.`});
+        }
+    }
+
+    requestFile() {
+
+    }
+
     handleDelete() {
+        confirmModal.open('Confirm delete',
+            this.requestFile,
+            () => {
+            },
+            {description: `Do you want to delete ${this.props.reportName} report.`});
     }
 
     handleClear() {
@@ -88,15 +117,11 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSave() {
-        saveReportModal.open(() => {}, () => {}, {reportName: this.props.reportName});
+        saveReportModal.open((reportName) => {configurationService.saveReport(reportName)}, () => {}, {reportName: this.props.reportName});
     }
 
     handleSearch() {
         this.props.onSearch(this.props.searchCriteria);
-    }
-
-    toggleShowInvalid() {
-        this.setState({showInvalid: !this.state.showInvalid});
     }
 
     render() {
@@ -114,7 +139,7 @@ class AdvancedSearchPanel extends React.Component {
                                    id="dashboard-avails-search-title-text"
                                    placeholder="Enter Title"
                                    name="title"
-                                   disabled={this.state.showInvalid}
+                                   disabled={this.props.searchCriteria.rowInvalid}
                                    value={this.props.searchCriteria.title}
                                    onChange={this.handleInputChange}
                                    onKeyPress={this._handleKeyPress}/>
@@ -128,7 +153,7 @@ class AdvancedSearchPanel extends React.Component {
                                    id="dashboard-avails-search-studio-text"
                                    placeholder="Enter Studio"
                                    name="studio"
-                                   disabled={this.state.showInvalid}
+                                   disabled={this.props.searchCriteria.rowInvalid}
                                    value={this.props.searchCriteria.studio}
                                    onChange={this.handleInputChange}
                                    onKeyPress={this._handleKeyPress}/>
@@ -139,7 +164,7 @@ class AdvancedSearchPanel extends React.Component {
                             displayName={'VOD Start'}
                             fromDate={this.props.searchCriteria.vodStartFrom}
                             toDate={this.props.searchCriteria.vodStartTo}
-                            disabled={this.state.showInvalid}
+                            disabled={this.props.searchCriteria.rowInvalid}
                             onFromDateChange={(value) => this.handleDateChange('vodStartFrom', value)}
                             onToDateChange={(value) => this.handleDateChange('vodStartTo', value)}
                             onValidate={(value) => this.handleDateValidate('vodStart', value)}
@@ -151,42 +176,24 @@ class AdvancedSearchPanel extends React.Component {
                             displayName={'VOD End'}
                             fromDate={this.props.searchCriteria.vodEndFrom}
                             toDate={this.props.searchCriteria.vodEndTo}
-                            disabled={this.state.showInvalid}
+                            disabled={this.props.searchCriteria.rowInvalid}
                             onFromDateChange={(value) => this.handleDateChange('vodEndFrom', value)}
                             onToDateChange={(value) => this.handleDateChange('vodEndTo', value)}
                             onValidate={(value) => this.handleDateValidate('vodEnd', value)}
                             setClearHandler={ handler => this.clearHandlers.vodEnd = handler}
                         />
                     </div>
-                    {/*<div className="col">*/}
-                        {/*<div className="form-group">*/}
-                            {/*<label htmlFor="dashboard-avails-search-end-date-text">VOD End</label>*/}
-                            {/*<span onClick={this.setupVodEndDate}>*/}
-                                {/*<DatePicker*/}
-                                    {/*ref={this.refDatePickerEnd}*/}
-                                    {/*className={this.state.invalidEndDate ? 'text-danger' : ''}*/}
-                                    {/*id="dashboard-avails-search-end-date-text"*/}
-                                    {/*selected={this.props.searchCriteria.vodEnd}*/}
-                                    {/*onChange={this.handleChangeVodEndDate}*/}
-                                    {/*onChangeRaw={(event) => this.handleChangeRawVodEndDate(event.target.value)}*/}
-                                    {/*todayButton={'Today'}*/}
-                                {/*/>*/}
-                                {/*{this.state.invalidEndDate && <small className="text-danger m-2"*/}
-                                                                     {/*style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}*/}
-                            {/*</span>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
                 </div>
 
                 <div className="row justify-content-between">
-                    <div>
-                        { !this.state.showInvalid && <Button outline color="secondary" id={'dashboard-avails-advanced-search-show-invalid-btn'} onClick={this.toggleShowInvalid}
-                                style={{marginLeft: '15px'}}><i className="far fa-circle"></i> Show invalid</Button>}
-                        { this.state.showInvalid && <Button color="primary" id={'dashboard-avails-advanced-search-show-invalid-btn'} onClick={this.toggleShowInvalid}
-                                                             style={{marginLeft: '15px'}}><i className="far fa-check-circle"></i> Show invalid</Button>}
+                    <div style={{marginLeft: '15px'}}>
+                        <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
+                        Show invalid avails
                     </div>
 
                     <div>
+                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                style={{ marginRight: '15px'}}>bulk export</Button>
                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
                                 style={{width: '80px', marginRight: '15px'}}>delete</Button>
 

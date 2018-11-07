@@ -7,7 +7,7 @@ import t from 'prop-types';
 import AvailsResultTable from './components/AvailsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from './DashboardService';
-import {profileService} from './ProfileService';
+import {configurationService} from './ConfigurationService';
 
 const mapStateToProps = state => {
     return {
@@ -29,14 +29,10 @@ class SearchResultsTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            reportsName:profileService.getReportsNames()
+            reportsName:configurationService.getReportsNames()
         };
         this.requestFile = this.requestFile.bind(this);
     }
-    //
-    // componentDidMount() {
-    //     profileService.getReportsNames();
-    // }
 
     exportAvails = () => {
         if (this.props.availTabPageSelected.length === 0) {
@@ -86,7 +82,7 @@ class SearchResultsTab extends React.Component {
     handleChangeReport(event) {
         const reportName = event.target.value;
         if (reportName) {
-            profileService.changeReport(reportName);
+            configurationService.changeReport(reportName);
         }
     }
 
@@ -108,18 +104,22 @@ class SearchResultsTab extends React.Component {
         return (
             <div id="dashboard-result-table">
                 <div className={'container-fluid'}>
-                    <div className="row justify-content-between">
-                        <div className="col-4 align-bottom">
+                    <div className="row justify-content-between" style={{paddingTop: '16px'}}>
+                        <div className="align-bottom" style={{marginLeft: '15px'}}>
                             <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
                                 Results: {this.props.availTabPage.total}
                             </span>
                             {this.selectedItemsComponent()}
                         </div>
-                        <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap'}}>
-                            <span className="align-self-center" >Selected report:</span>
-                            {renderReportSelect()}
-                        </div>
-                        <div className="col-2">
+                        {/*<div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap'}}>*/}
+                            {/*<span className="align-self-center" >Selected report:</span>*/}
+                            {/*{renderReportSelect()}*/}
+                        {/*</div>*/}
+                        <div  style={{marginRight: '15px'}}>
+                            <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
+                                <span className="align-self-center" >Selected report:</span>
+                                {renderReportSelect()}
+                            </div>
                             <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
                             <i className={'fas fa-th table-top-icon float-right'}> </i>
                         </div>

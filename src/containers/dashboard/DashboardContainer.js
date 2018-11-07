@@ -16,6 +16,7 @@ import t from 'prop-types';
 import {loadAvailsMapping} from '../../actions';
 import {profileService} from './ProfileService';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
+import {configurationService} from './ConfigurationService';
 
 const mapStateToProps = state => {
     return {
@@ -55,16 +56,8 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidMount() {
-        // if (!this.props.availsMapping) {
-        //     profileService.getAvailsMapping().then( (response) => {
-        //         this.props.loadAvailsMapping(response.data);
-        //     }). catch((error) => {
-        //        console.error('Unable to load AvailsMapping');
-        //        console.error(error);
-        //     });
-        // }
         profileService.initAvailsMapping();
-        profileService.initConfiguration();
+        configurationService.initConfiguration();
     }
 
     handleBackToDashboard() {
@@ -72,7 +65,6 @@ class DashboardContainer extends React.Component {
     }
 
     toggleAdvancedSearch() {
-        console.log(profileService.getReportsNames());
         this.setState({showAdvancedSearch: !this.state.showAdvancedSearch});
     }
 
