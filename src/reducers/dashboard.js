@@ -22,7 +22,6 @@ const initialState = {
         // title: '',
         // studio: ''
     },
-    columns: [],
     sortedBy: [],
 
     searchCriteria: {

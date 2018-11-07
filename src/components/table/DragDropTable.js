@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import connect from 'react-redux/es/connect/connect';
 import InfiniteScrollTable from './InfiniteScrollTable';
 import t from 'prop-types';
@@ -79,9 +78,11 @@ class DragDropTable extends React.Component {
         });
 
         let cols=[];
-        this.props.columnsOrder.map(acc => {
-            cols.push(columns[accessors.indexOf(acc)]);
-        });
+        if (this.props.columnsOrder) {
+            this.props.columnsOrder.map(acc => {
+                cols.push(columns[accessors.indexOf(acc)]);
+            });
+        }
 
         return (
                 <InfiniteScrollTable

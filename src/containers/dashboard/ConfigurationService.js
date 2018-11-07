@@ -4,6 +4,7 @@ import store from '../../stores';
 import {loadReports, setReportName} from '../../actions';
 import {errorModal} from '../../components/share/ErrorModal';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
+import {resultPageUpdateColumnsOrder} from '../../actions/dashboard';
 
 
 // const mockedConfiguration = {
@@ -51,8 +52,8 @@ const http = Http.create();
 
 
 const loadReportToStore = (report) => {
-    console.log(report);
     store.dispatch(setReportName(report.name));
+    store.dispatch(resultPageUpdateColumnsOrder(report.columns));
     advancedSearchHelper.loadAdvancedSearchForm(report.filter ? report.filter : {});
     advancedSearchHelper.advancedSearch(report.filter ? report.filter : {});
 };
@@ -60,7 +61,8 @@ const loadReportToStore = (report) => {
 const readReportFromStore = () => {
     const report = {
         name: store.getState().session.reportName,
-        filter: store.getState().dashboard.searchCriteria
+        filter: store.getState().dashboard.searchCriteria,
+        columns: store.getState().dashboard.columns,
     };
     return report;
 };
