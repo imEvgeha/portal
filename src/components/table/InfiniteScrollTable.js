@@ -126,12 +126,13 @@ class InfiniteScrollTable extends React.Component {
             toggleSelection,
             toggleAll,
             selectType: 'checkbox',
-            getTrProps,
-            getTdProps
+            //getTrProps,
+            //getTdProps
         };
 
         return (
             <CheckboxTable
+                {...this.props}
                 ref={this.ref}
                 className={'-striped -highlight'}
                 showPagination={false}
@@ -144,7 +145,7 @@ class InfiniteScrollTable extends React.Component {
                 pageSize={this.props.pageSize < startPageSize ? startPageSize : this.props.pageSize}
                 style={this.props.style ? this.props.style : {}}
                 manual
-                onSortedChange={this.props.onSortedChange}
+                //onSortedChange={this.props.onSortedChange}
                 loading={this.props.loading}
                 {...checkboxProps}
             />

@@ -6,6 +6,7 @@ import {
     DASHBOARD_RESULT_PAGE__SORT,
     DASHBOARD_RESULT_PAGE__LOADING,
     DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA,
+    DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
 } from '../constants/action-types';
 
 const initialState = {
@@ -34,7 +35,8 @@ const initialState = {
         total: 0
     },
     availTabPageSort: [],
-    availTabPageLoading: false
+    availTabPageLoading: false,
+    columns: ['studio', 'title', 'territory', 'genre', 'vodStart', 'vodEnd']
 };
 
 const dashboard = ( state = initialState, action) => {
@@ -53,6 +55,8 @@ const dashboard = ( state = initialState, action) => {
         return { ...state, availTabPageSort: action.payload};
     case DASHBOARD_RESULT_PAGE__LOADING:
         return { ...state, availTabPageLoading: action.payload};
+    case DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER:
+        return { ...state, columns: action.payload};
     default:
         return state;
     }
