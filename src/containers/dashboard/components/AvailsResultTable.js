@@ -12,21 +12,19 @@ import moment from 'moment';
 import {availDetailsModal} from './AvailDetailsModal';
 
 const columns = [
-    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>, colIndex:1},
-    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>, colIndex:2},
-    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>, colIndex:3},
+    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
+    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
+    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
     {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
     {
         accessor: 'vodStart',
         Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>),
-        colIndex:4
+        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
     },
     {
         accessor: 'vodEnd',
         Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>),
-        colIndex:5
+        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
     }
 ];
 
@@ -196,7 +194,6 @@ class AvailsResultTable extends React.Component {
     render() {
         return (
             <DragDropTable
-//            <InfiniteScrollTable
                 columns={columns}
                 data={this.props.availTabPage.avails}
                 pageSize={this.props.availTabPage.pageSize}
@@ -208,7 +205,7 @@ class AvailsResultTable extends React.Component {
                 sorted={this.props.availTabPageSort}
 
                 onLoadMoreItems={this.onLoadMoreItems}
-                //onSortedChange={this.onSortedChange}
+                onSortedChange={this.onSortedChange}
                 onSelection={this.onSelection}
                 onCellClick={this.onCellClick}
             />
