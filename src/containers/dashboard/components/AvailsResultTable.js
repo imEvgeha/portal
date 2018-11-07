@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import InfiniteScrollTable from '../../../components/table/InfiniteScrollTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from '../DashboardService';
@@ -88,6 +89,10 @@ class AvailsResultTable extends React.Component {
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
+
+        //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
+        let elem = document.querySelector('.vu-advanced-search-panel');
+        elem.addEventListener('transitionend', this.updateWindowDimensions);
     }
 
     componentWillUnmount() {
@@ -95,7 +100,8 @@ class AvailsResultTable extends React.Component {
     }
 
     updateWindowDimensions() {
-        this.setState({ height: (window.innerHeight - 157) + 'px' });
+        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
     }
 
     onLoadMoreItems() {
