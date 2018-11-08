@@ -45,6 +45,7 @@ export const advancedSearchHelper = {
             estStartTo: filter.estStartTo ? moment(filter.estStartTo) : null,
             estEndFrom: filter.estEndFrom ? moment(filter.estEndFrom) : null,
             estEndTo: filter.estEndTo ? moment(filter.estEndTo) : null,
+            rowEdited: filter.rowEdited ? moment(filter.rowEdited) : null,
             title: filter.title ? filter.title : '',
             studio: filter.studio ? filter.studio : '',
             releaseYear: filter.releaseYear ? filter.releaseYear : '',

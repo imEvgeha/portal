@@ -193,59 +193,52 @@ class AdvancedSearchPanel extends React.Component {
                         {renderTextField('territory', 'Territory')}
                     </div>
                     <div className="col">
-                        {renderRangeDatepicker('estStart', 'est start')}
+                        {renderRangeDatepicker('estStart', 'EST Start')}
                     </div>
                     <div className="col">
-                        {renderRangeDatepicker('estEnd', 'est end')}
+                        {renderRangeDatepicker('estEnd', 'EST End')}
                     </div>
                     <div className="col">
-                        <RangeDatapicker
-                            displayName={'VOD Start'}
-                            fromDate={this.props.searchCriteria.vodStartFrom}
-                            toDate={this.props.searchCriteria.vodStartTo}
-                            disabled={this.props.searchCriteria.rowInvalid}
-                            onFromDateChange={(value) => this.handleDateChange('vodStartFrom', value)}
-                            onToDateChange={(value) => this.handleDateChange('vodStartTo', value)}
-                            onValidate={(value) => this.handleDateValidate('vodStart', value)}
-                            setClearHandler={ handler => this.clearHandlers.vodStart = handler}
-                        />
+                        {renderRangeDatepicker('vodStart', 'VOD Start')}
                     </div>
                     <div className="col">
-                        <RangeDatapicker
-                            displayName={'VOD End'}
-                            fromDate={this.props.searchCriteria.vodEndFrom}
-                            toDate={this.props.searchCriteria.vodEndTo}
-                            disabled={this.props.searchCriteria.rowInvalid}
-                            onFromDateChange={(value) => this.handleDateChange('vodEndFrom', value)}
-                            onToDateChange={(value) => this.handleDateChange('vodEndTo', value)}
-                            onValidate={(value) => this.handleDateValidate('vodEnd', value)}
-                            setClearHandler={ handler => this.clearHandlers.vodEnd = handler}
-                        />
+                        {renderRangeDatepicker('vodEnd', 'VOD End')}
                     </div>
                 </div>
 
-                <div className="row justify-content-between">
-                    <div style={{marginLeft: '15px'}}>
+                <div className="row align-items-center" style={{marginRight: '30px'}}>
+                    <div className="col">
+                            {renderRangeDatepicker('rowEdited', 'Row edited')}
+                            </div>
+                    <div className="col" style={{paddingTop: '8px'}}>
                         <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                         Show invalid avails
                     </div>
+                    <div className="col">
+                    </div>
+                    <div className="col">
+                    </div>
 
-                    <div>
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                style={{ marginRight: '15px'}}>bulk export</Button>
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
-                                style={{width: '80px', marginRight: '15px'}}>delete</Button>
+                    <div className="col">
+                        <div style={{position: 'absolute', right: '-66px', bottom: '-17px', width: '569px'}}>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                    style={{ marginRight: '15px'}}>bulk export</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
+                                    style={{width: '80px', marginRight: '15px'}}>delete</Button>
 
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                style={{width: '80px', marginRight: '15px'}}>clear</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
+                                    style={{width: '80px', marginRight: '15px'}}>clear</Button>
 
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                style={{width: '80px', marginRight: '15px'}}>save</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
+                                    style={{width: '80px', marginRight: '15px'}}>save</Button>
 
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                style={{width: '80px', marginRight: '60px'}}>filter</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                                    style={{width: '80px', marginRight: '60px'}}>filter</Button>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
         );
     }
