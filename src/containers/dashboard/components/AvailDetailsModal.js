@@ -1,10 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
 import moment from 'moment';
-import DatePicker from 'react-datepicker/es';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { ModalFooter, ModalHeader, Modal, Button, Label, Input, Progress } from 'reactstrap';
-import { validateDate } from '../../../util/Validation';
+import { ModalFooter, ModalHeader, Modal, Button, Label } from 'reactstrap';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 
@@ -130,7 +128,7 @@ class AvailDetails extends React.Component {
         }
         if (startDate && endDate && moment(endDate) < moment(startDate)) {
             errorMessage.range = rangeError;
-            return rangeError
+            return rangeError;
         }
         this.setState({
             errorMessage: errorMessage
