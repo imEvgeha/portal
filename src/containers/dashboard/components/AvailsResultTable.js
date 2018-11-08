@@ -25,7 +25,7 @@ const mapStateToProps = state => {
         searchCriteria: state.dashboard.searchCriteria,
         useAdvancedSearch: state.dashboard.useAdvancedSearch,
         freeTextSearch: state.dashboard.freeTextSearch,
-        availTabPageSelected: state.session.availTabPageSelected,
+        availTabPageSelection: state.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
     };
@@ -48,7 +48,7 @@ class AvailsResultTable extends React.Component {
         searchCriteria: t.object,
         useAdvancedSearch: t.bool,
         freeTextSearch: t.object,
-        availTabPageSelected: t.array,
+        availTabPageSelection: t.object,
         availTabPageLoading: t.bool,
         resultPageUpdate: t.func,
         resultPageSort: t.func,
@@ -166,8 +166,8 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    onSelection(selected) {
-        this.props.resultPageSelect(selected);
+    onSelection(selected, selectAll) {
+        this.props.resultPageSelect({selected, selectAll});
     }
 
     editAvail(newAvail) {
@@ -223,7 +223,8 @@ class AvailsResultTable extends React.Component {
                 style={style}
                 scrollSliderLoadPercent={scrollSliderLoadPercent}
                 loading={this.props.availTabPageLoading}
-                selection={this.props.availTabPageSelected}
+                selection={this.props.availTabPageSelection.selected}
+                selectAll={this.props.availTabPageSelection.selectAll}
 
                 sorted={this.props.availTabPageSort}
 
