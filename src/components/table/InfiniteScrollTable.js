@@ -101,15 +101,19 @@ class InfiniteScrollTable extends React.Component {
 
     toggleAll = () => {
         const selectAll = !this.props.selectAll;
-        const selection = [];
+        let oldSelection = [...this.props.selection];
+        let newSelection = [];
+        let selection = [];
         if (selectAll) {
             const wrappedInstance = this.ref.current.getWrappedInstance();
             const currentRecords = wrappedInstance.getResolvedState().sortedData;
             currentRecords.forEach(item => {
-                selection.push(item._original.id);
+                newSelection.push(item._original.id);
             });
+             selection = oldSelection.concat(newSelection.filter(function (item) {
+                return oldSelection.indexOf(item) < 0;
+            }));
         }
-        // this.setState({selectAll});
         this.props.onSelection(selection, selectAll);
     };
 
