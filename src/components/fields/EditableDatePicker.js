@@ -120,7 +120,7 @@ class EditableDatePicker extends Component {
                             }
                         </div>
                         :
-                        this.state.date ?
+                        this.props.value ?
                             <span onClick={this.handleShowDatePicker} className="displayDate">
                                 {moment(this.state.date).format('L')}
                             </span>
