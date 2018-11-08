@@ -84,7 +84,8 @@ class AvailDetails extends React.Component {
             }, 1000);
         })
             .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
-        return this.props.resolve();
+        
+        //return this.props.resolve();
     }
 
     handleSubmit(editable) {
@@ -139,7 +140,6 @@ class AvailDetails extends React.Component {
         this.setState({
             avail: newAvail,
         });
-
         this.confirm();
     }
     setDisableCreate(avail, errorMessage) {
@@ -187,7 +187,7 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
                     onChange={this.handleChange}
-                    validate={this.validateNotEmpty}
+                    validate={ name !== 'title' && name !== 'studio' ? '' : this.validateNotEmpty }
                 />
             ));
         };
@@ -233,7 +233,7 @@ class AvailDetails extends React.Component {
     };
 
     return(
-            <Modal isOpen = { this.state.modal } toggle = { this.toggle } className = { this.props.className + ' lgModalBox' } fade = { false} backdrop = { false} size = { 'lg'} >
+            <Modal isOpen = { this.state.modal } toggle = { this.toggle } className = { this.props.className + ' lgModalBox' } fade = { false} backdrop = { false} size = {'lg'} >
             <ModalHeader toggle={this.toggle}>Avail Details</ModalHeader>
             <div className={'row'}>
                 <div className={'col-6'}>
