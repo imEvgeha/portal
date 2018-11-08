@@ -210,7 +210,7 @@ class AvailCreate extends React.Component {
         };
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false} size={'lg'}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className = { this.props.className + ' lgModalBox' } fade={false} backdrop={false} size={'lg'}>
                 <ModalHeader toggle={this.toggle}>Create Avail</ModalHeader>
                 <div className={'row'}>
                     <div className={'col-6'}>
