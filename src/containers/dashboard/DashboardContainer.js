@@ -8,7 +8,8 @@ import {
     searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
-    resultPageUpdate
+    resultPageUpdate,
+    resultPageSelect
 } from '../../actions/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
@@ -30,7 +31,8 @@ const mapDispatchToProps = {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    loadAvailsMapping
+    loadAvailsMapping,
+    resultPageSelect
 };
 
 class DashboardContainer extends React.Component {
@@ -41,6 +43,7 @@ class DashboardContainer extends React.Component {
         resultPageSort: t.func,
         resultPageUpdate: t.func,
         loadAvailsMapping: t.func,
+        resultPageSelect: t.func
     };
 
     constructor(props) {
@@ -53,6 +56,7 @@ class DashboardContainer extends React.Component {
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
         this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
+        this.cleanSelection = this.cleanSelection.bind(this);
     }
 
     componentDidMount() {
@@ -72,12 +76,22 @@ class DashboardContainer extends React.Component {
         this.props.searchFormShowAdvancedSearch(false);
         advancedSearchHelper.freeTextSearch(searchCriteria);
         this.setState({showSearchResults: true});
+        this.cleanSelection();
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
         this.props.searchFormShowAdvancedSearch(true);
         advancedSearchHelper.advancedSearch(searchCriteria);
         this.setState({showSearchResults: true});
+        this.cleanSelection();
+    }
+
+    cleanSelection() {
+        let availTabPageSelection = {
+            selected: [],
+            selectAll: false
+        };
+        this.props.resultPageSelect(availTabPageSelection);
     }
 
     render() {

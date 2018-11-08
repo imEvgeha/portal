@@ -6,7 +6,11 @@ import {
 import {saveState} from '../stores';
 
 const initialState = {
-    availTabPageSelected: [],
+    availTabPageSelection: {
+        selected: [],
+        selectAll: false
+    },
+
     reportName: ''
 };
 
@@ -18,7 +22,7 @@ const session = ( state = initialState, action) => {
             return { ...state, reportName: action.payload};
         case DASHBOARD_RESULT_PAGE__SELECT_ROW:
             saveState();
-            return { ...state, availTabPageSelected: action.payload};
+            return { ...state, availTabPageSelection: action.payload};
     default:
         return state;
     }
