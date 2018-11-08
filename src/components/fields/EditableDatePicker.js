@@ -88,6 +88,9 @@ class EditableDatePicker extends Component {
                                     className={this.state.errorMessage ? 'text-danger' : ''}
                                     placeholderText="Enter date"
                                     selected={moment(this.state.date)}
+                                    showYearDropdown
+                                    showMonthDropdown
+                                    autoComplete={'off'}
                                     onChangeRaw={(event) => this.handleDatepickerRawChange(event.target.value)}
                                     onChange={this.handleChangeDate}
                                     todayButton={'Today'} />

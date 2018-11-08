@@ -118,6 +118,9 @@ export default class RangeDatapicker extends React.Component {
                             className={this.state.invalidStartDate ? 'text-danger' : ''}
                             id="dashboard-avails-search-start-date-text"
                             selected={this.props.fromDate}
+                            showYearDropdown
+                            showMonthDropdown
+                            autoComplete={'off'}
                             onChange={this.handleChangeStartDate}
                             onChangeRaw={(event) => this.handleChangeRawStartDate(event.target.value)}
                             todayButton={'Today'}
@@ -135,6 +138,9 @@ export default class RangeDatapicker extends React.Component {
                             className={this.state.invalidEndDate ? 'text-danger' : ''}
                             id="dashboard-avails-search-start-date-text"
                             selected={this.props.toDate}
+                            showYearDropdown
+                            showMonthDropdown
+                            autoComplete={'off'}
                             onChange={this.handleChangeEndDate}
                             onChangeRaw={(event) => this.handleChangeRawEndDate(event.target.value)}
                             todayButton={'Today'}
