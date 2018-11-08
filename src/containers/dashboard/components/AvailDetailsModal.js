@@ -89,7 +89,7 @@ class AvailDetails extends React.Component {
             }, 1000);
         })
         .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
-        return this.props.resolve();
+         //return this.props.resolve();
     }
 
     handleSubmit(editable) {
