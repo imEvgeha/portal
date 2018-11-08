@@ -17,6 +17,7 @@ const columns = [
     {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
     {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
     {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
+    {accessor: 'genres', Header: <span id={'dashboard-result-table-header-genres'}>Genres</span>},
     {
         accessor: 'vodStart',
         Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,

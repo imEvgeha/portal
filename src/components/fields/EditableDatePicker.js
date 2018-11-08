@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import t from 'prop-types';
+import {validateDate} from '../../util/Validation';
 
 class EditableDatePicker extends Component {
 
@@ -56,7 +57,7 @@ class EditableDatePicker extends Component {
     }
 
     handleDatepickerRawChange(date) {
-        if (moment(date).isValid() || !date) {
+        if (validateDate(date) || !date) {
             this.handleChangeDate(date);
         } else {
             this.setState({ errorMessage: 'Invalid date: ' + this.props.displayName, submitStatus: true });

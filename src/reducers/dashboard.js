@@ -35,7 +35,7 @@ const initialState = {
     },
     availTabPageSort: [],
     availTabPageLoading: false,
-    columns: ['studio', 'title', 'territory', 'genre', 'vodStart', 'vodEnd']
+    columns: ['studio', 'title', 'territory', 'genres', 'vodStart', 'vodEnd']
 };
 
 const dashboard = ( state = initialState, action) => {
