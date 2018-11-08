@@ -7,7 +7,7 @@ import t from 'prop-types';
 class Confirm extends React.Component{
 
     static propTypes = {
-        description: t.string,
+        description: t.oneOfType([t.string, t.array]),
         className: t.string,
         message: t.string,
         confirmLabel: t.string,
