@@ -18,7 +18,6 @@ class EditableDatePicker extends Component {
 
     constructor(props) {
         let vodDate = props.value;
-        console.log(vodDate + ' ' + ( vodDate ? vodDate : moment()) + ' ' + (  moment(vodDate).isValid() ? moment(vodDate) : moment()));
         super(props);
         this.state = {
             date: vodDate ? vodDate : moment(),
@@ -33,7 +32,7 @@ class EditableDatePicker extends Component {
         this.handleCancelDatePicker = this.handleCancelDatePicker.bind(this);
         this.handleDatepickerRawChange = this.handleDatepickerRawChange.bind(this);
         this.submit = this.submit.bind(this);
-    } 
+    }
 
     handleShowDatePicker(e) {
         e.preventDefault();
@@ -66,10 +65,11 @@ class EditableDatePicker extends Component {
 
     submit(date) {
         let validationError = this.props.validate(date);
-        this.setState({
-            errorMessage: validationError
-        });
-        if (validationError === undefined) {
+        if (validationError !== undefined) {
+            this.setState({
+                errorMessage: validationError
+            });
+        } else {
             this.props.onChange(date);
             this.setState({
                 datePickerStatus: false
@@ -86,7 +86,7 @@ class EditableDatePicker extends Component {
                             <div className="dPicker">
                                 <DatePicker
                                     className={this.state.errorMessage ? 'text-danger' : ''}
-                                    placeholderText="Enter date" 
+                                    placeholderText="Enter date"
                                     selected={moment(this.state.date)}
                                     onChangeRaw={(event) => this.handleDatepickerRawChange(event.target.value)}
                                     onChange={this.handleChangeDate}
@@ -116,17 +116,17 @@ class EditableDatePicker extends Component {
                         </div>
                         :
                         this.props.value ?
-                            <span 
-                                onClick={this.handleShowDatePicker} 
+                            <span
+                                onClick={this.handleShowDatePicker}
                                 className="displayDate">
-                                    {moment(this.state.date).format('L')}
+                                {moment(this.state.date).format('L')}
                             </span>
                             :
-                            <span 
-                                style={{ color: '#808080', cursor: 'pointer' }} 
-                                onClick={this.handleShowDatePicker}> 
-                                    {'Enter ' + this.props.displayName}
-                                </span>
+                            <span
+                                style={{ color: '#808080', cursor: 'pointer' }}
+                                onClick={this.handleShowDatePicker}>
+                                {'Enter ' + this.props.displayName}
+                            </span>
                 }
 
             </div>
