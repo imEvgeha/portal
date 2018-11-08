@@ -76,26 +76,28 @@ class SearchResultsTab extends React.Component {
     }
 
     saveColumns() {
+        let cols = this.props.columnsOrder.slice();
         //remove all hidden columns
         Object.keys(this.state.hideShowColumns).map(key => {
             if(this.state.hideShowColumns[key]===false){
-                let position = this.props.columnsOrder.indexOf(key);
+                let position = cols.indexOf(key);
                 if(position>-1){
-                    this.props.columnsOrder.splice(position, 1);
+                    cols.splice(position, 1);
                 }
             }
         })
         //add new visible columns
         Object.keys(this.state.hideShowColumns).map(key => {
             if(this.state.hideShowColumns[key]===true){
-                let position = this.props.columnsOrder.indexOf(key);
+                let position = cols.indexOf(key);
                 if(position===-1){
-                    this.props.columnsOrder.push(key);
+                    cols.push(key);
                 }
             }
         })
+
         this.state.hideShowColumns={};
-        this.props.resultPageUpdateColumnsOrder(this.props.columnsOrder);
+        this.props.resultPageUpdateColumnsOrder(cols);
     }
 
     cancelColumns() {

@@ -12,22 +12,7 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import {availDetailsModal} from './AvailDetailsModal';
 
-const columns = [
-    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
-    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
-    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
-    {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
-    {
-        accessor: 'vodStart',
-        Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
-    },
-    {
-        accessor: 'vodEnd',
-        Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
-    }
-];
+const columns = [];
 
 /**
  * Advance Search -
@@ -85,6 +70,11 @@ class AvailsResultTable extends React.Component {
         this.editAvail = this.editAvail.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
+
+        if(columns.length==0){
+            this.parseColumnsSchema();
+        }
     }
 
     componentDidMount() {
@@ -103,6 +93,19 @@ class AvailsResultTable extends React.Component {
     updateWindowDimensions() {
         let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
+    }
+
+    parseColumnsSchema() {
+        this.props.availsMapping.mappings.map(column => {
+                let columnDef={};
+                columnDef.accessor = column.javaVariableName;
+                columnDef.Header =  <span id={`dashboard-result-table-header-${column.javaVariableName}`}>{column.displayName}</span>;
+                if(column.dataType=='date'){
+                    columnDef.Cell = row => (<span>{row.value && moment(row.value).format('L')}</span>);
+                }
+                columns.push(columnDef);
+            }
+        )
     }
 
     onLoadMoreItems() {
