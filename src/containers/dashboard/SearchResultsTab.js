@@ -8,6 +8,7 @@ import AvailsResultTable from './components/AvailsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from './DashboardService';
 import {configurationService} from './ConfigurationService';
+import {downloadFile} from '../../util/Common';
 
 import {
     resultPageUpdateColumnsOrder
@@ -16,6 +17,7 @@ import {
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
+        columns: state.dashboard.columns,
         availTabPageSelected: state.session.availTabPageSelected,
         reportName: state.session.reportName,
         availsMapping: state.root.availsMapping,
@@ -32,6 +34,7 @@ class SearchResultsTab extends React.Component {
     static propTypes = {
         availTabPage: t.object,
         availTabPageSelected: t.array,
+        columns: t.array,
         reportName: t.string,
         onBackToDashboard: t.func,
     };
@@ -113,24 +116,10 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        dashboardService.downloadAvails(this.props.availTabPageSelected)
+        dashboardService.exportAvails(this.props.availTabPageSelected, this.props.columns)
         .then(function (response) {
             console.log('avails received');
-
-            //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
-            //for now we recreate the filename using the same syntax as server
-            const currentTime = new Date();
-            let filename = 'avails_';
-            filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate() + '_';
-            filename += currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds();
-            filename += '.xlsx';
-
-            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/octet-stream'}));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', filename);
-            link.click();
-            window.URL.revokeObjectURL(url);
+            downloadFile(response.data);
         })
         .catch(function (error) {
             console.log(error);
@@ -160,7 +149,7 @@ class SearchResultsTab extends React.Component {
                         value={this.props.reportName}>
                     <option value="">None selected</option>
                     {
-                        this.state.reportsName.map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
+                        configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
                     }
                 </select>
             );
@@ -176,10 +165,6 @@ class SearchResultsTab extends React.Component {
                             </span>
                             {this.selectedItemsComponent()}
                         </div>
-                        {/*<div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap'}}>*/}
-                            {/*<span className="align-self-center" >Selected report:</span>*/}
-                            {/*{renderReportSelect()}*/}
-                        {/*</div>*/}
                         <div  style={{marginRight: '15px'}}>
                             <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
                                 <span className="align-self-center" >Selected report:</span>

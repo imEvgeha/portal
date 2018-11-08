@@ -11,6 +11,8 @@ import RangeDatapicker from '../../../components/fields/RangeDatapicker';
 import {configurationService} from '../ConfigurationService';
 import {alertModal} from '../../../components/share/AlertModal';
 import {confirmModal} from '../../../components/share/ConfirmModal';
+import {dashboardService} from '../DashboardService';
+import {downloadFile} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -51,6 +53,7 @@ class AdvancedSearchPanel extends React.Component {
             reportName: '',
         };
         this.handleBulkExport = this.handleBulkExport.bind(this);
+        this.bulkExport = this.bulkExport.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -84,20 +87,29 @@ class AdvancedSearchPanel extends React.Component {
             }, {description: 'You have more that 50000 avails, please change filters'});
         } else {
             confirmModal.open('Confirm download',
-                this.requestFile,
+                this.bulkExport,
                 () => {
                 },
                 {description: `You have ${this.props.availTabPage.total} avails for download.`});
         }
     }
 
-    requestFile() {
-
+    bulkExport() {
+        dashboardService.bulkExportAvails(this.props.searchCriteria)
+        .then(function (response) {
+            console.log('avails received');
+            downloadFile(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     handleDelete() {
         confirmModal.open('Confirm delete',
-            this.requestFile,
+            () => {
+                configurationService.deleteReport(this.props.reportName);
+            },
             () => {
             },
             {description: `Do you want to delete ${this.props.reportName} report.`});
@@ -125,6 +137,34 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     render() {
+
+        const renderTextField = (name, displayName) => {
+            return (<div className="form-group">
+                <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
+                <input type="text" className="form-control"
+                       id={'dashboard-avails-search-' + name + '-text'}
+                       placeholder={'Enter ' + displayName}
+                       name={name}
+                       disabled={this.props.searchCriteria.rowInvalid}
+                       value={this.props.searchCriteria[name]}
+                       onChange={this.handleInputChange}
+                       onKeyPress={this._handleKeyPress}/>
+            </div>);
+        };
+
+        const renderRangeDatepicker = (name, displayName) => {
+            return (<RangeDatapicker
+                displayName={displayName}
+                fromDate={this.props.searchCriteria[name + 'From']}
+                toDate={this.props.searchCriteria[name + 'To']}
+                disabled={this.props.searchCriteria.rowInvalid}
+                onFromDateChange={(value) => this.handleDateChange(name +'From', value)}
+                onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
+                onValidate={(value) => this.handleDateValidate(name, value)}
+                setClearHandler={ handler => this.clearHandlers[name] = handler}
+            />);
+        };
+
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
                  style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
@@ -133,80 +173,72 @@ class AdvancedSearchPanel extends React.Component {
                 </button>
                 <div className="row">
                     <div className="col">
-                        <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-title-text">Title</label>
-                            <input type="text" className="form-control"
-                                   id="dashboard-avails-search-title-text"
-                                   placeholder="Enter Title"
-                                   name="title"
-                                   disabled={this.props.searchCriteria.rowInvalid}
-                                   value={this.props.searchCriteria.title}
-                                   onChange={this.handleInputChange}
-                                   onKeyPress={this._handleKeyPress}/>
-                        </div>
+                        {renderTextField('title', 'Title')}
                     </div>
                     <div className="col">
-                        <div className="form-group">
-                            <label
-                                htmlFor="dashboard-avails-search-studio-text">Studio</label>
-                            <input type="text" className="form-control"
-                                   id="dashboard-avails-search-studio-text"
-                                   placeholder="Enter Studio"
-                                   name="studio"
-                                   disabled={this.props.searchCriteria.rowInvalid}
-                                   value={this.props.searchCriteria.studio}
-                                   onChange={this.handleInputChange}
-                                   onKeyPress={this._handleKeyPress}/>
-                        </div>
+                        {renderTextField('studio', 'Studio')}
                     </div>
                     <div className="col">
-                        <RangeDatapicker
-                            displayName={'VOD Start'}
-                            fromDate={this.props.searchCriteria.vodStartFrom}
-                            toDate={this.props.searchCriteria.vodStartTo}
-                            disabled={this.props.searchCriteria.rowInvalid}
-                            onFromDateChange={(value) => this.handleDateChange('vodStartFrom', value)}
-                            onToDateChange={(value) => this.handleDateChange('vodStartTo', value)}
-                            onValidate={(value) => this.handleDateValidate('vodStart', value)}
-                            setClearHandler={ handler => this.clearHandlers.vodStart = handler}
-                        />
+                        {renderTextField('releaseYear', 'Release Year')}
                     </div>
                     <div className="col">
-                        <RangeDatapicker
-                            displayName={'VOD End'}
-                            fromDate={this.props.searchCriteria.vodEndFrom}
-                            toDate={this.props.searchCriteria.vodEndTo}
-                            disabled={this.props.searchCriteria.rowInvalid}
-                            onFromDateChange={(value) => this.handleDateChange('vodEndFrom', value)}
-                            onToDateChange={(value) => this.handleDateChange('vodEndTo', value)}
-                            onValidate={(value) => this.handleDateValidate('vodEnd', value)}
-                            setClearHandler={ handler => this.clearHandlers.vodEnd = handler}
-                        />
+                        {renderTextField('releaseType', 'Release Type')}
+                    </div>
+                    <div className="col">
+                        {renderTextField('licensor', 'Licensor')}
+                    </div>
+                </div>
+                <div className="row" style={{marginRight: '30px'}}>
+                    <div className="col">
+                        {renderTextField('territory', 'Territory')}
+                    </div>
+                    <div className="col">
+                        {renderRangeDatepicker('estStart', 'EST Start')}
+                    </div>
+                    <div className="col">
+                        {renderRangeDatepicker('estEnd', 'EST End')}
+                    </div>
+                    <div className="col">
+                        {renderRangeDatepicker('vodStart', 'VOD Start')}
+                    </div>
+                    <div className="col">
+                        {renderRangeDatepicker('vodEnd', 'VOD End')}
                     </div>
                 </div>
 
-                <div className="row justify-content-between">
-                    <div style={{marginLeft: '15px'}}>
+                <div className="row align-items-center" style={{marginRight: '30px'}}>
+                    <div className="col">
+                            {renderRangeDatepicker('rowEdited', 'Row edited')}
+                            </div>
+                    <div className="col" style={{paddingTop: '8px'}}>
                         <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                         Show invalid avails
                     </div>
+                    <div className="col">
+                    </div>
+                    <div className="col">
+                    </div>
 
-                    <div>
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                style={{ marginRight: '15px'}}>bulk export</Button>
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
-                                style={{width: '80px', marginRight: '15px'}}>delete</Button>
+                    <div className="col">
+                        <div style={{position: 'absolute', right: '-66px', bottom: '-17px', width: '569px'}}>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                    style={{ marginRight: '15px'}}>bulk export</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
+                                    style={{width: '80px', marginRight: '15px'}}>delete</Button>
 
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                style={{width: '80px', marginRight: '15px'}}>clear</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
+                                    style={{width: '80px', marginRight: '15px'}}>clear</Button>
 
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                style={{width: '80px', marginRight: '15px'}}>save</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
+                                    style={{width: '80px', marginRight: '15px'}}>save</Button>
 
-                        <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                style={{width: '80px', marginRight: '60px'}}>filter</Button>
+                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                                    style={{width: '80px', marginRight: '60px'}}>filter</Button>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
         );
     }

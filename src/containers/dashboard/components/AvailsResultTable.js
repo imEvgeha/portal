@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import InfiniteScrollTable from '../../../components/table/InfiniteScrollTable';
 import DragDropTable from '../../../components/table/DragDropTable';
 import connect from 'react-redux/es/connect/connect';
@@ -12,21 +13,19 @@ import moment from 'moment';
 import {availDetailsModal} from './AvailDetailsModal';
 
 const columns = [
-    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>, colIndex:1},
-    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>, colIndex:2},
-    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>, colIndex:3},
+    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
+    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
+    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
     {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
     {
         accessor: 'vodStart',
         Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>),
-        colIndex:4
+        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
     },
     {
         accessor: 'vodEnd',
         Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>),
-        colIndex:5
+        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
     }
 ];
 
@@ -55,9 +54,6 @@ const mapDispatchToProps = {
 };
 
 const scrollSliderLoadPercent = 0.5;
-const style = {
-    height: '500px' // This will force the table body to overflow and scroll, since there is not enough room
-};
 
 class AvailsResultTable extends React.Component {
     static propTypes = {
@@ -88,6 +84,25 @@ class AvailsResultTable extends React.Component {
         this.onEdit = this.onEdit.bind(this);
         this.editAvail = this.editAvail.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+
+        //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
+        let elem = document.querySelector('.vu-advanced-search-panel');
+        elem.addEventListener('transitionend', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
     }
 
     onLoadMoreItems() {
@@ -194,9 +209,11 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
+        // This will force the table body to overflow and scroll, since there is not enough room
+        let style = {height : this.state.height};
+        
         return (
             <DragDropTable
-//            <InfiniteScrollTable
                 columns={columns}
                 data={this.props.availTabPage.avails}
                 pageSize={this.props.availTabPage.pageSize}
@@ -208,7 +225,7 @@ class AvailsResultTable extends React.Component {
                 sorted={this.props.availTabPageSort}
 
                 onLoadMoreItems={this.onLoadMoreItems}
-                //onSortedChange={this.onSortedChange}
+                onSortedChange={this.onSortedChange}
                 onSelection={this.onSelection}
                 onCellClick={this.onCellClick}
             />
