@@ -23,6 +23,7 @@ const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
+        selected: state.session.availTabPageSelection.selected,
     };
 };
 
@@ -43,7 +44,8 @@ class DashboardContainer extends React.Component {
         resultPageSort: t.func,
         resultPageUpdate: t.func,
         loadAvailsMapping: t.func,
-        resultPageSelect: t.func
+        resultPageSelect: t.func,
+        selected: t.array
     };
 
     constructor(props) {
@@ -88,7 +90,7 @@ class DashboardContainer extends React.Component {
 
     cleanSelection() {
         let availTabPageSelection = {
-            selected: [],
+            selected: this.props.selected,
             selectAll: false
         };
         this.props.resultPageSelect(availTabPageSelection);
