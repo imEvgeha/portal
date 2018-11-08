@@ -81,17 +81,12 @@ export default class RangeDatapicker extends React.Component {
     }
 
     handleChangeRawStartDate(date) {
-        console.log('RAW FROM DATE' + date + ' ' + validateDate(date) + ' current:' + this.state.invalidStartDate);
         if (date) {
             if (validateDate(date)) {
-                console.log('set valid FROM');
                 this.handleChangeStartDate(moment(date));
                 this.setState({invalidStartDate: ''});
             } else {
-                console.log('set INVALID FROM');
-                this.setState({invalidStartDate: 'Invalid Date', invalidRange: ''});
-                console.log('set INVALID FROM - FINISHED');
-                console.log('set INVALID FROM - FINISHED' +  this.state.invalidStartDate);
+                this.setState({invalidStartDate: INVALID_DATE, invalidRange: ''});
 
             }
         } else {
