@@ -41,8 +41,16 @@ export const advancedSearchHelper = {
             vodStartTo: filter.vodStartTo ? moment(filter.vodStartTo) : null,
             vodEndFrom: filter.vodEndFrom ? moment(filter.vodEndFrom) : null,
             vodEndTo: filter.vodEndTo ? moment(filter.vodEndTo) : null,
-            studio: filter.studio ? filter.studio : '',
+            estStartFrom: filter.estStartFrom ? moment(filter.estStartFrom) : null,
+            estStartTo: filter.estStartTo ? moment(filter.estStartTo) : null,
+            estEndFrom: filter.estEndFrom ? moment(filter.estEndFrom) : null,
+            estEndTo: filter.estEndTo ? moment(filter.estEndTo) : null,
             title: filter.title ? filter.title : '',
+            studio: filter.studio ? filter.studio : '',
+            releaseYear: filter.releaseYear ? filter.releaseYear : '',
+            releaseType: filter.releaseType ? filter.releaseType : '',
+            licensor: filter.licensor ? filter.licensor : '',
+            territory: filter.territory ? filter.territory : '',
             rowInvalid: filter.rowInvalid ? filter.rowInvalid : false,
         }));
     },
@@ -54,8 +62,8 @@ export const advancedSearchHelper = {
     prepareAdvancedSearchCall: (searchCriteria) => {
         return {
             ...searchCriteria,
-            vodStart: searchCriteria.vodStart && searchCriteria.vodStart.toISOString(),
-            vodEnd: searchCriteria.vodEnd && searchCriteria.vodEnd.toISOString()
+            vodStartFrom: searchCriteria.vodStartFrom && searchCriteria.vodStartFrom.toISOString(),
+            vodStartTo: searchCriteria.vodStartTo && searchCriteria.vodStartTo.toISOString()
         };
     },
 
@@ -66,9 +74,17 @@ export const advancedSearchHelper = {
             vodStartTo: null,
             vodEndFrom: null,
             vodEndTo: null,
+            estStartFrom: null,
+            estStartTo: null,
+            estEndFrom: null,
+            estEndTo: null,
             rowInvalid: false,
-            studio: '',
             title: '',
+            studio: '',
+            releaseYear: '',
+            releaseType: '',
+            licensor: '',
+            territory: '',
         }));
         console.log(store.getState().dashboard.advancedSearchCriteria);
     },

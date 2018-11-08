@@ -95,7 +95,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        dashboardService.exportAvails(this.props.searchCriteria)
+        dashboardService.bulkExportAvails(this.props.searchCriteria)
         .then(function (response) {
             console.log('avails received');
             downloadFile(response.data);
@@ -137,6 +137,34 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     render() {
+
+        const renderTextField = (name, displayName) => {
+            return (<div className="form-group">
+                <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
+                <input type="text" className="form-control"
+                       id={'dashboard-avails-search-' + name + '-text'}
+                       placeholder={'Enter ' + displayName}
+                       name={name}
+                       disabled={this.props.searchCriteria.rowInvalid}
+                       value={this.props.searchCriteria[name]}
+                       onChange={this.handleInputChange}
+                       onKeyPress={this._handleKeyPress}/>
+            </div>);
+        };
+
+        const renderRangeDatepicker = (name, displayName) => {
+            return (<RangeDatapicker
+                displayName={displayName}
+                fromDate={this.props.searchCriteria[name + 'From']}
+                toDate={this.props.searchCriteria[name + 'To']}
+                disabled={this.props.searchCriteria.rowInvalid}
+                onFromDateChange={(value) => this.handleDateChange(name +'From', value)}
+                onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
+                onValidate={(value) => this.handleDateValidate(name, value)}
+                setClearHandler={ handler => this.clearHandlers[name] = handler}
+            />);
+        };
+
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
                  style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
@@ -145,31 +173,30 @@ class AdvancedSearchPanel extends React.Component {
                 </button>
                 <div className="row">
                     <div className="col">
-                        <div className="form-group">
-                            <label htmlFor="dashboard-avails-search-title-text">Title</label>
-                            <input type="text" className="form-control"
-                                   id="dashboard-avails-search-title-text"
-                                   placeholder="Enter Title"
-                                   name="title"
-                                   disabled={this.props.searchCriteria.rowInvalid}
-                                   value={this.props.searchCriteria.title}
-                                   onChange={this.handleInputChange}
-                                   onKeyPress={this._handleKeyPress}/>
-                        </div>
+                        {renderTextField('title', 'Title')}
                     </div>
                     <div className="col">
-                        <div className="form-group">
-                            <label
-                                htmlFor="dashboard-avails-search-studio-text">Studio</label>
-                            <input type="text" className="form-control"
-                                   id="dashboard-avails-search-studio-text"
-                                   placeholder="Enter Studio"
-                                   name="studio"
-                                   disabled={this.props.searchCriteria.rowInvalid}
-                                   value={this.props.searchCriteria.studio}
-                                   onChange={this.handleInputChange}
-                                   onKeyPress={this._handleKeyPress}/>
-                        </div>
+                        {renderTextField('studio', 'Studio')}
+                    </div>
+                    <div className="col">
+                        {renderTextField('releaseYear', 'Release Year')}
+                    </div>
+                    <div className="col">
+                        {renderTextField('releaseType', 'Release Type')}
+                    </div>
+                    <div className="col">
+                        {renderTextField('licensor', 'Licensor')}
+                    </div>
+                </div>
+                <div className="row" style={{marginRight: '30px'}}>
+                    <div className="col">
+                        {renderTextField('territory', 'Territory')}
+                    </div>
+                    <div className="col">
+                        {renderRangeDatepicker('estStart', 'est start')}
+                    </div>
+                    <div className="col">
+                        {renderRangeDatepicker('estEnd', 'est end')}
                     </div>
                     <div className="col">
                         <RangeDatapicker

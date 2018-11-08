@@ -53,6 +53,6 @@ export const dashboardService = {
                 params[key] = searchCriteria[key];
             }
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/bulkExport', {responseType: 'arraybuffer', params: {...params}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/bulkExport', {responseType: 'arraybuffer', params: {...params, page: 0, size: 1}});
     }
 };
