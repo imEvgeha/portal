@@ -37,13 +37,17 @@ class SearchResultsTab extends React.Component {
         columns: t.array,
         reportName: t.string,
         onBackToDashboard: t.func,
+        availsMapping: t.object,
+        columnsOrder: t.array,
+        resultPageUpdateColumnsOrder: t.func
     };
+
+    hideShowColumns={};
 
     constructor(props) {
         super(props);
         this.state = {
             reportsName:configurationService.getReportsNames(),
-            hideShowColumns:{}
         };
         this.requestFile = this.requestFile.bind(this);
         this.toggleColumn = this.toggleColumn.bind(this);
@@ -68,40 +72,40 @@ class SearchResultsTab extends React.Component {
     }
 
     toggleColumn(e){
-        if(this.state.hideShowColumns.hasOwnProperty(e.target.name) && this.state.hideShowColumns[e.target.name] != e.target.checked){
-            delete this.state.hideShowColumns[e.target.name];
+        if(this.hideShowColumns.hasOwnProperty(e.target.name) && this.hideShowColumns[e.target.name] != e.target.checked){
+            delete this.hideShowColumns[e.target.name];
         }else{
-            this.state.hideShowColumns[e.target.name]=e.target.checked;
+            this.hideShowColumns[e.target.name]=e.target.checked;
         }
     }
 
     saveColumns() {
         let cols = this.props.columnsOrder.slice();
         //remove all hidden columns
-        Object.keys(this.state.hideShowColumns).map(key => {
-            if(this.state.hideShowColumns[key]===false){
+        Object.keys(this.hideShowColumns).map(key => {
+            if(this.hideShowColumns[key]===false){
                 let position = cols.indexOf(key);
                 if(position>-1){
                     cols.splice(position, 1);
                 }
             }
-        })
+        });
         //add new visible columns
-        Object.keys(this.state.hideShowColumns).map(key => {
-            if(this.state.hideShowColumns[key]===true){
+        Object.keys(this.hideShowColumns).map(key => {
+            if(this.hideShowColumns[key]===true){
                 let position = cols.indexOf(key);
                 if(position===-1){
                     cols.push(key);
                 }
             }
-        })
+        });
 
-        this.state.hideShowColumns={};
+        this.hideShowColumns={};
         this.props.resultPageUpdateColumnsOrder(cols);
     }
 
     cancelColumns() {
-        this.state.hideShowColumns={};
+        this.hideShowColumns={};
     }
 
     exportAvails = () => {
@@ -120,11 +124,7 @@ class SearchResultsTab extends React.Component {
     requestFile() {
         dashboardService.exportAvails(this.props.availTabPageSelected, this.props.columns)
         .then(function (response) {
-            console.log('avails received');
             downloadFile(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
         });
     }
 
