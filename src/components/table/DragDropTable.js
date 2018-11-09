@@ -30,7 +30,7 @@ class DragDropTable extends React.Component {
         this.state=this.state || {};
     }
 
-    getTheadThProps = (state, rowInfo, column, instance) => {
+    getTheadThProps = (state, rowInfo, column) => {
         return {
             onDragStart: (e) => {
                 e.stopPropagation();
@@ -70,7 +70,7 @@ class DragDropTable extends React.Component {
         const enhancements = {
             getTheadThProps
         };
-        const { rows, columns } = this.props;
+        const { columns } = this.props;
 
         let accessors = [];
         columns.map(col => {
