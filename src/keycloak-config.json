@@ -1,6 +1,6 @@
 {
   "realm": "Vubiquity1",
-  "auth-server-url": "http://usla-amm-d001.dev.vubiquity.com:8080/auth",
+  "auth-server-url": "http://auth.dev.vubiquity.com/auth",
   "ssl-required": "external",
   "resource": "test-client",
   "credentials": {

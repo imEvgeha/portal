@@ -1,6 +1,6 @@
 export const defaultConfiguration = {
     gateway: {
-        url: 'http://usla-amm-d001.dev.vubiquity.com:8082'
+        url: 'http://availsapi.dev.vubiquity.com'
     },
     base: {
         path: '/avails-api/v1'
@@ -19,8 +19,8 @@ export const defaultConfiguration = {
     keycloak: {
         'clientId': 'vehicle-public',
         'realm': 'Vubiquity',
-        'auth-server-url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
-        'url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
+        'auth-server-url': 'http://auth.dev.vubiquity.com/auth',
+        'url': 'http://authdev.vubiquity.com:8080/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0,
