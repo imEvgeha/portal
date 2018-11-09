@@ -39,12 +39,7 @@ class DashboardTab extends React.Component {
         this.state = {
             ingestedCount: '-'
         };
-        this.viewErrors = this.viewErrors.bind(this);
 
-    }
-
-    viewErrors() {
-        console.log('Error ');
     }
 
     createAvail = () => {

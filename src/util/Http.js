@@ -32,7 +32,6 @@ const Http = {
             },
             function (error) {
                 if (error.response) {
-                    console.log('STATUS: ' + error.response.status);
                     if (403 === error.response.status || 401 === error.response.status) {
                         let description;
                         if (error.response.data) {

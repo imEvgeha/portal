@@ -11,7 +11,7 @@ axios.get('config.js').then(response => {
     config.set(response.data, {assign: true, freeze: true});
 }).catch((error) => {
     console.warn('Unexpected Error during load environment configuration');
-    console.log(error);
+    console.warn(error);
 });
 
 import React from 'react';

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import InfiniteScrollTable from '../../../components/table/InfiniteScrollTable';
 import DragDropTable from '../../../components/table/DragDropTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from '../DashboardService';
@@ -100,12 +99,12 @@ class AvailsResultTable extends React.Component {
                 let columnDef={};
                 columnDef.accessor = column.javaVariableName;
                 columnDef.Header =  <span id={`dashboard-result-table-header-${column.javaVariableName}`}>{column.displayName}</span>;
-                if(column.dataType=='date'){
+                if(column.dataType === 'date'){
                     columnDef.Cell = row => (<span>{row.value && moment(row.value).format('L')}</span>);
                 }
                 columns.push(columnDef);
             }
-        )
+        );
     }
 
     onLoadMoreItems() {
@@ -117,8 +116,8 @@ class AvailsResultTable extends React.Component {
                 this.setState({requestLoading: false});
             }).catch((error) => {
                 this.setState({requestLoading: false});
-                console.log('Unexpected error');
-                console.log(error);
+                console.error('Unexpected error');
+                console.error(error);
             });
         }
     }
@@ -153,8 +152,8 @@ class AvailsResultTable extends React.Component {
                 this.props.resultPageLoading(false);
             }).catch((error) => {
             this.props.resultPageLoading(false);
-            console.log('Unexpected error');
-            console.log(error);
+            console.error('Unexpected error');
+            console.error(error);
         });
     }
 
