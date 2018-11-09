@@ -60,7 +60,7 @@ const loadReportToStore = (report) => {
 
 const readReportFromStore = () => {
     const report = {
-        name: store.getState().session.reportName,
+        name: store.getState().dashboard.reportName,
         filter: store.getState().dashboard.advancedSearchCriteria,
         columns: store.getState().dashboard.columns,
     };

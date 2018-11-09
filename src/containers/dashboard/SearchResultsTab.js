@@ -19,7 +19,7 @@ const mapStateToProps = state => {
         availTabPage: state.dashboard.availTabPage,
         columns: state.dashboard.columns,
         availTabPageSelected: state.session.availTabPageSelection.selected,
-        reportName: state.session.reportName,
+        reportName: state.dashboard.reportName,
         availsMapping: state.root.availsMapping,
         columnsOrder: state.dashboard.columns
     };

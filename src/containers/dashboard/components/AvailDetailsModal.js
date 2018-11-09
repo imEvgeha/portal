@@ -140,7 +140,16 @@ class AvailDetails extends React.Component {
         this.setState({
             avail: newAvail,
         });
-        this.confirm();
+        this.setState({ loading: true, showCreatedMessage: false });
+        dashboardService.updateAvails(newAvail).then(() => {
+            this.setState({ loading: false, showCreatedMessage: true });
+            let thatAbort = this.abort;
+            setTimeout(function () {
+                thatAbort();
+            }, 1000);
+        })
+        .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
+        // this.confirm();
     }
     setDisableCreate(avail, errorMessage) {
         if (this.isAnyErrors(errorMessage)) {
@@ -216,7 +225,7 @@ class AvailDetails extends React.Component {
                 name={name}
                 displayName={displayName}
                 validate={(date) => this.validation(name, displayName, moment(date))}
-                onChange={(date) => this.handleDatepickerChange(name, displayName, moment(date))}
+                onChange={(date) => this.handleDatepickerChange(name, moment(date))}
             />
         ));
     };

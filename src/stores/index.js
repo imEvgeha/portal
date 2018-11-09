@@ -28,12 +28,10 @@ export const loadState = () => {
 
 export const saveState = () => {
     setTimeout(() => {
-        console.log(store.getState().root.profileInfo);
         try {
             const serializedState = JSON.stringify(store.getState().session);
             localStorage.setItem('state-' + store.getState().root.profileInfo.email, serializedState);
         } catch (error) {
-            console.log(error);
             // ignore write errors
         }
     }, 100);

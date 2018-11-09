@@ -36,7 +36,7 @@ module.exports = {
             "error",
             "always"
         ],
-        "no-console": 0,
+        "no-console": ["error", { allow: ["warn", "error"]}],
         "react/no-find-dom-node": 0,
         "react/display-name": [0, { "ignoreTranspilerName": true }],
         "react-redux/prefer-separate-component-file": 0

@@ -17,7 +17,7 @@ import {downloadFile} from '../../../util/Common';
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        reportName: state.session.reportName,
+        reportName: state.dashboard.reportName,
         searchCriteria: state.dashboard.advancedSearchCriteria,
     };
 };
@@ -97,11 +97,10 @@ class AdvancedSearchPanel extends React.Component {
     bulkExport() {
         dashboardService.bulkExportAvails(this.props.searchCriteria)
         .then(function (response) {
-            console.log('avails received');
             downloadFile(response.data);
         })
         .catch(function (error) {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -129,7 +128,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSave() {
-        saveReportModal.open((reportName) => {configurationService.saveReport(reportName)}, () => {}, {reportName: this.props.reportName});
+        saveReportModal.open((reportName) => {configurationService.saveReport(reportName);}, () => {}, {reportName: this.props.reportName});
     }
 
     handleSearch() {

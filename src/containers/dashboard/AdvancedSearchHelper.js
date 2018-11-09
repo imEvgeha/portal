@@ -25,7 +25,7 @@ const doSearch = (searchCriteria, searchFn) => {
         }
     ).catch((error) => {
         store.dispatch(resultPageLoading(false));
-        console.log('Unexpected error');
+        console.warn('Unexpected error');
         console.error(error);
     });
 };
@@ -78,7 +78,6 @@ export const advancedSearchHelper = {
     },
 
     clearAdvancedSearchForm: () => {
-        console.log('CLEAR');
         store.dispatch(searchFormUpdateAdvancedSearchCriteria({
             vodStartFrom: null,
             vodStartTo: null,
