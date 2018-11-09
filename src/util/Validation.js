@@ -1,6 +1,8 @@
+import moment from 'moment';
+
 function validateDate(date) {
-    const parsed = new Date(date);
-    return (parsed instanceof Date && !isNaN(parsed.getTime())) ? parsed : false;
+
+    return date && (''+date).length === 10 && moment(date).isValid();
 }
 
 export {validateDate};

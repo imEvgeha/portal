@@ -21,7 +21,7 @@ export const dashboardService = {
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-        return http.get(config.get('gateway.url') + config.get('base.path') +'/avails/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -31,19 +31,28 @@ export const dashboardService = {
                 params[key] = searchCriteria[key];
             }
         }
-        return http.get(config.get('gateway.url') + config.get('base.path') +'/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     createAvail: (avail) => {
-        return http.post(config.get('gateway.url') + config.get('base.path') +'/avails', avail);
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails', avail);
     },
 
     updateAvails: (avail) => {
-        return http.put(config.get('gateway.url') + config.get('base.path') +`/avails/${avail.id}`, avail);
+        return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${avail.id}`, avail);
     },
 
-    downloadAvails: (availIDs) => {
-        return http.post(config.get('gateway.url') + config.get('base.path') +'/avails/download', {columnNames: ['title', 'studio'], availIds: availIDs}, {responseType: 'arraybuffer'});
+    exportAvails: (availIDs, columns) => {
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/download', {columnNames: columns, availIds: availIDs}, {responseType: 'arraybuffer'});
     },
 
+    bulkExportAvails: (searchCriteria) => {
+        const params = {};
+        for (let key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                params[key] = searchCriteria[key];
+            }
+        }
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/bulkExport', {responseType: 'arraybuffer', params: {...params, page: 0, size: 1}});
+    }
 };

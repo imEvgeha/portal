@@ -4,6 +4,7 @@ import './DashboardCard.scss';
 
 export default class DashboardDropableCard extends React.Component {
     static propTypes = {
+        name: t.string,
         title: t.string,
         action: t.func,
         iconClass: t.string,
@@ -20,7 +21,7 @@ export default class DashboardDropableCard extends React.Component {
                 <div className="dashboard-card-title">
                     {this.props.title}
                 </div>
-                {this.props.actionName && <button className="btn btn-primary dashboard-card-btn" onClick={this.props.action}>{this.props.actionName}</button>}
+                {this.props.actionName && <button className="btn btn-primary dashboard-card-btn" onClick={this.props.action} id={'avails-dashboard-' +  this.props.name + '-btn'}>{this.props.actionName}</button>}
             </div>
         );
     }

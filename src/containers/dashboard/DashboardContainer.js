@@ -1,6 +1,5 @@
 import './DashboardContainer.scss';
 
-import config from 'react-global-configuration';
 import React from 'react';
 import {connect} from 'react-redux';
 import FreeTextSearch from './components/FreeTextSearch';
@@ -9,19 +8,22 @@ import {
     searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
-    resultPageUpdate
+    resultPageUpdate,
+    resultPageSelect
 } from '../../actions/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
-import {dashboardService} from './DashboardService';
 import t from 'prop-types';
 import {loadAvailsMapping} from '../../actions';
 import {profileService} from './ProfileService';
+import {advancedSearchHelper} from './AdvancedSearchHelper';
+import {configurationService} from './ConfigurationService';
 
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
+        selected: state.session.availTabPageSelection.selected,
     };
 };
 
@@ -30,7 +32,8 @@ const mapDispatchToProps = {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    loadAvailsMapping
+    loadAvailsMapping,
+    resultPageSelect
 };
 
 class DashboardContainer extends React.Component {
@@ -41,9 +44,9 @@ class DashboardContainer extends React.Component {
         resultPageSort: t.func,
         resultPageUpdate: t.func,
         loadAvailsMapping: t.func,
+        resultPageSelect: t.func,
+        selected: t.array
     };
-
-    defaultPageSort = [];
 
     constructor(props) {
         super(props);
@@ -55,17 +58,12 @@ class DashboardContainer extends React.Component {
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
         this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
+        this.cleanSelection = this.cleanSelection.bind(this);
     }
 
     componentDidMount() {
-        if (!this.props.availsMapping) {
-            profileService.getAvailsMapping().then( (response) => {
-                this.props.loadAvailsMapping(response.data);
-            }). catch((error) => {
-               console.error('Unable to load AvailsMapping');
-               console.error(error);
-            });
-        }
+        profileService.initAvailsMapping();
+        configurationService.initConfiguration();
     }
 
     handleBackToDashboard() {
@@ -78,32 +76,24 @@ class DashboardContainer extends React.Component {
 
     handleAvailsFreeTextSearch(searchCriteria) {
         this.props.searchFormShowAdvancedSearch(false);
-        this.doSearch(searchCriteria, dashboardService.freeTextSearch);
+        advancedSearchHelper.freeTextSearch(searchCriteria);
+        this.setState({showSearchResults: true});
+        this.cleanSelection();
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
         this.props.searchFormShowAdvancedSearch(true);
-        this.doSearch(searchCriteria, dashboardService.advancedSearch);
+        advancedSearchHelper.advancedSearch(searchCriteria);
+        this.setState({showSearchResults: true});
+        this.cleanSelection();
     }
 
-    doSearch(searchCriteria, searchFn) {
-        this.props.resultPageLoading(true);
-        this.props.resultPageSort(this.defaultPageSort);
-        searchFn(searchCriteria, 0, config.get('avails.page.size'), this.defaultPageSort)
-            .then(response => {
-                this.props.resultPageLoading(false);
-                this.props.resultPageUpdate({
-                    pages: 1,
-                    avails: response.data.data,
-                    pageSize: response.data.data.length,
-                    total: response.data.total
-                });
-            }
-            ).catch(() => {
-                this.props.resultPageLoading(false);
-                console.log('Unexpected error');
-            });
-        this.setState({showSearchResults: true});
+    cleanSelection() {
+        let availTabPageSelection = {
+            selected: this.props.selected,
+            selectAll: false
+        };
+        this.props.resultPageSelect(availTabPageSelection);
     }
 
     render() {

@@ -1,9 +1,11 @@
 export const defaultConfiguration = {
     gateway: {
-        url: 'http://availsapi.dev.vubiquity.com'
-    },
-    base: {
-        path: '/avails-api/v1'
+        url: 'http://availsapi.dev.vubiquity.com',
+        configuration: 'http://usla-amm-d001.dev.vubiquity.com:8087',
+        service: {
+            avails: '/avails-api/v1',
+            configuration: '/configuration-api/v1',
+        },
     },
     avails: {
         upload: {

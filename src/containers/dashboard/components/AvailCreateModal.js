@@ -190,6 +190,9 @@ class AvailCreate extends React.Component {
                     id={'dashboard-avails-create-modal-' + name + '-text'}
                     name={name}
                     selected={this.state.avail[name]}
+                    showYearDropdown
+                    showMonthDropdown
+                    autoComplete={'off'}
                     onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
                     onChangeRaw={(event) => this.handleDatepickerRawChange(name, displayName, event.target.value)}
                     todayButton={'Today'}
@@ -210,7 +213,7 @@ class AvailCreate extends React.Component {
         };
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} backdrop={false} size={'lg'}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className = { this.props.className + ' lgModalBox' } fade={false} backdrop={false} size={'lg'}>
                 <ModalHeader toggle={this.toggle}>Create Avail</ModalHeader>
                 <div className={'row'}>
                     <div className={'col-6'}>
