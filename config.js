@@ -1,5 +1,5 @@
 {
     gateway: {
-        url: 'https://availsapi.dev.vubiquity.com'
+        url: 'http://availsapi.dev.vubiquity.com'
     }
 }
