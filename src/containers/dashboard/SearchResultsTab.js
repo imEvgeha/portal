@@ -6,13 +6,13 @@ import {confirmModal} from '../../components/share/ConfirmModal';
 import t from 'prop-types';
 import AvailsResultTable from './components/AvailsResultTable';
 import connect from 'react-redux/es/connect/connect';
-import {dashboardService} from './DashboardService';
 import {configurationService} from './ConfigurationService';
 import {downloadFile} from '../../util/Common';
 
 import {
     resultPageUpdateColumnsOrder
 } from '../../actions/dashboard';
+import {exportService} from './ExportService';
 
 const mapStateToProps = state => {
     return {
@@ -122,7 +122,7 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        dashboardService.exportAvails(this.props.availTabPageSelected, this.props.columns)
+        exportService.exportAvails(this.props.availTabPageSelected, this.props.columns)
         .then(function (response) {
             downloadFile(response.data);
         });

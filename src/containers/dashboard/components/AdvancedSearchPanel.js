@@ -11,8 +11,8 @@ import RangeDatapicker from '../../../components/fields/RangeDatapicker';
 import {configurationService} from '../ConfigurationService';
 import {alertModal} from '../../../components/share/AlertModal';
 import {confirmModal} from '../../../components/share/ConfirmModal';
-import {dashboardService} from '../DashboardService';
 import {downloadFile} from '../../../util/Common';
+import {exportService} from '../ExportService';
 
 const mapStateToProps = state => {
     return {
@@ -101,7 +101,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        dashboardService.bulkExportAvails(this.props.searchCriteria)
+        exportService.bulkExportAvails(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
         .then(function (response) {
             downloadFile(response.data);
         })
