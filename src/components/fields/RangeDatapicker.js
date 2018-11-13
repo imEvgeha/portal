@@ -109,7 +109,7 @@ export default class RangeDatapicker extends React.Component {
 
     render() {
         return (
-            <div className="form-group">
+            <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
                 <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
                 <div className={'row justify-content-around'}>
                     <div style={{width: '45%', paddingLeft: '8px'}}>

@@ -138,7 +138,7 @@ class AdvancedSearchPanel extends React.Component {
     render() {
 
         const renderTextField = (name, displayName) => {
-            return (<div className="form-group">
+            return (<div style={{ maxWidth:'310px', minWidth:'200px', flex:'1 2 250px', margin:'0 5px'}}>
                 <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
                 <input type="text" className="form-control"
                        id={'dashboard-avails-search-' + name + '-text'}
@@ -170,74 +170,40 @@ class AdvancedSearchPanel extends React.Component {
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <div className="row">
-                    <div className="col">
-                        {renderTextField('title', 'Title')}
-                    </div>
-                    <div className="col">
-                        {renderTextField('studio', 'Studio')}
-                    </div>
-                    <div className="col">
-                        {renderTextField('releaseYear', 'Release Year')}
-                    </div>
-                    <div className="col">
-                        {renderTextField('releaseType', 'Release Type')}
-                    </div>
-                    <div className="col">
-                        {renderTextField('licensor', 'Licensor')}
-                    </div>
+                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'left',  alignItems:'flex-end'}}>
+                    {renderTextField('title', 'Title')}
+                    {renderTextField('studio', 'Studio')}
+                    {renderTextField('releaseYear', 'Release Year')}
+                    {renderTextField('releaseType', 'Release Type')}
+                    {renderTextField('licensor', 'Licensor')}
+                    {renderTextField('territory', 'Territory')}
+                    {renderRangeDatepicker('estStart', 'EST Start')}
+                    {renderRangeDatepicker('estEnd', 'EST End')}
+                    {renderRangeDatepicker('vodStart', 'VOD Start')}
+                    {renderRangeDatepicker('vodEnd', 'VOD End')}
                 </div>
-                <div className="row" style={{marginRight: '30px'}}>
-                    <div className="col">
-                        {renderTextField('territory', 'Territory')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('estStart', 'EST Start')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('estEnd', 'EST End')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('vodStart', 'VOD Start')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('vodEnd', 'VOD End')}
-                    </div>
+                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'left', alignItems:'flex-end'}}>
+                    {renderRangeDatepicker('rowEdited', 'Row edited')}
+                     <div style={{flex:'1 1 200px', marginTop: '5px', marginBottom: '8px'}}>
+                         <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
+                         Show invalid avails
+                     </div>
+                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-begin', alignContent:'flex-end', margin: '8px 0px 0px'}}>
+                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                 style={{ margin: '4px 7px 0'}}>bulk export</Button>
+                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
+                                 style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
+
+                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
+                                 style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
+
+                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
+                                 style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
+
+                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                                 style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
+                     </div>
                 </div>
-
-                <div className="row align-items-center" style={{marginRight: '30px'}}>
-                    <div className="col">
-                            {renderRangeDatepicker('rowEdited', 'Row edited')}
-                            </div>
-                    <div className="col" style={{paddingTop: '8px'}}>
-                        <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
-                        Show invalid avails
-                    </div>
-                    <div className="col">
-                    </div>
-                    <div className="col">
-                    </div>
-
-                    <div className="col">
-                        <div style={{position: 'absolute', right: '-66px', bottom: '-17px', width: '569px'}}>
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                    style={{ marginRight: '15px'}}>bulk export</Button>
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
-                                    style={{width: '80px', marginRight: '15px'}}>delete</Button>
-
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                    style={{width: '80px', marginRight: '15px'}}>clear</Button>
-
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                    style={{width: '80px', marginRight: '15px'}}>save</Button>
-
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                    style={{width: '80px', marginRight: '60px'}}>filter</Button>
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
         );
     }
