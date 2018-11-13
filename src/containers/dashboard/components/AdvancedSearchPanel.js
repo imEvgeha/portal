@@ -95,7 +95,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        exportService.bulkExportAvails(this.props.searchCriteria)
+        exportService.bulkExportAvails(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
         .then(function (response) {
             downloadFile(response.data);
         })
