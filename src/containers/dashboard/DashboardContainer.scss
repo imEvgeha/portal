@@ -27,12 +27,17 @@
 
 .vu-advanced-search-panel {
   z-index: 100;
-  transition: margin 300ms;
   margin-bottom: 0;
+
+  max-height: 1000px;
+  transition: max-height 300ms, margin 300ms;
+  overflow: hidden;
 }
 
 .vu-advanced-search-panel.hide {
-  margin-top: -360px;
-  margin-bottom: 66px;
-  transition: margin 300ms;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  max-height: 0;
+
+  transition: max-height 300ms, padding-top 300ms, padding-bottom 300ms;
 }

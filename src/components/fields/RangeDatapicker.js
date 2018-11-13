@@ -109,7 +109,7 @@ export default class RangeDatapicker extends React.Component {
 
     render() {
         return (
-            <div className="form-group">
+            <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
                 <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
                 <div className={'row justify-content-around'}>
                     <div style={{width: '45%', paddingLeft: '8px'}}>
@@ -127,9 +127,8 @@ export default class RangeDatapicker extends React.Component {
                             disabled={this.props.disabled}
                         />
                         {this.state.invalidStartDate && <small className="text-danger m-2"
-                                                               style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
-                        {this.state.invalidRange && <small className="text-danger m-2"
-                                                               style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidRange}</small>}
+                                                               style={{bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
+
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
@@ -147,8 +146,10 @@ export default class RangeDatapicker extends React.Component {
                             disabled={this.props.disabled}
                         />
                         {this.state.invalidEndDate && <small className="text-danger m-2"
-                                                               style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
+                                                               style={{bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
                     </div>
+                    {this.state.invalidRange && <small className="text-danger m-2"
+                                                                                   style={{bottom: '-9px'}}>{this.state.invalidRange}</small>}
                 </div>
             </div>
         );
