@@ -104,6 +104,9 @@ export const configurationService = {
 
 
     getReportsNames: () => {
+        if (!store.getState().root.reports) {
+            return [];
+        }
         return store.getState().root.reports.map((report) => (report.name));
     },
 
