@@ -170,7 +170,7 @@ class AdvancedSearchPanel extends React.Component {
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'left',  alignItems:'flex-end'}}>
+                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {renderTextField('title', 'Title')}
                     {renderTextField('studio', 'Studio')}
                     {renderTextField('releaseYear', 'Release Year')}
@@ -182,13 +182,13 @@ class AdvancedSearchPanel extends React.Component {
                     {renderRangeDatepicker('vodStart', 'VOD Start')}
                     {renderRangeDatepicker('vodEnd', 'VOD End')}
                 </div>
-                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'left', alignItems:'flex-end'}}>
+                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', alignItems:'flex-end'}}>
                     {renderRangeDatepicker('rowEdited', 'Row edited')}
                      <div style={{flex:'1 1 200px', marginTop: '5px', marginBottom: '8px'}}>
                          <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                          Show invalid avails
                      </div>
-                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-begin', alignContent:'flex-end', margin: '8px 0px 0px'}}>
+                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
