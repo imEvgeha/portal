@@ -13,7 +13,7 @@ export const profileService = {
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then( (response) => {
-                store.dispatch(loadAvailsMapping(response.data));
+                store.dispatch(loadAvailsMapping({mappings: response.data.mappings.filter((mapping) => (mapping.displayName))}));
             }). catch((error) => {
                 console.error('Unable to load AvailsMapping');
                 console.error(error);

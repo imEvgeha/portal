@@ -85,8 +85,7 @@ const loadConfiguration = (configuration) => {
         store.dispatch(loadReports(configuration.avails.reports));
     } else {
         store.dispatch(loadReports([]));
-        console.error('Unable to find reports in configuration');
-        console.error(configuration);
+        console.warn('No reports in configuration, init empty list');
     }
 };
 
@@ -96,7 +95,7 @@ export const configurationService = {
             getConfiguration().then( (response) => {
                 loadConfiguration(response.data);
             }). catch((error) => {
-                console.error('Unable to load AvailsMapping');
+                console.error('Unable to load configuration');
                 console.error(error);
             });
         }
@@ -104,6 +103,9 @@ export const configurationService = {
 
 
     getReportsNames: () => {
+        if (!store.getState().root.reports) {
+            return [];
+        }
         return store.getState().root.reports.map((report) => (report.name));
     },
 

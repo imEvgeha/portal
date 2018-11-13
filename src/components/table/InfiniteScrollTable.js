@@ -66,7 +66,8 @@ class InfiniteScrollTable extends React.Component {
     };
 
     getTdProps = (state, rowInfo, column) => {
-        if (column.id === 'title' || column.id === 'id') {
+
+        if (column.id !== '_selector') {
             return {
                 onClick: () => {
                     this.props.onCellClick(rowInfo.original);
