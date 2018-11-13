@@ -21,8 +21,8 @@ export const defaultConfiguration = {
     keycloak: {
         'clientId': 'vehicle-public',
         'realm': 'Vubiquity',
-        'auth-server-url': 'http://auth.dev.vubiquity.com/auth',
-        'url': 'http://auth.dev.vubiquity.com/auth',
+        'auth-server-url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
+        'url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0,
