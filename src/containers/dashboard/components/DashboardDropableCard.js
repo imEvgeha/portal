@@ -45,13 +45,13 @@ export default class DashboardDropableCard extends React.Component {
         } else {
             this.setState({file: null});
             this.uploadFinished();
-            console.log('Send next file, finished');
+            // console.log('Send next file, finished');
         }
     }
 
     sentUploadedFile(currentFile, files) {
-        uploadService.uploadAvail(currentFile).then((res) => {
-            console.log(res);
+        uploadService.uploadAvail(currentFile).then(() => {
+            // console.log(res);
             setTimeout(() => this.uploadFiles(files), 1000);
         }).catch((e) => {
             console.error('Unexpected error');
