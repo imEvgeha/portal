@@ -19,6 +19,7 @@ const mapStateToProps = state => {
         availTabPage: state.dashboard.availTabPage,
         reportName: state.dashboard.reportName,
         searchCriteria: state.dashboard.advancedSearchCriteria,
+        availsMapping: state.root.availsMapping,
     };
 };
 
@@ -35,7 +36,10 @@ class AdvancedSearchPanel extends React.Component {
         onToggleAdvancedSearch: t.func,
         hide: t.bool,
         reportName: t.string,
+        availsMapping: t.object,
     };
+
+
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -61,6 +65,8 @@ class AdvancedSearchPanel extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDateValidate = this.handleDateValidate.bind(this);
+
+        this.availsMap=null;
     }
 
     handleInputChange(event) {
@@ -136,9 +142,14 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     render() {
+        const searchBy = ['title', 'studio', 'releaseYear', 'releaseType', 'licensor', 'territory', 'estStart', 'estEnd', 'vodStart', 'vodEnd'];
+        if(this.availsMap===null && this.props.availsMapping!=null){
+            this.availsMap={};
+            this.props.availsMapping.mappings.map(column => this.availsMap[column.javaVariableName] = column);
+        }
 
         const renderTextField = (name, displayName) => {
-            return (<div style={{ maxWidth:'310px', minWidth:'200px', flex:'1 2 250px', margin:'0 5px'}}>
+            return (<div key={name} style={{ maxWidth:'310px', minWidth:'200px', flex:'1 2 250px', margin:'0 5px'}}>
                 <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
                 <input type="text" className="form-control"
                        id={'dashboard-avails-search-' + name + '-text'}
@@ -153,6 +164,7 @@ class AdvancedSearchPanel extends React.Component {
 
         const renderRangeDatepicker = (name, displayName) => {
             return (<RangeDatapicker
+                key={name}
                 displayName={displayName}
                 fromDate={this.props.searchCriteria[name + 'From']}
                 toDate={this.props.searchCriteria[name + 'To']}
@@ -164,6 +176,16 @@ class AdvancedSearchPanel extends React.Component {
             />);
         };
 
+        let searchFields = [];
+        if(this.availsMap != null) searchBy.map(key => {
+            let schema = this.availsMap[key];
+            if(schema.dataType=='date'){
+                searchFields.push(renderRangeDatepicker(key, schema.displayName));
+            }else{
+                searchFields.push(renderTextField(key, schema.displayName));
+            }
+        });
+
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
                  style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
@@ -171,16 +193,7 @@ class AdvancedSearchPanel extends React.Component {
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
-                    {renderTextField('title', 'Title')}
-                    {renderTextField('studio', 'Studio')}
-                    {renderTextField('releaseYear', 'Release Year')}
-                    {renderTextField('releaseType', 'Release Type')}
-                    {renderTextField('licensor', 'Licensor')}
-                    {renderTextField('territory', 'Territory')}
-                    {renderRangeDatepicker('estStart', 'EST Start')}
-                    {renderRangeDatepicker('estEnd', 'EST End')}
-                    {renderRangeDatepicker('vodStart', 'VOD Start')}
-                    {renderRangeDatepicker('vodEnd', 'VOD End')}
+                    {searchFields}
                 </div>
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', alignItems:'flex-end'}}>
                     {renderRangeDatepicker('rowEdited', 'Row edited')}
