@@ -78,6 +78,13 @@ class AdvancedSearchPanel extends React.Component {
         this.setState({invalid: {...this.state.invalid, [name]: value}});
     }
 
+    validateForm() {
+        for (let key of Object.keys(this.state.invalid)) {
+            if (this.state.invalid[key]) { return false; }
+        }
+        return true;
+    }
+
     handleBulkExport() {
         if (!this.props.availTabPage.total) {
             alertModal.open('Action required', () => {
@@ -219,6 +226,7 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
 
                     <div className="col">
+                        {this.validateForm() ? 'ok' : 'none'}
                         <div style={{position: 'absolute', right: '-66px', bottom: '-17px', width: '569px'}}>
                             <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
                                     style={{ marginRight: '15px'}}>bulk export</Button>
@@ -232,6 +240,7 @@ class AdvancedSearchPanel extends React.Component {
                                     style={{width: '80px', marginRight: '15px'}}>save</Button>
 
                             <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                                    disabled={!this.validateForm()}
                                     style={{width: '80px', marginRight: '60px'}}>filter</Button>
                         </div>
                     </div>
