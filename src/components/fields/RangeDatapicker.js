@@ -84,8 +84,9 @@ export default class RangeDatapicker extends React.Component {
     }
 
     wrongDateRange(wrong) {
-        this.setState({invalidRange: wrong ? this.props.displayName + ' from should be before to' : ''});
-        this.props.onValidate(wrong ? this.props.displayName + ' from should be before to' : '');
+        const invalid = wrong ? this.props.displayName + ' from should be before to date' : '';
+        this.setState({invalidRange: invalid});
+        this.props.onValidate(invalid);
     }
 
     handleChangeRawStartDate(date) {
