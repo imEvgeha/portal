@@ -76,7 +76,7 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value});
-        this.setState({invalidForm: this.validateState(this.state.invalid)});
+        this.setState({invalidForm: !this.validateState(this.state.invalid)});
     }
 
     handleDateChange(name, value) {
