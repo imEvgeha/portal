@@ -25,7 +25,7 @@ const doSearch = (searchCriteria, searchFn) => {
         }
     ).catch((error) => {
         store.dispatch(resultPageLoading(false));
-        console.log('Unexpected error');
+        console.warn('Unexpected error');
         console.error(error);
     });
 };
@@ -45,6 +45,8 @@ export const advancedSearchHelper = {
             estStartTo: filter.estStartTo ? moment(filter.estStartTo) : null,
             estEndFrom: filter.estEndFrom ? moment(filter.estEndFrom) : null,
             estEndTo: filter.estEndTo ? moment(filter.estEndTo) : null,
+            rowEditedFrom: filter.rowEditedFrom ? moment(filter.rowEditedFrom) : null,
+            rowEditedTo: filter.rowEditedTo ? moment(filter.rowEditedTo) : null,
             title: filter.title ? filter.title : '',
             studio: filter.studio ? filter.studio : '',
             releaseYear: filter.releaseYear ? filter.releaseYear : '',
@@ -63,12 +65,19 @@ export const advancedSearchHelper = {
         return {
             ...searchCriteria,
             vodStartFrom: searchCriteria.vodStartFrom && searchCriteria.vodStartFrom.toISOString(),
-            vodStartTo: searchCriteria.vodStartTo && searchCriteria.vodStartTo.toISOString()
+            vodStartTo: searchCriteria.vodStartTo && searchCriteria.vodStartTo.toISOString(),
+            vodEndFrom: searchCriteria.vodEndFrom && searchCriteria.vodEndFrom.toISOString(),
+            vodEndTo: searchCriteria.vodEndTo && searchCriteria.vodEndTo.toISOString(),
+            estStartFrom: searchCriteria.estStartFrom && searchCriteria.estStartFrom.toISOString(),
+            estStartTo: searchCriteria.estStartTo && searchCriteria.estStartTo.toISOString(),
+            estEndFrom: searchCriteria.estEndFrom && searchCriteria.estEndFrom.toISOString(),
+            estEndTo: searchCriteria.estEndTo && searchCriteria.estEndTo.toISOString(),
+            rowEditedFrom: searchCriteria.rowEditedFrom && searchCriteria.rowEditedFrom.toISOString(),
+            rowEditedTo: searchCriteria.rowEditedTo && searchCriteria.rowEditedTo.toISOString(),
         };
     },
 
     clearAdvancedSearchForm: () => {
-        console.log('CLEAR');
         store.dispatch(searchFormUpdateAdvancedSearchCriteria({
             vodStartFrom: null,
             vodStartTo: null,
@@ -78,6 +87,8 @@ export const advancedSearchHelper = {
             estStartTo: null,
             estEndFrom: null,
             estEndTo: null,
+            rowEditedFrom: null,
+            rowEditedTo: null,
             rowInvalid: false,
             title: '',
             studio: '',
@@ -86,7 +97,25 @@ export const advancedSearchHelper = {
             licensor: '',
             territory: '',
         }));
-        console.log(store.getState().dashboard.advancedSearchCriteria);
+        store.dispatch(searchFormUpdateSearchCriteria({
+            vodStartFrom: null,
+            vodStartTo: null,
+            vodEndFrom: null,
+            vodEndTo: null,
+            estStartFrom: null,
+            estStartTo: null,
+            estEndFrom: null,
+            estEndTo: null,
+            rowEditedFrom: null,
+            rowEditedTo: null,
+            rowInvalid: false,
+            title: '',
+            studio: '',
+            releaseYear: '',
+            releaseType: '',
+            licensor: '',
+            territory: '',
+        }));
     },
 
     freeTextSearch(searchCriteria) {

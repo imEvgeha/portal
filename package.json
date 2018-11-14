@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --env dev --hot --inline --open --mode development --progress --client-log-level info",
     "build": "webpack --env dev --mode development",
-    "verify": "eslint src/**/*.js",
+    "test": "webpack --env test --mode development",
     "build:prod": "webpack --env prod --mode production && docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {

@@ -80,6 +80,7 @@ class DragDropTable extends React.Component {
         let cols=[];
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
+            if(accessors.indexOf(acc)>-1)
                 cols.push(columns[accessors.indexOf(acc)]);
             });
         }

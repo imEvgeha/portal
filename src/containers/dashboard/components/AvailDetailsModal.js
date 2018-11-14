@@ -258,7 +258,6 @@ class AvailDetails extends React.Component {
                 <ModalFooter>
                     <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
                 </ModalFooter>
-
             </Modal>
         );
     }

@@ -3,6 +3,7 @@ import React from 'react';
 import '../../containers/dashboard/components/DashboardCard.scss';
 import DatePicker from 'react-datepicker/es';
 import moment from 'moment';
+import {validateDate} from '../../util/Validation';
 
 const INVALID_DATE = 'Invalid Date';
 
@@ -23,6 +24,8 @@ export default class RangeDatapicker extends React.Component {
         this.state = {
             invalidStartDate: '',
             invalidEndDate: '',
+            prevFromDate: null,
+            prevToDate: null,
         };
         this.clear = this.clear.bind(this);
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
@@ -38,29 +41,19 @@ export default class RangeDatapicker extends React.Component {
     }
 
     componentDidUpdate() {
-        if (!this.props.toDate) {
-            if (this.state.invalidStartDate) {
-                this.setState({
-                    invalidStartDate: '',
-                });
-            }
-            if (this.state.invalidRange) {
-                this.setState({
-                    invalidRange: '',
-                });
-            }
+        if (!this.props.fromDate && this.state.prevFromDate) {
+            this.setState({
+                invalidEndDate: '',
+                invalidRange: '',
+                prevFromDate: this.props.fromDate,
+            });
         }
-        if (!this.props.fromDate) {
-            if (this.state.invalidEndDate) {
-                this.setState({
-                    invalidEndDate: '',
-                });
-            }
-            if (this.state.invalidRange) {
-                this.setState({
-                    invalidRange: '',
-                });
-            }
+        if (!this.props.toDate && this.state.prevToDate) {
+            this.setState({
+                invalidStartDate: '',
+                invalidRange: '',
+                prevToDate: this.props.toDate,
+            });
         }
     }
 
@@ -89,11 +82,12 @@ export default class RangeDatapicker extends React.Component {
 
     handleChangeRawStartDate(date) {
         if (date) {
-            if (moment(date).isValid()) {
+            if (validateDate(date)) {
                 this.handleChangeStartDate(moment(date));
                 this.setState({invalidStartDate: ''});
             } else {
-                this.setState({invalidStartDate: INVALID_DATE});
+                this.setState({invalidStartDate: INVALID_DATE, invalidRange: ''});
+
             }
         } else {
             this.setState({invalidStartDate: '', invalidRange: ''});
@@ -102,11 +96,11 @@ export default class RangeDatapicker extends React.Component {
 
     handleChangeRawEndDate(date) {
         if (date) {
-            if (moment(date).isValid()) {
+            if (validateDate(date)) {
                 this.handleChangeEndDate(moment(date));
                 this.setState({invalidEndDate: ''});
             } else {
-                this.setState({invalidEndDate: INVALID_DATE});
+                this.setState({invalidEndDate: INVALID_DATE, invalidRange: ''});
             }
         } else {
             this.setState({invalidRange: '', invalidEndDate: ''});
@@ -124,6 +118,9 @@ export default class RangeDatapicker extends React.Component {
                             className={this.state.invalidStartDate ? 'text-danger' : ''}
                             id="dashboard-avails-search-start-date-text"
                             selected={this.props.fromDate}
+                            showYearDropdown
+                            showMonthDropdown
+                            autoComplete={'off'}
                             onChange={this.handleChangeStartDate}
                             onChangeRaw={(event) => this.handleChangeRawStartDate(event.target.value)}
                             todayButton={'Today'}
@@ -141,6 +138,9 @@ export default class RangeDatapicker extends React.Component {
                             className={this.state.invalidEndDate ? 'text-danger' : ''}
                             id="dashboard-avails-search-start-date-text"
                             selected={this.props.toDate}
+                            showYearDropdown
+                            showMonthDropdown
+                            autoComplete={'off'}
                             onChange={this.handleChangeEndDate}
                             onChangeRaw={(event) => this.handleChangeRawEndDate(event.target.value)}
                             todayButton={'Today'}

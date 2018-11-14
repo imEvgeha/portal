@@ -6,8 +6,6 @@ const http = Http.create();
 
 const prepareSortMatrixParam = function (sortedParams) {
     let matrix = '';
-    console.log('sortedParams');
-    console.log(sortedParams);
     sortedParams.forEach((entry) => {
         matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
     });

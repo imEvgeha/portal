@@ -17,6 +17,7 @@ class InfiniteScrollTable extends React.Component {
         data: t.array,
         pageSize:t.number,
         selection: t.array,
+        selectAll: t.bool,
         sorted: t.array,
         onLoadMoreItems: t.func,
         onSortedChange: t.func,
@@ -64,17 +65,10 @@ class InfiniteScrollTable extends React.Component {
         }
     };
 
-    getTdProps = (state, rowInfo, column, instance) => {
+    getTdProps = (state, rowInfo, column) => {
         if (column.id === 'title' || column.id === 'id') {
             return {
-                onClick: (e) => {
-                    console.log('Cell - onMouseEnter', {
-                        state,
-                        rowInfo,
-                        column,
-                        instance,
-                        event: e
-                    });
+                onClick: () => {
                     this.props.onCellClick(rowInfo.original);
                 },
                 className: 'pointer'
@@ -95,21 +89,25 @@ class InfiniteScrollTable extends React.Component {
         } else {
             selection.push(key);
         }
-        this.props.onSelection(selection);
+        this.props.onSelection(selection, this.props.selectAll);
     };
 
     toggleAll = () => {
-        const selectAll = !this.state.selectAll;
-        const selection = [];
+        const selectAll = !this.props.selectAll;
+        let oldSelection = [...this.props.selection];
+        let newSelection = [];
+        let selection = [];
         if (selectAll) {
             const wrappedInstance = this.ref.current.getWrappedInstance();
             const currentRecords = wrappedInstance.getResolvedState().sortedData;
             currentRecords.forEach(item => {
-                selection.push(item._original.id);
+                newSelection.push(item._original.id);
             });
+             selection = oldSelection.concat(newSelection.filter(function (item) {
+                return oldSelection.indexOf(item) < 0;
+            }));
         }
-        this.setState({selectAll});
-        this.props.onSelection(selection);
+        this.props.onSelection(selection, selectAll);
     };
 
     isSelected = key => {
@@ -118,7 +116,7 @@ class InfiniteScrollTable extends React.Component {
 
     render() {
         const {toggleSelection, toggleAll, isSelected, getTrProps, getTdProps} = this;
-        const {selectAll} = this.state;
+        let selectAll = this.props.selectAll;
 
         const checkboxProps = {
             selectAll,

@@ -2,8 +2,9 @@ import Http from '../../util/Http';
 import config from 'react-global-configuration';
 import store from '../../stores';
 import {loadAvailsMapping} from '../../actions';
+import {errorModal} from '../../components/share/ErrorModal';
 
-const http = Http.create();
+const http = Http.create({noDefaultErrorHandling : true});
 
 const getAvailsMapping = () => {
     return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/mapping-data');
@@ -15,9 +16,10 @@ export const profileService = {
             getAvailsMapping().then( (response) => {
                 store.dispatch(loadAvailsMapping(response.data));
             }). catch((error) => {
+                errorModal.open('mappingError', () => {}, {description: 'System is not configured correctly!'});
                 console.error('Unable to load AvailsMapping');
                 console.error(error);
             });
-        }
+        } 
     },
 };

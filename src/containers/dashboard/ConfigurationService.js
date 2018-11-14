@@ -48,7 +48,7 @@ import {resultPageUpdateColumnsOrder} from '../../actions/dashboard';
 // };
 
 
-const http = Http.create();
+const http = Http.create({noDefaultErrorHandling : true});
 
 
 const loadReportToStore = (report) => {
@@ -60,8 +60,8 @@ const loadReportToStore = (report) => {
 
 const readReportFromStore = () => {
     const report = {
-        name: store.getState().session.reportName,
-        filter: store.getState().dashboard.searchCriteria,
+        name: store.getState().dashboard.reportName,
+        filter: store.getState().dashboard.advancedSearchCriteria,
         columns: store.getState().dashboard.columns,
     };
     return report;
@@ -86,7 +86,7 @@ const loadConfiguration = (configuration) => {
     } else {
         store.dispatch(loadReports([]));
         console.error('Unable to find reports in configuration');
-        console.error(configuration);
+        console.error(configuration);        
     }
 };
 
@@ -95,7 +95,8 @@ export const configurationService = {
         if (forceReload || !store.getState().root.reports) {
             getConfiguration().then( (response) => {
                 loadConfiguration(response.data);
-            }). catch((error) => {
+            }). catch((error) => {                
+                errorModal.open('confError', () => {}, {description: 'System is not configured correctly'});
                 console.error('Unable to load AvailsMapping');
                 console.error(error);
             });
@@ -116,7 +117,6 @@ export const configurationService = {
             loadReportToStore(report);
         } else {
             errorModal.open('Cannot find report: ' + reportName);
-
         }
     },
 
@@ -138,6 +138,11 @@ export const configurationService = {
             loadConfiguration(response.data);
             store.dispatch(setReportName(reportName));
         }). catch((error) => {
+            let description;
+            if(error.response.data) {
+                description = JSON.stringify(error.response.data);
+            }
+            errorModal.open('Unexpected error occured. Please try again later.', () => {}, {description: description});
             console.error('Unable to Save Report');
             console.error(error);
         });
@@ -149,6 +154,11 @@ export const configurationService = {
             loadConfiguration(response.data);
             store.dispatch(setReportName(''));
         }). catch((error) => {
+            let description;
+            if(error.response.data) {
+                description = JSON.stringify(error.response.data);
+            }
+            errorModal.open('Unexpected error occured. Please try again later.', () => {}, {description: description});
             console.error('Unable to Delete Report');
             console.error(error);
         });

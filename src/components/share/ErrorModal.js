@@ -17,11 +17,14 @@ class ErrorModal extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            modal: true
+            modal: true,
+            errorTitle: props.message,
+            errorDescription: props.description
         };
 
         this.toggle = this.toggle.bind(this);
         this.accept = this.accept.bind(this);
+        this.refresh = this.refresh.bind(this);
     }
 
     static defaultProps = {
@@ -34,9 +37,23 @@ class ErrorModal extends React.Component{
             modal: !this.state.modal
         });
     }
+    refresh() {
+        window.location.reload();
+    }
 
     accept() {
         return this.props.accept();
+    }
+    componentDidMount() {
+        if(this.state.errorTitle === 'mappingError' || this.state.errorTitle === 'confError') {
+            this.setState({
+                errorTitle: 'Error'
+            })
+        }else {
+            this.setState({
+                errorTitle: this.props.message
+            })
+        }
     }
 
     render() {
@@ -49,10 +66,16 @@ class ErrorModal extends React.Component{
 
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={false}>
-                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.toggle}>{this.props.message}</ModalHeader>
+                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.props.message === 'confError' || this.props.message === 'mappingError'  ? undefined : this.toggle}>{this.state.errorTitle}</ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                    {
+                        this.props.message === 'confError' || this.props.message === 'mappingError' ? 
+                        <Button color="danger" onClick={this.refresh}>Refresh</Button>
+                        :
+                        <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                    }
+                    
                 </ModalFooter>
             </Modal>
         );
@@ -71,7 +94,7 @@ export const errorModal = {
             accept: () => { cleanup();onApprove();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<ErrorModal {...props}/>, wrapper);
+        render(<ErrorModal {...props} />, wrapper);
         const cleanup = function() {
             unmountComponentAtNode(wrapper);
             return setTimeout(function() {

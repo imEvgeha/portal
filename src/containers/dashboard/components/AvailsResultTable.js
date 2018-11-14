@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import InfiniteScrollTable from '../../../components/table/InfiniteScrollTable';
 import DragDropTable from '../../../components/table/DragDropTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from '../DashboardService';
@@ -12,22 +11,7 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import {availDetailsModal} from './AvailDetailsModal';
 
-const columns = [
-    {accessor: 'title', Header: <span id={'dashboard-result-table-header-title'}>Title</span>},
-    {accessor: 'studio', Header: <span id={'dashboard-result-table-header-studio'}>Studio</span>},
-    {accessor: 'territory', Header: <span id={'dashboard-result-table-header-territory'}>Territory</span>},
-    {accessor: 'genre', Header: <span id={'dashboard-result-table-header-genre'}>Genre</span>},
-    {
-        accessor: 'vodStart',
-        Header: <span id={'dashboard-result-table-header-avail-start-date'}>VOD Start</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
-    },
-    {
-        accessor: 'vodEnd',
-        Header: <span id={'dashboard-result-table-header-avail-end-date'}>VOD End</span>,
-        Cell: row => (<span>{row.value && moment(row.value).format('L')}</span>)
-    }
-];
+const columns = [];
 
 /**
  * Advance Search -
@@ -40,7 +24,7 @@ const mapStateToProps = state => {
         searchCriteria: state.dashboard.searchCriteria,
         useAdvancedSearch: state.dashboard.useAdvancedSearch,
         freeTextSearch: state.dashboard.freeTextSearch,
-        availTabPageSelected: state.session.availTabPageSelected,
+        availTabPageSelection: state.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
     };
@@ -63,7 +47,7 @@ class AvailsResultTable extends React.Component {
         searchCriteria: t.object,
         useAdvancedSearch: t.bool,
         freeTextSearch: t.object,
-        availTabPageSelected: t.array,
+        availTabPageSelection: t.object,
         availTabPageLoading: t.bool,
         resultPageUpdate: t.func,
         resultPageSort: t.func,
@@ -85,6 +69,11 @@ class AvailsResultTable extends React.Component {
         this.editAvail = this.editAvail.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
+
+        if(columns.length==0){
+            this.parseColumnsSchema();
+        }
     }
 
     componentDidMount() {
@@ -105,6 +94,19 @@ class AvailsResultTable extends React.Component {
         this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
     }
 
+    parseColumnsSchema() {
+        this.props.availsMapping.mappings.map(column => {
+                let columnDef={};
+                columnDef.accessor = column.javaVariableName;
+                columnDef.Header =  <span id={`dashboard-result-table-header-${column.javaVariableName}`}>{column.displayName}</span>;
+                if(column.dataType === 'date'){
+                    columnDef.Cell = row => (<span>{row.value && moment(row.value).format('L')}</span>);
+                }
+                columns.push(columnDef);
+            }
+        );
+    }
+
     onLoadMoreItems() {
         if (!this.state.requestLoading && this.props.availTabPage.avails.length < this.props.availTabPage.total) {
             this.setState({requestLoading: true});
@@ -114,8 +116,8 @@ class AvailsResultTable extends React.Component {
                 this.setState({requestLoading: false});
             }).catch((error) => {
                 this.setState({requestLoading: false});
-                console.log('Unexpected error');
-                console.log(error);
+                console.error('Unexpected error');
+                console.error(error);
             });
         }
     }
@@ -150,8 +152,8 @@ class AvailsResultTable extends React.Component {
                 this.props.resultPageLoading(false);
             }).catch((error) => {
             this.props.resultPageLoading(false);
-            console.log('Unexpected error');
-            console.log(error);
+            console.error('Unexpected error');
+            console.error(error);
         });
     }
 
@@ -163,8 +165,8 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    onSelection(selected) {
-        this.props.resultPageSelect(selected);
+    onSelection(selected, selectAll) {
+        this.props.resultPageSelect({selected, selectAll});
     }
 
     editAvail(newAvail) {
@@ -220,7 +222,8 @@ class AvailsResultTable extends React.Component {
                 style={style}
                 scrollSliderLoadPercent={scrollSliderLoadPercent}
                 loading={this.props.availTabPageLoading}
-                selection={this.props.availTabPageSelected}
+                selection={this.props.availTabPageSelection.selected}
+                selectAll={this.props.availTabPageSelection.selectAll}
 
                 sorted={this.props.availTabPageSort}
 
