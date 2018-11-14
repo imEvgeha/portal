@@ -1,7 +1,6 @@
 import './bootstrap.scss';
 import './WeAre138.scss';
 import './global.scss';
-
 import axios from 'axios';
 import config from 'react-global-configuration';
 import {defaultConfiguration} from './config';
