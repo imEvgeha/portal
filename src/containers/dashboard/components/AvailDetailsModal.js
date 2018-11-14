@@ -45,25 +45,6 @@ class AvailDetails extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        if (this.state.avail.vodStart) {
-            this.setState({
-                avail: {
-                    ...this.state.avail,
-                    vodStart: moment(this.state.avail.vodStart).format('L')
-                }
-            });
-        }
-        if (this.state.avail.vodEnd) {
-            this.setState({
-                avail: {
-                    ...this.state.avail,
-                    vodEnd: moment(this.state.avail.vodEnd).format('L')
-                }
-            });
-        }
-    }
-
     toggle() {
         this.setState({
             modal: !this.state.modal

@@ -65,11 +65,11 @@ class InfiniteScrollTable extends React.Component {
         }
     };
 
-    getTdProps = (state, rowInfo, column, instance) => {
+    getTdProps = (state, rowInfo, column) => {
 
         if (column.id !== '_selector') {
             return {
-                onClick: (e) => {
+                onClick: () => {
                     this.props.onCellClick(rowInfo.original);
                 },
                 className: 'pointer'

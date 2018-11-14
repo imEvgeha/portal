@@ -10,6 +10,7 @@ import t from 'prop-types';
 import config from 'react-global-configuration';
 import moment from 'moment';
 import {availDetailsModal} from './AvailDetailsModal';
+import {advancedSearchHelper} from '../AdvancedSearchHelper';
 
 const columns = [];
 
@@ -159,7 +160,7 @@ class AvailsResultTable extends React.Component {
 
     doSearch(page, pageSize, sortedParams) {
         if (this.props.useAdvancedSearch) {
-            return dashboardService.advancedSearch(this.props.searchCriteria, page, pageSize, sortedParams);
+            return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
         } else {
             return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
         }
