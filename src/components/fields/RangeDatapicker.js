@@ -60,6 +60,11 @@ export default class RangeDatapicker extends React.Component {
     clear() {
         this.refDatePickerStart.current.clear();
         this.refDatePickerEnd.current.clear();
+        this.setState({
+            invalidStartDate: '',
+            invalidEndDate: '',
+            invalidRange: '',
+        });
     }
 
     handleChangeStartDate(date) {
