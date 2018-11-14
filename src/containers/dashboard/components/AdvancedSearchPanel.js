@@ -55,9 +55,11 @@ class AdvancedSearchPanel extends React.Component {
             invalidEndDate: '',
             invalid: {},
             reportName: '',
+            invalidForm: false
         };
         this.handleBulkExport = this.handleBulkExport.bind(this);
         this.bulkExport = this.bulkExport.bind(this);
+        this.validateState = this.validateState.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -74,6 +76,7 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value});
+        this.setState({invalidForm: this.validateState(this.state.invalid)});
     }
 
     handleDateChange(name, value) {
@@ -81,7 +84,16 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleDateValidate(name, value) {
-        this.setState({invalid: {...this.state.invalid, [name]: value}});
+        const state = {invalid: {...this.state.invalid, [name]: value}};
+        state.invalidForm = !this.validateState(state.invalid);
+        this.setState(state);
+    }
+
+    validateState(invalidState) {
+        for (let key of Object.keys(invalidState)) {
+            if (invalidState[key]) { return false; }
+        }
+        return true;
     }
 
     handleBulkExport() {
@@ -203,6 +215,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                 disabled={this.state.invalidForm}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
                                  style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
@@ -211,9 +224,11 @@ class AdvancedSearchPanel extends React.Component {
                                  style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
 
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
+                                 disabled={this.state.invalidForm}
                                  style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
 
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                                 disabled={this.state.invalidForm}
                                  style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
                      </div>
                 </div>
