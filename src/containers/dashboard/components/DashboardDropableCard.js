@@ -93,7 +93,7 @@ export default class DashboardDropableCard extends React.Component {
                     { this.state.uploading && ( this.state.error ? renderUploadingError(this.state.error, this.state.file) : renderUploadingInfo(this.state.file))}
                 </div>
                 { this.state.uploading && <Progress animated={!!this.state.file} value={100 - this.state.files.length * 100 / this.state.total} />}
-                { !this.state.uploading && !this.state.error && <button className="btn btn-primary dashboard-card-btn" id={'avails-dashboard-upload-btn'} onClick={() => this.dropZoneRef.open()}>Browse files</button>}
+                { !this.state.uploading && <button className="btn btn-primary dashboard-card-btn" id={'avails-dashboard-upload-btn'} onClick={() => this.dropZoneRef.open()}>Browse files</button>}
             </Dropzone>
         );
     }
