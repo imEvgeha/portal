@@ -58,6 +58,7 @@ class SearchResultsTab extends React.Component {
 
     selectColumnsContentProvider() {
         return this.props.availsMapping.mappings.map(column => {
+                if(column.javaVariableName=='title') return '';
                 let checked = this.props.columnsOrder.indexOf(column.javaVariableName) > -1 ? true : false;
                 return <div key={column.javaVariableName}><input type='checkbox' name={column.javaVariableName} style={{marginRight: '8px'}} onClick={this.toggleColumn} defaultChecked={checked} />{column.displayName}<br/></div>;
             }
