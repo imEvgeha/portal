@@ -26,35 +26,37 @@ const Http = {
                 return Promise.reject(error);
             }
         );
-        http.interceptors.response.use(
-            function (response) {
-                return response;
-            },
-            function (error) {
-                if (error.response) {
-                    if (403 === error.response.status || 401 === error.response.status) {
-                        let description;
-                        if (error.response.data) {
-                            description = error.response.status +
-                              ', uri: ' + error.response.config.url +
-                              ', method: ' + error.response.config.method.toUpperCase();
+        if(!param.noDefaultErrorHandling) {
+            http.interceptors.response.use(
+                function (response) {
+                    return response;
+                },
+                function (error) {
+                    if (error.response) {
+                        if (403 === error.response.status || 401 === error.response.status) {
+                            let description;
+                            if (error.response.data) {
+                                description = error.response.status +
+                                  ', uri: ' + error.response.config.url +
+                                  ', method: ' + error.response.config.method.toUpperCase();
+                            }
+                            errorModal.open('Access denied', () => {
+                            }, {description: description});
+    
+                        } else{
+                            let description;
+                            if (error.response.data) {
+                                description = JSON.stringify(error.response.data);
+                            }
+                            errorModal.open('Unexpected error occured. Please try again later.', () => {
+                            }, {description: description});
+    
                         }
-                        errorModal.open('Access denied', () => {
-                        }, {description: description});
-
-                    } else{
-                        let description;
-                        if (error.response.data) {
-                            description = JSON.stringify(error.response.data);
-                        }
-                        errorModal.open('Unexpected error occured. Please try again later.', () => {
-                        }, {description: description});
-
                     }
+                    return Promise.reject(error);
                 }
-                return Promise.reject(error);
-            }
-        );
+            );
+        }
 
         return http;
     }

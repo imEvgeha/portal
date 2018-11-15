@@ -16,7 +16,7 @@ export const profileService = {
             getAvailsMapping().then( (response) => {
                 store.dispatch(loadAvailsMapping({mappings: response.data.mappings.filter((mapping) => (mapping.displayName))}));
             }). catch((error) => {
-                errorModal.open('mappingError', () => {}, {description: 'System is not configured correctly!'});
+                errorModal.open('Error', () => {}, {description: 'System is not configured correctly!'});
                 console.error('Unable to load AvailsMapping');
                 console.error(error);
             });

@@ -44,17 +44,6 @@ class ErrorModal extends React.Component{
     accept() {
         return this.props.accept();
     }
-    componentDidMount() {
-        if(this.state.errorTitle === 'mappingError' || this.state.errorTitle === 'confError') {
-            this.setState({
-                errorTitle: 'Error'
-            })
-        }else {
-            this.setState({
-                errorTitle: this.props.message
-            })
-        }
-    }
 
     render() {
         let modalBody;
@@ -65,12 +54,12 @@ class ErrorModal extends React.Component{
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={false}>
-                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.props.message === 'confError' || this.props.message === 'mappingError'  ? undefined : this.toggle}>{this.state.errorTitle}</ModalHeader>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={this.props.message === 'Error' ? 'static' : false}>
+                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.props.message === 'Error' ? undefined : this.toggle}>{this.state.errorTitle}</ModalHeader>
                 {modalBody}
                 <ModalFooter>
                     {
-                        this.props.message === 'confError' || this.props.message === 'mappingError' ? 
+                        this.props.message === 'Error' ? 
                         <Button color="danger" onClick={this.refresh}>Refresh</Button>
                         :
                         <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>

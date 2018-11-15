@@ -95,6 +95,7 @@ export const configurationService = {
             getConfiguration().then( (response) => {
                 loadConfiguration(response.data);
             }). catch((error) => {
+                errorModal.open('Error', () => {}, {description: 'System is not configured correctly'});
                 console.error('Unable to load configuration');
                 console.error(error);
             });
