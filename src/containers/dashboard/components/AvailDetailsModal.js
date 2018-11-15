@@ -30,11 +30,7 @@ class AvailDetails extends React.Component {
         this.state = {
             modal: true,
             avail: this.props.avail,
-            errorMessage: {
-                date: '',
-                range: '',
-                other: ''
-            },
+            errorMessage: '',
         };
 
         this.emptyValueText = 'Enter';
@@ -139,8 +135,7 @@ class AvailDetails extends React.Component {
     }
 
     render() {
-        const rowsOnLeft = this.props.availsMapping.mappings.length / 2;
-
+        const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
         const renderFieldTemplate = (name, displayName, content) => {
             return (
                 <div href="#" key={name}
@@ -201,12 +196,15 @@ class AvailDetails extends React.Component {
     };
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
-            switch (mapping.dataType) {
-                case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
-                case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
-                case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
-                default:
-                    console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+            if(mapping.javaVariableName!='availId'){//we shouldn't be able to modify the id
+                switch (mapping.dataType) {
+                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
+                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName); //yeah, somebody put type 'year' for Release Year Field, this is a quick fix
+                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
+                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                    default:
+                        console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                }
             }
         });
     };
