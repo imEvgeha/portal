@@ -41,7 +41,6 @@ class AvailDetails extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
-        this.confirm = this.confirm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -53,20 +52,6 @@ class AvailDetails extends React.Component {
 
     abort() {
         return this.props.reject();
-    }
-
-    confirm() {
-        this.setState({ loading: true, showCreatedMessage: false });
-        dashboardService.updateAvails(this.state.avail).then(() => {
-            this.setState({ loading: false, showCreatedMessage: true });
-            let thatAbort = this.abort;
-            setTimeout(function () {
-                thatAbort();
-            }, 1000);
-        })
-            .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
-        
-        //return this.props.resolve();
     }
 
     handleSubmit(editable) {
@@ -106,13 +91,8 @@ class AvailDetails extends React.Component {
             rangeError = displayName + ' must be after corresponding end date';
         }
         if (startDate && endDate && moment(endDate) < moment(startDate)) {
-            errorMessage.range = rangeError;
             return rangeError;
         }
-        this.setState({
-            errorMessage: errorMessage
-        });
-
     }
 
     handleDatepickerChange(name, date) {
@@ -124,13 +104,9 @@ class AvailDetails extends React.Component {
         this.setState({ loading: true, showCreatedMessage: false });
         dashboardService.updateAvails(newAvail).then(() => {
             this.setState({ loading: false, showCreatedMessage: true });
-            let thatAbort = this.abort;
-            setTimeout(function () {
-                thatAbort();
-            }, 1000);
+            //this.handleSubmit(name, this);
         })
         .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
-        // this.confirm();
     }
     setDisableCreate(avail, errorMessage) {
         if (this.isAnyErrors(errorMessage)) {
@@ -154,7 +130,7 @@ class AvailDetails extends React.Component {
 
         const renderFieldTemplate = (name, displayName, content) => {
             return (
-                <a href="#" key={name}
+                <div href="#" key={name}
                     className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="row">
                         <div className="col-4">{displayName}:</div>
@@ -162,7 +138,7 @@ class AvailDetails extends React.Component {
                             {content}
                         </div>
                     </div>
-                </a>
+                </div>
             );
         };
         const renderTextField = (name, displayName) => {
@@ -205,8 +181,8 @@ class AvailDetails extends React.Component {
                 value={this.state.avail[name]}
                 name={name}
                 displayName={displayName}
-                validate={(date) => this.validation(name, displayName, moment(date))}
-                onChange={(date) => this.handleDatepickerChange(name, moment(date))}
+                validate={(date) => this.validation(name, displayName, date)}
+                onChange={(date) => this.handleDatepickerChange(name, date)}
             />
         ));
     };

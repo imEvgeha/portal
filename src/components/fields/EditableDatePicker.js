@@ -20,11 +20,11 @@ class EditableDatePicker extends Component {
         let vodDate = props.value;
         super(props);
         this.state = {
-            date: vodDate ? vodDate : moment(),
+            date: vodDate ? moment(vodDate) : moment(),
             datePickerStatus: false,
             errorMessage: '',
             submitStatus: false,
-            prevDate: vodDate
+            prevDate: moment(vodDate)
         };
 
         this.handleShowDatePicker = this.handleShowDatePicker.bind(this);
@@ -99,7 +99,7 @@ class EditableDatePicker extends Component {
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
-                                    onClick={() => this.submit(this.state.date)}
+                                    onClick={() => this.submit(this.state.date.toISOString())}
                                     color="success"><FontAwesome name='check' />
                                 </Button>
                                 <Button
