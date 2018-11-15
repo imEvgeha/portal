@@ -17,9 +17,7 @@ class ErrorModal extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            modal: true,
-            errorTitle: props.message,
-            errorDescription: props.description
+            modal: true
         };
 
         this.toggle = this.toggle.bind(this);
