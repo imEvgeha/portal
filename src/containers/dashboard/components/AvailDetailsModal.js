@@ -94,8 +94,7 @@ class AvailDetails extends React.Component {
     }
 
     validation(name, displayName, date) {
-        let errorMessage = { ...this.state.errorMessage, range: '', date: '' };
-        let startDate, endDate, rangeError;
+         let startDate, endDate, rangeError;
 
         if (name.endsWith('Start') && this.state.avail[name.replace('Start', 'End')]) {
             startDate = date;

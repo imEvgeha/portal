@@ -185,10 +185,6 @@ class AvailsResultTable extends React.Component {
         }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
     }
 
-    onDateEdit(availDetailModal){
-        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-    }
-
     onEdit(avail) {
         this.props.resultPageUpdate({
             pages: this.props.availTabPage.pages,
