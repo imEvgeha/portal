@@ -60,6 +60,11 @@ export default class RangeDatapicker extends React.Component {
     clear() {
         this.refDatePickerStart.current.clear();
         this.refDatePickerEnd.current.clear();
+        this.setState({
+            invalidStartDate: '',
+            invalidEndDate: '',
+            invalidRange: '',
+        });
     }
 
     handleChangeStartDate(date) {
@@ -67,6 +72,7 @@ export default class RangeDatapicker extends React.Component {
             this.props.onFromDateChange(date);
         }
         this.wrongDateRange(date && this.props.toDate && this.props.toDate < date);
+        this.setState({invalidStartDate: ''});
     }
 
     handleChangeEndDate(date) {
@@ -74,10 +80,13 @@ export default class RangeDatapicker extends React.Component {
             this.props.onToDateChange(date);
         }
         this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
+        this.setState({invalidEndDate: ''});
     }
 
     wrongDateRange(wrong) {
-        this.setState({invalidRange: wrong ? this.props.displayName + ' from should be before to date' : ''});
+        const invalid = wrong ? this.props.displayName + ' from should be before to date' : '';
+        this.setState({invalidRange: invalid});
+        this.props.onValidate(invalid);
     }
 
     handleChangeRawStartDate(date) {
@@ -85,12 +94,15 @@ export default class RangeDatapicker extends React.Component {
             if (validateDate(date)) {
                 this.handleChangeStartDate(moment(date));
                 this.setState({invalidStartDate: ''});
+                this.props.onValidate('');
             } else {
                 this.setState({invalidStartDate: INVALID_DATE, invalidRange: ''});
+                this.props.onValidate(INVALID_DATE);
 
             }
         } else {
             this.setState({invalidStartDate: '', invalidRange: ''});
+            this.props.onValidate('');
         }
     }
 
