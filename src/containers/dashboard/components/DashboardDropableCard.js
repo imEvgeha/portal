@@ -31,25 +31,28 @@ export default class DashboardDropableCard extends React.Component {
 
     handleUpload(files) {
         if (files && files.length > 0) {
-            this.setState({files: files, total: files.length});
-            this.sendNextFile();
+            this.setState({files: files, total: files.length, uploading: true});
+            this.uploadFiles(files);
         }
     }
 
-    sendNextFile() {
-        if (this.state.files && this.state.files.length > 0) {
-            const file = this.state.files[0];
-            this.setState({files: this.state.files.slice(1), file: file, uploading: true});
-            this.uploadFile(file);
+    uploadFiles(files) {
+        if (files && files.length > 0) {
+            const currentFile = files[0];
+            files = files.slice(1);
+            this.setState({files: files, file: currentFile});
+            this.sentUploadedFile(currentFile, files);
         } else {
             this.setState({file: null});
             this.uploadFinished();
+            // console.log('Send next file, finished');
         }
     }
 
-    uploadFile(file) {
-        uploadService.uploadAvail(file).then(() => {
-            setTimeout(() => this.sendNextFile(), 1000);
+    sentUploadedFile(currentFile, files) {
+        uploadService.uploadAvail(currentFile).then(() => {
+            // console.log(res);
+            setTimeout(() => this.uploadFiles(files), 1000);
         }).catch((e) => {
             console.error('Unexpected error');
             console.error(e);
@@ -90,7 +93,7 @@ export default class DashboardDropableCard extends React.Component {
                     { this.state.uploading && ( this.state.error ? renderUploadingError(this.state.error, this.state.file) : renderUploadingInfo(this.state.file))}
                 </div>
                 { this.state.uploading && <Progress animated={!!this.state.file} value={100 - this.state.files.length * 100 / this.state.total} />}
-                { !this.state.uploading && !this.state.error && <button className="btn btn-primary dashboard-card-btn" id={'avails-dashboard-upload-btn'} onClick={() => this.dropZoneRef.open()}>Browse files</button>}
+                { !this.state.uploading && <button className="btn btn-primary dashboard-card-btn" id={'avails-dashboard-upload-btn'} onClick={() => this.dropZoneRef.open()}>Browse files</button>}
             </Dropzone>
         );
     }

@@ -60,6 +60,11 @@ export default class RangeDatapicker extends React.Component {
     clear() {
         this.refDatePickerStart.current.clear();
         this.refDatePickerEnd.current.clear();
+        this.setState({
+            invalidStartDate: '',
+            invalidEndDate: '',
+            invalidRange: '',
+        });
     }
 
     handleChangeStartDate(date) {
@@ -67,6 +72,7 @@ export default class RangeDatapicker extends React.Component {
             this.props.onFromDateChange(date);
         }
         this.wrongDateRange(date && this.props.toDate && this.props.toDate < date);
+        this.setState({invalidStartDate: ''});
     }
 
     handleChangeEndDate(date) {
@@ -74,10 +80,13 @@ export default class RangeDatapicker extends React.Component {
             this.props.onToDateChange(date);
         }
         this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
+        this.setState({invalidEndDate: ''});
     }
 
     wrongDateRange(wrong) {
-        this.setState({invalidRange: wrong ? this.props.displayName + ' from should be before to' : ''});
+        const invalid = wrong ? this.props.displayName + ' from should be before to date' : '';
+        this.setState({invalidRange: invalid});
+        this.props.onValidate(invalid);
     }
 
     handleChangeRawStartDate(date) {
@@ -85,12 +94,18 @@ export default class RangeDatapicker extends React.Component {
             if (validateDate(date)) {
                 this.handleChangeStartDate(moment(date));
                 this.setState({invalidStartDate: ''});
+                this.props.onValidate('');
             } else {
                 this.setState({invalidStartDate: INVALID_DATE, invalidRange: ''});
+<<<<<<< HEAD
+=======
+                this.props.onValidate(INVALID_DATE);
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
 
             }
         } else {
             this.setState({invalidStartDate: '', invalidRange: ''});
+            this.props.onValidate('');
         }
     }
 
@@ -109,7 +124,7 @@ export default class RangeDatapicker extends React.Component {
 
     render() {
         return (
-            <div className="form-group">
+            <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
                 <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
                 <div className={'row justify-content-around'}>
                     <div style={{width: '45%', paddingLeft: '8px'}}>
@@ -127,9 +142,8 @@ export default class RangeDatapicker extends React.Component {
                             disabled={this.props.disabled}
                         />
                         {this.state.invalidStartDate && <small className="text-danger m-2"
-                                                               style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
-                        {this.state.invalidRange && <small className="text-danger m-2"
-                                                               style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidRange}</small>}
+                                                               style={{bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
+
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
@@ -147,8 +161,10 @@ export default class RangeDatapicker extends React.Component {
                             disabled={this.props.disabled}
                         />
                         {this.state.invalidEndDate && <small className="text-danger m-2"
-                                                               style={{position: 'absolute', bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
+                                                               style={{bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
                     </div>
+                    {this.state.invalidRange && <small className="text-danger m-2"
+                                                                                   style={{bottom: '-9px'}}>{this.state.invalidRange}</small>}
                 </div>
             </div>
         );

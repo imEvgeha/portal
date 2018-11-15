@@ -14,6 +14,11 @@ export const defaultConfiguration = {
             },
             extensions: '.xls, .xlsx'
         },
+        export: {
+            http: {
+                timeout: 120000
+            },
+        },
         page: {
             size: 100
         }

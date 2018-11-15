@@ -39,18 +39,4 @@ export const dashboardService = {
     updateAvails: (avail) => {
         return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${avail.id}`, avail);
     },
-
-    exportAvails: (availIDs, columns) => {
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/download', {columnNames: columns, availIds: availIDs}, {responseType: 'arraybuffer'});
-    },
-
-    bulkExportAvails: (searchCriteria) => {
-        const params = {};
-        for (let key in searchCriteria) {
-            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                params[key] = searchCriteria[key];
-            }
-        }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/bulkExport', {responseType: 'arraybuffer', params: {...params, page: 0, size: 1}});
-    }
 };

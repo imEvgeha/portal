@@ -4,7 +4,11 @@ import { Button } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import t from 'prop-types';
+<<<<<<< HEAD
 import { validateDate } from '../../util/Validation';
+=======
+import {validateDate} from '../../util/Validation';
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
 
 class EditableDatePicker extends Component {
 
@@ -131,6 +135,10 @@ class EditableDatePicker extends Component {
                                 {'Enter ' + this.props.displayName}
                             </span>
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
             </div>
         );
     }

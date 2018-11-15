@@ -5,9 +5,14 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { ModalFooter, ModalHeader, Modal, Button, Label } from 'reactstrap';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
+<<<<<<< HEAD
 
 import { dashboardService } from '../DashboardService';
 import EditableDatePicker from '../../../components/fields/EditableDatePicker';
+=======
+import EditableDatePicker from '../../../components/fields/EditableDatePicker';
+import { dashboardService } from '../DashboardService';
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
 
 class AvailDetails extends React.Component {
     static propTypes = {
@@ -44,6 +49,7 @@ class AvailDetails extends React.Component {
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+<<<<<<< HEAD
 
     }
 
@@ -65,6 +71,8 @@ class AvailDetails extends React.Component {
                 }
             });
         }
+=======
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
     }
 
     toggle() {
@@ -86,8 +94,14 @@ class AvailDetails extends React.Component {
                 thatAbort();
             }, 1000);
         })
+<<<<<<< HEAD
         .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
          //return this.props.resolve();
+=======
+            .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
+        
+        //return this.props.resolve();
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
     }
 
     handleSubmit(editable) {
@@ -125,11 +139,19 @@ class AvailDetails extends React.Component {
             startDate = this.state.avail[name.replace('End', 'Start')];
             endDate = date;
             rangeError = displayName + ' must be after corresponding end date';
+<<<<<<< HEAD
         }
         if (startDate && endDate && moment(endDate) < moment(startDate)) {
             errorMessage.range = rangeError;
             return rangeError;
         }
+=======
+        }
+        if (startDate && endDate && moment(endDate) < moment(startDate)) {
+            errorMessage.range = rangeError;
+            return rangeError;
+        }
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
         this.setState({
             errorMessage: errorMessage
         });
@@ -142,8 +164,21 @@ class AvailDetails extends React.Component {
         this.setState({
             avail: newAvail,
         });
+<<<<<<< HEAD
 
         this.confirm();
+=======
+        this.setState({ loading: true, showCreatedMessage: false });
+        dashboardService.updateAvails(newAvail).then(() => {
+            this.setState({ loading: false, showCreatedMessage: true });
+            let thatAbort = this.abort;
+            setTimeout(function () {
+                thatAbort();
+            }, 1000);
+        })
+        .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
+        // this.confirm();
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
     }
     setDisableCreate(avail, errorMessage) {
         if (this.isAnyErrors(errorMessage)) {
@@ -168,7 +203,11 @@ class AvailDetails extends React.Component {
         const renderFieldTemplate = (name, displayName, content) => {
             return (
                 <a href="#" key={name}
+<<<<<<< HEAD
                    className="list-group-item list-group-item-action flex-column align-items-start">
+=======
+                    className="list-group-item list-group-item-action flex-column align-items-start">
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                     <div className="row">
                         <div className="col-4">{displayName}:</div>
                         <div className={'col' + (this.state.avail[name] ? '' : ' empty')} >
@@ -190,17 +229,26 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
                     onChange={this.handleChange}
+<<<<<<< HEAD
                     validate={this.validateNotEmpty}
+=======
+                    validate={ name !== 'title' && name !== 'studio' ? '' : this.validateNotEmpty }
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 />
             ));
         };
         const renderBooleanField = (name, displayName) => {
             return renderFieldTemplate(name, displayName, (
                 <Editable
+<<<<<<< HEAD
+=======
+                    title={name}
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                     name={name}
                     id={'dashboard-avails-detail-modal-' + name + '-select'}
                     dataType="select"
                     onChange={this.handleChange}
+<<<<<<< HEAD
                     value={this.state.avail[name]}
                     options={[
                         { value: 'true', text: 'Yes' },
@@ -245,9 +293,58 @@ class AvailDetails extends React.Component {
                         <div className="nx-stylish list-group">
                             {renderFields(this.props.availsMapping.mappings.slice(rowsOnLeft))}
                         </div>
+=======
+                    handleSubmit={this.handleSubmit}
+                    value={this.state.avail[name]}
+                    options={[
+                        { key:'t', value: 'true', text: 'Yes' },
+                        { key:'f', value: 'false', text: 'No' }]}
+                /> 
+                
+            ));
+
+    };
+    const renderDatepickerField = (name, displayName) => {
+        return renderFieldTemplate(name, displayName, (
+            <EditableDatePicker
+                value={this.state.avail[name]}
+                name={name}
+                displayName={displayName}
+                validate={(date) => this.validation(name, displayName, moment(date))}
+                onChange={(date) => this.handleDatepickerChange(name, moment(date))}
+            />
+        ));
+    };
+    const renderFields = (mappings) => {
+        return mappings.map((mapping) => {
+            switch (mapping.dataType) {
+                case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
+                case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
+                case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                default:
+                    console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+            }
+        });
+    };
+
+    return(
+            <Modal isOpen = { this.state.modal } toggle = { this.toggle } className = { this.props.className + ' lgModalBox' } fade = { false} backdrop = { false} size = {'lg'} >
+            <ModalHeader toggle={this.toggle}>Avail Details</ModalHeader>
+            <div className={'row'}>
+                <div className={'col-6'}>
+                    <div className="nx-stylish list-group">
+                        {renderFields(this.props.availsMapping.mappings.slice(0, rowsOnLeft))}
                     </div>
                 </div>
+                <div className={'col-6'}>
+                    <div className="nx-stylish list-group">
+                        {renderFields(this.props.availsMapping.mappings.slice(rowsOnLeft))}
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
+                    </div>
+                </div>
+            </div>
                 {
+<<<<<<< HEAD
                     this.state.errorMessage &&
                     <ModalFooter id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
                         <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
@@ -257,8 +354,20 @@ class AvailDetails extends React.Component {
                 }
                 <ModalFooter>
                     <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
+=======
+            this.state.errorMessage &&
+                <ModalFooter id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
+                    <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
+                        {this.state.errorMessage.other} {this.state.errorMessage.date} {this.state.errorMessage.range}
+                    </Label>
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 </ModalFooter>
-            </Modal>
+                }
+<ModalFooter>
+    <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
+</ModalFooter>
+
+            </Modal >
         );
     }
 }

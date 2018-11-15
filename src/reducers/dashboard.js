@@ -30,7 +30,11 @@ const initialState = {
     reportName: '',
     availTabPageSort: [],
     availTabPageLoading: false,
+<<<<<<< HEAD
     columns: ['studio', 'title', 'territory', 'genres', 'vodStart', 'vodEnd']
+=======
+    columns: ['title', 'studio', 'territory', 'genres', 'vodStart', 'vodEnd']
+>>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
 };
 
 const dashboard = (state = initialState, action) => {
