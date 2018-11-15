@@ -26,25 +26,6 @@ const Http = {
                 return Promise.reject(error);
             }
         );
-        if (!param.noDefaultErrorHandling) {
-            http.interceptors.response.use(
-                function (response) {
-                    return response;
-                },
-                function (error) {                    
-                    if (error.response) {
-                        if (403 === error.response.status || 401 === error.response.status) {
-                            let description;
-                            if (error.response.data) {
-                                description = error.response.status +
-                                ', uri: ' + error.response.config.url +
-                                ', method: ' + error.response.config.method.toUpperCase();
-                            }
-                            errorModal.open('Access denied', () => {
-                            }, {description: description});
-
-<<<<<<< HEAD
-=======
         http.interceptors.response.use(
             function (response) {
                 return response;
@@ -57,20 +38,23 @@ const Http = {
                             description = error.response.status +
                               ', uri: ' + error.response.config.url +
                               ', method: ' + error.response.config.method.toUpperCase();
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                         }
-                        else {
-                            let description;
-                            if(error.response.data) {
-                                description = JSON.stringify(error.response.data);
-                            }
-                            errorModal.open('Unexpected error occured. Please try again later.', () => {}, { description: description});
+                        errorModal.open('Access denied', () => {
+                        }, {description: description});
+
+                    } else{
+                        let description;
+                        if (error.response.data) {
+                            description = JSON.stringify(error.response.data);
                         }
+                        errorModal.open('Unexpected error occured. Please try again later.', () => {
+                        }, {description: description});
+
                     }
-                    return Promise.reject(error);
                 }
-            );
-        }
+                return Promise.reject(error);
+            }
+        );
 
         return http;
     }

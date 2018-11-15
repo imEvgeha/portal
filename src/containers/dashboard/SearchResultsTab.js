@@ -12,10 +12,7 @@ import {downloadFile} from '../../util/Common';
 import {
     resultPageUpdateColumnsOrder
 } from '../../actions/dashboard';
-<<<<<<< HEAD
-=======
 import {exportService} from './ExportService';
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
 
 const mapStateToProps = state => {
     return {
@@ -51,10 +48,6 @@ class SearchResultsTab extends React.Component {
         super(props);
         this.state = {
             reportsName:configurationService.getReportsNames(),
-<<<<<<< HEAD
-            hideShowColumns:{}
-=======
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
         };
         this.requestFile = this.requestFile.bind(this);
         this.toggleColumn = this.toggleColumn.bind(this);
@@ -65,10 +58,7 @@ class SearchResultsTab extends React.Component {
 
     selectColumnsContentProvider() {
         return this.props.availsMapping.mappings.map(column => {
-<<<<<<< HEAD
-=======
                 if(column.javaVariableName=='title') return '';
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 let checked = this.props.columnsOrder.indexOf(column.javaVariableName) > -1 ? true : false;
                 return <div key={column.javaVariableName}><input type='checkbox' name={column.javaVariableName} style={{marginRight: '8px'}} onClick={this.toggleColumn} defaultChecked={checked} />{column.displayName}<br/></div>;
             }
@@ -83,69 +73,40 @@ class SearchResultsTab extends React.Component {
     }
 
     toggleColumn(e){
-<<<<<<< HEAD
-        if(this.state.hideShowColumns.hasOwnProperty(e.target.name) && this.state.hideShowColumns[e.target.name] != e.target.checked){
-            delete this.state.hideShowColumns[e.target.name];
-        }else{
-            this.state.hideShowColumns[e.target.name]=e.target.checked;
-=======
         if(this.hideShowColumns.hasOwnProperty(e.target.name) && this.hideShowColumns[e.target.name] != e.target.checked){
             delete this.hideShowColumns[e.target.name];
         }else{
             this.hideShowColumns[e.target.name]=e.target.checked;
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
         }
     }
 
     saveColumns() {
         let cols = this.props.columnsOrder.slice();
         //remove all hidden columns
-<<<<<<< HEAD
-        Object.keys(this.state.hideShowColumns).map(key => {
-            if(this.state.hideShowColumns[key]===false){
-=======
         Object.keys(this.hideShowColumns).map(key => {
             if(this.hideShowColumns[key]===false){
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 let position = cols.indexOf(key);
                 if(position>-1){
                     cols.splice(position, 1);
                 }
             }
-<<<<<<< HEAD
-        })
-        //add new visible columns
-        Object.keys(this.state.hideShowColumns).map(key => {
-            if(this.state.hideShowColumns[key]===true){
-=======
         });
         //add new visible columns
         Object.keys(this.hideShowColumns).map(key => {
             if(this.hideShowColumns[key]===true){
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 let position = cols.indexOf(key);
                 if(position===-1){
                     cols.push(key);
                 }
             }
-<<<<<<< HEAD
-        })
-
-        this.state.hideShowColumns={};
-=======
         });
 
         this.hideShowColumns={};
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
         this.props.resultPageUpdateColumnsOrder(cols);
     }
 
     cancelColumns() {
-<<<<<<< HEAD
-        this.state.hideShowColumns={};
-=======
         this.hideShowColumns={};
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
     }
 
     exportAvails = () => {

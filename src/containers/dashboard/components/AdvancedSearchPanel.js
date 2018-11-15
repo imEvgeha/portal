@@ -212,56 +212,6 @@ class AdvancedSearchPanel extends React.Component {
                          Show invalid avails
                      </div>
                 </div>
-<<<<<<< HEAD
-                <div className="row" style={{marginRight: '30px'}}>
-                    <div className="col">
-                        {renderTextField('territory', 'Territory')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('estStart', 'EST Start')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('estEnd', 'EST End')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('vodStart', 'VOD Start')}
-                    </div>
-                    <div className="col">
-                        {renderRangeDatepicker('vodEnd', 'VOD End')}
-                    </div>
-                </div>
-
-                <div className="row align-items-center" style={{marginRight: '30px'}}>
-                    <div className="col">
-                            {renderRangeDatepicker('rowEdited', 'Row edited')}
-                            </div>
-                    <div className="col" style={{paddingTop: '8px'}}>
-                        <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
-                        Show invalid avails
-                    </div>
-                    <div className="col">
-                    </div>
-                    <div className="col">
-                    </div>
-
-                    <div className="col">
-                        <div style={{position: 'absolute', right: '-66px', bottom: '-17px', width: '569px'}}>
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                    style={{ marginRight: '15px'}}>bulk export</Button>
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
-                                    style={{width: '80px', marginRight: '15px'}}>delete</Button>
-
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                    style={{width: '80px', marginRight: '15px'}}>clear</Button>
-
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                    style={{width: '80px', marginRight: '15px'}}>save</Button>
-
-                            <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                    style={{width: '80px', marginRight: '60px'}}>filter</Button>
-                        </div>
-                    </div>
-=======
                 <div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
@@ -281,7 +231,6 @@ class AdvancedSearchPanel extends React.Component {
                                  disabled={this.state.invalidForm}
                                  style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
                      </div>
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 </div>
 
 

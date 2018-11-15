@@ -35,15 +35,9 @@
 }
 
 .vu-advanced-search-panel.hide {
-<<<<<<< HEAD
-  margin-top: -360px;
-  margin-bottom: 66px;
-  transition: margin 300ms;
-=======
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   max-height: 0;
 
   transition: max-height 300ms, padding-top 300ms, padding-bottom 300ms;
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
 }

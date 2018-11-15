@@ -85,12 +85,7 @@ const loadConfiguration = (configuration) => {
         store.dispatch(loadReports(configuration.avails.reports));
     } else {
         store.dispatch(loadReports([]));
-<<<<<<< HEAD
-        console.error('Unable to find reports in configuration');
-        console.error(configuration);        
-=======
         console.warn('No reports in configuration, init empty list');
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
     }
 };
 
@@ -99,14 +94,8 @@ export const configurationService = {
         if (forceReload || !store.getState().root.reports) {
             getConfiguration().then( (response) => {
                 loadConfiguration(response.data);
-<<<<<<< HEAD
-            }). catch((error) => {                
-                errorModal.open('confError', () => {}, {description: 'System is not configured correctly'});
-                console.error('Unable to load AvailsMapping');
-=======
             }). catch((error) => {
                 console.error('Unable to load configuration');
->>>>>>> 57b03f8f55f5b484625263fc34f493f460828782
                 console.error(error);
             });
         }
