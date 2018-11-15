@@ -1,6 +1,7 @@
 import Http from '../../util/Http';
 import config from 'react-global-configuration';
-
+import moment from 'moment';
+import {momentToISO} from '../../util/Common';
 
 const http = Http.create();
 
@@ -10,6 +11,18 @@ const prepareSortMatrixParam = function (sortedParams) {
         matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
     });
     return matrix;
+};
+
+const prepareAvail = function (avail) {
+
+    let availCopy = Object.assign({}, avail);
+    for(let key in availCopy) {
+        if(availCopy.hasOwnProperty(key) && availCopy[key] instanceof moment) {
+            availCopy[key] = momentToISO(availCopy[key]);
+        }
+    }
+
+    return availCopy;
 };
 
 export const dashboardService = {
@@ -33,10 +46,10 @@ export const dashboardService = {
     },
 
     createAvail: (avail) => {
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails', avail);
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails', prepareAvail(avail));
     },
 
     updateAvails: (avail) => {
-        return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${avail.id}`, avail);
+        return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${avail.id}`, prepareAvail(avail));
     },
 };
