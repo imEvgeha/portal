@@ -185,6 +185,7 @@ class AdvancedSearchPanel extends React.Component {
                 onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
                 onValidate={(value) => this.handleDateValidate(name, value)}
                 setClearHandler={ handler => this.clearHandlers[name] = handler}
+                handleKeyPress={this._handleKeyPress}
             />);
         };
 
@@ -207,7 +208,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     {renderRangeDatepicker('rowEdited', 'Row edited')}
-                     <div style={{flex:'1 1 200px', marginTop: '30px', marginBottom: '0'}}>
+                     <div style={{flex:'1 1 200px', margin:'30px 10px 0', marginBottom: '0'}}>
                          <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                          Show invalid avails
                      </div>
