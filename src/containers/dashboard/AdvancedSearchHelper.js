@@ -9,6 +9,7 @@ import {
 } from '../../actions/dashboard';
 import config from 'react-global-configuration';
 import {dashboardService} from './DashboardService';
+import {momentToISO} from '../../util/Common';
 
 const doSearch = (searchCriteria, searchFn) => {
     store.dispatch(resultPageLoading(true));
@@ -64,16 +65,16 @@ export const advancedSearchHelper = {
     prepareAdvancedSearchCall: (searchCriteria) => {
         return {
             ...searchCriteria,
-            vodStartFrom: searchCriteria.vodStartFrom && searchCriteria.vodStartFrom.toISOString(),
-            vodStartTo: searchCriteria.vodStartTo && searchCriteria.vodStartTo.toISOString(),
-            vodEndFrom: searchCriteria.vodEndFrom && searchCriteria.vodEndFrom.toISOString(),
-            vodEndTo: searchCriteria.vodEndTo && searchCriteria.vodEndTo.toISOString(),
-            estStartFrom: searchCriteria.estStartFrom && searchCriteria.estStartFrom.toISOString(),
-            estStartTo: searchCriteria.estStartTo && searchCriteria.estStartTo.toISOString(),
-            estEndFrom: searchCriteria.estEndFrom && searchCriteria.estEndFrom.toISOString(),
-            estEndTo: searchCriteria.estEndTo && searchCriteria.estEndTo.toISOString(),
-            rowEditedFrom: searchCriteria.rowEditedFrom && searchCriteria.rowEditedFrom.toISOString(),
-            rowEditedTo: searchCriteria.rowEditedTo && searchCriteria.rowEditedTo.toISOString(),
+            vodStartFrom: searchCriteria.vodStartFrom && momentToISO(searchCriteria.vodStartFrom),
+            vodStartTo: searchCriteria.vodStartTo && momentToISO(searchCriteria.vodStartTo),
+            vodEndFrom: searchCriteria.vodEndFrom && momentToISO(searchCriteria.vodEndFrom),
+            vodEndTo: searchCriteria.vodEndTo && momentToISO(searchCriteria.vodEndTo),
+            estStartFrom: searchCriteria.estStartFrom && momentToISO(searchCriteria.estStartFrom),
+            estStartTo: searchCriteria.estStartTo && momentToISO(searchCriteria.estStartTo),
+            estEndFrom: searchCriteria.estEndFrom && momentToISO(searchCriteria.estEndFrom),
+            estEndTo: searchCriteria.estEndTo && momentToISO(searchCriteria.estEndTo),
+            rowEditedFrom: searchCriteria.rowEditedFrom && momentToISO(searchCriteria.rowEditedFrom),
+            rowEditedTo: searchCriteria.rowEditedTo && momentToISO(searchCriteria.rowEditedTo),
         };
     },
 
