@@ -42,6 +42,7 @@ class AvailDetails extends React.Component {
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.notifyOtherSystems = this.notifyOtherSystems.bind(this);
     }
 
     toggle() {
@@ -55,7 +56,26 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        this.props.onEdit(editable, this);
+        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value};
+        this.notifyOtherSystems(updatedAvail);
+    }
+
+    notifyOtherSystems(updatedAvail){
+        dashboardService.updateAvails(updatedAvail)
+            .then(res => {
+                let editedAvail = res.data;
+                this.setState({
+                    avail: editedAvail,
+                    errorMessage: ''
+                });
+
+                this.props.onEdit(editedAvail);
+            })
+            .catch(() => {
+                this.setState({
+                    errorMessage: 'Avail edit failed'
+                });
+            });
     }
 
 
@@ -98,15 +118,8 @@ class AvailDetails extends React.Component {
     handleDatepickerChange(name, date) {
         let newAvail = { ...this.state.avail };
         newAvail[name] = date;
-        this.setState({
-            avail: newAvail,
-        });
-        this.setState({ loading: true, showCreatedMessage: false });
-        dashboardService.updateAvails(newAvail).then(() => {
-            this.setState({ loading: false, showCreatedMessage: true });
-            //this.handleSubmit(name, this);
-        })
-        .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
+        this.notifyOtherSystems(newAvail);
+
     }
     setDisableCreate(avail, errorMessage) {
         if (this.isAnyErrors(errorMessage)) {
