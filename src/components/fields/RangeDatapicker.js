@@ -116,6 +116,7 @@ export default class RangeDatapicker extends React.Component {
             }
         } else {
             this.setState({invalidRange: '', invalidEndDate: ''});
+            this.props.onValidate('');
         }
     }
 
