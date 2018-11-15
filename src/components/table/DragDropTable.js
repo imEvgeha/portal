@@ -26,8 +26,7 @@ class DragDropTable extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state=this.state || {};
+        this.state = {};
     }
 
     getTheadThProps = (state, rowInfo, column) => {
