@@ -5,12 +5,12 @@ import { errorModal } from '../components/share/ErrorModal';
 
 const Http = {
     create: function (param) {
-        
+
         const defaults = {
             timeout: 10000,
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         };
-        param = {...param};
+        param = { ...param };
         const http = axios.create({
             ...defaults,
             ...param
@@ -26,7 +26,7 @@ const Http = {
                 return Promise.reject(error);
             }
         );
-        if(!param.noDefaultErrorHandling) {
+        if (!param.noDefaultErrorHandling) {
             http.interceptors.response.use(
                 function (response) {
                     return response;
@@ -37,20 +37,19 @@ const Http = {
                             let description;
                             if (error.response.data) {
                                 description = error.response.status +
-                                  ', uri: ' + error.response.config.url +
-                                  ', method: ' + error.response.config.method.toUpperCase();
+                                    ', uri: ' + error.response.config.url +
+                                    ', method: ' + error.response.config.method.toUpperCase();
                             }
                             errorModal.open('Access denied', () => {
-                            }, {description: description});
-    
-                        } else{
+                            }, { description: description });
+
+                        } else {
                             let description;
                             if (error.response.data) {
                                 description = JSON.stringify(error.response.data);
                             }
                             errorModal.open('Unexpected error occured. Please try again later.', () => {
-                            }, {description: description});
-    
+                            }, { description: description, closable: true });
                         }
                     }
                     return Promise.reject(error);

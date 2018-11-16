@@ -48,7 +48,7 @@ import {resultPageUpdateColumnsOrder} from '../../actions/dashboard';
 // };
 
 
-const http = Http.create({noDefaultErrorHandling : true});
+const http = Http.create({noDefaultErrorHandling: false});
 
 
 const loadReportToStore = (report) => {
@@ -95,7 +95,7 @@ export const configurationService = {
             getConfiguration().then( (response) => {
                 loadConfiguration(response.data);
             }). catch((error) => {
-                errorModal.open('Error', () => {}, {description: 'System is not configured correctly!'});
+                errorModal.open('Error', () => {}, {description: 'System is not configured correctly!', closable: false});
                 console.error('Unable to load configuration');
                 console.error(error);
             });
@@ -139,28 +139,18 @@ export const configurationService = {
         putConfiguration({'avails': {'reports': reports}}).then( (response) => {
             loadConfiguration(response.data);
             store.dispatch(setReportName(reportName));
-        }). catch((error) => {
-            let description;
-            if(error.response.data) {
-                description = JSON.stringify(error.response.data);
-            }
-            errorModal.open('Unexpected error occured. Please try again later.', () => {}, {description: description});
+        }). catch((error) => {  
+            //errorModal.open('Error', () => {}, { description: 'System is not configured correctly!', closable: false });
             console.error('Unable to Save Report');
             console.error(error);
         });
     },
-
     deleteReport: (reportName) => {
         const reports = store.getState().root.reports.filter((report) => {return report.name !== reportName;});
         putConfiguration({'avails': {'reports': reports}}).then( (response) => {
             loadConfiguration(response.data);
             store.dispatch(setReportName(''));
         }). catch((error) => {
-            let description;
-            if(error.response.data) {
-                description = JSON.stringify(error.response.data);
-            }
-            errorModal.open('Unexpected error occured. Please try again later.', () => {}, {description: description});
             console.error('Unable to Delete Report');
             console.error(error);
         });

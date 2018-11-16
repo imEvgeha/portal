@@ -232,8 +232,6 @@ class AdvancedSearchPanel extends React.Component {
                                  style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
                      </div>
                 </div>
-
-
             </div>
         );
     }

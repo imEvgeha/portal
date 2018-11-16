@@ -52,15 +52,15 @@ class ErrorModal extends React.Component{
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={this.props.message === 'Error' ? 'static' : false}>
-                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.props.message === 'Error' ? undefined : this.toggle}>{this.state.errorTitle}</ModalHeader>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={!this.props.closable ? 'static' : false}>
+                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={!this.props.closable ? undefined : this.toggle}>{this.props.message}</ModalHeader>
                 {modalBody}
                 <ModalFooter>
                     {
-                        this.props.message === 'Error' ? 
-                        <Button color="danger" onClick={this.refresh}>Refresh</Button>
+                        !this.props.closable ? 
+                            <Button color="danger" onClick={this.refresh}>Refresh</Button>
                         :
-                        <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                            <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
                     }
                     
                 </ModalFooter>
