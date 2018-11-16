@@ -942,6 +942,18 @@ after@0.8.2:
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
+ag-grid-community@^19.1.2:
+  version "19.1.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-19.1.2.tgz#4dddba4492bfbc21d93634cd7aae396b452d187f"
+  integrity sha512-nbnapa1D8usuDf80Vd09gpAosCFyvdwhq6zL4T7FSePYFjRhvvToryJ2wcDE0vcIuI5lpnR0Nrj3kRcXM+/3cQ==
+
+ag-grid-react@^19.1.2:
+  version "19.1.2"
+  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-19.1.2.tgz#e1d29d19b0993301a468648d034aec245afa6935"
+  integrity sha512-87XaXdtuvy2/krFhyFfocIstRCwRX8G0uYBq78SD8VUoblEXN0nA77mStjMdfbjPbU+GxIbdULKOEdqlHVoDcg==
+  dependencies:
+    prop-types "^15.6.2"
+
 agent-base@4, agent-base@^4.1.0, agent-base@^4.2.0, agent-base@~4.2.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.2.1.tgz#d89e5999f797875674c07d87f260fc41e83e8ca9"

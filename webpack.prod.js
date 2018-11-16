@@ -23,7 +23,7 @@ module.exports = {
                 loaders: ['babel-loader', 'eslint-loader']
             },
             {
-                test: /\.scss/,
+                test: /\.(scss|css)/,
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             }, {
                 test: /\.(gif|png|jpe?g|svg)$/i,

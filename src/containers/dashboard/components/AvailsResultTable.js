@@ -1,5 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
+import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
+import 'ag-grid-community/dist/styles/ag-theme-dark.css';
+import 'ag-grid-community/dist/styles/ag-theme-blue.css';
+import 'ag-grid-community/dist/styles/ag-theme-bootstrap.css';
+
 import DragDropTable from '../../../components/table/DragDropTable';
 import connect from 'react-redux/es/connect/connect';
 import {dashboardService} from '../DashboardService';
@@ -63,12 +74,12 @@ class AvailsResultTable extends React.Component {
             requestLoading: false,
         };
 
-        this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
-        this.onSortedChange = this.onSortedChange.bind(this);
-        this.onSelection = this.onSelection.bind(this);
-        this.onEdit = this.onEdit.bind(this);
-        this.editAvail = this.editAvail.bind(this);
-        this.onCellClick = this.onCellClick.bind(this);
+//        this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
+//        this.onSortedChange = this.onSortedChange.bind(this);
+//        this.onSelection = this.onSelection.bind(this);
+//        this.onEdit = this.onEdit.bind(this);
+//        this.editAvail = this.editAvail.bind(this);
+//        this.onCellClick = this.onCellClick.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
 
@@ -96,144 +107,156 @@ class AvailsResultTable extends React.Component {
     }
 
     parseColumnsSchema() {
-        this.props.availsMapping.mappings.map(column => {
-                let columnDef={};
-                columnDef.accessor = column.javaVariableName;
-                columnDef.Header =  <span id={`dashboard-result-table-header-${column.javaVariableName}`}>{column.displayName}</span>;
-                if(column.dataType === 'date'){
-                    columnDef.Cell = row => (<span>{row.value && moment(row.value).format('L')}</span>);
-                }
-                columns.push(columnDef);
-            }
-        );
-    }
-
-    onLoadMoreItems() {
-        if (!this.state.requestLoading && this.props.availTabPage.avails.length < this.props.availTabPage.total) {
-            this.setState({requestLoading: true});
-            this.doSearch(this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
-            .then(response => {
-                this.addLoadedItems(response.data);
-                this.setState({requestLoading: false});
-            }).catch((error) => {
-                this.setState({requestLoading: false});
-                console.error('Unexpected error');
-                console.error(error);
-            });
+        if(this.props.availsMapping){
+            this.props.availsMapping.mappings.map(column => columns.push({field:column.javaVariableName, headerName:column.displayName, checkboxSelection: true}));
         }
     }
 
-    addLoadedItems(data) {
-        let items = data.data;
-        if (items.length > 0) {
-            this.props.resultPageUpdate({
-                pages: this.props.availTabPage.pages + 1,
-                avails: this.props.availTabPage.avails.concat(items),
-                pageSize: this.props.availTabPage.pageSize + items.length,
-                total: data.total
-            });
-        }
-    }
+//    onLoadMoreItems() {
+//        if (!this.state.requestLoading && this.props.availTabPage.avails.length < this.props.availTabPage.total) {
+//            this.setState({requestLoading: true});
+//            this.doSearch(this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
+//            .then(response => {
+//                this.addLoadedItems(response.data);
+//                this.setState({requestLoading: false});
+//            }).catch((error) => {
+//                this.setState({requestLoading: false});
+//                console.error('Unexpected error');
+//                console.error(error);
+//            });
+//        }
+//    }
 
-    onSortedChange(newSorted) {
-        this.props.resultPageSort(newSorted);
-        this.sortData(newSorted);
-    }
+//    addLoadedItems(data) {
+//        let items = data.data;
+//        if (items.length > 0) {
+//            this.props.resultPageUpdate({
+//                pages: this.props.availTabPage.pages + 1,
+//                avails: this.props.availTabPage.avails.concat(items),
+//                pageSize: this.props.availTabPage.pageSize + items.length,
+//                total: data.total
+//            });
+//        }
+//    }
 
-    sortData(sortProps) {
-        this.props.resultPageLoading(true);
-        this.doSearch(0, this.state.pageSize, sortProps)
-            .then(response => {
-                this.props.resultPageUpdate({
-                    pages: 1,
-                    avails: response.data.data,
-                    pageSize: response.data.data.length,
-                    total: response.data.total
-                });
-                this.props.resultPageLoading(false);
-            }).catch((error) => {
-            this.props.resultPageLoading(false);
-            console.error('Unexpected error');
-            console.error(error);
-        });
-    }
+//    onSortedChange(newSorted) {
+//        this.props.resultPageSort(newSorted);
+//        this.sortData(newSorted);
+//    }
+//
+//    sortData(sortProps) {
+//        this.props.resultPageLoading(true);
+//        this.doSearch(0, this.state.pageSize, sortProps)
+//            .then(response => {
+//                this.props.resultPageUpdate({
+//                    pages: 1,
+//                    avails: response.data.data,
+//                    pageSize: response.data.data.length,
+//                    total: response.data.total
+//                });
+//                this.props.resultPageLoading(false);
+//            }).catch((error) => {
+//            this.props.resultPageLoading(false);
+//            console.error('Unexpected error');
+//            console.error(error);
+//        });
+//    }
 
-    doSearch(page, pageSize, sortedParams) {
-        if (this.props.useAdvancedSearch) {
-            return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
-        } else {
-            return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
-        }
-    }
+//    doSearch(page, pageSize, sortedParams) {
+//        if (this.props.useAdvancedSearch) {
+//            return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
+//        } else {
+//            return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
+//        }
+//    }
+//
+//    onSelection(selected, selectAll) {
+//        this.props.resultPageSelect({selected, selectAll});
+//    }
+//
+//    editAvail(newAvail) {
+//        let copiedAvails = this.props.availTabPage.avails.slice();
+//        let avail = copiedAvails.find(b => b.id === newAvail.id);
+//        if (avail) {
+//            for(let availField in newAvail) avail[availField] = newAvail[availField];
+//        }
+//        return copiedAvails;
+//    }
 
-    onSelection(selected, selectAll) {
-        this.props.resultPageSelect({selected, selectAll});
-    }
-
-    editAvail(newAvail) {
-        let copiedAvails = this.props.availTabPage.avails.slice();
-        let avail = copiedAvails.find(b => b.id === newAvail.id);
-        if (avail) {
-            for(let availField in newAvail) avail[availField] = newAvail[availField];
-        }
-        return copiedAvails;
-    }
-
-    onCellClick(row) {
-        availDetailsModal.open(row, () => {
-        }, () => {
-        }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
-    }
-
-    onEdit(editable, availDetailModal) {
-        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                availDetailModal.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
-                this.props.resultPageUpdate({
-                    pages: this.props.availTabPage.pages,
-                    avails: this.editAvail(editedAvail),
-                    pageSize: this.props.availTabPage.pageSize,
-                    total: this.props.availTabPage.total
-                });
-            })
-            .catch(() => {
-                editable.setState({availLastEditSucceed: false});
-                availDetailModal.setState({vailsMapping: t.any,
-                    errorMessage: 'Avail edit failed'
-                });
-                editable.value = availDetailModal.state.avail[editable.props.title];
-                editable.newValue = availDetailModal.state.avail[editable.props.title];
-            });
-    }
+//    onCellClick(row) {
+//        availDetailsModal.open(row, () => {
+//        }, () => {
+//        }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
+//    }
+//
+//    onEdit(editable, availDetailModal) {
+//        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
+//        dashboardService.updateAvails(updatedAvail)
+//            .then(res => {
+//                let editedAvail = res.data;
+//                availDetailModal.setState({
+//                    avail: editedAvail,
+//                    errorMessage: ''
+//                });
+//                this.props.resultPageUpdate({
+//                    pages: this.props.availTabPage.pages,
+//                    avails: this.editAvail(editedAvail),
+//                    pageSize: this.props.availTabPage.pageSize,
+//                    total: this.props.availTabPage.total
+//                });
+//            })
+//            .catch(() => {
+//                editable.setState({availLastEditSucceed: false});
+//                availDetailModal.setState({vailsMapping: t.any,
+//                    errorMessage: 'Avail edit failed'
+//                });
+//                editable.value = availDetailModal.state.avail[editable.props.title];
+//                editable.newValue = availDetailModal.state.avail[editable.props.title];
+//            });
+//    }
 
     render() {
-        // This will force the table body to overflow and scroll, since there is not enough room
-        let style = {height : this.state.height};
-        
-        return (
-            <DragDropTable
-                columns={columns}
-                data={this.props.availTabPage.avails}
-                pageSize={this.props.availTabPage.pageSize}
-                style={style}
-                scrollSliderLoadPercent={scrollSliderLoadPercent}
-                loading={this.props.availTabPageLoading}
-                selection={this.props.availTabPageSelection.selected}
-                selectAll={this.props.availTabPageSelection.selectAll}
+        return(
+            <div
+                className="ag-theme-balham"
+                style={{
+                    height: this.state.height,
+                    width: '100%' }}
+                    >
+                <AgGridReact
+                    columnDefs={columns}
+                    rowData={this.props.availTabPage.avails}
+                    enableSorting={true}
+                    enableFilter={true}
+                    rowSelection="multiple"
 
-                sorted={this.props.availTabPageSort}
 
-                onLoadMoreItems={this.onLoadMoreItems}
-                onSortedChange={this.onSortedChange}
-                onSelection={this.onSelection}
-                onCellClick={this.onCellClick}
-            />
+
+                    >
+                </AgGridReact>
+            </div>
         );
+
+        
+//        return (
+//            <DragDropTable
+//                columns={columns}
+//                data={this.props.availTabPage.avails}
+//                pageSize={this.props.availTabPage.pageSize}
+//                style={style}
+//                scrollSliderLoadPercent={scrollSliderLoadPercent}
+//                loading={this.props.availTabPageLoading}
+//                selection={this.props.availTabPageSelection.selected}
+//                selectAll={this.props.availTabPageSelection.selectAll}
+//
+//                sorted={this.props.availTabPageSort}
+//
+//                onLoadMoreItems={this.onLoadMoreItems}
+//                onSortedChange={this.onSortedChange}
+//                onSelection={this.onSelection}
+//                onCellClick={this.onCellClick}
+//            />
+//        );
     }
 }
 
