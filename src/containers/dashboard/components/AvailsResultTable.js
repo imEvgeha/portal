@@ -1,5 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import t from 'prop-types';
+
+import config from 'react-global-configuration';
+
+import './AvailResultTable.scss';
 
 // image import
 import LoadingGif from '../../../img/loading.gif';
@@ -14,19 +19,14 @@ import 'ag-grid-community/dist/styles/ag-theme-dark.css';
 import 'ag-grid-community/dist/styles/ag-theme-blue.css';
 import 'ag-grid-community/dist/styles/ag-theme-bootstrap.css';
 
-import DragDropTable from '../../../components/table/DragDropTable';
 import connect from 'react-redux/es/connect/connect';
+import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../actions/dashboard';
 import {dashboardService} from '../DashboardService';
-
-import './AvailResultTable.scss';
-import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading} from '../../../actions/dashboard';
-import t from 'prop-types';
-import config from 'react-global-configuration';
-import moment from 'moment';
-import {availDetailsModal} from './AvailDetailsModal';
 import {advancedSearchHelper} from '../AdvancedSearchHelper';
+//import {availDetailsModal} from './AvailDetailsModal';
 
-const columns = [];
+
+const colDef = [];
 
 /**
  * Advance Search -
@@ -42,6 +42,7 @@ const mapStateToProps = state => {
         availTabPageSelection: state.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
+        columnsOrder: state.dashboard.columns
     };
 };
 
@@ -49,10 +50,9 @@ const mapDispatchToProps = {
     resultPageUpdate,
     resultPageSort,
     resultPageSelect,
-    resultPageLoading
+    resultPageLoading,
+    resultPageUpdateColumnsOrder: resultPageUpdateColumnsOrder
 };
-
-const scrollSliderLoadPercent = 0.5;
 
 class AvailsResultTable extends React.Component {
     static propTypes = {
@@ -68,7 +68,11 @@ class AvailsResultTable extends React.Component {
         resultPageSort: t.func,
         resultPageSelect: t.func,
         resultPageLoading: t.func,
+        columnsOrder: t.array,
+        resultPageUpdateColumnsOrder: t.func
     };
+
+    table = null;
 
     constructor(props) {
         super(props);
@@ -85,8 +89,9 @@ class AvailsResultTable extends React.Component {
         this.addLoadedItems = this.addLoadedItems.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
+        this.onColumnReordered = this.onColumnReordered.bind(this);
 
-        if(columns.length==0){
+        if(colDef.length==0){
             this.parseColumnsSchema();
         }
     }
@@ -111,7 +116,7 @@ class AvailsResultTable extends React.Component {
 
     parseColumnsSchema() {
         if(this.props.availsMapping){
-            this.props.availsMapping.mappings.map(column => columns.push({field:column.javaVariableName, headerName:column.displayName, cellRenderer: 'loadingRenderer'}));
+            this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {field:column.javaVariableName, headerName:column.displayName, cellRenderer: 'loadingRenderer'});
         }
     }
 
@@ -187,73 +192,6 @@ class AvailsResultTable extends React.Component {
 //            });
 //    }
 
-    render() {
-        let dataSource = {
-            rowCount: null, // behave as infinite scroll
-            getRows: this.props.availTabPageLoading ? null : this.getRows
-        }
-        let components = {
-            loadingRenderer: function(params) {
-                if (params.value !== undefined) {
-                    return params.value;
-                } else {
-                    return `<img src=${LoadingGif}>`;
-                }
-            }
-        }
-
-        return(
-            <div
-                className="ag-theme-balham"
-                style={{
-                    height: this.state.height,
-                    width: '100%' }}
-                    >
-                <AgGridReact
-                    columnDefs={columns}
-                    rowBuffer= '50'
-                    rowModelType= 'infinite'
-                    paginationPageSize= {this.state.pageSize}
-                    infiniteInitialRowCount= '0'
-                    cacheOverflowSize= '2'
-                    maxConcurrentDatasourceRequests= '1'
-                    datasource= {dataSource}
-                    components= {components}
-
-
-                    enableSorting={true}
-                    enableFilter={true}
-                    rowSelection="multiple"
-                    enableColResize= {true}
-                    rowDeselection= {true}
-                    >
-                </AgGridReact>
-
-            </div>
-        );
-
-        
-//        return (
-//            <DragDropTable
-//                columns={columns}
-//                data={this.props.availTabPage.avails}
-//                pageSize={this.props.availTabPage.pageSize}
-//                style={style}
-//                scrollSliderLoadPercent={scrollSliderLoadPercent}
-//                loading={this.props.availTabPageLoading}
-//                selection={this.props.availTabPageSelection.selected}
-//                selectAll={this.props.availTabPageSelection.selectAll}
-//
-//                sorted={this.props.availTabPageSort}
-//
-//                onLoadMoreItems={this.onLoadMoreItems}
-//                onSortedChange={this.onSortedChange}
-//                onSelection={this.onSelection}
-//                onCellClick={this.onCellClick}
-//            />
-//        );
-    }
-
     doSearch(page, pageSize, sortedParams) {
         if (this.props.useAdvancedSearch) {
             return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
@@ -290,6 +228,107 @@ class AvailsResultTable extends React.Component {
             });
         }
     }
+
+    onColumnReordered(e) {
+        let cols = []
+        e.columnApi.getAllGridColumns().map(column => cols.push(column.colDef.field));
+        this.props.resultPageUpdateColumnsOrder(cols);
+        console.log(e);
+    }
+
+    setTable = element => {
+      this.table = element;
+    };
+
+    render() {
+        let dataSource = {
+            rowCount: null, // behave as infinite scroll
+            getRows: this.getRows
+        }
+        let components = {
+            loadingRenderer: function(params) {
+                if (params.value !== undefined) {
+                    return params.value;
+                } else {
+                    return `<img src=${LoadingGif}>`;
+                }
+            }
+        }
+
+        let cols=[];
+        if (this.props.columnsOrder) {
+            this.props.columnsOrder.map(acc => {
+                if(colDef.hasOwnProperty(acc)){
+                    cols.push(colDef[acc]);
+                }
+            });
+        };
+
+        if(this.table){
+            this.table.api.setColumnDefs(cols); //forces refresh of columns
+            this.table.columnApi.moveColumns(this.props.columnsOrder, 0);
+
+            if(this.props.availTabPageLoading){
+                this.table.api.setDatasource(dataSource);
+            }
+        }
+
+        return(
+            <div
+                className="ag-theme-balham"
+                style={{
+                    height: this.state.height,
+                    width: '100%' }}
+                    >
+                <AgGridReact
+                    ref={this.setTable}
+                    columnDefs= {cols}
+                    rowBuffer= '50'
+                    rowModelType= 'infinite'
+                    paginationPageSize= {this.state.pageSize}
+                    infiniteInitialRowCount= '0'
+                    cacheOverflowSize= '2'
+                    maxConcurrentDatasourceRequests= '1'
+                    datasource= {dataSource}
+                    components= {components}
+                    suppressDragLeaveHidesColumns= {true}
+
+                    onDragStopped= {this.onColumnReordered}
+
+//                    enableSorting={true}
+//                    enableFilter={true}
+//                    rowSelection="multiple"
+//                    enableColResize= {true}
+//                    rowDeselection= {true}
+                    >
+                </AgGridReact>
+
+            </div>
+        );
+
+        
+//        return (
+//            <DragDropTable
+//                columns={columns}
+//                data={this.props.availTabPage.avails}
+//                pageSize={this.props.availTabPage.pageSize}
+//                style={style}
+//                scrollSliderLoadPercent={scrollSliderLoadPercent}
+//                loading={this.props.availTabPageLoading}
+//                selection={this.props.availTabPageSelection.selected}
+//                selectAll={this.props.availTabPageSelection.selectAll}
+//
+//                sorted={this.props.availTabPageSort}
+//
+//                onLoadMoreItems={this.onLoadMoreItems}
+//                onSortedChange={this.onSortedChange}
+//                onSelection={this.onSelection}
+//                onCellClick={this.onCellClick}
+//            />
+//        );
+    }
+
+
 }
 
 
