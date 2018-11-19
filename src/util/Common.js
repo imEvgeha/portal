@@ -1,3 +1,5 @@
+const formatISO = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
+
 function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
@@ -15,4 +17,8 @@ function downloadFile(data) {
     window.URL.revokeObjectURL(url);
 }
 
-export {downloadFile};
+function momentToISO(date) {
+    return date.format(formatISO);
+}
+
+export {downloadFile, momentToISO};

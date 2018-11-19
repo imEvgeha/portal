@@ -17,6 +17,7 @@ export default class RangeDatapicker extends React.Component {
         onToDateChange: t.func,
         onValidate: t.func,
         setClearHandler: t.func,
+        handleKeyPress: t.func,
     };
 
     constructor(props) {
@@ -116,6 +117,7 @@ export default class RangeDatapicker extends React.Component {
             }
         } else {
             this.setState({invalidRange: '', invalidEndDate: ''});
+            this.props.onValidate('');
         }
     }
 
@@ -137,6 +139,7 @@ export default class RangeDatapicker extends React.Component {
                             onChangeRaw={(event) => this.handleChangeRawStartDate(event.target.value)}
                             todayButton={'Today'}
                             disabled={this.props.disabled}
+                            customInput={<input onKeyPress={this.props.handleKeyPress} />}
                         />
                         {this.state.invalidStartDate && <small className="text-danger m-2"
                                                                style={{bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
@@ -156,6 +159,7 @@ export default class RangeDatapicker extends React.Component {
                             onChangeRaw={(event) => this.handleChangeRawEndDate(event.target.value)}
                             todayButton={'Today'}
                             disabled={this.props.disabled}
+                            customInput={<input onKeyPress={this.props.handleKeyPress} />}
                         />
                         {this.state.invalidEndDate && <small className="text-danger m-2"
                                                                style={{bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
