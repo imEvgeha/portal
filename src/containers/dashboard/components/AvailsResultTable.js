@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// image import
+import LoadingGif from '../../../img/loading.gif';
+
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -71,15 +74,15 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: config.get('avails.page.size'),
-            requestLoading: false,
         };
 
-//        this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
 //        this.onSortedChange = this.onSortedChange.bind(this);
 //        this.onSelection = this.onSelection.bind(this);
 //        this.onEdit = this.onEdit.bind(this);
 //        this.editAvail = this.editAvail.bind(this);
 //        this.onCellClick = this.onCellClick.bind(this);
+        this.getRows = this.getRows.bind(this);
+        this.addLoadedItems = this.addLoadedItems.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
 
@@ -108,36 +111,11 @@ class AvailsResultTable extends React.Component {
 
     parseColumnsSchema() {
         if(this.props.availsMapping){
-            this.props.availsMapping.mappings.map(column => columns.push({field:column.javaVariableName, headerName:column.displayName, checkboxSelection: true}));
+            this.props.availsMapping.mappings.map(column => columns.push({field:column.javaVariableName, headerName:column.displayName, cellRenderer: 'loadingRenderer'}));
         }
     }
 
-//    onLoadMoreItems() {
-//        if (!this.state.requestLoading && this.props.availTabPage.avails.length < this.props.availTabPage.total) {
-//            this.setState({requestLoading: true});
-//            this.doSearch(this.props.availTabPage.pages, this.state.pageSize, this.props.availTabPageSort)
-//            .then(response => {
-//                this.addLoadedItems(response.data);
-//                this.setState({requestLoading: false});
-//            }).catch((error) => {
-//                this.setState({requestLoading: false});
-//                console.error('Unexpected error');
-//                console.error(error);
-//            });
-//        }
-//    }
 
-//    addLoadedItems(data) {
-//        let items = data.data;
-//        if (items.length > 0) {
-//            this.props.resultPageUpdate({
-//                pages: this.props.availTabPage.pages + 1,
-//                avails: this.props.availTabPage.avails.concat(items),
-//                pageSize: this.props.availTabPage.pageSize + items.length,
-//                total: data.total
-//            });
-//        }
-//    }
 
 //    onSortedChange(newSorted) {
 //        this.props.resultPageSort(newSorted);
@@ -162,14 +140,8 @@ class AvailsResultTable extends React.Component {
 //        });
 //    }
 
-//    doSearch(page, pageSize, sortedParams) {
-//        if (this.props.useAdvancedSearch) {
-//            return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
-//        } else {
-//            return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
-//        }
-//    }
-//
+
+
 //    onSelection(selected, selectAll) {
 //        this.props.resultPageSelect({selected, selectAll});
 //    }
@@ -216,6 +188,20 @@ class AvailsResultTable extends React.Component {
 //    }
 
     render() {
+        let dataSource = {
+            rowCount: null, // behave as infinite scroll
+            getRows: this.props.availTabPageLoading ? null : this.getRows
+        }
+        let components = {
+            loadingRenderer: function(params) {
+                if (params.value !== undefined) {
+                    return params.value;
+                } else {
+                    return `<img src=${LoadingGif}>`;
+                }
+            }
+        }
+
         return(
             <div
                 className="ag-theme-balham"
@@ -225,15 +211,24 @@ class AvailsResultTable extends React.Component {
                     >
                 <AgGridReact
                     columnDefs={columns}
-                    rowData={this.props.availTabPage.avails}
+                    rowBuffer= '50'
+                    rowModelType= 'infinite'
+                    paginationPageSize= {this.state.pageSize}
+                    infiniteInitialRowCount= '0'
+                    cacheOverflowSize= '2'
+                    maxConcurrentDatasourceRequests= '1'
+                    datasource= {dataSource}
+                    components= {components}
+
+
                     enableSorting={true}
                     enableFilter={true}
                     rowSelection="multiple"
-
-
-
+                    enableColResize= {true}
+                    rowDeselection= {true}
                     >
                 </AgGridReact>
+
             </div>
         );
 
@@ -258,6 +253,45 @@ class AvailsResultTable extends React.Component {
 //            />
 //        );
     }
+
+    doSearch(page, pageSize, sortedParams) {
+        if (this.props.useAdvancedSearch) {
+            return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
+        } else {
+            return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
+        }
+    }
+
+    getRows(params){
+        this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
+                   .then(response => {
+                        this.addLoadedItems(response.data);
+                        // if on or after the last page, work out the last row.
+                        var lastRow = -1;
+                        if (response.data.total <= params.endRow) {
+                            lastRow = response.data.data.length;
+                        }
+                        params.successCallback(response.data.data, lastRow)
+                   }).catch((error) => {
+                       console.error('Unexpected error');
+                       console.error(error);
+                       params.failCallback();
+                   });
+    }
+
+    addLoadedItems(data) {
+        let items = data.data;
+        if (items.length > 0) {
+            this.props.resultPageUpdate({
+                pages: this.props.availTabPage.pages + 1,
+                avails: this.props.availTabPage.avails.concat(items),
+                pageSize: this.props.availTabPage.pageSize + items.length,
+                total: data.total
+            });
+        }
+    }
 }
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailsResultTable);
