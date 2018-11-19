@@ -80,7 +80,6 @@ class AvailsResultTable extends React.Component {
             pageSize: config.get('avails.page.size'),
         };
 
-//        this.onSortedChange = this.onSortedChange.bind(this);
 //        this.onSelection = this.onSelection.bind(this);
 //        this.onEdit = this.onEdit.bind(this);
 //        this.editAvail = this.editAvail.bind(this);
@@ -90,6 +89,7 @@ class AvailsResultTable extends React.Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
         this.onColumnReordered = this.onColumnReordered.bind(this);
+        this.onSortChanged = this.onSortChanged.bind(this);
 
         if(colDef.length==0){
             this.parseColumnsSchema();
@@ -122,30 +122,17 @@ class AvailsResultTable extends React.Component {
 
 
 
-//    onSortedChange(newSorted) {
-//        this.props.resultPageSort(newSorted);
-//        this.sortData(newSorted);
-//    }
-//
-//    sortData(sortProps) {
-//        this.props.resultPageLoading(true);
-//        this.doSearch(0, this.state.pageSize, sortProps)
-//            .then(response => {
-//                this.props.resultPageUpdate({
-//                    pages: 1,
-//                    avails: response.data.data,
-//                    pageSize: response.data.data.length,
-//                    total: response.data.total
-//                });
-//                this.props.resultPageLoading(false);
-//            }).catch((error) => {
-//            this.props.resultPageLoading(false);
-//            console.error('Unexpected error');
-//            console.error(error);
-//        });
-//    }
-
-
+    onSortChanged(e) {
+        let sortParams = e.api.getSortModel();
+        let newSort = [];
+        if(sortParams.length>0){
+            sortParams.map(criteria =>{
+                newSort.push({id : criteria.colId, desc: criteria.sort=='desc'})
+            })
+        }
+        this.props.resultPageSort(newSort);
+        this.resetLoadedItems();
+    }
 
 //    onSelection(selected, selectAll) {
 //        this.props.resultPageSelect({selected, selectAll});
@@ -201,8 +188,10 @@ class AvailsResultTable extends React.Component {
     }
 
     getRows(params){
+        console.log('getRows', params,  this.props.availTabPageSort);
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
+                        //console.log(response);
                         this.addLoadedItems(response.data);
                         // if on or after the last page, work out the last row.
                         var lastRow = -1;
@@ -229,16 +218,26 @@ class AvailsResultTable extends React.Component {
         }
     }
 
+    resetLoadedItems(){
+        this.props.resultPageUpdate({
+            pages: 0,
+            avails: [],
+            pageSize: 0,
+            total:0
+        });
+    }
+
     onColumnReordered(e) {
         let cols = []
         e.columnApi.getAllGridColumns().map(column => cols.push(column.colDef.field));
         this.props.resultPageUpdateColumnsOrder(cols);
-        console.log(e);
     }
 
     setTable = element => {
       this.table = element;
     };
+
+
 
     render() {
         let dataSource = {
@@ -264,12 +263,32 @@ class AvailsResultTable extends React.Component {
             });
         };
 
+
         if(this.table){
             this.table.api.setColumnDefs(cols); //forces refresh of columns
             this.table.columnApi.moveColumns(this.props.columnsOrder, 0);
 
-            if(this.props.availTabPageLoading){
+            let sortModel=[]
+            this.props.availTabPageSort.map(sortCriteria=>{
+                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'})
+            });
+            let currentSortModel=this.table.api.getSortModel();
+            let toChangeSortModel=false;
+
+            if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
+
+            for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
+                if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
+                if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
+            }
+
+            if(toChangeSortModel){
+                this.table.api.setSortModel(sortModel);
+            }
+
+            if(this.props.availTabPageLoading && this.table.api.getDisplayedRowCount()>0) {
                 this.table.api.setDatasource(dataSource);
+
             }
         }
 
@@ -282,7 +301,14 @@ class AvailsResultTable extends React.Component {
                     >
                 <AgGridReact
                     ref={this.setTable}
+
+                    components= {components}
+
                     columnDefs= {cols}
+                    suppressDragLeaveHidesColumns= {true}
+                    enableColResize= {true}
+                    onDragStopped = {this.onColumnReordered}
+
                     rowBuffer= '50'
                     rowModelType= 'infinite'
                     paginationPageSize= {this.state.pageSize}
@@ -290,15 +316,16 @@ class AvailsResultTable extends React.Component {
                     cacheOverflowSize= '2'
                     maxConcurrentDatasourceRequests= '1'
                     datasource= {dataSource}
-                    components= {components}
-                    suppressDragLeaveHidesColumns= {true}
 
-                    onDragStopped= {this.onColumnReordered}
+                    enableSorting={true}
+                    enableServerSideSorting= {true}
+                    onSortChanged = {this.onSortChanged}
 
-//                    enableSorting={true}
 //                    enableFilter={true}
+//                    floatingFilter: true,
+//                    debug= {true}
 //                    rowSelection="multiple"
-//                    enableColResize= {true}
+
 //                    rowDeselection= {true}
                     >
                 </AgGridReact>
@@ -309,18 +336,18 @@ class AvailsResultTable extends React.Component {
         
 //        return (
 //            <DragDropTable
-//                columns={columns}
-//                data={this.props.availTabPage.avails}
-//                pageSize={this.props.availTabPage.pageSize}
-//                style={style}
-//                scrollSliderLoadPercent={scrollSliderLoadPercent}
-//                loading={this.props.availTabPageLoading}
+//
+//
+//
+//
+//
+//
 //                selection={this.props.availTabPageSelection.selected}
 //                selectAll={this.props.availTabPageSelection.selectAll}
 //
 //                sorted={this.props.availTabPageSort}
 //
-//                onLoadMoreItems={this.onLoadMoreItems}
+//
 //                onSortedChange={this.onSortedChange}
 //                onSelection={this.onSelection}
 //                onCellClick={this.onCellClick}
