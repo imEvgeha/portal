@@ -4,9 +4,9 @@ import './global.scss';
 
 import axios from 'axios';
 import config from 'react-global-configuration';
-import {defaultConfiguration} from './config';
+//import {defaultConfiguration} from './config';
 
-config.set(defaultConfiguration, {freeze: false});
+//config.set(defaultConfiguration, {freeze: false});
 axios.get('config.js').then(response => {
     config.set(response.data, {assign: true, freeze: true});
 }).catch(() => {
