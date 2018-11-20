@@ -10,8 +10,9 @@ config.set(defaultConfiguration, {freeze: false});
 axios.get('config/config.js').then(response => {
     config.set(response.data, {assign: true, freeze: true});
     init();
-}).catch(() => {
+}).catch((error) => {
     console.warn('Cannot load environment configuration, using defaults');
+    console.error(error);
     render(
         <p>
            Problem with configuration, application cannot be started
