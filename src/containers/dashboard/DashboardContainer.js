@@ -19,6 +19,7 @@ import {profileService} from './ProfileService';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
 import {configurationService} from './ConfigurationService';
 
+
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
