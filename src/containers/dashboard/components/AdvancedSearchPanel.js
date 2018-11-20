@@ -219,6 +219,7 @@ class AdvancedSearchPanel extends React.Component {
                                  disabled={this.state.invalidForm}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
+                                 disabled={!this.props.reportName}
                                  style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
 
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
