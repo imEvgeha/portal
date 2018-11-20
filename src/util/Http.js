@@ -17,7 +17,7 @@ const Http = {
 
         http.interceptors.request.use(
             function (config) {
-                const token = keycloak.token;
+                const token = keycloak.instance.token;
                 if (token) config.headers.Authorization = `Bearer ${token}`;
                 return config;
             },

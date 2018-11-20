@@ -72,13 +72,13 @@ class NavbarConnect extends React.Component {
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem header>
-                                {keycloak.hasResourceRole('user') && keycloak.hasResourceRole(
+                                {keycloak.instance.hasResourceRole('user') && keycloak.hasResourceRole(
                                     'manage') ? 'user, manage' : ''}
-                                {keycloak.hasResourceRole('user')
-                  && !keycloak.hasResourceRole(
+                                {keycloak.instance.hasResourceRole('user')
+                  && !keycloak.instance.hasResourceRole(
                       'manage') ? 'user' : ''}
-                                {!keycloak.hasResourceRole('user')
-                  && keycloak.hasResourceRole(
+                                {!keycloak.instance.hasResourceRole('user')
+                  && keycloak.instance.hasResourceRole(
                       'manage') ? 'user' : ''}
                             </DropdownItem>
                             {/*<DropdownItem divider/>*/}
@@ -86,7 +86,7 @@ class NavbarConnect extends React.Component {
                             {/*<DropdownItem>Another Action</DropdownItem>*/}
                             <DropdownItem divider/>
                             <DropdownItem>
-                                <a href="#" onClick={keycloak.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>
+                                <a href="#" onClick={keycloak.instance.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
