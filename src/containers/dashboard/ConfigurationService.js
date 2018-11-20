@@ -6,49 +6,8 @@ import {errorModal} from '../../components/share/ErrorModal';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
 import {resultPageUpdateColumnsOrder} from '../../actions/dashboard';
 
-
-// const mockedConfiguration = {
-//     'avails': {
-//         'reports': [
-//             {
-//                 'name': 'Batman report 1',
-//                 'filter': {
-//                     'title': 'Batman',
-//                     'studio': 'Warner'
-//                 },
-//                 'columns': [
-//                     'title',
-//                     'studio',
-//                     'vodStart',
-//                     'vodEnd'
-//                 ],
-//                 'sortedBy': [
-//                     {
-//                         'column': 'title',
-//                         'order': 'ASC'
-//                     },
-//                     {
-//                         'column': 'vodEnd',
-//                         'order': 'DESC'
-//                     }
-//                 ]
-//             },
-//             {
-//                 'name': 'Batman report 2',
-//                 'filter': {
-//                     'rowInvalid': true
-//                 },
-//                 'columns': [
-//                     'vodStart',
-//                     'title'
-//                 ]
-//             }
-//         ]
-//     }
-// };
-
-
-const http = Http.create({noDefaultErrorHandling: false});
+const httpWithoutErrorHandling = Http.create({noDefaultErrorHandling: false});
+const http = Http.create();
 
 
 const loadReportToStore = (report) => {
@@ -68,7 +27,7 @@ const readReportFromStore = () => {
 };
 
 const getConfiguration = () => {
-    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
+    return httpWithoutErrorHandling.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
     // return new Promise(function(resolve) {
     //     setTimeout(function() {
     //         resolve({data: mockedConfiguration});
