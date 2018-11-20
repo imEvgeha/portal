@@ -28,11 +28,6 @@ const readReportFromStore = () => {
 
 const getConfiguration = () => {
     return httpWithoutErrorHandling.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
-    // return new Promise(function(resolve) {
-    //     setTimeout(function() {
-    //         resolve({data: mockedConfiguration});
-    //     }, 300);
-    // });
 };
 
 const putConfiguration = (configuration) => {
@@ -83,7 +78,6 @@ export const configurationService = {
 
     saveReport: (reportName) => {
         const reports = store.getState().root.reports;
-        // const reports = [];
         const newReport = readReportFromStore();
 
         const currentReport = reports.find((report) => {return report.name === reportName;});
@@ -98,8 +92,7 @@ export const configurationService = {
         putConfiguration({'avails': {'reports': reports}}).then( (response) => {
             loadConfiguration(response.data);
             store.dispatch(setReportName(reportName));
-        }). catch((error) => {  
-            //errorModal.open('Error', () => {}, { description: 'System is not configured correctly!', closable: false });
+        }). catch((error) => {
             console.error('Unable to Save Report');
             console.error(error);
         });
