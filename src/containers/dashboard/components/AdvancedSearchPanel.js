@@ -43,7 +43,6 @@ class AdvancedSearchPanel extends React.Component {
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter' && !this.state.invalidForm) {
-            console.log('Invalid: ' + this.state.invalidForm);
             this.handleSearch();
         }
     };

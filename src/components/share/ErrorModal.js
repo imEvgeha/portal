@@ -11,7 +11,8 @@ class ErrorModal extends React.Component{
         className: t.string,
         message: t.string,
         buttonLabel: t.string,
-        accept: t.func
+        accept: t.func,
+        closable: t.bool
     };
 
     constructor(props) {
