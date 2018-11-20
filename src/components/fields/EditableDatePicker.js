@@ -131,7 +131,6 @@ class EditableDatePicker extends Component {
                                 {'Enter ' + this.props.displayName}
                             </span>
                 }
-
             </div>
         );
     }

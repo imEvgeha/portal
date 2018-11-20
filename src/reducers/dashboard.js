@@ -15,6 +15,23 @@ const initialState = {
         text: ''
     },
     advancedSearchCriteria: {
+        vodStartFrom: null,
+        vodStartTo: null,
+        vodEndFrom: null,
+        vodEndTo: null,
+        estStartFrom: null,
+        estStartTo: null,
+        estEndFrom: null,
+        estEndTo: null,
+        rowEditedFrom: null,
+        rowEditedTo: null,
+        rowInvalid: false,
+        title: '',
+        studio: '',
+        releaseYear: '',
+        releaseType: '',
+        licensor: '',
+        territory: '',
     },
     sortedBy: [],
 
