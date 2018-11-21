@@ -7,11 +7,11 @@ import config from 'react-global-configuration';
 import {defaultConfiguration} from './config';
 
 config.set(defaultConfiguration, {freeze: false});
-axios.get('config/config.js').then(response => {
+axios.get('config.json').then(response => {
     config.set(response.data, {assign: true, freeze: true});
     init();
 }).catch((error) => {
-    console.warn('Cannot load environment configuration, using defaults');
+    console.warn('Cannot load environment configuration');
     console.error(error);
     render(
         <p>
