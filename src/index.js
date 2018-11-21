@@ -6,8 +6,13 @@ import config from 'react-global-configuration';
 import {defaultConfiguration} from './config';
 
 config.set(defaultConfiguration, {freeze: false});
+
 axios.get('config.json').then(response => {
-    config.set(response.data, {assign: true, freeze: true});
+    if (isObject(response.data)) {
+        config.set(mergeDeep(JSON.parse(config.serialize()), response.data), {freeze: true});
+    } else {
+        JSON.parse(response.data);
+    }
     init();
 }).catch((error) => {
     console.warn('Cannot load environment configuration');
@@ -30,6 +35,7 @@ import store from './stores/index';
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
 import {loadState} from './stores';
+import {isObject, mergeDeep} from './util/Common';
 
 export const keycloak = {instance: {}};
 function init() {
