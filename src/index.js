@@ -7,7 +7,7 @@ import config from 'react-global-configuration';
 //import {defaultConfiguration} from './config';
 
 //config.set(defaultConfiguration, {freeze: false});
-axios.get('config.json').then(response => {
+axios({method:'get', url:'config.json', responseType:'json'}).then(response => {
     config.set(response.data, {assign: true, freeze: true});
 }).catch(() => {
     console.warn('Cannot load environment configuration, using defaults');
