@@ -51,7 +51,7 @@ const mapDispatchToProps = {
     resultPageSort,
     resultPageSelect,
     resultPageLoading,
-    resultPageUpdateColumnsOrder: resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder
 };
 
 class AvailsResultTable extends React.Component {
@@ -78,12 +78,14 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: config.get('avails.page.size'),
+            cols:[]
         };
 
 //        this.onSelection = this.onSelection.bind(this);
 //        this.onEdit = this.onEdit.bind(this);
 //        this.editAvail = this.editAvail.bind(this);
 //        this.onCellClick = this.onCellClick.bind(this);
+        this.refreshColumns = this.refreshColumns.bind(this);
         this.getRows = this.getRows.bind(this);
         this.addLoadedItems = this.addLoadedItems.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -103,6 +105,7 @@ class AvailsResultTable extends React.Component {
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
         let elem = document.querySelector('.vu-advanced-search-panel');
         elem.addEventListener('transitionend', this.updateWindowDimensions);
+        this.refreshColumns();
     }
 
     componentWillUnmount() {
@@ -114,24 +117,27 @@ class AvailsResultTable extends React.Component {
         this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
     }
 
+    componentDidUpdate(prevProps) {
+      if(this.props.columnsOrder != prevProps.columnsOrder) this.refreshColumns();
+    }
+
     parseColumnsSchema() {
         if(this.props.availsMapping){
             this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {field:column.javaVariableName, headerName:column.displayName, cellRenderer: 'loadingRenderer'});
         }
     }
 
-
-
     onSortChanged(e) {
         let sortParams = e.api.getSortModel();
         let newSort = [];
         if(sortParams.length>0){
             sortParams.map(criteria =>{
-                newSort.push({id : criteria.colId, desc: criteria.sort=='desc'})
+                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort=='desc'})
             })
         }
         this.props.resultPageSort(newSort);
         this.resetLoadedItems();
+        this.refreshColumns();
     }
 
 //    onSelection(selected, selectAll) {
@@ -237,7 +243,18 @@ class AvailsResultTable extends React.Component {
       this.table = element;
     };
 
-
+    refreshColumns(){
+        let newCols=[]
+        if (this.props.columnsOrder) {
+            this.props.columnsOrder.map(acc => {
+                if(colDef.hasOwnProperty(acc)){
+                    newCols.push(JSON.parse(JSON.stringify(colDef[acc])));
+                }
+            });
+            newCols[0].checkboxSelection  = true;
+            this.setState({cols: newCols})
+        };
+    }
 
     render() {
         let dataSource = {
@@ -254,18 +271,8 @@ class AvailsResultTable extends React.Component {
             }
         }
 
-        let cols=[];
-        if (this.props.columnsOrder) {
-            this.props.columnsOrder.map(acc => {
-                if(colDef.hasOwnProperty(acc)){
-                    cols.push(colDef[acc]);
-                }
-            });
-        };
-
-
         if(this.table){
-            this.table.api.setColumnDefs(cols); //forces refresh of columns
+            this.table.api.setColumnDefs(this.state.cols); //forces refresh of columns
             this.table.columnApi.moveColumns(this.props.columnsOrder, 0);
 
             let sortModel=[]
@@ -304,7 +311,7 @@ class AvailsResultTable extends React.Component {
 
                     components= {components}
 
-                    columnDefs= {cols}
+                    columnDefs= {this.state.cols}
                     suppressDragLeaveHidesColumns= {true}
                     enableColResize= {true}
                     onDragStopped = {this.onColumnReordered}
@@ -324,7 +331,8 @@ class AvailsResultTable extends React.Component {
 //                    enableFilter={true}
 //                    floatingFilter: true,
 //                    debug= {true}
-//                    rowSelection="multiple"
+                    rowSelection= "multiple"
+                    rowMultiSelectWithClick = {true}
 
 //                    rowDeselection= {true}
                     >
@@ -336,19 +344,10 @@ class AvailsResultTable extends React.Component {
         
 //        return (
 //            <DragDropTable
-//
-//
-//
-//
-//
-//
+
 //                selection={this.props.availTabPageSelection.selected}
-//                selectAll={this.props.availTabPageSelection.selectAll}
+//                selectAll={this.props.availTabPageSelection.selectAll}//
 //
-//                sorted={this.props.availTabPageSort}
-//
-//
-//                onSortedChange={this.onSortedChange}
 //                onSelection={this.onSelection}
 //                onCellClick={this.onCellClick}
 //            />
