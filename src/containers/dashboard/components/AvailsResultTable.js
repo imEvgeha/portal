@@ -81,7 +81,6 @@ class AvailsResultTable extends React.Component {
             cols:[]
         };
 
-//        this.onSelection = this.onSelection.bind(this);
 //        this.onEdit = this.onEdit.bind(this);
 //        this.editAvail = this.editAvail.bind(this);
 //        this.onCellClick = this.onCellClick.bind(this);
@@ -92,6 +91,7 @@ class AvailsResultTable extends React.Component {
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
         this.onColumnReordered = this.onColumnReordered.bind(this);
         this.onSortChanged = this.onSortChanged.bind(this);
+        this.onSelectionChanged = this.onSelectionChanged.bind(this);
 
         if(colDef.length==0){
             this.parseColumnsSchema();
@@ -123,7 +123,16 @@ class AvailsResultTable extends React.Component {
 
     parseColumnsSchema() {
         if(this.props.availsMapping){
-            this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {field:column.javaVariableName, headerName:column.displayName, cellRenderer: 'loadingRenderer'});
+            this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {
+                        field:column.javaVariableName,
+                        headerName:column.displayName,
+                        cellRenderer: 'loadingRenderer',
+                        checkboxSelection: function(params) {
+                            var displayedColumns = params.columnApi.getAllDisplayedColumns();
+                            var thisIsFirstColumn = displayedColumns[0] === params.column;
+                            return thisIsFirstColumn;
+                        }
+            });
         }
     }
 
@@ -140,10 +149,15 @@ class AvailsResultTable extends React.Component {
         this.refreshColumns();
     }
 
-//    onSelection(selected, selectAll) {
-//        this.props.resultPageSelect({selected, selectAll});
-//    }
-//
+    onSelectionChanged(e){
+        let selectedRows = e.api.getSelectedRows();
+        let selected=[];
+        selectedRows.map(row => {
+            selected.push(row.id);
+        })
+        this.props.resultPageSelect({selected: selected, selectAll: false});
+    }
+
 //    editAvail(newAvail) {
 //        let copiedAvails = this.props.availTabPage.avails.slice();
 //        let avail = copiedAvails.find(b => b.id === newAvail.id);
@@ -201,10 +215,15 @@ class AvailsResultTable extends React.Component {
                         this.addLoadedItems(response.data);
                         // if on or after the last page, work out the last row.
                         var lastRow = -1;
-                        if (response.data.total <= params.endRow) {
-                            lastRow = response.data.data.length;
+                        if (response.data.page * response.data.size + response.data.data.length >= response.data.total) {
+                            lastRow = response.data.total;
                         }
-                        params.successCallback(response.data.data, lastRow)
+                        params.successCallback(response.data.data, lastRow);
+                        this.table.api.forEachNode(rowNode => {
+                            if(this.props.availTabPageSelection.selected.indexOf(rowNode.data.id)>-1){
+                                rowNode.setSelected(true);
+                            }
+                        });
                    }).catch((error) => {
                        console.error('Unexpected error');
                        console.error(error);
@@ -248,10 +267,12 @@ class AvailsResultTable extends React.Component {
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
-                    newCols.push(JSON.parse(JSON.stringify(colDef[acc])));
+//                    newCols.push(JSON.parse(JSON.stringify(colDef[acc])));
+                    newCols.push((colDef[acc]));
+
                 }
             });
-            newCols[0].checkboxSelection  = true;
+//            newCols[0].checkboxSelection  = true;
             this.setState({cols: newCols})
         };
     }
@@ -295,7 +316,6 @@ class AvailsResultTable extends React.Component {
 
             if(this.props.availTabPageLoading && this.table.api.getDisplayedRowCount()>0) {
                 this.table.api.setDatasource(dataSource);
-
             }
         }
 
@@ -310,6 +330,7 @@ class AvailsResultTable extends React.Component {
                     ref={this.setTable}
 
                     components= {components}
+                    onGridReady={params => params.api.sizeColumnsToFit()}
 
                     columnDefs= {this.state.cols}
                     suppressDragLeaveHidesColumns= {true}
@@ -328,11 +349,13 @@ class AvailsResultTable extends React.Component {
                     enableServerSideSorting= {true}
                     onSortChanged = {this.onSortChanged}
 
+                    rowSelection= "multiple"
+                    onSelectionChanged= {this.onSelectionChanged}
+
 //                    enableFilter={true}
 //                    floatingFilter: true,
 //                    debug= {true}
-                    rowSelection= "multiple"
-                    rowMultiSelectWithClick = {true}
+
 
 //                    rowDeselection= {true}
                     >

@@ -19,7 +19,7 @@ class FreeTextSearch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: 'war',
+            text: 'warlord',
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
