@@ -24,7 +24,7 @@ import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../actions/dashboard';
 import {dashboardService} from '../DashboardService';
 import {advancedSearchHelper} from '../AdvancedSearchHelper';
-//import {availDetailsModal} from './AvailDetailsModal';
+import {availDetailsModal} from './AvailDetailsModal';
 
 
 const colDef = [];
@@ -82,9 +82,7 @@ class AvailsResultTable extends React.Component {
             cols:[]
         };
 
-//        this.onEdit = this.onEdit.bind(this);
-//        this.editAvail = this.editAvail.bind(this);
-//        this.onCellClick = this.onCellClick.bind(this);
+        this.loadingRenderer = this.loadingRenderer.bind(this);
         this.refreshColumns = this.refreshColumns.bind(this);
         this.getRows = this.getRows.bind(this);
         this.addLoadedItems = this.addLoadedItems.bind(this);
@@ -125,17 +123,18 @@ class AvailsResultTable extends React.Component {
     parseColumnsSchema() {
         if(this.props.availsMapping){
             this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {
-                        field:column.javaVariableName,
-                        headerName:column.displayName,
-                        cellRenderer: 'loadingRenderer',
-                        valueGetter: column.dataType==='date' ? function(params) {
-                            return moment(params.data[column.javaVariableName]).format('L');
-                        } : null,
-                        checkboxSelection: function(params) {
-                            var displayedColumns = params.columnApi.getAllDisplayedColumns();
-                            var thisIsFirstColumn = displayedColumns[0] === params.column;
-                            return thisIsFirstColumn;
-                        }
+                field:column.javaVariableName,
+                headerName:column.displayName,
+                cellRendererFramework: this.loadingRenderer,
+                valueFormatter: column.dataType==='date' ? function(params) {
+                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L');
+                    else return undefined;
+                } : null,
+//                checkboxSelection: function(params) {
+//                    var displayedColumns = params.columnApi.getAllDisplayedColumns();
+//                    var thisIsFirstColumn = displayedColumns[0] === params.column;
+//                    return thisIsFirstColumn;
+//                }
             });
         }
     }
@@ -161,46 +160,41 @@ class AvailsResultTable extends React.Component {
         })
         this.props.resultPageSelect({selected: selected, selectAll: false});
     }
-//    editAvail(newAvail) {
-//        let copiedAvails = this.props.availTabPage.avails.slice();
-//        let avail = copiedAvails.find(b => b.id === newAvail.id);
-//        if (avail) {
-//            for(let availField in newAvail) avail[availField] = newAvail[availField];
-//        }
-//        return copiedAvails;
-//    }
 
-//    onCellClick(row) {
-//        availDetailsModal.open(row, () => {
-//        }, () => {
-//        }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
-//    }
-//
-//    onEdit(editable, availDetailModal) {
-//        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-//        dashboardService.updateAvails(updatedAvail)
-//            .then(res => {
-//                let editedAvail = res.data;
-//                availDetailModal.setState({
-//                    avail: editedAvail,
-//                    errorMessage: ''
-//                });
-//                this.props.resultPageUpdate({
-//                    pages: this.props.availTabPage.pages,
-//                    avails: this.editAvail(editedAvail),
-//                    pageSize: this.props.availTabPage.pageSize,
-//                    total: this.props.availTabPage.total
-//                });
-//            })
-//            .catch(() => {
-//                editable.setState({availLastEditSucceed: false});
-//                availDetailModal.setState({vailsMapping: t.any,
-//                    errorMessage: 'Avail edit failed'
-//                });
-//                editable.value = availDetailModal.state.avail[editable.props.title];
-//                editable.newValue = availDetailModal.state.avail[editable.props.title];
-//            });
-//    }
+    editAvail(newAvail) {
+        let copiedAvails = this.props.availTabPage.avails.slice();
+        let avail = copiedAvails.find(b => b.id === newAvail.id);
+        if (avail) {
+            for(let availField in newAvail) avail[availField] = newAvail[availField];
+        }
+        return copiedAvails;
+    }
+
+    onEdit(editable, availDetailModal) {
+        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
+        dashboardService.updateAvails(updatedAvail)
+            .then(res => {
+                let editedAvail = res.data;
+                availDetailModal.setState({
+                    avail: editedAvail,
+                    errorMessage: ''
+                });
+                this.props.resultPageUpdate({
+                    pages: this.props.availTabPage.pages,
+                    avails: this.editAvail(editedAvail),
+                    pageSize: this.props.availTabPage.pageSize,
+                    total: this.props.availTabPage.total
+                });
+            })
+            .catch(() => {
+                editable.setState({availLastEditSucceed: false});
+                availDetailModal.setState({availsMapping: t.any,
+                    errorMessage: 'Avail edit failed'
+                });
+                editable.value = availDetailModal.state.avail[editable.props.title];
+                editable.newValue = availDetailModal.state.avail[editable.props.title];
+            });
+    }
 
     doSearch(page, pageSize, sortedParams) {
         if (this.props.useAdvancedSearch) {
@@ -218,12 +212,12 @@ class AvailsResultTable extends React.Component {
                         this.addLoadedItems(response.data);
                         // if on or after the last page, work out the last row.
                         var lastRow = -1;
-                        if (response.data.page * response.data.size + response.data.data.length >= response.data.total) {
+                        if ((response.data.page + 1) * response.data.size >= response.data.total) {
                             lastRow = response.data.total;
                         }
                         params.successCallback(response.data.data, lastRow);
                         this.table.api.forEachNode(rowNode => {
-                            if(this.props.availTabPageSelection.selected.indexOf(rowNode.data.id)>-1){
+                            if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id)>-1){
                                 rowNode.setSelected(true);
                             }
                         });
@@ -277,19 +271,32 @@ class AvailsResultTable extends React.Component {
         };
     }
 
+    onCellClicked(row){
+        availDetailsModal.open(row, () => {
+                }, () => {
+                }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
+    }
+
+    loadingRenderer(params){
+        let content = params.valueFormatted || params.value;
+        if (params.value !== undefined) {
+            if (content) {
+                return(
+                    <a href="#" onClick={() => this.onCellClicked(params.data)}>
+                        {content}
+                    </a>
+                );
+            }
+            else return params.value;
+        } else {
+            return <img src={LoadingGif}/>;
+        }
+    }
+
     render() {
         let dataSource = {
             rowCount: null, // behave as infinite scroll
             getRows: this.getRows
-        }
-        let components = {
-            loadingRenderer: function(params) {
-                if (params.value !== undefined) {
-                    return params.value;
-                } else {
-                    return `<img src=${LoadingGif}>`;
-                }
-            }
         }
 
         if(this.table){
@@ -328,8 +335,6 @@ class AvailsResultTable extends React.Component {
                     >
                 <AgGridReact
                     ref={this.setTable}
-
-                    components= {components}
                     onGridReady={params => params.api.sizeColumnsToFit()}
 
                     columnDefs= {this.state.cols}
@@ -351,23 +356,13 @@ class AvailsResultTable extends React.Component {
 
                     rowSelection= "multiple"
                     onSelectionChanged= {this.onSelectionChanged}
-
-                    onCellClicked = {this.onCellClicked}
+                    suppressRowClickSelection = {true}
                     >
                 </AgGridReact>
 
             </div>
         );
-
-        
-//        return (
-//            <DragDropTable
-//                onCellClick={this.onCellClick}
-//            />
-//        );
     }
-
-
 }
 
 
