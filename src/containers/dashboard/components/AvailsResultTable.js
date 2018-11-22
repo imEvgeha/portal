@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import t from 'prop-types';
+import moment from 'moment';
 
 import config from 'react-global-configuration';
 
@@ -127,6 +128,9 @@ class AvailsResultTable extends React.Component {
                         field:column.javaVariableName,
                         headerName:column.displayName,
                         cellRenderer: 'loadingRenderer',
+                        valueGetter: column.dataType==='date' ? function(params) {
+                            return moment(params.data[column.javaVariableName]).format('L');
+                        } : null,
                         checkboxSelection: function(params) {
                             var displayedColumns = params.columnApi.getAllDisplayedColumns();
                             var thisIsFirstColumn = displayedColumns[0] === params.column;
@@ -157,7 +161,6 @@ class AvailsResultTable extends React.Component {
         })
         this.props.resultPageSelect({selected: selected, selectAll: false});
     }
-
 //    editAvail(newAvail) {
 //        let copiedAvails = this.props.availTabPage.avails.slice();
 //        let avail = copiedAvails.find(b => b.id === newAvail.id);
@@ -267,12 +270,9 @@ class AvailsResultTable extends React.Component {
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
-//                    newCols.push(JSON.parse(JSON.stringify(colDef[acc])));
-                    newCols.push((colDef[acc]));
-
+                    newCols.push(colDef[acc]);
                 }
             });
-//            newCols[0].checkboxSelection  = true;
             this.setState({cols: newCols})
         };
     }
@@ -352,12 +352,7 @@ class AvailsResultTable extends React.Component {
                     rowSelection= "multiple"
                     onSelectionChanged= {this.onSelectionChanged}
 
-//                    enableFilter={true}
-//                    floatingFilter: true,
-//                    debug= {true}
-
-
-//                    rowDeselection= {true}
+                    onCellClicked = {this.onCellClicked}
                     >
                 </AgGridReact>
 
@@ -367,11 +362,6 @@ class AvailsResultTable extends React.Component {
         
 //        return (
 //            <DragDropTable
-
-//                selection={this.props.availTabPageSelection.selected}
-//                selectAll={this.props.availTabPageSelection.selectAll}//
-//
-//                onSelection={this.onSelection}
 //                onCellClick={this.onCellClick}
 //            />
 //        );
