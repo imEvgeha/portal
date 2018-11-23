@@ -154,7 +154,7 @@ class AvailsResultTable extends React.Component {
         selectedRows.map(row => {
             selected.push(row.id);
         })
-        this.props.resultPageSelect({selected: selected, selectAll: false});
+        this.props.resultPageSelect({selected: selected, selectAll: selected.length == this.props.availTabPage.total});
     }
 
     editAvail(newAvail) {
@@ -263,7 +263,8 @@ class AvailsResultTable extends React.Component {
             width: 40,
             pinned: 'left',
             suppressResize: true,
-            suppressSizeToFit: true
+            suppressSizeToFit: true,
+            headerComponentFramework: CheckBoxHeader
         });
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
@@ -339,6 +340,7 @@ class AvailsResultTable extends React.Component {
                     >
                 <AgGridReact
                     ref={this.setTable}
+
                     onGridReady={params => params.api.sizeColumnsToFit()}
 
                     columnDefs= {this.state.cols}
@@ -369,6 +371,44 @@ class AvailsResultTable extends React.Component {
     }
 }
 
-
-
 export default connect(mapStateToProps, mapDispatchToProps)(AvailsResultTable);
+
+import {Component} from 'react';
+
+const mapStateToProps2 = state => {
+    return {
+        availTabPageSelection: state.session.availTabPageSelection
+    };
+};
+
+class CheckBoxHeaderInternal extends Component {
+    constructor(props) {
+        super(props);
+        this.onCheckBoxClick = this.onCheckBoxClick.bind(this);
+    }
+
+    onCheckBoxClick(e){
+        if(!this.props.availTabPageSelection.selectAll) {
+            this.props.api.forEachNode(node=>{
+                node.setSelected(true);
+            });
+        }
+        else {
+            this.props.api.deselectAll();
+        }
+    }
+
+    render() {
+        let rows = this.props.availTabPageSelection.selected.length;
+        let selectAll = this.props.availTabPageSelection.selectAll;
+        return (
+            <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
+                <span className={`ag-icon ag-icon-checkbox-checked ${selectAll ? '' : 'ag-hidden'}`}></span>
+                <span className={`ag-icon ag-icon-checkbox-unchecked ${rows == 0 ? '' : 'ag-hidden'}`}></span>
+                <span className={`ag-icon ag-icon-checkbox-indeterminate ${rows > 0 && !selectAll ? '' : 'ag-hidden'}`}></span>
+            </span>
+        );
+    }
+}
+
+let CheckBoxHeader = connect(mapStateToProps2)(CheckBoxHeaderInternal);
