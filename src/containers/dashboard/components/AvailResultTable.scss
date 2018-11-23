@@ -20,3 +20,9 @@
 html {
     overflow: hidden;
 }
+
+.ag-font-style {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    user-select: text !important;
+}
