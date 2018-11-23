@@ -130,11 +130,7 @@ class AvailsResultTable extends React.Component {
                     if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L');
                     else return undefined;
                 } : null,
-//                checkboxSelection: function(params) {
-//                    var displayedColumns = params.columnApi.getAllDisplayedColumns();
-//                    var thisIsFirstColumn = displayedColumns[0] === params.column;
-//                    return thisIsFirstColumn;
-//                }
+                width: 300
             });
         }
     }
@@ -261,13 +257,21 @@ class AvailsResultTable extends React.Component {
 
     refreshColumns(){
         let newCols=[]
+        newCols.push({
+            headerName: '',
+            checkboxSelection: true,
+            width: 40,
+            pinned: 'left',
+            suppressResize: true,
+            suppressSizeToFit: true
+        });
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
                     newCols.push(colDef[acc]);
                 }
             });
-            this.setState({cols: newCols})
+            this.setState({cols: newCols});
         };
     }
 
@@ -301,7 +305,7 @@ class AvailsResultTable extends React.Component {
 
         if(this.table){
             this.table.api.setColumnDefs(this.state.cols); //forces refresh of columns
-            this.table.columnApi.moveColumns(this.props.columnsOrder, 0);
+            this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
 
             let sortModel=[]
             this.props.availTabPageSort.map(sortCriteria=>{
