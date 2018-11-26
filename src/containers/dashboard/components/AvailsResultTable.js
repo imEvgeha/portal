@@ -154,7 +154,11 @@ class AvailsResultTable extends React.Component {
         selectedRows.map(row => {
             selected.push(row.id);
         })
-        this.props.resultPageSelect({selected: selected, selectAll: selected.length == this.props.availTabPage.total});
+        let loadedRows = e.api.getDisplayedRowCount();
+        if(!e.api.isMaxRowFound()){
+            loadedRows-=e.api.gridOptionsWrapper.gridOptions.cacheOverflowSize;
+        }
+        this.props.resultPageSelect({selected: selected, selectAll: selected.length == loadedRows});
     }
 
     editAvail(newAvail) {
