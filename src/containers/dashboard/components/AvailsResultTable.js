@@ -26,7 +26,7 @@ const colDef = [];
  * Advance Search -
  * title, studio Vod Start Date, Vod End Date
  */
-const mapStateToProps = state => {
+let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         availTabPageSort: state.dashboard.availTabPageSort,
@@ -133,8 +133,8 @@ class AvailsResultTable extends React.Component {
         let newSort = [];
         if(sortParams.length>0){
             sortParams.map(criteria =>{
-                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort=='desc'})
-            })
+                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort=='desc'});
+            });
         }
         this.props.resultPageSort(newSort);
         this.resetLoadedItems();
@@ -146,7 +146,7 @@ class AvailsResultTable extends React.Component {
         let selected=[];
         selectedRows.map(row => {
             selected.push(row.id);
-        })
+        });
         let loadedRows = e.api.getDisplayedRowCount();
         if(!e.api.isMaxRowFound()){
             loadedRows-=e.api.gridOptionsWrapper.gridOptions.cacheOverflowSize;
@@ -198,7 +198,7 @@ class AvailsResultTable extends React.Component {
     }
 
     getRows(params){
-        console.log('getRows', params,  this.props.availTabPageSort);
+        //console.log('getRows', params,  this.props.availTabPageSort);
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
                         //console.log(response);
@@ -243,7 +243,7 @@ class AvailsResultTable extends React.Component {
     }
 
     onColumnReordered(e) {
-        let cols = []
+        let cols = [];
         e.columnApi.getAllGridColumns().map(column => cols.push(column.colDef.field));
         this.props.resultPageUpdateColumnsOrder(cols);
     }
@@ -253,7 +253,7 @@ class AvailsResultTable extends React.Component {
     };
 
     refreshColumns(){
-        let newCols=[]
+        let newCols=[];
         newCols.push({
             headerName: '',
             checkboxSelection: true,
@@ -270,7 +270,7 @@ class AvailsResultTable extends React.Component {
                 }
             });
             this.setState({cols: newCols});
-        };
+        }
     }
 
     onCellClicked(row){
@@ -299,15 +299,15 @@ class AvailsResultTable extends React.Component {
         let dataSource = {
             rowCount: null, // behave as infinite scroll
             getRows: this.getRows
-        }
+        };
 
         if(this.table){
             this.table.api.setColumnDefs(this.state.cols); //forces refresh of columns
             this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
 
-            let sortModel=[]
+            let sortModel=[];
             this.props.availTabPageSort.map(sortCriteria=>{
-                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'})
+                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
             });
             let currentSortModel=this.table.api.getSortModel();
             let toChangeSortModel=false;
@@ -375,19 +375,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(AvailsResultTable);
 
 import {Component} from 'react';
 
-const mapStateToProps2 = state => {
+mapStateToProps = state => {
     return {
         availTabPageSelection: state.session.availTabPageSelection
     };
 };
 
 class CheckBoxHeaderInternal extends Component {
+    static propTypes = {
+        availTabPageSelection: t.object,
+        api: t.object
+    };
+
     constructor(props) {
         super(props);
         this.onCheckBoxClick = this.onCheckBoxClick.bind(this);
     }
 
-    onCheckBoxClick(e){
+    onCheckBoxClick(){
         if(!this.props.availTabPageSelection.selectAll) {
             this.props.api.forEachNode(node=>{
                 node.setSelected(true);
@@ -411,4 +416,4 @@ class CheckBoxHeaderInternal extends Component {
     }
 }
 
-let CheckBoxHeader = connect(mapStateToProps2)(CheckBoxHeaderInternal);
+let CheckBoxHeader = connect(mapStateToProps)(CheckBoxHeaderInternal);
