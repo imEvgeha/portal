@@ -34,7 +34,7 @@ import store from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
-import {loadState} from './stores';
+// import {loadState} from './stores';
 import {isObject, mergeDeep} from './util/Common';
 
 export const keycloak = {instance: {}};
@@ -48,7 +48,7 @@ function init() {
 
             keycloak.instance.loadUserInfo().success(profileInfo => {
                 store.dispatch(loadProfileInfo(profileInfo));
-                loadState();
+                // loadState();
             });
 
             render(

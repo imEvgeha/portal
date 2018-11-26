@@ -18,13 +18,14 @@ import {loadAvailsMapping} from '../../actions';
 import {profileService} from './ProfileService';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
 import {configurationService} from './ConfigurationService';
+import {loadDashboardState} from '../../stores';
 
 
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
-        selected: state.session.availTabPageSelection.selected,
+        selected: state.dashboard.session.availTabPageSelection.selected,
     };
 };
 
@@ -63,6 +64,7 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidMount() {
+        loadDashboardState();
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
     }

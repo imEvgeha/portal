@@ -21,11 +21,11 @@ const columns = [];
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        availTabPageSort: state.dashboard.availTabPageSort,
-        searchCriteria: state.dashboard.searchCriteria,
-        useAdvancedSearch: state.dashboard.useAdvancedSearch,
-        freeTextSearch: state.dashboard.freeTextSearch,
-        availTabPageSelection: state.session.availTabPageSelection,
+        availTabPageSort: state.dashboard.session.availTabPageSort,
+        searchCriteria: state.dashboard.session.searchCriteria,
+        useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
+        freeTextSearch: state.dashboard.session.freeTextSearch,
+        availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
     };

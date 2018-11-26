@@ -19,9 +19,9 @@ const loadReportToStore = (report) => {
 
 const readReportFromStore = () => {
     const report = {
-        name: store.getState().dashboard.reportName,
-        filter: store.getState().dashboard.advancedSearchCriteria,
-        columns: store.getState().dashboard.columns,
+        name: store.getState().dashboard.session.reportName,
+        filter: store.getState().dashboard.session.advancedSearchCriteria,
+        columns: store.getState().dashboard.session.columns,
     };
     return report;
 };
