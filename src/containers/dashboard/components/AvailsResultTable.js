@@ -5,20 +5,13 @@ import moment from 'moment';
 
 import config from 'react-global-configuration';
 
-import './AvailResultTable.scss';
-
 // image import
 import LoadingGif from '../../../img/loading.gif';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import 'ag-grid-community/dist/styles/ag-theme-fresh.css';
-import 'ag-grid-community/dist/styles/ag-theme-dark.css';
-import 'ag-grid-community/dist/styles/ag-theme-blue.css';
-import 'ag-grid-community/dist/styles/ag-theme-bootstrap.css';
+import './AvailResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../actions/dashboard';
@@ -367,6 +360,9 @@ class AvailsResultTable extends React.Component {
                     rowSelection= "multiple"
                     onSelectionChanged= {this.onSelectionChanged}
                     suppressRowClickSelection = {true}
+
+                    headerHeight= '52'
+                    rowHeight= '48'
                     >
                 </AgGridReact>
 
