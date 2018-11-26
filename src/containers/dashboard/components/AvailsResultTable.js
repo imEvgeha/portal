@@ -21,6 +21,7 @@ import {availDetailsModal} from './AvailDetailsModal';
 
 
 const colDef = [];
+let registeredOnSelect= false;
 
 /**
  * Advance Search -
@@ -84,6 +85,7 @@ class AvailsResultTable extends React.Component {
         this.onColumnReordered = this.onColumnReordered.bind(this);
         this.onSortChanged = this.onSortChanged.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
+        this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
 
         if(colDef.length==0){
             this.parseColumnsSchema();
@@ -142,6 +144,15 @@ class AvailsResultTable extends React.Component {
     }
 
     onSelectionChanged(e){
+        if(!registeredOnSelect){
+            registeredOnSelect = true;
+            setTimeout(this.onSelectionChangedProcess, 1, e);
+        }
+    }
+
+    onSelectionChangedProcess(e){
+        registeredOnSelect = false;
+
         let selectedRows = e.api.getSelectedRows();
         let selected=[];
         selectedRows.map(row => {
@@ -209,11 +220,18 @@ class AvailsResultTable extends React.Component {
                             lastRow = response.data.total;
                         }
                         params.successCallback(response.data.data, lastRow);
-                        this.table.api.forEachNode(rowNode => {
-                            if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id)>-1){
-                                rowNode.setSelected(true);
-                            }
-                        });
+                        let selectionChanged=false;
+                        if(response.data.page===0){
+                            this.table.api.forEachNode(rowNode => {
+                                if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id)>-1 && !rowNode.isSelected()){
+                                    rowNode.setSelected(true);
+                                    selectionChanged=true;
+                                }
+                            });
+                        }
+                        if(!selectionChanged){
+                            this.onSelectionChanged(this.table);
+                        }
                    }).catch((error) => {
                        console.error('Unexpected error');
                        console.error(error);
@@ -395,7 +413,9 @@ class CheckBoxHeaderInternal extends Component {
     onCheckBoxClick(){
         if(!this.props.availTabPageSelection.selectAll) {
             this.props.api.forEachNode(node=>{
-                node.setSelected(true);
+                if(!node.isSelected()) {
+                    node.setSelected(true);
+                }
             });
         }
         else {
