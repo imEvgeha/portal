@@ -2,6 +2,7 @@ import {combineReducers, createStore} from 'redux';
 import root from '../reducers/index';
 import dashboard from '../reducers/dashboard';
 import {loadDashboardSession} from '../actions/dashboard';
+import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.1';
 
@@ -16,6 +17,9 @@ export default store;
 
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
+    setTimeout(() => {
+        advancedSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
+    }, 100);
 };
 
 export const saveDashboardState = () => {
@@ -23,18 +27,15 @@ export const saveDashboardState = () => {
 };
 
 const loadFromWebLocalStorage = (name, loadAction, version) => {
-    setTimeout(() => {try {
-        console.log('Try ' + 'state-' + name + '-' + version + '-' + store.getState().root.profileInfo.email);
+    try {
         const serializedState = localStorage.getItem('state-' + name + '-' + version + '-' + store.getState().root.profileInfo.email);
         if (serializedState === null) {
             return undefined;
         }
-        console.log(JSON.parse(serializedState));
         store.dispatch(loadAction(JSON.parse(serializedState)));
     } catch (err) {
         return undefined;
     }
-    }, 100);
 };
 
 const saveToWebLocalStorage = (name, version) => {

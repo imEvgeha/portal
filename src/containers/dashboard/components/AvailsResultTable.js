@@ -24,7 +24,7 @@ const mapStateToProps = state => {
         availTabPageSort: state.dashboard.session.availTabPageSort,
         searchCriteria: state.dashboard.session.searchCriteria,
         useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
-        freeTextSearch: state.dashboard.session.freeTextSearch,
+        freeTextSearch: state.dashboard.freeTextSearch,
         availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,

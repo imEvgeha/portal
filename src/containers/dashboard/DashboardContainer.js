@@ -9,7 +9,9 @@ import {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    resultPageSelect
+    resultPageSelect,
+    searchFormShowSearchResults,
+    searchFormShowAdvancedSearch
 } from '../../actions/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
@@ -18,44 +20,47 @@ import {loadAvailsMapping} from '../../actions';
 import {profileService} from './ProfileService';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
 import {configurationService} from './ConfigurationService';
-import {loadDashboardState} from '../../stores';
-
 
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
         selected: state.dashboard.session.availTabPageSelection.selected,
+        showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
+        showSearchResults: state.dashboard.session.showSearchResults,
     };
 };
 
 const mapDispatchToProps = {
-    searchFormShowAdvancedSearch: searchFormUseAdvancedSearch,
+    searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
     loadAvailsMapping,
-    resultPageSelect
+    resultPageSelect,
+    searchFormShowAdvancedSearch,
+    searchFormShowSearchResults
 };
 
 class DashboardContainer extends React.Component {
     static propTypes = {
         availsMapping: t.any,
-        searchFormShowAdvancedSearch: t.func,
+        searchFormUseAdvancedSearch: t.func,
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
         loadAvailsMapping: t.func,
         resultPageSelect: t.func,
-        selected: t.array
+        searchFormShowAdvancedSearch: t.func,
+        searchFormShowSearchResults: t.func,
+        selected: t.array,
+        showAdvancedSearch: t.bool,
+        showSearchResults: t.bool,
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-            showAdvancedSearch: false,
-            showSearchResults: false
-        };
+        this.state = {};
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
@@ -64,30 +69,30 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidMount() {
-        loadDashboardState();
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
     }
 
     handleBackToDashboard() {
-        this.setState({showSearchResults: false, showAdvancedSearch: false});
+        this.props.searchFormShowAdvancedSearch(false);
+        this.props.searchFormShowSearchResults(false);
     }
 
     toggleAdvancedSearch() {
-        this.setState({showAdvancedSearch: !this.state.showAdvancedSearch});
+        this.props.searchFormShowAdvancedSearch(!this.props.showAdvancedSearch);
     }
 
     handleAvailsFreeTextSearch(searchCriteria) {
-        this.props.searchFormShowAdvancedSearch(false);
+        this.props.searchFormUseAdvancedSearch(false);
+        this.props.searchFormShowSearchResults(true);
         advancedSearchHelper.freeTextSearch(searchCriteria);
-        this.setState({showSearchResults: true});
         this.cleanSelection();
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
-        this.props.searchFormShowAdvancedSearch(true);
+        this.props.searchFormUseAdvancedSearch(true);
+        this.props.searchFormShowSearchResults(true);
         advancedSearchHelper.advancedSearch(searchCriteria);
-        this.setState({showSearchResults: true});
         this.cleanSelection();
     }
 
@@ -102,13 +107,13 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <div className={'container-fluid vu-free-text-search ' + (this.state.showAdvancedSearch ? 'hide': '')}>
+                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <FreeTextSearch disabled={this.state.showAdvancedSearch} containerId={'dashboard-avails'}
+                                        <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
                                             onSearch={this.handleAvailsFreeTextSearch}/>
                                     </td>
                                     <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
@@ -122,9 +127,9 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                {<AdvancedSearchPanel hide={!this.state.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
-                {!this.state.showSearchResults && <DashboardTab/>}
-                {this.state.showSearchResults && <SearchResultsTab onBackToDashboard={this.handleBackToDashboard}/>}
+                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                {!this.props.showSearchResults && <DashboardTab/>}
+                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab onBackToDashboard={this.handleBackToDashboard}/>}
             </div>
         );
     }

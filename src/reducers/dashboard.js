@@ -9,7 +9,7 @@ import {
     DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
     DASHBOARD_RESULT_PAGE__SELECT_ROW,
     SET_REPORT_NAME,
-    LOAD_DASHBOARD_SESSION,
+    LOAD_DASHBOARD_SESSION, DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS, DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
 } from '../constants/action-types';
 import {saveDashboardState} from '../stores';
 
@@ -21,15 +21,17 @@ const initialState = {
         total: 0
     },
     availTabPageLoading: false,
+    freeTextSearch: {
+        text: ''
+    },
     session: {
         availTabPageSelection: {
             selected: [],
             selectAll: false
         },
         useAdvancedSearch: false,
-        freeTextSearch: {
-            text: ''
-        },
+        showAdvancedSearch: false,
+        showSearchResults: false,
         advancedSearchCriteria: {
             vodStartFrom: null,
             vodStartTo: null,
@@ -59,24 +61,19 @@ const initialState = {
 
 
 const dashboard = (state = initialState, action) => {
-    function session(sessionState) {
-        saveDashboardState();
-        return { ...state, session: {...state.session, sessionState}};
-    }
-
     switch (action.type) {
         case LOAD_DASHBOARD_SESSION:
             return { ...state, session: action.payload};
-        case SET_REPORT_NAME:
-            return {...state, reportName: action.payload};
         case DASHBOARD_RESULT_PAGE__UPDATE:
             return {...state, availTabPage: {...state.availTabPage, ...action.payload}};
+        case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
+            return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__LOADING:
             return {...state, availTabPageLoading: action.payload};
 //  ------------   SESSION Actions   ----------------------------
-        case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
-             saveDashboardState();
-            return { ...state, session: {...state.session, freeTextSearch: {...state.session.freeTextSearch, ...action.payload}}};
+        case SET_REPORT_NAME:
+            saveDashboardState();
+            return {...state, session: {...state.session, reportName: action.payload}};
         case DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA:
              saveDashboardState();
             return { ...state, session: {...state.session, advancedSearchCriteria: {...state.session.advancedSearchCriteria, ...action.payload}}};
@@ -86,6 +83,12 @@ const dashboard = (state = initialState, action) => {
         case DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH:
              saveDashboardState();
             return { ...state, session: {...state.session, useAdvancedSearch: action.payload}};
+        case DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH:
+             saveDashboardState();
+            return { ...state, session: {...state.session, showAdvancedSearch: action.payload}};
+        case DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS:
+             saveDashboardState();
+            return { ...state, session: {...state.session, showSearchResults: action.payload}};
         case DASHBOARD_RESULT_PAGE__SORT:
              saveDashboardState();
             return { ...state, session: {...state.session, availTabPageSort: action.payload}};

@@ -1,0 +1,15 @@
+{
+  "gateway":{
+    "url":"http://usla-amm-d001.dev.vubiquity.com:8082",
+    "configuration": "http://usla-amm-d001.dev.vubiquity.com:8087",
+    "service": {
+      "avails": "/avails-api/v1",
+      "configuration": "/configuration-api/v1"
+    }
+  },
+  "keycloak": {
+    "clientId": "vehicle-public",
+    "realm": "Vubiquity",
+    "url": "http://usla-amm-d001.dev.vubiquity.com:8080/auth"
+  }
+}

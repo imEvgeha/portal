@@ -131,7 +131,7 @@ export default class RangeDatapicker extends React.Component {
                             ref={this.refDatePickerStart}
                             className={this.state.invalidStartDate ? 'text-danger' : ''}
                             id="dashboard-avails-search-start-date-text"
-                            selected={this.props.fromDate}
+                            selected={this.props.fromDate ? moment(this.props.fromDate) : this.props.fromDate}
                             showYearDropdown
                             showMonthDropdown
                             autoComplete={'off'}
@@ -151,7 +151,7 @@ export default class RangeDatapicker extends React.Component {
                             ref={this.refDatePickerEnd}
                             className={this.state.invalidEndDate ? 'text-danger' : ''}
                             id="dashboard-avails-search-start-date-text"
-                            selected={this.props.toDate}
+                            selected={this.props.toDate ? moment(this.props.toDate) : this.props.toDate}
                             showYearDropdown
                             showMonthDropdown
                             autoComplete={'off'}
