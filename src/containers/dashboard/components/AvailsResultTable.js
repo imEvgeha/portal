@@ -265,7 +265,9 @@ class AvailsResultTable extends React.Component {
 
     onColumnReordered(e) {
         let cols = [];
-        e.columnApi.getAllGridColumns().map(column => cols.push(column.colDef.field));
+        e.columnApi.getAllGridColumns().map(column => {
+            if(column.colDef.headerName!='') cols.push(column.colDef.field);
+        });
         this.props.resultPageUpdateColumnsOrder(cols);
     }
 
@@ -323,7 +325,6 @@ class AvailsResultTable extends React.Component {
         };
 
         if(this.table){
-            this.table.api.setColumnDefs(this.state.cols); //forces refresh of columns
             this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
 
             let sortModel=[];
