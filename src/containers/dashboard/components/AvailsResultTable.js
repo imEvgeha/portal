@@ -86,6 +86,7 @@ class AvailsResultTable extends React.Component {
         this.onSortChanged = this.onSortChanged.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
+        this.onEdit = this.onEdit.bind(this);
 
         if(colDef.length==0){
             this.parseColumnsSchema();
@@ -183,6 +184,8 @@ class AvailsResultTable extends React.Component {
                     avail: editedAvail,
                     errorMessage: ''
                 });
+
+                this.table.api.getRowNode(editedAvail.id).setData(editedAvail);
                 this.props.resultPageUpdate({
                     pages: this.props.availTabPage.pages,
                     avails: this.editAvail(editedAvail),
@@ -357,6 +360,7 @@ class AvailsResultTable extends React.Component {
                     ref={this.setTable}
 
                     onGridReady={params => params.api.sizeColumnsToFit()}
+                    getRowNodeId= {data => data.id}
 
                     columnDefs= {this.state.cols}
                     suppressDragLeaveHidesColumns= {true}
@@ -381,6 +385,7 @@ class AvailsResultTable extends React.Component {
 
                     headerHeight= '52'
                     rowHeight= '48'
+
                     >
                 </AgGridReact>
 
