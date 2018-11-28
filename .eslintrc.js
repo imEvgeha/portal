@@ -28,6 +28,7 @@ module.exports = {
         //     "error",
         //     "unix"
         // ],
+        "no-var": "error",
         "quotes": [
             "error",
             "single"
