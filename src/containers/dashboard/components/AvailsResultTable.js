@@ -30,14 +30,14 @@ let registeredOnSelect= false;
 let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        availTabPageSort: state.dashboard.availTabPageSort,
-        searchCriteria: state.dashboard.searchCriteria,
-        useAdvancedSearch: state.dashboard.useAdvancedSearch,
+        availTabPageSort: state.dashboard.session.availTabPageSort,
+        searchCriteria: state.dashboard.session.searchCriteria,
+        useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
         freeTextSearch: state.dashboard.freeTextSearch,
-        availTabPageSelection: state.session.availTabPageSelection,
+        availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
-        columnsOrder: state.dashboard.columns
+        columnsOrder: state.dashboard.session.columns
     };
 };
 
@@ -184,32 +184,14 @@ class AvailsResultTable extends React.Component {
         return copiedAvails;
     }
 
-    onEdit(editable, availDetailModal) {
-        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                availDetailModal.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
-
-                this.table.api.getRowNode(editedAvail.id).setData(editedAvail);
-                this.props.resultPageUpdate({
-                    pages: this.props.availTabPage.pages,
-                    avails: this.editAvail(editedAvail),
-                    pageSize: this.props.availTabPage.pageSize,
-                    total: this.props.availTabPage.total
-                });
-            })
-            .catch(() => {
-                editable.setState({availLastEditSucceed: false});
-                availDetailModal.setState({availsMapping: t.any,
-                    errorMessage: 'Avail edit failed'
-                });
-                editable.value = availDetailModal.state.avail[editable.props.title];
-                editable.newValue = availDetailModal.state.avail[editable.props.title];
-            });
+    onEdit(avail) {
+        this.table.api.getRowNode(avail.id).setData(avail);
+        this.props.resultPageUpdate({
+            pages: this.props.availTabPage.pages,
+            avails: this.editAvail(avail),
+            pageSize: this.props.availTabPage.pageSize,
+            total: this.props.availTabPage.total
+        });
     }
 
     doSearch(page, pageSize, sortedParams) {
@@ -410,7 +392,7 @@ import {Component} from 'react';
 
 mapStateToProps = state => {
     return {
-        availTabPageSelection: state.session.availTabPageSelection
+        availTabPageSelection: state.dashboard.session.availTabPageSelection
     };
 };
 

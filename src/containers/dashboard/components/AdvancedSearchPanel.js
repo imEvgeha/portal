@@ -17,8 +17,8 @@ import {exportService} from '../ExportService';
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        reportName: state.dashboard.reportName,
-        searchCriteria: state.dashboard.advancedSearchCriteria,
+        reportName: state.dashboard.session.reportName,
+        searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
     };
 };
