@@ -94,6 +94,11 @@ class AvailsResultTable extends React.Component {
     }
 
     componentDidMount() {
+        this.dataSource = {
+            rowCount: null, // behave as infinite scroll
+            getRows: this.getRows
+        };
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
@@ -114,6 +119,10 @@ class AvailsResultTable extends React.Component {
 
     componentDidUpdate(prevProps) {
       if(this.props.columnsOrder != prevProps.columnsOrder) this.refreshColumns();
+      if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
+        this.table.api.showLoadingOverlay();
+        this.table.api.setDatasource(this.dataSource);
+      }
     }
 
     parseColumnsSchema() {
@@ -215,25 +224,32 @@ class AvailsResultTable extends React.Component {
         //console.log('getRows', params,  this.props.availTabPageSort);
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
-                        //console.log(response);
-                        this.addLoadedItems(response.data);
-                        // if on or after the last page, work out the last row.
-                        var lastRow = -1;
-                        if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                            lastRow = response.data.total;
-                        }
-                        params.successCallback(response.data.data, lastRow);
-                        let selectionChanged=false;
-                        if(response.data.page===0){
-                            this.table.api.forEachNode(rowNode => {
-                                if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id)>-1 && !rowNode.isSelected()){
-                                    rowNode.setSelected(true);
-                                    selectionChanged=true;
-                                }
-                            });
-                        }
-                        if(!selectionChanged){
+                        if(response.data.total > 0){
+                            //console.log(response);
+                            this.addLoadedItems(response.data);
+                            // if on or after the last page, work out the last row.
+                            let lastRow = -1;
+                            if ((response.data.page + 1) * response.data.size >= response.data.total) {
+                                lastRow = response.data.total;
+                            }
+                            params.successCallback(response.data.data, lastRow);
+
+                            if(response.data.page === 0){
+                                //clear selected and not present rows
+
+                                let prevSelection = this.props.availTabPageSelection.selected.slice(0);
+                                this.table.api.deselectAll();
+
+                                this.table.api.forEachNode(rowNode => {
+                                     if(rowNode.data && prevSelection.indexOf(rowNode.data.id) > -1 && !rowNode.isSelected()){
+                                        rowNode.setSelected(true);
+                                    }
+                                });
+                                this.table.api.hideOverlay();
+                            }
                             this.onSelectionChanged(this.table);
+                        }else{
+                            this.table.api.showNoRowsOverlay();
                         }
                    }).catch((error) => {
                        console.error('Unexpected error');
@@ -273,6 +289,7 @@ class AvailsResultTable extends React.Component {
 
     setTable = element => {
       this.table = element;
+      element.api.showLoadingOverlay();
     };
 
     refreshColumns(){
@@ -319,10 +336,6 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
-        let dataSource = {
-            rowCount: null, // behave as infinite scroll
-            getRows: this.getRows
-        };
 
         if(this.table){
             this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
@@ -343,10 +356,6 @@ class AvailsResultTable extends React.Component {
 
             if(toChangeSortModel){
                 this.table.api.setSortModel(sortModel);
-            }
-
-            if(this.props.availTabPageLoading && this.table.api.getDisplayedRowCount()>0) {
-                this.table.api.setDatasource(dataSource);
             }
         }
 
@@ -374,7 +383,7 @@ class AvailsResultTable extends React.Component {
                     infiniteInitialRowCount= '0'
                     cacheOverflowSize= '2'
                     maxConcurrentDatasourceRequests= '1'
-                    datasource= {dataSource}
+                    datasource= {this.dataSource}
 
                     enableSorting={true}
                     enableServerSideSorting= {true}
