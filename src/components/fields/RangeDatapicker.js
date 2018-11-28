@@ -69,17 +69,13 @@ export default class RangeDatapicker extends React.Component {
     }
 
     handleChangeStartDate(date) {
-        if (date) {
-            this.props.onFromDateChange(date);
-        }
+        this.props.onFromDateChange(date);
         this.wrongDateRange(date && this.props.toDate && this.props.toDate < date);
         this.setState({invalidStartDate: ''});
     }
 
     handleChangeEndDate(date) {
-        if (date) {
-            this.props.onToDateChange(date);
-        }
+        this.props.onToDateChange(date);
         this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
         this.setState({invalidEndDate: ''});
     }
@@ -102,6 +98,7 @@ export default class RangeDatapicker extends React.Component {
 
             }
         } else {
+            this.handleChangeStartDate(null);
             this.setState({invalidStartDate: '', invalidRange: ''});
             this.props.onValidate('');
         }
@@ -116,6 +113,7 @@ export default class RangeDatapicker extends React.Component {
                 this.setState({invalidEndDate: INVALID_DATE, invalidRange: ''});
             }
         } else {
+            this.handleChangeEndDate(null);
             this.setState({invalidRange: '', invalidEndDate: ''});
             this.props.onValidate('');
         }
