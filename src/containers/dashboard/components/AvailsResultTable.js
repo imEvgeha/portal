@@ -185,30 +185,13 @@ class AvailsResultTable extends React.Component {
         }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
     }
 
-    onEdit(editable, availDetailModal) {
-        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                availDetailModal.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
-                this.props.resultPageUpdate({
-                    pages: this.props.availTabPage.pages,
-                    avails: this.editAvail(editedAvail),
-                    pageSize: this.props.availTabPage.pageSize,
-                    total: this.props.availTabPage.total
-                });
-            })
-            .catch(() => {
-                editable.setState({availLastEditSucceed: false});
-                availDetailModal.setState({vailsMapping: t.any,
-                    errorMessage: 'Avail edit failed'
-                });
-                editable.value = availDetailModal.state.avail[editable.props.title];
-                editable.newValue = availDetailModal.state.avail[editable.props.title];
-            });
+    onEdit(avail) {
+        this.props.resultPageUpdate({
+            pages: this.props.availTabPage.pages,
+            avails: this.editAvail(avail),
+            pageSize: this.props.availTabPage.pageSize,
+            total: this.props.availTabPage.total
+        });
     }
 
     render() {
