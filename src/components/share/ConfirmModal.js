@@ -48,7 +48,7 @@ class Confirm extends React.Component{
     }
 
     render() {
-        var modalBody;
+        let modalBody;
         if (this.props.description) {
             modalBody = (
                 <ModalBody>{this.props.description}</ModalBody>

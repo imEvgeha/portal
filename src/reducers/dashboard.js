@@ -16,7 +16,7 @@ import {saveDashboardState} from '../stores';
 const initialState = {
     availTabPage: {
         pages: 0,
-        avails: [{}],
+        avails: [],
         pageSize: 0,
         total: 0
     },
