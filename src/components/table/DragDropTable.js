@@ -9,7 +9,7 @@ import {
 
 const mapStateToProps = state => {
     return {
-        columnsOrder: state.dashboard.columns
+        columnsOrder: state.dashboard.session.columns
     };
 };
 
