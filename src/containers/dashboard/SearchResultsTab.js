@@ -17,11 +17,11 @@ import {exportService} from './ExportService';
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        columns: state.dashboard.columns,
-        availTabPageSelected: state.session.availTabPageSelection.selected,
-        reportName: state.dashboard.reportName,
+        columns: state.dashboard.session.columns,
+        availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
+        reportName: state.dashboard.session.reportName,
         availsMapping: state.root.availsMapping,
-        columnsOrder: state.dashboard.columns
+        columnsOrder: state.dashboard.session.columns
     };
 };
 

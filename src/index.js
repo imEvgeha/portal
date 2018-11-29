@@ -30,11 +30,11 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 
 import Keycloak from './vendor/keycloak';
-import store from './stores/index';
+import store, {loadDashboardState} from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
-import {loadState} from './stores';
+// import {loadState} from './stores';
 import {isObject, mergeDeep} from './util/Common';
 
 export const keycloak = {instance: {}};
@@ -48,7 +48,7 @@ function init() {
 
             keycloak.instance.loadUserInfo().success(profileInfo => {
                 store.dispatch(loadProfileInfo(profileInfo));
-                loadState();
+                loadDashboardState();
             });
 
             render(

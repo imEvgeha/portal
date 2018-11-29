@@ -157,11 +157,10 @@ class AvailDetails extends React.Component {
     }
 
     render() {
-        const rowsOnLeft = this.props.availsMapping.mappings.length / 2;
-
+        const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
         const renderFieldTemplate = (name, displayName, content) => {
             return (
-                <a href="#" key={name}
+                <div href="#" key={name}
                     className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="row">
                         <div className="col-4">{displayName}:</div>
@@ -169,7 +168,7 @@ class AvailDetails extends React.Component {
                             {content}
                         </div>
                     </div>
-                </a>
+                </div>
             );
         };
         const renderTextField = (name, displayName) => {
@@ -212,19 +211,22 @@ class AvailDetails extends React.Component {
                 value={this.state.avail[name]}
                 name={name}
                 displayName={displayName}
-                validate={(date) => this.validation(name, displayName, moment(date))}
-                onChange={(date, cancel) => this.handleDatepickerSubmit(name, moment(date), cancel)}
+                validate={(date) => this.validation(name, displayName, date)}
+                onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}
             />
         ));
     };
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
-            switch (mapping.dataType) {
-                case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
-                case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
-                case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
-                default:
-                    console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+            if(mapping.javaVariableName!='availId'){//we shouldn't be able to modify the id
+                switch (mapping.dataType) {
+                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
+                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName); //yeah, somebody put type 'year' for Release Year Field, this is a quick fix
+                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
+                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                    default:
+                        console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                }
             }
         });
     };
