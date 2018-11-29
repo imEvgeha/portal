@@ -17,6 +17,8 @@ class AvailDetails extends React.Component {
         resolve: t.func,
         onEdit: t.func,
         availsMapping: t.any,
+        resultPageUpdate: t.func,
+        availTabPage: t.object
     };
 
     static defaultProps = {
@@ -41,8 +43,9 @@ class AvailDetails extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
-        this.confirm = this.confirm.bind(this);
+        this.update = this.update.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDatepickerSubmit = this.handleDatepickerSubmit.bind(this);
     }
 
     toggle() {
@@ -54,25 +57,6 @@ class AvailDetails extends React.Component {
     abort() {
         return this.props.reject();
     }
-
-    confirm() {
-        this.setState({ loading: true, showCreatedMessage: false });
-        dashboardService.updateAvails(this.state.avail).then(() => {
-            this.setState({ loading: false, showCreatedMessage: true });
-            let thatAbort = this.abort;
-            setTimeout(function () {
-                thatAbort();
-            }, 1000);
-        })
-            .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
-        
-        //return this.props.resolve();
-    }
-
-    handleSubmit(editable) {
-        this.props.onEdit(editable, this);
-    }
-
 
     validateNotEmpty(data) {
         if (!data) {
@@ -115,23 +99,46 @@ class AvailDetails extends React.Component {
 
     }
 
-    handleDatepickerChange(name, date) {
-        let newAvail = { ...this.state.avail };
-        newAvail[name] = date;
-        this.setState({
-            avail: newAvail,
+    handleSubmit(editable) {
+        const name = editable.props.title;
+        const value = editable.value;
+        this.update(name, value, () => {
+            editable.setState({availLastEditSucceed: false});
+            editable.value = this.state.avail[name];
+            editable.newValue = this.state.avail[name];
         });
-        this.setState({ loading: true, showCreatedMessage: false });
-        dashboardService.updateAvails(newAvail).then(() => {
-            this.setState({ loading: false, showCreatedMessage: true });
-            let thatAbort = this.abort;
-            setTimeout(function () {
-                thatAbort();
-            }, 1000);
-        })
-        .catch(() => this.setState({ loading: false, errorMessage: { ...this.state.errorMessage, other: 'Avail update Failed' } }));
-        // this.confirm();
     }
+
+    handleDatepickerSubmit(name, date, cancel) {
+        this.update(name, date, () => {
+            cancel();
+        });
+    }
+
+    update(name, value, onError) {
+        let updatedAvail = {...this.state.avail, [name]: value};
+        dashboardService.updateAvails(updatedAvail)
+        .then(res => {
+            let editedAvail = res.data;
+            this.setState({
+                avail: editedAvail,
+                errorMessage: ''
+            });
+            this.props.resultPageUpdate({
+                pages: this.props.availTabPage.pages,
+                avails: this.editAvail(editedAvail),
+                pageSize: this.props.availTabPage.pageSize,
+                total: this.props.availTabPage.total
+            });
+        })
+        .catch(() => {
+            this.setState({
+                errorMessage: 'Avail edit failed'
+            });
+            onError();
+        });
+    }
+
     setDisableCreate(avail, errorMessage) {
         if (this.isAnyErrors(errorMessage)) {
             this.setState({ disableCreateBtn: true });
@@ -206,7 +213,7 @@ class AvailDetails extends React.Component {
                 name={name}
                 displayName={displayName}
                 validate={(date) => this.validation(name, displayName, moment(date))}
-                onChange={(date) => this.handleDatepickerChange(name, moment(date))}
+                onChange={(date, cancel) => this.handleDatepickerSubmit(name, moment(date), cancel)}
             />
         ));
     };

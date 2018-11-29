@@ -66,7 +66,6 @@ class AvailsResultTable extends React.Component {
         this.onLoadMoreItems = this.onLoadMoreItems.bind(this);
         this.onSortedChange = this.onSortedChange.bind(this);
         this.onSelection = this.onSelection.bind(this);
-        this.onEdit = this.onEdit.bind(this);
         this.editAvail = this.editAvail.bind(this);
         this.onCellClick = this.onCellClick.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -182,33 +181,7 @@ class AvailsResultTable extends React.Component {
     onCellClick(row) {
         availDetailsModal.open(row, () => {
         }, () => {
-        }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
-    }
-
-    onEdit(editable, availDetailModal) {
-        let updatedAvail = {...availDetailModal.state.avail, [editable.props.title]: editable.value};
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                availDetailModal.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
-                this.props.resultPageUpdate({
-                    pages: this.props.availTabPage.pages,
-                    avails: this.editAvail(editedAvail),
-                    pageSize: this.props.availTabPage.pageSize,
-                    total: this.props.availTabPage.total
-                });
-            })
-            .catch(() => {
-                editable.setState({availLastEditSucceed: false});
-                availDetailModal.setState({vailsMapping: t.any,
-                    errorMessage: 'Avail edit failed'
-                });
-                editable.value = availDetailModal.state.avail[editable.props.title];
-                editable.newValue = availDetailModal.state.avail[editable.props.title];
-            });
+        }, {resultPageUpdate: this.props.resultPageUpdate, availsMapping: this.props.availsMapping, availTabPage: this.props.availTabPage});
     }
 
     render() {

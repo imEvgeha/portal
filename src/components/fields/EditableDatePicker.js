@@ -23,8 +23,7 @@ class EditableDatePicker extends Component {
             date: vodDate ? vodDate : moment(),
             datePickerStatus: false,
             errorMessage: '',
-            submitStatus: false,
-            prevDate: vodDate
+            submitStatus: false
         };
 
         this.handleShowDatePicker = this.handleShowDatePicker.bind(this);
@@ -32,6 +31,7 @@ class EditableDatePicker extends Component {
         this.handleCancelDatePicker = this.handleCancelDatePicker.bind(this);
         this.handleDatepickerRawChange = this.handleDatepickerRawChange.bind(this);
         this.submit = this.submit.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
     handleShowDatePicker(e) {
@@ -43,10 +43,12 @@ class EditableDatePicker extends Component {
     }
     handleCancelDatePicker(e) {
         e.preventDefault();
-        let date = moment(this.props.value);
-        let newPrevDate = date;
+        this.cancel();
+    }
+
+    cancel() {
         this.setState({
-            date: newPrevDate,
+            date: moment(this.props.value),
             datePickerStatus: false,
         });
     }
@@ -70,7 +72,7 @@ class EditableDatePicker extends Component {
                 errorMessage: validationError
             });
         } else {
-            this.props.onChange(date);
+            this.props.onChange(date, this.cancel);
             this.setState({
                 datePickerStatus: false
             });
