@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker/es';
 import {dashboardService} from '../DashboardService';
 import moment from 'moment';
 import {validateDate} from '../../../util/Validation';
+import NexusDatePicker from '../../../components/fields/NexusDatePicker';
 
 class AvailCreate extends React.Component {
     static propTypes = {
@@ -238,18 +239,11 @@ class AvailCreate extends React.Component {
         const renderDatepickerField = (name, displayName) => {
             return renderFieldTemplate(name, displayName, (
                 <div>
-                <DatePicker
-                    className={this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].date ? 'text-danger' : '' : ''}
-                    id={'dashboard-avails-create-modal-' + name + '-text'}
-                    name={name}
-                    selected={this.state.avail[name]}
-                    showYearDropdown
-                    showMonthDropdown
-                    autoComplete={'off'}
-                    onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
-                    onChangeRaw={(event) => this.handleDatepickerRawChange(name, displayName, event.target.value)}
-                    todayButton={'Today'}
-                />
+                    <NexusDatePicker
+                        id={'dashboard-avails-create-modal-' + name + '-text'}
+                        date={this.state.avail[name]}
+                        onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
+                    />
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].date &&
                         <small className="text-danger m-2">
                             {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].date ? this.state.mappingErrorMessage[name].date : '' : ''}

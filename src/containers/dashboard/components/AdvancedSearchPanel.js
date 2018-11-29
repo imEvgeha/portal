@@ -46,13 +46,10 @@ class AdvancedSearchPanel extends React.Component {
             this.handleSearch();
         }
     };
-    clearHandlers = {};
 
     constructor(props) {
         super(props);
         this.state = {
-            invalidStartDate: '',
-            invalidEndDate: '',
             invalid: {},
             reportName: '',
             invalidForm: false
@@ -134,15 +131,6 @@ class AdvancedSearchPanel extends React.Component {
 
     handleClear() {
         advancedSearchHelper.clearAdvancedSearchForm();
-        this.setState({
-            invalidStartDate: '',
-            invalidEndDate: '',
-        });
-        for (let key in this.clearHandlers) {
-            if (this.clearHandlers.hasOwnProperty(key)){
-                this.clearHandlers[key]();
-            }
-        }
     }
 
     handleSave() {
@@ -184,7 +172,6 @@ class AdvancedSearchPanel extends React.Component {
                 onFromDateChange={(value) => this.handleDateChange(name +'From', value)}
                 onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
                 onValidate={(value) => this.handleDateValidate(name, value)}
-                setClearHandler={ handler => this.clearHandlers[name] = handler}
                 handleKeyPress={this._handleKeyPress}
             />);
         };

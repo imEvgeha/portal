@@ -4,6 +4,7 @@ import '../../containers/dashboard/components/DashboardCard.scss';
 import DatePicker from 'react-datepicker/es';
 import moment from 'moment';
 import {validateDate} from '../../util/Validation';
+import NexusDatePicker from './NexusDatePicker';
 
 const INVALID_DATE = 'Invalid Date';
 
@@ -28,60 +29,27 @@ export default class RangeDatapicker extends React.Component {
             prevFromDate: null,
             prevToDate: null,
         };
-        this.clear = this.clear.bind(this);
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
-        this.handleChangeRawStartDate = this.handleChangeRawStartDate.bind(this);
-        this.handleChangeRawEndDate = this.handleChangeRawEndDate.bind(this);
-        this.refDatePickerStart = React.createRef();
-        this.refDatePickerEnd = React.createRef();
-    }
-
-    componentDidMount() {
-        this.props.setClearHandler(this.clear);
-    }
-
-    componentDidUpdate() {
-        if (!this.props.fromDate && this.state.prevFromDate) {
-            this.setState({
-                invalidEndDate: '',
-                invalidRange: '',
-                prevFromDate: this.props.fromDate,
-            });
-        }
-        if (!this.props.toDate && this.state.prevToDate) {
-            this.setState({
-                invalidStartDate: '',
-                invalidRange: '',
-                prevToDate: this.props.toDate,
-            });
-        }
-    }
-
-    clear() {
-        this.refDatePickerStart.current.clear();
-        this.refDatePickerEnd.current.clear();
-        this.setState({
-            invalidStartDate: '',
-            invalidEndDate: '',
-            invalidRange: '',
-        });
+        this.handleInvalid = this.handleInvalid.bind(this);
     }
 
     handleChangeStartDate(date) {
-        if (date) {
-            this.props.onFromDateChange(date);
-        }
+        this.props.onFromDateChange(date);
         this.wrongDateRange(date && this.props.toDate && this.props.toDate < date);
         this.setState({invalidStartDate: ''});
+        if (!this.state.invalidEndDate) {
+            this.props.onValidate(false);
+        }
     }
 
     handleChangeEndDate(date) {
-        if (date) {
-            this.props.onToDateChange(date);
-        }
+        this.props.onToDateChange(date);
         this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
         this.setState({invalidEndDate: ''});
+        if (!this.state.invalidStartDate) {
+            this.props.onValidate(false);
+        }
     }
 
     wrongDateRange(wrong) {
@@ -90,34 +58,12 @@ export default class RangeDatapicker extends React.Component {
         this.props.onValidate(invalid);
     }
 
-    handleChangeRawStartDate(date) {
-        if (date) {
-            if (validateDate(date)) {
-                this.handleChangeStartDate(moment(date));
-                this.setState({invalidStartDate: ''});
-                this.props.onValidate('');
-            } else {
-                this.setState({invalidStartDate: INVALID_DATE, invalidRange: ''});
-                this.props.onValidate(INVALID_DATE);
-
-            }
+    handleInvalid(name, value) {
+        if (value) {
+            this.setState({['invalid' + name +'Date']: INVALID_DATE, invalidRange: ''});
+            this.props.onValidate(true);
         } else {
-            this.setState({invalidStartDate: '', invalidRange: ''});
-            this.props.onValidate('');
-        }
-    }
-
-    handleChangeRawEndDate(date) {
-        if (date) {
-            if (validateDate(date)) {
-                this.handleChangeEndDate(moment(date));
-                this.setState({invalidEndDate: ''});
-            } else {
-                this.setState({invalidEndDate: INVALID_DATE, invalidRange: ''});
-            }
-        } else {
-            this.setState({invalidRange: '', invalidEndDate: ''});
-            this.props.onValidate('');
+            this.setState({['invalid' + name +'Date']: ''});
         }
     }
 
@@ -127,17 +73,11 @@ export default class RangeDatapicker extends React.Component {
                 <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
                 <div className={'row justify-content-around'}>
                     <div style={{width: '45%', paddingLeft: '8px'}}>
-                        <DatePicker
-                            ref={this.refDatePickerStart}
-                            className={this.state.invalidStartDate ? 'text-danger' : ''}
+                        <NexusDatePicker
                             id="dashboard-avails-search-start-date-text"
-                            selected={this.props.fromDate}
-                            showYearDropdown
-                            showMonthDropdown
-                            autoComplete={'off'}
+                            date={this.props.fromDate}
                             onChange={this.handleChangeStartDate}
-                            onChangeRaw={(event) => this.handleChangeRawStartDate(event.target.value)}
-                            todayButton={'Today'}
+                            onInvalid={(value) => {this.handleInvalid('Start', value);}}
                             disabled={this.props.disabled}
                             customInput={<input onKeyPress={this.props.handleKeyPress} />}
                         />
@@ -147,17 +87,11 @@ export default class RangeDatapicker extends React.Component {
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
-                        <DatePicker
-                            ref={this.refDatePickerEnd}
-                            className={this.state.invalidEndDate ? 'text-danger' : ''}
-                            id="dashboard-avails-search-start-date-text"
-                            selected={this.props.toDate}
-                            showYearDropdown
-                            showMonthDropdown
-                            autoComplete={'off'}
+                        <NexusDatePicker
+                            id="dashboard-avails-search-end-date-text"
+                            date={this.props.toDate}
                             onChange={this.handleChangeEndDate}
-                            onChangeRaw={(event) => this.handleChangeRawEndDate(event.target.value)}
-                            todayButton={'Today'}
+                            onInvalid={(value) => {this.handleInvalid('End', value);}}
                             disabled={this.props.disabled}
                             customInput={<input onKeyPress={this.props.handleKeyPress} />}
                         />
