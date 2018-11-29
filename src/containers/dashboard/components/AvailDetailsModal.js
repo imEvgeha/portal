@@ -79,18 +79,42 @@ class AvailDetails extends React.Component {
         if (!data) {
             return 'Field can not be empty';
         }
+        return '';
+    }
+
+    validateTextField(field, value) {
+        if(this.validateNotEmpty(value) === '') return '';
+        let atLeastOne = ['sd', 'hd', 'f3d', 'f4k'];
+        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+            let mapping = this.props.availsMapping.mappings[i];
+            if(mapping.javaVariableName === field) {
+                if(!mapping.required) return '';
+
+                if(atLeastOne.indexOf(mapping.javaVariableName) > -1){
+                    for(let j=0; j < atLeastOne.length; j++){
+                        if(atLeastOne[j]!=field && this.validateNotEmpty(this.state.avail[atLeastOne[j]]) === '') return '';
+                    }
+
+                    if(this.validateNotEmpty(value)!='') return 'Not all formats can be empty';
+                }
+
+                return this.validateNotEmpty(value);
+            }
+
+        }
+        return '';
     }
 
     handleChange({ target }) {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        let newAvail = { ...this.state.avail, [name]: value };
-        this.setState({
-            avail: newAvail
-        });
-
-        this.setDisableCreate(newAvail, this.state.errorMessage);
+        if(validateTextField(name, value)===''){
+            let newAvail = { ...this.state.avail, [name]: value };
+            this.setState({
+                avail: newAvail
+            });
+        }
     }
 
     validation(name, displayName, date) {
@@ -116,21 +140,9 @@ class AvailDetails extends React.Component {
         this.notifyOtherSystems(newAvail);
 
     }
-    setDisableCreate(avail, errorMessage) {
-        if (this.isAnyErrors(errorMessage)) {
-            this.setState({ disableCreateBtn: true });
-        } else if (this.areMandatoryFieldsEmpty(avail)) {
-            this.setState({ disableCreateBtn: true });
-        } else {
-            this.setState({ disableCreateBtn: false });
-        }
-    }
+
     isAnyErrors(errorMessage) {
         return !!(errorMessage.other || errorMessage.date);
-    }
-
-    areMandatoryFieldsEmpty(avail) {
-        return !(avail.title && avail.studio);
     }
 
     render() {
@@ -160,7 +172,7 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
                     onChange={this.handleChange}
-                    validate={ name !== 'title' && name !== 'studio' ? '' : this.validateNotEmpty }
+                    validate={(value) => this.validateTextField(name, value)}
                 />
             ));
         };
@@ -198,6 +210,7 @@ class AvailDetails extends React.Component {
             if(mapping.javaVariableName!='availId'){//we shouldn't be able to modify the id
                 switch (mapping.dataType) {
                     case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
+                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName);
                     case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName); //yeah, somebody put type 'year' for Release Year Field, this is a quick fix
                     case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
                     case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
@@ -231,9 +244,9 @@ class AvailDetails extends React.Component {
                     </Label>
                 </ModalFooter>
                 }
-<ModalFooter>
-    <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
-</ModalFooter>
+            <ModalFooter>
+                <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
+            </ModalFooter>
 
             </Modal >
         );

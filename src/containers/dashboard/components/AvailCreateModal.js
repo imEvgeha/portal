@@ -168,7 +168,17 @@ class AvailCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty(avail) {
-        return !(avail.title && avail.studio);
+        let atLeastOne = ['sd', 'hd', 'f3d', 'f4k'];
+        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+            let mapping = this.props.availsMapping.mappings[i];
+            console.log(mapping.javaVariableName, mapping.required, atLeastOne.indexOf(mapping.javaVariableName) == -1, avail[mapping.javaVariableName], !avail[mapping.javaVariableName], mapping.required && atLeastOne.indexOf(mapping.javaVariableName) == -1 && !avail[mapping.javaVariableName])
+            if(mapping.required && atLeastOne.indexOf(mapping.javaVariableName) == -1 && !avail[mapping.javaVariableName]) return true;
+        }
+        for(let i=0; i < atLeastOne.length; i++){
+            console.log(atLeastOne[i], avail[atLeastOne[i]]);
+            if(avail[atLeastOne[i]]) return false;
+        }
+        return true;
     }
 
     confirm() {
@@ -266,12 +276,16 @@ class AvailCreate extends React.Component {
 
         const renderFields = (mappings) => {
             return mappings.map((mapping)=> {
-                switch (mapping.dataType) {
-                    case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName);
-                    case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
-                    case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName);
-                    default:
-                        console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
+                    switch (mapping.dataType) {
+                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
+                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                        default:
+                            console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                    }
                 }
             });
         };
