@@ -118,11 +118,37 @@ class AvailsResultTable extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-      if(this.props.columnsOrder != prevProps.columnsOrder) this.refreshColumns();
-      if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
-        this.table.api.showLoadingOverlay();
-        this.table.api.setDatasource(this.dataSource);
-      }
+        if(this.props.columnsOrder != prevProps.columnsOrder) {
+            this.refreshColumns();
+            for(let i=0; i< Math.min(this.props.columnsOrder.length, prevProps.columnsOrder.length); i++){
+                this.table.columnApi.moveColumn(this.props.columnsOrder[i], i+1);
+            }
+        }
+
+        if(this.props.availTabPageSort != prevProps.availTabPageSort){
+            let sortModel=[];
+            this.props.availTabPageSort.map(sortCriteria=>{
+                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
+            });
+
+            let currentSortModel=this.table.api.getSortModel();
+            let toChangeSortModel=false;
+
+            if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
+
+            for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
+                if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
+                if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
+            }
+
+            if(toChangeSortModel){
+                this.table.api.setSortModel(sortModel);
+            }
+        }
+
+        if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
+            this.table.api.setDatasource(this.dataSource);
+        }
     }
 
     parseColumnsSchema() {
@@ -143,14 +169,12 @@ class AvailsResultTable extends React.Component {
     onSortChanged(e) {
         let sortParams = e.api.getSortModel();
         let newSort = [];
-        if(sortParams.length>0){
+        if(sortParams.length > 0){
             sortParams.map(criteria =>{
-                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort=='desc'});
+                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort == 'desc'});
             });
         }
         this.props.resultPageSort(newSort);
-        this.resetLoadedItems();
-        this.refreshColumns();
     }
 
     onSelectionChanged(e){
@@ -204,6 +228,9 @@ class AvailsResultTable extends React.Component {
 
     getRows(params){
         //console.log('getRows', params,  this.props.availTabPageSort);
+        if(this.table && this.table.api.getDisplayedRowCount()==0){
+            this.table.api.showLoadingOverlay();
+        }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
                         if(response.data.total > 0){
@@ -270,8 +297,10 @@ class AvailsResultTable extends React.Component {
     }
 
     setTable = element => {
-      this.table = element;
-      element.api.showLoadingOverlay();
+        this.table = element;
+        if(this.table){
+            element.api.showLoadingOverlay();
+        }
     };
 
     refreshColumns(){
@@ -283,6 +312,8 @@ class AvailsResultTable extends React.Component {
             pinned: 'left',
             suppressResize: true,
             suppressSizeToFit: true,
+            suppressMovable: true,
+            lockPosition: true,
             headerComponentFramework: CheckBoxHeader
         });
         if (this.props.columnsOrder) {
@@ -291,7 +322,7 @@ class AvailsResultTable extends React.Component {
                     newCols.push(colDef[acc]);
                 }
             });
-            this.setState({cols: newCols});
+            this.cols = newCols;
         }
     }
 
@@ -318,29 +349,6 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
-
-        if(this.table){
-            this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
-
-            let sortModel=[];
-            this.props.availTabPageSort.map(sortCriteria=>{
-                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
-            });
-            let currentSortModel=this.table.api.getSortModel();
-            let toChangeSortModel=false;
-
-            if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
-
-            for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
-                if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
-                if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
-            }
-
-            if(toChangeSortModel){
-                this.table.api.setSortModel(sortModel);
-            }
-        }
-
         return(
             <div
                 className="ag-theme-balham"
@@ -354,7 +362,7 @@ class AvailsResultTable extends React.Component {
                     onGridReady={params => params.api.sizeColumnsToFit()}
                     getRowNodeId= {data => data.id}
 
-                    columnDefs= {this.state.cols}
+                    columnDefs= {this.cols}
                     suppressDragLeaveHidesColumns= {true}
                     enableColResize= {true}
                     onDragStopped = {this.onColumnReordered}
