@@ -3,10 +3,8 @@ import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalFooter, ModalHeader, Modal, Button, Label, Input, Progress} from 'reactstrap';
 import t from 'prop-types';
-import DatePicker from 'react-datepicker/es';
 import {dashboardService} from '../DashboardService';
-import moment from 'moment';
-import {validateDate} from '../../../util/Validation';
+import {rangeValidation} from '../../../util/Validation';
 import NexusDatePicker from '../../../components/fields/NexusDatePicker';
 
 class AvailCreate extends React.Component {
@@ -32,30 +30,37 @@ class AvailCreate extends React.Component {
             disableCreateBtn: true,
             showCreatedMessage: false,
             loading: false,
-            errorMessage: {
-                other: ''
-            },
+            errorMessage: '',
             mappingErrorMessage: {},
-            avail: {
-                title: null,
-                studio: null,
-                territory: null,
-                genre: null,
-                vodStart: null,
-                vodEnd: null
-            }
+            avail: {}
         };
 
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleInvalidDatePicker = this.handleInvalidDatePicker.bind(this);
         this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
-        this.handleDatepickerRawChange = this.handleDatepickerRawChange.bind(this);
     }
 
     componentDidMount() {
         this.addMappingToState(this.props.availsMapping.mappings);
+    }
+
+    handleInvalidDatePicker(name, invalid) {
+        const mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
+        const groupedMappingName = this.getGroupedMappingName(name);
+        if (invalid) {
+            mappingErrorMessage[name] = {date: 'Invalid date, only digits allowed'};
+            if(mappingErrorMessage[groupedMappingName] && mappingErrorMessage[groupedMappingName].range) {
+                mappingErrorMessage[groupedMappingName].range = '';
+            }
+        } else {
+            mappingErrorMessage[name] = {...mappingErrorMessage[name], date: ''};
+        }
+        this.setState({
+            mappingErrorMessage: mappingErrorMessage
+        });
     }
 
     handleChange({target}) {
@@ -67,36 +72,19 @@ class AvailCreate extends React.Component {
             avail: newAvail
         });
 
-        this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
+        this.setDisableCreate(newAvail, this.state.mappingErrorMessage);
     }
 
     handleDatepickerChange(name, displayName, date) {
-        let newAvail = {...this.state.avail};
+        const newAvail = {...this.state.avail};
         newAvail[name] = date;
-        let errorMessage = {range: '', date: ''};
+        const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
+        let mappingErrorMessage = this.state.mappingErrorMessage;
+        mappingErrorMessage[name].range = errorMessage;
 
-        let startDate, endDate, rangeError;
-
-        if (name.endsWith('Start') && this.state.avail[name.replace('Start', 'End')]) {
-            startDate = date;
-            endDate = this.state.avail[name.replace('Start', 'End')];
-            rangeError = displayName + ' must be before corresponding end date';
-        } else if (name.endsWith('End') && this.state.avail[name.replace('End', 'Start')]) {
-            startDate = this.state.avail[name.replace('End', 'Start')];
-            endDate = date;
-            rangeError = displayName + ' must be after corresponding end date';
-        }
-
-        if (startDate && endDate && endDate < startDate) {
-            errorMessage.range = rangeError;
-        }
-
-        let mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
-        mappingErrorMessage[name] = errorMessage;
-
-        let groupedMappingName = this.getGroupedMappingName(name);
+        const groupedMappingName = this.getGroupedMappingName(name);
         if(mappingErrorMessage[groupedMappingName]) {
-            mappingErrorMessage[groupedMappingName].range = errorMessage.range;
+            mappingErrorMessage[groupedMappingName].range = errorMessage;
         }
 
         this.setState({
@@ -104,33 +92,11 @@ class AvailCreate extends React.Component {
             mappingErrorMessage: mappingErrorMessage
         });
 
-        this.setDisableCreate(newAvail, mappingErrorMessage, this.state.errorMessage);
+        this.setDisableCreate(newAvail, mappingErrorMessage);
     }
 
     getGroupedMappingName(name) {
-        if (name.endsWith('Start')) {
-            return name.replace('Start', 'End');
-        } else {
-            return name.replace('End', 'Start');
-        }
-    }
-
-    handleDatepickerRawChange(name, displayName, date) {
-        if (validateDate(date) || !date) {
-            this.handleDatepickerChange(name, displayName, date ? moment(date) : null);
-        } else {
-            let mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
-            mappingErrorMessage[name].date = 'Invalid date: ' + displayName;
-            mappingErrorMessage[name].range = '';
-
-            let groupedMappingName = this.getGroupedMappingName(name);
-            if(mappingErrorMessage[groupedMappingName]) {
-                mappingErrorMessage[groupedMappingName].range = '';
-            }
-
-            this.setState({mappingErrorMessage: mappingErrorMessage});
-            this.setDisableCreate(this.state.avail, mappingErrorMessage, this.state.errorMessage);
-        }
+        return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
     }
 
     toggle() {
@@ -143,20 +109,15 @@ class AvailCreate extends React.Component {
         return this.props.reject();
     }
 
-    setDisableCreate(avail, mappingErrorMessage, errorMessage) {
-        if (this.isAnyErrors(mappingErrorMessage, errorMessage)) {
-            this.setState({disableCreateBtn: true});
-        } else if (this.areMandatoryFieldsEmpty(avail)) {
+    setDisableCreate(avail, mappingErrorMessage) {
+        if (this.isAnyErrors(mappingErrorMessage) || this.areMandatoryFieldsEmpty(avail)) {
             this.setState({disableCreateBtn: true});
         } else {
             this.setState({disableCreateBtn: false});
         }
     }
 
-    isAnyErrors(mappingErrorMessage, errorMessage) {
-        if(errorMessage.other) {
-            return true;
-        }
+    isAnyErrors(mappingErrorMessage) {
         for (const [, value] of Object.entries(mappingErrorMessage)) {
             if(value.date) {
                 return true;
@@ -181,7 +142,7 @@ class AvailCreate extends React.Component {
                 thatAbort();
             }, 1000);
         })
-            .catch(() => this.setState({loading: false, errorMessage: {...this.state.errorMessage, other: 'Avail creation Failed'}}));
+            .catch(() => this.setState({loading: false, errorMessage: 'Avail creation Failed'}));
         return this.props.resolve();
     }
 
@@ -243,15 +204,16 @@ class AvailCreate extends React.Component {
                         id={'dashboard-avails-create-modal-' + name + '-text'}
                         date={this.state.avail[name]}
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
+                        onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
                     />
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].date &&
                         <small className="text-danger m-2">
-                            {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].date ? this.state.mappingErrorMessage[name].date : '' : ''}
+                            {this.state.mappingErrorMessage[name].date}
                         </small>
                     }
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].range &&
                         <small className="text-danger m-2">
-                            {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].range ? this.state.mappingErrorMessage[name].range : '' : ''}
+                            {this.state.mappingErrorMessage[name].range}
                         </small>
                     }
                 </div>
@@ -290,7 +252,7 @@ class AvailCreate extends React.Component {
                     {this.state.showCreatedMessage && <Label id="dashboard-avails-create-modal-error-message"
                            className="text-success w-100">Avails created</Label>}
                     <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
-                        {this.state.errorMessage.other}
+                        {this.state.errorMessage}
                     </Label>
                     <Button id="dashboard-avails-create-modal-create-btn" color="primary" disabled={this.state.disableCreateBtn}
                             onClick={this.confirm}>{this.props.confirmLabel}</Button>

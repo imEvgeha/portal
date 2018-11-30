@@ -1,9 +1,6 @@
 import t from 'prop-types';
 import React from 'react';
 import '../../containers/dashboard/components/DashboardCard.scss';
-import DatePicker from 'react-datepicker/es';
-import moment from 'moment';
-import {validateDate} from '../../util/Validation';
 import NexusDatePicker from './NexusDatePicker';
 
 const INVALID_DATE = 'Invalid Date';
@@ -17,7 +14,6 @@ export default class RangeDatapicker extends React.Component {
         onFromDateChange: t.func,
         onToDateChange: t.func,
         onValidate: t.func,
-        setClearHandler: t.func,
         handleKeyPress: t.func,
     };
 

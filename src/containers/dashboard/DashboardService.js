@@ -50,6 +50,6 @@ export const dashboardService = {
     },
 
     updateAvails: (avail) => {
-        return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/availfs/${avail.id}`, prepareAvail(avail));
+        return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${avail.id}`, prepareAvail(avail));
     },
 };

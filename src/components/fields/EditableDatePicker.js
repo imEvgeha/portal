@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import DatePicker from 'react-datepicker';
 import { Button } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import t from 'prop-types';
-import {validateDate} from '../../util/Validation';
+import NexusDatePicker from './NexusDatePicker';
 
 class EditableDatePicker extends Component {
 
@@ -17,7 +16,7 @@ class EditableDatePicker extends Component {
     };
 
     constructor(props) {
-        let vodDate = props.value;
+        const vodDate = props.value;
         super(props);
         this.state = {
             date: vodDate ? moment(vodDate) : moment(),
@@ -27,9 +26,9 @@ class EditableDatePicker extends Component {
         };
 
         this.handleShowDatePicker = this.handleShowDatePicker.bind(this);
-        this.handleChangeDate = this.handleChangeDate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleCancelDatePicker = this.handleCancelDatePicker.bind(this);
-        this.handleDatepickerRawChange = this.handleDatepickerRawChange.bind(this);
+        this.handleInvalid = this.handleInvalid.bind(this);
         this.submit = this.submit.bind(this);
         this.cancel = this.cancel.bind(this);
     }
@@ -53,20 +52,18 @@ class EditableDatePicker extends Component {
         });
     }
 
-    handleChangeDate(date) {
+    handleChange(date) {
         this.setState({ date: date, submitStatus: false, errorMessage: '' });
     }
 
-    handleDatepickerRawChange(date) {
-        if (validateDate(date) || !date) {
-            this.handleChangeDate(date);
-        } else {
+    handleInvalid(invalid) {
+        if (invalid) {
             this.setState({ errorMessage: 'Invalid date: ' + this.props.displayName, submitStatus: true });
         }
     }
 
     submit(date) {
-        let validationError = this.props.validate(date);
+        const validationError = this.props.validate(date);
         if (validationError !== undefined) {
             this.setState({
                 errorMessage: validationError
@@ -86,22 +83,18 @@ class EditableDatePicker extends Component {
                     this.state.datePickerStatus ?
                         <div>
                             <div className="dPicker" style={{ marginBottom: '5px' }}>
-                                <DatePicker
-                                    className={this.state.errorMessage ? 'text-danger' : ''}
-                                    placeholderText="Enter date"
-                                    selected={moment(this.state.date)}
-                                    showYearDropdown
-                                    showMonthDropdown
-                                    autoComplete={'off'}
-                                    onChangeRaw={(event) => this.handleDatepickerRawChange(event.target.value)}
-                                    onChange={this.handleChangeDate}
-                                    todayButton={'Today'} />
+                                <NexusDatePicker
+                                    id="dashboard-avails-search-start-date-text"
+                                    date={this.state.date}
+                                    onChange={this.handleChange}
+                                    onInvalid={this.handleInvalid}
+                                />
                             </div>
                             <div style={{ float: 'left' }}>
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
-                                    onClick={() => this.submit(this.state.date.toISOString())}
+                                    onClick={() => this.submit(this.state.date ? this.state.date.toISOString() : null)}
                                     color="success"><FontAwesome name='check' />
                                 </Button>
                                 <Button
@@ -122,7 +115,7 @@ class EditableDatePicker extends Component {
                             <span
                                 onClick={this.handleShowDatePicker}
                                 className="displayDate">
-                                {moment(this.state.date).format('L')}
+                                {this.state.date ? moment(this.state.date).format('L') : ''}
                             </span>
                             :
                             <span

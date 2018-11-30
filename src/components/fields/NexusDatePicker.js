@@ -13,8 +13,6 @@ class NexusDatePicker extends Component {
         onChange: t.func,
         handleKeyPress: t.func,
         onInvalid: t.func,
-
-        setClearHandler: t.func,
     };
 
     prevRawInput = '';
@@ -34,12 +32,7 @@ class NexusDatePicker extends Component {
         this.refDatePicker = React.createRef();
     }
 
-    componentDidMount() {
-        // this.props.setClearHandler(this.clear);
-    }
-
     componentDidUpdate() {
-        console.log(this.props.date + ' - ' + this.prevDate);
         if (this.props.date === null && this.prevDate !== null) {
             this.prevDate = this.props.date;
             this.clear();
@@ -48,7 +41,6 @@ class NexusDatePicker extends Component {
     }
 
     clear() {
-        console.log('CLEAR');
         this.refDatePicker.current.clear();
         this.setState({dirty: false});
         this.prevRawInput = '';
@@ -57,6 +49,7 @@ class NexusDatePicker extends Component {
 
     handleChange(date) {
         this.props.onChange(date);
+        this.setState({dirty: true});
         this.setValid(true);
     }
 
@@ -109,7 +102,7 @@ class NexusDatePicker extends Component {
                 className={this.state.invalidDate ? 'text-danger' : ''}
                 id={this.props.id}
                 placeholderText={'MM/DD/YYYY'}
-                selected={this.props.date}
+                selected={this.props.date ? moment(this.props.date) : null}
                 showYearDropdown
                 showMonthDropdown
                 autoComplete={'off'}
