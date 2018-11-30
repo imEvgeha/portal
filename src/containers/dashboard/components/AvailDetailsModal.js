@@ -55,7 +55,8 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value.trim()};
+        let value = editable.value ? editable.value.trim() : editable.value;
+        let updatedAvail = {...this.state.avail, [editable.props.title]: value};
         this.notifyOtherSystems(updatedAvail);
     }
 
@@ -92,7 +93,12 @@ class AvailDetails extends React.Component {
         return false;
     }
 
-    validateTextField(field, value) {
+    validateTextField(target, field) {
+        if(this.state.resolutionValidation.fields.indexOf(field) > -1 && target.type !== 'checkbox' && target.newValue){
+            target.newValue = target.newValue.toUpperCase();
+        }
+        const value =  target.newValue ? target.newValue.trim() : '';
+
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === field) {
@@ -129,18 +135,6 @@ class AvailDetails extends React.Component {
 
         }
         return '';
-    }
-
-    handleChange({ target }) {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        if(this.validateTextField(name, value)===''){
-            let newAvail = { ...this.state.avail, [name]: value.trim() };
-            this.setState({
-                avail: newAvail
-            });
-        }
     }
 
     validation(name, displayName, date) {
@@ -187,8 +181,10 @@ class AvailDetails extends React.Component {
             );
         };
         const renderTextField = (name, displayName) => {
+            const ref = React.createRef();
             return renderFieldTemplate(name, displayName, (
                 <Editable
+                    ref={ref}
                     title={name}
                     id={'dashboard-avails-detail-modal-' + name + '-text'}
                     value={this.state.avail[name]}
@@ -197,8 +193,7 @@ class AvailDetails extends React.Component {
                     placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
-                    onChange={this.handleChange}
-                    validate={(value) => this.validateTextField(name, value)}
+                    validate={() => this.validateTextField(ref.current, name)}
                 />
             ));
         };
@@ -209,7 +204,6 @@ class AvailDetails extends React.Component {
                     name={name}
                     id={'dashboard-avails-detail-modal-' + name + '-select'}
                     dataType="select"
-                    onChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}
                     options={[

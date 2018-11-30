@@ -60,10 +60,13 @@ class AvailCreate extends React.Component {
     }
 
     handleChange({target}) {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        if(this.state.resolutionValidation.fields.indexOf(target.name) > -1 && target.type !== 'checkbox' && target.value !== ''){
+            target.value = target.value.toUpperCase();
+        }
+        const value = target.type === 'checkbox' ? target.checked : target.value.trim();
         const name = target.name;
 
-        let newAvail = {...this.state.avail, [name]: value.trim()};
+        let newAvail = {...this.state.avail, [name]: value};
         this.setState({
             avail: newAvail
         });
