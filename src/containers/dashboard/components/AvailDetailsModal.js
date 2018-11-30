@@ -7,6 +7,7 @@ import t from 'prop-types';
 import Editable from 'react-x-editable';
 import EditableDatePicker from '../../../components/fields/EditableDatePicker';
 import { dashboardService } from '../DashboardService';
+import config from 'react-global-configuration';
 
 class AvailDetails extends React.Component {
     static propTypes = {
@@ -28,6 +29,7 @@ class AvailDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
             avail: this.props.avail,
             errorMessage: '',
@@ -39,6 +41,7 @@ class AvailDetails extends React.Component {
         this.abort = this.abort.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.notifyOtherSystems = this.notifyOtherSystems.bind(this);
+        this.validateTextField = this.validateTextField.bind(this);
     }
 
     toggle() {
@@ -82,22 +85,45 @@ class AvailDetails extends React.Component {
         return '';
     }
 
+    isAcceptable(data, acceptedValues){
+        if(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1){
+            return true;
+        }
+        return false;
+    }
+
     validateTextField(field, value) {
-        if(this.validateNotEmpty(value) === '') return '';
-        let atLeastOne = ['sd', 'hd', 'f3d', 'f4k'];
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === field) {
                 if(!mapping.required) return '';
 
-                if(atLeastOne.indexOf(mapping.javaVariableName) > -1){
-                    for(let j=0; j < atLeastOne.length; j++){
-                        if(atLeastOne[j]!=field && this.validateNotEmpty(this.state.avail[atLeastOne[j]]) === '') return '';
+                if(this.state.resolutionValidation.type === 'oneOf'){
+                    if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
+                        //if this field belongs to 'oneOf' extra validation
+                        let stillInvalid = true; //is presumed invalid until one valid value is found
+                        for(let j=0; j < this.state.resolutionValidation.fields.length; j++){
+                            if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
+                                //if no required value just check against empty
+                                if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
+                            }else{
+                                //if the oneOf element has at least one acceptable value
+                                if(this.state.resolutionValidation.fields[j] !== field){
+                                     //if is another oneOf element from same group
+                                    if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
+                                }else{
+                                   //if is current field
+                                   if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                   //if not acceptable but also not empty
+                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                }
+                            }
+                        }
+
+                        if(stillInvalid) return 'Not all formats can be empty';
+                        else return '';
                     }
-
-                    if(this.validateNotEmpty(value)!='') return 'Not all formats can be empty';
                 }
-
                 return this.validateNotEmpty(value);
             }
 
@@ -109,7 +135,7 @@ class AvailDetails extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        if(validateTextField(name, value)===''){
+        if(this.validateTextField(name, value)===''){
             let newAvail = { ...this.state.avail, [name]: value };
             this.setState({
                 avail: newAvail

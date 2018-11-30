@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker/es';
 import {dashboardService} from '../DashboardService';
 import moment from 'moment';
 import {validateDate} from '../../../util/Validation';
+import config from 'react-global-configuration';
 
 class AvailCreate extends React.Component {
     static propTypes = {
@@ -27,6 +28,7 @@ class AvailCreate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
             disableCreateBtn: true,
             showCreatedMessage: false,
@@ -168,17 +170,36 @@ class AvailCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty(avail) {
-        let atLeastOne = ['sd', 'hd', 'f3d', 'f4k'];
-        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
-            let mapping = this.props.availsMapping.mappings[i];
-            console.log(mapping.javaVariableName, mapping.required, atLeastOne.indexOf(mapping.javaVariableName) == -1, avail[mapping.javaVariableName], !avail[mapping.javaVariableName], mapping.required && atLeastOne.indexOf(mapping.javaVariableName) == -1 && !avail[mapping.javaVariableName])
-            if(mapping.required && atLeastOne.indexOf(mapping.javaVariableName) == -1 && !avail[mapping.javaVariableName]) return true;
+        //only one extra validation for now, can be extended to multiple validation later if necessary
+        switch (this.state.resolutionValidation.type) {
+            case 'oneOf' : {
+                for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+                    let mapping = this.props.availsMapping.mappings[i];
+                    //check fields not belonging to 'oneOf' validations
+                    //return true and get out as soon as one mandatory field is found not valid
+                    if(mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1 && !avail[mapping.javaVariableName]) return true;
+                }
+            }
         }
-        for(let i=0; i < atLeastOne.length; i++){
-            console.log(atLeastOne[i], avail[atLeastOne[i]]);
-            if(avail[atLeastOne[i]]) return false;
+
+        //check fields belonging to 'oneOf'
+        if(this.state.resolutionValidation.type === 'oneOf'){
+            let stillInvalid = true; //is presumed invalid until one valid value is found
+            for(let i=0; i < this.state.resolutionValidation.fields.length && stillInvalid; i++){
+                //check each value to corresponding accepted values (or not empty) and get out when found one valid value
+                if(this.state.resolutionValidation.values == null || i >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[i] == null){
+                    //if no required value just check against empty
+                    if(avail[this.state.resolutionValidation.fields[i]]) stillInvalid = false;
+                }else{
+                    //if accepted values exists check if current value is among them
+                    if(this.state.resolutionValidation.values[i].indexOf(avail[this.state.resolutionValidation.fields[i]]) > -1) stillInvalid = false;
+                }
+            }
+
+            if(stillInvalid) return true;
         }
-        return true;
+
+        return false;
     }
 
     confirm() {
