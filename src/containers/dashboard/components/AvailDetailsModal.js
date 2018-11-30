@@ -55,7 +55,7 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value};
+        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value.trim()};
         this.notifyOtherSystems(updatedAvail);
     }
 
@@ -79,7 +79,7 @@ class AvailDetails extends React.Component {
 
 
     validateNotEmpty(data) {
-        if (!data) {
+        if (!data.trim()) {
             return 'Field can not be empty';
         }
         return '';
@@ -136,7 +136,7 @@ class AvailDetails extends React.Component {
         const name = target.name;
 
         if(this.validateTextField(name, value)===''){
-            let newAvail = { ...this.state.avail, [name]: value };
+            let newAvail = { ...this.state.avail, [name]: value.trim() };
             this.setState({
                 avail: newAvail
             });
