@@ -101,7 +101,7 @@ class NexusDatePicker extends Component {
                 ref={this.refDatePicker}
                 className={this.state.invalidDate ? 'text-danger' : ''}
                 id={this.props.id}
-                placeholderText={'MM/DD/YYYY'}
+                placeholderText={'mm/dd/yyyy'}
                 selected={this.props.date ? moment(this.props.date) : null}
                 showYearDropdown
                 showMonthDropdown
