@@ -55,24 +55,6 @@ class AvailDetails extends React.Component {
         return this.props.reject();
     }
 
-    validateNotEmpty(data) {
-        if (!data) {
-            return 'Field can not be empty';
-        }
-    }
-
-    handleChange({ target }) {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        let newAvail = { ...this.state.avail, [name]: value };
-        this.setState({
-            avail: newAvail
-        });
-
-        this.setDisableCreate(newAvail, this.state.errorMessage);
-    }
-
     handleSubmit(editable) {
         const name = editable.props.title;
         const value = editable.value.trim();
@@ -110,17 +92,12 @@ class AvailDetails extends React.Component {
 
 
     validateNotEmpty(data) {
-        if (!data.trim()) {
-            return 'Field can not be empty';
-        }
-        return '';
+        return data.trim() ? '' : 'Field can not be empty';
     }
 
     isAcceptable(data, acceptedValues){
-        if(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1){
-            return true;
-        }
-        return false;
+        return !!(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1);
+
     }
 
     validateTextField(target, field) {
@@ -165,34 +142,6 @@ class AvailDetails extends React.Component {
 
         }
         return '';
-    }
-
-    validation(name, displayName, date) {
-         let startDate, endDate, rangeError;
-
-        if (name.endsWith('Start') && this.state.avail[name.replace('Start', 'End')]) {
-            startDate = date;
-            endDate = this.state.avail[name.replace('Start', 'End')];
-            rangeError = displayName + ' must be before corresponding end date';
-        } else if (name.endsWith('End') && this.state.avail[name.replace('End', 'Start')]) {
-            startDate = this.state.avail[name.replace('End', 'Start')];
-            endDate = date;
-            rangeError = displayName + ' must be after corresponding end date';
-        }
-        if (startDate && endDate && moment(endDate) < moment(startDate)) {
-            return rangeError;
-        }
-    }
-
-    handleDatepickerChange(name, date) {
-        let newAvail = { ...this.state.avail };
-        newAvail[name] = date;
-        this.notifyOtherSystems(newAvail);
-
-    }
-
-    isAnyErrors(errorMessage) {
-        return !!(errorMessage.other || errorMessage.date);
     }
 
     render() {
