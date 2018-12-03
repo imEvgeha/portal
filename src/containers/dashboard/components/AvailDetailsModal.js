@@ -7,6 +7,7 @@ import t from 'prop-types';
 import Editable from 'react-x-editable';
 import EditableDatePicker from '../../../components/fields/EditableDatePicker';
 import { dashboardService } from '../DashboardService';
+import config from 'react-global-configuration';
 
 class AvailDetails extends React.Component {
     static propTypes = {
@@ -28,6 +29,7 @@ class AvailDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
             avail: this.props.avail,
             errorMessage: '',
@@ -39,6 +41,7 @@ class AvailDetails extends React.Component {
         this.abort = this.abort.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.notifyOtherSystems = this.notifyOtherSystems.bind(this);
+        this.validateTextField = this.validateTextField.bind(this);
     }
 
     toggle() {
@@ -52,7 +55,8 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value.trim()};
+        let value = editable.value ? editable.value.trim() : editable.value;
+        let updatedAvail = {...this.state.avail, [editable.props.title]: value};
         this.notifyOtherSystems(updatedAvail);
     }
 
@@ -79,18 +83,58 @@ class AvailDetails extends React.Component {
         if (!data.trim()) {
             return 'Field can not be empty';
         }
+        return '';
     }
 
-    handleChange({ target }) {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+    isAcceptable(data, acceptedValues){
+        if(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1){
+            return true;
+        }
+        return false;
+    }
 
-        let newAvail = { ...this.state.avail, [name]: value.trim() };
-        this.setState({
-            avail: newAvail
-        });
+    validateTextField(target, field) {
+        if(this.state.resolutionValidation.fields.indexOf(field) > -1 && target.type !== 'checkbox' && target.newValue){
+            target.newValue = target.newValue.toUpperCase();
+        }
+        const value =  target.newValue ? target.newValue.trim() : '';
 
-        this.setDisableCreate(newAvail, this.state.errorMessage);
+        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+            let mapping = this.props.availsMapping.mappings[i];
+            if(mapping.javaVariableName === field) {
+                if(!mapping.required) return '';
+
+                if(this.state.resolutionValidation.type === 'oneOf'){
+                    if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
+                        //if this field belongs to 'oneOf' extra validation
+                        let stillInvalid = true; //is presumed invalid until one valid value is found
+                        for(let j=0; j < this.state.resolutionValidation.fields.length; j++){
+                            if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
+                                //if no required value just check against empty
+                                if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
+                            }else{
+                                //if the oneOf element has at least one acceptable value
+                                if(this.state.resolutionValidation.fields[j] !== field){
+                                     //if is another oneOf element from same group
+                                    if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
+                                }else{
+                                   //if is current field
+                                   if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                   //if not acceptable but also not empty
+                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                }
+                            }
+                        }
+
+                        if(stillInvalid) return 'Not all formats can be empty';
+                        else return '';
+                    }
+                }
+                return this.validateNotEmpty(value);
+            }
+
+        }
+        return '';
     }
 
     validation(name, displayName, date) {
@@ -116,21 +160,9 @@ class AvailDetails extends React.Component {
         this.notifyOtherSystems(newAvail);
 
     }
-    setDisableCreate(avail, errorMessage) {
-        if (this.isAnyErrors(errorMessage)) {
-            this.setState({ disableCreateBtn: true });
-        } else if (this.areMandatoryFieldsEmpty(avail)) {
-            this.setState({ disableCreateBtn: true });
-        } else {
-            this.setState({ disableCreateBtn: false });
-        }
-    }
+
     isAnyErrors(errorMessage) {
         return !!(errorMessage.other || errorMessage.date);
-    }
-
-    areMandatoryFieldsEmpty(avail) {
-        return !(avail.title && avail.studio);
     }
 
     render() {
@@ -149,8 +181,10 @@ class AvailDetails extends React.Component {
             );
         };
         const renderTextField = (name, displayName) => {
+            const ref = React.createRef();
             return renderFieldTemplate(name, displayName, (
                 <Editable
+                    ref={ref}
                     title={name}
                     id={'dashboard-avails-detail-modal-' + name + '-text'}
                     value={this.state.avail[name]}
@@ -159,8 +193,7 @@ class AvailDetails extends React.Component {
                     placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
-                    onChange={this.handleChange}
-                    validate={ name !== 'title' && name !== 'studio' ? '' : this.validateNotEmpty }
+                    validate={() => this.validateTextField(ref.current, name)}
                 />
             ));
         };
@@ -171,7 +204,6 @@ class AvailDetails extends React.Component {
                     name={name}
                     id={'dashboard-avails-detail-modal-' + name + '-select'}
                     dataType="select"
-                    onChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}
                     options={[
@@ -198,6 +230,7 @@ class AvailDetails extends React.Component {
             if(mapping.javaVariableName!='availId'){//we shouldn't be able to modify the id
                 switch (mapping.dataType) {
                     case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
+                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName);
                     case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName); //yeah, somebody put type 'year' for Release Year Field, this is a quick fix
                     case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
                     case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
@@ -231,9 +264,9 @@ class AvailDetails extends React.Component {
                     </Label>
                 </ModalFooter>
                 }
-<ModalFooter>
-    <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
-</ModalFooter>
+            <ModalFooter>
+                <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
+            </ModalFooter>
 
             </Modal >
         );

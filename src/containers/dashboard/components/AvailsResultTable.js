@@ -270,8 +270,8 @@ class AvailsResultTable extends React.Component {
     }
 
     setTable = element => {
-      this.table = element;
-      element.api.showLoadingOverlay();
+        this.table = element;
+        if(this.table) element.api.showLoadingOverlay();
     };
 
     refreshColumns(){
