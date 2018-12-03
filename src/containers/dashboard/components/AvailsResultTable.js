@@ -4,7 +4,6 @@ import t from 'prop-types';
 import moment from 'moment';
 
 import config from 'react-global-configuration';
-import {saveDashboardState} from '../../../stores';
 
 // image import
 import LoadingGif from '../../../img/loading.gif';
@@ -43,7 +42,7 @@ let mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = {
+let mapDispatchToProps = {
     resultPageUpdate,
     resultPageSort,
     resultPageSelect,
@@ -66,6 +65,7 @@ class AvailsResultTable extends React.Component {
         resultPageSelect: t.func,
         resultPageLoading: t.func,
         columnsOrder: t.array,
+        columnsSize: t.array,
         resultPageUpdateColumnsOrder: t.func
     };
 
@@ -195,11 +195,21 @@ class AvailsResultTable extends React.Component {
         selectedRows.map(row => {
             selected.push(row.id);
         });
-        let loadedRows = e.api.getDisplayedRowCount();
-        if(!e.api.isMaxRowFound()){
-            loadedRows-=e.api.gridOptionsWrapper.gridOptions.cacheOverflowSize;
+
+        if(e.api.getDisplayedRowCount() > 0){
+            this.props.availTabPageSelection.selected.map(id => {
+                if(selected.indexOf(id) === -1) selected.push(id);
+            });
+        } else {
+            selected = selected.concat(this.props.availTabPageSelection.selection);
         }
-        this.props.resultPageSelect({selected: selected, selectAll: selected.length == loadedRows});
+
+        let allLoadedSelected = true;
+
+        e.api.forEachNode( node => {
+            if(!node.isSelected()) allLoadedSelected = false;
+        });
+        this.props.resultPageSelect({selected: selected, selectAll: allLoadedSelected});
     }
 
     editAvail(newAvail) {
@@ -246,19 +256,15 @@ class AvailsResultTable extends React.Component {
                             }
                             params.successCallback(response.data.data, lastRow);
 
-                            if(response.data.page === 0){
-                                //clear selected and not present rows
-
-                                let prevSelection = this.props.availTabPageSelection.selected.slice(0);
-                                this.table.api.deselectAll();
-
+                            if(this.props.availTabPageSelection.selected.length > 0){
                                 this.table.api.forEachNode(rowNode => {
-                                     if(rowNode.data && prevSelection.indexOf(rowNode.data.id) > -1 && !rowNode.isSelected()){
+                                    if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1 && !rowNode.isSelected()){
                                         rowNode.setSelected(true);
                                     }
                                 });
-                                this.table.api.hideOverlay();
                             }
+
+                            this.table.api.hideOverlay();
                             this.onSelectionChanged(this.table);
                         }else{
                             this.table.api.showNoRowsOverlay();
@@ -413,10 +419,15 @@ mapStateToProps = state => {
     };
 };
 
+mapDispatchToProps = {
+    resultPageSelect
+};
+
 class CheckBoxHeaderInternal extends Component {
     static propTypes = {
         availTabPageSelection: t.object,
-        api: t.object
+        api: t.object,
+        resultPageSelect: t.func
     };
 
     constructor(props) {
@@ -434,20 +445,26 @@ class CheckBoxHeaderInternal extends Component {
         }
         else {
             this.props.api.deselectAll();
+            this.props.resultPageSelect({selected: [], selectAll: false});
         }
     }
 
     render() {
-        let rows = this.props.availTabPageSelection.selected.length;
-        let selectAll = this.props.availTabPageSelection.selectAll;
+        let allLoadedSelected = true;
+        let atLeastOneLoadedSelected = false;
+
+        this.props.api.forEachNode(node => {
+            if(node.isSelected()) atLeastOneLoadedSelected = true;
+            else allLoadedSelected = false;
+        });
         return (
             <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
-                <span className={`ag-icon ag-icon-checkbox-checked ${selectAll ? '' : 'ag-hidden'}`}></span>
-                <span className={`ag-icon ag-icon-checkbox-unchecked ${rows == 0 ? '' : 'ag-hidden'}`}></span>
-                <span className={`ag-icon ag-icon-checkbox-indeterminate ${rows > 0 && !selectAll ? '' : 'ag-hidden'}`}></span>
+                <span className={`ag-icon ag-icon-checkbox-checked ${atLeastOneLoadedSelected && allLoadedSelected ? '' : 'ag-hidden'}`}></span>
+                <span className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneLoadedSelected ? '' : 'ag-hidden'}`}></span>
+                <span className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneLoadedSelected && !allLoadedSelected ? '' : 'ag-hidden'}`}></span>
             </span>
         );
     }
 }
 
-let CheckBoxHeader = connect(mapStateToProps)(CheckBoxHeaderInternal);
+let CheckBoxHeader = connect(mapStateToProps, mapDispatchToProps)(CheckBoxHeaderInternal);
