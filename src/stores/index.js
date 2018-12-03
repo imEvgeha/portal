@@ -17,7 +17,6 @@ export default store;
 
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
-    loadLocal('columnsSize', 'columnsSize');
     setTimeout(() => {
         advancedSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
     }, 100);
@@ -25,7 +24,6 @@ export const loadDashboardState = () => {
 
 export const saveDashboardState = () => {
     saveToWebLocalStorage('dashboard', DASHBOARD_SESSION_VERSION);
-    saveLocal('columnsSize', 'columnsSize');
 };
 
 const loadFromWebLocalStorage = (name, loadAction, version) => {
@@ -49,27 +47,4 @@ const saveToWebLocalStorage = (name, version) => {
             // ignore write errors
         }
     }, 100);
-};
-
-const saveLocal = (source, destination) => {
-    setTimeout(() => {
-        try {
-            const serializedState = JSON.stringify(store.getState().dashboard[source]);
-            localStorage.setItem(destination, serializedState);
-        } catch (error) {
-            // ignore write errors
-        }
-    }, 100);
-};
-
-const loadLocal = (source, destination) => {
-    try {
-        const serializedState = localStorage.getItem(source);
-        if (serializedState === null) {
-            return undefined;
-        }
-        store.getState().dashboard[destination] = JSON.parse(serializedState);
-    } catch (err) {
-        return undefined;
-    }
 };

@@ -38,7 +38,7 @@ let mapStateToProps = state => {
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
         columnsOrder: state.dashboard.session.columns,
-        columnsSize: state.dashboard.columnsSize
+        columnsSize: state.dashboard.session.columnsSize
     };
 };
 
@@ -65,7 +65,7 @@ class AvailsResultTable extends React.Component {
         resultPageSelect: t.func,
         resultPageLoading: t.func,
         columnsOrder: t.array,
-        columnsSize: t.array,
+        columnsSize: t.object,
         resultPageUpdateColumnsOrder: t.func
     };
 
