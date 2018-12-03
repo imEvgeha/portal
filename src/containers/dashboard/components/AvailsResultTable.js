@@ -4,6 +4,7 @@ import t from 'prop-types';
 import moment from 'moment';
 
 import config from 'react-global-configuration';
+import {saveDashboardState} from '../../../stores';
 
 // image import
 import LoadingGif from '../../../img/loading.gif';
@@ -37,7 +38,8 @@ let mapStateToProps = state => {
         availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
-        columnsOrder: state.dashboard.session.columns
+        columnsOrder: state.dashboard.session.columns,
+        columnsSize: state.dashboard.columnsSize
     };
 };
 
@@ -83,6 +85,7 @@ class AvailsResultTable extends React.Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
         this.onColumnReordered = this.onColumnReordered.bind(this);
+        this.onColumnResized = this.onColumnResized.bind(this);
         this.onSortChanged = this.onSortChanged.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
@@ -161,7 +164,7 @@ class AvailsResultTable extends React.Component {
                     if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L');
                     else return undefined;
                 } : null,
-                width: 300
+                width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250
             });
         }
     }
@@ -296,6 +299,12 @@ class AvailsResultTable extends React.Component {
         this.props.resultPageUpdateColumnsOrder(cols);
     }
 
+    onColumnResized(e) {
+        if(e.finished){
+            this.props.columnsSize[e.column.colDef.field] = e.column.actualWidth;
+        }
+    }
+
     setTable = element => {
         this.table = element;
         if(this.table){
@@ -359,13 +368,13 @@ class AvailsResultTable extends React.Component {
                 <AgGridReact
                     ref={this.setTable}
 
-                    onGridReady={params => params.api.sizeColumnsToFit()}
                     getRowNodeId= {data => data.id}
 
                     columnDefs= {this.cols}
                     suppressDragLeaveHidesColumns= {true}
                     enableColResize= {true}
                     onDragStopped = {this.onColumnReordered}
+                    onColumnResized = {this.onColumnResized}
 
                     rowBuffer= '50'
                     rowModelType= 'infinite'

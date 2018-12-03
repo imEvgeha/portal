@@ -24,6 +24,7 @@ const initialState = {
     freeTextSearch: {
         text: ''
     },
+    columnsSize: {},
     session: {
         availTabPageSelection: {
             selected: [],
