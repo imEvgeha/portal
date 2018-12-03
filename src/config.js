@@ -35,7 +35,7 @@ export const defaultConfiguration = {
         resolution: {
             type: 'oneOf',
             fields: ['sd', 'hd', 'f3d', 'f4k'],
-            values: [['SD'], ['HD'], ['3D'], ['4K', 'UHD']]
+            values: [['SD'], ['HD'], ['3D'], ['4K/UHD']]
         }
     }
 };
