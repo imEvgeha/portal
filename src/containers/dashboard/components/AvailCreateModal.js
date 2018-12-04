@@ -51,6 +51,8 @@ class AvailCreate extends React.Component {
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.checkAvail = this.checkAvail.bind(this);
+        this.validateTextField = this.validateTextField.bind(this);
         this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
         this.handleDatepickerRawChange = this.handleDatepickerRawChange.bind(this);
     }
@@ -63,15 +65,28 @@ class AvailCreate extends React.Component {
         if(this.state.resolutionValidation.fields.indexOf(target.name) > -1 && target.type !== 'checkbox' && target.value !== ''){
             target.value = target.value.toUpperCase();
         }
-        const value = target.type === 'checkbox' ? target.checked : target.value.trim();
+        const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
         const name = target.name;
 
-        let newAvail = {...this.state.avail, [name]: value};
-        this.setState({
-            avail: newAvail
-        });
+        this.checkAvail(name, value);
+    }
 
-        this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
+    checkAvail(name, value, mappingErrorMessage) {
+        let validationError = this.validateTextField(name, value);
+
+        let errorMessage = {range: '', date: '', text: validationError};
+
+        if(!mappingErrorMessage){
+            let newAvail = {...this.state.avail, [name]: value};
+            this.setState({
+                avail: newAvail,
+                mappingErrorMessage: {...this.state.mappingErrorMessage, [name]: errorMessage}
+            });
+
+            this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
+        }else{
+            mappingErrorMessage[name]=errorMessage;
+        }
     }
 
     handleDatepickerChange(name, displayName, date) {
@@ -172,6 +187,59 @@ class AvailCreate extends React.Component {
         return false;
     }
 
+    validateNotEmpty(data) {
+        if (!data || !data.trim()) {
+            return 'Field can not be empty';
+        }
+        return '';
+    }
+
+     isAcceptable(data, acceptedValues){
+        if(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1){
+            return true;
+        }
+        return false;
+    }
+
+    validateTextField(name, value) {
+        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+            let mapping = this.props.availsMapping.mappings[i];
+            if(mapping.javaVariableName === name) {
+                if(!mapping.required) return '';
+
+                if(this.state.resolutionValidation.type === 'oneOf'){
+                    if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
+                        //if this field belongs to 'oneOf' extra validation
+                        let stillInvalid = true; //is presumed invalid until one valid value is found
+                        for(let j=0; j < this.state.resolutionValidation.fields.length; j++){
+                            if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
+                                //if no required value just check against empty
+                                if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
+                            }else{
+                                //if the oneOf element has at least one acceptable value
+                                if(this.state.resolutionValidation.fields[j] !== name){
+                                     //if is another oneOf element from same group
+                                    if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
+                                }else{
+                                   //if is current field
+                                   if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                   //if not acceptable but also not empty
+                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                }
+                            }
+                        }
+
+                        if(stillInvalid) return 'Not all formats can be empty';
+                        else return '';
+                    }
+                }
+                return this.validateNotEmpty(value);
+            }
+
+        }
+        return '';
+    }
+
     areMandatoryFieldsEmpty(avail) {
         //only one extra validation for now, can be extended to multiple validation later if necessary
         switch (this.state.resolutionValidation.type) {
@@ -206,6 +274,16 @@ class AvailCreate extends React.Component {
     }
 
     confirm() {
+        let mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
+        this.props.availsMapping.mappings.map((mapping) => {
+            this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage);
+        });
+
+        this.setState({
+            mappingErrorMessage: mappingErrorMessage
+        });
+
+        if(this.state.disableCreateBtn) return;
         this.setState({loading: true, showCreatedMessage: false});
         dashboardService.createAvail(this.state.avail).then(() => {
             this.setState({loading: false, showCreatedMessage: true});
@@ -223,7 +301,8 @@ class AvailCreate extends React.Component {
         mappings.map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 date: '',
-                range: ''
+                range: '',
+                text:''
             };
         });
 
@@ -233,12 +312,12 @@ class AvailCreate extends React.Component {
     render() {
         const rowsOnLeft = this.props.availsMapping.mappings.length/2;
 
-        const renderFieldTemplate = (name, displayName, content) => {
+        const renderFieldTemplate = (name, displayName, required, content) => {
             return (
                 <a href="#" key={name}
                    className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="row">
-                        <div className="col-4">{displayName}:</div>
+                        <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
                         <div className="col">
                             {content}
                         </div>
@@ -247,15 +326,21 @@ class AvailCreate extends React.Component {
             );
         };
 
-        const renderTextField = (name, displayName) => {
-            return renderFieldTemplate(name, displayName, (
-                <Input type="text" name={name} id={'dashboard-avails-create-modal-' + name + '-text'} placeholder={'Enter ' + displayName}
-                       onChange={this.handleChange}/>
+        const renderTextField = (name, displayName, required) => {
+            return renderFieldTemplate(name, displayName, required, (
+                <div>
+                <Input type="text" name={name} id={'dashboard-avails-create-modal-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
+                {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                }
+                </div>
             ));
         };
 
-        const renderBooleanField = (name, displayName) => {
-            return renderFieldTemplate(name, displayName, (
+        const renderBooleanField = (name, displayName, required) => {
+            return renderFieldTemplate(name, displayName, required, (
                 <select className="form-control"
                         name={name}
                         id={'dashboard-avails-create-modal-' + name + '-select'}
@@ -269,8 +354,8 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName) => {
-            return renderFieldTemplate(name, displayName, (
+        const renderDatepickerField = (name, displayName, required) => {
+            return renderFieldTemplate(name, displayName, required, (
                 <div>
                 <DatePicker
                     className={this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].date ? 'text-danger' : '' : ''}
@@ -302,11 +387,11 @@ class AvailCreate extends React.Component {
             return mappings.map((mapping)=> {
                 if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
                     switch (mapping.dataType) {
-                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName);
-                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName);
-                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName);
-                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
-                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
+                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
+                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
+                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, mapping.required);
+                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, mapping.required);
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
@@ -336,8 +421,7 @@ class AvailCreate extends React.Component {
                     <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
                         {this.state.errorMessage.other}
                     </Label>
-                    <Button id="dashboard-avails-create-modal-create-btn" color="primary" disabled={this.state.disableCreateBtn}
-                            onClick={this.confirm}>{this.props.confirmLabel}</Button>
+                    <Button id="dashboard-avails-create-modal-create-btn" color="primary" onClick={this.confirm}>{this.props.confirmLabel}</Button>
                     <Button id="dashboard-avails-create-modal-cancel-btn" color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
                 </ModalFooter>
             </Modal>
