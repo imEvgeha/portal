@@ -1,12 +1,13 @@
 import React from 'react';
 import { Component } from 'react';
-import moment from 'moment';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { ModalFooter, ModalHeader, Modal, Button, Label } from 'reactstrap';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import EditableDatePicker from '../../../components/fields/EditableDatePicker';
 import { dashboardService } from '../DashboardService';
+import {rangeValidation} from '../../../util/Validation';
+import config from 'react-global-configuration';
 
 class AvailDetails extends React.Component {
     static propTypes = {
@@ -28,6 +29,7 @@ class AvailDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
             avail: this.props.avail,
             errorMessage: '',
@@ -37,8 +39,10 @@ class AvailDetails extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
+        this.update = this.update.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.notifyOtherSystems = this.notifyOtherSystems.bind(this);
+        this.handleDatepickerSubmit = this.handleDatepickerSubmit.bind(this);
+        this.validateTextField = this.validateTextField.bind(this);
     }
 
     toggle() {
@@ -52,85 +56,92 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        let updatedAvail = {...this.state.avail, [editable.props.title]: editable.value};
-        this.notifyOtherSystems(updatedAvail);
+        const name = editable.props.title;
+        const value = editable.value.trim();
+        this.update(name, value, () => {
+            editable.setState({availLastEditSucceed: false});
+            editable.value = this.state.avail[name];
+            editable.newValue = this.state.avail[name];
+        });
     }
 
-    notifyOtherSystems(updatedAvail){
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                this.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
+    handleDatepickerSubmit(name, date, cancel) {
+        this.update(name, date, () => {
+            cancel();
+        });
+    }
 
-                this.props.onEdit(editedAvail);
-            })
-            .catch(() => {
-                this.setState({
-                    errorMessage: 'Avail edit failed'
-                });
+    update(name, value, onError) {
+        let updatedAvail = {...this.state.avail, [name]: value};
+        dashboardService.updateAvails(updatedAvail)
+        .then(res => {
+            let editedAvail = res.data;
+            this.setState({
+                avail: editedAvail,
+                errorMessage: ''
             });
+            this.props.onEdit(editedAvail);
+        })
+        .catch(() => {
+            this.setState({
+                errorMessage: 'Avail edit failed'
+            });
+            onError();
+        });
     }
 
 
     validateNotEmpty(data) {
-        if (!data) {
-            return 'Field can not be empty';
+        return data.trim() ? '' : 'Field can not be empty';
+    }
+
+    isAcceptable(data, acceptedValues){
+        return !!(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1);
+
+    }
+
+    validateTextField(target, field) {
+        if(this.state.resolutionValidation.fields.indexOf(field) > -1 && target.type !== 'checkbox' && target.newValue){
+            target.newValue = target.newValue.toUpperCase();
         }
-    }
+        const value =  target.newValue ? target.newValue.trim() : '';
 
-    handleChange({ target }) {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+            let mapping = this.props.availsMapping.mappings[i];
+            if(mapping.javaVariableName === field) {
+                if(!mapping.required) return '';
 
-        let newAvail = { ...this.state.avail, [name]: value };
-        this.setState({
-            avail: newAvail
-        });
+                if(this.state.resolutionValidation.type === 'oneOf'){
+                    if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
+                        //if this field belongs to 'oneOf' extra validation
+                        let stillInvalid = true; //is presumed invalid until one valid value is found
+                        for(let j=0; j < this.state.resolutionValidation.fields.length; j++){
+                            if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
+                                //if no required value just check against empty
+                                if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
+                            }else{
+                                //if the oneOf element has at least one acceptable value
+                                if(this.state.resolutionValidation.fields[j] !== field){
+                                     //if is another oneOf element from same group
+                                    if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
+                                }else{
+                                   //if is current field
+                                   if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                   //if not acceptable but also not empty
+                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                }
+                            }
+                        }
 
-        this.setDisableCreate(newAvail, this.state.errorMessage);
-    }
+                        if(stillInvalid) return 'Not all formats can be empty';
+                        else return '';
+                    }
+                }
+                return this.validateNotEmpty(value);
+            }
 
-    validation(name, displayName, date) {
-         let startDate, endDate, rangeError;
-
-        if (name.endsWith('Start') && this.state.avail[name.replace('Start', 'End')]) {
-            startDate = date;
-            endDate = this.state.avail[name.replace('Start', 'End')];
-            rangeError = displayName + ' must be before corresponding end date';
-        } else if (name.endsWith('End') && this.state.avail[name.replace('End', 'Start')]) {
-            startDate = this.state.avail[name.replace('End', 'Start')];
-            endDate = date;
-            rangeError = displayName + ' must be after corresponding end date';
         }
-        if (startDate && endDate && moment(endDate) < moment(startDate)) {
-            return rangeError;
-        }
-    }
-
-    handleDatepickerChange(name, date) {
-        let newAvail = { ...this.state.avail };
-        newAvail[name] = date;
-        this.notifyOtherSystems(newAvail);
-
-    }
-    setDisableCreate(avail, errorMessage) {
-        if (this.isAnyErrors(errorMessage)) {
-            this.setState({ disableCreateBtn: true });
-        } else if (this.areMandatoryFieldsEmpty(avail)) {
-            this.setState({ disableCreateBtn: true });
-        } else {
-            this.setState({ disableCreateBtn: false });
-        }
-    }
-    isAnyErrors(errorMessage) {
-        return !!(errorMessage.other || errorMessage.date);
-    }
-
-    areMandatoryFieldsEmpty(avail) {
-        return !(avail.title && avail.studio);
+        return '';
     }
 
     render() {
@@ -149,8 +160,10 @@ class AvailDetails extends React.Component {
             );
         };
         const renderTextField = (name, displayName) => {
+            const ref = React.createRef();
             return renderFieldTemplate(name, displayName, (
                 <Editable
+                    ref={ref}
                     title={name}
                     id={'dashboard-avails-detail-modal-' + name + '-text'}
                     value={this.state.avail[name]}
@@ -159,8 +172,7 @@ class AvailDetails extends React.Component {
                     placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
-                    onChange={this.handleChange}
-                    validate={ name !== 'title' && name !== 'studio' ? '' : this.validateNotEmpty }
+                    validate={() => this.validateTextField(ref.current, name)}
                 />
             ));
         };
@@ -171,7 +183,6 @@ class AvailDetails extends React.Component {
                     name={name}
                     id={'dashboard-avails-detail-modal-' + name + '-select'}
                     dataType="select"
-                    onChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}
                     options={[
@@ -188,8 +199,8 @@ class AvailDetails extends React.Component {
                 value={this.state.avail[name]}
                 name={name}
                 displayName={displayName}
-                validate={(date) => this.validation(name, displayName, date)}
-                onChange={(date) => this.handleDatepickerChange(name, date)}
+                validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
+                onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}
             />
         ));
     };
@@ -198,6 +209,7 @@ class AvailDetails extends React.Component {
             if(mapping.javaVariableName!='availId'){//we shouldn't be able to modify the id
                 switch (mapping.dataType) {
                     case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
+                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName);
                     case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName); //yeah, somebody put type 'year' for Release Year Field, this is a quick fix
                     case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
                     case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
@@ -227,13 +239,13 @@ class AvailDetails extends React.Component {
             this.state.errorMessage &&
                 <ModalFooter id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
                     <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
-                        {this.state.errorMessage.other} {this.state.errorMessage.date} {this.state.errorMessage.range}
+                        {this.state.errorMessage}
                     </Label>
                 </ModalFooter>
                 }
-<ModalFooter>
-    <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
-</ModalFooter>
+            <ModalFooter>
+                <Button color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
+            </ModalFooter>
 
             </Modal >
         );
