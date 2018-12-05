@@ -78,15 +78,14 @@ class AvailCreate extends React.Component {
         }
     }
 
-    checkAvail(name, value, mappingErrorMessage, setNewValue) {
-        console.log('checkAvail', name, value);
-        let validationError = this.validateTextField(name, value);
+    checkAvail(name, value, mappingErrorMessage, setNewValue, overrideField, overrideValue) {
+        let validationError = this.validateTextField(name, value, overrideField, overrideValue);
 
         let errorMessage = {range: '', date: '', text: validationError};
 
+        let newAvail = {...this.state.avail, [name]: value};
+
         if(setNewValue){
-            this.state.avail[name] = value; //not how state should be changed, hack for propagation of new value in current frame, other fields check against this
-            let newAvail = {...this.state.avail, [name]: value};
             this.setState({
                 avail: newAvail,
             });
@@ -215,7 +214,7 @@ class AvailCreate extends React.Component {
         return false;
     }
 
-    validateTextField(name, value) {
+    validateTextField(name, value, overrideField, overrideValue) {
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === name) {
@@ -226,19 +225,37 @@ class AvailCreate extends React.Component {
                         //if this field belongs to 'oneOf' extra validation
                         let stillInvalid = true; //is presumed invalid until one valid value is found
                         for(let j=0; j < this.state.resolutionValidation.fields.length; j++){
-                            if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
-                                //if no required value just check against empty
-                                if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
-                            }else{
-                                //if the oneOf element has at least one acceptable value
-                                if(this.state.resolutionValidation.fields[j] !== name){
-                                     //if is another oneOf element from same group
-                                    if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
+                            if(overrideField && overrideValue && overrideField === this.state.resolutionValidation.fields[j]){
+                                if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
+                                    //if no required value just check against empty
+                                    if(this.validateNotEmpty(overrideValue) === '') stillInvalid = false;
                                 }else{
-                                   //if is current field
-                                   if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
-                                   //if not acceptable but also not empty
-                                   if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
+                                    //if the oneOf element has at least one acceptable value
+                                    if(overrideField !== name){
+                                         //if is another oneOf element from same group
+                                        if(this.isAcceptable(overrideValue, this.state.resolutionValidation.values[j])) stillInvalid=false;
+                                    }else{
+                                       //if is current field
+                                       if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                       //if not acceptable but also not empty
+                                       if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
+                                    }
+                                }
+                            }else{
+                                if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
+                                    //if no required value just check against empty
+                                    if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
+                                }else{
+                                    //if the oneOf element has at least one acceptable value
+                                    if(this.state.resolutionValidation.fields[j] !== name){
+                                         //if is another oneOf element from same group
+                                        if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
+                                    }else{
+                                       //if is current field
+                                       if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                       //if not acceptable but also not empty
+                                       if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
+                                    }
                                 }
                             }
                         }
@@ -288,19 +305,14 @@ class AvailCreate extends React.Component {
     }
 
     validateFields(fields, overrideField, overrideValue){
-        console.log('validateFields', fields, overrideField, overrideValue);
         let mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
         if(overrideField){
-            console.log('set', overrideField, overrideValue);
             this.checkAvail(overrideField, overrideValue, mappingErrorMessage, true);
         }
         this.props.availsMapping.mappings.map((mapping) => {
-            console.log('2', mapping.javaVariableName);
-            if(!fields || (fields && fields.indexOf(mapping.javaVariableName)>-1)){
-                console.log('3', mapping.javaVariableName, this.state.avail[mapping.javaVariableName]);
+            if(!fields || (fields && fields.indexOf(mapping.javaVariableName) >- 1)){
                 if(!overrideField || (overrideField && overrideField !== mapping.javaVariableName)){
-                    console.log('4 call it', mapping.javaVariableName, this.state.avail[mapping.javaVariableName]);
-                    this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage);
+                    this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage, false, overrideField, overrideValue);
                 }
             }
         });
