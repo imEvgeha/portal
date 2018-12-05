@@ -7,6 +7,7 @@ import DatePicker from 'react-datepicker/es';
 import {dashboardService} from '../DashboardService';
 import moment from 'moment';
 import {validateDate} from '../../../util/Validation';
+import config from 'react-global-configuration';
 
 class AvailCreate extends React.Component {
     static propTypes = {
@@ -27,6 +28,7 @@ class AvailCreate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
             disableCreateBtn: true,
             showCreatedMessage: false,
@@ -58,7 +60,10 @@ class AvailCreate extends React.Component {
     }
 
     handleChange({target}) {
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        if(this.state.resolutionValidation.fields.indexOf(target.name) > -1 && target.type !== 'checkbox' && target.value !== ''){
+            target.value = target.value.toUpperCase();
+        }
+        const value = target.type === 'checkbox' ? target.checked : target.value.trim();
         const name = target.name;
 
         let newAvail = {...this.state.avail, [name]: value};
@@ -168,7 +173,36 @@ class AvailCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty(avail) {
-        return !(avail.title && avail.studio);
+        //only one extra validation for now, can be extended to multiple validation later if necessary
+        switch (this.state.resolutionValidation.type) {
+            case 'oneOf' : {
+                for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+                    let mapping = this.props.availsMapping.mappings[i];
+                    //check fields not belonging to 'oneOf' validations
+                    //return true and get out as soon as one mandatory field is found not valid
+                    if(mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1 && !avail[mapping.javaVariableName]) return true;
+                }
+            }
+        }
+
+        //check fields belonging to 'oneOf'
+        if(this.state.resolutionValidation.type === 'oneOf'){
+            let stillInvalid = true; //is presumed invalid until one valid value is found
+            for(let i=0; i < this.state.resolutionValidation.fields.length && stillInvalid; i++){
+                //check each value to corresponding accepted values (or not empty) and get out when found one valid value
+                if(this.state.resolutionValidation.values == null || i >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[i] == null){
+                    //if no required value just check against empty
+                    if(avail[this.state.resolutionValidation.fields[i]]) stillInvalid = false;
+                }else{
+                    //if accepted values exists check if current value is among them
+                    if(this.state.resolutionValidation.values[i].indexOf(avail[this.state.resolutionValidation.fields[i]]) > -1) stillInvalid = false;
+                }
+            }
+
+            if(stillInvalid) return true;
+        }
+
+        return false;
     }
 
     confirm() {
@@ -266,12 +300,16 @@ class AvailCreate extends React.Component {
 
         const renderFields = (mappings) => {
             return mappings.map((mapping)=> {
-                switch (mapping.dataType) {
-                    case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName);
-                    case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
-                    case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName);
-                    default:
-                        console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
+                    switch (mapping.dataType) {
+                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName);
+                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
+                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                        default:
+                            console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
+                    }
                 }
             });
         };

@@ -17,8 +17,8 @@ import {exportService} from '../ExportService';
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
-        reportName: state.dashboard.reportName,
-        searchCriteria: state.dashboard.advancedSearchCriteria,
+        reportName: state.dashboard.session.reportName,
+        searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
     };
 };
@@ -42,7 +42,7 @@ class AdvancedSearchPanel extends React.Component {
 
 
     _handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !this.state.invalidForm) {
             this.handleSearch();
         }
     };
@@ -185,6 +185,7 @@ class AdvancedSearchPanel extends React.Component {
                 onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
                 onValidate={(value) => this.handleDateValidate(name, value)}
                 setClearHandler={ handler => this.clearHandlers[name] = handler}
+                handleKeyPress={this._handleKeyPress}
             />);
         };
 
@@ -207,7 +208,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     {renderRangeDatepicker('rowEdited', 'Row edited')}
-                     <div style={{flex:'1 1 200px', marginTop: '30px', marginBottom: '0'}}>
+                     <div style={{flex:'1 1 200px', margin:'30px 10px 0', marginBottom: '0'}}>
                          <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                          Show invalid avails
                      </div>
@@ -218,6 +219,7 @@ class AdvancedSearchPanel extends React.Component {
                                  disabled={this.state.invalidForm}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
+                                 disabled={!this.props.reportName}
                                  style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
 
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}

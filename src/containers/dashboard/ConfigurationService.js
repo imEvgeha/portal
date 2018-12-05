@@ -6,48 +6,7 @@ import {errorModal} from '../../components/share/ErrorModal';
 import {advancedSearchHelper} from './AdvancedSearchHelper';
 import {resultPageUpdateColumnsOrder} from '../../actions/dashboard';
 
-
-// const mockedConfiguration = {
-//     'avails': {
-//         'reports': [
-//             {
-//                 'name': 'Batman report 1',
-//                 'filter': {
-//                     'title': 'Batman',
-//                     'studio': 'Warner'
-//                 },
-//                 'columns': [
-//                     'title',
-//                     'studio',
-//                     'vodStart',
-//                     'vodEnd'
-//                 ],
-//                 'sortedBy': [
-//                     {
-//                         'column': 'title',
-//                         'order': 'ASC'
-//                     },
-//                     {
-//                         'column': 'vodEnd',
-//                         'order': 'DESC'
-//                     }
-//                 ]
-//             },
-//             {
-//                 'name': 'Batman report 2',
-//                 'filter': {
-//                     'rowInvalid': true
-//                 },
-//                 'columns': [
-//                     'vodStart',
-//                     'title'
-//                 ]
-//             }
-//         ]
-//     }
-// };
-
-
+const httpWithoutErrorHandling = Http.create({noDefaultErrorHandling: false});
 const http = Http.create();
 
 
@@ -60,20 +19,15 @@ const loadReportToStore = (report) => {
 
 const readReportFromStore = () => {
     const report = {
-        name: store.getState().dashboard.reportName,
-        filter: store.getState().dashboard.advancedSearchCriteria,
-        columns: store.getState().dashboard.columns,
+        name: store.getState().dashboard.session.reportName,
+        filter: store.getState().dashboard.session.advancedSearchCriteria,
+        columns: store.getState().dashboard.session.columns,
     };
     return report;
 };
 
 const getConfiguration = () => {
-    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
-    // return new Promise(function(resolve) {
-    //     setTimeout(function() {
-    //         resolve({data: mockedConfiguration});
-    //     }, 300);
-    // });
+    return httpWithoutErrorHandling.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
 };
 
 const putConfiguration = (configuration) => {
@@ -95,6 +49,7 @@ export const configurationService = {
             getConfiguration().then( (response) => {
                 loadConfiguration(response.data);
             }). catch((error) => {
+                errorModal.open('Error', () => {}, {description: 'System is not configured correctly!', closable: false});
                 console.error('Unable to load configuration');
                 console.error(error);
             });
@@ -118,13 +73,11 @@ export const configurationService = {
             loadReportToStore(report);
         } else {
             errorModal.open('Cannot find report: ' + reportName);
-
         }
     },
 
     saveReport: (reportName) => {
         const reports = store.getState().root.reports;
-        // const reports = [];
         const newReport = readReportFromStore();
 
         const currentReport = reports.find((report) => {return report.name === reportName;});
@@ -144,7 +97,6 @@ export const configurationService = {
             console.error(error);
         });
     },
-
     deleteReport: (reportName) => {
         const reports = store.getState().root.reports.filter((report) => {return report.name !== reportName;});
         putConfiguration({'avails': {'reports': reports}}).then( (response) => {

@@ -11,7 +11,8 @@ class ErrorModal extends React.Component{
         className: t.string,
         message: t.string,
         buttonLabel: t.string,
-        accept: t.func
+        accept: t.func,
+        closable: t.bool
     };
 
     constructor(props) {
@@ -22,6 +23,7 @@ class ErrorModal extends React.Component{
 
         this.toggle = this.toggle.bind(this);
         this.accept = this.accept.bind(this);
+        this.refresh = this.refresh.bind(this);
     }
 
     static defaultProps = {
@@ -33,6 +35,9 @@ class ErrorModal extends React.Component{
         this.setState({
             modal: !this.state.modal
         });
+    }
+    refresh() {
+        window.location.reload();
     }
 
     accept() {
@@ -48,11 +53,17 @@ class ErrorModal extends React.Component{
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={false}>
-                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={this.toggle}>{this.props.message}</ModalHeader>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={!this.props.closable ? 'static' : false}>
+                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={!this.props.closable ? undefined : this.toggle}>{this.props.message}</ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                    {
+                        !this.props.closable ? 
+                            <Button color="danger" onClick={this.refresh}>Refresh</Button>
+                        :
+                            <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                    }
+                    
                 </ModalFooter>
             </Modal>
         );
@@ -71,7 +82,7 @@ export const errorModal = {
             accept: () => { cleanup();onApprove();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<ErrorModal {...props}/>, wrapper);
+        render(<ErrorModal {...props} />, wrapper);
         const cleanup = function() {
             unmountComponentAtNode(wrapper);
             return setTimeout(function() {

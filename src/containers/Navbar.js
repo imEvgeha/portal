@@ -5,13 +5,24 @@ import {NavLink} from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import t from 'prop-types';
+import {
+    searchFormShowAdvancedSearch,
+    searchFormShowSearchResults,
+} from '../actions/dashboard';
 
 const mapStateToProps = state => {
     return {profileInfo: state.root.profileInfo};
 };
 
+const mapDispatchToProps = {
+    searchFormShowAdvancedSearch,
+    searchFormShowSearchResults
+};
+
 class NavbarConnect extends React.Component {
     static propTypes = {
+        searchFormShowAdvancedSearch: t.func,
+        searchFormShowSearchResults: t.func,
         profileInfo: t.any,
     };
 
@@ -19,6 +30,7 @@ class NavbarConnect extends React.Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
+        this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
         this.state = {
             dropdownOpen: false
         };
@@ -30,6 +42,11 @@ class NavbarConnect extends React.Component {
         }));
     }
 
+    handleBackToDashboard() {
+        this.props.searchFormShowAdvancedSearch(false);
+        this.props.searchFormShowSearchResults(false);
+    }
+
     render() {
         return (
             <nav className="navbar navbar-NEXUS navbar-expand-md">
@@ -38,7 +55,7 @@ class NavbarConnect extends React.Component {
                 </span>
                 <ul className="navbar-nav">
                     <li className="">
-                        <span className="nav-link" href="#">
+                        <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
                             <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
                         </span>
                     </li>
@@ -72,21 +89,18 @@ class NavbarConnect extends React.Component {
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem header>
-                                {keycloak.hasResourceRole('user') && keycloak.hasResourceRole(
+                                {keycloak.instance.hasResourceRole('user') && keycloak.hasResourceRole(
                                     'manage') ? 'user, manage' : ''}
-                                {keycloak.hasResourceRole('user')
-                  && !keycloak.hasResourceRole(
+                                {keycloak.instance.hasResourceRole('user')
+                  && !keycloak.instance.hasResourceRole(
                       'manage') ? 'user' : ''}
-                                {!keycloak.hasResourceRole('user')
-                  && keycloak.hasResourceRole(
+                                {!keycloak.instance.hasResourceRole('user')
+                  && keycloak.instance.hasResourceRole(
                       'manage') ? 'user' : ''}
                             </DropdownItem>
-                            {/*<DropdownItem divider/>*/}
-                            {/*<DropdownItem disabled>Action</DropdownItem>*/}
-                            {/*<DropdownItem>Another Action</DropdownItem>*/}
                             <DropdownItem divider/>
                             <DropdownItem>
-                                <a href="#" onClick={keycloak.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>
+                                <a href="#" onClick={keycloak.instance.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
@@ -97,6 +111,6 @@ class NavbarConnect extends React.Component {
 }
 const options = {pure: false};
 
-const Navbar = connect(mapStateToProps, null, null, options)(NavbarConnect);
+const Navbar = connect(mapStateToProps, mapDispatchToProps, null, options)(NavbarConnect);
 
 export default Navbar;

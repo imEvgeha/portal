@@ -26,11 +26,16 @@ export const defaultConfiguration = {
     keycloak: {
         'clientId': 'vehicle-public',
         'realm': 'Vubiquity',
-        'auth-server-url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
         'url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
-        'confidential-port': 0,
-        'policy-enforcer': {}
+        'confidential-port': 0
+    },
+    extraValidation: {
+        resolution: {
+            type: 'oneOf',
+            fields: ['sd', 'hd', 'f3d', 'f4k'],
+            values: [['SD'], ['HD'], ['3D'], ['4K/UHD']]
+        }
     }
 };

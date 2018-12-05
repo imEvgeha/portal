@@ -1,9 +1,9 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const htmlPlugin = new HtmlWebPackPlugin({
-    template: "./src/index.html",
-    filename: "./index.html"
+    template: './src/index.html',
+    filename: './index.html'
 });
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
         chunkFilename: 'app/[id].chunk.js'
     },
     entry: {
-        main: "./src/index.js"
+        main: './src/index.js'
     },
     module: {
         rules: [
@@ -22,7 +22,7 @@ module.exports = {
                 exclude: /node_modules/,
                 loaders: ['babel-loader']
             }, {
-                test: /\.scss/,
+                test: /\.(scss|css)/,
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             }, {
                 test: /\.(gif|png|jpe?g|svg)$/i,
@@ -44,6 +44,7 @@ module.exports = {
         new CopyWebpackPlugin([
             // relative path is from src
             { from: 'src/favicon.ico' }, // <- your path to favicon
+            { from: 'profile/config.json' },
         ])
     ],
     devServer: {

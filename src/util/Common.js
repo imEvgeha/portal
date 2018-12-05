@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const formatISO = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
 
 function downloadFile(data) {
@@ -18,10 +20,9 @@ function downloadFile(data) {
 }
 
 function momentToISO(date) {
-    return date.format(formatISO);
+    return moment(date).format(formatISO);
 }
 
-export {downloadFile, momentToISO};
 function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
