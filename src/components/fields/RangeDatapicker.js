@@ -40,6 +40,9 @@ export default class RangeDatapicker extends React.Component {
     }
 
     handleChangeEndDate(date) {
+        if (date) {
+            date.set({hour:23, minute:59});
+        }
         this.props.onToDateChange(date);
         this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
         this.setState({invalidEndDate: ''});
