@@ -149,6 +149,7 @@ class AvailsResultTable extends React.Component {
             if(toChangeSortModel){
                 this.table.api.setSortModel(sortModel);
             }
+
         }
 
         if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
@@ -200,7 +201,7 @@ class AvailsResultTable extends React.Component {
 
         if(e.api.getDisplayedRowCount() > 0){
             this.props.availTabPageSelection.selected.map(id => {
-                if(selected.indexOf(id) === -1) selected.push(id);
+                if(selected.indexOf(id) === -1 && e.api.getRowNode(id) === null) selected.push(id);
             });
         } else {
             selected = selected.concat(this.props.availTabPageSelection.selection);
@@ -260,7 +261,7 @@ class AvailsResultTable extends React.Component {
 
                             if(this.props.availTabPageSelection.selected.length > 0){
                                 this.table.api.forEachNode(rowNode => {
-                                    if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1 && !rowNode.isSelected()){
+                                    if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
                                         rowNode.setSelected(true);
                                     }
                                 });
