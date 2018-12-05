@@ -55,6 +55,7 @@ const initialState = {
         searchCriteria: {},
         reportName: '',
         columns: ['title', 'studio', 'territory', 'genres', 'vodStart', 'vodEnd'],
+        columnsSize: {}
     }
 };
 
