@@ -4,7 +4,11 @@ import moment from 'moment';
 import t from 'prop-types';
 import {validateDate} from '../../util/Validation';
 
+const FIRST_DELIMETER_POSITION = 2;
+const SECOUND_DELIMETER_POSITION = 5;
+
 class NexusDatePicker extends Component {
+
     static propTypes = {
         date: t.any,
         id: t.string,
@@ -84,11 +88,13 @@ class NexusDatePicker extends Component {
     handleChangeRaw(date) {
         let justDirty = false;
         if (date) {
-            if (this.prevRawInput.length === 1 && date.length === 2 || this.prevRawInput.length === 4 && date.length === 5) {
+            if ( (this.prevRawInput.length === FIRST_DELIMETER_POSITION - 1 && date.length === FIRST_DELIMETER_POSITION) ||
+                    (this.prevRawInput.length === SECOUND_DELIMETER_POSITION - 1 && date.length === SECOUND_DELIMETER_POSITION)) {
                 this.refDatePicker.current.input.value = this.refDatePicker.current.input.value + '/';
             }
 
-            if (this.prevRawInput.length === 3 && date.length === 2 || this.prevRawInput.length === 6 && date.length === 5 || date.length > 10) {
+            if ( (this.prevRawInput.length === FIRST_DELIMETER_POSITION +1 && date.length === FIRST_DELIMETER_POSITION) ||
+                    (this.prevRawInput.length === SECOUND_DELIMETER_POSITION + 1 && date.length === SECOUND_DELIMETER_POSITION || date.length > 10)) {
                 this.refDatePicker.current.input.value = this.refDatePicker.current.input.value.slice(0, -1);
                 date = this.refDatePicker.current.input.value;
             }
