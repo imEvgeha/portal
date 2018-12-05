@@ -126,6 +126,8 @@ class AvailsResultTable extends React.Component {
             for(let i=0; i< Math.min(this.props.columnsOrder.length, prevProps.columnsOrder.length); i++){
                 this.table.columnApi.moveColumn(this.props.columnsOrder[i], i+1);
             }
+
+            this.setState({});
         }
 
         if(this.props.availTabPageSort != prevProps.availTabPageSort){
