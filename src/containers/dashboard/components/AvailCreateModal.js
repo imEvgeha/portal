@@ -68,24 +68,38 @@ class AvailCreate extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
         const name = target.name;
 
-        this.checkAvail(name, value);
+
+        if(this.state.resolutionValidation.type === 'oneOf'){
+            if(this.state.resolutionValidation.fields.indexOf(name) > -1){
+                this.validateFields(this.state.resolutionValidation.fields, name, value);
+            }else{
+                this.checkAvail(name, value, null, true);
+            }
+        }
     }
 
-    checkAvail(name, value, mappingErrorMessage) {
+    checkAvail(name, value, mappingErrorMessage, setNewValue) {
+        console.log('checkAvail', name, value);
         let validationError = this.validateTextField(name, value);
 
         let errorMessage = {range: '', date: '', text: validationError};
 
-        if(!mappingErrorMessage){
+        if(setNewValue){
+            this.state.avail[name] = value; //not how state should be changed, hack for propagation of new value in current frame, other fields check against this
             let newAvail = {...this.state.avail, [name]: value};
             this.setState({
                 avail: newAvail,
+            });
+        }
+
+        if(!mappingErrorMessage){
+            this.setState({
                 mappingErrorMessage: {...this.state.mappingErrorMessage, [name]: errorMessage}
             });
 
             this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
         }else{
-            mappingErrorMessage[name]=errorMessage;
+            mappingErrorMessage[name] = errorMessage;
         }
     }
 
@@ -224,12 +238,12 @@ class AvailCreate extends React.Component {
                                    //if is current field
                                    if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
                                    //if not acceptable but also not empty
-                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                   if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
                                 }
                             }
                         }
 
-                        if(stillInvalid) return 'Not all formats can be empty';
+                        if(stillInvalid)return 'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value';
                         else return '';
                     }
                 }
@@ -273,16 +287,33 @@ class AvailCreate extends React.Component {
         return false;
     }
 
-    confirm() {
+    validateFields(fields, overrideField, overrideValue){
+        console.log('validateFields', fields, overrideField, overrideValue);
         let mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
+        if(overrideField){
+            console.log('set', overrideField, overrideValue);
+            this.checkAvail(overrideField, overrideValue, mappingErrorMessage, true);
+        }
         this.props.availsMapping.mappings.map((mapping) => {
-            this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage);
+            console.log('2', mapping.javaVariableName);
+            if(!fields || (fields && fields.indexOf(mapping.javaVariableName)>-1)){
+                console.log('3', mapping.javaVariableName, this.state.avail[mapping.javaVariableName]);
+                if(!overrideField || (overrideField && overrideField !== mapping.javaVariableName)){
+                    console.log('4 call it', mapping.javaVariableName, this.state.avail[mapping.javaVariableName]);
+                    this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage);
+                }
+            }
         });
 
         this.setState({
             mappingErrorMessage: mappingErrorMessage
         });
 
+        this.setDisableCreate(this.state.avail, mappingErrorMessage, this.state.errorMessage);
+    }
+
+    confirm() {
+        this.validateFields();
         if(this.state.disableCreateBtn) return;
         this.setState({loading: true, showCreatedMessage: false});
         dashboardService.createAvail(this.state.avail).then(() => {
