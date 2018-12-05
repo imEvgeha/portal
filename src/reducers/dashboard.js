@@ -63,7 +63,7 @@ const initialState = {
 const dashboard = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_DASHBOARD_SESSION:
-            return { ...state, session: action.payload};
+            return { ...state, session: {...state.session, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__UPDATE:
             return {...state, availTabPage: {...state.availTabPage, ...action.payload}};
         case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:

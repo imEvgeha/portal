@@ -270,8 +270,10 @@ class AvailsResultTable extends React.Component {
     }
 
     setTable = element => {
-        this.table = element;
-        if(this.table) element.api.showLoadingOverlay();
+      this.table = element;
+      if (this.table) {
+          element.api.showLoadingOverlay();
+      }
     };
 
     refreshColumns(){
@@ -295,10 +297,10 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    onCellClicked(row){
+    onCellClicked(row) {
         availDetailsModal.open(row, () => {
-                }, () => {
-                }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
+        }, () => {
+        }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
     }
 
     loadingRenderer(params){
