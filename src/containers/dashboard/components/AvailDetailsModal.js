@@ -128,12 +128,12 @@ class AvailDetails extends React.Component {
                                    //if is current field
                                    if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
                                    //if not acceptable but also not empty
-                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                   if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
                                 }
                             }
                         }
 
-                        if(stillInvalid) return 'Not all formats can be empty';
+                        if(stillInvalid) return 'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value';
                         else return '';
                     }
                 }
