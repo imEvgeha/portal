@@ -1,12 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
-import moment from 'moment';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { ModalFooter, ModalHeader, Modal, Button, Label } from 'reactstrap';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import EditableDatePicker from '../../../components/fields/EditableDatePicker';
 import { dashboardService } from '../DashboardService';
+import {rangeValidation} from '../../../util/Validation';
 import config from 'react-global-configuration';
 
 class AvailDetails extends React.Component {
@@ -39,8 +39,9 @@ class AvailDetails extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.abort = this.abort.bind(this);
+        this.update = this.update.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.notifyOtherSystems = this.notifyOtherSystems.bind(this);
+        this.handleDatepickerSubmit = this.handleDatepickerSubmit.bind(this);
         this.validateTextField = this.validateTextField.bind(this);
     }
 
@@ -55,42 +56,48 @@ class AvailDetails extends React.Component {
     }
 
     handleSubmit(editable) {
-        let value = editable.value ? editable.value.trim() : editable.value;
-        let updatedAvail = {...this.state.avail, [editable.props.title]: value};
-        this.notifyOtherSystems(updatedAvail);
+        const name = editable.props.title;
+        const value = editable.value.trim();
+        this.update(name, value, () => {
+            editable.setState({availLastEditSucceed: false});
+            editable.value = this.state.avail[name];
+            editable.newValue = this.state.avail[name];
+        });
     }
 
-    notifyOtherSystems(updatedAvail){
-        dashboardService.updateAvails(updatedAvail)
-            .then(res => {
-                let editedAvail = res.data;
-                this.setState({
-                    avail: editedAvail,
-                    errorMessage: ''
-                });
+    handleDatepickerSubmit(name, date, cancel) {
+        this.update(name, date, () => {
+            cancel();
+        });
+    }
 
-                this.props.onEdit(editedAvail);
-            })
-            .catch(() => {
-                this.setState({
-                    errorMessage: 'Avail edit failed'
-                });
+    update(name, value, onError) {
+        let updatedAvail = {...this.state.avail, [name]: value};
+        dashboardService.updateAvails(updatedAvail)
+        .then(res => {
+            let editedAvail = res.data;
+            this.setState({
+                avail: editedAvail,
+                errorMessage: ''
             });
+            this.props.onEdit(editedAvail);
+        })
+        .catch(() => {
+            this.setState({
+                errorMessage: 'Avail edit failed'
+            });
+            onError();
+        });
     }
 
 
     validateNotEmpty(data) {
-        if (!data.trim()) {
-            return 'Field can not be empty';
-        }
-        return '';
+        return data.trim() ? '' : 'Field can not be empty';
     }
 
     isAcceptable(data, acceptedValues){
-        if(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1){
-            return true;
-        }
-        return false;
+        return !!(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1);
+
     }
 
     validateTextField(target, field) {
@@ -121,12 +128,12 @@ class AvailDetails extends React.Component {
                                    //if is current field
                                    if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
                                    //if not acceptable but also not empty
-                                   if(this.validateNotEmpty(value)==='') return 'Value not acceptable';
+                                   if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
                                 }
                             }
                         }
 
-                        if(stillInvalid) return 'Not all formats can be empty';
+                        if(stillInvalid) return 'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value';
                         else return '';
                     }
                 }
@@ -135,34 +142,6 @@ class AvailDetails extends React.Component {
 
         }
         return '';
-    }
-
-    validation(name, displayName, date) {
-         let startDate, endDate, rangeError;
-
-        if (name.endsWith('Start') && this.state.avail[name.replace('Start', 'End')]) {
-            startDate = date;
-            endDate = this.state.avail[name.replace('Start', 'End')];
-            rangeError = displayName + ' must be before corresponding end date';
-        } else if (name.endsWith('End') && this.state.avail[name.replace('End', 'Start')]) {
-            startDate = this.state.avail[name.replace('End', 'Start')];
-            endDate = date;
-            rangeError = displayName + ' must be after corresponding end date';
-        }
-        if (startDate && endDate && moment(endDate) < moment(startDate)) {
-            return rangeError;
-        }
-    }
-
-    handleDatepickerChange(name, date) {
-        let newAvail = { ...this.state.avail };
-        newAvail[name] = date;
-        this.notifyOtherSystems(newAvail);
-
-    }
-
-    isAnyErrors(errorMessage) {
-        return !!(errorMessage.other || errorMessage.date);
     }
 
     render() {
@@ -220,8 +199,8 @@ class AvailDetails extends React.Component {
                 value={this.state.avail[name]}
                 name={name}
                 displayName={displayName}
-                validate={(date) => this.validation(name, displayName, date)}
-                onChange={(date) => this.handleDatepickerChange(name, date)}
+                validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
+                onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}
             />
         ));
     };
@@ -260,7 +239,7 @@ class AvailDetails extends React.Component {
             this.state.errorMessage &&
                 <ModalFooter id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
                     <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
-                        {this.state.errorMessage.other} {this.state.errorMessage.date} {this.state.errorMessage.range}
+                        {this.state.errorMessage}
                     </Label>
                 </ModalFooter>
                 }
