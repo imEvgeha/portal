@@ -296,7 +296,7 @@ class AvailsResultTable extends React.Component {
     }
 
     onCellClicked(row){
-        availDetailsModal.open(row, () => {
+        availDetailsModal.open(this.table.api.getRowNode(row.id).data, () => {
                 }, () => {
                 }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
     }
