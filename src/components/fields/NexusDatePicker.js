@@ -21,7 +21,8 @@ class NexusDatePicker extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dirty: false
+            dirty: false,
+            open: false
         };
 
         this.clear = this.clear.bind(this);
@@ -30,6 +31,19 @@ class NexusDatePicker extends Component {
         this.handleOnBlur = this.handleOnBlur.bind(this);
         this.setValid = this.setValid.bind(this);
         this.refDatePicker = React.createRef();
+    }
+
+    toggleOpen = () => {
+        if (this.state.open && this.refDatePicker.current.state.open) {
+            setTimeout(() => {
+                this.refDatePicker.current.setOpen(false);
+            }, 10);
+        }
+        this.setState({open: !this.state.open});
+    };
+
+    componentDidMount() {
+        this.refDatePicker.current.input.onclick = this.toggleOpen;
     }
 
     componentDidUpdate() {
@@ -54,7 +68,7 @@ class NexusDatePicker extends Component {
     }
 
     handleOnBlur() {
-        this.setState({dirty: true});
+        this.setState({dirty: true, open: false});
         if (this.refDatePicker.current.input.value && !validateDate(this.refDatePicker.current.input.value)) {
             this.setValid(false);
         }
@@ -68,6 +82,7 @@ class NexusDatePicker extends Component {
     }
 
     handleChangeRaw(date) {
+        let justDirty = false;
         if (date) {
             if (this.prevRawInput.length === 1 && date.length === 2 || this.prevRawInput.length === 4 && date.length === 5) {
                 this.refDatePicker.current.input.value = this.refDatePicker.current.input.value + '/';
@@ -80,11 +95,12 @@ class NexusDatePicker extends Component {
 
             if (!this.state.dirty && date.length === 10 ) {
                 this.setState({dirty: true});
+                justDirty = true;
             }
 
             if (validateDate(date)) {
                 this.handleChange(moment(date));
-            } else if (this.state.dirty) {
+            } else if (this.state.dirty || justDirty) {
                 this.setValid(false);
             }
 

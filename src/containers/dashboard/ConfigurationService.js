@@ -97,6 +97,7 @@ export const configurationService = {
             console.error(error);
         });
     },
+
     deleteReport: (reportName) => {
         const reports = store.getState().root.reports.filter((report) => {return report.name !== reportName;});
         putConfiguration({'avails': {'reports': reports}}).then( (response) => {
