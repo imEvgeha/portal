@@ -158,6 +158,9 @@ class AvailCreate extends React.Component {
             if(value.range) {
                 return true;
             }
+            if(value.text) {
+                return true;
+            }
         }
         return false;
     }
