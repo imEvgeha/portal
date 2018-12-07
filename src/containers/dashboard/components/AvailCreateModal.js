@@ -102,7 +102,7 @@ class AvailCreate extends React.Component {
                 mappingErrorMessage: {...this.state.mappingErrorMessage, [name]: errorMessage}
             });
 
-            this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
+            this.setDisableCreate(newAvail, this.state.mappingErrorMessage);
         }else{
             mappingErrorMessage[name] = errorMessage;
         }
@@ -145,8 +145,10 @@ class AvailCreate extends React.Component {
     setDisableCreate(avail, mappingErrorMessage) {
         if (this.isAnyErrors(mappingErrorMessage) || this.areMandatoryFieldsEmpty(avail)) {
             this.setState({disableCreateBtn: true});
+            return true;
         } else {
             this.setState({disableCreateBtn: false});
+            return false;
         }
     }
 
@@ -283,12 +285,15 @@ class AvailCreate extends React.Component {
             mappingErrorMessage: mappingErrorMessage
         });
 
-        this.setDisableCreate(this.state.avail, mappingErrorMessage, this.state.errorMessage);
+        let newAvail = {...this.state.avail};
+        if(overrideField && overrideValue){
+            newAvail[overrideField] = overrideValue;
+        }
+        return this.setDisableCreate(newAvail, mappingErrorMessage);
     }
 
     confirm() {
-        this.validateFields();
-        if(this.state.disableCreateBtn) return;
+        if(this.validateFields()) return;
         this.setState({loading: true, showCreatedMessage: false});
         dashboardService.createAvail(this.state.avail).then(() => {
             this.setState({loading: false, showCreatedMessage: true});
