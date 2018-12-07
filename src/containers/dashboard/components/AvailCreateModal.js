@@ -388,12 +388,13 @@ class AvailCreate extends React.Component {
         const renderFields = (mappings) => {
             return mappings.map((mapping)=> {
                 if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
+                    let required = mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1;
                     switch (mapping.dataType) {
-                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, mapping.required);
+                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, required);
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
