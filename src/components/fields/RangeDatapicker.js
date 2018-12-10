@@ -78,7 +78,7 @@ export default class RangeDatapicker extends React.Component {
                             onChange={this.handleChangeStartDate}
                             onInvalid={(value) => {this.handleInvalid('Start', value);}}
                             disabled={this.props.disabled}
-                            customInput={<input onKeyPress={this.props.handleKeyPress} />}
+                            handleKeyPress={this.props.handleKeyPress}
                         />
                         {this.state.invalidStartDate && <small className="text-danger m-2"
                                                                style={{bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
@@ -92,7 +92,7 @@ export default class RangeDatapicker extends React.Component {
                             onChange={this.handleChangeEndDate}
                             onInvalid={(value) => {this.handleInvalid('End', value);}}
                             disabled={this.props.disabled}
-                            customInput={<input onKeyPress={this.props.handleKeyPress} />}
+                            handleKeyPress={this.props.handleKeyPress}
                         />
                         {this.state.invalidEndDate && <small className="text-danger m-2"
                                                                style={{bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
