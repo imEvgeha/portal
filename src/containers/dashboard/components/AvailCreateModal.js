@@ -7,6 +7,7 @@ import {dashboardService} from '../DashboardService';
 import {rangeValidation} from '../../../util/Validation';
 import NexusDatePicker from '../../../components/fields/NexusDatePicker';
 import config from 'react-global-configuration';
+import {INVALID_DATE} from '../../../constants/messages';
 
 class AvailCreate extends React.Component {
     static propTypes = {
@@ -55,7 +56,7 @@ class AvailCreate extends React.Component {
         const mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
         const groupedMappingName = this.getGroupedMappingName(name);
         if (invalid) {
-            mappingErrorMessage[name] = {date: 'Invalid date, only digits allowed'};
+            mappingErrorMessage[name] = {date: INVALID_DATE};
             if(mappingErrorMessage[groupedMappingName] && mappingErrorMessage[groupedMappingName].range) {
                 mappingErrorMessage[groupedMappingName].range = '';
             }
@@ -111,13 +112,15 @@ class AvailCreate extends React.Component {
     handleDatepickerChange(name, displayName, date) {
         const newAvail = {...this.state.avail};
         newAvail[name] = date;
-        const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
-        let mappingErrorMessage = this.state.mappingErrorMessage;
-        mappingErrorMessage[name].range = errorMessage;
-
         const groupedMappingName = this.getGroupedMappingName(name);
-        if(mappingErrorMessage[groupedMappingName]) {
-            mappingErrorMessage[groupedMappingName].range = errorMessage;
+        const mappingErrorMessage = this.state.mappingErrorMessage;
+
+        if (!mappingErrorMessage[groupedMappingName].date) {
+            const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
+            mappingErrorMessage[name].range = errorMessage;
+            if (mappingErrorMessage[groupedMappingName]) {
+                mappingErrorMessage[groupedMappingName].range = errorMessage;
+            }
         }
 
         this.setState({

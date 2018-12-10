@@ -1,0 +1,1 @@
+export const INVALID_DATE = 'Invalid date, only digits allowed';

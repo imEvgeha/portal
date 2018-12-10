@@ -128,6 +128,7 @@ class NexusDatePicker extends Component {
                 showYearDropdown
                 showMonthDropdown
                 autoComplete={'off'}
+                allowSameDay={true}
                 onChange={this.handleChange}
                 onChangeRaw={(event) => this.handleChangeRaw(event.target.value)}
                 onBlur={this.handleOnBlur}
