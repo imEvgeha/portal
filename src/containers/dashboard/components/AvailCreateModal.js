@@ -29,7 +29,6 @@ class AvailCreate extends React.Component {
         this.state = {
             resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
-            disableCreateBtn: true,
             showCreatedMessage: false,
             loading: false,
             errorMessage: '',
@@ -102,7 +101,7 @@ class AvailCreate extends React.Component {
                 mappingErrorMessage: {...this.state.mappingErrorMessage, [name]: errorMessage}
             });
 
-            this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
+            this.anyInvalidField(newAvail, this.state.mappingErrorMessage);
         }else{
             mappingErrorMessage[name] = errorMessage;
         }
@@ -124,8 +123,6 @@ class AvailCreate extends React.Component {
             avail: newAvail,
             mappingErrorMessage: mappingErrorMessage
         });
-
-        this.setDisableCreate(newAvail, mappingErrorMessage);
     }
 
     getGroupedMappingName(name) {
@@ -142,11 +139,11 @@ class AvailCreate extends React.Component {
         return this.props.reject();
     }
 
-    setDisableCreate(avail, mappingErrorMessage) {
+    anyInvalidField(avail, mappingErrorMessage) {
         if (this.isAnyErrors(mappingErrorMessage) || this.areMandatoryFieldsEmpty(avail)) {
-            this.setState({disableCreateBtn: true});
+            return true;
         } else {
-            this.setState({disableCreateBtn: false});
+            return false;
         }
     }
 
@@ -287,12 +284,15 @@ class AvailCreate extends React.Component {
             mappingErrorMessage: mappingErrorMessage
         });
 
-        this.setDisableCreate(this.state.avail, mappingErrorMessage, this.state.errorMessage);
+        let newAvail = {...this.state.avail};
+        if(overrideField && overrideValue){
+            newAvail[overrideField] = overrideValue;
+        }
+        return this.anyInvalidField(newAvail, mappingErrorMessage);
     }
 
     confirm() {
-        this.validateFields();
-        if(this.state.disableCreateBtn) return;
+        if(this.validateFields()) return;
         this.setState({loading: true, showCreatedMessage: false});
         dashboardService.createAvail(this.state.avail).then(() => {
             this.setState({loading: false, showCreatedMessage: true});
