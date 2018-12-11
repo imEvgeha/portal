@@ -51,6 +51,10 @@ class NexusDatePicker extends Component {
     }
 
     componentDidUpdate() {
+        if (this.props.date === '') {
+            this.prevDate = '';
+            this.handleChange(null);
+        }
         if (this.props.date === null && this.prevDate !== null) {
             this.prevDate = this.props.date;
             this.clear();
