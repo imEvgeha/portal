@@ -272,6 +272,7 @@ class AvailCreate extends React.Component {
             this.checkAvail(overrideField, overrideValue, mappingErrorMessage, true);
         }
         this.props.availsMapping.mappings.map((mapping) => {
+            if(mapping.dataType === 'date') return;
             if(!fields || (fields && fields.indexOf(mapping.javaVariableName) >- 1)){
                 if(!overrideField || (overrideField && overrideField !== mapping.javaVariableName)){
                     this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage, false, overrideField, overrideValue);
