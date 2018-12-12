@@ -2,9 +2,8 @@ import t from 'prop-types';
 import React from 'react';
 import '../../containers/dashboard/components/DashboardCard.scss';
 import NexusDatePicker from './NexusDatePicker';
+import {INVALID_DATE} from '../../constants/messages';
 import moment from 'moment';
-
-const INVALID_DATE = 'Invalid Date';
 
 export default class RangeDatapicker extends React.Component {
     static propTypes = {
