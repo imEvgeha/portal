@@ -2,6 +2,7 @@ import t from 'prop-types';
 import React from 'react';
 import '../../containers/dashboard/components/DashboardCard.scss';
 import NexusDatePicker from './NexusDatePicker';
+import moment from 'moment';
 
 const INVALID_DATE = 'Invalid Date';
 
@@ -24,15 +25,27 @@ export default class RangeDatapicker extends React.Component {
             invalidEndDate: '',
             prevFromDate: null,
             prevToDate: null,
+            invalidRange: ''
         };
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleInvalid = this.handleInvalid.bind(this);
     }
 
+    componentDidUpdate() {
+        if (this.props.fromDate && this.props.toDate && moment(this.props.fromDate) > moment(this.props.toDate)) {
+            if (!this.state.invalidRange) {
+                this.wrongDateRange(true);
+            }
+        } else {
+            if (this.state.invalidRange) {
+                this.wrongDateRange(false);
+            }
+        }
+    }
+
     handleChangeStartDate(date) {
         this.props.onFromDateChange(date);
-        this.wrongDateRange(date && this.props.toDate && this.props.toDate < date);
         this.setState({invalidStartDate: ''});
         if (!this.state.invalidEndDate) {
             this.props.onValidate(false);
@@ -44,7 +57,6 @@ export default class RangeDatapicker extends React.Component {
             date.set({hour:23, minute:59});
         }
         this.props.onToDateChange(date);
-        this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
         this.setState({invalidEndDate: ''});
         if (!this.state.invalidStartDate) {
             this.props.onValidate(false);
