@@ -55,7 +55,8 @@ class AdvancedSearchPanel extends React.Component {
         this.state = {
             invalid: {},
             reportName: '',
-            invalidForm: false
+            invalidForm: false,
+            selected: null
         };
         this.handleBulkExport = this.handleBulkExport.bind(this);
         this.bulkExport = this.bulkExport.bind(this);
@@ -81,7 +82,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleDateChange(name, value) {
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value, [name + 'ADV']: {value: value}});
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value});
     }
 
     handleDateValidate(name, value) {
@@ -180,7 +181,7 @@ class AdvancedSearchPanel extends React.Component {
 
         const renderTextField = (name, displayName) => {
             return (<div key={name} style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
+                {/*<label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>*/}
                 <input type="text" className="form-control"
                        id={'dashboard-avails-search-' + name + '-text'}
                        placeholder={'Enter ' + displayName}
@@ -195,6 +196,7 @@ class AdvancedSearchPanel extends React.Component {
         const renderRangeDatepicker = (name, displayName) => {
             return (<RangeDatapicker
                 key={name}
+                hideLabel={true}
                 displayName={displayName}
                 fromDate={this.props.searchCriteria[name + 'From']}
                 toDate={this.props.searchCriteria[name + 'To']}
@@ -249,11 +251,9 @@ class AdvancedSearchPanel extends React.Component {
             let schema = this.availsMap[key];
             if(schema.dataType=='date'){
                 searchFields.push(renderRangeDatepicker(key, schema.displayName));
-                // btns.push(renderCloseableDateBtn(key, schema.displayName));
 
             }else{
                 searchFields.push(renderTextField(key, schema.displayName));
-                // btns.push(renderCloseableBtn(key, schema.displayName));
             }
         });
 
@@ -275,26 +275,49 @@ class AdvancedSearchPanel extends React.Component {
             return null;
         };
 
+        const renderSelect = () => {
+            return (
+                <Select
+                    onChange={(option) => {console.log(option);this.setState({selected: option.value});}}
+                    options={this.searchOptions ? this.searchOptions : []}
+                > </Select>
+            );
+        };
+
+        const renderSelectedInput = () => {
+            const selected = this.state.selected;
+            if (!selected) return '';
+
+            let schema = this.availsMap[selected];
+            if(schema.dataType=='date'){
+               return renderRangeDatepicker(selected, schema.displayName);
+            }else{
+                return renderTextField(selected, schema.displayName);
+            }
+        };
 
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
-                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
+                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}>
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <div>
-                    <div style={{width: '250px'}}>
-                        <Select options={this.searchOptions ? this.searchOptions : []}> </Select>
+                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
+                    <div style={{width: '250px', margin:'30px 10px 0'}}>
+                        {renderSelect()}
                     </div>
+                    <div style={{margin:'30px 10px 0'}}>
+                        {renderSelectedInput()}
+                    </div>
+
                 </div>
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
-                    {searchFields}
-                    {renderRangeDatepicker('rowEdited', 'Row edited')}
-                     <div style={{flex:'1 1 200px', margin:'30px 10px 0', marginBottom: '0'}}>
+                    {renderCloseable()}
+                    <div style={{flex:'1 1 200px', margin:'30px 10px 0'}}>
                          <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                          Show invalid avails
                      </div>
-                    {renderCloseable()}
+
                 </div>
                 <div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
