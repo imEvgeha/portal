@@ -13,6 +13,9 @@ import {alertModal} from '../../../components/share/AlertModal';
 import {confirmModal} from '../../../components/share/ConfirmModal';
 import {downloadFile} from '../../../util/Common';
 import {exportService} from '../ExportService';
+import moment from 'moment';
+import CloseableBtn from '../../../components/fields/CloseableBtn';
+import Select from 'react-select';
 
 const mapStateToProps = state => {
     return {
@@ -66,6 +69,7 @@ class AdvancedSearchPanel extends React.Component {
         this.handleDateValidate = this.handleDateValidate.bind(this);
 
         this.availsMap=null;
+        this.searchOptions=null;
     }
 
     handleInputChange(event) {
@@ -77,7 +81,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleDateChange(name, value) {
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value});
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value, [name + 'ADV']: {value: value}});
     }
 
     handleDateValidate(name, value) {
@@ -140,9 +144,35 @@ class AdvancedSearchPanel extends React.Component {
     handleSearch() {
         this.props.onSearch(this.props.searchCriteria);
     }
-
     render() {
         const searchBy = ['title', 'studio', 'releaseYear', 'releaseType', 'licensor', 'territory', 'estStart', 'estEnd', 'vodStart', 'vodEnd'];
+
+        const showCriteriaSet = new Set();
+        for (let key of Object.keys(this.props.searchCriteria) ) {
+            const value = this.props.searchCriteria[key];
+            if (value) {
+                if (key.endsWith('From')) {
+                    showCriteriaSet.add(key.slice(0, -4));
+                } else if (key.endsWith('To')) {
+                    showCriteriaSet.add(key.slice(0, -2));
+                } else {
+                    showCriteriaSet.add(key);
+                }
+            }
+        }
+
+        if (this.props.availsMapping) {
+
+            if(this.availsMap === null || this.searchOptions === null){
+                this.availsMap = {};
+                this.searchOptions = [];
+                this.props.availsMapping.mappings.forEach( (mapping) => {
+                    this.availsMap[mapping.javaVariableName] = mapping;
+                    this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
+                });
+            }
+        }
+
         if(this.availsMap===null && this.props.availsMapping!=null){
             this.availsMap={};
             this.props.availsMapping.mappings.map(column => this.availsMap[column.javaVariableName] = column);
@@ -176,15 +206,75 @@ class AdvancedSearchPanel extends React.Component {
             />);
         };
 
+        const renderCloseableInput = (name, displayName) => {
+            return (<div key={name} style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'5px 10px'}}>
+                {/*<label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>*/}
+                <input type="text" className="form-control"
+                       id={'dashboard-avails-search-' + name + '-text'}
+                       name={name}
+                       disabled={true}
+                       value={displayName + ' = ' + this.props.searchCriteria[name]}
+                       onKeyPress={this._handleKeyPress}/>
+            </div>);
+        };
+
+
+        const renderCloseableBtn = (name, displayName) => {
+            return (<div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    value={ ' = ' + this.props.searchCriteria[name] }
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
+            </div>);
+        };
+
+
+        const renderCloseableDateBtn = (name, displayName) => {
+            function prepareDate(prefix, date) {
+                return date ? prefix + ' ' + moment(date).format('L') : '';
+            }
+            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    value={prepareDate(' from', this.props.searchCriteria[name + 'From']) + ' ' + prepareDate('to', this.props.searchCriteria[name + 'To'])}
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
+            </div>);
+        };
+
+
         let searchFields = [];
         if(this.availsMap != null) searchBy.map(key => {
             let schema = this.availsMap[key];
             if(schema.dataType=='date'){
                 searchFields.push(renderRangeDatepicker(key, schema.displayName));
+                // btns.push(renderCloseableDateBtn(key, schema.displayName));
+
             }else{
                 searchFields.push(renderTextField(key, schema.displayName));
+                // btns.push(renderCloseableBtn(key, schema.displayName));
             }
         });
+
+        const renderCloseable = () => {
+            if (this.availsMap != null) {
+                return Array.from(showCriteriaSet).map((key) => {
+                    const schema = this.availsMap[key];
+                    if (schema) {
+                        if (schema.dataType === 'date') {
+                            return renderCloseableDateBtn(key, schema.displayName);
+                        } else {
+                            return renderCloseableBtn(key, schema.displayName);
+                        }
+                    } else {
+                        console.warn('Cannot determine schema for field: ' + key);
+                    }
+                });
+            }
+            return null;
+        };
+
 
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
@@ -192,6 +282,11 @@ class AdvancedSearchPanel extends React.Component {
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <div>
+                    <div style={{width: '250px'}}>
+                        <Select options={this.searchOptions ? this.searchOptions : []}> </Select>
+                    </div>
+                </div>
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     {renderRangeDatepicker('rowEdited', 'Row edited')}
@@ -199,6 +294,7 @@ class AdvancedSearchPanel extends React.Component {
                          <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
                          Show invalid avails
                      </div>
+                    {renderCloseable()}
                 </div>
                 <div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
