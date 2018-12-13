@@ -7,13 +7,12 @@ const INVALID_DATE = 'Invalid Date';
 
 export default class RangeDatapicker extends React.Component {
     static propTypes = {
-        fromDate: t.any,
-        toDate: t.any,
+        value: t.object,
         displayName: t.string,
         disabled: t.bool,
         onFromDateChange: t.func,
         onToDateChange: t.func,
-        onValidate: t.func,
+        onInvalid: t.func,
         handleKeyPress: t.func,
         hideLabel: t.bool
     };
@@ -33,11 +32,9 @@ export default class RangeDatapicker extends React.Component {
 
     handleChangeStartDate(date) {
         this.props.onFromDateChange(date);
-        this.wrongDateRange(date && this.props.toDate && this.props.toDate < date);
+        const invalidRange = this.wrongDateRange(date && this.props.value.to && this.props.value.to < date);
         this.setState({invalidStartDate: ''});
-        if (!this.state.invalidEndDate) {
-            this.props.onValidate(false);
-        }
+        this.props.onInvalid(this.state.invalidEndDate || invalidRange);
     }
 
     handleChangeEndDate(date) {
@@ -45,23 +42,21 @@ export default class RangeDatapicker extends React.Component {
             date.set({hour:23, minute:59});
         }
         this.props.onToDateChange(date);
-        this.wrongDateRange(date && this.props.fromDate && this.props.fromDate > date);
+        const invalidRange = this.wrongDateRange(date && this.props.value.from && this.props.value.from > date);
         this.setState({invalidEndDate: ''});
-        if (!this.state.invalidStartDate) {
-            this.props.onValidate(false);
-        }
+        this.props.onInvalid(this.state.invalidStartDate || invalidRange);
     }
 
     wrongDateRange(wrong) {
         const invalid = wrong ? this.props.displayName + ' from should be before to date' : '';
         this.setState({invalidRange: invalid});
-        this.props.onValidate(invalid);
+        return !!invalid;
     }
 
     handleInvalid(name, value) {
         if (value) {
             this.setState({['invalid' + name +'Date']: INVALID_DATE, invalidRange: ''});
-            this.props.onValidate(true);
+            this.props.onInvalid(true);
         } else {
             this.setState({['invalid' + name +'Date']: ''});
         }
@@ -75,31 +70,30 @@ export default class RangeDatapicker extends React.Component {
                     <div style={{width: '45%', paddingLeft: '8px'}}>
                         <NexusDatePicker
                             id="dashboard-avails-search-start-date-text"
-                            date={this.props.fromDate}
+                            date={this.props.value.from}
                             onChange={this.handleChangeStartDate}
                             onInvalid={(value) => {this.handleInvalid('Start', value);}}
                             disabled={this.props.disabled}
                             customInput={<input onKeyPress={this.props.handleKeyPress} />}
                         />
-                        {this.state.invalidStartDate && <small className="text-danger m-2"
-                                                               style={{bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
-
+                        {this.state.invalidStartDate && <small className="text-danger ml-2"
+                                                               style={{position: 'absolute'}}>{this.state.invalidStartDate}</small>}
+                        {this.state.invalidRange && <small className="text-danger ml-2"
+                                                           style={{position: 'absolute'}}>{this.state.invalidRange}</small>}
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
                         <NexusDatePicker
                             id="dashboard-avails-search-end-date-text"
-                            date={this.props.toDate}
+                            date={this.props.value.to}
                             onChange={this.handleChangeEndDate}
                             onInvalid={(value) => {this.handleInvalid('End', value);}}
                             disabled={this.props.disabled}
                             customInput={<input onKeyPress={this.props.handleKeyPress} />}
                         />
-                        {this.state.invalidEndDate && <small className="text-danger m-2"
-                                                               style={{bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
+                        {this.state.invalidEndDate && <small className="text-danger ml-2"
+                                                               style={{position: 'absolute'}}>{this.state.invalidEndDate}</small>}
                     </div>
-                    {this.state.invalidRange && <small className="text-danger m-2"
-                                                                                   style={{bottom: '-9px'}}>{this.state.invalidRange}</small>}
                 </div>
             </div>
         );

@@ -17,6 +17,7 @@ export default class CloseableBtn extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.close = this.close.bind(this);
     }
 
     closeStyle = {
@@ -28,13 +29,19 @@ export default class CloseableBtn extends Component {
         top: '0px'
     };
 
+    close(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.onClose();
+    }
+
     render() {
         return (
             <Button outline color="secondary" id={this.props.id} onClick={this.props.onClick}
                     disabled={this.props.disabled}
                     style={{ width: '100%', textAlign: 'left', position: 'relative'}}>
                 <div style={{width: '100%', overflow: 'hidden', paddingRight: '20px', textOverflow: 'ellipsis'}}><small><strong>{this.props.title}</strong>{this.props.value}</small></div>
-                <a href={'#'} style={this.closeStyle}><span aria-hidden="true">&times;</span></a>
+                <a href={'#'} style={this.closeStyle} onClick={this.close}><span aria-hidden="true">&times;</span></a>
             </Button>
         );
     }
