@@ -75,7 +75,7 @@ export default class SelectableInput extends Component {
         const renderTextField = (name, displayName) => {
             return (<div key={name} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
                 <input type="text" className="form-control"
-                    id={'dashboard-avails-search-' + name + '-text'}
+                    id={this.props.id + '-text'}
                     placeholder={'Enter ' + displayName}
                     name={name}
                     ref={this.refInput}
@@ -89,6 +89,7 @@ export default class SelectableInput extends Component {
             return (
                 <RangeDatapicker
                     key={name}
+                    id={this.props.id + '-datepicker'}
                     ref={this.refDatePicker}
                     hideLabel={true}
                     displayName={displayName}

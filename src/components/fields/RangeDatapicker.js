@@ -7,6 +7,7 @@ const INVALID_DATE = 'Invalid Date';
 
 export default class RangeDatapicker extends React.Component {
     static propTypes = {
+        id: t.string,
         value: t.object,
         displayName: t.string,
         disabled: t.bool,
@@ -74,7 +75,7 @@ export default class RangeDatapicker extends React.Component {
                 <div className={'row justify-content-around'}>
                     <div style={{width: '45%', paddingLeft: '8px'}}>
                         <NexusDatePicker
-                            id="dashboard-avails-search-start-date-text"
+                            id={this.props.id + '-from'}
                             date={this.props.value.from}
                             ref={this.refFirstDatePicker}
                             onChange={this.handleChangeStartDate}
@@ -90,7 +91,7 @@ export default class RangeDatapicker extends React.Component {
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
                         <NexusDatePicker
-                            id="dashboard-avails-search-end-date-text"
+                            id={this.props.id + '-to'}
                             date={this.props.value.to}
                             onChange={this.handleChangeEndDate}
                             onInvalid={(value) => {this.handleInvalid('End', value);}}
