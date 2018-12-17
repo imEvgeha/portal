@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import t from 'prop-types';
 import {Button} from 'reactstrap';
 
@@ -9,6 +9,7 @@ export default class CloseableBtn extends Component {
         id: t.string,
         value: t.string,
         disabled: t.bool,
+        highlighted: t.bool,
 
         onClick: t.func,
         onClose: t.func,
@@ -39,8 +40,10 @@ export default class CloseableBtn extends Component {
         return (
             <Button outline color="secondary" id={this.props.id} onClick={this.props.onClick}
                     disabled={this.props.disabled}
-                    style={{ width: '100%', textAlign: 'left', position: 'relative'}}>
-                <div style={{width: '100%', overflow: 'hidden', paddingRight: '20px', textOverflow: 'ellipsis'}}><small><strong>{this.props.title}</strong>{this.props.value}</small></div>
+                    style={{width: '100%', textAlign: 'left', position: 'relative', backgroundColor: this.props.highlighted ? 'gray' : ''}}>
+                <div style={{width: '100%', overflow: 'hidden', paddingRight: '20px', textOverflow: 'ellipsis'}}>
+                    <small><strong>{this.props.title}</strong>{this.props.value}</small>
+                </div>
                 <a href={'#'} style={this.closeStyle} onClick={this.close}><span aria-hidden="true">&times;</span></a>
             </Button>
         );

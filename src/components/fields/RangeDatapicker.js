@@ -28,6 +28,7 @@ export default class RangeDatapicker extends React.Component {
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleInvalid = this.handleInvalid.bind(this);
+        this.refFirstDatePicker = React.createRef();
     }
 
     handleChangeStartDate(date) {
@@ -62,6 +63,10 @@ export default class RangeDatapicker extends React.Component {
         }
     }
 
+    focus() {
+        this.refFirstDatePicker.current.focus();
+    }
+
     render() {
         return (
             <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
@@ -71,10 +76,11 @@ export default class RangeDatapicker extends React.Component {
                         <NexusDatePicker
                             id="dashboard-avails-search-start-date-text"
                             date={this.props.value.from}
+                            ref={this.refFirstDatePicker}
                             onChange={this.handleChangeStartDate}
                             onInvalid={(value) => {this.handleInvalid('Start', value);}}
                             disabled={this.props.disabled}
-                            customInput={<input onKeyPress={this.props.handleKeyPress} />}
+                            handleKeyPress={this.props.handleKeyPress}
                         />
                         {this.state.invalidStartDate && <small className="text-danger ml-2"
                                                                style={{position: 'absolute'}}>{this.state.invalidStartDate}</small>}
@@ -89,7 +95,7 @@ export default class RangeDatapicker extends React.Component {
                             onChange={this.handleChangeEndDate}
                             onInvalid={(value) => {this.handleInvalid('End', value);}}
                             disabled={this.props.disabled}
-                            customInput={<input onKeyPress={this.props.handleKeyPress} />}
+                            handleKeyPress={this.props.handleKeyPress}
                         />
                         {this.state.invalidEndDate && <small className="text-danger ml-2"
                                                                style={{position: 'absolute'}}>{this.state.invalidEndDate}</small>}

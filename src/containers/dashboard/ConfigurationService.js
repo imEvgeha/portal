@@ -13,14 +13,14 @@ const http = Http.create();
 const loadReportToStore = (report) => {
     store.dispatch(setReportName(report.name));
     store.dispatch(resultPageUpdateColumnsOrder(report.columns));
-    advancedSearchHelper.loadAdvancedSearchForm(report.filter ? report.filter : {});
-    advancedSearchHelper.advancedSearch(report.filter ? report.filter : {});
+    advancedSearchHelper.loadAdvancedSearchForm(report.orderedFilter ? report.orderedFilter : {});
+    advancedSearchHelper.advancedSearch(report.orderedFilter ? report.orderedFilter : {});
 };
 
 const readReportFromStore = () => {
     const report = {
         name: store.getState().dashboard.session.reportName,
-        filter: store.getState().dashboard.session.advancedSearchCriteria,
+        orderedFilter: store.getState().dashboard.session.advancedSearchCriteria,
         columns: store.getState().dashboard.session.columns,
     };
     return report;
@@ -82,7 +82,7 @@ export const configurationService = {
 
         const currentReport = reports.find((report) => {return report.name === reportName;});
         if (currentReport) {
-            currentReport.filter = newReport.filter;
+            currentReport.orderedFilter = newReport.orderedFilter;
             currentReport.columns = newReport.columns;
             currentReport.sortedBy = newReport.sortedBy;
         } else {
