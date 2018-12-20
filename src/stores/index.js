@@ -4,7 +4,7 @@ import dashboard from '../reducers/dashboard';
 import {loadDashboardSession} from '../actions/dashboard';
 import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper';
 
-const DASHBOARD_SESSION_VERSION = '0.1';
+const DASHBOARD_SESSION_VERSION = '0.2';
 
 const reducers = combineReducers({
     root,

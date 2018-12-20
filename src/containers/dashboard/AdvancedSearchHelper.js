@@ -1,11 +1,10 @@
-import moment from 'moment';
 import store from '../../stores';
 import {
     resultPageSort,
     resultPageUpdate,
     resultPageLoading,
-    searchFormUpdateSearchCriteria,
-    searchFormUpdateAdvancedSearchCriteria,
+    searchFormSetSearchCriteria,
+    searchFormSetAdvancedSearchCriteria,
 } from '../../actions/dashboard';
 import config from 'react-global-configuration';
 import {dashboardService} from './DashboardService';
@@ -35,87 +34,42 @@ const defaultPageSort = [];
 
 export const advancedSearchHelper = {
 
-    //TODO: Support mapping
     loadAdvancedSearchForm: (filter) => {
-        store.dispatch(searchFormUpdateAdvancedSearchCriteria({
-            vodStartFrom: filter.vodStartFrom ? moment(filter.vodStartFrom) : null,
-            vodStartTo: filter.vodStartTo ? moment(filter.vodStartTo) : null,
-            vodEndFrom: filter.vodEndFrom ? moment(filter.vodEndFrom) : null,
-            vodEndTo: filter.vodEndTo ? moment(filter.vodEndTo) : null,
-            estStartFrom: filter.estStartFrom ? moment(filter.estStartFrom) : null,
-            estStartTo: filter.estStartTo ? moment(filter.estStartTo) : null,
-            estEndFrom: filter.estEndFrom ? moment(filter.estEndFrom) : null,
-            estEndTo: filter.estEndTo ? moment(filter.estEndTo) : null,
-            rowEditedFrom: filter.rowEditedFrom ? moment(filter.rowEditedFrom) : null,
-            rowEditedTo: filter.rowEditedTo ? moment(filter.rowEditedTo) : null,
-            title: filter.title ? filter.title : '',
-            studio: filter.studio ? filter.studio : '',
-            releaseYear: filter.releaseYear ? filter.releaseYear : '',
-            releaseType: filter.releaseType ? filter.releaseType : '',
-            licensor: filter.licensor ? filter.licensor : '',
-            territory: filter.territory ? filter.territory : '',
-            rowInvalid: filter.rowInvalid ? filter.rowInvalid : false,
-        }));
+        store.dispatch(searchFormSetAdvancedSearchCriteria(filter));
     },
 
     storeAdvancedSearchForm: (searchCriteria) => {
-        store.dispatch(searchFormUpdateSearchCriteria(searchCriteria));
+        store.dispatch(searchFormSetSearchCriteria(searchCriteria));
     },
 
     prepareAdvancedSearchCall: (searchCriteria) => {
-        return {
-            ...searchCriteria,
-            vodStartFrom: searchCriteria.vodStartFrom && momentToISO(searchCriteria.vodStartFrom),
-            vodStartTo: searchCriteria.vodStartTo && momentToISO(searchCriteria.vodStartTo),
-            vodEndFrom: searchCriteria.vodEndFrom && momentToISO(searchCriteria.vodEndFrom),
-            vodEndTo: searchCriteria.vodEndTo && momentToISO(searchCriteria.vodEndTo),
-            estStartFrom: searchCriteria.estStartFrom && momentToISO(searchCriteria.estStartFrom),
-            estStartTo: searchCriteria.estStartTo && momentToISO(searchCriteria.estStartTo),
-            estEndFrom: searchCriteria.estEndFrom && momentToISO(searchCriteria.estEndFrom),
-            estEndTo: searchCriteria.estEndTo && momentToISO(searchCriteria.estEndTo),
-            rowEditedFrom: searchCriteria.rowEditedFrom && momentToISO(searchCriteria.rowEditedFrom),
-            rowEditedTo: searchCriteria.rowEditedTo && momentToISO(searchCriteria.rowEditedTo),
-        };
+        const response = {};
+        for (let key of Object.keys(searchCriteria) ) {
+            const criteria = searchCriteria[key];
+            if (criteria) {
+                if (!(criteria instanceof Object)) {
+                    response[key] = criteria;
+                } else if (criteria.value) {
+                    response[key] = criteria.value;
+                } else {
+                    if (criteria.from) {
+                        response[key + 'From'] = momentToISO(criteria.from);
+                    }
+                    if (criteria.to) {
+                        response[key + 'To'] = momentToISO(criteria.to);
+                    }
+                }
+            }
+        }
+        return response;
     },
 
     clearAdvancedSearchForm: () => {
-        store.dispatch(searchFormUpdateAdvancedSearchCriteria({
-            vodStartFrom: '',
-            vodStartTo: '',
-            vodEndFrom: '',
-            vodEndTo: '',
-            estStartFrom: '',
-            estStartTo: '',
-            estEndFrom: '',
-            estEndTo: '',
-            rowEditedFrom: '',
-            rowEditedTo: '',
-            rowInvalid: false,
-            title: '',
-            studio: '',
-            releaseYear: '',
-            releaseType: '',
-            licensor: '',
-            territory: '',
+        store.dispatch(searchFormSetAdvancedSearchCriteria({
+            rowInvalid: {value: false},
         }));
-        store.dispatch(searchFormUpdateSearchCriteria({
-            vodStartFrom: null,
-            vodStartTo: null,
-            vodEndFrom: null,
-            vodEndTo: null,
-            estStartFrom: null,
-            estStartTo: null,
-            estEndFrom: null,
-            estEndTo: null,
-            rowEditedFrom: null,
-            rowEditedTo: null,
-            rowInvalid: false,
-            title: '',
-            studio: '',
-            releaseYear: '',
-            releaseType: '',
-            licensor: '',
-            territory: '',
+        store.dispatch(searchFormSetSearchCriteria({
+            rowInvalid: {value: false},
         }));
     },
 
@@ -126,7 +80,6 @@ export const advancedSearchHelper = {
     advancedSearch(searchCriteria) {
         this.storeAdvancedSearchForm(searchCriteria);
         doSearch(this.prepareAdvancedSearchCall(searchCriteria), dashboardService.advancedSearch);
-    },
-
+    }
 
 };

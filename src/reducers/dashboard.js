@@ -1,6 +1,6 @@
 import {
     DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH,
-    DASHBOARD_SEARCH_FORM__UPDATE_SEARCH_CRITERIA,
+    DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA,
     DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH,
     DASHBOARD_RESULT_PAGE__UPDATE,
     DASHBOARD_RESULT_PAGE__SORT,
@@ -9,7 +9,10 @@ import {
     DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
     DASHBOARD_RESULT_PAGE__SELECT_ROW,
     SET_REPORT_NAME,
-    LOAD_DASHBOARD_SESSION, DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS, DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
+    LOAD_DASHBOARD_SESSION,
+    DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS,
+    DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
+    DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
 } from '../constants/action-types';
 import {saveDashboardState} from '../stores';
 
@@ -32,25 +35,7 @@ const initialState = {
         useAdvancedSearch: false,
         showAdvancedSearch: false,
         showSearchResults: false,
-        advancedSearchCriteria: {
-            vodStartFrom: null,
-            vodStartTo: null,
-            vodEndFrom: null,
-            vodEndTo: null,
-            estStartFrom: null,
-            estStartTo: null,
-            estEndFrom: null,
-            estEndTo: null,
-            rowEditedFrom: null,
-            rowEditedTo: null,
-            rowInvalid: false,
-            title: '',
-            studio: '',
-            releaseYear: '',
-            releaseType: '',
-            licensor: '',
-            territory: '',
-        },
+        advancedSearchCriteria: {},
         availTabPageSort: [],
         searchCriteria: {},
         reportName: '',
@@ -75,12 +60,15 @@ const dashboard = (state = initialState, action) => {
         case SET_REPORT_NAME:
             saveDashboardState();
             return {...state, session: {...state.session, reportName: action.payload}};
+        case DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA:
+             saveDashboardState();
+            return { ...state, session: {...state.session, advancedSearchCriteria: action.payload}};
         case DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA:
              saveDashboardState();
             return { ...state, session: {...state.session, advancedSearchCriteria: {...state.session.advancedSearchCriteria, ...action.payload}}};
-        case DASHBOARD_SEARCH_FORM__UPDATE_SEARCH_CRITERIA:
+        case DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA:
              saveDashboardState();
-            return { ...state, session: {...state.session, searchCriteria: {...state.session.searchCriteria, ...action.payload}}};
+            return { ...state, session: {...state.session, searchCriteria: {...action.payload}}};
         case DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH:
              saveDashboardState();
             return { ...state, session: {...state.session, useAdvancedSearch: action.payload}};

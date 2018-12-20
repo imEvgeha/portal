@@ -7,12 +7,14 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
 import {advancedSearchHelper} from '../AdvancedSearchHelper';
-import RangeDatapicker from '../../../components/fields/RangeDatapicker';
 import {configurationService} from '../ConfigurationService';
 import {alertModal} from '../../../components/share/AlertModal';
 import {confirmModal} from '../../../components/share/ConfirmModal';
 import {downloadFile} from '../../../util/Common';
 import {exportService} from '../ExportService';
+import moment from 'moment';
+import CloseableBtn from '../../../components/fields/CloseableBtn';
+import SelectableInput from '../../../components/fields/SelectableInput';
 
 const mapStateToProps = state => {
     return {
@@ -39,58 +41,92 @@ class AdvancedSearchPanel extends React.Component {
         availsMapping: t.object,
     };
 
-
-
-    _handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !this.state.invalidForm) {
-            this.handleSearch();
-        }
-    };
-
     constructor(props) {
         super(props);
         this.state = {
-            invalid: {},
             reportName: '',
-            invalidForm: false
+            selected: null,
+            value: null,
+            blink: null,
         };
         this.handleBulkExport = this.handleBulkExport.bind(this);
         this.bulkExport = this.bulkExport.bind(this);
-        this.validateState = this.validateState.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleDateValidate = this.handleDateValidate.bind(this);
+        this.handleValueChange = this.handleValueChange.bind(this);
+        this.addSearchField = this.addSearchField.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.blink = this.blink.bind(this);
+        this.refSearchBtn = React.createRef();
+
 
         this.availsMap=null;
+        this.searchOptions=[];
+    }
+
+    handleSelect(option) {
+        if (!option) {
+            this.setState({selected: null, value: {}});
+        } else {
+            const value = this.props.searchCriteria[option.value];
+            this.setState({selected: option, value: value ? value : {}});
+        }
+    }
+
+    blink(name) {
+        this.setState({blink: name});
+    }
+
+    handleValueChange(value) {
+        this.setState({value: value});
+    }
+
+    selectField(name) {
+        this.handleSelect(this.searchOptions.find( (option) => (name === option.value)));
+    }
+
+    removeField(name) {
+        if (this.state.selected && this.state.selected.value === name) {
+            this.setState({selected: null, value: null});
+        }
+        const searchCriteria = {};
+
+        let sortedFields = this.getSortedFieldsToShow();
+        let position = 0;
+        sortedFields.forEach((field) => {
+            if (field.name !== name) {
+                searchCriteria[field.name] = {...this.props.searchCriteria[field.name], order: position++};
+            } else {
+                searchCriteria[field.name] = null;
+            }
+
+        });
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, ...searchCriteria});
     }
 
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value});
-        this.setState({invalidForm: !this.validateState(this.state.invalid)});
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: {value: value}});
     }
 
-    handleDateChange(name, value) {
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: value});
-    }
-
-    handleDateValidate(name, value) {
-        const state = {invalid: {...this.state.invalid, [name]: value}};
-        state.invalidForm = !this.validateState(state.invalid);
-        this.setState(state);
-    }
-
-    validateState(invalidState) {
-        for (let key of Object.keys(invalidState)) {
-            if (invalidState[key]) { return false; }
+    addSearchField() {
+        let value = this.state.value;
+        if (value.value || value.from || value.to) {
+            if (!value.order && value.order !== 0) {
+                value.order = this.getFieldsToShow().length;
+            }
+            this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [this.state.selected.value]: value});
+            this.blink(this.state.selected.value);
+        } else {
+            this.removeField(this.state.selected.value);
         }
-        return true;
+        this.setState({selected: null, value: null});
+        this.refSearchBtn.current.focus();
     }
 
     handleBulkExport() {
@@ -130,6 +166,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleClear() {
+        this.handleSelect(null);
         advancedSearchHelper.clearAdvancedSearchForm();
     }
 
@@ -138,72 +175,116 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSearch() {
+        this.setState({blink: null});
         this.props.onSearch(this.props.searchCriteria);
     }
 
+    getFieldsToShow() {
+        const nonEmptyFields = [];
+        for (let key of Object.keys(this.props.searchCriteria) ) {
+            const field = this.props.searchCriteria[key];
+            if (field) {
+                field.name = key;
+                nonEmptyFields.push(field);
+            }
+        }
+        return nonEmptyFields;
+    }
+
+    getSortedFieldsToShow() {
+        return this.getFieldsToShow().sort( (a, b) => (a.order ? a.order : -1)  - (b.order ? b.order : -1) );
+    }
+
     render() {
-        const searchBy = ['title', 'studio', 'releaseYear', 'releaseType', 'licensor', 'territory', 'estStart', 'estEnd', 'vodStart', 'vodEnd'];
-        if(this.availsMap===null && this.props.availsMapping!=null){
-            this.availsMap={};
-            this.props.availsMapping.mappings.map(column => this.availsMap[column.javaVariableName] = column);
+        if (this.props.availsMapping && this.availsMap === null) {
+            this.availsMap = {};
+            this.searchOptions = [];
+            this.props.availsMapping.mappings.forEach( (mapping) => {
+                this.availsMap[mapping.javaVariableName] = mapping;
+                this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
+            });
         }
 
-        const renderTextField = (name, displayName) => {
-            return (<div key={name} style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
-                <input type="text" className="form-control"
-                       id={'dashboard-avails-search-' + name + '-text'}
-                       placeholder={'Enter ' + displayName}
-                       name={name}
-                       disabled={this.props.searchCriteria.rowInvalid}
-                       value={this.props.searchCriteria[name]}
-                       onChange={this.handleInputChange}
-                       onKeyPress={this._handleKeyPress}/>
+        const fieldsToShow = this.getSortedFieldsToShow().map((field) => (field.name));
+        const options = this.searchOptions.filter((option) => (!(fieldsToShow.indexOf(option.value) > -1)));
+
+        const renderCloseableBtn = (name, displayName) => {
+            return (
+                <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        value={ ' = ' + this.props.searchCriteria[name].value }
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+            );
+        };
+
+        const renderCloseableDateBtn = (name, displayName) => {
+            function prepareDate(prefix, date) {
+                return date ? prefix + ' ' + moment(date).format('L') : '';
+            }
+            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    onClick={() => this.selectField(name)}
+                    onClose={() => this.removeField(name)}
+                    highlighted={this.state.blink === name}
+                    value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
             </div>);
         };
 
-        const renderRangeDatepicker = (name, displayName) => {
-            return (<RangeDatapicker
-                key={name}
-                displayName={displayName}
-                fromDate={this.props.searchCriteria[name + 'From']}
-                toDate={this.props.searchCriteria[name + 'To']}
-                disabled={this.props.searchCriteria.rowInvalid}
-                onFromDateChange={(value) => this.handleDateChange(name +'From', value)}
-                onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
-                onValidate={(value) => this.handleDateValidate(name, value)}
-                handleKeyPress={this._handleKeyPress}
-            />);
-        };
-
-        let searchFields = [];
-        if(this.availsMap != null) searchBy.map(key => {
-            let schema = this.availsMap[key];
-            if(schema.dataType=='date'){
-                searchFields.push(renderRangeDatepicker(key, schema.displayName));
-            }else{
-                searchFields.push(renderTextField(key, schema.displayName));
+        const renderCloseable = () => {
+            if (this.availsMap != null) {
+                return Array.from(fieldsToShow).map((key) => {
+                    const schema = this.availsMap[key];
+                    if (schema) {
+                        if (schema.dataType === 'date') {
+                            return renderCloseableDateBtn(key, schema.displayName);
+                        } else {
+                            return renderCloseableBtn(key, schema.displayName);
+                        }
+                    } else {
+                        console.warn('Cannot determine schema for field: ' + key);
+                    }
+                });
             }
-        });
+            return null;
+        };
 
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
-                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
+                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}>
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <SelectableInput
+                    options={options}
+                    selected={this.state.selected}
+                    value={this.state.value}
+                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].dataType : null}
+                    displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
+                    id={'dashboard-avails-advanced-search-selectable'}
+
+                    onChange={this.handleValueChange}
+                    onSelect={this.handleSelect}
+                    onSave={this.addSearchField}
+                />
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
-                    {searchFields}
-                    {renderRangeDatepicker('rowEdited', 'Row edited')}
-                     <div style={{flex:'1 1 200px', margin:'30px 10px 0', marginBottom: '0'}}>
-                         <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid} onChange={this.handleInputChange}/>
-                         Show invalid avails
-                     </div>
+                    {renderCloseable()}
                 </div>
-                <div>
-                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
+                <div className="d-flex flex-row justify-content-between mt-2">
+                    <div style={{margin:'0 5px', alignSelf: 'center'}}>
+                        <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : false} onChange={this.handleInputChange}/>
+                        Show invalid avails
+                    </div>
+                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                 disabled={this.state.invalidForm}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
                                  disabled={!this.props.reportName}
@@ -213,11 +294,10 @@ class AdvancedSearchPanel extends React.Component {
                                  style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
 
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                 disabled={this.state.invalidForm}
                                  style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
 
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                 disabled={this.state.invalidForm}
+                                 innerRef={this.refSearchBtn}
                                  style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
                      </div>
                 </div>

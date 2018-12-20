@@ -7,14 +7,15 @@ import moment from 'moment';
 
 export default class RangeDatapicker extends React.Component {
     static propTypes = {
-        fromDate: t.any,
-        toDate: t.any,
+        id: t.string,
+        value: t.object,
         displayName: t.string,
         disabled: t.bool,
         onFromDateChange: t.func,
         onToDateChange: t.func,
-        onValidate: t.func,
+        onInvalid: t.func,
         handleKeyPress: t.func,
+        hideLabel: t.bool
     };
 
     constructor(props) {
@@ -29,26 +30,26 @@ export default class RangeDatapicker extends React.Component {
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleInvalid = this.handleInvalid.bind(this);
+        this.refFirstDatePicker = React.createRef();
     }
 
     componentDidUpdate() {
-        if (this.props.fromDate && this.props.toDate && moment(this.props.fromDate) > moment(this.props.toDate)) {
+        if (this.props.value.from && this.props.value.to && moment(this.props.value.from) > moment(this.props.value.to)) {
             if (!this.state.invalidRange) {
-                this.wrongDateRange(true);
+                this.props.onInvalid(this.wrongDateRange(true));
             }
         } else {
             if (this.state.invalidRange) {
-                this.wrongDateRange(false);
+                this.props.onInvalid(this.wrongDateRange(false));
             }
         }
     }
 
     handleChangeStartDate(date) {
         this.props.onFromDateChange(date);
+        const invalidRange = this.wrongDateRange(date && this.props.value.to && this.props.value.to < date);
         this.setState({invalidStartDate: ''});
-        if (!this.state.invalidEndDate) {
-            this.props.onValidate(false);
-        }
+        this.props.onInvalid(this.state.invalidEndDate || invalidRange);
     }
 
     handleChangeEndDate(date) {
@@ -56,60 +57,63 @@ export default class RangeDatapicker extends React.Component {
             date.set({hour:23, minute:59});
         }
         this.props.onToDateChange(date);
+        const invalidRange = this.wrongDateRange(date && this.props.value.from && this.props.value.from > date);
         this.setState({invalidEndDate: ''});
-        if (!this.state.invalidStartDate) {
-            this.props.onValidate(false);
-        }
+        this.props.onInvalid(this.state.invalidStartDate || invalidRange);
     }
 
     wrongDateRange(wrong) {
         const invalid = wrong ? this.props.displayName + ' from should be before to date' : '';
         this.setState({invalidRange: invalid});
-        this.props.onValidate(invalid);
+        return !!invalid;
     }
 
     handleInvalid(name, value) {
         if (value) {
             this.setState({['invalid' + name +'Date']: INVALID_DATE, invalidRange: ''});
-            this.props.onValidate(true);
+            this.props.onInvalid(true);
         } else {
             this.setState({['invalid' + name +'Date']: ''});
         }
     }
 
+    focus() {
+        this.refFirstDatePicker.current.focus();
+    }
+
     render() {
         return (
             <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
+                { !this.props.hideLabel && <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>}
                 <div className={'row justify-content-around'}>
                     <div style={{width: '45%', paddingLeft: '8px'}}>
                         <NexusDatePicker
-                            id="dashboard-avails-search-start-date-text"
-                            date={this.props.fromDate}
+                            id={this.props.id + '-from'}
+                            date={this.props.value.from}
+                            ref={this.refFirstDatePicker}
                             onChange={this.handleChangeStartDate}
                             onInvalid={(value) => {this.handleInvalid('Start', value);}}
                             disabled={this.props.disabled}
                             handleKeyPress={this.props.handleKeyPress}
                         />
-                        {this.state.invalidStartDate && <small className="text-danger m-2"
-                                                               style={{bottom: '-9px'}}>{this.state.invalidStartDate}</small>}
-
+                        {this.state.invalidStartDate && <small className="text-danger ml-2"
+                                                               style={{position: 'absolute'}}>{this.state.invalidStartDate}</small>}
+                        {this.state.invalidRange && <small className="text-danger ml-2"
+                                                           style={{position: 'absolute'}}>{this.state.invalidRange}</small>}
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
                         <NexusDatePicker
-                            id="dashboard-avails-search-end-date-text"
-                            date={this.props.toDate}
+                            id={this.props.id + '-to'}
+                            date={this.props.value.to}
                             onChange={this.handleChangeEndDate}
                             onInvalid={(value) => {this.handleInvalid('End', value);}}
                             disabled={this.props.disabled}
                             handleKeyPress={this.props.handleKeyPress}
                         />
-                        {this.state.invalidEndDate && <small className="text-danger m-2"
-                                                               style={{bottom: '-9px'}}>{this.state.invalidEndDate}</small>}
+                        {this.state.invalidEndDate && <small className="text-danger ml-2"
+                                                               style={{position: 'absolute'}}>{this.state.invalidEndDate}</small>}
                     </div>
-                    {this.state.invalidRange && <small className="text-danger m-2"
-                                                                                   style={{bottom: '-9px'}}>{this.state.invalidRange}</small>}
                 </div>
             </div>
         );

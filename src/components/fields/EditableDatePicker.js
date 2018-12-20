@@ -12,7 +12,6 @@ class EditableDatePicker extends Component {
         validate: t.func,
         value: t.string,
         displayName: t.string,
-        name: t.string,
         onChange: t.func,
     };
 

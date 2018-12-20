@@ -33,6 +33,7 @@ class NexusDatePicker extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeRaw = this.handleChangeRaw.bind(this);
         this.handleOnBlur = this.handleOnBlur.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
         this.setValid = this.setValid.bind(this);
         this.refDatePicker = React.createRef();
     }
@@ -82,11 +83,22 @@ class NexusDatePicker extends Component {
         }
     }
 
+    // Hack for fix https://github.com/Hacker0x01/react-datepicker/issues/730
+    handleClickOutside() {
+        this.refDatePicker.current.cancelFocusInput();
+        this.refDatePicker.current.setOpen(false);
+    }
+
     setValid(valid) {
         this.setState({invalidDate: !valid});
         if (this.props.onInvalid) {
             this.props.onInvalid(!valid);
         }
+    }
+
+    // Used by ref
+    focus() {
+        this.refDatePicker.current.input.focus();
     }
 
     handleChangeRaw(date) {
@@ -139,6 +151,7 @@ class NexusDatePicker extends Component {
                 todayButton={'Today'}
                 disabled={this.props.disabled}
                 customInput={<input onKeyPress={this.props.handleKeyPress} />}
+                onClickOutside={this.handleClickOutside}
             />
         );
     }
