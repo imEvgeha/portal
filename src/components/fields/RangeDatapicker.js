@@ -33,6 +33,18 @@ export default class RangeDatapicker extends React.Component {
         this.refFirstDatePicker = React.createRef();
     }
 
+    componentDidUpdate() {
+        if (this.props.value.from && this.props.value.to && moment(this.props.value.from) > moment(this.props.value.to)) {
+            if (!this.state.invalidRange) {
+                this.props.onInvalid(this.wrongDateRange(true));
+            }
+        } else {
+            if (this.state.invalidRange) {
+                this.props.onInvalid(this.wrongDateRange(false));
+            }
+        }
+    }
+
     handleChangeStartDate(date) {
         this.props.onFromDateChange(date);
         const invalidRange = this.wrongDateRange(date && this.props.value.to && this.props.value.to < date);

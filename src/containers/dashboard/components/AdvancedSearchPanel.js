@@ -267,7 +267,8 @@ class AdvancedSearchPanel extends React.Component {
                     options={options}
                     selected={this.state.selected}
                     value={this.state.value}
-                    mapping={this.state.selected ? this.availsMap[this.state.selected.value] : null}
+                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].dataType : null}
+                    displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
                     id={'dashboard-avails-advanced-search-selectable'}
 
                     onChange={this.handleValueChange}
