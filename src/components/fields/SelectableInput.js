@@ -11,9 +11,10 @@ export default class SelectableInput extends Component {
         saveText: t.string,
         placeholder: t.string,
 
-        selected: t.object,
+        displayName: t.string,
+        dataType: t.string,
         value: t.object,
-        mapping: t.object,
+        selected: t.object,
         disabled: t.bool,
 
         options: t.array,
@@ -103,8 +104,8 @@ export default class SelectableInput extends Component {
 
         const renderSelectedInput = () => {
             const selected = this.props.selected;
-            const displayName = this.props.mapping.displayName;
-            if (this.props.mapping.dataType === 'date') {
+            const displayName = this.props.displayName;
+            if (this.props.dataType === 'date') {
                 return renderRangeDatepicker(selected, displayName);
             } else {
                 return renderTextField(selected, displayName);

@@ -38,12 +38,12 @@ export default class CloseableBtn extends Component {
 
     render() {
         return (
-            <Button outline color="secondary"
+            <Button outline={!this.props.highlighted} color="secondary"
                     id={this.props.id}
                     onClick={this.props.onClick}
                     title={this.props.title + this.props.value}
                     disabled={this.props.disabled}
-                    style={{width: '100%', textAlign: 'left', position: 'relative', backgroundColor: this.props.highlighted ? 'gray' : ''}}>
+                    style={{width: '100%', textAlign: 'left', position: 'relative'}}>
                 <div style={{width: '100%', overflow: 'hidden', paddingRight: '20px', textOverflow: 'ellipsis'}}>
                     <small><strong>{this.props.title}</strong>{this.props.value}</small>
                 </div>

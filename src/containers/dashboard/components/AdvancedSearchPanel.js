@@ -25,8 +25,6 @@ const mapStateToProps = state => {
     };
 };
 
-const BLINK_DURATION = 150;
-
 const mapDispatchToProps = {
     searchFormUpdateAdvancedSearchCriteria,
 };
@@ -80,7 +78,6 @@ class AdvancedSearchPanel extends React.Component {
 
     blink(name) {
         this.setState({blink: name});
-        setTimeout(()=> {this.setState({blink: null});}, BLINK_DURATION);
     }
 
     handleValueChange(value) {
@@ -178,6 +175,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSearch() {
+        this.setState({blink: null});
         this.props.onSearch(this.props.searchCriteria);
     }
 
