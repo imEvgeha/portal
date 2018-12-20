@@ -115,7 +115,7 @@ export default class SelectableInput extends Component {
             <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
                 <div style={{width: '250px', margin: '0 0 16px'}}>
                     <Select
-                        id={'asdffaweawr'}
+                        id={this.props.id + '-select'}
                         onChange={this.handleSelect}
                         value={this.props.selected}
                         placeholder={this.props.placeholder}
@@ -130,7 +130,7 @@ export default class SelectableInput extends Component {
                 { this.props.selected &&
                 <div style={{margin: '0 0 16px'}}>
                     <Button outline color="secondary"
-                            id={'dashboard-avails-advanced-search-add-btn'}
+                            id={this.props.id + '-add-btn'}
                             onClick={this.props.onSave}
                             disabled={this.state.invalid}
                             style={{width: '80px'}}>{this.props.saveText || 'add' }</Button>

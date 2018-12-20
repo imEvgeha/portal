@@ -152,7 +152,9 @@ class AvailDetails extends React.Component {
                     className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="row">
                         <div className="col-4">{displayName}:</div>
-                        <div className={'col' + (this.state.avail[name] ? '' : ' empty')} >
+                        <div
+                            className={'col' + (this.state.avail[name] ? '' : ' empty')}
+                            id={'dashboard-avails-detail-modal-' + name + '-field'}>
                             {content}
                         </div>
                     </div>
@@ -165,7 +167,6 @@ class AvailDetails extends React.Component {
                 <Editable
                     ref={ref}
                     title={name}
-                    id={'dashboard-avails-detail-modal-' + name + '-text'}
                     value={this.state.avail[name]}
                     dataType="text"
                     mode="inline"
@@ -181,7 +182,6 @@ class AvailDetails extends React.Component {
                 <Editable
                     title={name}
                     name={name}
-                    id={'dashboard-avails-detail-modal-' + name + '-select'}
                     dataType="select"
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}

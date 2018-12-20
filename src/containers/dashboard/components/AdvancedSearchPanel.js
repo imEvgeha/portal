@@ -120,7 +120,9 @@ class AdvancedSearchPanel extends React.Component {
     addSearchField() {
         let value = this.state.value;
         if (value.value || value.from || value.to) {
-            value.order = this.getFieldsToShow().length;
+            if (!value.order && value.order !== 0) {
+                value.order = this.getFieldsToShow().length;
+            }
             this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [this.state.selected.value]: value});
             this.blink(this.state.selected.value);
         } else {
