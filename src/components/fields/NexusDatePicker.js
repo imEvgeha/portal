@@ -52,6 +52,10 @@ class NexusDatePicker extends Component {
     }
 
     componentDidUpdate() {
+        if (this.props.date === '') {
+            this.prevDate = '';
+            this.handleChange(null);
+        }
         if (this.props.date === null && this.prevDate !== null) {
             this.prevDate = this.props.date;
             this.clear();
@@ -140,6 +144,7 @@ class NexusDatePicker extends Component {
                 showYearDropdown
                 showMonthDropdown
                 autoComplete={'off'}
+                allowSameDay={true}
                 onChange={this.handleChange}
                 onChangeRaw={(event) => this.handleChangeRaw(event.target.value)}
                 onBlur={this.handleOnBlur}
