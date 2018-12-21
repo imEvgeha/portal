@@ -47,6 +47,10 @@ class NavbarConnect extends React.Component {
         this.props.searchFormShowSearchResults(false);
     }
 
+    goToHistoryContainer() {
+        //this.props.searchFormShowSearchResults(false);
+    }
+
     render() {
         return (
             <nav className="navbar navbar-NEXUS navbar-expand-md">
@@ -59,11 +63,11 @@ class NavbarConnect extends React.Component {
                             <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
                         </span>
                     </li>
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/upload" id="upload-avails-tab">Avails</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
+                    <li className="">
+                        <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
+                            <NavLink activeClassName="navActive" to="/availIngestHistory" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
+                        </span>
+                    </li>
                     {/*<li className="nav-item">*/}
                         {/*<span className="nav-link" href="#">*/}
                             {/*<NavLink activeClassName="navActive" to="/registry" id="title-registry-tab">Title Registry</NavLink>*/}

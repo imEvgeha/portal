@@ -1,0 +1,212 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import t from 'prop-types';
+import config from 'react-global-configuration';
+
+import { AgGridReact } from 'ag-grid-react';
+
+import AvailHistoryRecordRenderer from './AvailHistoryRecordRenderer';
+import './AvailsIngestHistoryTable.scss';
+
+// image import
+import LoadingGif from '../../../img/loading.gif';
+
+import connect from 'react-redux/es/connect/connect';
+import {resultPageHistoryUpdate, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../actions/history';
+import {historyService} from '../HistoryService';
+import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
+
+let mapStateToProps = state => {
+    return {
+        availHistoryPage: state.history.availHistoryPage,
+        availHistoryLoading: state.history.availHistoryLoading,
+        searchCriteria: state.history.session.advancedSearchCriteria,
+    };
+};
+
+let mapDispatchToProps = {
+    resultPageHistoryUpdate,
+    searchFormUpdateAdvancedHistorySearchCriteria,
+};
+
+class AvailsIngestHistoryTable extends React.Component {
+
+    static propTypes = {
+        searchCriteria: t.object,
+        availHistoryLoading: t.bool,
+        resultPageHistoryUpdate: t.func,
+        searchFormUpdateAdvancedHistorySearchCriteria: t.func
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            pageSize: config.get('avails.page.size'),
+            cols:[{headerName: '', cellRendererFramework: this.loadingRenderer, minWidth: 150}]
+        };
+
+        this.getRows = this.getRows.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+
+        this.setState({dataSource: {rowCount: null, getRows: this.getRows}});
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        let offsetLeft  = ReactDOM.findDOMNode(this).getBoundingClientRect().left;
+        this.setState({ height: (window.innerHeight - offsetTop - 120) + 'px',
+                        width: (window.innerWidth - offsetLeft - 20) + 'px'});
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.availHistoryLoading != prevProps.availHistoryLoading && this.props.availHistoryLoading === true && this.table != null) {
+            this.table.api.setDatasource(this.state.dataSource);
+        }
+    }
+
+    doSearch(page, pageSize, sortedParams) {
+        return historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
+    }
+
+    getRows(params){
+        if(this.table.api.getDisplayedRowCount()==0){
+            this.table.api.showLoadingOverlay();
+        }
+
+        this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
+                   .then(response => {
+                        if(response.data.total > 0){
+                            //console.log(response);
+                            this.addLoadedItems(response.data);
+                            // if on or after the last page, work out the last row.
+                            let lastRow = -1;
+                            if ((response.data.page + 1) * response.data.size >= response.data.total) {
+                                lastRow = response.data.total;
+                            }
+                            params.successCallback(response.data.data, lastRow);
+
+                            this.table.api.hideOverlay();
+                        }else{
+                            this.table.api.showNoRowsOverlay();
+                        }
+                   }).catch((error) => {
+                       console.error('Unexpected error');
+                       console.error(error);
+                       params.failCallback();
+                   });
+    }
+
+    addLoadedItems(data) {
+        let items = data.data;
+        if (items.length > 0) {
+            this.props.resultPageHistoryUpdate({
+                pages: this.props.availHistoryPage.pages + 1,
+                avails: this.props.availHistoryPage.records.concat(items),
+                pageSize: this.props.availHistoryPage.pageSize + items.length,
+                total: data.total
+            });
+        }
+    }
+
+    resetLoadedItems(){
+        this.props.resultPageHistoryUpdate({
+            pages: 0,
+            avails: [],
+            pageSize: 0,
+            total:0
+        });
+        }
+
+    setTable = element => {
+        this.table = element;
+        if(this.table){
+            element.api.showLoadingOverlay();
+        }
+    };
+
+    loadingRenderer(params){
+        if (params.data !== undefined) {
+            return(
+                <div>
+                    <AvailHistoryRecordRenderer
+                        {...params}
+                    />
+                </div>
+            );
+        } else {
+            return <img src={LoadingGif}/>;
+        }
+    }
+
+    setIngestType(type){
+        if(type != this.props.searchCriteria.ingestType){
+            this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
+            this.table.api.setDatasource(this.state.dataSource);
+        }
+    }
+
+    render() {
+        return (
+            <div id="dashboard-result-table">
+                <div className={'container-fluid'} style={{paddingLeft: '0'}}>
+                    <div className="justify-content-between" style={{paddingTop: '16px'}}>
+                        <div className="align-bottom" style={{marginBottom: '10px'}}>
+                            <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px', marginLeft: '20px'}}>
+                                Results: 6
+                            </span>
+                        </div>
+                    </div>
+                    <div className="tab">
+                      <button className="tablinks" onClick={() => this.setIngestType('') }>All</button>
+                      <button className="tablinks" onClick={() => this.setIngestType('Email') }>Emailed</button>
+                      <button className="tablinks" onClick={() => this.setIngestType('MasterAvail') }>Uploaded</button>
+                    </div>
+                    <div
+                        className="ag-theme-balham"
+                        style={{
+                            height: this.state.height,
+                            width: this.state.width }}
+                            >
+                        <AgGridReact
+                            ref={this.setTable}
+                            onGridReady={params => params.api.sizeColumnsToFit()}
+                            onGridSizeChanged={params => params.api.sizeColumnsToFit()}
+                            getRowNodeId= {data => data.id}
+
+                            columnDefs= {this.state.cols}
+
+                            rowBuffer= '2'
+                            rowModelType= 'infinite'
+                            paginationPageSize= {this.state.pageSize}
+                            infiniteInitialRowCount= '0'
+                            cacheOverflowSize= '2'
+                            maxConcurrentDatasourceRequests= '1'
+                            datasource= {this.state.dataSource}
+
+                            headerHeight= '0'
+                            rowHeight= '100'
+
+                            suppressHorizontalScroll= {true}
+
+                            >
+                        </AgGridReact>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        );
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AvailsIngestHistoryTable);

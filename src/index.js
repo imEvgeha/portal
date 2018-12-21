@@ -30,7 +30,7 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 
 import Keycloak from './vendor/keycloak';
-import store, {loadDashboardState} from './stores/index';
+import store, {loadDashboardState, loadHistoryState} from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './actions';
@@ -49,6 +49,7 @@ function init() {
             keycloak.instance.loadUserInfo().success(profileInfo => {
                 store.dispatch(loadProfileInfo(profileInfo));
                 loadDashboardState();
+                loadHistoryState();
             });
 
             render(
