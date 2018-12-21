@@ -30,12 +30,12 @@ class AvailHistoryRecordRenderer extends React.Component {
         });
         return(
             <div style={{display: 'flex', height: '100%', alignItems: 'center', alignContent: 'center'}}>
-                <div style={{display: 'flex', flex: 1.6, paddingLeft:'10px', lineHeight: '30px'}}>
-                    <div style={{display: 'flex', flex: 0.4, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'310px'}}>
+                <div style={{display: 'flex', flex: 1, paddingLeft:'10px', lineHeight: '30px'}}>
+                    <div style={{display: 'flex', flex: 0.4, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'360px'}}>
                         <div style={{display: 'flex', flex: 1}}><b>Provider:</b> &nbsp; {this.props.data.provider} </div>
                         <div style={{display: 'flex', flex: 1}}><b>Received:</b> &nbsp; {this.props.data.received ? moment(this.props.data.received).format('llll'):''} </div>
                     </div>
-                    <div style={{display: 'flex', flex: 0.4, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'125px'}}>
+                    <div style={{display: 'flex', flex: 0.3, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'125px'}}>
                         <div style={{display: 'flex', flex: 1}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
                         <div style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
                             { (() => {
