@@ -172,7 +172,7 @@ class AvailsIngestHistoryTable extends React.Component {
                     <div className='tab'>
                       <button className={'tablinks ' + (this.props.searchCriteria.ingestType === '' ? 'active' : '')} onClick={() => this.setIngestType('') }>All</button>
                       <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Email' ? 'active' : '')} onClick={() => this.setIngestType('Email') }>Emailed</button>
-                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'MasterAvail' ? 'active' : '')} onClick={() => this.setIngestType('MasterAvail') }>Uploaded</button>
+                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Upload' ? 'active' : '')} onClick={() => this.setIngestType('Upload') }>Uploaded</button>
                     </div>
                     <div
                         className='ag-theme-balham'
