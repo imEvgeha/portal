@@ -16,11 +16,17 @@ class AvailHistoryRecordRenderer extends React.Component {
 
 
     render(){
+        let email = null;
         let atts = this.props.data.attachments.map(attachment => {
-            let filename = attachment.link.split(/(\\|\/)/g).pop();
-            return (
-               <div key={attachment.link}>&nbsp;&nbsp;<a href={attachment.link} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
-            );
+            if(attachment.type==='Email'){
+                email = attachment.link;
+                return '';
+            }else{
+                let filename = attachment.link.split(/(\\|\/)/g).pop();
+                return (
+                   <div key={attachment.link}>&nbsp;&nbsp;<a href={attachment.link} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
+                );
+            }
         });
         return(
             <div style={{display: 'flex', height: '100%', alignItems: 'center', alignContent: 'center'}}>
@@ -60,7 +66,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     </div>
                 </div>
                 <div style={{display: 'flex', flex: 0.4, width:'20%', height:'100%', textAlign: 'center', alignItems: 'flex-end', alignContent: 'flex-end',  verticalAlign: 'center !important'}}>
-                    {this.props.data.sourceEmail && <a href={this.props.data.sourceEmail} target="_new" key={this.props.data.sourceEmail} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%'}}><i className="far fa-envelope"></i></a>}
+                    {email && <a href={email} target="_new" key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%'}}><i className="far fa-envelope"></i></a>}
                     {atts}
                 </div>
             </div>
