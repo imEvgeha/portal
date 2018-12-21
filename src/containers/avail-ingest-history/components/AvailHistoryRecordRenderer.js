@@ -43,7 +43,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                      case 'COMPLETED':
                                         return <span style={{ color: 'green'}}><i className="fas fa-check-circle"></i></span>;
                                      case 'FAILED':
-                                        return <span style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
+                                        return <span title={this.props.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
                                      case 'PENDING':
                                         return <img src={LoadingElipsis}/>;
                                      default:
@@ -62,7 +62,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     </div>
                     <div style={{display: 'flex', flex: 0.1, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', color: '#CF2A27', minWidth:'125px'}}>
                         <div style={{display: 'flex', flex: 0.5}}><u><b>Errors:</b></u></div>
-                        <div title={this.props.data.details} style={{display: 'flex', flex: 0.5, fontSize: '25px', fontWeight:'bolder'}}>{this.props.data.failedToProcess} </div>
+                        <div style={{display: 'flex', flex: 0.5, fontSize: '25px', fontWeight:'bolder'}}>{this.props.data.failedToProcess} </div>
                     </div>
                 </div>
                 <div style={{display: 'flex', flex: 0.4, width:'20%', height:'100%', textAlign: 'center', alignItems: 'flex-end', alignContent: 'flex-end',  verticalAlign: 'center !important'}}>
