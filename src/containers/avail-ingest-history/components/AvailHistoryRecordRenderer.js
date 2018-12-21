@@ -2,7 +2,7 @@ import React from 'react';
 import t from 'prop-types';
 import moment from 'moment';
 
-import ReactAnimatedEllipsis from 'react-animated-ellipsis';
+import LoadingElipsis from '../../../img/ajax-loader.gif';
 
 class AvailHistoryRecordRenderer extends React.Component {
 
@@ -39,7 +39,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                      case 'FAILED':
                                         return <span style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
                                      case 'PENDING':
-                                        return <ReactAnimatedEllipsis fontSize='5rem'/>;
+                                        return <img src={LoadingElipsis}/>;
                                      default:
                                         return this.props.data.state;
                                      }
