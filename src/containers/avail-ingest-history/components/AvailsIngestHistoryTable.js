@@ -16,6 +16,8 @@ import {resultPageHistoryUpdate, searchFormUpdateAdvancedHistorySearchCriteria} 
 import {historyService} from '../HistoryService';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 
+
+
 let mapStateToProps = state => {
     return {
         availHistoryPage: state.history.availHistoryPage,
@@ -23,6 +25,8 @@ let mapStateToProps = state => {
         searchCriteria: state.history.session.advancedSearchCriteria,
     };
 };
+
+
 
 let mapDispatchToProps = {
     resultPageHistoryUpdate,
@@ -160,7 +164,7 @@ class AvailsIngestHistoryTable extends React.Component {
                     <div className="justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginBottom: '10px'}}>
                             <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px', marginLeft: '20px'}}>
-                                Results: 6
+                                Results: {this.props.availHistoryPage.total}
                             </span>
                         </div>
                     </div>
@@ -192,7 +196,7 @@ class AvailsIngestHistoryTable extends React.Component {
                             datasource= {this.state.dataSource}
 
                             headerHeight= '0'
-                            rowHeight= '100'
+                            rowHeight= '70'
 
                             suppressHorizontalScroll= {true}
 

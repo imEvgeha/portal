@@ -112,8 +112,7 @@ class AdvancedHistorySearchPanel extends React.Component {
 
         let searchFields = [];
         searchFields.push(renderTextField('provider', 'Provider'));
-        searchFields.push(renderRangeDatepicker('start', 'Avail Delivery Date Start'));
-        searchFields.push(renderRangeDatepicker('end', 'Avail Delivery Date End'));
+        searchFields.push(renderRangeDatepicker('received', 'Avail Delivery Date'));
 
         let options = [
             { value: '', label: 'ALL' },

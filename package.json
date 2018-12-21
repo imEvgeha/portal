@@ -25,6 +25,7 @@
     "moment": "^2.22.2",
     "prop-types": "15.x",
     "react": "16.x",
+    "react-animated-ellipsis": "^0.3.0",
     "react-datepicker": "^1.6.0",
     "react-dom": "16.x",
     "react-dropzone": "^6.0.2",

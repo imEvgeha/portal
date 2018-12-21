@@ -14,7 +14,6 @@ const doSearch = (searchCriteria, searchFn) => {
     searchFn(searchCriteria, 0, config.get('avails.page.size'), defaultPageSort)
     .then(response => {
         store.dispatch(resultHistoryPageLoading(false));
-        console.warn(response);
         store.dispatch(resultPageHistoryUpdate({
             pages: 1,
             records: response.data.data,
