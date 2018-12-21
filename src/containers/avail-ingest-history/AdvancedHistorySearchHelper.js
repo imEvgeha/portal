@@ -33,10 +33,8 @@ export const advancedHistorySearchHelper = {
 
     loadAdvancedHistorySearchForm: (filter) => {
         store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
-            startFrom: filter.startFrom ? moment(filter.startFrom) : null,
-            startTo: filter.startTo ? moment(filter.startTo) : null,
-            endFrom: filter.endFrom ? moment(filter.endFrom) : null,
-            endTo: filter.endTo ? moment(filter.endTo) : null,
+            receivedFrom: filter.receivedFrom ? moment(filter.receivedFrom) : null,
+            receivedTo: filter.receivedTo ? moment(filter.receivedTo) : null,
             provider: filter.provider ? filter.provider : '',
             state: filter.state ? filter.state : null,
         }));
@@ -49,19 +47,15 @@ export const advancedHistorySearchHelper = {
     prepareAdvancedHistorySearchCall: (searchCriteria) => {
         return {
             ...searchCriteria,
-            startFrom: searchCriteria.startFrom && momentToISO(searchCriteria.startFrom),
-            startTo: searchCriteria.startTo && momentToISO(searchCriteria.startTo),
-            endFrom: searchCriteria.endFrom && momentToISO(searchCriteria.endFrom),
-            endTo: searchCriteria.endTo && momentToISO(searchCriteria.endTo),
+            receivedFrom: searchCriteria.receivedFrom && momentToISO(searchCriteria.receivedFrom),
+            receivedTo: searchCriteria.receivedTo && momentToISO(searchCriteria.receivedTo),
         };
     },
 
     clearAdvancedHistorySearchForm: () => {
         store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
-           startFrom: null,
-           startTo: null,
-           endFrom: null,
-           endTo: null,
+           receivedFrom: null,
+           receivedTo: null,
            provider: '',
            state: '',
         }));

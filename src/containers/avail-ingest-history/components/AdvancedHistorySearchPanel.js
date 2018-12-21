@@ -124,7 +124,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         return (
             <div className={'nx-stylish container-fluid vu-advanced-history-search-panel'}
                  style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
-                <div style={{ display:'flex', flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-end'}}>
+                <div style={{ display:'flex', flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
                         <label htmlFor={'dashboard-avails-search-state-text'}>State</label>

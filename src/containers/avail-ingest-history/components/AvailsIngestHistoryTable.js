@@ -50,6 +50,7 @@ class AvailsIngestHistoryTable extends React.Component {
         };
 
         this.getRows = this.getRows.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
     componentDidMount() {
@@ -159,7 +160,7 @@ class AvailsIngestHistoryTable extends React.Component {
 
     render() {
         return (
-            <div id="dashboard-result-table">
+            <div id='dashboard-result-table'>
                 <div className={'container-fluid'} style={{paddingLeft: '0'}}>
                     <div className="justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginBottom: '10px'}}>
@@ -168,13 +169,13 @@ class AvailsIngestHistoryTable extends React.Component {
                             </span>
                         </div>
                     </div>
-                    <div className="tab">
-                      <button className="tablinks" onClick={() => this.setIngestType('') }>All</button>
-                      <button className="tablinks" onClick={() => this.setIngestType('Email') }>Emailed</button>
-                      <button className="tablinks" onClick={() => this.setIngestType('MasterAvail') }>Uploaded</button>
+                    <div className='tab'>
+                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === '' ? 'active' : '')} onClick={() => this.setIngestType('') }>All</button>
+                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Email' ? 'active' : '')} onClick={() => this.setIngestType('Email') }>Emailed</button>
+                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'MasterAvail' ? 'active' : '')} onClick={() => this.setIngestType('MasterAvail') }>Uploaded</button>
                     </div>
                     <div
-                        className="ag-theme-balham"
+                        className='ag-theme-balham'
                         style={{
                             height: this.state.height,
                             width: this.state.width }}
