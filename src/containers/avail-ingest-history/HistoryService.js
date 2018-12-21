@@ -21,6 +21,7 @@ export const historyService = {
             }
         }
 
-        return http.get('http://usla-amm-d001.dev.vubiquity.com:8083' + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        //return http.get('http://usla-amm-d001.dev.vubiquity.com:8083' + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 };

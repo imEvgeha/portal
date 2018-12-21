@@ -1,6 +1,6 @@
 export const defaultConfiguration = {
     gateway: {
-        url: 'http://usla-amm-d001.dev.vubiquity.com:8083',
+        url: 'http://usla-amm-d001.dev.vubiquity.com:8082',
         configuration: 'http://usla-amm-d001.dev.vubiquity.com:8087',
         service: {
             avails: '/avails-api/v1',
