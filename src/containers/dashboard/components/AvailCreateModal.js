@@ -7,6 +7,7 @@ import {dashboardService} from '../DashboardService';
 import {rangeValidation} from '../../../util/Validation';
 import NexusDatePicker from '../../../components/fields/NexusDatePicker';
 import config from 'react-global-configuration';
+import {INVALID_DATE} from '../../../constants/messages';
 
 class AvailCreate extends React.Component {
     static propTypes = {
@@ -29,7 +30,6 @@ class AvailCreate extends React.Component {
         this.state = {
             resolutionValidation: config.get('extraValidation.resolution'),
             modal: true,
-            disableCreateBtn: true,
             showCreatedMessage: false,
             loading: false,
             errorMessage: '',
@@ -55,7 +55,7 @@ class AvailCreate extends React.Component {
         const mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
         const groupedMappingName = this.getGroupedMappingName(name);
         if (invalid) {
-            mappingErrorMessage[name] = {date: 'Invalid date, only digits allowed'};
+            mappingErrorMessage[name] = {date: INVALID_DATE};
             if(mappingErrorMessage[groupedMappingName] && mappingErrorMessage[groupedMappingName].range) {
                 mappingErrorMessage[groupedMappingName].range = '';
             }
@@ -102,7 +102,7 @@ class AvailCreate extends React.Component {
                 mappingErrorMessage: {...this.state.mappingErrorMessage, [name]: errorMessage}
             });
 
-            this.setDisableCreate(newAvail, this.state.mappingErrorMessage, this.state.errorMessage);
+            this.anyInvalidField(newAvail, this.state.mappingErrorMessage);
         }else{
             mappingErrorMessage[name] = errorMessage;
         }
@@ -111,21 +111,21 @@ class AvailCreate extends React.Component {
     handleDatepickerChange(name, displayName, date) {
         const newAvail = {...this.state.avail};
         newAvail[name] = date;
-        const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
-        let mappingErrorMessage = this.state.mappingErrorMessage;
-        mappingErrorMessage[name].range = errorMessage;
-
         const groupedMappingName = this.getGroupedMappingName(name);
-        if(mappingErrorMessage[groupedMappingName]) {
-            mappingErrorMessage[groupedMappingName].range = errorMessage;
+        const mappingErrorMessage = this.state.mappingErrorMessage;
+
+        if (!mappingErrorMessage[groupedMappingName].date) {
+            const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
+            mappingErrorMessage[name].range = errorMessage;
+            if (mappingErrorMessage[groupedMappingName]) {
+                mappingErrorMessage[groupedMappingName].range = errorMessage;
+            }
         }
 
         this.setState({
             avail: newAvail,
             mappingErrorMessage: mappingErrorMessage
         });
-
-        this.setDisableCreate(newAvail, mappingErrorMessage);
     }
 
     getGroupedMappingName(name) {
@@ -142,11 +142,11 @@ class AvailCreate extends React.Component {
         return this.props.reject();
     }
 
-    setDisableCreate(avail, mappingErrorMessage) {
+    anyInvalidField(avail, mappingErrorMessage) {
         if (this.isAnyErrors(mappingErrorMessage) || this.areMandatoryFieldsEmpty(avail)) {
-            this.setState({disableCreateBtn: true});
+            return true;
         } else {
-            this.setState({disableCreateBtn: false});
+            return false;
         }
     }
 
@@ -156,6 +156,9 @@ class AvailCreate extends React.Component {
                 return true;
             }
             if(value.range) {
+                return true;
+            }
+            if(value.text) {
                 return true;
             }
         }
@@ -272,6 +275,7 @@ class AvailCreate extends React.Component {
             this.checkAvail(overrideField, overrideValue, mappingErrorMessage, true);
         }
         this.props.availsMapping.mappings.map((mapping) => {
+            if(mapping.dataType === 'date') return;
             if(!fields || (fields && fields.indexOf(mapping.javaVariableName) >- 1)){
                 if(!overrideField || (overrideField && overrideField !== mapping.javaVariableName)){
                     this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage, false, overrideField, overrideValue);
@@ -283,12 +287,15 @@ class AvailCreate extends React.Component {
             mappingErrorMessage: mappingErrorMessage
         });
 
-        this.setDisableCreate(this.state.avail, mappingErrorMessage, this.state.errorMessage);
+        let newAvail = {...this.state.avail};
+        if(overrideField && overrideValue){
+            newAvail[overrideField] = overrideValue;
+        }
+        return this.anyInvalidField(newAvail, mappingErrorMessage);
     }
 
     confirm() {
-        this.validateFields();
-        if(this.state.disableCreateBtn) return;
+        if(this.validateFields()) return;
         this.setState({loading: true, showCreatedMessage: false});
         dashboardService.createAvail(this.state.avail).then(() => {
             this.setState({loading: false, showCreatedMessage: true});
@@ -385,12 +392,13 @@ class AvailCreate extends React.Component {
         const renderFields = (mappings) => {
             return mappings.map((mapping)=> {
                 if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
+                    let required = mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1;
                     switch (mapping.dataType) {
-                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, mapping.required);
-                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, mapping.required);
+                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, required);
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }

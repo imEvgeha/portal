@@ -4,6 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import t from 'prop-types';
 import NexusDatePicker from './NexusDatePicker';
+import {INVALID_DATE} from '../../constants/messages';
 
 class EditableDatePicker extends Component {
 
@@ -11,7 +12,6 @@ class EditableDatePicker extends Component {
         validate: t.func,
         value: t.string,
         displayName: t.string,
-        name: t.string,
         onChange: t.func,
     };
 
@@ -49,6 +49,7 @@ class EditableDatePicker extends Component {
         this.setState({
             date: moment(this.props.value),
             datePickerStatus: false,
+            errorMessage: ''
         });
     }
 
@@ -58,7 +59,7 @@ class EditableDatePicker extends Component {
 
     handleInvalid(invalid) {
         if (invalid) {
-            this.setState({ errorMessage: 'Invalid date: ' + this.props.displayName, submitStatus: true });
+            this.setState({ errorMessage: INVALID_DATE, submitStatus: true });
         }
     }
 

@@ -50,7 +50,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jquery": "^3.3.1",
     "keycloak-js": "^4.1.0",
-    "node-sass": "^4.9.3",
+    "node-sass": "^4.11.0",
     "nwb": "0.21.x",
     "nwb-sass": "0.8.x",
     "popper.js": "^1.14.3",
