@@ -2,6 +2,7 @@ import moment from 'moment';
 import store from '../../stores';
 import {
     searchFormUpdateAdvancedHistorySearchCriteria,
+    searchFormUpdateHistorySearchCriteria,
     resultHistoryPageLoading,
     resultPageHistoryUpdate
 } from '../../actions/history';
@@ -41,7 +42,7 @@ export const advancedHistorySearchHelper = {
     },
 
     storeAdvancedHistorySearchForm: (searchCriteria) => {
-        store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria(searchCriteria));
+        store.dispatch(searchFormUpdateHistorySearchCriteria(searchCriteria));
     },
 
     prepareAdvancedHistorySearchCall: (searchCriteria) => {
@@ -54,6 +55,12 @@ export const advancedHistorySearchHelper = {
 
     clearAdvancedHistorySearchForm: () => {
         store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
+           receivedFrom: null,
+           receivedTo: null,
+           provider: '',
+           state: '',
+        }));
+        store.dispatch(searchFormUpdateHistorySearchCriteria({
            receivedFrom: null,
            receivedTo: null,
            provider: '',

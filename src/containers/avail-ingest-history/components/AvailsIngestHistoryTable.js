@@ -12,7 +12,7 @@ import './AvailsIngestHistoryTable.scss';
 import LoadingGif from '../../../img/loading.gif';
 
 import connect from 'react-redux/es/connect/connect';
-import {resultPageHistoryUpdate, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../actions/history';
+import {resultPageHistoryUpdate, searchFormUpdateHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../actions/history';
 import {historyService} from '../HistoryService';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 
@@ -22,7 +22,8 @@ let mapStateToProps = state => {
     return {
         availHistoryPage: state.history.availHistoryPage,
         availHistoryLoading: state.history.availHistoryLoading,
-        searchCriteria: state.history.session.advancedSearchCriteria,
+        searchCriteria: state.history.session.searchCriteria,
+        advancedSearchCriteria: state.history.session.advancedSearchCriteria,
     };
 };
 
@@ -30,6 +31,7 @@ let mapStateToProps = state => {
 
 let mapDispatchToProps = {
     resultPageHistoryUpdate,
+    searchFormUpdateHistorySearchCriteria,
     searchFormUpdateAdvancedHistorySearchCriteria,
 };
 
@@ -37,8 +39,10 @@ class AvailsIngestHistoryTable extends React.Component {
 
     static propTypes = {
         searchCriteria: t.object,
+        advancedSearchCriteria: t.object,
         availHistoryLoading: t.bool,
         resultPageHistoryUpdate: t.func,
+        searchFormUpdateHistorySearchCriteria: t.func,
         searchFormUpdateAdvancedHistorySearchCriteria: t.func
     };
 
@@ -101,6 +105,7 @@ class AvailsIngestHistoryTable extends React.Component {
                             this.table.api.hideOverlay();
                         }else{
                             this.table.api.showNoRowsOverlay();
+                            this.resetLoadedItems();
                         }
                    }).catch((error) => {
                        console.error('Unexpected error');
@@ -153,7 +158,8 @@ class AvailsIngestHistoryTable extends React.Component {
 
     setIngestType(type){
         if(type != this.props.searchCriteria.ingestType){
-            this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
+            this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
+            this.props.searchFormUpdateHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
             this.table.api.setDatasource(this.state.dataSource);
         }
     }
