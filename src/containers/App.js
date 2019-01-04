@@ -19,7 +19,7 @@ export default class App extends React.Component {
                     <div >
                         <Route exact path="/" render={() => <Redirect to="/dashboard"/> }/>
                         <Route path="/dashboard" component={DashboardContainer}/>
-                        <Route path="/availIngestHistory" component={AvailIngestHistoryContainer}/>
+                        <Route path="/avail-ingest-history" component={AvailIngestHistoryContainer}/>
                     </div>
                 </div>
             </Router>

@@ -1,17 +1,9 @@
 import Http from '../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
-import {momentToISO} from '../../util/Common';
+import {momentToISO, prepareSortMatrixParam} from '../../util/Common';
 
 const http = Http.create();
-
-const prepareSortMatrixParam = function (sortedParams) {
-    let matrix = '';
-    sortedParams.forEach((entry) => {
-        matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
-    });
-    return matrix;
-};
 
 const prepareAvail = function (avail) {
 

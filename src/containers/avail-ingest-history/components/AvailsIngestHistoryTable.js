@@ -12,7 +12,7 @@ import './AvailsIngestHistoryTable.scss';
 import LoadingGif from '../../../img/loading.gif';
 
 import connect from 'react-redux/es/connect/connect';
-import {resultPageHistoryUpdate, searchFormUpdateHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../actions/history';
+import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormSetAdvancedHistorySearchCriteria} from '../../../actions/history';
 import {historyService} from '../HistoryService';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 
@@ -31,8 +31,8 @@ let mapStateToProps = state => {
 
 let mapDispatchToProps = {
     resultPageHistoryUpdate,
-    searchFormUpdateHistorySearchCriteria,
-    searchFormUpdateAdvancedHistorySearchCriteria,
+    searchFormSetHistorySearchCriteria,
+    searchFormSetAdvancedHistorySearchCriteria,
 };
 
 class AvailsIngestHistoryTable extends React.Component {
@@ -42,8 +42,8 @@ class AvailsIngestHistoryTable extends React.Component {
         advancedSearchCriteria: t.object,
         availHistoryLoading: t.bool,
         resultPageHistoryUpdate: t.func,
-        searchFormUpdateHistorySearchCriteria: t.func,
-        searchFormUpdateAdvancedHistorySearchCriteria: t.func
+        searchFormSetHistorySearchCriteria: t.func,
+        searchFormSetAdvancedHistorySearchCriteria: t.func
     };
 
     constructor(props) {
@@ -69,14 +69,14 @@ class AvailsIngestHistoryTable extends React.Component {
     }
 
     updateWindowDimensions() {
-        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
-        let offsetLeft  = ReactDOM.findDOMNode(this).getBoundingClientRect().left;
+        const offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        const offsetLeft  = ReactDOM.findDOMNode(this).getBoundingClientRect().left;
         this.setState({ height: (window.innerHeight - offsetTop - 120) + 'px',
                         width: (window.innerWidth - offsetLeft - 20) + 'px'});
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.availHistoryLoading != prevProps.availHistoryLoading && this.props.availHistoryLoading === true && this.table != null) {
+        if(this.props.availHistoryLoading !== prevProps.availHistoryLoading && this.props.availHistoryLoading === true && this.table !== null) {
             this.table.api.setDatasource(this.state.dataSource);
         }
     }
@@ -115,7 +115,7 @@ class AvailsIngestHistoryTable extends React.Component {
     }
 
     addLoadedItems(data) {
-        let items = data.data;
+        const items = data.data;
         if (items.length > 0) {
             this.props.resultPageHistoryUpdate({
                 pages: this.props.availHistoryPage.pages + 1,
@@ -158,19 +158,19 @@ class AvailsIngestHistoryTable extends React.Component {
 
     setIngestType(type){
         if(type != this.props.searchCriteria.ingestType){
-            this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
-            this.props.searchFormUpdateHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
+            this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
+            this.props.searchFormSetHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
             this.table.api.setDatasource(this.state.dataSource);
         }
     }
 
     render() {
         return (
-            <div id='dashboard-result-table'>
+            <div id='avail-ingest-history-result-table'>
                 <div className={'container-fluid'} style={{paddingLeft: '0'}}>
                     <div className="justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginBottom: '10px'}}>
-                            <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px', marginLeft: '20px'}}>
+                            <span className="table-top-text" id={'avail-ingest-history-result-number'} style={{paddingTop: '10px', marginLeft: '20px'}}>
                                 Results: {this.props.availHistoryPage.total}
                             </span>
                         </div>

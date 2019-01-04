@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {
-    searchFormUpdateAdvancedHistorySearchCriteria
+    searchFormSetAdvancedHistorySearchCriteria
 } from '../../../actions/history';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
@@ -16,14 +16,14 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    searchFormUpdateAdvancedHistorySearchCriteria,
+    searchFormSetAdvancedHistorySearchCriteria,
 };
 
 class AdvancedHistorySearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
         onSearch: t.func,
-        searchFormUpdateAdvancedHistorySearchCriteria: t.func
+        searchFormSetAdvancedHistorySearchCriteria: t.func
     };
 
     _handleKeyPress = (e) => {
@@ -42,7 +42,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleDateValidate = this.handleDateValidate.bind(this);
+        this.handleDateInvalid = this.handleDateInvalid.bind(this);
         this.handleStateSelect = this.handleStateSelect.bind(this);
     }
 
@@ -50,22 +50,22 @@ class AdvancedHistorySearchPanel extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
+        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
         this.setState({invalidForm: !this.validateState(this.state.invalid)});
     }
 
     handleDateChange(name, value) {
-        this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
+        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
     }
 
-    handleDateValidate(name, value) {
+    handleDateInvalid(name, value) {
         const state = {invalid: {...this.state.invalid, [name]: value}};
         state.invalidForm = !this.validateState(state.invalid);
         this.setState(state);
     }
 
     handleStateSelect(option){
-        this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, state: option.value});
+        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, state: option.value});
     }
 
     validateState(invalidState) {
@@ -86,9 +86,9 @@ class AdvancedHistorySearchPanel extends React.Component {
     render() {
         const renderTextField = (name, displayName) => {
             return (<div key={name} style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                <label htmlFor={'dashboard-avails-search-' + name + '-text'}>{displayName}</label>
+                <label htmlFor={'avail-ingest-history-search-' + name + '-text'}>{displayName}</label>
                 <input type="text" className="form-control"
-                       id={'dashboard-avails-search-' + name + '-text'}
+                       id={'avail-ingest-history-search-' + name + '-text'}
                        placeholder={'Enter ' + displayName}
                        name={name}
                        value={this.props.searchCriteria[name]}
@@ -100,12 +100,13 @@ class AdvancedHistorySearchPanel extends React.Component {
         const renderRangeDatepicker = (name, displayName) => {
             return (<RangeDatapicker
                 key={name}
+                id={'avails-ingest-history-search-' + name}
                 displayName={displayName}
-                fromDate={this.props.searchCriteria[name + 'From']}
-                toDate={this.props.searchCriteria[name + 'To']}
+                value={{from: this.props.searchCriteria[name + 'From'], to: this.props.searchCriteria[name + 'To']}}
                 onFromDateChange={(value) => this.handleDateChange(name +'From', value)}
                 onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
                 onValidate={(value) => this.handleDateValidate(name, value)}
+                onInvalid={(value) => this.handleDateInvalid(name, value)}
                 handleKeyPress={this._handleKeyPress}
             />);
         };
@@ -127,9 +128,9 @@ class AdvancedHistorySearchPanel extends React.Component {
                 <div style={{ display:'flex', flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                        <label htmlFor={'dashboard-avails-search-state-text'}>State</label>
+                        <label htmlFor={'avail-ingest-history-search-state-text'}>State</label>
                         <Select
-                            id={'statusSelect'}
+                            id={'avail-ingest-history-search-state-select'}
                             onChange={this.handleStateSelect}
                             options={options}
                             value ={options.filter(option => option.value === this.props.searchCriteria.state)}
@@ -138,10 +139,10 @@ class AdvancedHistorySearchPanel extends React.Component {
                 </div>
                 <div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
+                         <Button outline color="secondary" id={'avail-ingest-history-avails-advanced-search-clear-btn'} onClick={this.handleClear}
                                  style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
 
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                         <Button outline color="secondary" id={'avail-ingest-history-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
                                  disabled={this.state.invalidForm}
                                  style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
                      </div>

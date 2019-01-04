@@ -1,8 +1,7 @@
-import moment from 'moment';
 import store from '../../stores';
 import {
-    searchFormUpdateAdvancedHistorySearchCriteria,
-    searchFormUpdateHistorySearchCriteria,
+    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormSetHistorySearchCriteria,
     resultHistoryPageLoading,
     resultPageHistoryUpdate
 } from '../../actions/history';
@@ -32,35 +31,40 @@ const defaultPageSort = [];
 
 export const advancedHistorySearchHelper = {
 
-    loadAdvancedHistorySearchForm: (filter) => {
-        store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
-            receivedFrom: filter.receivedFrom ? moment(filter.receivedFrom) : null,
-            receivedTo: filter.receivedTo ? moment(filter.receivedTo) : null,
-            provider: filter.provider ? filter.provider : '',
-            state: filter.state ? filter.state : null,
-        }));
-    },
-
     storeAdvancedHistorySearchForm: (searchCriteria) => {
-        store.dispatch(searchFormUpdateHistorySearchCriteria(searchCriteria));
+        store.dispatch(searchFormSetHistorySearchCriteria(searchCriteria));
     },
 
     prepareAdvancedHistorySearchCall: (searchCriteria) => {
-        return {
-            ...searchCriteria,
-            receivedFrom: searchCriteria.receivedFrom && momentToISO(searchCriteria.receivedFrom),
-            receivedTo: searchCriteria.receivedTo && momentToISO(searchCriteria.receivedTo),
-        };
+        const response = {};
+        for (let key of Object.keys(searchCriteria) ) {
+            const criteria = searchCriteria[key];
+            if (criteria) {
+                if (!(criteria instanceof Object)) {
+                    response[key] = criteria;
+                } else if (criteria.value) {
+                    response[key] = criteria.value;
+                } else {
+                    if (criteria.from) {
+                        response[key + 'From'] = momentToISO(criteria.from);
+                    }
+                    if (criteria.to) {
+                        response[key + 'To'] = momentToISO(criteria.to);
+                    }
+                }
+            }
+        }
+        return response;
     },
 
     clearAdvancedHistorySearchForm: () => {
-        store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
+        store.dispatch(searchFormSetAdvancedHistorySearchCriteria({
            receivedFrom: null,
            receivedTo: null,
            provider: '',
            state: '',
         }));
-        store.dispatch(searchFormUpdateHistorySearchCriteria({
+        store.dispatch(searchFormSetHistorySearchCriteria({
            receivedFrom: null,
            receivedTo: null,
            provider: '',

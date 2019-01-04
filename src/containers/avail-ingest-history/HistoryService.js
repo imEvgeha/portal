@@ -1,15 +1,8 @@
 import Http from '../../util/Http';
 import config from 'react-global-configuration';
+import {prepareSortMatrixParam} from '../../util/Common';
 
 const http = Http.create();
-
-const prepareSortMatrixParam = function (sortedParams) {
-    let matrix = '';
-    if(sortedParams) sortedParams.forEach((entry) => {
-        matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
-    });
-    return matrix;
-};
 
 export const historyService = {
 
@@ -22,6 +15,5 @@ export const historyService = {
         }
 
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
-        //return http.get('http://usla-amm-d001.dev.vubiquity.com:8083' + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 };

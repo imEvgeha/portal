@@ -48,7 +48,6 @@ class NavbarConnect extends React.Component {
     }
 
     goToHistoryContainer() {
-        //this.props.searchFormShowSearchResults(false);
     }
 
     render() {
@@ -65,7 +64,7 @@ class NavbarConnect extends React.Component {
                     </li>
                     <li className="">
                         <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
-                            <NavLink activeClassName="navActive" to="/availIngestHistory" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
+                            <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
                         </span>
                     </li>
                     {/*<li className="nav-item">*/}
