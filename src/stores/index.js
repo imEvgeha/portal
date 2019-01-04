@@ -1,19 +1,35 @@
 import {combineReducers, createStore} from 'redux';
 import root from '../reducers/index';
 import dashboard from '../reducers/dashboard';
+import history from '../reducers/history';
 import {loadDashboardSession} from '../actions/dashboard';
+import {loadHistorySession} from '../actions/history';
 import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper';
+import {advancedHistorySearchHelper} from '../containers/avail-ingest-history/AdvancedHistorySearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.2';
+const HISTORY_SESSION_VERSION = '0.1';
 
 const reducers = combineReducers({
     root,
     dashboard,
+    history
 });
 
 const store = createStore(reducers);
 
 export default store;
+
+export const loadHistoryState = () => {
+    loadFromWebLocalStorage('history', loadHistorySession, HISTORY_SESSION_VERSION);
+    setTimeout(() => {
+        advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
+    }, 100);
+};
+
+export const saveHistoryState = () => {
+    saveToWebLocalStorage('history', HISTORY_SESSION_VERSION);
+};
 
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);

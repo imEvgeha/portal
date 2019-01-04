@@ -27,6 +27,16 @@ function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
+function prepareSortMatrixParam(sortedParams) {
+    let matrix = '';
+    if(sortedParams){
+        sortedParams.forEach((entry) => {
+            matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
+        });
+    }
+    return matrix;
+}
+
 function mergeDeep(target, source) {
     let output = Object.assign({}, target);
     if (isObject(target) && isObject(source)) {
@@ -44,4 +54,4 @@ function mergeDeep(target, source) {
     return output;
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam};
