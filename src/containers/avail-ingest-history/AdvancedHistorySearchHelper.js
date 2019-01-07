@@ -59,14 +59,12 @@ export const advancedHistorySearchHelper = {
 
     clearAdvancedHistorySearchForm: () => {
         store.dispatch(searchFormSetAdvancedHistorySearchCriteria({
-           receivedFrom: null,
-           receivedTo: null,
+           received: null,
            provider: '',
            state: '',
         }));
         store.dispatch(searchFormSetHistorySearchCriteria({
-           receivedFrom: null,
-           receivedTo: null,
+           received: null,
            provider: '',
            state: '',
         }));

@@ -19,8 +19,7 @@ const initialState = {
     session: {
         advancedSearchCriteria: {
             provider: '',
-            receivedFrom: null,
-            receivedTo: null,
+            received: null,
             state: '',
             ingestType: '',
         },
