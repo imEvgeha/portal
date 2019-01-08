@@ -57,12 +57,12 @@ class NavbarConnect extends React.Component {
                     <a className="navbar-brand Nlogo" href="#"> </a>
                 </span>
                 <ul className="navbar-nav">
-                    <li className="">
+                    <li className="nav-item">
                         <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
-                            <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
+                            <NavLink activeClassName="navActive" to="/dashboard"  id="dashboard-tab">Dashboard</NavLink>
                         </span>
                     </li>
-                    <li className="">
+                    <li className="nav-item">
                         <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
                             <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
                         </span>
