@@ -24,7 +24,7 @@ export const loadHistoryState = () => {
     loadFromWebLocalStorage('history', loadHistorySession, HISTORY_SESSION_VERSION);
     setTimeout(() => {
         advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
-    }, 100);
+    }, 1);
 };
 
 export const saveHistoryState = () => {
@@ -35,7 +35,7 @@ export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
     setTimeout(() => {
         advancedSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
-    }, 100);
+    }, 1);
 };
 
 export const saveDashboardState = () => {

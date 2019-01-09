@@ -51,6 +51,7 @@ class NavbarConnect extends React.Component {
     }
 
     render() {
+
         return (
             <nav className="navbar navbar-NEXUS navbar-expand-md">
                 <span className="navbar-brand">
@@ -67,21 +68,6 @@ class NavbarConnect extends React.Component {
                             <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
                         </span>
                     </li>
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/registry" id="title-registry-tab">Title Registry</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/services" id="profile-services-tab">Profile Services</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/admin" id="admin-tab">Admin</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
                 </ul>
                 <ul className="nav navbar-nav ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}

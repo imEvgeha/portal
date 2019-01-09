@@ -83,3 +83,13 @@
 .css-15k3avv {
   position: absolute;
 }
+
+.breadcrumb {
+  background: white;
+  padding-bottom: 8px;
+  margin-bottom: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+}

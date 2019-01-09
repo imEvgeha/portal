@@ -3,6 +3,7 @@ import t from 'prop-types';
 import moment from 'moment';
 
 import LoadingElipsis from '../../../img/ajax-loader.gif';
+import {Link} from 'react-router-dom';
 
 class AvailHistoryRecordRenderer extends React.Component {
 
@@ -53,21 +54,28 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </div>
                     </div>
                     <div style={{display: 'flex', flex: 0.1, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', minWidth:'125px'}}>
-                        <div style={{display: 'flex', flex: 0.5}}><u><b>Total Avails:</b></u></div>
+                        <div style={{display: 'flex', flex: 0.5}}>
+                            <u><b><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data}}}>Total Avails:</Link></b></u>
+                        </div>
                         <div style={{display: 'flex', flex: 0.5, fontSize: '25px', fontWeight:'bolder'}}>{this.props.data.totalProcessed} </div>
                     </div>
                     <div style={{display: 'flex', flex: 0.1, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', minWidth:'125px'}}>
-                        <div style={{display: 'flex', flex: 0.5}}><u><b>Success:</b></u></div>
+                        <div style={{display: 'flex', flex: 0.5}}>
+                            <u><b><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: false}}}>Success:</Link></b></u>
+                        </div>
                         <div style={{display: 'flex', flex: 0.5, fontSize: '25px', fontWeight:'bolder'}}>{this.props.data.successfullyProcessed} </div>
                     </div>
                     <div style={{display: 'flex', flex: 0.1, flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', color: '#CF2A27', minWidth:'125px'}}>
-                        <div style={{display: 'flex', flex: 0.5}}><u><b>Errors:</b></u></div>
+                        <div style={{display: 'flex', flex: 0.5}}>
+                            <u><b><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: true}}}>Errors:</Link></b></u>
+                        </div>
                         <div style={{display: 'flex', flex: 0.5, fontSize: '25px', fontWeight:'bolder'}}>{this.props.data.failedToProcess} </div>
                     </div>
                 </div>
                 <div style={{display: 'flex', flex: 0.4, width:'20%', height:'100%', textAlign: 'center', alignItems: 'flex-end', alignContent: 'flex-end',  verticalAlign: 'center !important'}}>
                     {email && <a href={email} target="_new" key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%'}}><i className="far fa-envelope"></i></a>}
                     {atts}
+                    {this.props.data.id}
                 </div>
             </div>
         );
