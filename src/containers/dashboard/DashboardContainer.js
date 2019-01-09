@@ -69,6 +69,7 @@ class DashboardContainer extends React.Component {
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         useAdvancedSearch: t.bool,
+        location: t.object,
     };
 
     fromHistory = false;
@@ -86,7 +87,6 @@ class DashboardContainer extends React.Component {
     componentDidMount() {
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
-        console.log(this.props.location.state);
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.availHistory) {
