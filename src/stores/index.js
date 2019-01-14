@@ -8,7 +8,7 @@ import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper
 import {advancedHistorySearchHelper} from '../containers/avail-ingest-history/AdvancedHistorySearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.2';
-const HISTORY_SESSION_VERSION = '0.2';
+const HISTORY_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
     root,
