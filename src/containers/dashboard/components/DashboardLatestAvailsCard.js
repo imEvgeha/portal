@@ -27,7 +27,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
                     {headerName: 'Provider', field: 'provider', width:90},
                     {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIconRender, width:55},
                     {headerName: 'Ingest Method', field: 'ingestType', width:105},
-                    {headerName: 'Filename', cellRenderer: this.showFileNames, width:180}
+                    {headerName: 'Filename', tooltip: this.showFileNames, valueFormatter: this.showFileNames, width:180}
             ]
         };
 
@@ -35,7 +35,6 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     statusIconRender(params){
-        console.log('statusIconRender', params)
         let content = params.valueFormatted || params.value;
         if (params.value !== undefined) {
             if (content) {
@@ -57,7 +56,6 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     showFileNames(params){
-        console.log(params.data.attachments);
         let toReturn='';
         params.data.attachments.forEach( attachment => {
             let filename = attachment.link.split(/(\\|\/)/g).pop();
@@ -69,11 +67,10 @@ export default class DashboardLatestAvailsCard extends React.Component {
         });
         toReturn = toReturn.slice(0, -2);
         return toReturn;
-        //return '<div title=' + toReturn + '>' + toReturn + '</div>';
     }
 
     getData() {
-        //setTimeout(this.getData, 5 * 1000);
+        setTimeout(this.getData, 5 * 1000);
         historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
                 .then(response => {
                     //console.log(response);
