@@ -50,7 +50,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flex: 1}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
                     <div style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
                         { (() => {
-                            switch (this.props.data.state) {
+                            switch (this.props.data.status) {
                                  case 'COMPLETED':
                                     return <span style={{ color: 'green'}}><i className="fas fa-check-circle"></i></span>;
                                  case 'FAILED':
@@ -58,7 +58,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                  case 'PENDING':
                                     return <img src={LoadingElipsis}/>;
                                  default:
-                                    return this.props.data.state;
+                                    return this.props.data.status;
                                  }
                         })()}
                     </div>

@@ -66,7 +66,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     handleStateSelect(option){
-        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, state: option.value});
+        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, status: option.value});
     }
 
     validateState(invalidState) {
@@ -128,12 +128,12 @@ class AdvancedHistorySearchPanel extends React.Component {
                 <div style={{ display:'flex', flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                        <label htmlFor={'avail-ingest-history-search-state-text'}>State</label>
+                        <label htmlFor={'avail-ingest-history-search-state-text'}>Status</label>
                         <Select
                             id={'avail-ingest-history-search-state-select'}
                             onChange={this.handleStateSelect}
                             options={options}
-                            value ={options.filter(option => option.value === this.props.searchCriteria.state)}
+                            value ={options.filter(option => option.value === this.props.searchCriteria.status)}
                         > </Select>
                     </div>
                 </div>

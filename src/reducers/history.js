@@ -20,7 +20,7 @@ const initialState = {
         advancedSearchCriteria: {
             provider: '',
             received: null,
-            state: '',
+            status: '',
             ingestType: '',
         },
         searchCriteria: {},
