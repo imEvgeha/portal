@@ -37,8 +37,14 @@ export default class SelectableInput extends Component {
         this.refDatePicker = React.createRef();
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.displayName !== this.props.displayName) {
+            this.setState({invalid: false});
+        }
+    }
+
     _handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && ! this.state.invalid) {
             this.props.onSave();
         }
     };
@@ -94,7 +100,7 @@ export default class SelectableInput extends Component {
                     ref={this.refDatePicker}
                     hideLabel={true}
                     displayName={displayName}
-                    value={this.props.value ? this.props.value : {from: null, to: null}}
+                    value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
                     onFromDateChange={(value) => this.handleDateChange('from', value)}
                     onToDateChange={(value) => this.handleDateChange('to', value)}
                     onInvalid={this.handleDateInvalid}
