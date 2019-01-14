@@ -93,3 +93,11 @@
 .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
 }
+
+.error-link {
+  color: #CF2A27;
+}
+
+.error-link:hover {
+  color: #F63;
+}
