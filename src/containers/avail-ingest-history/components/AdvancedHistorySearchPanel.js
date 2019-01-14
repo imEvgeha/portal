@@ -54,8 +54,9 @@ class AdvancedHistorySearchPanel extends React.Component {
         this.setState({invalidForm: !this.validateState(this.state.invalid)});
     }
 
-    handleDateChange(name, value) {
-        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
+    handleDateChange(name, field, value) {
+        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: {...this.props.searchCriteria[name], [field] : value}});
+
     }
 
     handleDateInvalid(name, value) {
@@ -65,7 +66,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     handleStateSelect(option){
-        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, state: option.value});
+        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, status: option.value});
     }
 
     validateState(invalidState) {
@@ -102,10 +103,9 @@ class AdvancedHistorySearchPanel extends React.Component {
                 key={name}
                 id={'avails-ingest-history-search-' + name}
                 displayName={displayName}
-                value={{from: this.props.searchCriteria[name + 'From'], to: this.props.searchCriteria[name + 'To']}}
-                onFromDateChange={(value) => this.handleDateChange(name +'From', value)}
-                onToDateChange={(value) => this.handleDateChange(name + 'To', value)}
-                onValidate={(value) => this.handleDateValidate(name, value)}
+                value={this.props.searchCriteria[name] ? this.props.searchCriteria[name] : {from: null, to: null}}
+                onFromDateChange={(value) => this.handleDateChange(name, 'from', value)}
+                onToDateChange={(value) => this.handleDateChange(name, 'to', value)}
                 onInvalid={(value) => this.handleDateInvalid(name, value)}
                 handleKeyPress={this._handleKeyPress}
             />);
@@ -128,12 +128,12 @@ class AdvancedHistorySearchPanel extends React.Component {
                 <div style={{ display:'flex', flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                        <label htmlFor={'avail-ingest-history-search-state-text'}>State</label>
+                        <label htmlFor={'avail-ingest-history-search-state-text'}>Status</label>
                         <Select
                             id={'avail-ingest-history-search-state-select'}
                             onChange={this.handleStateSelect}
                             options={options}
-                            value ={options.filter(option => option.value === this.props.searchCriteria.state)}
+                            value ={options.filter(option => option.value === this.props.searchCriteria.status)}
                         > </Select>
                     </div>
                 </div>
