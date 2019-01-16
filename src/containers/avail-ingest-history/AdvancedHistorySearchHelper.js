@@ -27,7 +27,7 @@ const doSearch = (searchCriteria, searchFn) => {
     });
 };
 
-const defaultPageSort = [];
+const defaultPageSort = [{id: 'createdAt', desc: true}];
 
 export const advancedHistorySearchHelper = {
 
