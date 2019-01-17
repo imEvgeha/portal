@@ -289,13 +289,10 @@ class AdvancedSearchPanel extends React.Component {
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
                                  disabled={!this.props.reportName}
                                  style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
-
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
                                  style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
-
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
                                  style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
-
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
                                  innerRef={this.refSearchBtn}
                                  style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>

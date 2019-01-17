@@ -36,6 +36,7 @@ import App from './containers/App';
 import {loadProfileInfo} from './actions';
 // import {loadState} from './stores';
 import {isObject, mergeDeep} from './util/Common';
+import {updateAbility} from './ability';
 
 export const keycloak = {instance: {}};
 function init() {
@@ -51,6 +52,8 @@ function init() {
                 loadDashboardState();
                 loadHistoryState();
             });
+
+            updateAbility(keycloak.instance);
 
             render(
                 <Provider store={store}>

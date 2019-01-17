@@ -8,6 +8,7 @@ import {resultPageLoading, resultPageSort, resultPageUpdate, searchFormUseAdvanc
 import {loadAvailsMapping} from '../../actions';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
+import {Can} from '../../ability';
 
 const mapStateToProps = state => {
     return {
@@ -50,9 +51,13 @@ class DashboardTab extends React.Component {
         return (
             <div className={'dashboard-tab'}>
                 <div className="row">
-                    <DashboardDropableCard/>
+                    <Can I="create" a="Avail">
+                        <DashboardDropableCard/>
+                    </Can>
                     {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
-                    <DashboardCard title="Create New Edit Version" action={this.createAvail} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-avails'}/>
+                    <Can I="create" a="Avail">
+                        <DashboardCard title="Create New Edit Version" action={this.createAvail} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-avails'}/>
+                    </Can>
                     {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                 </div>
                 <div className="row">
