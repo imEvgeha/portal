@@ -9,6 +9,8 @@ import './DashboardLatestAvailsCard.scss';
 
 import LoadingElipsis from '../../../img/ajax-loader.gif';
 
+const REFRESH_INTERVAL = 5*1000; //5 seconds
+
 export default class DashboardLatestAvailsCard extends React.Component {
 
     table = null;
@@ -21,7 +23,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
         this.state = {
             pageSize: 6,
             cols:[{headerName: 'Date', field: 'received', valueFormatter: function(params) {
-                          if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
+                          if(params.data && params.data.createdAt) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
                           else return '';
                       }, width:120},
                     {headerName: 'Provider', field: 'provider', width:90},
@@ -35,7 +37,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     statusIconRender(params){
-        let content = params.valueFormatted || params.value;
+        const content = params.valueFormatted || params.value;
         if (params.value !== undefined) {
             if (content) {
                 switch (content) {
@@ -44,7 +46,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
                      case 'FAILED':
                         return <span title={params.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
                      case 'PENDING':
-                        return <img src={LoadingElipsis}/>;
+                        return <img style={{width:'11px'}} src={LoadingElipsis}/>;
                      default:
                         return content;
                  }
@@ -70,12 +72,14 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     getData() {
-        setTimeout(this.getData, 5 * 1000);
-        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
+        setTimeout(this.getData, REFRESH_INTERVAL);
+        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'createdAt', desc:true}])
                 .then(response => {
                     //console.log(response);
-                    this.table.api.setRowData(response.data.data);
-                    this.table.api.hideOverlay();
+                    if(this.table){
+                        this.table.api.setRowData(response.data.data);
+                        this.table.api.hideOverlay();
+                    }
                 }).catch((error) => {
                    console.error('Unexpected error');
                    console.error(error);
