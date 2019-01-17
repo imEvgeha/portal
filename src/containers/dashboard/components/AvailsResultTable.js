@@ -16,7 +16,6 @@ import './AvailResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../actions/dashboard';
 import {dashboardServiceManager} from '../DashboardServiceManager';
-import {advancedSearchHelper} from '../AdvancedSearchHelper';
 import {availDetailsModal} from './AvailDetailsModal';
 
 

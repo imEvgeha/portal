@@ -1,15 +1,10 @@
 import store from '../../stores';
 import {
     searchFormSetAdvancedHistorySearchCriteria,
-    searchFormSetHistorySearchCriteria,
-    resultHistoryPageLoading,
-    resultPageHistoryUpdate
+    searchFormSetHistorySearchCriteria
 } from '../../actions/history';
-import config from 'react-global-configuration';
 import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO} from '../../util/Common';
-
-const defaultPageSort = [];
 
 export const advancedHistorySearchHelper = {
 

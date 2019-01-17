@@ -14,7 +14,6 @@ import LoadingGif from '../../../img/loading.gif';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormSetAdvancedHistorySearchCriteria} from '../../../actions/history';
 import {historyServiceManager} from '../HistoryServiceManager';
-import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 
 
 

@@ -29,5 +29,5 @@ export const historyServiceManager = {
                 console.warn('Unexpected error');
                 console.error(error);
             });
-    },
-}
+    }
+};

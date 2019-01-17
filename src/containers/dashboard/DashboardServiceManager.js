@@ -35,5 +35,5 @@ export const dashboardServiceManager = {
                 console.warn('Unexpected error');
                 console.error(error);
             });
-    },
-}
+    }
+};

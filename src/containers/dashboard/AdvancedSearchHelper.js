@@ -1,16 +1,11 @@
 import store from '../../stores';
 import {
-    resultPageSort,
-    resultPageUpdate,
-    resultPageLoading,
     searchFormSetSearchCriteria,
     searchFormSetAdvancedSearchCriteria,
 } from '../../actions/dashboard';
-import config from 'react-global-configuration';
+
 import {dashboardServiceManager} from './DashboardServiceManager';
 import {momentToISO} from '../../util/Common';
-
-const defaultPageSort = [];
 
 export const advancedSearchHelper = {
 
