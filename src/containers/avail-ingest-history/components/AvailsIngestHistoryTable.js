@@ -13,7 +13,7 @@ import LoadingGif from '../../../img/loading.gif';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormSetAdvancedHistorySearchCriteria} from '../../../actions/history';
-import {historyService} from '../HistoryService';
+import {historyServiceManager} from '../HistoryServiceManager';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 
 
@@ -82,7 +82,7 @@ class AvailsIngestHistoryTable extends React.Component {
     }
 
     doSearch(page, pageSize, sortedParams) {
-        return historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
+        return historyServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){
