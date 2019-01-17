@@ -23,7 +23,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
         this.state = {
             pageSize: 6,
             cols:[{headerName: 'Date', field: 'received', valueFormatter: function(params) {
-                          if(params.data && params.data.createdAt) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
+                          if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
                           else return '';
                       }, width:120},
                     {headerName: 'Provider', field: 'provider', width:90},
