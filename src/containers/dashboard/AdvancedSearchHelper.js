@@ -65,12 +65,8 @@ export const advancedSearchHelper = {
     },
 
     clearAdvancedSearchForm: () => {
-        store.dispatch(searchFormSetAdvancedSearchCriteria({
-            rowInvalid: {value: false},
-        }));
-        store.dispatch(searchFormSetSearchCriteria({
-            rowInvalid: {value: false},
-        }));
+        store.dispatch(searchFormSetAdvancedSearchCriteria({}));
+        store.dispatch(searchFormSetSearchCriteria({}));
     },
 
     freeTextSearch(searchCriteria) {

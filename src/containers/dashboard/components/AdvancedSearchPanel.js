@@ -31,6 +31,8 @@ const mapDispatchToProps = {
     updateBreadcrumb,
 };
 
+const ignoreForCloseable = ['rowInvalid'];
+
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
@@ -252,14 +254,16 @@ class AdvancedSearchPanel extends React.Component {
             if (this.availsMap != null) {
                 return Array.from(fieldsToShow).map((key) => {
                     const schema = this.availsMap[key];
-                    if (schema) {
-                        if (schema.dataType === 'date') {
-                            return renderCloseableDateBtn(key, schema.displayName);
+                    if (ignoreForCloseable.indexOf(key) === -1) {
+                        if (schema) {
+                            if (schema.dataType === 'date') {
+                                return renderCloseableDateBtn(key, schema.displayName);
+                            } else {
+                                return renderCloseableBtn(key, schema.displayName);
+                            }
                         } else {
-                            return renderCloseableBtn(key, schema.displayName);
+                            console.warn('Cannot determine schema for field: ' + key);
                         }
-                    } else {
-                        console.warn('Cannot determine schema for field: ' + key);
                     }
                 });
             }
@@ -311,7 +315,7 @@ class AdvancedSearchPanel extends React.Component {
                         <select className="form-control border-1 d-inline"
                                 id={'dashboard-avails-report-select'}
                                 onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : ''}
+                                value={this.props.searchCriteria.rowInvalid && this.props.searchCriteria.rowInvalid.value ? this.props.searchCriteria.rowInvalid.value : ''}
                                 style={{width: '100px', background: 'initial', margin: '0 5px'}}
                         >
                             <option value="">All</option>
