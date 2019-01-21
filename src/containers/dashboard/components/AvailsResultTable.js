@@ -75,7 +75,10 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: config.get('avails.page.size'),
-            cols:[]
+            cols:[],
+            defaultColDef: {
+                cellStyle: this.cellStyle
+            }
         };
 
         this.loadingRenderer = this.loadingRenderer.bind(this);
@@ -352,18 +355,48 @@ class AvailsResultTable extends React.Component {
     }
 
     loadingRenderer(params){
-        let content = params.valueFormatted || params.value;
+        let error = null;
+        params.data.validationErrors.forEach( e => {
+            if(e.fieldName === params.colDef.field){
+                error = e.message + ', error processing field ' + e.originalFieldName +
+                            ' with value ' + e.originalValue +
+                            ' at row ' + e.rowId +
+                            ' from file ' + e.fileName;
+                return;
+            }
+        });
+
+        const content = error || params.valueFormatted || params.value;
         if (params.value !== undefined) {
             if (content) {
                 return(
                     <a href="#" onClick={() => this.onCellClicked(params.data)}>
-                        {content}
+                        <div
+                        title= {error}
+                        style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            {content}
+                        </div>
                     </a>
                 );
             }
             else return params.value;
         } else {
             return <img src={LoadingGif}/>;
+        }
+    }
+
+     cellStyle(params) {
+        let error = null;
+        params.data.validationErrors.forEach( e => {
+         if(e.fieldName === params.colDef.field){
+             error = e;
+             return;
+         }
+        });
+        if (error) {
+            return {backgroundColor: '#f2dede'};
+        } else {
+            return null;
         }
     }
 
@@ -380,6 +413,7 @@ class AvailsResultTable extends React.Component {
 
                     getRowNodeId= {data => data.id}
 
+                    defaultColDef = {this.state.defaultColDef}
                     columnDefs= {this.cols}
                     suppressDragLeaveHidesColumns= {true}
                     enableColResize= {true}

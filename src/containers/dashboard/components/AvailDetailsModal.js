@@ -146,14 +146,17 @@ class AvailDetails extends React.Component {
 
     render() {
         const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
-        const renderFieldTemplate = (name, displayName, content) => {
+        const renderFieldTemplate = (name, displayName, error, content) => {
             return (
                 <div href="#" key={name}
-                    className="list-group-item list-group-item-action flex-column align-items-start">
+                    className="list-group-item list-group-item-action flex-column align-items-start"
+                    style={{backgroundColor: error ? '#f2dede' : null,
+                            color: error ? '#a94442' : null
+                        }}>
                     <div className="row">
                         <div className="col-4">{displayName}:</div>
                         <div
-                            className={'col' + (this.state.avail[name] ? '' : ' empty')}
+                            className={'col-8' + (this.state.avail[name] ? '' : ' empty')}
                             id={'dashboard-avails-detail-modal-' + name + '-field'}>
                             {content}
                         </div>
@@ -161,9 +164,9 @@ class AvailDetails extends React.Component {
                 </div>
             );
         };
-        const renderTextField = (name, displayName) => {
+        const renderTextField = (name, displayName, error) => {
             const ref = React.createRef();
-            return renderFieldTemplate(name, displayName, (
+            return renderFieldTemplate(name, displayName, error, (
                 <Editable
                     ref={ref}
                     title={name}
@@ -174,11 +177,22 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={this.emptyValueText + ' ' + displayName}
                     validate={() => this.validateTextField(ref.current, name)}
+                    display={(value) => {
+                        if(error){
+                            return (<div title = {error}
+                                style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',
+                                        color: error ? '#a94442' : null
+                                    }}
+                                > {error} </div>);
+                        }else{
+                            return value;
+                        }
+                    }}
                 />
             ));
         };
-        const renderBooleanField = (name, displayName) => {
-            return renderFieldTemplate(name, displayName, (
+        const renderBooleanField = (name, displayName, error) => {
+            return renderFieldTemplate(name, displayName, error, (
                 <Editable
                     title={name}
                     name={name}
@@ -193,10 +207,10 @@ class AvailDetails extends React.Component {
             ));
 
     };
-    const renderDatepickerField = (name, displayName) => {
-        return renderFieldTemplate(name, displayName, (
+    const renderDatepickerField = (name, displayName, error) => {
+        return renderFieldTemplate(name, displayName, error, (
             <EditableDatePicker
-                value={this.state.avail[name]}
+                value={error || this.state.avail[name]}
                 name={name}
                 displayName={displayName}
                 validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
@@ -206,13 +220,24 @@ class AvailDetails extends React.Component {
     };
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
-            if(mapping.javaVariableName!='availId'){//we shouldn't be able to modify the id
+            if(mapping.javaVariableName !== 'availId'){//we shouldn't be able to modify the id
+                console.log(this.state.avail);
+                let error = null;
+                this.state.avail.validationErrors.forEach( e => {
+                    if(e.fieldName === mapping.javaVariableName){
+                        error = e.message + ', error processing field ' + e.originalFieldName +
+                                    ' with value ' + e.originalValue +
+                                    ' at row ' + e.rowId +
+                                    ' from file ' + e.fileName;
+                        return;
+                    }
+                });
                 switch (mapping.dataType) {
-                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName);
-                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName);
-                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName); //yeah, somebody put type 'year' for Release Year Field, this is a quick fix
-                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName);
-                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName);
+                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
+                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
+                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
+                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName, error);
+                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName, error);
                     default:
                         console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                 }
