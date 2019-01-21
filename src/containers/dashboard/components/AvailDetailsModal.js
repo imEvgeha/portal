@@ -221,7 +221,6 @@ class AvailDetails extends React.Component {
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
             if(mapping.javaVariableName !== 'availId'){//we shouldn't be able to modify the id
-                console.log(this.state.avail);
                 let error = null;
                 this.state.avail.validationErrors.forEach( e => {
                     if(e.fieldName === mapping.javaVariableName){
