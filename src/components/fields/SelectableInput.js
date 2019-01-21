@@ -86,7 +86,7 @@ export default class SelectableInput extends Component {
                     placeholder={'Enter ' + displayName}
                     name={name}
                     ref={this.refInput}
-                    value={this.props.value && this.props.value.value}
+                    value={this.props.value && this.props.value.value ? this.props.value.value : '' }
                     onChange={this.handleInputChange}
                     onKeyPress={this._handleKeyPress}/>
             </div>);

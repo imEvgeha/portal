@@ -126,8 +126,8 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     addSearchField() {
-        let value = this.state.value;
-        if (value.value || value.from || value.to) {
+        const value = this.state.value;
+        if ( this.isAnyValueSpecified() ) {
             if (!value.order && value.order !== 0) {
                 value.order = this.getFieldsToShow().length;
             }
@@ -182,13 +182,30 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSave() {
-        saveReportModal.open((reportName) => {configurationService.saveReport(reportName);}, () => {}, {reportName: this.props.reportName});
+        saveReportModal.open((reportName) => {
+            if (this.props.reportName !== reportName && configurationService.getReportsNames().indexOf(reportName) > -1) {
+                confirmModal.open('Report "' + reportName + '" already exists, do you wanna to overwrite?', () => {
+                    configurationService.saveReport(reportName);
+                });
+            } else {
+                configurationService.saveReport(reportName);
+            }
+        }, () => {
+        }, {reportName: this.props.reportName});
     }
 
     handleSearch() {
+        if ( !this.isAnyValueSpecified() ) {
+            this.setState({selected: null, value: null});
+        }
         this.setState({blink: null});
         this.props.onSearch(this.props.searchCriteria);
     }
+
+    isAnyValueSpecified = () => {
+        const value = this.state.value;
+        return value.from || value.to || (value.value  && value.value.trim());
+    };
 
     getFieldsToShow() {
         const nonEmptyFields = [];
@@ -212,7 +229,9 @@ class AdvancedSearchPanel extends React.Component {
             this.searchOptions = [];
             this.props.availsMapping.mappings.forEach( (mapping) => {
                 this.availsMap[mapping.javaVariableName] = mapping;
-                this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
+                if (mapping.fullTextSearch === 'true') {
+                    this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
+                }
             });
         }
 
