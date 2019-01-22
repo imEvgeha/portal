@@ -227,7 +227,6 @@ class AvailDetails extends React.Component {
     return(
             <Modal isOpen = { this.state.modal } toggle = { this.toggle } className = { this.props.className + ' lgModalBox' } fade = { false} backdrop = { false} size = {'lg'} >
             <ModalHeader toggle={this.toggle}>Avail Details</ModalHeader>
-                cannot : {'' + cannot('update', 'Avail')}
             <div className={'row'}>
                 <div className={'col-6'}>
                     <div className="nx-stylish list-group">
