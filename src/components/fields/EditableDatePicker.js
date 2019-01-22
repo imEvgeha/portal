@@ -13,6 +13,7 @@ class EditableDatePicker extends Component {
         value: t.string,
         displayName: t.string,
         onChange: t.func,
+        priorityDisplay: t.any
     };
 
     constructor(props) {
@@ -78,6 +79,32 @@ class EditableDatePicker extends Component {
     }
 
     render() {
+        let displayFunc = (value)=>{
+            return (<span
+                       onClick={this.handleShowDatePicker}
+                       className="displayDate">
+                       {value}
+                   </span>);
+        };
+
+        let unfocusedRender = ()=>{
+            if(this.props.priorityDisplay) {
+                return displayFunc(this.props.priorityDisplay);
+            } else {
+                if(this.props.value) {
+                    return displayFunc(this.state.date ? moment(this.state.date).format('L') : '');
+                } else {
+                    return(
+                        <span
+                            style={{ color: '#808080', cursor: 'pointer' }}
+                            onClick={this.handleShowDatePicker}>
+                            {'Enter ' + this.props.displayName}
+                        </span>
+                    );
+                }
+            }
+        };
+
         return (
             <div>
                 {
@@ -112,25 +139,7 @@ class EditableDatePicker extends Component {
                             }
                         </div>
                         :
-                        this.props.priorityDisplay ?
-                            <span
-                                onClick={this.handleShowDatePicker}
-                                className="displayDate">
-                                {this.props.priorityDisplay}
-                            </span>
-                        :
-                        this.props.value ?
-                            <span
-                                onClick={this.handleShowDatePicker}
-                                className="displayDate">
-                                {this.state.date ? moment(this.state.date).format('L') : ''}
-                            </span>
-                            :
-                            <span
-                                style={{ color: '#808080', cursor: 'pointer' }}
-                                onClick={this.handleShowDatePicker}>
-                                {'Enter ' + this.props.displayName}
-                            </span>
+                        unfocusedRender()
                 }
             </div>
         );

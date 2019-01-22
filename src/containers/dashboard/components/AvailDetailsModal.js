@@ -176,7 +176,7 @@ class AvailDetails extends React.Component {
                 }else{
                     return value;
                 }
-            }
+            };
 
             return renderFieldTemplate(name, displayName, error, (
                 <Editable
@@ -215,7 +215,7 @@ class AvailDetails extends React.Component {
             priorityError = <div title = {error}
                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
                                 {error}
-                            </div>
+                            </div>;
         }
         return renderFieldTemplate(name, displayName, error, (
             <EditableDatePicker
