@@ -8,6 +8,7 @@ import EditableDatePicker from '../../../components/fields/EditableDatePicker';
 import { dashboardService } from '../DashboardService';
 import {rangeValidation} from '../../../util/Validation';
 import config from 'react-global-configuration';
+import {cannot} from '../../../ability';
 
 class AvailDetails extends React.Component {
     static propTypes = {
@@ -168,6 +169,7 @@ class AvailDetails extends React.Component {
                     ref={ref}
                     title={name}
                     value={this.state.avail[name]}
+                    disabled={cannot('update', 'Avail')}
                     dataType="text"
                     mode="inline"
                     placeholder={this.emptyValueText + ' ' + displayName}
@@ -183,6 +185,7 @@ class AvailDetails extends React.Component {
                     title={name}
                     name={name}
                     dataType="select"
+                    disabled={cannot('update', 'Avail')}
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}
                     options={[
@@ -198,6 +201,7 @@ class AvailDetails extends React.Component {
             <EditableDatePicker
                 value={this.state.avail[name]}
                 name={name}
+                disabled={cannot('update', 'Avail')}
                 displayName={displayName}
                 validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
                 onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}

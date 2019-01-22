@@ -12,6 +12,7 @@ class EditableDatePicker extends Component {
         validate: t.func,
         value: t.string,
         displayName: t.string,
+        disabled: t.bool,
         onChange: t.func,
     };
 
@@ -35,10 +36,12 @@ class EditableDatePicker extends Component {
 
     handleShowDatePicker(e) {
         e.preventDefault();
-        this.setState({
-            datePickerStatus: true,
-            date: moment(this.state.date).isValid() ? moment(this.state.date) : moment(),
-        });
+        if (!this.props.disabled) {
+            this.setState({
+                datePickerStatus: true,
+                date: moment(this.state.date).isValid() ? moment(this.state.date) : moment(),
+            });
+        }
     }
     handleCancelDatePicker(e) {
         e.preventDefault();

@@ -9,6 +9,7 @@ import {
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
 } from '../actions/dashboard';
+import {Can} from '../ability';
 
 const mapStateToProps = state => {
     return {profileInfo: state.root.profileInfo};
@@ -51,23 +52,26 @@ class NavbarConnect extends React.Component {
     }
 
     render() {
-
         return (
             <nav className="navbar navbar-NEXUS navbar-expand-md">
                 <span className="navbar-brand">
                     <a className="navbar-brand Nlogo" href="#"> </a>
                 </span>
                 <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
-                            <NavLink activeClassName="navActive" to="/dashboard"  id="dashboard-tab">Dashboard</NavLink>
-                        </span>
-                    </li>
-                    <li className="nav-item">
-                        <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
-                            <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
-                        </span>
-                    </li>
+                    <Can I="read" a="Avail">
+                        <li className="nav-item">
+                            <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
+                                <NavLink activeClassName="navActive" to="/dashboard"  id="dashboard-tab">Dashboard</NavLink>
+                            </span>
+                        </li>
+                    </Can>
+                    <Can I="read" a="Avail">
+                        <li className="nav-item">
+                            <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
+                                <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
+                            </span>
+                        </li>
+                    </Can>
                 </ul>
                 <ul className="nav navbar-nav ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}

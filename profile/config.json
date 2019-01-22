@@ -8,7 +8,7 @@
     }
   },
   "keycloak": {
-    "clientId": "vehicle-public",
+    "clientId": "portal-client",
     "realm": "Vubiquity",
     "url": "http://usla-amm-d001.dev.vubiquity.com:8080/auth"
   }
