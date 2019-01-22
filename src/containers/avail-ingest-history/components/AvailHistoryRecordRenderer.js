@@ -20,7 +20,7 @@ class AvailHistoryRecordRenderer extends React.Component {
         let email = null;
         let counter = 0;
         let atts = [];
-        if(this.props.data.attachments !== null){
+        if(this.props.data && this.props.data.attachments){
             atts = this.props.data.attachments.map(attachment => {
                 if(attachment.type==='Email'){
                     email = attachment.link;
