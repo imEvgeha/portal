@@ -25,7 +25,6 @@ class TitleCreate extends React.Component {
             episodeID: '',
 
 
-            isContentTypeValid: false,
             loading: false,
             seasonChecked: true,
             episodeChecked: true,
@@ -69,19 +68,16 @@ class TitleCreate extends React.Component {
         };
         this.setState({ loading: true, showCreatedMessage: '' });
         dashboardService.createTitle(newTitle).then((res) => {
-            if (res.status === 200) {
+                console.log(res)
                 this.form && this.form.reset();
                 this.setState({ loading: false, showCreatedMessage: 'Title created successfully.' });
-            }else {
-                this.setState({ loading: false, showCreatedMessage: `Unable to create the title resource. Error : ${res.status}` });
-            }
         }).catch((err) => {
-            this.setState({ loading: false, errorMessage: `Title creation Failed! Error: ${err}` });
+            this.setState({ loading: false, showCreatedMessage: 'Title creation Failed' });
         });
     }
     cleanFields = () => {
         this.setState({
-            showCreatedMessage: false,
+            showCreatedMessage: '',
             errorMessage: '',
             title: '',
             contentType: '',
@@ -111,15 +107,13 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 brandChecked: false,
                 episodeID: '',
-                episodeNumber: '',                
-                isContentTypeValid: false
+                episodeNumber: ''
             });
         } else if (e.target.value === 'Episode') {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
-                brandChecked: false,                
-                isContentTypeValid: false
+                brandChecked: false
             });
         } else if (e.target.value === 'Brand') {
             this.setState({
@@ -129,16 +123,14 @@ class TitleCreate extends React.Component {
                 episodeID: '',
                 episodeNumber: '',
                 seasonID: '',
-                seasonNumber: '',              
-                isContentTypeValid: false
+                seasonNumber: ''
 
             });
         } else if (e.target.value === 'Event') {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
-                brandChecked: false,                
-                isContentTypeValid: false
+                brandChecked: false
             });
         } else {
             this.setState({
@@ -150,8 +142,7 @@ class TitleCreate extends React.Component {
                 episodeID: '',
                 episodeNumber: '',
                 seasonID: '',
-                seasonNumber: '',                
-                isContentTypeValid: false
+                seasonNumber: ''
 
             });
         }

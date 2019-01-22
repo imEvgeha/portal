@@ -56,7 +56,6 @@ const Http = {
                 }
             );
         }
-
         return http;
     }
 };
