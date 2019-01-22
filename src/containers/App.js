@@ -22,7 +22,7 @@ export default class App extends React.Component {
                     <div >
                         <Route exact path="/" component={Welcome}/>
                         <Route path="/dashboard" component={canRender(DashboardContainer, 'read', 'Avail')}/>
-                        <Route path="/avail-ingest-history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avails')}/>
+                        <Route path="/avail-ingest-history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                     </div>
                 </div>
             </Router>
