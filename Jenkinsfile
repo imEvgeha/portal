@@ -21,5 +21,15 @@ pipeline {
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
          }
+         stage('kubernetes') {
+           steps {
+             dir('kubernetes') {
+               git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+             }
+             dir('kubernetes/nexus-avails/portal') {
+               sh "./deploy.sh dev nexus-avails ${imageTag}"
+             }
+           }
+         }
      }
  }
