@@ -58,7 +58,7 @@ class AvailDetails extends React.Component {
 
     handleSubmit(editable) {
         const name = editable.props.title;
-        const value = editable.value.trim();
+        const value = editable.value ? editable.value.trim() : editable.value;
         this.update(name, value, () => {
             editable.setState({availLastEditSucceed: false});
             editable.value = this.state.avail[name];

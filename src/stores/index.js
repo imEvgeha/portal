@@ -8,7 +8,7 @@ import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper
 import {advancedHistorySearchHelper} from '../containers/avail-ingest-history/AdvancedHistorySearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.2';
-const HISTORY_SESSION_VERSION = '0.1';
+const HISTORY_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
     root,
@@ -24,7 +24,7 @@ export const loadHistoryState = () => {
     loadFromWebLocalStorage('history', loadHistorySession, HISTORY_SESSION_VERSION);
     setTimeout(() => {
         advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
-    }, 100);
+    }, 1);
 };
 
 export const saveHistoryState = () => {
@@ -35,7 +35,7 @@ export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
     setTimeout(() => {
         advancedSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
-    }, 100);
+    }, 1);
 };
 
 export const saveDashboardState = () => {

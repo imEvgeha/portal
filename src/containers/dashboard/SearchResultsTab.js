@@ -36,7 +36,6 @@ class SearchResultsTab extends React.Component {
         availTabPageSelected: t.array,
         columns: t.array,
         reportName: t.string,
-        onBackToDashboard: t.func,
         availsMapping: t.object,
         columnsOrder: t.array,
         resultPageUpdateColumnsOrder: t.func

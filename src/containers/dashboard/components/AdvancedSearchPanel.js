@@ -15,6 +15,7 @@ import {exportService} from '../ExportService';
 import moment from 'moment';
 import CloseableBtn from '../../../components/fields/CloseableBtn';
 import SelectableInput from '../../../components/fields/SelectableInput';
+import {updateBreadcrumb} from '../../../actions';
 
 const mapStateToProps = state => {
     return {
@@ -27,6 +28,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     searchFormUpdateAdvancedSearchCriteria,
+    updateBreadcrumb,
 };
 
 class AdvancedSearchPanel extends React.Component {
@@ -35,6 +37,7 @@ class AdvancedSearchPanel extends React.Component {
         availTabPage: t.object,
         onSearch: t.func,
         searchFormUpdateAdvancedSearchCriteria: t.func,
+        updateBreadcrumb: t.func,
         onToggleAdvancedSearch: t.func,
         hide: t.bool,
         reportName: t.string,
@@ -57,6 +60,7 @@ class AdvancedSearchPanel extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
+        this.handleInvalidChange = this.handleInvalidChange.bind(this);
         this.addSearchField = this.addSearchField.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.blink = this.blink.bind(this);
@@ -112,6 +116,11 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: {value: value}});
+    }
+
+    handleInvalidChange(event) {
+        const value = event.target.value;
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, rowInvalid: {value: value ? value : null}});
     }
 
     addSearchField() {
@@ -257,6 +266,23 @@ class AdvancedSearchPanel extends React.Component {
             return null;
         };
 
+        const renderSpecialCloseable = () => {
+            return (
+                this.props.searchCriteria.availHistoryId &&
+                <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
+                    <CloseableBtn
+                        title={'Avail History'}
+                        value={' = ' + this.props.searchCriteria.availHistoryId.subTitle}
+                        onClose={() => {
+                            this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryId: null});
+                            this.props.updateBreadcrumb([{name: 'Dashboard', path: 'dashboard'}]);
+                        }}
+                        id={'dashboard-avails-advanced-search-' + 'AvailId' + '-criteria'}
+                    />
+                </div>
+            );
+        };
+
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
                  style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}>
@@ -276,12 +302,22 @@ class AdvancedSearchPanel extends React.Component {
                     onSave={this.addSearchField}
                 />
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
+                    {renderSpecialCloseable()}
                     {renderCloseable()}
                 </div>
                 <div className="d-flex flex-row justify-content-between mt-2">
                     <div style={{margin:'0 5px', alignSelf: 'center'}}>
-                        <input style={{margin: '2px', marginRight: '6px', fontSize: 'medium'}}  name={'rowInvalid'} type={'checkbox'} checked={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : false} onChange={this.handleInputChange}/>
-                        Show invalid avails
+                        Show:
+                        <select className="form-control border-1 d-inline"
+                                id={'dashboard-avails-report-select'}
+                                onChange={this.handleInvalidChange}
+                                value={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : ''}
+                                style={{width: '100px', background: 'initial', margin: '0 5px'}}
+                        >
+                            <option value="">All</option>
+                            <option value="false">Valid</option>
+                            <option value="true">Invalid</option>
+                        </select>
                     </div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}

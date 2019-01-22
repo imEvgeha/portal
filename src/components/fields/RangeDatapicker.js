@@ -35,7 +35,7 @@ export default class RangeDatapicker extends React.Component {
 
     componentDidUpdate() {
         if (this.props.value.from && this.props.value.to && moment(this.props.value.from) > moment(this.props.value.to)) {
-            if (!this.state.invalidRange) {
+            if (!this.state.invalidRange && !this.state.invalidStartDate && !this.state.invalidEndDate) {
                 this.props.onInvalid(this.wrongDateRange(true));
             }
         } else {
@@ -47,7 +47,7 @@ export default class RangeDatapicker extends React.Component {
 
     handleChangeStartDate(date) {
         this.props.onFromDateChange(date);
-        const invalidRange = this.wrongDateRange(date && this.props.value.to && this.props.value.to < date);
+        const invalidRange = this.wrongDateRange(date && this.props.value.to && moment(this.props.value.to) < date);
         this.setState({invalidStartDate: ''});
         this.props.onInvalid(this.state.invalidEndDate || invalidRange);
     }
@@ -57,7 +57,7 @@ export default class RangeDatapicker extends React.Component {
             date.set({hour:23, minute:59});
         }
         this.props.onToDateChange(date);
-        const invalidRange = this.wrongDateRange(date && this.props.value.from && this.props.value.from > date);
+        const invalidRange = this.wrongDateRange(date && this.props.value.from && moment(this.props.value.from) > date);
         this.setState({invalidEndDate: ''});
         this.props.onInvalid(this.state.invalidStartDate || invalidRange);
     }

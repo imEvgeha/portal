@@ -9,6 +9,7 @@ import DashboardContainer from './dashboard/DashboardContainer';
 import AvailIngestHistoryContainer from './avail-ingest-history/AvailIngestHistoryContainer';
 import {canRender} from '../ability';
 import Welcome from './Welcome';
+import NexusBreadcrumb from './NexusBreadcrumb';
 
 export default class App extends React.Component {
 
@@ -17,6 +18,7 @@ export default class App extends React.Component {
             <Router>
                 <div>
                     <Navbar/>
+                    <NexusBreadcrumb/>
                     <div >
                         <Route exact path="/" component={Welcome}/>
                         <Route path="/dashboard" component={canRender(DashboardContainer, 'read', 'Avail')}/>

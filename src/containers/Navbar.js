@@ -59,14 +59,14 @@ class NavbarConnect extends React.Component {
                 </span>
                 <ul className="navbar-nav">
                     <Can I="read" a="Avail">
-                        <li className="">
+                        <li className="nav-item">
                             <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
                                 <NavLink activeClassName="navActive" to="/dashboard"  id="dashboard-tab">Dashboard</NavLink>
                             </span>
                         </li>
                     </Can>
                     <Can I="read" a="Avail">
-                        <li className="">
+                        <li className="nav-item">
                             <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
                                 <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
                             </span>
