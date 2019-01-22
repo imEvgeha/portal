@@ -8,7 +8,6 @@ import t from 'prop-types';
 import RangeDatapicker from '../../../components/fields/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 import Select from 'react-select';
-import moment from 'moment';
 
 const mapStateToProps = state => {
     return {
