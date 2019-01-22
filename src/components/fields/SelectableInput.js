@@ -33,6 +33,7 @@ export default class SelectableInput extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDateInvalid = this.handleDateInvalid.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.isAnyValueSpecified = this.isAnyValueSpecified.bind(this);
         this.refInput = React.createRef();
         this.refDatePicker = React.createRef();
     }
@@ -77,6 +78,11 @@ export default class SelectableInput extends Component {
             }
         }, 10);
     }
+
+    isAnyValueSpecified = () => {
+        const value = this.props.value;
+        return value.from || value.to || (value.value  && value.value.trim());
+    };
 
     render() {
         const renderTextField = (name, displayName) => {
@@ -139,7 +145,7 @@ export default class SelectableInput extends Component {
                     <Button outline color="secondary"
                             id={this.props.id + '-add-btn'}
                             onClick={this.props.onSave}
-                            disabled={this.state.invalid}
+                            disabled={this.state.invalid || !this.isAnyValueSpecified()}
                             style={{width: '80px'}}>{this.props.saveText || 'add' }</Button>
                 </div>
                 }
