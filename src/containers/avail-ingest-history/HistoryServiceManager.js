@@ -2,6 +2,8 @@ import store from '../../stores';
 import {resultHistoryPageLoading, resultPageHistoryUpdate, searchFormSetHistorySearchCriteria} from '../../actions/history';
 import {historyService} from './HistoryService';
 
+const defaultPageSort = [{id: 'createdAt', desc: true}];
+
 export const historyServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements
     //for now just table listens for that
@@ -12,7 +14,7 @@ export const historyServiceManager = {
 
     //called by the table either as result of other systems triggering the table (page 0) or scrolling the table (page > 0)
     doSearch: (page, pageSize, sortedParams) => {
-        return historyServiceManager.callService(historyService.advancedSearch, page, pageSize, sortedParams);
+        return historyServiceManager.callService(historyService.advancedSearch, page, pageSize, sortedParams || defaultPageSort);
     },
 
     //the actual call to the service (and further to server), generic interpretation of result and forward for detailed interpretation (by the table)

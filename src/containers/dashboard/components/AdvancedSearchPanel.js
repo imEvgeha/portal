@@ -268,13 +268,13 @@ class AdvancedSearchPanel extends React.Component {
 
         const renderSpecialCloseable = () => {
             return (
-                this.props.searchCriteria.availHistoryId &&
+                this.props.searchCriteria.availHistoryIds &&
                 <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={'Avail History'}
-                        value={' = ' + this.props.searchCriteria.availHistoryId.subTitle}
+                        value={' = ' + this.props.searchCriteria.availHistoryIds.subTitle}
                         onClose={() => {
-                            this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryId: null});
+                            this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
                             this.props.updateBreadcrumb([{name: 'Dashboard', path: 'dashboard'}]);
                         }}
                         id={'dashboard-avails-advanced-search-' + 'AvailId' + '-criteria'}

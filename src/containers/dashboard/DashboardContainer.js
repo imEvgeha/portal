@@ -91,7 +91,7 @@ class DashboardContainer extends React.Component {
             const state = this.props.location.state;
             if (state.availHistory) {
                 const subTitle = state.availHistory.ingestType + ', ' + (state.availHistory.provider ? state.availHistory.provider + ', ' : '') + moment(state.availHistory.received).format('llll');
-                const criteria = {availHistoryId: {value: state.availHistory.id, subTitle}};
+                const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
                 if (state.rowInvalid !== undefined) {
                     criteria.rowInvalid = {value: state.rowInvalid};
                 }
@@ -103,7 +103,7 @@ class DashboardContainer extends React.Component {
             } else if (state.back) {
                 this.handleBackToDashboard();
             }
-        } else if (this.props.searchCriteria.availHistoryId) {
+        } else if (this.props.searchCriteria.availHistoryIds) {
             if (this.props.showSearchResults) {
                 this.props.updateBreadcrumb([{name: 'Avail Ingest History', path: 'avail-ingest-history'}, {name: 'Search Results'}]);
             } else {
@@ -115,7 +115,7 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.searchCriteria.availHistoryId && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {
+        if (this.props.searchCriteria.availHistoryIds && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {
             this.props.updateBreadcrumb([{name: 'Avail Ingest History', path: 'avail-ingest-history'}, {name: 'Search Results'}]);
             this.fromHistory = true;
         }
@@ -142,7 +142,7 @@ class DashboardContainer extends React.Component {
     handleAvailsAdvancedSearch(searchCriteria) {
         this.props.searchFormUseAdvancedSearch(true);
         this.props.searchFormShowSearchResults(true);
-        if (!this.props.searchCriteria.availHistoryId) {
+        if (!this.props.searchCriteria.availHistoryIds) {
             this.props.updateBreadcrumb([{name: 'Dashboard', path: 'dashboard'}, {name: 'Search Results'}]);
         }
         advancedSearchHelper.advancedSearch(searchCriteria);
