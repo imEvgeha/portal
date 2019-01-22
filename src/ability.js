@@ -11,11 +11,23 @@ const ability = new Ability([]);
 const updateAbility = (keycloak) => {
     const { can, rules } = AbilityBuilder.extract();
 
-    if (keycloak.hasRealmRole('catalog_viewer')) {
+    // ******** Ability *************
+    if (keycloak.hasRealmRole('avails_viewer')) {
         can('read', 'Avail');
-    } else if (keycloak.hasRealmRole('catalog_user')) {
+    } else if (keycloak.hasRealmRole('avails_user')) {
+        can(['create', 'read', 'update', 'delete'], 'Avail');
+    } else if (keycloak.hasRealmRole('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
     }
+
+    // ******** Metadata *************
+    // if (keycloak.hasRealmRole('metadata_viewer')) {
+    //     can('read', 'Metadata');
+    // } else if (keycloak.hasRealmRole('metadata_user')) {
+    //     can(['create', 'read', 'update', 'delete'], 'Metadata');
+    // } else if (keycloak.hasRealmRole('metadata_admin')) {
+    //     can(['create', 'read', 'update', 'delete'], 'Metadata');
+    // }
 
     ability.update(rules);
 };

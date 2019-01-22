@@ -9,6 +9,7 @@ import {
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
 } from '../actions/dashboard';
+import {Can} from '../ability';
 
 const mapStateToProps = state => {
     return {profileInfo: state.root.profileInfo};
@@ -57,31 +58,20 @@ class NavbarConnect extends React.Component {
                     <a className="navbar-brand Nlogo" href="#"> </a>
                 </span>
                 <ul className="navbar-nav">
-                    <li className="">
-                        <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
-                            <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
-                        </span>
-                    </li>
-                    <li className="">
-                        <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
-                            <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
-                        </span>
-                    </li>
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/registry" id="title-registry-tab">Title Registry</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/services" id="profile-services-tab">Profile Services</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
-                    {/*<li className="nav-item">*/}
-                        {/*<span className="nav-link" href="#">*/}
-                            {/*<NavLink activeClassName="navActive" to="/admin" id="admin-tab">Admin</NavLink>*/}
-                        {/*</span>*/}
-                    {/*</li>*/}
+                    <Can I="read" a="Avail">
+                        <li className="">
+                            <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
+                                <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
+                            </span>
+                        </li>
+                    </Can>
+                    <Can I="read" a="Avail">
+                        <li className="">
+                            <span className="nav-link" href="#" onClick={this.goToHistoryContainer}>
+                                <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
+                            </span>
+                        </li>
+                    </Can>
                 </ul>
                 <ul className="nav navbar-nav ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
