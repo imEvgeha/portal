@@ -110,6 +110,8 @@ class AvailsResultTable extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
+        let elem = document.querySelector('.vu-advanced-search-panel');
+        elem.removeEventListener('transitionend', this.updateWindowDimensions);
     }
 
     updateWindowDimensions() {

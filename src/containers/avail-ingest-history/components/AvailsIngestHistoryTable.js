@@ -70,7 +70,7 @@ class AvailsIngestHistoryTable extends React.Component {
     updateWindowDimensions() {
         const offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         const offsetLeft  = ReactDOM.findDOMNode(this).getBoundingClientRect().left;
-        this.setState({ height: (window.innerHeight - offsetTop - 120) + 'px',
+        this.setState({ height: (window.innerHeight - offsetTop - 140) + 'px',
                         width: (window.innerWidth - offsetLeft - 20) + 'px'});
     }
 
