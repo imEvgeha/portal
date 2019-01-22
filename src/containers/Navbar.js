@@ -67,6 +67,11 @@ class NavbarConnect extends React.Component {
                             <NavLink activeClassName="navActive" to="/avail-ingest-history" id="avail-ingest-history-tab">Avail Ingest History</NavLink>
                         </span>
                     </li>
+                    <li className="">
+                        <span className="nav-link" href="#" >
+                            <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
+                        </span>
+                    </li>
                     {/*<li className="nav-item">*/}
                         {/*<span className="nav-link" href="#">*/}
                             {/*<NavLink activeClassName="navActive" to="/registry" id="title-registry-tab">Title Registry</NavLink>*/}
