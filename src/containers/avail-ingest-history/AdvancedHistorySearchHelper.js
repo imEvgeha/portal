@@ -1,39 +1,12 @@
 import store from '../../stores';
 import {
     searchFormSetAdvancedHistorySearchCriteria,
-    searchFormSetHistorySearchCriteria,
-    resultHistoryPageLoading,
-    resultPageHistoryUpdate
+    searchFormSetHistorySearchCriteria
 } from '../../actions/history';
-import config from 'react-global-configuration';
-import {historyService} from './HistoryService';
+import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO} from '../../util/Common';
 
-const doSearch = (searchCriteria, searchFn) => {
-    store.dispatch(resultHistoryPageLoading(true));
-    searchFn(searchCriteria, 0, config.get('avails.page.size'), defaultPageSort)
-    .then(response => {
-        store.dispatch(resultHistoryPageLoading(false));
-        store.dispatch(resultPageHistoryUpdate({
-            pages: 1,
-            records: response.data.data,
-            pageSize: response.data.data.length,
-            total: response.data.total
-        }));
-        }
-    ).catch((error) => {
-        console.warn('Unexpected error');
-        console.error(error);
-    });
-};
-
-const defaultPageSort = [{id: 'createdAt', desc: true}];
-
 export const advancedHistorySearchHelper = {
-
-    storeAdvancedHistorySearchForm: (searchCriteria) => {
-        store.dispatch(searchFormSetHistorySearchCriteria(searchCriteria));
-    },
 
     prepareAdvancedHistorySearchCall: (searchCriteria) => {
         const response = {};
@@ -41,9 +14,9 @@ export const advancedHistorySearchHelper = {
             const criteria = searchCriteria[key];
             if (criteria) {
                 if (!(criteria instanceof Object)) {
-                    response[key] = criteria;
+                    response[key] = criteria.trim();
                 } else if (criteria.value) {
-                    response[key] = criteria.value;
+                    response[key] = criteria.value.trim();
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);
@@ -71,9 +44,6 @@ export const advancedHistorySearchHelper = {
     },
 
     advancedSearch(searchCriteria) {
-        this.storeAdvancedHistorySearchForm(searchCriteria);
-        doSearch(this.prepareAdvancedHistorySearchCall(searchCriteria), historyService.advancedSearch);
-    },
-
-
+        historyServiceManager.search(this.prepareAdvancedHistorySearchCall(searchCriteria));
+    }
 };

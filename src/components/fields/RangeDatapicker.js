@@ -89,7 +89,7 @@ export default class RangeDatapicker extends React.Component {
                     <div style={{width: '45%', paddingLeft: '8px'}}>
                         <NexusDatePicker
                             id={this.props.id + '-from'}
-                            date={this.props.value.from}
+                            date={this.props.value.from !== undefined ? this.props.value.from : ''}
                             ref={this.refFirstDatePicker}
                             onChange={this.handleChangeStartDate}
                             onInvalid={(value) => {this.handleInvalid('Start', value);}}
@@ -105,7 +105,7 @@ export default class RangeDatapicker extends React.Component {
                     <div style={{width: '45%', paddingRight: '8px'}}>
                         <NexusDatePicker
                             id={this.props.id + '-to'}
-                            date={this.props.value.to}
+                            date={this.props.value.to !== undefined ? this.props.value.to : ''}
                             onChange={this.handleChangeEndDate}
                             onInvalid={(value) => {this.handleInvalid('End', value);}}
                             disabled={this.props.disabled}

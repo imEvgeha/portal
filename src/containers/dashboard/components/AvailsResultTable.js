@@ -15,8 +15,7 @@ import './AvailResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../actions/dashboard';
-import {dashboardService} from '../DashboardService';
-import {advancedSearchHelper} from '../AdvancedSearchHelper';
+import {dashboardServiceManager} from '../DashboardServiceManager';
 import {availDetailsModal} from './AvailDetailsModal';
 
 
@@ -31,7 +30,6 @@ let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         availTabPageSort: state.dashboard.session.availTabPageSort,
-        searchCriteria: state.dashboard.session.searchCriteria,
         useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
         freeTextSearch: state.dashboard.freeTextSearch,
         availTabPageSelection: state.dashboard.session.availTabPageSelection,
@@ -55,7 +53,6 @@ class AvailsResultTable extends React.Component {
         availsMapping: t.any,
         availTabPage: t.object,
         availTabPageSort: t.array,
-        searchCriteria: t.object,
         useAdvancedSearch: t.bool,
         freeTextSearch: t.object,
         availTabPageSelection: t.object,
@@ -236,15 +233,10 @@ class AvailsResultTable extends React.Component {
     }
 
     doSearch(page, pageSize, sortedParams) {
-        if (this.props.useAdvancedSearch) {
-            return dashboardService.advancedSearch(advancedSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
-        } else {
-            return dashboardService.freeTextSearch(this.props.freeTextSearch, page, pageSize, sortedParams);
-        }
+        return dashboardServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){
-        //console.log('getRows', params,  this.props.availTabPageSort);
         if(this.table && this.table.api.getDisplayedRowCount()==0){
             this.table.api.showLoadingOverlay();
         }

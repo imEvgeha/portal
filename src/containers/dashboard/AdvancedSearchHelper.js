@@ -1,45 +1,16 @@
 import store from '../../stores';
 import {
-    resultPageSort,
-    resultPageUpdate,
-    resultPageLoading,
     searchFormSetSearchCriteria,
     searchFormSetAdvancedSearchCriteria,
 } from '../../actions/dashboard';
-import config from 'react-global-configuration';
-import {dashboardService} from './DashboardService';
+
+import {dashboardServiceManager} from './DashboardServiceManager';
 import {momentToISO} from '../../util/Common';
-
-const doSearch = (searchCriteria, searchFn) => {
-    store.dispatch(resultPageLoading(true));
-    store.dispatch(resultPageSort(defaultPageSort));
-    searchFn(searchCriteria, 0, config.get('avails.page.size'), defaultPageSort)
-    .then(response => {
-            store.dispatch(resultPageLoading(false));
-            store.dispatch(resultPageUpdate({
-                pages: 1,
-                avails: response.data.data,
-                pageSize: response.data.data.length,
-                total: response.data.total
-            }));
-        }
-    ).catch((error) => {
-        store.dispatch(resultPageLoading(false));
-        console.warn('Unexpected error');
-        console.error(error);
-    });
-};
-
-const defaultPageSort = [];
 
 export const advancedSearchHelper = {
 
     loadAdvancedSearchForm: (filter) => {
         store.dispatch(searchFormSetAdvancedSearchCriteria(filter));
-    },
-
-    storeAdvancedSearchForm: (searchCriteria) => {
-        store.dispatch(searchFormSetSearchCriteria(searchCriteria));
     },
 
     prepareAdvancedSearchCall: (searchCriteria) => {
@@ -48,9 +19,9 @@ export const advancedSearchHelper = {
             const criteria = searchCriteria[key];
             if (criteria) {
                 if (!(criteria instanceof Object)) {
-                    response[key] = criteria;
+                    response[key] = criteria.trim();
                 } else if (criteria.value) {
-                    response[key] = criteria.value;
+                    response[key] = criteria.value.trim();
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);
@@ -74,12 +45,11 @@ export const advancedSearchHelper = {
     },
 
     freeTextSearch(searchCriteria) {
-        doSearch(this.prepareAdvancedSearchCall(searchCriteria), dashboardService.freeTextSearch);
+        dashboardServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 
     advancedSearch(searchCriteria) {
-        this.storeAdvancedSearchForm(searchCriteria);
-        doSearch(this.prepareAdvancedSearchCall(searchCriteria), dashboardService.advancedSearch);
+        dashboardServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     }
 
 };
