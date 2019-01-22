@@ -230,6 +230,7 @@ class AvailsResultTable extends React.Component {
 
     onEdit(avail) {
         this.table.api.getRowNode(avail.id).setData(avail);
+        this.table.api.redrawRows([this.table.api.getRowNode(avail.id)]);
         this.props.resultPageUpdate({
             pages: this.props.availTabPage.pages,
             avails: this.editAvail(avail),
@@ -356,17 +357,19 @@ class AvailsResultTable extends React.Component {
 
     loadingRenderer(params){
         let error = null;
-        params.data.validationErrors.forEach( e => {
-            if(e.fieldName === params.colDef.field){
-                error = e.message + ', error processing field ' + e.originalFieldName +
-                            ' with value ' + e.originalValue +
-                            ' at row ' + e.rowId +
-                            ' from file ' + e.fileName;
-                return;
-            }
-        });
+        if(!params.value && params.data && params.data.validationErrors){
+            params.data.validationErrors.forEach( e => {
+                if(e.fieldName === params.colDef.field){
+                    error = e.message + ', error processing field ' + e.originalFieldName +
+                                ' with value ' + e.originalValue +
+                                ' at row ' + e.rowId +
+                                ' from file ' + e.fileName;
+                    return;
+                }
+            });
+        }
 
-        const content = error || params.valueFormatted || params.value;
+        const content = params.valueFormatted || params.value || error;
         if (params.value !== undefined) {
             if (content) {
                 return(
@@ -387,13 +390,15 @@ class AvailsResultTable extends React.Component {
 
      cellStyle(params) {
         let error = null;
-        params.data.validationErrors.forEach( e => {
-         if(e.fieldName === params.colDef.field){
-             error = e;
-             return;
-         }
-        });
-        if (error) {
+        if(!params.value && params.data && params.data.validationErrors){
+            params.data.validationErrors.forEach( e => {
+             if(e.fieldName === params.colDef.field){
+                 error = e;
+                 return;
+             }
+            });
+        }
+        if (params.colDef.headerName !== '' && error) {
             return {backgroundColor: '#f2dede'};
         } else {
             return null;

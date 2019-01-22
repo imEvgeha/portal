@@ -147,11 +147,12 @@ class AvailDetails extends React.Component {
     render() {
         const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
         const renderFieldTemplate = (name, displayName, error, content) => {
+            const hasValidationError = !this.state.avail[name] && error;
             return (
                 <div href="#" key={name}
                     className="list-group-item list-group-item-action flex-column align-items-start"
-                    style={{backgroundColor: error ? '#f2dede' : null,
-                            color: error ? '#a94442' : null
+                    style={{backgroundColor: hasValidationError ? '#f2dede' : null,
+                            color: hasValidationError ? '#a94442' : null
                         }}>
                     <div className="row">
                         <div className="col-4">{displayName}:</div>
@@ -189,7 +190,6 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={displayFunc(this.emptyValueText + ' ' + displayName)}
                     validate={() => this.validateTextField(ref.current, name)}
-                    display={displayFunc}
                 />
             ));
         };
@@ -211,7 +211,7 @@ class AvailDetails extends React.Component {
     };
     const renderDatepickerField = (name, displayName, error) => {
         let priorityError = null;
-        if(error){
+        if(!this.state.avail[name] && error){
             priorityError = <div title = {error}
                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
                                 {error}
@@ -232,15 +232,17 @@ class AvailDetails extends React.Component {
         return mappings.map((mapping) => {
             if(mapping.javaVariableName !== 'availId'){//we shouldn't be able to modify the id
                 let error = null;
-                this.state.avail.validationErrors.forEach( e => {
-                    if(e.fieldName === mapping.javaVariableName){
-                        error = e.message + ', error processing field ' + e.originalFieldName +
-                                    ' with value ' + e.originalValue +
-                                    ' at row ' + e.rowId +
-                                    ' from file ' + e.fileName;
-                        return;
-                    }
-                });
+                if(this.state.avail.validationErrors){
+                    this.state.avail.validationErrors.forEach( e => {
+                        if(e.fieldName === mapping.javaVariableName){
+                            error = e.message + ', error processing field ' + e.originalFieldName +
+                                        ' with value ' + e.originalValue +
+                                        ' at row ' + e.rowId +
+                                        ' from file ' + e.fileName;
+                            return;
+                        }
+                    });
+                }
                 switch (mapping.dataType) {
                     case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
                     case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
