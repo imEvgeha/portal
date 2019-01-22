@@ -61,7 +61,7 @@ class NavbarConnect extends React.Component {
                     <Can I="read" a="Avail">
                         <li className="">
                             <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
-                                <NavLink activeClassName="navActive" to="/"  id="dashboard-tab">Dashboard</NavLink>
+                                <NavLink activeClassName="navActive" to="/dashboard"  id="dashboard-tab">Dashboard</NavLink>
                             </span>
                         </li>
                     </Can>

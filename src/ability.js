@@ -1,5 +1,7 @@
 import { AbilityBuilder, Ability } from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
+import {withRouter} from 'react-router-dom';
+import React from 'react';
 
 const ability = new Ability([]);
 
@@ -42,5 +44,24 @@ const cannot = (action, subject, field = undefined) => {
     return ability.cannot(action, subject, field);
 };
 
+const canRender = (Component, action, subject, field = undefined) => {
 
-export {ability, updateAbility, Can, can, cannot};
+    class AuthenticatedComponent extends React.Component {
+
+        componentDidMount() {
+            if (cannot(action, subject, field)) {
+                this.props.history.push('/');
+            }
+        }
+
+        render() {
+            return can(action, subject, field) ? <Component {...this.props}/> : <div>Invalid application state</div>;
+        }
+
+    }
+
+    return withRouter(AuthenticatedComponent);
+};
+
+
+export {ability, updateAbility, Can, can, cannot, canRender};
