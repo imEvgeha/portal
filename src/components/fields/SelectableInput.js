@@ -33,6 +33,7 @@ export default class SelectableInput extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDateInvalid = this.handleDateInvalid.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.isAnyValueSpecified = this.isAnyValueSpecified.bind(this);
         this.refInput = React.createRef();
         this.refDatePicker = React.createRef();
     }
@@ -78,6 +79,11 @@ export default class SelectableInput extends Component {
         }, 10);
     }
 
+    isAnyValueSpecified = () => {
+        const value = this.props.value;
+        return value.from || value.to || (value.value  && value.value.trim());
+    };
+
     render() {
         const renderTextField = (name, displayName) => {
             return (<div key={name} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
@@ -86,7 +92,7 @@ export default class SelectableInput extends Component {
                     placeholder={'Enter ' + displayName}
                     name={name}
                     ref={this.refInput}
-                    value={this.props.value && this.props.value.value}
+                    value={this.props.value && this.props.value.value ? this.props.value.value : '' }
                     onChange={this.handleInputChange}
                     onKeyPress={this._handleKeyPress}/>
             </div>);
@@ -139,7 +145,7 @@ export default class SelectableInput extends Component {
                     <Button outline color="secondary"
                             id={this.props.id + '-add-btn'}
                             onClick={this.props.onSave}
-                            disabled={this.state.invalid}
+                            disabled={this.state.invalid || !this.isAnyValueSpecified()}
                             style={{width: '80px'}}>{this.props.saveText || 'add' }</Button>
                 </div>
                 }

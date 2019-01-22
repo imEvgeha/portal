@@ -81,7 +81,12 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     handleSearch() {
-        this.props.onSearch(this.props.searchCriteria);
+        const criteria = {...this.props.searchCriteria};
+        if (criteria.provider) {
+            criteria.provider = criteria.provider.trim();
+            this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
+        }
+        this.props.onSearch(criteria);
     }
 
     render() {
@@ -103,7 +108,7 @@ class AdvancedHistorySearchPanel extends React.Component {
                 key={name}
                 id={'avails-ingest-history-search-' + name}
                 displayName={displayName}
-                value={this.props.searchCriteria[name] ? this.props.searchCriteria[name] : {from: null, to: null}}
+                value={this.props.searchCriteria[name] ? this.props.searchCriteria[name] : {}}
                 onFromDateChange={(value) => this.handleDateChange(name, 'from', value)}
                 onToDateChange={(value) => this.handleDateChange(name, 'to', value)}
                 onInvalid={(value) => this.handleDateInvalid(name, value)}

@@ -27,3 +27,8 @@
 - need to be a valid JSON file
 - should have similar structure to default config.js file, but you can specify only value which need to be changed in environment, all other will be a default one
 - in case of any problem with Parsing json you will se problematic position in web console log
+
+
+
+## Link to shared components: 
+- http://confluence.vubiquity.com/display/CS/Portal+Components

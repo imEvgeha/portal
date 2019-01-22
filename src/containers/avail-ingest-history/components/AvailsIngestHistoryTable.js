@@ -13,8 +13,7 @@ import LoadingGif from '../../../img/loading.gif';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormSetAdvancedHistorySearchCriteria} from '../../../actions/history';
-import {historyService} from '../HistoryService';
-import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
+import {historyServiceManager} from '../HistoryServiceManager';
 
 
 
@@ -71,7 +70,7 @@ class AvailsIngestHistoryTable extends React.Component {
     updateWindowDimensions() {
         const offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         const offsetLeft  = ReactDOM.findDOMNode(this).getBoundingClientRect().left;
-        this.setState({ height: (window.innerHeight - offsetTop - 120) + 'px',
+        this.setState({ height: (window.innerHeight - offsetTop - 140) + 'px',
                         width: (window.innerWidth - offsetLeft - 20) + 'px'});
     }
 
@@ -82,7 +81,7 @@ class AvailsIngestHistoryTable extends React.Component {
     }
 
     doSearch(page, pageSize, sortedParams) {
-        return historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall(this.props.searchCriteria), page, pageSize, sortedParams);
+        return historyServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){
