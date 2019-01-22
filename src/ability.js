@@ -16,9 +16,11 @@ const updateAbility = (keycloak) => {
     // ******** Ability *************
     if (keycloak.hasRealmRole('avails_viewer')) {
         can('read', 'Avail');
-    } else if (keycloak.hasRealmRole('avails_user')) {
+    }
+    if (keycloak.hasRealmRole('avails_user')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
-    } else if (keycloak.hasRealmRole('avails_admin')) {
+    }
+    if (keycloak.hasRealmRole('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
     }
 
