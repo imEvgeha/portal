@@ -112,6 +112,13 @@ class EditableDatePicker extends Component {
                             }
                         </div>
                         :
+                        this.props.priorityDisplay ?
+                            <span
+                                onClick={this.handleShowDatePicker}
+                                className="displayDate">
+                                {this.props.priorityDisplay}
+                            </span>
+                        :
                         this.props.value ?
                             <span
                                 onClick={this.handleShowDatePicker}

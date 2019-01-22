@@ -166,6 +166,18 @@ class AvailDetails extends React.Component {
         };
         const renderTextField = (name, displayName, error) => {
             const ref = React.createRef();
+            let displayFunc = (value) => {
+                if(error){
+                    return (<div title = {error}
+                        style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',
+                                color: error ? '#a94442' : null
+                            }}
+                        > {error} </div>);
+                }else{
+                    return value;
+                }
+            }
+
             return renderFieldTemplate(name, displayName, error, (
                 <Editable
                     ref={ref}
@@ -175,19 +187,9 @@ class AvailDetails extends React.Component {
                     mode="inline"
                     placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
-                    emptyValueText={this.emptyValueText + ' ' + displayName}
+                    emptyValueText={displayFunc(this.emptyValueText + ' ' + displayName)}
                     validate={() => this.validateTextField(ref.current, name)}
-                    display={(value) => {
-                        if(error){
-                            return (<div title = {error}
-                                style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',
-                                        color: error ? '#a94442' : null
-                                    }}
-                                > {error} </div>);
-                        }else{
-                            return value;
-                        }
-                    }}
+                    display={displayFunc}
                 />
             ));
         };
@@ -208,9 +210,17 @@ class AvailDetails extends React.Component {
 
     };
     const renderDatepickerField = (name, displayName, error) => {
+        let priorityError = null;
+        if(error){
+            priorityError = <div title = {error}
+                                style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+                                {error}
+                            </div>
+        }
         return renderFieldTemplate(name, displayName, error, (
             <EditableDatePicker
-                value={error || this.state.avail[name]}
+                value={this.state.avail[name]}
+                priorityDisplay={priorityError}
                 name={name}
                 displayName={displayName}
                 validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
