@@ -30,7 +30,7 @@ pipeline {
                sh "./deploy.sh dev nexus-avails ${imageTag}"
              }
            }
-         }
+         }  // kubernetes
      }
 
      post {
