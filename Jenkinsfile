@@ -35,16 +35,10 @@ pipeline {
 
      post {
        success {
-         mail
-           to: 'sjalali@vubiquity.com',
-           subject: "Build ${currentBuild.fullDisplayName} FAILED",
-           body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+         mail to: 'sjalali@vubiquity.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
        }
        failure {
-         mail
-           to: 'sjalali@vubiquity.com',
-           subject: "Build ${currentBuild.fullDisplayName} FAILED",
-           body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+         mail to: 'sjalali@vubiquity.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
        }
      }  // Post
  }
