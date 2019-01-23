@@ -21,8 +21,8 @@ class TitleCreate extends React.Component {
             seasonNumber: '',
             episodeNumber: '',
             seasonId: '',
-            episodeId: '',   
-            
+            episodeId: '',
+
             isFailed: false,
             loading: false,
             seasonChecked: true,
@@ -49,7 +49,7 @@ class TitleCreate extends React.Component {
 
 
     onSubmit = () => {
-        const { title, contentType, boxOffice, productionYear, brandProdYear, productionStudioId, brandTitleName, seasonId, seasonNumber, episodeId, episodeNumber} = this.state;
+        const { title, contentType, boxOffice, productionYear, brandProdYear, productionStudioId, brandTitleName, seasonId, seasonNumber, episodeId, episodeNumber } = this.state;
         const episodic = {
             brandProdYear,
             brandTitleName,
@@ -67,15 +67,16 @@ class TitleCreate extends React.Component {
             title
         };
         this.setState({ loading: true, errorMessage: '' });
-        dashboardService.createTitle(newTitle).then(() => {
+        dashboardService.createTitle(newTitle).then((res) => {
+            if (res.status === 200) {
                 this.form && this.form.reset();
-                this.setState({
-                    seasonId: '',
-                    episodeNumber: '',
-                    episodeId: ''
-                });
+                this.cleanFields();
                 this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false });
-                console.log(newTitle);
+            } else if(res.status === 400) {
+                this.setState({ loading: false, errorMessage: `Error: ${res.data.description}`, isFailed: true });
+            } else {
+                this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
+            }
         }).catch(() => {
             this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
         });
@@ -105,7 +106,7 @@ class TitleCreate extends React.Component {
     handleSelect = (e) => {
         this.setState({
             contentType: e.target.value
-        }); 
+        });
         if (e.target.value === 'Season') {
             this.setState({
                 seasonChecked: false,
