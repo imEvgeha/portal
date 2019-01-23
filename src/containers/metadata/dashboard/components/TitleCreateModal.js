@@ -67,18 +67,16 @@ class TitleCreate extends React.Component {
             title
         };
         this.setState({ loading: true, errorMessage: '' });
-        dashboardService.createTitle(newTitle).then((res) => {
-            if (res.status === 200) {
+        dashboardService.createTitle(newTitle).then(() => {
                 this.form && this.form.reset();
                 this.cleanFields();
                 this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false });
-            } else if(res.status === 400) {
-                this.setState({ loading: false, errorMessage: `Error: ${res.data.description}`, isFailed: true });
+        }).catch((err) => {
+            if(err.response.status === 400) {
+                this.setState({ loading: false, errorMessage: `Error: ${err.response.data.description}`, isFailed: true });
             } else {
                 this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
             }
-        }).catch(() => {
-            this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
         });
     }
     cleanFields = () => {
