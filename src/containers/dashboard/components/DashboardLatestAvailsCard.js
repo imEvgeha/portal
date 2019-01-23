@@ -75,7 +75,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
 
     getData() {
         setTimeout(this.getData, REFRESH_INTERVAL);
-        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'createdAt', desc:true}])
+        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
                 .then(response => {
                     //console.log(response);
                     if(this.table){
