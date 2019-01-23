@@ -167,7 +167,7 @@ class AvailDetails extends React.Component {
         };
         const renderTextField = (name, displayName, error) => {
             const ref = React.createRef();
-            let displayFunc = (value) => {
+            const displayFunc = (value) => {
                 if(error){
                     return (<div title = {error}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',

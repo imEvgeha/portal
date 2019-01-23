@@ -79,7 +79,7 @@ class EditableDatePicker extends Component {
     }
 
     render() {
-        let displayFunc = (value)=>{
+        const displayFunc = (value)=>{
             return (<span
                        onClick={this.handleShowDatePicker}
                        className="displayDate">
@@ -87,7 +87,7 @@ class EditableDatePicker extends Component {
                    </span>);
         };
 
-        let unfocusedRender = ()=>{
+        const unfocusedRender = ()=>{
             if(this.props.priorityDisplay) {
                 return displayFunc(this.props.priorityDisplay);
             } else {
