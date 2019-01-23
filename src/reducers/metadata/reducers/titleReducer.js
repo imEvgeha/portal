@@ -1,24 +1,13 @@
-import { GET_TITLE, UPDATE_TITLE, ADD_TITLE } from '../../../constants/action-types';
+import { METADATA_TITLE_DASHBOARD_CREATE_TITLE } from '../../../constants/action-types';
 
 const initialState = {
     titles: [{}],
-    title: {},
-    status: {}
+    title: {}
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case ADD_TITLE: 
-            return {
-                ...state,
-                title: action.payload
-            };
-        case GET_TITLE:
-            return {
-                ...state,
-                title: action.payload
-        };
-        case UPDATE_TITLE:
+        case METADATA_TITLE_DASHBOARD_CREATE_TITLE: 
             return {
                 ...state,
                 title: action.payload

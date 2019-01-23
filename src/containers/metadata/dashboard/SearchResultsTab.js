@@ -18,7 +18,7 @@ class SearchResultsTab extends React.Component {
         const renderReportSelect = () => {
             return (
                 <select className="form-control border-0 d-inline"
-                        id={'dashboard-avails-report-select'}
+                        id={'dashboard-title-report-select'}
                         onChange={this.handleChangeReport}
                         value={this.props.reportName}>
                     <option value="">None selected</option>
@@ -35,7 +35,7 @@ class SearchResultsTab extends React.Component {
                     <div className="row justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginLeft: '15px'}}>
                             <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                                Results: {this.props.availTabPage.total}
+                                Results: {this.props.titleTabPage.total}
                             </span>
                             {this.selectedItemsComponent()}
                         </div>
@@ -44,11 +44,11 @@ class SearchResultsTab extends React.Component {
                                 <span className="align-self-center" >Selected report:</span>
                                 {renderReportSelect()}
                             </div>
-                            <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
+                            <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportTitles}> </i>
                             <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
                         </div>
                     </div>
-                    {/*<AvailsResultTable/>*/}
+                    {/*<TitleResultTable/>*/}
                 </div>
             </div>
         );
@@ -57,7 +57,7 @@ class SearchResultsTab extends React.Component {
 
 SearchResultsTab.propTypes = {
     reportName: PropTypes.string.isRequired,
-    availTabPage: PropTypes.object,
+    titleTabPage: PropTypes.object,
 };
 
 

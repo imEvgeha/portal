@@ -25,7 +25,7 @@ class DashboardContainer extends React.Component {
                                 <tr>
                                     <td>
                                         <FreeTextSearch disabled={false} containerId={'dashboard-title'}
-                                            onSearch={this.handleAvailsFreeTextSearch}/>
+                                            onSearch={this.handleTitleFreeTextSearch}/>
                                     </td>
                                     <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
                                         <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
