@@ -8,7 +8,7 @@ import t from 'prop-types';
 import {
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
-} from '../actions/dashboard';
+} from '../stores/actions/avail/dashboard';
 import {Can} from '../ability';
 
 const mapStateToProps = state => {
@@ -72,6 +72,11 @@ class NavbarConnect extends React.Component {
                             </span>
                         </li>
                     </Can>
+                    <li className="">
+                        <span className="nav-link" href="#" >
+                            <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
+                        </span>
+                    </li>
                 </ul>
                 <ul className="nav navbar-nav ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}

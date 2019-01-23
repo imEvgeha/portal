@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { keycloak } from '../index';
-import { errorModal } from '../components/share/ErrorModal';
+import { errorModal } from '../components/modal/ErrorModal';
 
 
 const Http = {
@@ -56,7 +56,6 @@ const Http = {
                 }
             );
         }
-
         return http;
     }
 };

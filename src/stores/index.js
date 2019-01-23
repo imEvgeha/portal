@@ -1,22 +1,23 @@
-import {combineReducers, createStore} from 'redux';
-import root from '../reducers/index';
-import dashboard from '../reducers/dashboard';
-import history from '../reducers/history';
-import {loadDashboardSession} from '../actions/dashboard';
-import {loadHistorySession} from '../actions/history';
-import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper';
-import {advancedHistorySearchHelper} from '../containers/avail-ingest-history/AdvancedHistorySearchHelper';
+import {combineReducers, createStore } from 'redux';
+import root from './reducers/index';
+import titleReducer from './reducers/metadata/titleReducer';
+import dashboard from './reducers/avail/dashboard';
+import history from './reducers/history';
+import {loadDashboardSession} from './actions/avail/dashboard';
+import {loadHistorySession} from './actions/avail/history';
+import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper';
+import {advancedHistorySearchHelper} from '../containers/avail/ingest-history/AdvancedHistorySearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.2';
 const HISTORY_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
     root,
+    titleReducer,
     dashboard,
-    history
+    history,
 });
-
-const store = createStore(reducers);
+const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 export default store;
 
@@ -26,7 +27,6 @@ export const loadHistoryState = () => {
         advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
     }, 1);
 };
-
 export const saveHistoryState = () => {
     saveToWebLocalStorage('history', HISTORY_SESSION_VERSION);
 };
@@ -34,7 +34,7 @@ export const saveHistoryState = () => {
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
     setTimeout(() => {
-        advancedSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
+        availSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
     }, 1);
 };
 
