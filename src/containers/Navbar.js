@@ -72,6 +72,7 @@ class NavbarConnect extends React.Component {
                             </span>
                         </li>
                     </Can>
+
                 </ul>
                 <ul className="nav navbar-nav ml-auto">
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}

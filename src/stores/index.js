@@ -1,5 +1,6 @@
-import {combineReducers, createStore} from 'redux';
+import {combineReducers, createStore } from 'redux';
 import root from '../reducers/index';
+import titleReducer from '../reducers/metadata/reducers/titleReducer';
 import dashboard from '../reducers/dashboard';
 import history from '../reducers/history';
 import {loadDashboardSession} from '../actions/dashboard';
@@ -12,11 +13,11 @@ const HISTORY_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
     root,
+    titleReducer,
     dashboard,
-    history
+    history,
 });
-
-const store = createStore(reducers);
+const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 export default store;
 
@@ -26,7 +27,6 @@ export const loadHistoryState = () => {
         advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
     }, 1);
 };
-
 export const saveHistoryState = () => {
     saveToWebLocalStorage('history', HISTORY_SESSION_VERSION);
 };
