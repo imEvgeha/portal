@@ -204,7 +204,7 @@ class AdvancedSearchPanel extends React.Component {
 
     isAnyValueSpecified = () => {
         const value = this.state.value;
-        return value.from || value.to || (value.value  && value.value.trim());
+        return value && (value.from || value.to || (value.value  && value.value.trim()));
     };
 
     getFieldsToShow() {

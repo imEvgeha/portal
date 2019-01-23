@@ -2,7 +2,7 @@ import store from '../../stores';
 import {resultHistoryPageLoading, resultPageHistoryUpdate, searchFormSetHistorySearchCriteria} from '../../actions/history';
 import {historyService} from './HistoryService';
 
-const defaultPageSort = [{id: 'createdAt', desc: true}];
+const defaultPageSort = [{id: 'received', desc: true}];
 
 export const historyServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements
