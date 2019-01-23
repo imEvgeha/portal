@@ -32,4 +32,13 @@ pipeline {
            }
          }
      }
+
+     post {
+       success {
+         mail to: 'sjalali@vubiquity.com', subject: "Jenkins Build ${currentBuild.fullDisplayName} SUCCEEDED", body: "${JOB_NAME} from ${JOB_BASE_NAME}"
+       }
+       failure {
+         mail to: 'sjalali@vubiquity.com', subject: "Jenkins Build ${currentBuild.fullDisplayName} FAILED", body: "${JOB_NAME} from ${JOB_BASE_NAME}"
+       }
+     }  // Post
  }
