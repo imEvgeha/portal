@@ -42,7 +42,6 @@ const Http = {
                             }
                             errorModal.open('Access denied', () => {
                             }, { description: description });
-                            return error.response;
 
                         } else {
                             let description;
@@ -51,7 +50,6 @@ const Http = {
                             }
                             errorModal.open('Unexpected error occured. Please try again later.', () => {
                             }, { description: description, closable: true });
-                            return error.response;
                         }
                     }
                     return Promise.reject(error);
