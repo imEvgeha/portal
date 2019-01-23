@@ -8,7 +8,7 @@ import t from 'prop-types';
 import {
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
-} from '../actions/dashboard';
+} from '../stores/actions/avail/dashboard';
 import {Can} from '../ability';
 
 const mapStateToProps = state => {
