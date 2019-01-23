@@ -14,6 +14,7 @@ class EditableDatePicker extends Component {
         displayName: t.string,
         disabled: t.bool,
         onChange: t.func,
+        priorityDisplay: t.any
     };
 
     constructor(props) {
@@ -81,6 +82,32 @@ class EditableDatePicker extends Component {
     }
 
     render() {
+        const displayFunc = (value)=>{
+            return (<span
+                       onClick={this.handleShowDatePicker}
+                       className="displayDate">
+                       {value}
+                   </span>);
+        };
+
+        const unfocusedRender = ()=>{
+            if(this.props.priorityDisplay) {
+                return displayFunc(this.props.priorityDisplay);
+            } else {
+                if(this.props.value) {
+                    return displayFunc(this.state.date ? moment(this.state.date).format('L') : '');
+                } else {
+                    return(
+                        <span
+                            style={{ color: '#808080', cursor: 'pointer' }}
+                            onClick={this.handleShowDatePicker}>
+                            {'Enter ' + this.props.displayName}
+                        </span>
+                    );
+                }
+            }
+        };
+
         return (
             <div>
                 {
@@ -115,18 +142,7 @@ class EditableDatePicker extends Component {
                             }
                         </div>
                         :
-                        this.props.value ?
-                            <span
-                                onClick={this.handleShowDatePicker}
-                                className="displayDate">
-                                {this.state.date ? moment(this.state.date).format('L') : ''}
-                            </span>
-                            :
-                            <span
-                                style={{ color: '#808080', cursor: 'pointer' }}
-                                onClick={this.handleShowDatePicker}>
-                                {'Enter ' + this.props.displayName}
-                            </span>
+                        unfocusedRender()
                 }
             </div>
         );
