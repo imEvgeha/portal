@@ -1,5 +1,5 @@
-import store from '../../../../stores/index';
-import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../../stores/actions/avail/dashboard';
+import store from '../../../stores/index';
+import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/avail/dashboard';
 import {availService} from './AvailService';
 
 export const availServiceManager = {

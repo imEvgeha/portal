@@ -5,7 +5,7 @@ import { ModalFooter, ModalHeader, Modal, Button, Label } from 'reactstrap';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import EditableDatePicker from '../../../../components/form/EditableDatePicker';
-import { availService } from '../service/AvailService';
+import { availService } from '../../service/AvailService';
 import {rangeValidation} from '../../../../util/Validation';
 import config from 'react-global-configuration';
 import {cannot} from '../../../../ability';

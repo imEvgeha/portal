@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
 
-import {historyService} from '../../ingest-history/HistoryService';
+import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
 
 import './DashboardLatestAvailsCard.scss';

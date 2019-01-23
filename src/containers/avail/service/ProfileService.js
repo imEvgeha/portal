@@ -1,8 +1,8 @@
-import Http from '../../../../util/Http';
+import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import store from '../../../../stores/index';
-import {loadAvailsMapping} from '../../../../stores/actions/index';
-import {errorModal} from '../../../../components/modal/ErrorModal';
+import store from '../../../stores/index';
+import {loadAvailsMapping} from '../../../stores/actions/index';
+import {errorModal} from '../../../components/modal/ErrorModal';
 
 const http = Http.create({noDefaultErrorHandling: true});
 

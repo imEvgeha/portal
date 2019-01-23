@@ -15,7 +15,7 @@ import './AvailResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
-import {availServiceManager} from '../service/AvailServiceManager';
+import {availServiceManager} from '../../service/AvailServiceManager';
 import {availDetailsModal} from './AvailDetailsModal';
 
 

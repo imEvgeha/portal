@@ -4,7 +4,7 @@ import {
     searchFormSetAdvancedSearchCriteria,
 } from '../../../stores/actions/avail/dashboard';
 
-import {availServiceManager} from './service/AvailServiceManager';
+import {availServiceManager} from '../service/AvailServiceManager';
 import {momentToISO} from '../../../util/Common';
 
 export const availSearchHelper = {

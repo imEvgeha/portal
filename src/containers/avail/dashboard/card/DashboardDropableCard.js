@@ -3,7 +3,7 @@ import React from 'react';
 import './DashboardCard.scss';
 import Dropzone from 'react-dropzone';
 import {Progress} from 'reactstrap';
-import {uploadService} from '../service/UploadService';
+import {uploadService} from '../../service/UploadService';
 import config from 'react-global-configuration';
 
 

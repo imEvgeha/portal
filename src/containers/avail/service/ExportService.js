@@ -1,4 +1,4 @@
-import Http from '../../../../util/Http';
+import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 
 const http = Http.create();

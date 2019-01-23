@@ -6,13 +6,13 @@ import {confirmModal} from '../../../components/modal/ConfirmModal';
 import t from 'prop-types';
 import AvailsResultTable from './components/AvailsResultTable';
 import connect from 'react-redux/es/connect/connect';
-import {configurationService} from './service/ConfigurationService';
+import {configurationService} from '../service/ConfigurationService';
 import {downloadFile} from '../../../util/Common';
 
 import {
     resultPageUpdateColumnsOrder
 } from '../../../stores/actions/avail/dashboard';
-import {exportService} from './service/ExportService';
+import {exportService} from '../service/ExportService';
 
 const mapStateToProps = state => {
     return {

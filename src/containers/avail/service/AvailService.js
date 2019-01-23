@@ -1,7 +1,7 @@
-import Http from '../../../../util/Http';
+import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
-import {momentToISO, prepareSortMatrixParam} from '../../../../util/Common';
+import {momentToISO, prepareSortMatrixParam} from '../../../util/Common';
 
 const http = Http.create();
 

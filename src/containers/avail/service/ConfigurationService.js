@@ -1,10 +1,10 @@
-import Http from '../../../../util/Http';
+import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import store from '../../../../stores/index';
-import {loadReports, setReportName} from '../../../../stores/actions/index';
-import {errorModal} from '../../../../components/modal/ErrorModal';
-import {availSearchHelper} from '../AvailSearchHelper';
-import {resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
+import store from '../../../stores/index';
+import {loadReports, setReportName} from '../../../stores/actions/index';
+import {errorModal} from '../../../components/modal/ErrorModal';
+import {availSearchHelper} from '../dashboard/AvailSearchHelper';
+import {resultPageUpdateColumnsOrder} from '../../../stores/actions/avail/dashboard';
 
 const httpWithoutErrorHandling = Http.create({noDefaultErrorHandling: false});
 const http = Http.create();

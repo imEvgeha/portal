@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalFooter, ModalHeader, Modal, Button, Label, Input, Progress} from 'reactstrap';
 import t from 'prop-types';
-import {availService} from '../service/AvailService';
+import {availService} from '../../service/AvailService';
 import {rangeValidation} from '../../../../util/Validation';
 import NexusDatePicker from '../../../../components/form/NexusDatePicker';
 import config from 'react-global-configuration';

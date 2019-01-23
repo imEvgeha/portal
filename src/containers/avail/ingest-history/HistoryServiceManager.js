@@ -1,6 +1,6 @@
 import store from '../../../stores/index';
 import {resultHistoryPageLoading, resultPageHistoryUpdate, searchFormSetHistorySearchCriteria} from '../../../stores/actions/avail/history';
-import {historyService} from './HistoryService';
+import {historyService} from '../service/HistoryService';
 
 const defaultPageSort = [{id: 'received', desc: true}];
 

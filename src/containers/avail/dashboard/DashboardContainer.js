@@ -21,9 +21,9 @@ import {
     loadAvailsMapping,
     updateBreadcrumb
 } from '../../../stores/actions/index';
-import {profileService} from './service/ProfileService';
+import {profileService} from '../service/ProfileService';
 import {availSearchHelper} from './AvailSearchHelper';
-import {configurationService} from './service/ConfigurationService';
+import {configurationService} from '../service/ConfigurationService';
 import moment from 'moment';
 
 const mapStateToProps = state => {
