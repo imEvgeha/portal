@@ -70,16 +70,76 @@ class AvailHistoryRecordRenderer extends React.Component {
                 <div style={{display: 'flex', flex:1}}/>
                 <div style={{display: 'flex', paddingLeft:'10px', lineHeight: '30px', width:'345px'}}>
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'125px'}}>
-                        <div style={{display: 'flex', flex: 1}}><u><b><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data}}}>Total Avails:</Link></b></u></div>
-                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data}}}>{this.props.data.totalProcessed}</Link></div>
+                        <div style={{display: 'flex', flex: 1}}><u><b>
+                            {this.props.data.totalProcessed > 0 ?
+                                (<Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data}}}>
+                                    Total Avails:
+                                </Link>)
+                                :
+                                (<div>
+                                    Total Avails:
+                                </div>)
+                            }
+                        </b></u></div>
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
+                            {this.props.data.totalProcessed > 0 ?
+                                (<Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data}}}>
+                                    {this.props.data.totalProcessed}
+                                </Link>)
+                                :
+                                (<div>
+                                    {this.props.data.totalProcessed}
+                                </div>)
+                            }
+                        </div>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
-                        <div style={{display: 'flex', flex: 1}}><u><b><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: false}}}>Success:</Link></b></u></div>
-                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}><Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: false}}}>{this.props.data.successfullyProcessed}</Link> </div>
+                        <div style={{display: 'flex', flex: 1}}><u><b>
+                            {this.props.data.successfullyProcessed > 0 ?
+                                (<Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: false}}}>
+                                    Success:
+                                </Link>)
+                                :
+                                (<div>
+                                    Success:
+                                 </div>)
+                            }
+                        </b></u></div>
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
+                            {this.props.data.successfullyProcessed > 0 ?
+                                (<Link to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: false}}}>
+                                    {this.props.data.successfullyProcessed}
+                                </Link>)
+                                :
+                                (<div>
+                                    {this.props.data.successfullyProcessed}
+                                </div>)
+                            }
+                        </div>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
-                        <div style={{display: 'flex', flex: 1}}><u><b><Link className={'error-link'} to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: true}}}>Errors:</Link></b></u></div>
-                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}><Link className={'error-link'} to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: true}}}>{this.props.data.failedToProcess}</Link> </div>
+                        <div style={{display: 'flex', flex: 1}}><u><b>
+                            {this.props.data.failedToProcess > 0 ?
+                                (<Link className={'error-link'} to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: true}}}>
+                                    Errors:
+                                </Link>)
+                                :
+                                (<div>
+                                    Errors:
+                                </div>)
+                            }
+                        </b></u></div>
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
+                            {this.props.data.failedToProcess > 0 ?
+                                (<Link className={'error-link'} to={{ pathname: '/dashboard', state: {availHistory: this.props.data, rowInvalid: true}}}>
+                                    {this.props.data.failedToProcess}
+                                </Link>)
+                                :
+                                (<div>
+                                    {this.props.data.failedToProcess}
+                                </div>)
+                            }
+                        </div>
                     </div>
                 </div>
                 <div style={{display: 'flex', flex:1}}/>
