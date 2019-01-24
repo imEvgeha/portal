@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
+import {Link} from 'react-router-dom';
 
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
@@ -103,9 +104,9 @@ export default class DashboardLatestAvailsCard extends React.Component {
         return (
             <div className="dashboard-card-container no-padding" style={{width:'555px', height:'200px'}}>
                 <div className="dashboard-card-title">
-                    <a href='/avail-ingest-history'>Latest Avails Ingests</a>
+                    <Link to={{ pathname: '/avail-ingest-history'}}>Latest Avails Ingests</Link>
                     <span style={{float:'right', textDecoration: 'underline', paddingRight: '5px'}}>
-                        <a href='/avail-ingest-history'>View All</a>
+                        <Link to={{ pathname: '/avail-ingest-history'}}>View All</Link>
                     </span>
                 </div>
                 <div className="ag-theme-balham"

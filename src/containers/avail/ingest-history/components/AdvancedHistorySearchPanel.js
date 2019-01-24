@@ -8,6 +8,7 @@ import t from 'prop-types';
 import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 import Select from 'react-select';
+import {safeTrim} from '../../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -82,10 +83,8 @@ class AdvancedHistorySearchPanel extends React.Component {
 
     handleSearch() {
         const criteria = {...this.props.searchCriteria};
-        if (criteria.provider) {
-            criteria.provider = criteria.provider.trim();
-            this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
-        }
+        criteria.provider = safeTrim(criteria.provider);
+        this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
         this.props.onSearch(criteria);
     }
 
