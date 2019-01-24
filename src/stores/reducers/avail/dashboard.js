@@ -83,7 +83,7 @@ const dashboard = (state = initialState, action) => {
             return { ...state, session: {...state.session, availTabPageSort: action.payload}};
         case DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER:
              saveDashboardState();
-            return { ...state, session: {...state.session, columns: action.payload}};
+            return { ...state, session: {...state.session, columns: action.payload || initialState.session.columns}};
         case DASHBOARD_RESULT_PAGE__SELECT_ROW:
             saveDashboardState();
             return { ...state, session: {...state.session, availTabPageSelection: action.payload}};

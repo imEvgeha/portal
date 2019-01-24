@@ -132,27 +132,7 @@ class AvailsResultTable extends React.Component {
             this.setState({});
         }
 
-        if(this.props.availTabPageSort != prevProps.availTabPageSort){
-            let sortModel=[];
-            this.props.availTabPageSort.map(sortCriteria=>{
-                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
-            });
-
-            let currentSortModel=this.table.api.getSortModel();
-            let toChangeSortModel=false;
-
-            if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
-
-            for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
-                if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
-                if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
-            }
-
-            if(toChangeSortModel){
-                this.table.api.setSortModel(sortModel);
-            }
-
-        }
+        this.refreshSort();
 
         if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
             this.table.api.setDatasource(this.dataSource);
@@ -171,6 +151,27 @@ class AvailsResultTable extends React.Component {
                 } : null,
                 width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250
             });
+        }
+    }
+
+    refreshSort(){
+        let sortModel=[];
+        this.props.availTabPageSort.map(sortCriteria=>{
+            sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
+        });
+
+        let currentSortModel=this.table.api.getSortModel();
+        let toChangeSortModel=false;
+
+        if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
+
+        for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
+            if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
+            if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
+        }
+
+        if(toChangeSortModel){
+            this.table.api.setSortModel(sortModel);
         }
     }
 
@@ -248,7 +249,7 @@ class AvailsResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
-                        if(response.data.total > 0){
+                        if(response && response.data.total > 0){
                             //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
