@@ -4,7 +4,7 @@ import {
     searchFormSetHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
-import {momentToISO} from '../../../util/Common';
+import {momentToISO, safeTrim} from '../../../util/Common';
 
 export const advancedHistorySearchHelper = {
 
@@ -12,11 +12,11 @@ export const advancedHistorySearchHelper = {
         const response = {};
         for (let key of Object.keys(searchCriteria) ) {
             const criteria = searchCriteria[key];
-            if (criteria) {
+            if (criteria !== null && criteria !== undefined) {
                 if (!(criteria instanceof Object)) {
-                    response[key] = criteria.trim();
+                    response[key] = safeTrim(criteria);
                 } else if (criteria.value) {
-                    response[key] = criteria.value.trim();
+                    response[key] = safeTrim(criteria.value);
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);

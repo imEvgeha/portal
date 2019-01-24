@@ -305,7 +305,6 @@ class AdvancedSearchPanel extends React.Component {
                 </div>
             );
         };
-
         return (
             <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
                  style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}>
@@ -334,7 +333,7 @@ class AdvancedSearchPanel extends React.Component {
                         <select className="form-control border-1 d-inline"
                                 id={'dashboard-avails-report-select'}
                                 onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.rowInvalid && this.props.searchCriteria.rowInvalid.value ? this.props.searchCriteria.rowInvalid.value : ''}
+                                value={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : ''}
                                 style={{width: '100px', background: 'initial', margin: '0 5px'}}
                         >
                             <option value="">All</option>

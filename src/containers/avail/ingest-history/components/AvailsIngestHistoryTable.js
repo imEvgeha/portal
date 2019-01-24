@@ -100,11 +100,14 @@ class AvailsIngestHistoryTable extends React.Component {
                                 lastRow = response.data.total;
                             }
                             params.successCallback(response.data.data, lastRow);
-
-                            this.table.api.hideOverlay();
+                            if(this.table){
+                                this.table.api.hideOverlay();
+                            }
                         }else{
-                            this.table.api.showNoRowsOverlay();
-                            this.resetLoadedItems();
+                            if(this.table){
+                                this.table.api.showNoRowsOverlay();
+                                this.resetLoadedItems();
+                            }
                         }
                    }).catch((error) => {
                        console.error('Unexpected error');

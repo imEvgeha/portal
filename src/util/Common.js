@@ -19,6 +19,15 @@ function downloadFile(data) {
     window.URL.revokeObjectURL(url);
 }
 
+function safeTrim(value){
+    if(value === undefined || value === null) return value;
+    if(typeof value === 'string'){
+        return value.trim();
+    }else{
+        return value;
+    }
+}
+
 function momentToISO(date) {
     return moment(date).format(formatISO);
 }
@@ -54,4 +63,4 @@ function mergeDeep(target, source) {
     return output;
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim};
