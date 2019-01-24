@@ -10,6 +10,8 @@
     "build:prod": "webpack --env prod --mode production && docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {
+    "@casl/ability": "^2.5.1",
+    "@casl/react": "^0.8.1",
     "ag-grid-community": "^19.1.2",
     "ag-grid-react": "^19.1.2",
     "availity-reactstrap-validation": "^2.5.0",

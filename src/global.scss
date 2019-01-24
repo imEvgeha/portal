@@ -43,6 +43,10 @@
   display: flex;
 }
 
+.editable-container a{
+    width: 100%;
+}
+
 .editable-container .btn {
   margin-left: 8px;
   width: 40px;
@@ -82,4 +86,26 @@
 
 .css-15k3avv {
   position: absolute;
+}
+
+.breadcrumb {
+  background: white;
+  padding-bottom: 8px;
+  margin-bottom: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+}
+
+.error-link {
+  color: #CF2A27;
+}
+
+.error-link:hover {
+  color: #F63;
+}
+
+.ag-cell-wrapper > .ag-selection-checkbox {
+  margin-left: 10px;
 }
