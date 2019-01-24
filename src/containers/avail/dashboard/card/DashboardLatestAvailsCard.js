@@ -105,7 +105,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
                 <div className="dashboard-card-title">
                     <a href='/avail-ingest-history'>Latest Avails Ingests</a>
                     <span style={{float:'right', textDecoration: 'underline', paddingRight: '5px'}}>
-                        <a href='/avail-ingest-history'>View All</a>
+                        <a href='/avail/history'>View All</a>
                     </span>
                 </div>
                 <div className="ag-theme-balham"

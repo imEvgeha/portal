@@ -22,11 +22,12 @@ export default class App extends React.Component {
                     <NexusBreadcrumb/>
                     <div >
                         <Route exact path="/" component={Welcome}/>
-                        <Route path="/dashboard" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
-                        <Route path="/avail-ingest-history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
+                        <Route exact path="/avail" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
+                        <Route path="/avail/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                         <Route path="/metadata" component={MetadataDashboardContainer} />
                     </div>
                 </div>
+
             </Router>
         );
     }
