@@ -24,13 +24,14 @@ const updateAbility = (keycloak) => {
         can(['create', 'read', 'update', 'delete'], 'Avail');
     }
 
-    if (keycloak.hasRealmRole('metadata_viewer')) {
-        can('read', 'Metadata');
-    } else if (keycloak.hasRealmRole('metadata_user')) {
-        can(['create', 'read', 'update', 'delete'], 'Metadata');
-    } else if (keycloak.hasRealmRole('metadata_admin')) {
-        can(['create', 'read', 'update', 'delete'], 'Metadata');
-    }
+    // ******** Metadata *************
+    // if (keycloak.hasRealmRole('metadata_viewer')) {
+    //     can('read', 'Metadata');
+    // } else if (keycloak.hasRealmRole('metadata_user')) {
+    //     can(['create', 'read', 'update', 'delete'], 'Metadata');
+    // } else if (keycloak.hasRealmRole('metadata_admin')) {
+    //     can(['create', 'read', 'update', 'delete'], 'Metadata');
+    // }
 
     ability.update(rules);
 };
