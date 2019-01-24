@@ -4,12 +4,14 @@ import titleReducer from '../reducers/metadata/reducers/titleReducer';
 import dashboard from '../reducers/dashboard';
 import history from '../reducers/history';
 import {loadDashboardSession} from '../actions/dashboard';
+import {loadTitleSession} from '../actions/metadata/actions/index'
 import {loadHistorySession} from '../actions/history';
 import {advancedSearchHelper} from '../containers/dashboard/AdvancedSearchHelper';
 import {advancedHistorySearchHelper} from '../containers/avail-ingest-history/AdvancedHistorySearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.2';
 const HISTORY_SESSION_VERSION = '0.1';
+const METADATA_TITLE_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
     root,
@@ -17,7 +19,7 @@ const reducers = combineReducers({
     dashboard,
     history,
 });
-const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); // REDUX DEVTOOLS allows you to see your action  and state changes real-time in the browser.
+const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); // REDUX DEVTOOLS allows you to see your action and state changes real-time in the browser.
 
 export default store;
 
