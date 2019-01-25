@@ -90,7 +90,16 @@ class DashboardContainer extends React.Component {
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.availHistory) {
-                const subTitle = state.availHistory.ingestType + ', ' + (state.availHistory.provider ? state.availHistory.provider + ', ' : '') + moment(state.availHistory.received).format('llll');
+                let subTitle = state.availHistory.ingestType + ', ';
+                if(state.availHistory.ingestType === 'Email'){
+                    subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '')
+                }else{
+                    if(state.availHistory.attachments && state.availHistory.attachments[0]){
+                        const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
+                        subTitle += (filename ? filename + ', ' : '')
+                    }
+                }
+                subTitle += moment(state.availHistory.received).format('llll');
                 const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
                 if (state.rowInvalid !== undefined) {
                     criteria.rowInvalid = {value: state.rowInvalid};
