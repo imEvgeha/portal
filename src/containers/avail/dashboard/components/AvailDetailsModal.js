@@ -239,10 +239,15 @@ class AvailDetails extends React.Component {
                 if(this.state.avail.validationErrors){
                     this.state.avail.validationErrors.forEach( e => {
                         if(e.fieldName === mapping.javaVariableName){
-                            error = e.message + ', error processing field ' + e.originalFieldName +
-                                        ' with value ' + e.originalValue +
-                                        ' at row ' + e.rowId +
-                                        ' from file ' + e.fileName;
+                            error = e.message;
+                            if(e.sourceDetails){
+                                if(e.sourceDetails.originalValue) error += '&quot;' + e.sourceDetails.originalValue + '&quot;';
+                                if(e.sourceDetails.fileName){
+                                    error += ', in file ' + e.sourceDetails.fileName
+                                           + ', row number ' + e.sourceDetails.rowId
+                                           + ', column ' + e.sourceDetails.originalFieldName;
+                                }
+                            }
                             return;
                         }
                     });

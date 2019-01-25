@@ -354,12 +354,18 @@ class AvailsResultTable extends React.Component {
         if(!params.value && params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
                 if(e.fieldName === params.colDef.field){
-                    error = e.message + ', error processing field ' + e.originalFieldName +
-                                ' with value ' + e.originalValue +
-                                ' at row ' + e.rowId +
-                                ' from file ' + e.fileName;
-                    return;
+                    error = e.message;
+                    if(e.sourceDetails){
+                        if(e.sourceDetails.originalValue) error += '&quot;' + e.sourceDetails.originalValue + '&quot;';
+                        if(e.sourceDetails.fileName){
+                            error += ', in file ' + e.sourceDetails.fileName
+                                   + ', row number ' + e.sourceDetails.rowId
+                                   + ', column ' + e.sourceDetails.originalFieldName;
+                        }
+                    }
+
                 }
+                return error;
             });
         }
 
