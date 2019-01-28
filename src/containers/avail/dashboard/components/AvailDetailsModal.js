@@ -73,8 +73,8 @@ class AvailDetails extends React.Component {
     }
 
     update(name, value, onError) {
-        let updatedAvail = {id: this.state.avail.id, [name]: value};
-        availService.updateAvails(updatedAvail)
+        let updatedAvail = {[name]: value};
+        availService.updateAvails(updatedAvail, this.state.avail.id)
         .then(res => {
             let editedAvail = res.data;
             this.setState({
