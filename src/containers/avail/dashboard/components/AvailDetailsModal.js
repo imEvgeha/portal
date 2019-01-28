@@ -241,7 +241,7 @@ class AvailDetails extends React.Component {
                         if(e.fieldName === mapping.javaVariableName){
                             error = e.message;
                             if(e.sourceDetails){
-                                if(e.sourceDetails.originalValue) error += '&quot;' + e.sourceDetails.originalValue + '&quot;';
+                                if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
                                 if(e.sourceDetails.fileName){
                                     error += ', in file ' + e.sourceDetails.fileName
                                            + ', row number ' + e.sourceDetails.rowId
