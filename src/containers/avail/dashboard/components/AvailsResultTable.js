@@ -352,19 +352,25 @@ class AvailsResultTable extends React.Component {
 
     loadingRenderer(params){
         let error = null;
-        if(!params.value && params.data && params.data.validationErrors){
+        if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
                 if(e.fieldName === params.colDef.field){
-                    error = e.message + ', error processing field ' + e.originalFieldName +
-                                ' with value ' + e.originalValue +
-                                ' at row ' + e.rowId +
-                                ' from file ' + e.fileName;
-                    return;
+                    error = e.message;
+                    if(e.sourceDetails){
+                        if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                        if(e.sourceDetails.fileName){
+                            error += ', in file ' + e.sourceDetails.fileName
+                                   + ', row number ' + e.sourceDetails.rowId
+                                   + ', column ' + e.sourceDetails.originalFieldName;
+                        }
+                    }
+
                 }
+                return error;
             });
         }
 
-        const content = params.valueFormatted || params.value || error;
+        const content = error || params.valueFormatted || params.value;
         if (params.value !== undefined) {
             if (content) {
                 return(
@@ -385,7 +391,7 @@ class AvailsResultTable extends React.Component {
 
      cellStyle(params) {
         let error = null;
-        if(!params.value && params.data && params.data.validationErrors){
+        if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
              if(e.fieldName === params.colDef.field){
                  error = e;

@@ -73,8 +73,8 @@ class AvailDetails extends React.Component {
     }
 
     update(name, value, onError) {
-        let updatedAvail = {...this.state.avail, [name]: value};
-        availService.updateAvails(updatedAvail)
+        let updatedAvail = {[name]: value};
+        availService.updateAvails(updatedAvail, this.state.avail.id)
         .then(res => {
             let editedAvail = res.data;
             this.setState({
@@ -148,7 +148,7 @@ class AvailDetails extends React.Component {
     render() {
         const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
         const renderFieldTemplate = (name, displayName, error, content) => {
-            const hasValidationError = !this.state.avail[name] && error;
+            const hasValidationError = error;
             return (
                 <div href="#" key={name}
                     className="list-group-item list-group-item-action flex-column align-items-start"
@@ -192,6 +192,7 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={displayFunc(this.emptyValueText + ' ' + displayName)}
                     validate={() => this.validateTextField(ref.current, name)}
+                    display={displayFunc}
                 />
             ));
         };
@@ -214,7 +215,7 @@ class AvailDetails extends React.Component {
     };
     const renderDatepickerField = (name, displayName, error) => {
         let priorityError = null;
-        if(!this.state.avail[name] && error){
+        if(error){
             priorityError = <div title = {error}
                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
                                 {error}
@@ -239,10 +240,15 @@ class AvailDetails extends React.Component {
                 if(this.state.avail.validationErrors){
                     this.state.avail.validationErrors.forEach( e => {
                         if(e.fieldName === mapping.javaVariableName){
-                            error = e.message + ', error processing field ' + e.originalFieldName +
-                                        ' with value ' + e.originalValue +
-                                        ' at row ' + e.rowId +
-                                        ' from file ' + e.fileName;
+                            error = e.message;
+                            if(e.sourceDetails){
+                                if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                                if(e.sourceDetails.fileName){
+                                    error += ', in file ' + e.sourceDetails.fileName
+                                           + ', row number ' + e.sourceDetails.rowId
+                                           + ', column ' + e.sourceDetails.originalFieldName;
+                                }
+                            }
                             return;
                         }
                     });
