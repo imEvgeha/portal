@@ -147,7 +147,7 @@ class SearchResultsTab extends React.Component {
                         id={'dashboard-avails-report-select'}
                         onChange={this.handleChangeReport}
                         value={this.props.reportName}>
-                    <option value="">{this.props.reportName === '' ? 'None selected' : 'Default Report'}</option>
+                    <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
                     {
                         configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
                     }
