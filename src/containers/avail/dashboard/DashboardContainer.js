@@ -93,11 +93,11 @@ class DashboardContainer extends React.Component {
             if (state.availHistory) {
                 let subTitle = state.availHistory.ingestType + ', ';
                 if(state.availHistory.ingestType === 'Email'){
-                    subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '')
+                    subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '');
                 }else{
                     if(state.availHistory.attachments && state.availHistory.attachments[0]){
                         const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
-                        subTitle += (filename ? filename + ', ' : '')
+                        subTitle += (filename ? filename + ', ' : '');
                     }
                 }
                 subTitle += moment(state.availHistory.received).format('llll');
