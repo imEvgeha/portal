@@ -148,7 +148,7 @@ class AvailDetails extends React.Component {
     render() {
         const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
         const renderFieldTemplate = (name, displayName, error, content) => {
-            const hasValidationError = !this.state.avail[name] && error;
+            const hasValidationError = error;
             return (
                 <div href="#" key={name}
                     className="list-group-item list-group-item-action flex-column align-items-start"
@@ -192,6 +192,7 @@ class AvailDetails extends React.Component {
                     handleSubmit={this.handleSubmit}
                     emptyValueText={displayFunc(this.emptyValueText + ' ' + displayName)}
                     validate={() => this.validateTextField(ref.current, name)}
+                    display={displayFunc}
                 />
             ));
         };
@@ -214,7 +215,7 @@ class AvailDetails extends React.Component {
     };
     const renderDatepickerField = (name, displayName, error) => {
         let priorityError = null;
-        if(!this.state.avail[name] && error){
+        if(error){
             priorityError = <div title = {error}
                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
                                 {error}

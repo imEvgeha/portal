@@ -351,7 +351,7 @@ class AvailsResultTable extends React.Component {
 
     loadingRenderer(params){
         let error = null;
-        if(!params.value && params.data && params.data.validationErrors){
+        if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
                 if(e.fieldName === params.colDef.field){
                     error = e.message;
@@ -369,7 +369,7 @@ class AvailsResultTable extends React.Component {
             });
         }
 
-        const content = params.valueFormatted || params.value || error;
+        const content = error || params.valueFormatted || params.value;
         if (params.value !== undefined) {
             if (content) {
                 return(
@@ -390,7 +390,7 @@ class AvailsResultTable extends React.Component {
 
      cellStyle(params) {
         let error = null;
-        if(!params.value && params.data && params.data.validationErrors){
+        if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
              if(e.fieldName === params.colDef.field){
                  error = e;
