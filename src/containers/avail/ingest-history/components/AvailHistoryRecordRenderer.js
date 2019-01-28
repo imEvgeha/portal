@@ -20,6 +20,7 @@ class AvailHistoryRecordRenderer extends React.Component {
         let email = null;
         let counter = 0;
         let atts = [];
+        let firstName = '';
         if(this.props.data && this.props.data.attachments){
             atts = this.props.data.attachments.map(attachment => {
                 if(attachment.type==='Email'){
@@ -27,6 +28,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     return '';
                 }else{
                     let filename = attachment.link.split(/(\\|\/)/g).pop();
+                    if(!firstName) firstName = filename;
                     switch (attachment.type) {
                         case 'Excel':
                             return (
@@ -45,13 +47,17 @@ class AvailHistoryRecordRenderer extends React.Component {
 
         return(
             <div style={{display: 'flex', alignItems: 'center'}}>
-                <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'360px'}}>
-                    <div style={{display: 'flex', flex: 1}}><b>Provider:</b> &nbsp; {this.props.data.provider} </div>
-                    <div style={{display: 'flex', flex: 1}}><b>Received:</b> &nbsp; {this.props.data.received ? moment(this.props.data.received).format('llll'):''} </div>
+                <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'400px', width:'25%'}}>
+                    {this.props.data.ingestType === 'Email' ?
+                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Provider:</b> &nbsp; {this.props.data.provider} </div>)
+                        :
+                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Document Name:</b> &nbsp; <div style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}} title={firstName}>{firstName}</div> </div>)
+                    }
+                    <div style={{display: 'flex'}}><b>Received:</b> &nbsp; {this.props.data.received ? moment(this.props.data.received).format('llll'):''} </div>
                 </div>
-                <div style={{display: 'flex', flex:1}}/>
+                <div style={{display: 'flex', flex:0.5, minWidth:'30px'}}/>
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'182px'}}>
-                    <div style={{display: 'flex', flex: 1}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
+                    <div style={{display: 'flex'}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
                     <div style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
                         { (() => {
                             switch (this.props.data.status) {
@@ -67,7 +73,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         })()}
                     </div>
                 </div>
-                <div style={{display: 'flex', flex:1}}/>
+                <div style={{display: 'flex', flex:1, minWidth:'30px'}}/>
                 <div style={{display: 'flex', paddingLeft:'10px', lineHeight: '30px', width:'345px'}}>
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'125px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
