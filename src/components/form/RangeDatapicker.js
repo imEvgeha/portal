@@ -1,6 +1,5 @@
 import t from 'prop-types';
 import React from 'react';
-import '../../containers/avail/dashboard/card/DashboardCard.scss';
 import NexusDatePicker from './NexusDatePicker';
 import {INVALID_DATE} from '../../constants/messages';
 import moment from 'moment';

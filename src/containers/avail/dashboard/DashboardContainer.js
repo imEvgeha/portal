@@ -25,6 +25,7 @@ import {profileService} from '../service/ProfileService';
 import {availSearchHelper} from './AvailSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
 import moment from 'moment';
+import {AVAILS_DASHBOARD, AVAILS_HISTORY, SEARCH_RESULTS} from '../../../constants/breadcrumb';
 
 const mapStateToProps = state => {
     return {
@@ -98,25 +99,25 @@ class DashboardContainer extends React.Component {
                 this.props.searchFormShowAdvancedSearch(true);
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);
                 this.handleAvailsAdvancedSearch(criteria);
-                this.props.updateBreadcrumb([{name: 'Avail Ingest History', path: 'avail-ingest-history'}, {name: 'Search Results'}]);
+                this.props.updateBreadcrumb([AVAILS_HISTORY, SEARCH_RESULTS]);
                 this.fromHistory = true;
             } else if (state.back) {
                 this.handleBackToDashboard();
             }
         } else if (this.props.searchCriteria.availHistoryIds) {
             if (this.props.showSearchResults) {
-                this.props.updateBreadcrumb([{name: 'Avail Ingest History', path: 'avail-ingest-history'}, {name: 'Search Results'}]);
+                this.props.updateBreadcrumb([AVAILS_HISTORY, SEARCH_RESULTS]);
             } else {
-                this.props.updateBreadcrumb([{name: 'Dashboard', path: '/dashboard'}]);
+                this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}]);
             }
         } else {
-            this.props.updateBreadcrumb([{name: 'Dashboard', path: '/dashboard'}]);
+            this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}]);
         }
     }
 
     componentDidUpdate() {
         if (this.props.searchCriteria.availHistoryIds && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {
-            this.props.updateBreadcrumb([{name: 'Avail Ingest History', path: 'avail-ingest-history'}, {name: 'Search Results'}]);
+            this.props.updateBreadcrumb([AVAILS_HISTORY, SEARCH_RESULTS]);
             this.fromHistory = true;
         }
     }
@@ -124,7 +125,7 @@ class DashboardContainer extends React.Component {
     handleBackToDashboard() {
         this.props.searchFormShowAdvancedSearch(false);
         this.props.searchFormShowSearchResults(false);
-        this.props.updateBreadcrumb([{name: 'Dashboard', path: '/dashboard'}]);
+        this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}]);
     }
 
     toggleAdvancedSearch() {
@@ -134,7 +135,7 @@ class DashboardContainer extends React.Component {
     handleAvailsFreeTextSearch(searchCriteria) {
         this.props.searchFormUseAdvancedSearch(false);
         this.props.searchFormShowSearchResults(true);
-        this.props.updateBreadcrumb([{name: 'Dashboard', path: '/dashboard', onClick: () => this.handleBackToDashboard()}, {name: 'Search Results'}]);
+        this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}, SEARCH_RESULTS]);
         availSearchHelper.freeTextSearch(searchCriteria);
         this.cleanSelection();
     }
@@ -143,7 +144,7 @@ class DashboardContainer extends React.Component {
         this.props.searchFormUseAdvancedSearch(true);
         this.props.searchFormShowSearchResults(true);
         if (!this.props.searchCriteria.availHistoryIds) {
-            this.props.updateBreadcrumb([{name: 'Dashboard', path: 'dashboard'}, {name: 'Search Results'}]);
+            this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}, SEARCH_RESULTS]);
         }
         availSearchHelper.advancedSearch(searchCriteria);
         this.cleanSelection();

@@ -104,9 +104,9 @@ export default class DashboardLatestAvailsCard extends React.Component {
         return (
             <div className="dashboard-card-container no-padding" style={{width:'555px', height:'200px'}}>
                 <div className="dashboard-card-title">
-                    <Link to={{ pathname: '/avail-ingest-history'}}>Latest Avails Ingests</Link>
+                    <Link to={{ pathname: '/avails/history'}}>Latest Avails Ingests</Link>
                     <span style={{float:'right', textDecoration: 'underline', paddingRight: '5px'}}>
-                        <Link to={{ pathname: '/avail-ingest-history'}}>View All</Link>
+                        <Link to={{ pathname: '/avails/history'}}>View All</Link>
                     </span>
                 </div>
                 <div className="ag-theme-balham"

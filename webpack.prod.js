@@ -10,7 +10,8 @@ module.exports = {
     output: {
         path: __dirname + '/dist',
         filename: 'app/[name].bundle.js',
-        chunkFilename: 'app/[name].[chunkhash].chunk.js'
+        chunkFilename: 'app/[name].[chunkhash].chunk.js',
+        publicPath: '/'
     },
     entry: {
         main: './src/index.js'

@@ -45,7 +45,8 @@ const Http = {
 
                         } else {
                             let description;
-                            if (error.response.data) {
+                            if (error.response.data &&  Object.keys(error.response.data).length > 0) {
+                                console.log('Have import data');
                                 description = JSON.stringify(error.response.data);
                             }
                             errorModal.open('Unexpected error occured. Please try again later.', () => {
