@@ -37,7 +37,7 @@ const history = (state = initialState, action) => {
             return { ...state, session: {...state.session, advancedSearchCriteria: {...state.session.advancedSearchCriteria, ...action.payload}}};
         case HISTORY_SEARCH_FORM__SET_SEARCH_CRITERIA:
             saveHistoryState();
-            return { ...state, session: {...state.session, searchCriteria: {...state.session.searchCriteria, ...action.payload}}};
+            return { ...state, session: {...state.session, searchCriteria: action.payload}};
         case HISTORY_RESULT_PAGE__LOADING:
             return {...state, availHistoryLoading: action.payload};
         case HISTORY_RESULT_PAGE__UPDATE:

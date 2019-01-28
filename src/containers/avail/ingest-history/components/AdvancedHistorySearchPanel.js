@@ -1,7 +1,8 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {
-    searchFormSetAdvancedHistorySearchCriteria
+    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormSetHistorySearchCriteria
 } from '../../../../stores/actions/avail/history';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
@@ -18,13 +19,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     searchFormSetAdvancedHistorySearchCriteria,
+    searchFormSetHistorySearchCriteria
 };
 
 class AdvancedHistorySearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
         onSearch: t.func,
-        searchFormSetAdvancedHistorySearchCriteria: t.func
+        searchFormSetAdvancedHistorySearchCriteria: t.func,
+        searchFormSetHistorySearchCriteria : t.func
     };
 
     _handleKeyPress = (e) => {
@@ -85,6 +88,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         const criteria = {...this.props.searchCriteria};
         criteria.provider = safeTrim(criteria.provider);
         this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
+        this.props.searchFormSetHistorySearchCriteria(criteria);
         this.props.onSearch(criteria);
     }
 

@@ -36,11 +36,6 @@ export const advancedHistorySearchHelper = {
            provider: '',
            status: '',
         }));
-        store.dispatch(searchFormSetHistorySearchCriteria({
-           received: null,
-           provider: '',
-           status: '',
-        }));
     },
 
     advancedSearch(searchCriteria) {
