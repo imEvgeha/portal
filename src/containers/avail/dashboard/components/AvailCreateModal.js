@@ -183,7 +183,6 @@ class AvailCreate extends React.Component {
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === name) {
-                if(!mapping.required) return '';
 
                 if(this.state.resolutionValidation.type === 'oneOf'){
                     if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
@@ -229,7 +228,7 @@ class AvailCreate extends React.Component {
                         else return '';
                     }
                 }
-                return this.validateNotEmpty(value);
+                if(mapping.required) return this.validateNotEmpty(value);
             }
 
         }
