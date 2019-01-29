@@ -34,7 +34,21 @@ export default class DashboardLatestAvailsCard extends React.Component {
             ]
         };
 
+        this.refresh = null;
+    }
+
+    componentDidMount() {
         this.getData();
+        if(this.refresh === null){
+            this.refresh = setInterval(this.getData, REFRESH_INTERVAL);
+        }
+    }
+
+    componentWillUnmount() {
+        if(this.refresh !== null){
+            clearInterval(this.refresh);
+            this.refresh = null;
+        }
     }
 
     statusIconRender(params){
@@ -75,7 +89,6 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     getData() {
-        setTimeout(this.getData, REFRESH_INTERVAL);
         historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
                 .then(response => {
                     //console.log(response);
