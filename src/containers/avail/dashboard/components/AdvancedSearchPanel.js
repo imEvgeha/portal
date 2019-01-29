@@ -123,7 +123,7 @@ class AdvancedSearchPanel extends React.Component {
 
     handleInvalidChange(event) {
         const value = event.target.value;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, rowInvalid: {value: value ? value : null}});
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, rowInvalid: {value: value}});
     }
 
     addSearchField() {
