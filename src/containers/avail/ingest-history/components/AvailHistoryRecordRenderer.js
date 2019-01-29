@@ -23,13 +23,13 @@ class AvailHistoryRecordRenderer extends React.Component {
         let firstName = '';
         if(this.props.data && this.props.data.attachments){
             atts = this.props.data.attachments.map(attachment => {
-                if(attachment.type==='Email'){
+                if(attachment.attachmentType==='Email'){
                     email = attachment.link;
                     return '';
                 }else{
                     let filename = attachment.link.split(/(\\|\/)/g).pop();
                     if(!firstName) firstName = filename;
-                    switch (attachment.type) {
+                    switch (attachment.attachmentType) {
                         case 'Excel':
                             return (
                                <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href={attachment.link} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
