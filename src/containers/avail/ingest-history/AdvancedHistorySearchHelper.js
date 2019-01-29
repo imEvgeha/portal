@@ -1,7 +1,6 @@
 import store from '../../../stores/index';
 import {
-    searchFormSetAdvancedHistorySearchCriteria //,
-    //searchFormSetHistorySearchCriteria
+    searchFormSetAdvancedHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO, safeTrim} from '../../../util/Common';
