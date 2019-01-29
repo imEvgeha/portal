@@ -68,7 +68,7 @@ class SearchResultsTab extends React.Component {
         confirmModal.open('Select Visible Columns',
             this.saveColumns,
             this.cancelColumns,
-            {confirmLabel:'Save',  description: this.selectColumnsContentProvider()});
+            {confirmLabel:'OK',  description: this.selectColumnsContentProvider()});
     }
 
     toggleColumn(e){
