@@ -235,7 +235,7 @@ class AvailDetails extends React.Component {
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
             const excludedFields = ['availId'];
-            const readOnlyFields = ['rowEdited']
+            const readOnlyFields = ['rowEdited'];
             if(excludedFields.indexOf(mapping.javaVariableName) === -1){
                 let error = null;
                 if(this.state.avail.validationErrors){
