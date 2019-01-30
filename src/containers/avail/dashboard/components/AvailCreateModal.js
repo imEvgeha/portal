@@ -390,7 +390,8 @@ class AvailCreate extends React.Component {
 
         const renderFields = (mappings) => {
             return mappings.map((mapping)=> {
-                if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
+                const excludedFields = ['availId', 'rowEdited'];
+                if(excludedFields.indexOf(mapping.javaVariableName) === -1){
                     let required = mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1;
                     switch (mapping.dataType) {
                         case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);

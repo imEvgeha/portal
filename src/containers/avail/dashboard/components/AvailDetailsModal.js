@@ -165,7 +165,7 @@ class AvailDetails extends React.Component {
                 </div>
             );
         };
-        const renderTextField = (name, displayName, error) => {
+        const renderTextField = (name, displayName, forceReadOnly, error) => {
             const ref = React.createRef();
             const displayFunc = (value) => {
                 if(error){
@@ -184,7 +184,7 @@ class AvailDetails extends React.Component {
                     ref={ref}
                     title={name}
                     value={this.state.avail[name]}
-                    disabled={cannot('update', 'Avail')}
+                    disabled={forceReadOnly || cannot('update', 'Avail')}
                     dataType="text"
                     mode="inline"
                     placeholder={this.emptyValueText + ' ' + displayName}
@@ -195,13 +195,13 @@ class AvailDetails extends React.Component {
                 />
             ));
         };
-        const renderBooleanField = (name, displayName, error) => {
+        const renderBooleanField = (name, displayName, forceReadOnly, error) => {
             return renderFieldTemplate(name, displayName, error, (
                 <Editable
                     title={name}
                     name={name}
                     dataType="select"
-                    disabled={cannot('update', 'Avail')}
+                    disabled={forceReadOnly || cannot('update', 'Avail')}
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}
                     options={[
@@ -212,7 +212,7 @@ class AvailDetails extends React.Component {
             ));
 
     };
-    const renderDatepickerField = (name, displayName, error) => {
+    const renderDatepickerField = (name, displayName, forceReadOnly, error) => {
         let priorityError = null;
         if(error){
             priorityError = <div title = {error}
@@ -225,7 +225,7 @@ class AvailDetails extends React.Component {
                 value={this.state.avail[name]}
                 priorityDisplay={priorityError}
                 name={name}
-                disabled={cannot('update', 'Avail')}
+                disabled={forceReadOnly || cannot('update', 'Avail')}
                 displayName={displayName}
                 validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
                 onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}
@@ -234,7 +234,9 @@ class AvailDetails extends React.Component {
     };
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
-            if(mapping.javaVariableName !== 'availId'){//we shouldn't be able to modify the id
+            const excludedFields = ['availId'];
+            const readOnlyFields = ['rowEdited']
+            if(excludedFields.indexOf(mapping.javaVariableName) === -1){
                 let error = null;
                 if(this.state.avail.validationErrors){
                     this.state.avail.validationErrors.forEach( e => {
@@ -252,12 +254,13 @@ class AvailDetails extends React.Component {
                         }
                     });
                 }
+                const forceReadOnly = readOnlyFields.indexOf(mapping.javaVariableName) > -1;
                 switch (mapping.dataType) {
-                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName, error);
+                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
                     default:
                         console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                 }
