@@ -36,6 +36,16 @@ class EditableDatePicker extends Component {
         this.cancel = this.cancel.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps.value != this.props.value){
+            this.setState({
+                showStateDate: false,
+                date: this.props.value ? moment(this.props.value) : moment(),
+            });
+        }
+
+    }
+
     handleShowDatePicker(e) {
         e.preventDefault();
         if (!this.props.disabled) {
