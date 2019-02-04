@@ -48,6 +48,14 @@
  color:#000; 
  cursor: pointer;
 }
+
+.displayDate.disabled,
+.displayDate.disabled:hover{
+ color: black;
+ cursor: text;
+}
+
 .displayDate:hover{
   color:#FE6633;
 }
+
