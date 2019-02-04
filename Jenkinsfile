@@ -2,6 +2,9 @@ pipeline {
      agent { label 'usla-jknd-p002' }
      stages {
          stage('build') {
+           when {
+               expression { env.GIT_BRANCH == 'origin/develop' }
+           }
              steps {
                script {
                  tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
@@ -12,11 +15,17 @@ pipeline {
              }
          }
          stage('docker build') {
+           when {
+               expression { env.GIT_BRANCH == 'origin/develop' }
+           }
              steps {
                sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
              }
          }
          stage('docker push') {
+           when {
+               expression { env.GIT_BRANCH == 'origin/develop' }
+           }           
              steps {
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
