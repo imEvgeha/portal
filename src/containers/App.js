@@ -27,10 +27,10 @@ export default class App extends React.Component {
                         <Route exact path="/" component={Welcome}/>
                         <Route exact path="/avails" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
                         <Switch>
+                            <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/new" component={AvailCreate}/>
                             <Route exact path="/avails/:id" component={AvailDetails}/>
                         </Switch>
-                        <Route path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                         <Route path="/metadata" component={MetadataDashboardContainer} />
                     </div>
                 </div>
