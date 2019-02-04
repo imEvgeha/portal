@@ -20,7 +20,7 @@ export const availSearchHelper = {
             if (criteria) {
                 if (!(criteria instanceof Object)) {
                     response[key] = safeTrim(criteria);
-                } else if (criteria.value) {
+                } else if (criteria.value || criteria.value === false) {
                     response[key] = safeTrim(criteria.value);
                 } else {
                     if (criteria.from) {

@@ -5,6 +5,8 @@ import moment from 'moment';
 import LoadingElipsis from '../../../../../src/img/ajax-loader.gif';
 import {Link} from 'react-router-dom';
 
+import {historyService} from '../../service/HistoryService';
+
 class AvailHistoryRecordRenderer extends React.Component {
 
     static propTypes = {
@@ -13,6 +15,25 @@ class AvailHistoryRecordRenderer extends React.Component {
 
     constructor(props) {
         super(props);
+    }
+
+    getDownloadLink(attachment){
+        const filename = attachment.link.split(/(\\|\/)/g).pop();
+
+        historyService.getDownloadUrl(attachment.id)
+        .then(response => {
+            if(response && response.data && response.data.downloadUrl){
+                const link = document.createElement('a');
+                link.href = response.data.downloadUrl;
+                link.setAttribute('download', filename);
+                link.click();
+            }
+        })
+        .catch(() => {
+            this.setState({
+                errorMessage: 'Download Failed. Url not available.'
+            });
+        });
     }
 
 
@@ -24,15 +45,16 @@ class AvailHistoryRecordRenderer extends React.Component {
         if(this.props.data && this.props.data.attachments){
             atts = this.props.data.attachments.map(attachment => {
                 if(attachment.attachmentType==='Email'){
-                    email = attachment.link;
+                    email = attachment;
                     return '';
                 }else{
                     let filename = attachment.link.split(/(\\|\/)/g).pop();
                     if(!firstName) firstName = filename;
+
                     switch (attachment.attachmentType) {
                         case 'Excel':
                             return (
-                               <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href={attachment.link} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
+                               <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
                             );
                         default:
                             return '';
@@ -102,7 +124,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: false}}}>
+                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
                                     Success:
                                 </Link>)
                                 :
@@ -113,7 +135,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: false}}}>
+                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
                                     {this.props.data.successfullyProcessed}
                                 </Link>)
                                 :
@@ -126,7 +148,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: true}}}>
+                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
                                     Errors:
                                 </Link>)
                                 :
@@ -137,7 +159,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: true}}}>
+                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
                                     {this.props.data.failedToProcess}
                                 </Link>)
                                 :
@@ -150,7 +172,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                 </div>
                 <div style={{display: 'flex', flex:1}}/>
                 <div style={{display: 'flex', width:'274px', verticalAlign: 'middle !important'}}>
-                    {email && <a href={email} target="_new" key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
+                    {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
                     {!email && <div key={email} style={{width: '40px', display:'inline-block'}}></div>}
                     <div style={{width: '224px', display:'inline-block', whiteSpace: 'normal'}}>
                         {atts}
