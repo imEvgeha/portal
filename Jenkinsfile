@@ -3,7 +3,7 @@ pipeline {
      stages {
          stage('build') {
            when {
-               expression { env.GIT_BRANCH == 'origin/develop' }
+               expression { env.GIT_COMMIT != env.GIT_PREVIOUS_SUCCESSFUL_COMMIT }
            }
              steps {
                script {
@@ -16,7 +16,7 @@ pipeline {
          }
          stage('docker build') {
            when {
-               expression { env.GIT_BRANCH == 'origin/develop' }
+               expression { env.GIT_COMMIT != env.GIT_PREVIOUS_SUCCESSFUL_COMMIT }
            }
              steps {
                sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
@@ -24,8 +24,8 @@ pipeline {
          }
          stage('docker push') {
            when {
-               expression { env.GIT_BRANCH == 'origin/develop' }
-           }           
+               expression { env.GIT_COMMIT != env.GIT_PREVIOUS_SUCCESSFUL_COMMIT }
+           }
              steps {
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
