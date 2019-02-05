@@ -11,9 +11,14 @@ import {
     METADATA_TITLE_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     METADATA_TITLE_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     METADATA_TITLE_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
-} from '../constants/action-types';
+    METADATA_TITLE_LOAD_PROFILE_INFO,
+    METADATA_TITLE_LOAD_TITLE_MAPPING,
+    METADATA_TITLE_LOAD_REPORTS,
+    METADATA_TITLE_SET_REPORT_NAME,
+    METADATA_TITLE_UPDATE_BREADCRUMB,
+    METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER
+} from '../../../constants/action-types';
 
-export const loadTitleSession = state => ({type: METADATA_TITLE_LOAD_SESSION, payload: state});
 
 export const searchFormUpdateTextSearch = textSearch => ({type: METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH, payload: textSearch});
 export const searchFormSetAdvancedSearchCriteria = searchCriteria => ({type: METADATA_TITLE_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA, payload: searchCriteria});
@@ -27,3 +32,14 @@ export const resultPageUpdate = results => ({ type: METADATA_TITLE_RESULT_PAGE__
 export const resultPageSort = sortCriteria => ({ type: METADATA_TITLE_RESULT_PAGE__SORT, payload: sortCriteria });
 export const resultPageSelect = selection => ({ type: METADATA_TITLE_RESULT_PAGE__SELECT_ROW, payload: selection });
 export const resultPageLoading = loading => ({ type: METADATA_TITLE_RESULT_PAGE__LOADING, payload: loading });
+
+
+export const loadTitleSession = state => ({type: METADATA_TITLE_LOAD_SESSION, payload: state});
+export const loadProfileInfo = profileInfo => ({type: METADATA_TITLE_LOAD_PROFILE_INFO, payload: profileInfo});
+export const loadTitleMapping = titleMapping => ({type: METADATA_TITLE_LOAD_TITLE_MAPPING, payload: titleMapping});
+export const loadReports = reports => ({type: METADATA_TITLE_LOAD_REPORTS, payload: reports});
+export const setReportName = reportName => ({type: METADATA_TITLE_SET_REPORT_NAME, payload: reportName});
+export const updateBreadcrumb = payload => ({type: METADATA_TITLE_UPDATE_BREADCRUMB, payload: payload});
+
+export const resultPageUpdateColumnsOrder = results => ({ type: METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER, payload: results });
+

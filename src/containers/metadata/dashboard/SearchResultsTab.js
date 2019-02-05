@@ -1,65 +1,96 @@
 import './DashboardContainer.scss';
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
+import t from 'prop-types';
+import TitleResultTable from './components/TitleResultTable';
+import connect from 'react-redux/es/connect/connect';
 
+import {
+    resultPageUpdateColumnsOrder
+} from '../../../stores/actions/metadata/index';
 
+import { titleMapping } from '../../metadata/service/Profile';
 
+const mapStateToProps = state => {
+    return {
+        titleTabPage: state.titleReducer.titleTabPage,
+        columns: state.titleReducer.session.columns,
+        titleTabPageSelected: state.titleReducer.session.titleTabPageSelection.selected,
+        reportName: state.titleReducer.session.reportName,
+        columnsOrder: state.titleReducer.session.columns
+    };
+};
+
+const mapDispatchToProps = {
+    resultPageUpdateColumnsOrder: resultPageUpdateColumnsOrder
+};
 
 class SearchResultsTab extends React.Component {
+
+    static propTypes = {
+        titleTabPage: t.object,
+        titleTabPageSelected: t.array,
+        columns: t.array,
+        reportName: t.string,
+        columnsOrder: t.array,
+        resultPageUpdateColumnsOrder: t.func
+    };
 
     hideShowColumns={};
 
     constructor(props) {
         super(props);
+        this.toggleColumn = this.toggleColumn.bind(this);
+        this.selectColumns = this.selectColumns.bind(this);
+        this.cancelColumns = this.cancelColumns.bind(this);
     }
 
-    render() {
-        const renderReportSelect = () => {
-            return (
-                <select className="form-control border-0 d-inline"
-                        id={'dashboard-title-report-select'}
-                        onChange={this.handleChangeReport}
-                        value={this.props.reportName}>
-                    <option value="">None selected</option>
-                    {
-                        //configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
-                    }
-                </select>
-            );
-        };
+    selectColumnsContentProvider() {
+        return titleMapping.mappings.map(column => {
+                if(column.javaVariableName=='title') return '';
+                let checked = this.props.columnsOrder.indexOf(column.javaVariableName) > -1 ? true : false;
+                return <div key={column.javaVariableName}><input type='checkbox' name={column.javaVariableName} style={{marginRight: '8px'}} onClick={this.toggleColumn} defaultChecked={checked} />{column.title}<br/></div>;
+            }
+        );
+    }
 
+    selectColumns() {
+        confirmModal.open('Select Visible Columns',
+            this.saveColumns,
+            this.cancelColumns,
+            {confirmLabel:'Save',  description: this.selectColumnsContentProvider()});
+    }
+
+    toggleColumn(e){
+        if(this.hideShowColumns.hasOwnProperty(e.target.name) && this.hideShowColumns[e.target.name] != e.target.checked){
+            delete this.hideShowColumns[e.target.name];
+        }else{
+            this.hideShowColumns[e.target.name]=e.target.checked;
+        }
+    }
+
+    cancelColumns() {
+        this.hideShowColumns={};
+    }
+
+    selectedItemsComponent() {
+        if (this.props.titleTabPageSelected.length) {
+            return <span className={'nx-container-margin table-top-text'}
+                         id={'dashboard-selected-title-number'}>Selected items: {this.props.titleTabPageSelected.length}</span>;
+        }
+    }
+    
+    render() {
         return (
             <div id="dashboard-result-table">
                 <div className={'container-fluid'}>
-                    <div className="row justify-content-between" style={{paddingTop: '16px'}}>
-                        <div className="align-bottom" style={{marginLeft: '15px'}}>
-                            <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                                Results: {this.props.titleTabPage.total}
-                            </span>
-                            {this.selectedItemsComponent()}
-                        </div>
-                        <div  style={{marginRight: '15px'}}>
-                            <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
-                                <span className="align-self-center" >Selected report:</span>
-                                {renderReportSelect()}
-                            </div>
-                            <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportTitles}> </i>
-                            <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
-                        </div>
-                    </div>
-                    {/*<TitleResultTable/>*/}
+                    Title Records
+                    <TitleResultTable/>
                 </div>
             </div>
         );
     }
 }
 
-SearchResultsTab.propTypes = {
-    reportName: PropTypes.string.isRequired,
-    titleTabPage: PropTypes.object,
-};
-
-
-
-export default SearchResultsTab;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);

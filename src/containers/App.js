@@ -11,6 +11,7 @@ import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer'
 import {canRender} from '../ability';
 import Welcome from './Welcome';
 import NexusBreadcrumb from './NexusBreadcrumb';
+import TitleEdit from './metadata/dashboard/components/TitleEdit';
 
 export default class App extends React.Component {
 
@@ -20,11 +21,12 @@ export default class App extends React.Component {
                 <div>
                     <Navbar/>
                     <NexusBreadcrumb/>
-                    <div >
+                    <div>
                         <Route exact path="/" component={Welcome}/>
-                        <Route path="/dashboard" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
-                        <Route path="/avail-ingest-history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
-                        <Route path="/metadata" component={MetadataDashboardContainer} />
+                        <Route exact path="/avails" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
+                        <Route path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
+                        <Route exact path="/metadata" component={MetadataDashboardContainer} />
+                        <Route exact path="/metadata/detail/:id" component={TitleEdit} />
                     </div>
                 </div>
             </Router>

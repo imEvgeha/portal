@@ -3,7 +3,7 @@ import { ModalFooter, ModalHeader, Modal, Button, Input, ModalBody, Alert, Row, 
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import '../Title.scss';
-import { dashboardService } from './DashboardService';
+import { titleService } from '../../service/TitleService';
 
 class TitleCreate extends React.Component {
 
@@ -17,6 +17,9 @@ class TitleCreate extends React.Component {
             seasonChecked: true,
             episodeChecked: true,
             brandChecked: true,
+
+            isBrandCompleted: false,
+            isBrandYearCompleted: false,
 
             titleForm: {
                 title: '',
@@ -54,6 +57,20 @@ class TitleCreate extends React.Component {
             },
         });
 
+        if (this.state.titleForm.episodic.brandTitleName) {
+            this.setState({
+                isBrandYearCompleted: true
+            });
+        } else if (this.state.titleForm.episodic.brandProdYear) {
+            this.setState({
+                isBrandCompleted: true
+            });
+        } else {
+            this.setState({
+                isBrandCompleted: false,
+                isBrandYearCompleted: false
+            });
+        }
     }
 
     handleChangeEpisodic = (e) => {
@@ -69,7 +86,6 @@ class TitleCreate extends React.Component {
         });
     }
 
-
     onSubmit = () => {
         this.setState({ loading: true, errorMessage: '' });
         this.setState({
@@ -77,14 +93,18 @@ class TitleCreate extends React.Component {
                 ...this.state.titleForm,
                 boxOffice: this.state.titleForm.boxOffice ? parseInt(this.state.titleForm.boxOffice) : ''
             }
-        })
-        dashboardService.createTitle(this.state.titleForm).then(() => {
+        });
+        titleService.createTitle(this.state.titleForm).then(() => {
             this.form && this.form.reset();
             this.cleanFields();
-            this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false });
+            this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false, isBrandCompleted: false });
+            setTimeout(() => {
+                this.toggle();
+            }, 2000);
         }).catch(() => {
             this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
         });
+
     }
     cleanFields = () => {
         this.setState({
@@ -103,7 +123,6 @@ class TitleCreate extends React.Component {
                     seasonNumber: ''
                 },
             },
-
             seasonChecked: true,
             episodeChecked: true,
             brandChecked: true,
@@ -116,11 +135,11 @@ class TitleCreate extends React.Component {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: true,
-                brandChecked: true,
+                brandChecked: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
-                    episodic: {                        
+                    episodic: {
                         ...this.state.titleForm.episodic,
                         episodeId: '',
                         episodeNumber: ''
@@ -170,19 +189,18 @@ class TitleCreate extends React.Component {
                 seasonChecked: true,
                 episodeChecked: true,
                 brandChecked: true,
-                    titleForm: {
-                        ...this.state.titleForm,
-                        contentType: e.target.value,
-                        episodic: {
-                            brandTitleName: '',
-                            brandProdYear: '',
-                            episodeId: '',
-                            episodeNumber: '',
-                            seasonId: '',
-                            seasonNumber: '',
-                        }
+                titleForm: {
+                    ...this.state.titleForm,
+                    contentType: e.target.value,
+                    episodic: {
+                        brandTitleName: '',
+                        brandProdYear: '',
+                        episodeId: '',
+                        episodeNumber: '',
+                        seasonId: '',
+                        seasonNumber: '',
                     }
-
+                }
             });
         }
     }
@@ -202,7 +220,9 @@ class TitleCreate extends React.Component {
                                     <Row>
                                         <Col>
                                             <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
-                                            <AvField name="title" errorMessage="Field can not be empty!" id="title" value={this.state.titleForm.title} required placeholder="Enter Title" onChange={this.handleChange} />
+                                            <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={this.state.titleForm.title} placeholder="Enter Title" onChange={this.handleChange} validate={{
+                                                required: { errorMessage: 'Field cannot be empty!' }
+                                            }} />
                                         </Col>
                                     </Row>
                                     <Row>
@@ -223,8 +243,8 @@ class TitleCreate extends React.Component {
                                             </AvField>
                                         </Col>
                                         <Col>
-                                            <Label for="titleProductionStudio">Production Studio<span style={{ color: 'red' }}>*</span></Label>
-                                            <AvField name="productionStudioId" errorMessage="Field can not be empty!" id="titleProductionStudio" value={this.state.titleForm.productionStudioId} required placeholder="Enter Studio" onChange={this.handleChange} />
+                                            <Label for="titleProductionStudio">Production Studio</Label>
+                                            <AvField name="productionStudioId" errorMessage="Please enter a valid production studio!" id="titleProductionStudio" value={this.state.titleForm.productionStudioId} placeholder="Enter Studio" onChange={this.handleChange} />
                                         </Col>
                                     </Row>
                                     {
@@ -232,8 +252,10 @@ class TitleCreate extends React.Component {
                                             <Row>
                                                 <Col>
                                                     <Label for="titleBrandName">Brand <span style={{ color: 'red' }}>*</span></Label>
-                                                    <AvField type="text" name="brandTitleName" disabled={this.state.brandChecked} value={this.state.titleForm.episodic.brandTitleName} id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field can not be empty!" onChange={this.handleChangeEpisodic}
-                                                        required
+                                                    <AvField type="text" name="brandTitleName" disabled={this.state.brandChecked} value={this.state.titleForm.episodic.brandTitleName} id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Please enter a valid brand!" onChange={this.handleChangeEpisodic}
+                                                        validate={{
+                                                            required: { errorMessage: 'Field cannot be empty!' }
+                                                        }}
                                                     />
                                                 </Col>
                                                 <Col>
@@ -252,16 +274,15 @@ class TitleCreate extends React.Component {
                                         !this.state.seasonChecked ?
                                             <Row>
                                                 <Col>
-                                                    <Label for="titleSeasonNumber">Season <span style={{ color: 'red' }}>*</span></Label>
-                                                    <AvField type="text" name="seasonNumber" disabled={this.state.seasonChecked} value={this.state.titleForm.episodic.seasonNumber} id="titleSeasonNumber" placeholder={'Enter Season Number'} errorMessage="Field can not be empty!" onChange={this.handleChangeEpisodic}
-                                                        required
+                                                    <Label for="titleSeasonNumber">Season</Label>
+                                                    <AvField type="text" name="seasonNumber" disabled={this.state.seasonChecked} value={this.state.titleForm.episodic.seasonNumber} id="titleSeasonNumber" placeholder={'Enter Season Number'} errorMessage="Please enter a valid season number!" onChange={this.handleChangeEpisodic}
                                                     />
                                                 </Col>
                                                 {
                                                     !this.state.episodeChecked ?
                                                         <Col>
                                                             <Label for="titleEpisodeNumber">Episode</Label>
-                                                            <Input type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber} disabled={this.state.episodeChecked} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
+                                                            <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber} disabled={this.state.episodeChecked} id="titleEpisodeNumber" errorMessage="Please enter a valid episode number!" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
                                                         </Col>
                                                         : null
                                                 }
@@ -273,13 +294,13 @@ class TitleCreate extends React.Component {
                                             <Row>
                                                 <Col>
                                                     <Label for="titleSeasonID">Season ID</Label>
-                                                    <Input type="text" name="seasonId" value={this.state.titleForm.episodic.seasonId} disabled={this.state.seasonChecked} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
+                                                    <AvField type="text" name="seasonId" value={this.state.titleForm.episodic.seasonId} disabled={this.state.seasonChecked} id="titleSeasonID" errorMessage="Please enter a valid season id" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
                                                 </Col>
                                                 {
                                                     !this.state.episodeChecked ?
                                                         <Col>
                                                             <Label for="titleEpisodeID">Episode ID</Label>
-                                                            <Input type="text" name="episodeId" value={this.state.titleForm.episodic.episodeId} disabled={this.state.episodeChecked} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
+                                                            <AvField type="text" name="episodeId" value={this.state.titleForm.episodic.episodeId} disabled={this.state.episodeChecked} id="titleEpisodeID" errorMessage="Please enter a valid episode id" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
                                                         </Col>
                                                         : null
                                                 }
@@ -298,9 +319,7 @@ class TitleCreate extends React.Component {
                                         </Col>
                                         <Col>
                                             <Label for="titleBoxOffice">Box Office</Label>
-                                            <AvField name="boxOffice" id="titleBoxOffice" type="text" onChange={this.handleChange} value={this.state.titleForm.boxOffice} placeholder="Enter Box Office" validate={{
-                                                pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
-                                            }} />
+                                            <AvField name="boxOffice" id="titleBoxOffice" type="text" onChange={this.handleChange} value={this.state.titleForm.boxOffice} placeholder="Enter Box Office" />
                                         </Col>
                                     </Row>
                                     {
