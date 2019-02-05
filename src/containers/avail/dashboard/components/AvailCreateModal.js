@@ -114,7 +114,7 @@ class AvailCreate extends React.Component {
         const groupedMappingName = this.getGroupedMappingName(name);
         const mappingErrorMessage = this.state.mappingErrorMessage;
 
-        if (!mappingErrorMessage[groupedMappingName].date) {
+        if (mappingErrorMessage[groupedMappingName] && !mappingErrorMessage[groupedMappingName].date) {
             const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
             mappingErrorMessage[name].range = errorMessage;
             if (mappingErrorMessage[groupedMappingName]) {
