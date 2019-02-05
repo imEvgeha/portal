@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button} from 'reactstrap';
 import {
     searchFormUpdateAdvancedSearchCriteria
 } from '../../../../stores/actions/metadata/index';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModalFooter, ModalHeader, Modal, Button, Input, ModalBody, Alert, Row, Col, Label, Container, Progress } from 'reactstrap';
+import { ModalFooter, ModalHeader, Modal, Button, ModalBody, Alert, Row, Col, Label, Container, Progress } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import '../Title.scss';
