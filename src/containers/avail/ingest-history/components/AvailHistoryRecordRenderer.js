@@ -20,7 +20,7 @@ class AvailHistoryRecordRenderer extends React.Component {
     getDownloadLink(attachment){
         const filename = attachment.link.split(/(\\|\/)/g).pop();
 
-        historyService.getDownloadUrl(attachment.id)
+        historyService.getAvailHistoryAttachment(attachment.id)
         .then(response => {
             if(response && response.data && response.data.downloadUrl){
                 const link = document.createElement('a');
@@ -51,16 +51,9 @@ class AvailHistoryRecordRenderer extends React.Component {
                     let filename = attachment.link.split(/(\\|\/)/g).pop();
                     if(!firstName) firstName = filename;
 
-                    switch (attachment.attachmentType) {
-                        case 'Excel':
-                            return (
-                               <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
-                            );
-                        default:
-                            return '';
-                    }
-
-
+                    return (
+                       <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
+                    );
                 }
             }).filter( elem=> {
                 return elem !== '';
