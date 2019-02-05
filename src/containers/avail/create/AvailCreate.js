@@ -1,24 +1,30 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
+import config from 'react-global-configuration';
 
-import {updateBreadcrumb} from '../../../stores/actions/index';
+import {loadProfileInfo, updateBreadcrumb} from '../../../stores/actions/index';
+import {saveCreateAvailForm} from "../../../stores/actions/avail/createavail";
 import {Button, Input, Label, Progress} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rangeValidation} from '../../../util/Validation';
 import {availService} from '../service/AvailService';
-import config from 'react-global-configuration';
+import store from '../../../stores/index';
+import createAvail from "../../../stores/reducers/avail/createavail";
+
 
 const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
+        storedForm: state.createavail.session.form,
     };
 };
 
 const mapDispatchToProps = {
-    updateBreadcrumb
+    updateBreadcrumb,
+    saveCreateAvailForm
 };
 
 const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
@@ -27,7 +33,9 @@ class AvailCreate extends React.Component {
 
     static propTypes = {
         updateBreadcrumb: t.func,
-        availsMapping: t.any
+        saveCreateAvailForm: t.func,
+        availsMapping: t.any,
+        storedForm: t.object
     };
 
     static contextTypes = {
@@ -51,6 +59,9 @@ class AvailCreate extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            avail: this.props.storedForm,
+        });
         profileService.initAvailsMapping();
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
@@ -69,6 +80,11 @@ class AvailCreate extends React.Component {
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping != this.props.availsMapping) {
             this.addMappingToState(this.props.availsMapping.mappings);
+        }
+        if(prevProps.storedForm != this.props.storedForm){
+            this.setState({
+                avail: this.props.storedForm,
+            });
         }
     }
 
@@ -116,6 +132,7 @@ class AvailCreate extends React.Component {
             this.setState({
                 avail: newAvail,
             });
+            store.dispatch(saveCreateAvailForm(newAvail));
         }
 
         if(!mappingErrorMessage){
@@ -146,6 +163,7 @@ class AvailCreate extends React.Component {
             avail: newAvail,
             mappingErrorMessage: mappingErrorMessage
         });
+        store.dispatch(saveCreateAvailForm(newAvail));
     }
 
     getGroupedMappingName(name) {
@@ -307,7 +325,8 @@ class AvailCreate extends React.Component {
         if(this.validateFields()) return;
         this.setState({loading: true});
         availService.createAvail(this.state.avail).then((response) => {
-            this.setState({loading: false});
+            this.setState({loading: false, avail:{}});
+            store.dispatch(saveCreateAvailForm({}));
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
@@ -348,10 +367,10 @@ class AvailCreate extends React.Component {
             );
         };
 
-        const renderTextField = (name, displayName, required) => {
+        const renderTextField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
-                    <Input type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
+                    <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
                         {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
@@ -361,13 +380,13 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderBooleanField = (name, displayName, required) => {
+        const renderBooleanField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <select className="form-control"
                         name={name}
                         id={'avails-create-' + name + '-select'}
                         placeholder={'Enter ' + displayName}
-                        value={this.state.avail[name]}
+                        value={value}
                         onChange={this.handleChange}>
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
@@ -376,10 +395,11 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, required) => {
+        const renderDatepickerField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
                     <NexusDatePicker
+                        value={value}
                         id={'avails-create-' + name + '-text'}
                         date={this.state.avail[name]}
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
@@ -407,16 +427,17 @@ class AvailCreate extends React.Component {
             this.props.availsMapping.mappings.map((mapping)=> {
                 if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
                     let required = mapping.required;
+                    const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
-                        case 'text' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required));
+                        case 'text' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'number' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required));
+                        case 'number' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'year' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required));
+                        case 'year' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required));
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required));
+                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
@@ -434,7 +455,6 @@ class AvailCreate extends React.Component {
                 );
             }
         }
-
         return(
             <div>
                 <div className="nx-stylish row mt-3 mx-5">

@@ -20,7 +20,7 @@ class AvailHistoryRecordRenderer extends React.Component {
     getDownloadLink(attachment){
         const filename = attachment.link.split(/(\\|\/)/g).pop();
 
-        historyService.getDownloadUrl(attachment.id)
+        historyService.getAvailHistoryAttachment(attachment.id)
         .then(response => {
             if(response && response.data && response.data.downloadUrl){
                 const link = document.createElement('a');

@@ -273,7 +273,7 @@ class AvailDetails extends React.Component {
 
         const renderColumns = [];
 
-        if(this.props.availsMapping) {
+        if(this.state.avail && this.props.availsMapping) {
             const renderFields = [];
             const cannotUpdate = cannot('update', 'Avail');
 
