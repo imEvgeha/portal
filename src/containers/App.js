@@ -29,6 +29,7 @@ export default class App extends React.Component {
                         <Route exact path="/metadata/detail/:id" component={TitleEdit} />
                     </div>
                 </div>
+
             </Router>
         );
     }

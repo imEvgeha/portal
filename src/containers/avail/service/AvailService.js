@@ -41,7 +41,7 @@ export const availService = {
         return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails', prepareAvail(avail));
     },
 
-    updateAvails: (avail) => {
-        return http.put(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${avail.id}`, prepareAvail(avail));
+    updateAvails: (availDiff, id) => {
+        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/avails/${id}` + '?updateHistory=true' , prepareAvail(availDiff));
     },
 };

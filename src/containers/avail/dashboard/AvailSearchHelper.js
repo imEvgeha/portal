@@ -5,7 +5,7 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 
 import {availServiceManager} from '../service/AvailServiceManager';
-import {momentToISO} from '../../../util/Common';
+import {momentToISO, safeTrim} from '../../../util/Common';
 
 export const availSearchHelper = {
 
@@ -19,9 +19,9 @@ export const availSearchHelper = {
             const criteria = searchCriteria[key];
             if (criteria) {
                 if (!(criteria instanceof Object)) {
-                    response[key] = criteria.trim();
-                } else if (criteria.value) {
-                    response[key] = criteria.value.trim();
+                    response[key] = safeTrim(criteria);
+                } else if (criteria.value || criteria.value === false) {
+                    response[key] = safeTrim(criteria.value);
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);

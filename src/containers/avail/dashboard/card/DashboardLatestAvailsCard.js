@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
+import {Link} from 'react-router-dom';
 
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
@@ -33,7 +34,21 @@ export default class DashboardLatestAvailsCard extends React.Component {
             ]
         };
 
+        this.refresh = null;
+    }
+
+    componentDidMount() {
         this.getData();
+        if(this.refresh === null){
+            this.refresh = setInterval(this.getData, REFRESH_INTERVAL);
+        }
+    }
+
+    componentWillUnmount() {
+        if(this.refresh !== null){
+            clearInterval(this.refresh);
+            this.refresh = null;
+        }
     }
 
     statusIconRender(params){
@@ -62,7 +77,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
         if(params.data.attachments){
             params.data.attachments.forEach( attachment => {
                 let filename = attachment.link.split(/(\\|\/)/g).pop();
-                switch (attachment.type) {
+                switch (attachment.attachmentType) {
                     case 'Excel':
                         toReturn += filename + ', ';
                         break;
@@ -74,7 +89,6 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     getData() {
-        setTimeout(this.getData, REFRESH_INTERVAL);
         historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
                 .then(response => {
                     //console.log(response);
@@ -103,9 +117,9 @@ export default class DashboardLatestAvailsCard extends React.Component {
         return (
             <div className="dashboard-card-container no-padding" style={{width:'555px', height:'200px'}}>
                 <div className="dashboard-card-title">
-                    <a href='/avail-ingest-history'>Latest Avails Ingests</a>
+                    <Link to={{ pathname: '/avails/history'}}>Latest Avails Ingests</Link>
                     <span style={{float:'right', textDecoration: 'underline', paddingRight: '5px'}}>
-                        <a href='/avail-ingest-history'>View All</a>
+                        <Link to={{ pathname: '/avails/history'}}>View All</Link>
                     </span>
                 </div>
                 <div className="ag-theme-balham"

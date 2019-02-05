@@ -73,8 +73,8 @@ class AvailDetails extends React.Component {
     }
 
     update(name, value, onError) {
-        let updatedAvail = {...this.state.avail, [name]: value};
-        availService.updateAvails(updatedAvail)
+        let updatedAvail = {[name]: value};
+        availService.updateAvails(updatedAvail, this.state.avail.id)
         .then(res => {
             let editedAvail = res.data;
             this.setState({
@@ -110,7 +110,6 @@ class AvailDetails extends React.Component {
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === field) {
-                if(!mapping.required) return '';
 
                 if(this.state.resolutionValidation.type === 'oneOf'){
                     if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
@@ -138,7 +137,7 @@ class AvailDetails extends React.Component {
                         else return '';
                     }
                 }
-                return this.validateNotEmpty(value);
+                if(mapping.required) return this.validateNotEmpty(value);
             }
 
         }
@@ -148,7 +147,7 @@ class AvailDetails extends React.Component {
     render() {
         const rowsOnLeft = Math.floor(this.props.availsMapping.mappings.length / 2) + 1; //+1 because we skip the 'availId' present in this array
         const renderFieldTemplate = (name, displayName, error, content) => {
-            const hasValidationError = !this.state.avail[name] && error;
+            const hasValidationError = error;
             return (
                 <div href="#" key={name}
                     className="list-group-item list-group-item-action flex-column align-items-start"
@@ -166,7 +165,7 @@ class AvailDetails extends React.Component {
                 </div>
             );
         };
-        const renderTextField = (name, displayName, error) => {
+        const renderTextField = (name, displayName, forceReadOnly, error) => {
             const ref = React.createRef();
             const displayFunc = (value) => {
                 if(error){
@@ -185,23 +184,24 @@ class AvailDetails extends React.Component {
                     ref={ref}
                     title={name}
                     value={this.state.avail[name]}
-                    disabled={cannot('update', 'Avail')}
+                    disabled={forceReadOnly || cannot('update', 'Avail')}
                     dataType="text"
                     mode="inline"
                     placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
-                    emptyValueText={displayFunc(this.emptyValueText + ' ' + displayName)}
+                    emptyValueText={displayFunc(forceReadOnly ? '' : this.emptyValueText + ' ' + displayName)}
                     validate={() => this.validateTextField(ref.current, name)}
+                    display={displayFunc}
                 />
             ));
         };
-        const renderBooleanField = (name, displayName, error) => {
+        const renderBooleanField = (name, displayName, forceReadOnly, error) => {
             return renderFieldTemplate(name, displayName, error, (
                 <Editable
                     title={name}
                     name={name}
                     dataType="select"
-                    disabled={cannot('update', 'Avail')}
+                    disabled={forceReadOnly || cannot('update', 'Avail')}
                     handleSubmit={this.handleSubmit}
                     value={this.state.avail[name]}
                     options={[
@@ -212,9 +212,9 @@ class AvailDetails extends React.Component {
             ));
 
     };
-    const renderDatepickerField = (name, displayName, error) => {
+    const renderDatepickerField = (name, displayName, forceReadOnly, error) => {
         let priorityError = null;
-        if(!this.state.avail[name] && error){
+        if(error){
             priorityError = <div title = {error}
                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
                                 {error}
@@ -225,7 +225,7 @@ class AvailDetails extends React.Component {
                 value={this.state.avail[name]}
                 priorityDisplay={priorityError}
                 name={name}
-                disabled={cannot('update', 'Avail')}
+                disabled={forceReadOnly || cannot('update', 'Avail')}
                 displayName={displayName}
                 validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
                 onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}
@@ -234,25 +234,33 @@ class AvailDetails extends React.Component {
     };
     const renderFields = (mappings) => {
         return mappings.map((mapping) => {
-            if(mapping.javaVariableName !== 'availId'){//we shouldn't be able to modify the id
+            const excludedFields = ['availId'];
+            const readOnlyFields = ['rowEdited'];
+            if(excludedFields.indexOf(mapping.javaVariableName) === -1){
                 let error = null;
                 if(this.state.avail.validationErrors){
                     this.state.avail.validationErrors.forEach( e => {
                         if(e.fieldName === mapping.javaVariableName){
-                            error = e.message + ', error processing field ' + e.originalFieldName +
-                                        ' with value ' + e.originalValue +
-                                        ' at row ' + e.rowId +
-                                        ' from file ' + e.fileName;
+                            error = e.message;
+                            if(e.sourceDetails){
+                                if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                                if(e.sourceDetails.fileName){
+                                    error += ', in file ' + e.sourceDetails.fileName
+                                           + ', row number ' + e.sourceDetails.rowId
+                                           + ', column ' + e.sourceDetails.originalFieldName;
+                                }
+                            }
                             return;
                         }
                     });
                 }
+                const forceReadOnly = readOnlyFields.indexOf(mapping.javaVariableName) > -1;
                 switch (mapping.dataType) {
-                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName, error);
-                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName, error);
+                    case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
+                    case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName, forceReadOnly, error);
                     default:
                         console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                 }

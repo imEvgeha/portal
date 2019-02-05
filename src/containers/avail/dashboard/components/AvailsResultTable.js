@@ -132,27 +132,7 @@ class AvailsResultTable extends React.Component {
             this.setState({});
         }
 
-        if(this.props.availTabPageSort != prevProps.availTabPageSort){
-            let sortModel=[];
-            this.props.availTabPageSort.map(sortCriteria=>{
-                sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
-            });
-
-            let currentSortModel=this.table.api.getSortModel();
-            let toChangeSortModel=false;
-
-            if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
-
-            for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
-                if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
-                if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
-            }
-
-            if(toChangeSortModel){
-                this.table.api.setSortModel(sortModel);
-            }
-
-        }
+        this.refreshSort();
 
         if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
             this.table.api.setDatasource(this.dataSource);
@@ -171,6 +151,27 @@ class AvailsResultTable extends React.Component {
                 } : null,
                 width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250
             });
+        }
+    }
+
+    refreshSort(){
+        let sortModel=[];
+        this.props.availTabPageSort.map(sortCriteria=>{
+            sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
+        });
+
+        let currentSortModel=this.table.api.getSortModel();
+        let toChangeSortModel=false;
+
+        if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
+
+        for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
+            if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
+            if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
+        }
+
+        if(toChangeSortModel){
+            this.table.api.setSortModel(sortModel);
         }
     }
 
@@ -248,7 +249,7 @@ class AvailsResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
-                        if(response.data.total > 0){
+                        if(response && response.data.total > 0){
                             //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
@@ -256,20 +257,25 @@ class AvailsResultTable extends React.Component {
                             if ((response.data.page + 1) * response.data.size >= response.data.total) {
                                 lastRow = response.data.total;
                             }
-                            params.successCallback(response.data.data, lastRow);
 
-                            if(this.props.availTabPageSelection.selected.length > 0){
-                                this.table.api.forEachNode(rowNode => {
-                                    if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
-                                        rowNode.setSelected(true);
-                                    }
-                                });
+                            if(this.table){
+                                params.successCallback(response.data.data, lastRow);
+
+                                if(this.props.availTabPageSelection.selected.length > 0){
+                                    this.table.api.forEachNode(rowNode => {
+                                        if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
+                                            rowNode.setSelected(true);
+                                        }
+                                    });
+                                }
+
+                                this.table.api.hideOverlay();
+                                this.onSelectionChanged(this.table);
                             }
-
-                            this.table.api.hideOverlay();
-                            this.onSelectionChanged(this.table);
                         }else{
-                            this.table.api.showNoRowsOverlay();
+                            if(this.table){
+                                this.table.api.showNoRowsOverlay();
+                            }
                         }
                    }).catch((error) => {
                        console.error('Unexpected error');
@@ -351,19 +357,25 @@ class AvailsResultTable extends React.Component {
 
     loadingRenderer(params){
         let error = null;
-        if(!params.value && params.data && params.data.validationErrors){
+        if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
                 if(e.fieldName === params.colDef.field){
-                    error = e.message + ', error processing field ' + e.originalFieldName +
-                                ' with value ' + e.originalValue +
-                                ' at row ' + e.rowId +
-                                ' from file ' + e.fileName;
-                    return;
+                    error = e.message;
+                    if(e.sourceDetails){
+                        if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                        if(e.sourceDetails.fileName){
+                            error += ', in file ' + e.sourceDetails.fileName
+                                   + ', row number ' + e.sourceDetails.rowId
+                                   + ', column ' + e.sourceDetails.originalFieldName;
+                        }
+                    }
+
                 }
+                return error;
             });
         }
 
-        const content = params.valueFormatted || params.value || error;
+        const content = error || params.valueFormatted || params.value;
         if (params.value !== undefined) {
             if (content) {
                 return(
@@ -384,7 +396,7 @@ class AvailsResultTable extends React.Component {
 
      cellStyle(params) {
         let error = null;
-        if(!params.value && params.data && params.data.validationErrors){
+        if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
              if(e.fieldName === params.colDef.field){
                  error = e;

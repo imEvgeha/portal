@@ -4,7 +4,7 @@ import store from '../../../stores/index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {availSearchHelper} from '../dashboard/AvailSearchHelper';
-import {resultPageUpdateColumnsOrder} from '../../../stores/actions/avail/dashboard';
+import {resultPageUpdateColumnsOrder, resultPageSort} from '../../../stores/actions/avail/dashboard';
 
 const httpWithoutErrorHandling = Http.create({noDefaultErrorHandling: false});
 const http = Http.create();
@@ -13,15 +13,42 @@ const http = Http.create();
 const loadReportToStore = (report) => {
     store.dispatch(setReportName(report.name));
     store.dispatch(resultPageUpdateColumnsOrder(report.columns));
+
+    const sortedBy = [];
+    if(report.sortedBy){
+        report.sortedBy.forEach((entry) => {
+            sortedBy.push({id : entry.column, desc : entry.order === 'DESC' ? true : false});
+        });
+    }
+
+    store.dispatch(resultPageSort(sortedBy));
     availSearchHelper.loadAdvancedSearchForm(report.orderedFilter ? report.orderedFilter : {});
     availSearchHelper.advancedSearch(report.orderedFilter ? report.orderedFilter : {});
 };
 
+const resetToNoReport = () => {
+    store.dispatch(setReportName(''));
+    store.dispatch(resultPageUpdateColumnsOrder());
+    store.dispatch(resultPageSort([]));
+    availSearchHelper.loadAdvancedSearchForm({});
+    availSearchHelper.advancedSearch({});
+};
+
 const readReportFromStore = () => {
+    const originalSort = store.getState().dashboard.session.availTabPageSort;
+    const sortedBy = [];
+
+    if(originalSort){
+        originalSort.forEach((entry) => {
+            sortedBy.push({column : entry.id, order : entry.desc ? 'DESC' : 'ASC'});
+        });
+    }
+
     const report = {
         name: store.getState().dashboard.session.reportName,
         orderedFilter: store.getState().dashboard.session.advancedSearchCriteria,
         columns: store.getState().dashboard.session.columns,
+        sortedBy: sortedBy
     };
     return report;
 };
@@ -65,14 +92,18 @@ export const configurationService = {
     },
 
     changeReport: (reportName) => {
-        const reports = store.getState().root.reports;
-        const report = reports.find((report) => {
-           return report.name === reportName;
-        });
-        if (report) {
-            loadReportToStore(report);
-        } else {
-            errorModal.open('Cannot find report: ' + reportName);
+        if(reportName){
+            const reports = store.getState().root.reports;
+            const report = reports.find((report) => {
+               return report.name === reportName;
+            });
+            if (report) {
+                loadReportToStore(report);
+            } else {
+                errorModal.open('Cannot find report: ' + reportName);
+            }
+        }else{
+            resetToNoReport();
         }
     },
 
@@ -102,7 +133,7 @@ export const configurationService = {
         const reports = store.getState().root.reports.filter((report) => {return report.name !== reportName;});
         putConfiguration({'avails': {'reports': reports}}).then( (response) => {
             loadConfiguration(response.data);
-            store.dispatch(setReportName(''));
+            configurationService.changeReport('');
         }). catch((error) => {
             console.error('Unable to Delete Report');
             console.error(error);

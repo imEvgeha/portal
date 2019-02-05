@@ -6,6 +6,7 @@ import {advancedHistorySearchHelper} from './AdvancedHistorySearchHelper';
 import connect from 'react-redux/es/connect/connect';
 import {updateBreadcrumb} from '../../../stores/actions/index';
 import t from 'prop-types';
+import {AVAILS_HISTORY} from '../../../constants/breadcrumb';
 
 
 const mapStateToProps = () => {
@@ -31,7 +32,7 @@ class AvailIngestHistoryContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updateBreadcrumb([{name: 'Avail Ingest History', path: 'avail-ingest-history'}]);
+        this.props.updateBreadcrumb([AVAILS_HISTORY]);
     }
 
     render() {

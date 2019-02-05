@@ -1,10 +1,9 @@
 import store from '../../../stores/index';
 import {
-    searchFormSetAdvancedHistorySearchCriteria,
-    searchFormSetHistorySearchCriteria
+    searchFormSetAdvancedHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
-import {momentToISO} from '../../../util/Common';
+import {momentToISO, safeTrim} from '../../../util/Common';
 
 export const advancedHistorySearchHelper = {
 
@@ -12,11 +11,11 @@ export const advancedHistorySearchHelper = {
         const response = {};
         for (let key of Object.keys(searchCriteria) ) {
             const criteria = searchCriteria[key];
-            if (criteria) {
+            if (criteria !== null && criteria !== undefined) {
                 if (!(criteria instanceof Object)) {
-                    response[key] = criteria.trim();
-                } else if (criteria.value) {
-                    response[key] = criteria.value.trim();
+                    response[key] = safeTrim(criteria);
+                } else if (criteria.value || criteria.value === false) {
+                    response[key] = safeTrim(criteria.value);
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);
@@ -32,11 +31,6 @@ export const advancedHistorySearchHelper = {
 
     clearAdvancedHistorySearchForm: () => {
         store.dispatch(searchFormSetAdvancedHistorySearchCriteria({
-           received: null,
-           provider: '',
-           status: '',
-        }));
-        store.dispatch(searchFormSetHistorySearchCriteria({
            received: null,
            provider: '',
            status: '',

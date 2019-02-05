@@ -1,13 +1,15 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {
-    searchFormSetAdvancedHistorySearchCriteria
+    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormSetHistorySearchCriteria
 } from '../../../../stores/actions/avail/history';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 import Select from 'react-select';
+import {safeTrim} from '../../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -17,13 +19,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     searchFormSetAdvancedHistorySearchCriteria,
+    searchFormSetHistorySearchCriteria
 };
 
 class AdvancedHistorySearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
         onSearch: t.func,
-        searchFormSetAdvancedHistorySearchCriteria: t.func
+        searchFormSetAdvancedHistorySearchCriteria: t.func,
+        searchFormSetHistorySearchCriteria : t.func
     };
 
     _handleKeyPress = (e) => {
@@ -82,10 +86,9 @@ class AdvancedHistorySearchPanel extends React.Component {
 
     handleSearch() {
         const criteria = {...this.props.searchCriteria};
-        if (criteria.provider) {
-            criteria.provider = criteria.provider.trim();
-            this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
-        }
+        criteria.provider = safeTrim(criteria.provider);
+        this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
+        this.props.searchFormSetHistorySearchCriteria(criteria);
         this.props.onSearch(criteria);
     }
 

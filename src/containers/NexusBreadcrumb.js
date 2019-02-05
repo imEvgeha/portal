@@ -29,7 +29,7 @@ class NexusBreadcrumb extends React.Component {
             }
         };
         return (
-            <div style={{zIndex: '1000', position: 'relative'}}>
+            <div style={{zIndex: '500', position: 'relative'}}>
                 <Breadcrumb style={{position: 'relative', background: 'white'}}>
                     {this.props.breadcrumb.map((entry) => (<BreadcrumbItem key={entry.name}>{renderLink(entry)}</BreadcrumbItem>))}
                 </Breadcrumb>

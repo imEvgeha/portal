@@ -114,7 +114,7 @@ class AvailCreate extends React.Component {
         const groupedMappingName = this.getGroupedMappingName(name);
         const mappingErrorMessage = this.state.mappingErrorMessage;
 
-        if (!mappingErrorMessage[groupedMappingName].date) {
+        if (mappingErrorMessage[groupedMappingName] && !mappingErrorMessage[groupedMappingName].date) {
             const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
             mappingErrorMessage[name].range = errorMessage;
             if (mappingErrorMessage[groupedMappingName]) {
@@ -183,7 +183,6 @@ class AvailCreate extends React.Component {
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === name) {
-                if(!mapping.required) return '';
 
                 if(this.state.resolutionValidation.type === 'oneOf'){
                     if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
@@ -229,7 +228,7 @@ class AvailCreate extends React.Component {
                         else return '';
                     }
                 }
-                return this.validateNotEmpty(value);
+                if(mapping.required) return this.validateNotEmpty(value);
             }
 
         }
@@ -391,7 +390,8 @@ class AvailCreate extends React.Component {
 
         const renderFields = (mappings) => {
             return mappings.map((mapping)=> {
-                if(mapping.javaVariableName!='availId'){//we shouldn't be able to set the id
+                const excludedFields = ['availId', 'rowEdited'];
+                if(excludedFields.indexOf(mapping.javaVariableName) === -1){
                     let required = mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1;
                     switch (mapping.dataType) {
                         case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
