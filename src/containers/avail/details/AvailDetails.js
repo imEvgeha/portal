@@ -3,7 +3,7 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
-import {Label} from 'reactstrap';
+import {Button, Label} from 'reactstrap';
 
 import {updateBreadcrumb} from '../../../stores/actions/index';
 import {availService} from '../service/AvailService';
@@ -34,16 +34,23 @@ class AvailDetails extends React.Component {
         location: t.any
     };
 
+    static contextTypes = {
+        router: t.object
+    }
+
     constructor(props) {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.emptyValueText = 'Enter';
 
         this.state = {
             resolutionValidation: config.get('extraValidation.resolution'),
             errorMessage: '',
+            columns: 1
         };
     }
 
@@ -71,6 +78,18 @@ class AvailDetails extends React.Component {
                     });
             }
         }
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
+        if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
+            this.setState({ columns: columns });
     }
 
     handleSubmit(editable) {
@@ -159,6 +178,10 @@ class AvailDetails extends React.Component {
         return '';
     }
 
+    cancel(){
+        this.context.router.history.push('/avails');
+    }
+
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, content) => {
             const hasValidationError = error;
@@ -167,7 +190,7 @@ class AvailDetails extends React.Component {
                     className={'list-group-item list-group-item-action' + (readOnly ? ' disabled' : '')}
                     style={{backgroundColor: hasValidationError ? '#f2dede' : null,
                             color: hasValidationError ? '#a94442' : null,
-                            breakInside: 'avoid'
+                            border:'none'
                         }}>
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
@@ -248,54 +271,70 @@ class AvailDetails extends React.Component {
             ));
         };
 
-        const renderFields = (mappings) => {
+        const renderColumns = [];
 
+        if(this.props.availsMapping) {
+            const renderFields = [];
             const cannotUpdate = cannot('update', 'Avail');
 
-            return mappings.map((mapping) => {
-                if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
+            this.props.availsMapping.mappings.map((mapping)=> {
+                if (EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1) {
                     let error = null;
-                    if(this.state.avail && this.state.avail.validationErrors){
-                        this.state.avail.validationErrors.forEach( e => {
-                            if(e.fieldName === mapping.javaVariableName){
+                    if (this.state.avail && this.state.avail.validationErrors) {
+                        this.state.avail.validationErrors.forEach(e => {
+                            if (e.fieldName === mapping.javaVariableName) {
                                 error = e.message;
-                                if(e.sourceDetails){
-                                    if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
-                                    if(e.sourceDetails.fileName){
+                                if (e.sourceDetails) {
+                                    if (e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                                    if (e.sourceDetails.fileName) {
                                         error += ', in file ' + e.sourceDetails.fileName
                                             + ', row number ' + e.sourceDetails.rowId
                                             + ', column ' + e.sourceDetails.originalFieldName;
                                     }
                                 }
-                                return;
                             }
                         });
                     }
 
                     const readOnly = cannotUpdate || READONLY_FIELDS.indexOf(mapping.javaVariableName) > -1;
-                    const value = this.state.avail ? this.state.avail[mapping.javaVariableName]: '';
+                    const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
                     const required = mapping.required;
                     switch (mapping.dataType) {
-                        case 'text': return renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required);
-                        case 'number': return renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required);
-                        case 'year': return renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required);
-                        case 'date': return renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required);
-                        case 'boolean': return renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required);
+                        case 'text':
+                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                        case 'number':
+                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                        case 'year':
+                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                        case 'date':
+                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                        case 'boolean':
+                            renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
                 }
             });
-        };
+            const perColumn = Math.ceil(renderFields.length / this.state.columns);
+
+            for (let i = 0; i < this.state.columns; i++) {
+                renderColumns.push(
+                    <div key={i} className="nx-stylish list-group col">
+                        {renderFields.slice(i*perColumn, (i+1)*perColumn)}
+                    </div>
+                );
+            }
+        }
 
         return(
             <div>
-                <div className={'list-group'} >
-                    <div>
-                        <div className="nx-stylish" style={{columns:'3 400px'}}>
-                            {this.props.availsMapping ? renderFields(this.props.availsMapping.mappings) : ''}
-                        </div>
-                    </div>
+                <div className="nx-stylish row mt-3 mx-5">
+                    {renderColumns}
                 </div>
                 {
                     this.state.errorMessage &&
@@ -304,6 +343,11 @@ class AvailDetails extends React.Component {
                                 {this.state.errorMessage}
                             </Label>
                         </div>
+                }
+                {this.props.availsMapping &&
+                    <div className="float-right mt-5 mx-5 px-5">
+                        <Button className="mr-5" id="avails-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                    </div>
                 }
             </div>
         );

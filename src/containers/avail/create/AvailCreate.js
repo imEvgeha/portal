@@ -30,21 +30,40 @@ class AvailCreate extends React.Component {
         availsMapping: t.any
     };
 
+    static contextTypes = {
+        router: t.object
+    }
+
     constructor(props) {
         super(props);
 
         this.confirm = this.confirm.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.state = {
             resolutionValidation: config.get('extraValidation.resolution'),
             mappingErrorMessage: {},
-            avail: {}
+            avail: {},
+            columns: 1
         };
     }
 
     componentDidMount() {
         profileService.initAvailsMapping();
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
+        if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
+            this.setState({ columns: columns });
     }
 
     componentDidUpdate(prevProps) {
@@ -115,8 +134,7 @@ class AvailCreate extends React.Component {
         newAvail[name] = date;
         const groupedMappingName = this.getGroupedMappingName(name);
         const mappingErrorMessage = this.state.mappingErrorMessage;
-
-        if (!mappingErrorMessage[groupedMappingName].date) {
+        if (mappingErrorMessage[groupedMappingName] && !mappingErrorMessage[groupedMappingName].date) {
             const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
             mappingErrorMessage[name].range = errorMessage;
             if (mappingErrorMessage[groupedMappingName]) {
@@ -287,11 +305,18 @@ class AvailCreate extends React.Component {
 
     confirm() {
         if(this.validateFields()) return;
-        this.setState({loading: true, showCreatedMessage: false});
-        availService.createAvail(this.state.avail).then(() => {
-            this.setState({loading: false, showCreatedMessage: true});
+        this.setState({loading: true});
+        availService.createAvail(this.state.avail).then((response) => {
+            this.setState({loading: false});
+            if(response && response.data && response.data.id){
+                this.context.router.history.push('/avails/' + response.data.id);
+            }
         })
             .catch(() => this.setState({loading: false, errorMessage: 'Avail creation Failed'}));
+    }
+
+    cancel(){
+        this.context.router.history.push('/avails');
     }
 
     addMappingToState = (mappings) => {
@@ -310,15 +335,16 @@ class AvailCreate extends React.Component {
     render() {
         const renderFieldTemplate = (name, displayName, required, content) => {
             return (
-                <a href="#" key={name}
-                   className="list-group-item list-group-item-action flex-column align-items-start">
+                <div key={name}
+                   className="list-group-item list-group-item-action"
+                    style={{border:'none'}}>
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
                         <div className="col">
                             {content}
                         </div>
                     </div>
-                </a>
+                </div>
             );
         };
 
@@ -373,39 +399,56 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderFields = (mappings) => {
-            return mappings.map((mapping)=> {
+        const renderColumns = [];
+
+        if(this.props.availsMapping) {
+            const renderFields = [];
+
+            this.props.availsMapping.mappings.map((mapping)=> {
                 if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
                     let required = mapping.required;
                     switch (mapping.dataType) {
-                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'text' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required));
+                            break;
+                        case 'number' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required));
+                            break;
+                        case 'year' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required));
+                            break;
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required));
+                            break;
+                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required));
+                            break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
                 }
             });
-        };
+
+            const perColumn = Math.ceil(renderFields.length / this.state.columns);
+
+            for (let i = 0; i < this.state.columns; i++) {
+                renderColumns.push(
+                    <div key={i} className="nx-stylish list-group col">
+                        {renderFields.slice(i*perColumn, (i+1)*perColumn)}
+                    </div>
+                );
+            }
+        }
 
         return(
             <div>
-                <div className={'list-group'} >
-                    <div>
-                        <div className="nx-stylish" style={{columns:'3 400px'}}>
-                            {this.props.availsMapping ? renderFields(this.props.availsMapping.mappings) : ''}
-                        </div>
-                    </div>
+                <div className="nx-stylish row mt-3 mx-5">
+                    {renderColumns}
                 </div>
                 {this.state.loading && <Progress className={'custom-progress'} animated value={100}/>}
-                {this.state.showCreatedMessage && <Label id="avails-create-created-message" className="text-success w-100">Avail created</Label>}
-                <Label id="avails-create-error-message" className="text-danger w-100">
+                <Label id="avails-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
                     {this.state.errorMessage}
                 </Label>
                 {this.props.availsMapping &&
-                    < Button id="avails-create-create-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                    <div className="float-right mt-3 mx-5">
+                        <Button className="mr-2" id="avails-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                        <Button className="mr-4" id="avails-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                    </div>
                 }
             </div>
         );
