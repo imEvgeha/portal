@@ -101,7 +101,8 @@ class TitleCreate extends React.Component {
             setTimeout(() => {
                 this.toggle();
             }, 2000);
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err.message);
             this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
         });
 
