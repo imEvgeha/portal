@@ -7,6 +7,7 @@ import { Button, Row, Col, Label, Container, Progress, Alert } from 'reactstrap'
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { titleService } from '../../service/TitleService';
 import { errorModal } from '../../../../components/modal/ErrorModal';
+import './TitleEdit.scss';
 
 
 class TitleEdit extends React.Component {
@@ -144,7 +145,7 @@ class TitleEdit extends React.Component {
         const { title, contentType, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
         const { seasonId, seasonNumber, episodeId, episodeNumber } = this.state.titleForm.episodic;
         return (
-            <Container fluid>
+            <Container fluid id="titleContainer">
                 <Row>
                     <Col className="clearfix"><Button className="float-right" onClick={this.handleEditMode}>Edit</Button></Col>
                 </Row>
@@ -202,7 +203,7 @@ class TitleEdit extends React.Component {
         const { brandTitleName, brandProdYear, seasonId, seasonNumber, episodeId, episodeNumber } = this.state.titleForm.episodic;
         return (
             <AvForm id="titleDetail" onValidSubmit={this.onSave} ref={c => (this.form = c)} >
-                <Container fluid>
+                <Container fluid id="titleContainer">
                     <Row>
                         <Col className="clearfix">
                             <Button className="float-right" id="btnSave" color="primary" onKeyPress={this._handleKeyPress}>Save</Button>
@@ -224,7 +225,7 @@ class TitleEdit extends React.Component {
                             </Row>
                             <Row>
                                 <Col>
-                                    <Alert style={{ marginLeft: '-20px' }} color="light" id="titleContentType"><b>Content Type:</b> {contentType}</Alert>
+                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType}</Alert>
                                 </Col>
                                 <Col>
                                     <Label for="titleProductionStudio">Production Studio<span style={{ color: 'red' }}>*</span></Label>

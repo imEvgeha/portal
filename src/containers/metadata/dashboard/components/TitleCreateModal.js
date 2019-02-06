@@ -221,7 +221,8 @@ class TitleCreate extends React.Component {
                                         <Col>
                                             <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
                                             <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={this.state.titleForm.title} placeholder="Enter Title" onChange={this.handleChange} validate={{
-                                                required: { errorMessage: 'Field cannot be empty!' }
+                                                required: { errorMessage: 'Field cannot be empty!' },
+                                                maxLength: { value: 200 }                                                
                                             }} />
                                         </Col>
                                     </Row>
@@ -276,6 +277,9 @@ class TitleCreate extends React.Component {
                                                 <Col>
                                                     <Label for="titleSeasonNumber">Season</Label>
                                                     <AvField type="text" name="seasonNumber" disabled={this.state.seasonChecked} value={this.state.titleForm.episodic.seasonNumber} id="titleSeasonNumber" placeholder={'Enter Season Number'} errorMessage="Please enter a valid season number!" onChange={this.handleChangeEpisodic}
+                                                    validate={{
+                                                        maxLength: { value: 3 }
+                                                    }}
                                                     />
                                                 </Col>
                                                 {
