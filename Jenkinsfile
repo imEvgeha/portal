@@ -2,9 +2,6 @@ pipeline {
      agent { label 'usla-jknd-p002' }
      stages {
          stage('build') {
-           when {
-               expression { env.GIT_COMMIT != env.GIT_PREVIOUS_SUCCESSFUL_COMMIT }
-           }
              steps {
                script {
                  tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
@@ -15,17 +12,11 @@ pipeline {
              }
          }
          stage('docker build') {
-           when {
-               expression { env.GIT_COMMIT != env.GIT_PREVIOUS_SUCCESSFUL_COMMIT }
-           }
              steps {
                sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
              }
          }
          stage('docker push') {
-           when {
-               expression { env.GIT_COMMIT != env.GIT_PREVIOUS_SUCCESSFUL_COMMIT }
-           }
              steps {
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
