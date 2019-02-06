@@ -225,7 +225,8 @@ class TitleEdit extends React.Component {
                             </Row>
                             <Row>
                                 <Col>
-                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType}</Alert>
+                                    <Label for="titleContentType">Content Type</Label>
+                                    <Alert color="light" id="titleContentType"><b>{contentType}</b></Alert>
                                 </Col>
                                 <Col>
                                     <Label for="titleProductionStudio">Production Studio<span style={{ color: 'red' }}>*</span></Label>
