@@ -12,29 +12,24 @@ class TitleEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEditMode: false    
+            isEditMode: false
         };
     }
     componentDidMount() {
-        this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);      
-    }    
-    
-    handleEditMode = () => {
-        this.setState({
-            isEditMode: !this.state.isEditMode
-        });
+        this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
     }
-    handleCancel = () => {
+
+    handleSwitchMode = () => {
         this.setState({ isEditMode: !this.state.isEditMode });
     }
 
     readOnly = () => {
-        return <TitleReadOnlyMode titleId={this.props.match.params.id} handleEditMode={this.handleEditMode} />;
+        return <TitleReadOnlyMode titleId={this.props.match.params.id} handleSwitchMode={this.handleSwitchMode} />;
     };
 
     editMode = () => {
-        return <TitleEditMode 
-            handleCancel={this.handleCancel}
+        return <TitleEditMode
+            handleSwitchMode={this.handleSwitchMode}
             titleId={this.props.match.params.id} />;
     };
     render() {

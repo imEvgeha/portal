@@ -122,7 +122,7 @@ class TitleEditMode extends Component {
                 isLoading: false,
                 titleForm: this.state.editedForm
             });
-            this.props.handleCancel();
+            this.props.handleSwitchMode();
         }).catch((err) => {
             errorModal.open('Error', () => { }, { description: err.message, closable: true });
             console.error('Unable to load Title Data');
@@ -138,7 +138,7 @@ class TitleEditMode extends Component {
                     <Row>
                         <Col className="clearfix">
                             <Button className="float-right" id="btnSave" color="primary">Save</Button>
-                            <Button className="float-right" id="btnCancel" onClick={this.props.handleCancel} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
+                            <Button className="float-right" id="btnCancel" onClick={this.props.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
                         </Col>
                     </Row>
                     <Row>
@@ -260,7 +260,7 @@ class TitleEditMode extends Component {
 }
 
 TitleEditMode.propTypes = {
-    handleCancel: PropTypes.func.isRequired,
+    handleSwitchMode: PropTypes.func.isRequired,
     titleId: PropTypes.string.isRequired
 };
 

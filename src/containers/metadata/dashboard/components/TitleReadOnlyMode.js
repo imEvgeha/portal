@@ -41,7 +41,7 @@ class TitleReadOnlyMode extends Component {
         return (
             <Container fluid id="titleContainer">
                 <Row>
-                    <Col className="clearfix"><Button className="float-right" onClick={this.props.handleEditMode}>Edit</Button></Col>
+                    <Col className="clearfix"><Button className="float-right" onClick={this.props.handleSwitchMode}>Edit</Button></Col>
                 </Row>
                 <Row style={{ marginTop: '5px' }}>
                     <Col xs="4">
@@ -94,7 +94,7 @@ class TitleReadOnlyMode extends Component {
 }
 
 TitleReadOnlyMode.propTypes = {
-    handleEditMode: PropTypes.func.isRequired,
+    handleSwitchMode: PropTypes.func.isRequired,
     titleId: PropTypes.string.isRequired
 };
 
