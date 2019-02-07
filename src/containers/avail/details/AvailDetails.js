@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
@@ -11,6 +12,7 @@ import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import {rangeValidation} from '../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../ability';
+import './AvailDetails.scss';
 
 const mapStateToProps = state => {
    return {
@@ -182,12 +184,22 @@ class AvailDetails extends React.Component {
         this.context.router.history.push('/avails');
     }
 
+    onFieldClicked(e){
+        var node = ReactDOM.findDOMNode(e.currentTarget);
+        if(e.target.tagName === 'A' || e.target.tagName === 'SPAN'){
+            node.classList.add('no-border');
+        }
+        if(e.target.tagName === 'I' || e.target.tagName === 'BUTTON'){
+            node.classList.remove('no-border');
+        }
+    }
+
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, content) => {
             const hasValidationError = error;
             return (
                 <div key={name}
-                    className={'list-group-item list-group-item-action' + (readOnly ? ' disabled' : '')}
+                    className={'list-group-item' + (readOnly ? ' disabled' : '')}
                     style={{backgroundColor: hasValidationError ? '#f2dede' : null,
                             color: hasValidationError ? '#a94442' : null,
                             border:'none'
@@ -195,9 +207,13 @@ class AvailDetails extends React.Component {
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
                         <div
-                            className={'col-8' + (value ? '' : ' empty')}
-                            id={'dashboard-avails-detail-modal-' + name + '-field'}>
-                            {content}
+                            onClick = {this.onFieldClicked}
+                            className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
+                            id={'avails-detail-' + name + '-field'}>
+                            <div className="editable-field-content">
+                                {content}
+                            </div>
+                            <span className="edit-icon" style={{color: 'gray'}}><i className="fas fa-pen"></i></span>
                         </div>
                     </div>
                 </div>
@@ -324,7 +340,7 @@ class AvailDetails extends React.Component {
 
             for (let i = 0; i < this.state.columns; i++) {
                 renderColumns.push(
-                    <div key={i} className="nx-stylish list-group col">
+                    <div key={i} className={'nx-stylish list-group col-' + 12 / this.state.columns}>
                         {renderFields.slice(i*perColumn, (i+1)*perColumn)}
                     </div>
                 );

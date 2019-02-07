@@ -99,6 +99,7 @@ class EditableDatePicker extends Component {
                 } else {
                     return(
                         <span
+                            className="displayDate"
                             style={{ color: '#808080', cursor: 'pointer' }}
                             onClick={this.handleShowDatePicker}>
                             {'Enter ' + this.props.displayName}
@@ -126,12 +127,12 @@ class EditableDatePicker extends Component {
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
                                     onClick={() => this.submit(this.state.date ? this.state.date.toISOString() : null)}
-                                    color="success"><FontAwesome name='check' />
+                                    color="success"><i className="fa fa-check"></i>
                                 </Button>
                                 <Button
                                     className="dPButton"
                                     onClick={this.handleCancelDatePicker}
-                                    color="danger"><FontAwesome name='times' />
+                                    color="danger"><i className="fa fa-times"></i>
                                 </Button>
                             </div>
                             {
