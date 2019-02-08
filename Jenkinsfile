@@ -1,7 +1,12 @@
 pipeline {
      agent { label 'usla-jknd-p002' }
-     imageTag = ''
+
      stages {
+      stage('init') {
+        steps {
+          script { imageTag = ''}
+        }
+      }
          stage('build') {
            when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
              steps {
