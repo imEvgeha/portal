@@ -28,7 +28,9 @@ pipeline {
            steps {
              dir('kubernetes') {
                git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-               imageTag = imageTag || sh("./image-versions.sh dev nexus-avails portal").trim()
+               script {
+                imageTag = imageTag || sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+               }  
              }
              dir('kubernetes/nexus-avails/portal') {
                sh "./deploy.sh dev nexus-avails ${imageTag}"
