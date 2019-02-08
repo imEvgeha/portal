@@ -1,5 +1,6 @@
 pipeline {
      agent { label 'usla-jknd-p002' }
+     imageTag = ''
      stages {
          stage('build') {
            when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
@@ -29,7 +30,7 @@ pipeline {
              dir('kubernetes') {
                git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
                script {
-                imageTag = env.imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+                imageTag = imageTag || sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
                }  
              }
              dir('kubernetes/nexus-avails/portal') {
