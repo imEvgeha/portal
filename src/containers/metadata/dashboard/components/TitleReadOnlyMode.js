@@ -37,7 +37,7 @@ class TitleReadOnlyMode extends Component {
     }
     render() {
         const { title, contentType, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
-        const { seasonId, seasonNumber, episodeId, episodeNumber } = this.state.titleForm.episodic;
+        const { seasonId, seasonNumber, episodeId, episodeNumber, episodeCount } = this.state.titleForm.episodic;
         return (
             <Container fluid id="titleContainer">
                 <Row>
@@ -66,8 +66,11 @@ class TitleReadOnlyMode extends Component {
                                 <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{seasonNumber}</Alert>
                             </Col>
 
-                            <Col>
+                            <Col md={3}>
                                 <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{episodeNumber}</Alert>
+                            </Col>
+                            <Col md={3}>
+                                <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{episodeCount}</Alert>
                             </Col>
                         </Row>
                         <Row>
@@ -80,7 +83,7 @@ class TitleReadOnlyMode extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                <Alert color="light" id="titleProductionYear"><b>Production Year: </b>{productionYear}</Alert>
+                                <Alert color="light" id="titleProductionYear"><b>Release Year: </b>{productionYear}</Alert>
                             </Col>
                             <Col>
                                 <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> ${boxOffice}</Alert>

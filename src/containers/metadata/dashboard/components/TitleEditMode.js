@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Label, Container, Progress, Alert } from 'reactstrap';
+import { Button, Row, Col, Label, Container, Progress, Alert, FormGroup } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import { titleService } from '../../service/TitleService';
@@ -9,7 +9,7 @@ class TitleEditMode extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {            
+        this.state = {
             loading: false,
             seasonChecked: false,
             episodeChecked: false,
@@ -28,6 +28,7 @@ class TitleEditMode extends Component {
                     brandTitleName: '',
                     episodeId: '',
                     episodeNumber: '',
+                    episodeCount: '',
                     seasonId: '',
                     seasonNumber: ''
                 },
@@ -35,7 +36,7 @@ class TitleEditMode extends Component {
         };
     }
 
-    
+
     componentDidMount() {
         const titleId = this.props.titleId;
         titleService.getTitleById(titleId).then((response) => {
@@ -131,7 +132,7 @@ class TitleEditMode extends Component {
     }
     render() {
         const { title, contentType, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
-        const {  seasonId, seasonNumber, episodeId, episodeNumber } = this.state.titleForm.episodic;
+        const { seasonId, seasonNumber, episodeId, episodeNumber, episodeCount } = this.state.titleForm.episodic;
         return (
             <AvForm id="titleDetail" onValidSubmit={this.onSave} ref={c => (this.form = c)} >
                 <Container fluid id="titleContainer">
@@ -149,7 +150,7 @@ class TitleEditMode extends Component {
                             <Row>
                                 <Col>
                                     <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
-                                    <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={title} placeholder="Enter Title" onChange={this.handleOnChange} validate={{
+                                    <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={title || ''} placeholder="Enter Title" onChange={this.handleOnChange} validate={{
                                         required: { errorMessage: 'Field cannot be empty!' },
                                         maxLength: { value: 200 }
                                     }} />
@@ -161,10 +162,8 @@ class TitleEditMode extends Component {
                                     <Alert color="light" id="titleContentType"><b>{contentType}</b></Alert>
                                 </Col>
                                 <Col>
-                                    <Label for="titleProductionStudio">Production Studio<span style={{ color: 'red' }}>*</span></Label>
-                                    <AvField name="productionStudioId" errorMessage="Please enter a valid production studio!" id="titleProductionStudio" value={productionStudioId} placeholder="Enter Studio" onChange={this.handleOnChange} validate={{
-                                        required: { errorMessage: 'Field cannot be empty!' }
-                                    }} />
+                                    <Label for="titleProductionStudio">Production Studio</Label>
+                                    <AvField name="productionStudioId" errorMessage="Please enter a valid production studio!" id="titleProductionStudio" value={productionStudioId || ''} placeholder="Enter Studio" onChange={this.handleOnChange} />
                                 </Col>
                             </Row>
                             {
@@ -177,13 +176,13 @@ class TitleEditMode extends Component {
                                             />
                                         </Col>
                                         <Col>
-                                            <Label for="titleBrandProductionYear">Brand Production Year</Label>
+                                            <Label for="titleBrandProductionYear">Brand Release Year</Label>
                                             <AvField name="brandProdYear" id="titleBrandProductionYear" required={this.state.isBrandProdYearCompleted} errorMessage="Please enter a valid year!" validate={{
                                                 required: { errorMessage: 'Field cannot be empty!' },
                                                 pattern: { value: '^[0-9]+$' },
                                                 minLength: { value: 4 },
                                                 maxLength: { value: 4 }
-                                            }} placeholder="Enter Brand Production Year" onChange={this.handleChangeBrandProdYear} />
+                                            }} placeholder="Enter Brand Release Year" onChange={this.handleChangeBrandProdYear} />
                                         </Col>
                                     </Row>
                                     : null
@@ -192,20 +191,32 @@ class TitleEditMode extends Component {
                                 !this.state.seasonChecked ?
                                     <Row>
                                         <Col>
-                                            <Label for="titleSeasonNumber">Season</Label>
-                                            <AvField type="text" name="seasonNumber" value={seasonNumber} id="titleSeasonNumber" placeholder={'Enter Season Number'}
-                                                onChange={this.handleChangeEpisodic}
-                                                validate={{
-                                                    maxLength: { value: 3 }
-                                                }}
-                                            />
+                                            <FormGroup>
+                                                <Label for="titleSeasonNumber">Season</Label>
+                                                <AvField type="text" name="seasonNumber" value={seasonNumber || ''} id="titleSeasonNumber" placeholder={'Enter Season Number'}
+                                                    onChange={this.handleChangeEpisodic}
+                                                    validate={{
+                                                        maxLength: { value: 3 }
+                                                    }}
+                                                />
+                                            </FormGroup>
                                         </Col>
                                         {
                                             !this.state.episodeChecked ?
-                                                <Col>
-                                                    <Label for="titleEpisodeNumber">Episode</Label>
-                                                    <AvField type="text" name="episodeNumber" value={episodeNumber} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
-                                                </Col>
+                                                <React.Fragment>
+                                                    <Col md={3}>
+                                                        <FormGroup>
+                                                            <Label for="titleEpisodeNumber">Episode</Label>
+                                                            <AvField type="text" name="episodeNumber" value={episodeNumber || ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
+                                                        </FormGroup>
+                                                    </Col>
+                                                    <Col md={3}>
+                                                        <FormGroup>
+                                                            <Label for="titleEpisodeCount">Episode Count</Label>
+                                                            <AvField type="text" name="episodeCount" value={episodeCount || ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.handleChangeEpisodic} />
+                                                        </FormGroup>
+                                                    </Col>
+                                                </React.Fragment>
                                                 : null
                                         }
                                     </Row>
@@ -216,13 +227,13 @@ class TitleEditMode extends Component {
                                     <Row>
                                         <Col>
                                             <Label for="titleSeasonID">Season ID</Label>
-                                            <AvField type="text" name="seasonId" value={seasonId} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
+                                            <AvField type="text" name="seasonId" value={seasonId || ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
                                         </Col>
                                         {
                                             !this.state.episodeChecked ?
                                                 <Col>
                                                     <Label for="titleEpisodeID">Episode ID</Label>
-                                                    <AvField type="text" name="episodeId" value={episodeId} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
+                                                    <AvField type="text" name="episodeId" value={episodeId || ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
                                                 </Col>
                                                 : null
                                         }
@@ -231,17 +242,17 @@ class TitleEditMode extends Component {
                             }
                             <Row style={{ marginTop: '15px' }}>
                                 <Col>
-                                    <Label for="titleProductionYear">Production Year<span style={{ color: 'red' }}>*</span></Label>
+                                    <Label for="titleProductionYear">Release Year<span style={{ color: 'red' }}>*</span></Label>
                                     <AvField name="productionYear" errorMessage="Please enter a valid year!" id="titleProductionYear" validate={{
                                         required: { value: true, errorMessage: 'Field cannot be empty!' },
                                         pattern: { value: '^[0-9]+$' },
                                         minLength: { value: 4 },
                                         maxLength: { value: 4 }
-                                    }} placeholder="Enter Production Year" value={productionYear} onChange={this.handleOnChange} />
+                                    }} placeholder="Enter Release Year" value={productionYear} onChange={this.handleOnChange} />
                                 </Col>
                                 <Col>
                                     <Label for="titleBoxOffice">Box Office</Label>
-                                    <AvField name="boxOffice" id="titleBoxOffice" type="text" value={boxOffice} placeholder="Enter Box Office" validate={{
+                                    <AvField name="boxOffice" id="titleBoxOffice" type="text" value={boxOffice || ''} placeholder="Enter Box Office" validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                     }} onChange={this.handleOnChange} />
                                 </Col>
