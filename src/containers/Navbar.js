@@ -10,6 +10,8 @@ import {
     searchFormShowSearchResults,
 } from '../stores/actions/avail/dashboard';
 import {Can} from '../ability';
+import NexusBreadcrumb from './NexusBreadcrumb';
+import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
 
 const mapStateToProps = state => {
     return {profileInfo: state.root.profileInfo};
@@ -44,11 +46,11 @@ class NavbarConnect extends React.Component {
     }
 
     handleBackToDashboard() {
-        this.props.searchFormShowAdvancedSearch(false);
         this.props.searchFormShowSearchResults(false);
-    }
-
-    goToHistoryContainer() {
+        NexusBreadcrumb.set([{
+            ...AVAILS_DASHBOARD,
+            onClick: () => this.handleBackToDashboard()
+        }]);
     }
 
     render() {
