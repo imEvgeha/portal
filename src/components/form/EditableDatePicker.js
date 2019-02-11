@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import t from 'prop-types';
 import NexusDatePicker from './NexusDatePicker';

@@ -1,7 +1,7 @@
 import {
-    AVAIL__CREATE__FORM_UPDATE, LOAD_CREATEAVAIL_SESSION, LOAD_DASHBOARD_SESSION
+    AVAIL__CREATE__FORM_UPDATE, LOAD_CREATEAVAIL_SESSION
 } from '../../../constants/action-types';
-import {saveCreateAvailState} from "../../index";
+import {saveCreateAvailState} from '../../index';
 
 const initialState = {
     session:{

@@ -185,7 +185,7 @@ class AvailDetails extends React.Component {
     }
 
     onFieldClicked(e){
-        var node = ReactDOM.findDOMNode(e.currentTarget);
+        const node = ReactDOM.findDOMNode(e.currentTarget);
         if(e.target.tagName === 'A' || e.target.tagName === 'SPAN'){
             node.classList.add('no-border');
         }

@@ -3,8 +3,8 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import config from 'react-global-configuration';
 
-import {loadProfileInfo, updateBreadcrumb} from '../../../stores/actions/index';
-import {saveCreateAvailForm} from "../../../stores/actions/avail/createavail";
+import {updateBreadcrumb} from '../../../stores/actions/index';
+import {saveCreateAvailForm} from '../../../stores/actions/avail/createavail';
 import {Button, Input, Label, Progress} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
@@ -12,8 +12,6 @@ import {INVALID_DATE} from '../../../constants/messages';
 import {rangeValidation} from '../../../util/Validation';
 import {availService} from '../service/AvailService';
 import store from '../../../stores/index';
-import createAvail from "../../../stores/reducers/avail/createavail";
-
 
 const mapStateToProps = state => {
     return {
