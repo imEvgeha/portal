@@ -14,6 +14,7 @@ import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer'
 import {canRender} from '../ability';
 import Welcome from './Welcome';
 import NexusBreadcrumb from './NexusBreadcrumb';
+import TitleEdit from './metadata/dashboard/components/TitleEdit';
 
 export default class App extends React.Component {
 
@@ -23,7 +24,7 @@ export default class App extends React.Component {
                 <div>
                     <Navbar/>
                     <NexusBreadcrumb/>
-                    <div >
+                    <div>
                         <Route exact path="/" component={Welcome}/>
                         <Route exact path="/avails" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
                         <Switch>
@@ -31,7 +32,8 @@ export default class App extends React.Component {
                             <Route exact path="/avails/new" component={AvailCreate}/>
                             <Route exact path="/avails/:id" component={AvailDetails}/>
                         </Switch>
-                        <Route path="/metadata" component={MetadataDashboardContainer} />
+                        <Route exact path="/metadata" component={MetadataDashboardContainer} />
+                        <Route exact path="/metadata/detail/:id" component={TitleEdit} />
                     </div>
                 </div>
 

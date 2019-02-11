@@ -243,7 +243,7 @@ class AvailDetails extends React.Component {
                     mode="inline"
                     placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
-                    emptyValueText={displayFunc(this.emptyValueText + ' ' + displayName)}
+                    emptyValueText={displayFunc(readOnly ? '' : this.emptyValueText + ' ' + displayName)}
                     validate={() => this.validateTextField(ref.current, name)}
                     display={displayFunc}
                 />

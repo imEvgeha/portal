@@ -22,6 +22,7 @@ class EditableDatePicker extends Component {
         super(props);
         this.state = {
             date: vodDate ? moment(vodDate) : moment(),
+            showStateDate: false,
             datePickerStatus: false,
             errorMessage: '',
             submitStatus: false
@@ -33,6 +34,16 @@ class EditableDatePicker extends Component {
         this.handleInvalid = this.handleInvalid.bind(this);
         this.submit = this.submit.bind(this);
         this.cancel = this.cancel.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.value != this.props.value){
+            this.setState({
+                showStateDate: false,
+                date: this.props.value ? moment(this.props.value) : moment(),
+            });
+        }
+
     }
 
     handleShowDatePicker(e) {
@@ -52,6 +63,7 @@ class EditableDatePicker extends Component {
     cancel() {
         this.setState({
             date: moment(this.props.value),
+            showStateDate: false,
             datePickerStatus: false,
             errorMessage: ''
         });
@@ -74,10 +86,11 @@ class EditableDatePicker extends Component {
                 errorMessage: validationError
             });
         } else {
-            this.props.onChange(date, this.cancel);
             this.setState({
-                datePickerStatus: false
+                datePickerStatus: false,
+                showStateDate: true
             });
+            this.props.onChange(date, this.cancel);
         }
     }
 
@@ -85,7 +98,7 @@ class EditableDatePicker extends Component {
         const displayFunc = (value)=>{
             return (<span
                        onClick={this.handleShowDatePicker}
-                       className="displayDate">
+                       className={'displayDate' + (this.props.disabled ? ' disabled' : '')}>
                        {value}
                    </span>);
         };
@@ -94,17 +107,21 @@ class EditableDatePicker extends Component {
             if(this.props.priorityDisplay) {
                 return displayFunc(this.props.priorityDisplay);
             } else {
-                if(this.props.value) {
+                if(this.state.showStateDate){
                     return displayFunc(this.state.date ? moment(this.state.date).format('L') : '');
                 } else {
-                    return(
-                        <span
-                            className="displayDate"
-                            style={{ color: '#808080', cursor: 'pointer' }}
-                            onClick={this.handleShowDatePicker}>
-                            {'Enter ' + this.props.displayName}
+                    if(this.props.value){
+                        return displayFunc(this.props.value ? moment(this.props.value).format('L') : '');
+                    }else {
+                        return (
+                            <span
+                                className="displayDate"
+                                style={{color: '#808080', cursor: 'pointer'}}
+                                onClick={this.handleShowDatePicker}>
+                            {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
                         </span>
-                    );
+                        );
+                    }
                 }
             }
         };

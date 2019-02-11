@@ -258,20 +258,25 @@ class AvailsResultTable extends React.Component {
                             if ((response.data.page + 1) * response.data.size >= response.data.total) {
                                 lastRow = response.data.total;
                             }
-                            params.successCallback(response.data.data, lastRow);
 
-                            if(this.props.availTabPageSelection.selected.length > 0){
-                                this.table.api.forEachNode(rowNode => {
-                                    if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
-                                        rowNode.setSelected(true);
-                                    }
-                                });
+                            if(this.table){
+                                params.successCallback(response.data.data, lastRow);
+
+                                if(this.props.availTabPageSelection.selected.length > 0){
+                                    this.table.api.forEachNode(rowNode => {
+                                        if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
+                                            rowNode.setSelected(true);
+                                        }
+                                    });
+                                }
+
+                                this.table.api.hideOverlay();
+                                this.onSelectionChanged(this.table);
                             }
-
-                            this.table.api.hideOverlay();
-                            this.onSelectionChanged(this.table);
                         }else{
-                            this.table.api.showNoRowsOverlay();
+                            if(this.table){
+                                this.table.api.showNoRowsOverlay();
+                            }
                         }
                    }).catch((error) => {
                        console.error('Unexpected error');

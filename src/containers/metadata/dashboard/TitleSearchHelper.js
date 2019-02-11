@@ -2,13 +2,12 @@ import store from '../../../stores/index';
 import {
     searchFormSetSearchCriteria,
     searchFormSetAdvancedSearchCriteria,
-} from '../../../stores/actions/avail/dashboard';
+} from '../../../stores/actions/metadata/index';
 
-import {availServiceManager} from '../service/AvailServiceManager';
-import {momentToISO, safeTrim} from '../../../util/Common';
+import {titleServiceManager} from '../service/TitleServiceManager';
+import {momentToISO} from '../../../util/Common';
 
-export const availSearchHelper = {
-
+export const titleSearchHelper = {
     loadAdvancedSearchForm: (filter) => {
         store.dispatch(searchFormSetAdvancedSearchCriteria(filter));
     },
@@ -19,9 +18,9 @@ export const availSearchHelper = {
             const criteria = searchCriteria[key];
             if (criteria) {
                 if (!(criteria instanceof Object)) {
-                    response[key] = safeTrim(criteria);
-                } else if (criteria.value || criteria.value === false) {
-                    response[key] = safeTrim(criteria.value);
+                    response[key] = criteria.trim();
+                } else if (criteria.value) {
+                    response[key] = criteria.value.trim();
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);
@@ -41,11 +40,11 @@ export const availSearchHelper = {
     },
 
     freeTextSearch(searchCriteria) {
-        availServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
+        titleServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 
     advancedSearch(searchCriteria) {
-        availServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
+        titleServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     }
 
 };

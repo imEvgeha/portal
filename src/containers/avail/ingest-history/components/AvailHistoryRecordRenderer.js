@@ -51,16 +51,9 @@ class AvailHistoryRecordRenderer extends React.Component {
                     let filename = attachment.link.split(/(\\|\/)/g).pop();
                     if(!firstName) firstName = filename;
 
-                    switch (attachment.attachmentType) {
-                        case 'Excel':
-                            return (
-                               <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
-                            );
-                        default:
-                            return '';
-                    }
-
-
+                    return (
+                       <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
+                    );
                 }
             }).filter( elem=> {
                 return elem !== '';
@@ -124,7 +117,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: false}}}>
+                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
                                     Success:
                                 </Link>)
                                 :
@@ -135,7 +128,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: false}}}>
+                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
                                     {this.props.data.successfullyProcessed}
                                 </Link>)
                                 :
@@ -148,7 +141,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: true}}}>
+                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
                                     Errors:
                                 </Link>)
                                 :
@@ -159,7 +152,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: true}}}>
+                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
                                     {this.props.data.failedToProcess}
                                 </Link>)
                                 :
