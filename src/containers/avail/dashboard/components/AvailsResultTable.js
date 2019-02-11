@@ -17,8 +17,6 @@ import './AvailResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
 import {availServiceManager} from '../../service/AvailServiceManager';
-//import {availDetailsModal} from './AvailDetailsModal';
-
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -349,12 +347,6 @@ class AvailsResultTable extends React.Component {
             this.cols = newCols;
         }
     }
-
-//    onCellClicked(row){
-//        availDetailsModal.open(this.table.api.getRowNode(row.id).data, () => {
-//                }, () => {
-//                }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
-//    }
 
     loadingRenderer(params){
         let error = null;
