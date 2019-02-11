@@ -25,6 +25,11 @@ export const defaultConfiguration = {
             size: 100
         }
     },
+    title: {
+        page: {
+            size: 100
+        }
+    },
     keycloak: {
         'clientId': 'vehicle-public',
         'realm': 'Vubiquity',

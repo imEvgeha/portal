@@ -90,8 +90,8 @@ class NavbarConnect extends React.Component {
                       'manage') ? 'user' : ''}
                             </DropdownItem>
                             <DropdownItem divider/>
-                            <DropdownItem>
-                                <a href="#" onClick={keycloak.instance.logout} id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</a>
+                            <DropdownItem onClick={keycloak.instance.logout}>
+                                <span id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</span>
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
