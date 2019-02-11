@@ -18,6 +18,14 @@ class TitleEdit extends React.Component {
     componentDidMount() {
         this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
     }
+    
+    handleKeyDown = (e) => {
+        if(e.keyCode === 27) {
+            this.setState({
+                isEditMode: false
+            });
+        }
+    }
 
     handleSwitchMode = () => {
         this.setState({ isEditMode: !this.state.isEditMode });
@@ -28,7 +36,7 @@ class TitleEdit extends React.Component {
     };
 
     editMode = () => {
-        return <TitleEditMode
+        return <TitleEditMode keyPressed={this.handleKeyDown}
             handleSwitchMode={this.handleSwitchMode}
             titleId={this.props.match.params.id} />;
     };

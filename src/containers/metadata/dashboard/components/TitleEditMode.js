@@ -134,8 +134,8 @@ class TitleEditMode extends Component {
         const { title, contentType, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
         const { seasonId, seasonNumber, episodeId, episodeNumber, episodeCount } = this.state.titleForm.episodic;
         return (
-            <AvForm id="titleDetail" onValidSubmit={this.onSave} ref={c => (this.form = c)} >
-                <Container fluid id="titleContainer">
+            <AvForm id="titleDetail" onValidSubmit={this.onSave} ref={c => (this.form = c)}>
+                <Container fluid id="titleContainer" onKeyDown={this.props.keyPressed}>
                     <Row>
                         <Col className="clearfix">
                             <Button className="float-right" id="btnSave" color="primary">Save</Button>
@@ -272,7 +272,8 @@ class TitleEditMode extends Component {
 
 TitleEditMode.propTypes = {
     handleSwitchMode: PropTypes.func.isRequired,
-    titleId: PropTypes.string.isRequired
+    titleId: PropTypes.string.isRequired,
+    keyPressed: PropTypes.func
 };
 
 export default TitleEditMode;
