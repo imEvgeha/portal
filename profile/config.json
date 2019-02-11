@@ -1,15 +1,15 @@
 {
   "gateway":{
-    "url":"http://usla-amm-d001.dev.vubiquity.com:8082",
-    "configuration": "http://usla-amm-d001.dev.vubiquity.com:8087",
+    "url":"https://availsapi.dev.vubiquity.com",
+    "configuration": "https://configapi.dev.vubiquity.com",
     "service": {
       "avails": "/avails-api/v1",
       "configuration": "/configuration-api/v1"
     }
   },
   "keycloak": {
-    "clientId": "portal-client",
+    "clientId": "temportalapp-dev",
     "realm": "Vubiquity",
-    "url": "http://usla-amm-d001.dev.vubiquity.com:8080/auth"
+    "url": "https://auth.dev.vubiquity.com/auth"
   }
 }
