@@ -18,15 +18,10 @@ pipeline {
                sh 'yarn build:prod'
              }
          }
-         stage('docker build') {
+         stage('docker image') {
             when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
              steps {
                sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
-             }
-         }
-         stage('docker push') {
-           when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
-             steps {
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
          }
