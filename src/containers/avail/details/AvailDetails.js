@@ -136,7 +136,7 @@ class AvailDetails extends React.Component {
     }
 
     validateNotEmpty(data) {
-        return data.trim() ? '' : 'Field can not be empty';
+        return data.trim() ? '' : <small>Field can not be empty</small>;
     }
 
     isAcceptable(data, acceptedValues){
@@ -171,12 +171,12 @@ class AvailDetails extends React.Component {
                                     //if is current field
                                     if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
                                     //if not acceptable but also not empty
-                                    if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
+                                    if(this.validateNotEmpty(value)==='') return <small>{'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed'}</small>;
                                 }
                             }
                         }
 
-                        if(stillInvalid) return 'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value';
+                        if(stillInvalid) return <small>{'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value'}</small>;
                         else return '';
                     }
                 }

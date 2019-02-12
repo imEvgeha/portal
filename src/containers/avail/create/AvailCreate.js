@@ -5,7 +5,7 @@ import config from 'react-global-configuration';
 
 import {updateBreadcrumb} from '../../../stores/actions/index';
 import {saveCreateAvailForm} from '../../../stores/actions/avail/createavail';
-import {Button, Input, Label, Progress} from 'reactstrap';
+import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
@@ -322,15 +322,14 @@ class AvailCreate extends React.Component {
 
     confirm() {
         if(this.validateFields()) return;
-        this.setState({loading: true});
         availService.createAvail(this.state.avail).then((response) => {
-            this.setState({loading: false, avail:{}});
+            this.setState({avail:{}});
             store.dispatch(saveCreateAvailForm({}));
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
         })
-            .catch(() => this.setState({loading: false, errorMessage: 'Avail creation Failed'}));
+            .catch(() => this.setState({errorMessage: 'Avail creation Failed'}));
     }
 
     cancel(){
@@ -459,7 +458,6 @@ class AvailCreate extends React.Component {
                 <div className="nx-stylish row mt-3 mx-5">
                     {renderColumns}
                 </div>
-                {this.state.loading && <Progress className={'custom-progress'} animated value={100}/>}
                 <Label id="avails-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
                     {this.state.errorMessage}
                 </Label>

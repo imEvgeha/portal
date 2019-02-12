@@ -153,9 +153,9 @@ class EditableDatePicker extends Component {
                             </div>
                             {
                                 this.state.errorMessage &&
-                                <p style={{ color: 'red', float: 'left', width: '100%' }}>
+                                <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
-                                </p>
+                                </small>
                             }
                         </div>
                         :
