@@ -40,12 +40,15 @@ class AvailDetails extends React.Component {
         router: t.object
     }
 
+    refresh = null;
+
     constructor(props) {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.cancel = this.cancel.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.getAvailData = this.getAvailData.bind(this);
 
         this.emptyValueText = 'Enter';
 
@@ -58,33 +61,19 @@ class AvailDetails extends React.Component {
 
     componentDidMount() {
         profileService.initAvailsMapping();
-        if(this.props.match && this.props.match.params && this.props.match.params.id){
-            if(this.props.location && this.props.location.state && this.props.location.state.data &&
-            this.props.match.params.id === this.props.location.state.data.id){
-                this.setState({
-                    avail: this.props.location.state.data
-                });
-            }else{
-                availService.getAvail(this.props.match.params.id)
-                    .then(res => {
-                        if(res && res.data){
-                            this.setState({
-                                avail: res.data
-                            });
-                        }
-                    })
-                    .catch(() => {
-                        this.setState({
-                            errorMessage: 'Cannot retrieve avail'
-                        });
-                    });
-            }
+        this.getAvailData();
+        if(this.refresh === null){
+            this.refresh = setInterval(this.getAvailData, config.get('avails.edit.refresh.interval'));
         }
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     }
 
     componentWillUnmount() {
+        if(this.refresh !== null){
+            clearInterval(this.refresh);
+            this.refresh = null;
+        }
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
@@ -92,6 +81,24 @@ class AvailDetails extends React.Component {
         const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
         if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
             this.setState({ columns: columns });
+    }
+
+    getAvailData() {
+        if(this.props.match && this.props.match.params && this.props.match.params.id){
+            availService.getAvail(this.props.match.params.id)
+                .then(res => {
+                    if(res && res.data){
+                        this.setState({
+                            avail: res.data
+                        });
+                    }
+                })
+                .catch(() => {
+                    this.setState({
+                        errorMessage: 'Cannot retrieve avail'
+                    });
+                });
+        }
     }
 
     handleSubmit(editable) {

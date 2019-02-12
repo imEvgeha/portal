@@ -372,7 +372,7 @@ class AvailsResultTable extends React.Component {
         if (params.value !== undefined) {
             if (content) {
                 return(
-                    <Link to={{ pathname: '/avails/' + params.data.id, state: {data: params.data}}}>
+                    <Link to={{ pathname: '/avails/' + params.data.id }}>
                         <div
                         title= {error}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
