@@ -76,7 +76,7 @@ class TitleReadOnlyMode extends Component {
                                                 : 
                                                 <Col md={6}>
                                                     <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{episodeCount}</Alert>
-                                                </Col> :
+                                                </Col>
                                         }
                                     </Row>
                                     <Row>
