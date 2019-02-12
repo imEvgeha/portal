@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Button, Row, Col, Container, Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { titleService } from '../../service/TitleService';
@@ -61,26 +61,48 @@ class TitleReadOnlyMode extends Component {
                                 <Alert color="light" id="titleProductionStudioId"><b>Production Studio: </b>{productionStudioId}</Alert>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col>
-                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{seasonNumber}</Alert>
-                            </Col>
+                        {
+                            contentType !== 'MOVIE' && contentType !== 'BRAND' ?
+                                <Fragment>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{seasonNumber}</Alert>
+                                        </Col>
+                                        {
+                                            contentType !== 'SEASON' ?
+                                                <Col md={6}>
+                                                    <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{episodeNumber}</Alert>
+                                                </Col>
+                                                : null
+                                        }
+                                        {
+                                            contentType === 'SEASON' ?
+                                                <Col md={6}>
+                                                    <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{episodeCount}</Alert>
+                                                </Col> : null
+                                        }
+                                    </Row>
+                                    <Row>
+                                        {
+                                            contentType === 'SEASON' ?
 
-                            <Col md={3}>
-                                <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{episodeNumber}</Alert>
-                            </Col>
-                            <Col md={3}>
-                                <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{episodeCount}</Alert>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{seasonId}</Alert>
-                            </Col>
-                            <Col>
-                                <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{episodeId}</Alert>
-                            </Col>
-                        </Row>
+                                                <Col>
+                                                    <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{seasonId}</Alert>
+                                                </Col>
+                                                : null
+                                        }
+                                        {
+                                            contentType !== 'SEASON' ?
+                                                <Col>
+                                                    <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{episodeId}</Alert>
+                                                </Col>
+                                                : null
+                                        }
+                                    </Row>
+                                </Fragment>
+                                :
+                                null
+                        }
                         <Row>
                             <Col>
                                 <Alert color="light" id="titleProductionYear"><b>Release Year: </b>{productionYear}</Alert>
