@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Button, Row, Col, Label, Container, Progress, Alert, FormGroup } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
@@ -167,78 +167,81 @@ class TitleEditMode extends Component {
                                 </Col>
                             </Row>
                             {
-                                !this.state.brandChecked ?
-                                    <Row>
-                                        <Col>
-                                            <Label for="titleBrandName">Brand</Label>
-                                            <AvField type="text" name="brandTitleName" id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
-                                                onChange={this.handleChangeBrand} required={this.state.isBrandCompleted}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Label for="titleBrandProductionYear">Brand Release Year</Label>
-                                            <AvField name="brandProdYear" id="titleBrandProductionYear" required={this.state.isBrandProdYearCompleted} errorMessage="Please enter a valid year!" validate={{
-                                                required: { errorMessage: 'Field cannot be empty!' },
-                                                pattern: { value: '^[0-9]+$' },
-                                                minLength: { value: 4 },
-                                                maxLength: { value: 4 }
-                                            }} placeholder="Enter Brand Release Year" onChange={this.handleChangeBrandProdYear} />
-                                        </Col>
-                                    </Row>
-                                    : null
-                            }
-                            {
-                                !this.state.seasonChecked ?
-                                    <Row>
-                                        <Col>
-                                            <FormGroup>
-                                                <Label for="titleSeasonNumber">Season</Label>
-                                                <AvField type="text" name="seasonNumber" value={seasonNumber || ''} id="titleSeasonNumber" placeholder={'Enter Season Number'}
-                                                    onChange={this.handleChangeEpisodic}
-                                                    validate={{
-                                                        maxLength: { value: 3 }
-                                                    }}
+                                contentType !== 'MOVIE' && contentType !== 'BRAND' ?
+                                    <Fragment>
+                                        <Row>
+                                            <Col>
+                                                <Label for="titleBrandName">Brand</Label>
+                                                <AvField type="text" name="brandTitleName" id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
+                                                    onChange={this.handleChangeBrand} required={this.state.isBrandCompleted}
                                                 />
-                                            </FormGroup>
-                                        </Col>
-                                        {
-                                            !this.state.episodeChecked ?
-                                                <React.Fragment>
-                                                    <Col md={3}>
-                                                        <FormGroup>
-                                                            <Label for="titleEpisodeNumber">Episode</Label>
-                                                            <AvField type="text" name="episodeNumber" value={episodeNumber || ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
-                                                        </FormGroup>
+                                            </Col>
+                                            <Col>
+                                                <Label for="titleBrandProductionYear">Brand Release Year</Label>
+                                                <AvField name="brandProdYear" id="titleBrandProductionYear" required={this.state.isBrandProdYearCompleted} errorMessage="Please enter a valid year!" validate={{
+                                                    required: { errorMessage: 'Field cannot be empty!' },
+                                                    pattern: { value: '^[0-9]+$' },
+                                                    minLength: { value: 4 },
+                                                    maxLength: { value: 4 }
+                                                }} placeholder="Enter Brand Release Year" onChange={this.handleChangeBrandProdYear} />
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col  md={6}>
+                                                <FormGroup>
+                                                    <Label for="titleSeasonNumber">Season</Label>
+                                                    <AvField type="text" name="seasonNumber" value={seasonNumber || ''} id="titleSeasonNumber" placeholder={'Enter Season Number'}
+                                                        onChange={this.handleChangeEpisodic}
+                                                        validate={{
+                                                            maxLength: { value: 3 }
+                                                        }}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <React.Fragment>
+                                                {
+                                                    contentType !== 'SEASON' ?
+                                                        <Col md={6}>
+                                                            <FormGroup>
+                                                                <Label for="titleEpisodeNumber">Episode</Label>
+                                                                <AvField type="text" name="episodeNumber" value={episodeNumber || ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
+                                                            </FormGroup>
+                                                        </Col>
+                                                        : null
+                                                }
+                                                {
+                                                    contentType === 'SEASON' ?
+                                                        <Col md={6}>
+                                                            <FormGroup>
+                                                                <Label for="titleEpisodeCount">Episode Count</Label>
+                                                                <AvField type="text" name="episodeCount" value={episodeCount || ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.handleChangeEpisodic} />
+                                                            </FormGroup>
+                                                        </Col> : null
+                                                }
+                                            </React.Fragment>
+                                        </Row>
+                                        <Row>
+                                            {
+                                                contentType === 'SEASON' ?
+                                                    <Col>
+                                                        <Label for="titleSeasonID">Season ID</Label>
+                                                        <AvField type="text" name="seasonId" value={seasonId || ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
                                                     </Col>
-                                                    <Col md={3}>
-                                                        <FormGroup>
-                                                            <Label for="titleEpisodeCount">Episode Count</Label>
-                                                            <AvField type="text" name="episodeCount" value={episodeCount || ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.handleChangeEpisodic} />
-                                                        </FormGroup>
+                                                    : null
+                                            }
+                                            {
+                                                contentType !== 'SEASON' ?
+
+                                                    <Col>
+                                                        <Label for="titleEpisodeID">Episode ID</Label>
+                                                        <AvField type="text" name="episodeId" value={episodeId || ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
                                                     </Col>
-                                                </React.Fragment>
-                                                : null
-                                        }
-                                    </Row>
-                                    : null
-                            }
-                            {
-                                !this.state.seasonChecked ?
-                                    <Row>
-                                        <Col>
-                                            <Label for="titleSeasonID">Season ID</Label>
-                                            <AvField type="text" name="seasonId" value={seasonId || ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
-                                        </Col>
-                                        {
-                                            !this.state.episodeChecked ?
-                                                <Col>
-                                                    <Label for="titleEpisodeID">Episode ID</Label>
-                                                    <AvField type="text" name="episodeId" value={episodeId || ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
-                                                </Col>
-                                                : null
-                                        }
-                                    </Row>
-                                    : null
+                                                    : null
+                                            }
+                                        </Row>
+                                    </Fragment>
+                                    :
+                                    null
                             }
                             <Row style={{ marginTop: '15px' }}>
                                 <Col>
