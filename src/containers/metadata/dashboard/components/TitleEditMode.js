@@ -207,16 +207,13 @@ class TitleEditMode extends Component {
                                                                 <AvField type="text" name="episodeNumber" value={episodeNumber || ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
                                                             </FormGroup>
                                                         </Col>
-                                                        : null
-                                                }
-                                                {
-                                                    contentType === 'SEASON' ?
+                                                        : 
                                                         <Col md={6}>
                                                             <FormGroup>
                                                                 <Label for="titleEpisodeCount">Episode Count</Label>
                                                                 <AvField type="text" name="episodeCount" value={episodeCount || ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.handleChangeEpisodic} />
                                                             </FormGroup>
-                                                        </Col> : null
+                                                        </Col>
                                                 }
                                             </React.Fragment>
                                         </Row>
@@ -227,16 +224,11 @@ class TitleEditMode extends Component {
                                                         <Label for="titleSeasonID">Season ID</Label>
                                                         <AvField type="text" name="seasonId" value={seasonId || ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
                                                     </Col>
-                                                    : null
-                                            }
-                                            {
-                                                contentType !== 'SEASON' ?
-
+                                                    : 
                                                     <Col>
                                                         <Label for="titleEpisodeID">Episode ID</Label>
                                                         <AvField type="text" name="episodeId" value={episodeId || ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
                                                     </Col>
-                                                    : null
                                             }
                                         </Row>
                                     </Fragment>

@@ -73,30 +73,22 @@ class TitleReadOnlyMode extends Component {
                                                 <Col md={6}>
                                                     <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{episodeNumber}</Alert>
                                                 </Col>
-                                                : null
-                                        }
-                                        {
-                                            contentType === 'SEASON' ?
+                                                : 
                                                 <Col md={6}>
                                                     <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{episodeCount}</Alert>
-                                                </Col> : null
+                                                </Col> :
                                         }
                                     </Row>
                                     <Row>
                                         {
                                             contentType === 'SEASON' ?
-
                                                 <Col>
                                                     <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{seasonId}</Alert>
                                                 </Col>
-                                                : null
-                                        }
-                                        {
-                                            contentType !== 'SEASON' ?
+                                                : 
                                                 <Col>
                                                     <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{episodeId}</Alert>
                                                 </Col>
-                                                : null
                                         }
                                     </Row>
                                 </Fragment>
