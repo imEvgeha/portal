@@ -23,6 +23,11 @@ export const defaultConfiguration = {
         },
         page: {
             size: 100
+        },
+        edit:{
+            refresh: {
+                interval: 60000
+            }
         }
     },
     title: {
