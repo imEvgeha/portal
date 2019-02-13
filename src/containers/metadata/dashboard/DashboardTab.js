@@ -20,9 +20,9 @@ class DashboardTab extends React.Component {
         return (
             <div className={'dashboard-tab'}>
                 <div className="row">
-                    {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
-                    <DashboardCard title="Create New Title" action={this.state.modalBox} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-avails'}/>
-                    {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
+                    {/*<DashboardCard title="Manage Title Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
+                    <DashboardCard title="Create New Title" action={this.state.modalBox} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-title'}/>
+                    {/*<DashboardCard title="Title Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                 </div>
                 <div className="row">
 

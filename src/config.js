@@ -1,8 +1,8 @@
 export const defaultConfiguration = {
     gateway: {
-        url: 'http://availsapi.dev.vubiquity.com',
+        url: 'https://availsapi.dev.vubiquity.com',
         titleUrl: 'http://localhost:8090',
-        configuration: 'http://configapi.dev.vubiquity.com',
+        configuration: 'https://configapi.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
             title: '/titles-api/v1',
@@ -23,12 +23,22 @@ export const defaultConfiguration = {
         },
         page: {
             size: 100
+        },
+        edit:{
+            refresh: {
+                interval: 60000
+            }
+        }
+    },
+    title: {
+        page: {
+            size: 100
         }
     },
     keycloak: {
-        'clientId': 'vehicle-public',
+        'clientId': 'temportalapp-dev',
         'realm': 'Vubiquity',
-        'url': 'http://usla-amm-d001.dev.vubiquity.com:8080/auth',
+        'url': 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import t from 'prop-types';
 import moment from 'moment';
+import {Link} from 'react-router-dom';
 
 import config from 'react-global-configuration';
 
@@ -16,8 +17,6 @@ import './AvailResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
 import {availServiceManager} from '../../service/AvailServiceManager';
-import {availDetailsModal} from './AvailDetailsModal';
-
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -349,12 +348,6 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    onCellClicked(row){
-        availDetailsModal.open(this.table.api.getRowNode(row.id).data, () => {
-                }, () => {
-                }, {onEdit: this.onEdit, availsMapping: this.props.availsMapping});
-    }
-
     loadingRenderer(params){
         let error = null;
         if(params.data && params.data.validationErrors){
@@ -379,13 +372,13 @@ class AvailsResultTable extends React.Component {
         if (params.value !== undefined) {
             if (content) {
                 return(
-                    <a href="#" onClick={() => this.onCellClicked(params.data)}>
+                    <Link to={{ pathname: '/avails/' + params.data.id }}>
                         <div
                         title= {error}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
                             {content}
                         </div>
-                    </a>
+                    </Link>
                 );
             }
             else return params.value;
