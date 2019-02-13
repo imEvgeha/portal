@@ -49,7 +49,7 @@ class DashboardTab extends React.Component {
     }
 
     createAvail = () => {
-        this.context.router.history.push('avails/new');
+        this.context.router.history.push('avails/create');
     };
 
     render() {

@@ -29,7 +29,7 @@ export default class App extends React.Component {
                         <Route exact path="/avails" component={canRender(AvailDashboardContainer, 'read', 'Avail')}/>
                         <Switch>
                             <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
-                            <Route exact path="/avails/new" component={canRender(AvailCreate, 'create', 'Avail')}/>
+                            <Route exact path="/avails/create" component={canRender(AvailCreate, 'create', 'Avail')}/>
                             <Route exact path="/avails/:id" component={canRender(AvailDetails, 'read', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />

@@ -26,6 +26,7 @@ import {configurationService} from '../service/ConfigurationService';
 import moment from 'moment';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {gotoAvailsDashboard} from '../../Navbar';
 
 const mapStateToProps = state => {
     return {
@@ -79,14 +80,11 @@ class DashboardContainer extends React.Component {
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
-        this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
         this.cleanSelection = this.cleanSelection.bind(this);
     }
 
-    DASHBOARD = {...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()};
-
     componentDidMount() {
-        NexusBreadcrumb.set(this.DASHBOARD);
+        NexusBreadcrumb.set(AVAILS_DASHBOARD);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
         if (this.props.location && this.props.location.state) {
@@ -115,7 +113,7 @@ class DashboardContainer extends React.Component {
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);
                 this.handleAvailsAdvancedSearch(criteria);
             } else if (state.back) {
-                this.handleBackToDashboard();
+                gotoAvailsDashboard();
             }
         } else if (this.props.searchCriteria.availHistoryIds) {
             if (this.props.showSearchResults) {
@@ -130,7 +128,7 @@ class DashboardContainer extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(prevProps.searchCriteria !== this.props.searchCriteria) {
-            NexusBreadcrumb.set(this.DASHBOARD);
+            NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
             if (this.props.showSearchResults) {
                 if(this.props.currentSearchCriteria.availHistoryIds && this.props.showAdvancedSearch){
@@ -141,17 +139,12 @@ class DashboardContainer extends React.Component {
         }
     }
 
-    handleBackToDashboard() {
-        this.props.searchFormShowSearchResults(false);
-        NexusBreadcrumb.set(this.DASHBOARD);
-    }
-
     toggleAdvancedSearch() {
         this.props.searchFormShowAdvancedSearch(!this.props.showAdvancedSearch);
     }
 
     handleAvailsFreeTextSearch(searchCriteria) {
-        NexusBreadcrumb.set([this.DASHBOARD, AVAILS_SEARCH_RESULTS]);
+        NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.freeTextSearch(searchCriteria);
         this.cleanSelection();
@@ -159,9 +152,9 @@ class DashboardContainer extends React.Component {
 
     handleAvailsAdvancedSearch(searchCriteria) {
         if (this.props.searchCriteria.availHistoryIds) {
-            NexusBreadcrumb.set([this.DASHBOARD, AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
+            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
         }else{
-            NexusBreadcrumb.set([this.DASHBOARD, AVAILS_SEARCH_RESULTS]);
+            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         }
 
         this.props.searchFormShowSearchResults(true);

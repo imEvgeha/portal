@@ -33,7 +33,6 @@ class NavbarConnect extends React.Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
         this.state = {
             dropdownOpen: false
         };
@@ -45,14 +44,6 @@ class NavbarConnect extends React.Component {
         }));
     }
 
-    handleBackToDashboard() {
-        this.props.searchFormShowSearchResults(false);
-        NexusBreadcrumb.set([{
-            ...AVAILS_DASHBOARD,
-            onClick: () => this.handleBackToDashboard()
-        }]);
-    }
-
     render() {
         return (
             <nav className="navbar navbar-NEXUS navbar-expand-md">
@@ -62,7 +53,7 @@ class NavbarConnect extends React.Component {
                 <ul className="navbar-nav">
                     <Can I="read" a="Avail">
                         <li className="nav-item">
-                            <span className="nav-link" href="#" onClick={this.handleBackToDashboard}>
+                            <span className="nav-link" href="#" onClick={gotoAvailsDashboard}>
                                 <NavLink activeClassName="navActive" to="/avails"  id="avail-tab">Avails</NavLink>
                             </span>
                         </li>
@@ -107,3 +98,10 @@ const options = {pure: false};
 const Navbar = connect(mapStateToProps, mapDispatchToProps, null, options)(NavbarConnect);
 
 export default Navbar;
+
+import store from '../stores/index';
+export const gotoAvailsDashboard = () => {
+    store.dispatch(searchFormShowSearchResults(false));
+    NexusBreadcrumb.set(AVAILS_DASHBOARD);
+};
+
