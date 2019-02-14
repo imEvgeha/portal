@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
-    searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
@@ -37,12 +36,10 @@ const mapStateToProps = state => {
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         currentSearchCriteria: state.dashboard.session.searchCriteria,
-        useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
     };
 };
 
 const mapDispatchToProps = {
-    searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
@@ -58,7 +55,6 @@ class DashboardContainer extends React.Component {
         availsMapping: t.any,
         searchCriteria: t.any,
         currentSearchCriteria: t.any,
-        searchFormUseAdvancedSearch: t.func,
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
@@ -70,7 +66,6 @@ class DashboardContainer extends React.Component {
         selected: t.array,
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
-        useAdvancedSearch: t.bool,
         location: t.object,
     };
 

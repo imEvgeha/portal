@@ -29,7 +29,6 @@ let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         availTabPageSort: state.dashboard.session.availTabPageSort,
-        useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
         freeTextSearch: state.dashboard.freeTextSearch,
         availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
@@ -52,7 +51,6 @@ class AvailsResultTable extends React.Component {
         availsMapping: t.any,
         availTabPage: t.object,
         availTabPageSort: t.array,
-        useAdvancedSearch: t.bool,
         freeTextSearch: t.object,
         availTabPageSelection: t.object,
         availTabPageLoading: t.bool,
