@@ -16,7 +16,8 @@ import {
     METADATA_TITLE_LOAD_REPORTS,
     METADATA_TITLE_SET_REPORT_NAME,
     METADATA_TITLE_UPDATE_BREADCRUMB,
-    METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER
+    METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
+    TERRITORY_METADATA_ADD
 } from '../../../constants/action-types';
 
 
@@ -42,4 +43,6 @@ export const setReportName = reportName => ({type: METADATA_TITLE_SET_REPORT_NAM
 export const updateBreadcrumb = payload => ({type: METADATA_TITLE_UPDATE_BREADCRUMB, payload: payload});
 
 export const resultPageUpdateColumnsOrder = results => ({ type: METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER, payload: results });
+
+export const addTerritoryMetadata = results => ({ type: TERRITORY_METADATA_ADD, payload: results });
 

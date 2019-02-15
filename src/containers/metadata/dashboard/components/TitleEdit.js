@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import { updateBreadcrumb } from '../../../../stores/actions/metadata/index';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
@@ -6,9 +6,10 @@ import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
+import EditPage from './EditPage';
+import TerritoryMetadata from './TerritoryMetadata';
 
-
-class TitleEdit extends React.Component {
+class TitleEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,9 +19,9 @@ class TitleEdit extends React.Component {
     componentDidMount() {
         this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
     }
-    
+
     handleKeyDown = (e) => {
-        if(e.keyCode === 27) {
+        if (e.keyCode === 27) {
             this.setState({
                 isEditMode: false
             });
@@ -42,7 +43,12 @@ class TitleEdit extends React.Component {
     };
     render() {
         return (
-            this.state.isEditMode ? this.editMode() : this.readOnly()
+            <EditPage>
+                {
+                    this.state.isEditMode ? this.editMode() : this.readOnly()
+                }                
+                <TerritoryMetadata isEditMode={this.state.isEditMode} handleSwitchMode={this.handleSwitchMode} />
+            </EditPage>
         );
     }
 }
