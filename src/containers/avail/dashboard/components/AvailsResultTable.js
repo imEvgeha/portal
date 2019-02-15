@@ -206,8 +206,8 @@ class AvailsResultTable extends React.Component {
                 if(selected.indexOf(id) === -1 && e.api.getRowNode(id) === null) selected.push(id);
             });
         } else {
-            if(this.props.availTabPageSelection.selection && this.props.availTabPageSelection.selection.length > 0)
-                selected = selected.concat(this.props.availTabPageSelection.selection);
+            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
+                selected = selected.concat(this.props.availTabPageSelection.selected);
         }
 
         let allLoadedSelected = true;
