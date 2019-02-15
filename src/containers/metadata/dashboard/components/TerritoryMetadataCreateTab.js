@@ -12,20 +12,13 @@ class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            territories: {
-                local: '',
-                theatricalReleaseYear: '',
-                homeVideoReleaseYear: '',
-                availAnnounceDate: '',
-                boxOffice: '',
-                releaseYear: ''
-            }
+            territories: []
         };
     }
 
     addMetadata = () => {
         this.props.addTerritoryMetadata(this.state.territories);
-        console.log(this.state.territories);
+        this.form && this.form.reset();
     }
 
     handleChange = (e) => {
@@ -40,8 +33,8 @@ class TerritoryMetadataCreateTab extends Component {
         return (
             <div id="territoryContainer">
                 <Fragment>
-                <AvForm>
-                    <Button onClick={this.addMetadata}>Save</Button>
+                <AvForm onValidSubmit={this.addMetadata} ref={c => (this.form = c)}>
+                    <Button>Save</Button>
                     <Row style={{padding: '15px'}}>
                         <Col md={2}>
                             <b>Locale<span style={{ color: 'red' }}>*</span></b>

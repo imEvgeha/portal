@@ -32,13 +32,11 @@ const initialState = {
         columns: ['title', 'contentType', 'productionYear'],
         columnsSize: {}
     },
-    territoryMetadata: {
-        territories: [
-            { local: 'UK', theatricalReleaseYear: '2017-02-13', homeVideoReleaseYear: '2016-02-13', availAnnounceDate: '2011-02-13', boxOffice: '7774', releaseYear: '1994'},
-            { local: 'US', theatricalReleaseYear: '2016-02-13', homeVideoReleaseYear: '2018-02-13', availAnnounceDate: '2012-02-13', boxOffice: '5345', releaseYear: '1995'},
-            { local: 'PL', theatricalReleaseYear: '2019-02-13', homeVideoReleaseYear: '2015-02-13', availAnnounceDate: '2013-02-13', boxOffice: '34536', releaseYear: '1998'},
-        ]
-    }
+    territories: [
+        { local: 'UK', theatricalReleaseYear: '2017-02-13', homeVideoReleaseYear: '2016-02-13', availAnnounceDate: '2011-02-13', boxOffice: '7774', releaseYear: '1994'},
+        { local: 'US', theatricalReleaseYear: '2016-02-13', homeVideoReleaseYear: '2018-02-13', availAnnounceDate: '2012-02-13', boxOffice: '5345', releaseYear: '1995'},
+        { local: 'PL', theatricalReleaseYear: '2019-02-13', homeVideoReleaseYear: '2015-02-13', availAnnounceDate: '2013-02-13', boxOffice: '34536', releaseYear: '1998'},
+    ]
 };
 
 
@@ -54,7 +52,7 @@ const metadata = (state = initialState, action) => {
         case METADATA_TITLE_RESULT_PAGE__LOADING:
             return {...state, titleTabPageLoading: action.payload};
         case TERRITORY_METADATA_ADD:
-            return { ...state, territoryMetadata: { ...state.territoryMetadata, territories: [{...state.territoryMetadata.territores, ...action.payload}]}};
+            return { ...state, territories: [...state.territories, action.payload]};
         default:
             return state;
     }

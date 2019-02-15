@@ -39,19 +39,21 @@ class TerritoryMetadata extends Component {
                             : null
                     } 
                     {
-                        this.props.territoryMetadata.territories.map((item, i) => {                       
+                        this.props.territories.map((item, i) => {                       
                             return <button className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.local}</b></button>;
                         })
                     }                   
                 </div>
                 <TabContent activeTab={this.state.activeTab}>
                     {
-                        this.props.territoryMetadata.territories.map((item, i) => {
+                        this.props.territories && this.props.territories.map((item, i) => {
                                  return (
                                  <TabPane key={i} tabId={i}>
                                     <Row>
-                                        <TerritoryMetadataTab data={item} />
-                                        </Row>
+                                        <Col>                                        
+                                            <TerritoryMetadataTab key={i} data={item} />
+                                        </Col>
+                                    </Row>
                                 </TabPane>);
                         })
                     }
@@ -68,11 +70,11 @@ class TerritoryMetadata extends Component {
 
 TerritoryMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
-    territoryMetadata: PropTypes.object
+    territories: PropTypes.array
 };
 const mapStateToProps = state => {
     return {
-        territoryMetadata: state.titleReducer.territoryMetadata,
+        territories: state.titleReducer.territories,
     };
 };
 export default connect(mapStateToProps, null)(TerritoryMetadata);
