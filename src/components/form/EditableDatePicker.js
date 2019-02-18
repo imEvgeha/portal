@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
 import t from 'prop-types';
 import NexusDatePicker from './NexusDatePicker';
@@ -109,16 +108,17 @@ class EditableDatePicker extends Component {
             } else {
                 if(this.state.showStateDate){
                     return displayFunc(this.state.date ? moment(this.state.date).format('L') : '');
-                }else{
-                    if(this.props.value) {
+                } else {
+                    if(this.props.value){
                         return displayFunc(this.props.value ? moment(this.props.value).format('L') : '');
-                    } else {
-                        return(
+                    }else {
+                        return (
                             <span
-                                style={{ color: '#808080', cursor: 'pointer' }}
+                                className="displayDate"
+                                style={{color: '#808080', cursor: 'pointer'}}
                                 onClick={this.handleShowDatePicker}>
-                                {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
-                            </span>
+                            {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
+                        </span>
                         );
                     }
                 }
@@ -143,19 +143,19 @@ class EditableDatePicker extends Component {
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
                                     onClick={() => this.submit(this.state.date ? this.state.date.toISOString() : null)}
-                                    color="success"><FontAwesome name='check' />
+                                    color="success"><i className="fa fa-check"></i>
                                 </Button>
                                 <Button
                                     className="dPButton"
                                     onClick={this.handleCancelDatePicker}
-                                    color="danger"><FontAwesome name='times' />
+                                    color="danger"><i className="fa fa-times"></i>
                                 </Button>
                             </div>
                             {
                                 this.state.errorMessage &&
-                                <p style={{ color: 'red', float: 'left', width: '100%' }}>
+                                <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
-                                </p>
+                                </small>
                             }
                         </div>
                         :

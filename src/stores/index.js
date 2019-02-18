@@ -2,13 +2,16 @@ import {combineReducers, createStore } from 'redux';
 import root from './reducers/index';
 import titleReducer from './reducers/metadata/titleReducer';
 import dashboard from './reducers/avail/dashboard';
+import createavail from './reducers/avail/createavail';
 import history from './reducers/history';
 import {loadDashboardSession} from './actions/avail/dashboard';
+import {loadCreateAvailSession} from './actions/avail/createavail';
 import {loadHistorySession} from './actions/avail/history';
 import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper';
 import {advancedHistorySearchHelper} from '../containers/avail/ingest-history/AdvancedHistorySearchHelper';
 
 const DASHBOARD_SESSION_VERSION = '0.2';
+const CREATEAVAIL_SESSION_VERSION = '0.1';
 const HISTORY_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
@@ -16,6 +19,7 @@ const reducers = combineReducers({
     titleReducer,
     dashboard,
     history,
+    createavail
 });
 const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); // REDUX DEVTOOLS allows you to see your action and state changes real-time in the browser.
 
@@ -34,13 +38,29 @@ export const saveHistoryState = () => {
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
     setTimeout(() => {
-        availSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
+        const dashboard = store.getState().dashboard;
+        if(dashboard.session.showSearchResults) {
+            if (dashboard.session.showAdvancedSearch) {
+                availSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
+            }else{
+                availSearchHelper.freeTextSearch(dashboard.freeTextSearch);
+            }
+        }
     }, 1);
 };
 
 export const saveDashboardState = () => {
     saveToWebLocalStorage('dashboard', DASHBOARD_SESSION_VERSION);
 };
+
+export const loadCreateAvailState = () => {
+    loadFromWebLocalStorage('createavail', loadCreateAvailSession, CREATEAVAIL_SESSION_VERSION);
+};
+
+export const saveCreateAvailState = () => {
+    saveToWebLocalStorage('createavail', CREATEAVAIL_SESSION_VERSION);
+};
+
 
 const loadFromWebLocalStorage = (name, loadAction, version) => {
     try {

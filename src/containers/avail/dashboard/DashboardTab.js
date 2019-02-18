@@ -4,8 +4,7 @@ import React from 'react';
 import DashboardDropableCard from './card/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/DashboardCard';
-import {availCreateModal} from './components/AvailCreateModal';
-import {resultPageLoading, resultPageSort, resultPageUpdate, searchFormUseAdvancedSearch} from '../../../stores/actions/avail/dashboard';
+import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
 import {loadAvailsMapping} from '../../../stores/actions';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
@@ -19,7 +18,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    searchFormShowAdvancedSearch: searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
@@ -29,15 +27,19 @@ const mapDispatchToProps = {
 class DashboardTab extends React.Component {
     static propTypes = {
         availsMapping: t.any,
-        searchFormShowAdvancedSearch: t.func,
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
         loadAvailsMapping: t.func,
     };
 
+    static contextTypes = {
+        router: t.object
+    }
+
     constructor(props) {
         super(props);
+
         this.state = {
             ingestedCount: '-'
         };
@@ -45,7 +47,7 @@ class DashboardTab extends React.Component {
     }
 
     createAvail = () => {
-        availCreateModal.open(() => {}, () => {}, {availsMapping: this.props.availsMapping});
+        this.context.router.history.push('avails/create');
     };
 
     render() {
