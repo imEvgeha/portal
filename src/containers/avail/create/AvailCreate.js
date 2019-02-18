@@ -60,7 +60,11 @@ class AvailCreate extends React.Component {
         this.setState({
             avail: this.props.storedForm,
         });
-        profileService.initAvailsMapping();
+        if(this.props.availsMapping){
+            this.addMappingToState(this.props.availsMapping.mappings);
+        }else{
+            profileService.initAvailsMapping();
+        }
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     }
