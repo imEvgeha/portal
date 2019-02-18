@@ -6,22 +6,19 @@ import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
 import {Button, Label} from 'reactstrap';
 
-import {updateBreadcrumb} from '../../../stores/actions/index';
 import {availService} from '../service/AvailService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import {rangeValidation} from '../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../ability';
 import './AvailDetails.scss';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 
 const mapStateToProps = state => {
    return {
        availsMapping: state.root.availsMapping,
    };
-};
-
-const mapDispatchToProps = {
-    updateBreadcrumb
 };
 
 const EXCLUDED_FIELDS = ['availId'];
@@ -31,7 +28,6 @@ class AvailDetails extends React.Component {
 
     static propTypes = {
         availsMapping: t.any,
-        updateBreadcrumb: t.func,
         match: t.any,
         location: t.any
     };
@@ -60,6 +56,8 @@ class AvailDetails extends React.Component {
     }
 
     componentDidMount() {
+        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
+        NexusBreadcrumb.push({name: '', path: '/avails/'});
         profileService.initAvailsMapping();
         this.getAvailData();
         if(this.refresh === null){
@@ -74,6 +72,7 @@ class AvailDetails extends React.Component {
             clearInterval(this.refresh);
             this.refresh = null;
         }
+        NexusBreadcrumb.pop();
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
@@ -91,6 +90,8 @@ class AvailDetails extends React.Component {
                         this.setState({
                             avail: res.data
                         });
+                        NexusBreadcrumb.pop();
+                        NexusBreadcrumb.push({name: res.data.title, path: '/avails/' + res.data.id});
                     }
                 })
                 .catch(() => {
@@ -126,6 +127,8 @@ class AvailDetails extends React.Component {
                     avail: editedAvail,
                     errorMessage: ''
                 });
+                NexusBreadcrumb.pop();
+                NexusBreadcrumb.push({name: editedAvail.title, path: '/avails/' + editedAvail.id});
             })
             .catch(() => {
                 this.setState({
@@ -377,4 +380,4 @@ class AvailDetails extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailDetails);
+export default connect(mapStateToProps, null)(AvailDetails);

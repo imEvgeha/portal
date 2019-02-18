@@ -1,7 +1,6 @@
 import {
     DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA,
-    DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH,
     DASHBOARD_RESULT_PAGE__UPDATE,
     DASHBOARD_RESULT_PAGE__SORT,
     DASHBOARD_RESULT_PAGE__SELECT_ROW,
@@ -20,7 +19,6 @@ export const searchFormUpdateTextSearch = textSearch => ({type: DASHBOARD_SEARCH
 export const searchFormSetAdvancedSearchCriteria = searchCriteria => ({type: DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA, payload: searchCriteria});
 export const searchFormUpdateAdvancedSearchCriteria = searchCriteria => ({type: DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA, payload: searchCriteria});
 export const searchFormSetSearchCriteria = searchCriteria => ({type: DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA, payload: searchCriteria});
-export const searchFormUseAdvancedSearch = use => ({type: DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH, payload: use});
 export const searchFormShowAdvancedSearch = show => ({type: DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH, payload: show});
 export const searchFormShowSearchResults = show => ({type: DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS, payload: show});
 

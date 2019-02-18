@@ -38,7 +38,14 @@ export const saveHistoryState = () => {
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
     setTimeout(() => {
-        availSearchHelper.advancedSearch(store.getState().dashboard.session.searchCriteria);
+        const dashboard = store.getState().dashboard;
+        if(dashboard.session.showSearchResults) {
+            if (dashboard.session.showAdvancedSearch) {
+                availSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
+            }else{
+                availSearchHelper.freeTextSearch(dashboard.freeTextSearch);
+            }
+        }
     }, 1);
 };
 

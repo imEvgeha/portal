@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
-    searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
@@ -18,14 +17,15 @@ import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import t from 'prop-types';
 import {
-    loadAvailsMapping,
-    updateBreadcrumb
+    loadAvailsMapping
 } from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {availSearchHelper} from './AvailSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
 import moment from 'moment';
-import {AVAILS_DASHBOARD, AVAILS_HISTORY, SEARCH_RESULTS} from '../../../constants/breadcrumb';
+import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {gotoAvailsDashboard} from '../../Navbar';
 
 const mapStateToProps = state => {
     return {
@@ -35,12 +35,11 @@ const mapStateToProps = state => {
         showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
-        useAdvancedSearch: state.dashboard.session.useAdvancedSearch,
+        currentSearchCriteria: state.dashboard.session.searchCriteria,
     };
 };
 
 const mapDispatchToProps = {
-    searchFormUseAdvancedSearch,
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
@@ -48,15 +47,14 @@ const mapDispatchToProps = {
     resultPageSelect,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
-    searchFormSetAdvancedSearchCriteria,
-    updateBreadcrumb,
+    searchFormSetAdvancedSearchCriteria
 };
 
 class DashboardContainer extends React.Component {
     static propTypes = {
         availsMapping: t.any,
         searchCriteria: t.any,
-        searchFormUseAdvancedSearch: t.func,
+        currentSearchCriteria: t.any,
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
@@ -65,15 +63,11 @@ class DashboardContainer extends React.Component {
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
-        updateBreadcrumb: t.func,
         selected: t.array,
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
-        useAdvancedSearch: t.bool,
         location: t.object,
     };
-
-    fromHistory = false;
 
     constructor(props) {
         super(props);
@@ -81,11 +75,11 @@ class DashboardContainer extends React.Component {
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
-        this.handleBackToDashboard = this.handleBackToDashboard.bind(this);
         this.cleanSelection = this.cleanSelection.bind(this);
     }
 
     componentDidMount() {
+        NexusBreadcrumb.set(AVAILS_DASHBOARD);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
         if (this.props.location && this.props.location.state) {
@@ -105,36 +99,39 @@ class DashboardContainer extends React.Component {
                 if (state.rowInvalid !== undefined) {
                     criteria.rowInvalid = {value: state.rowInvalid};
                 }
+
+                if(this.props.showSearchResults) {
+                    NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
+                }
+
                 this.props.searchFormShowAdvancedSearch(true);
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);
                 this.handleAvailsAdvancedSearch(criteria);
-                this.props.updateBreadcrumb([AVAILS_HISTORY, SEARCH_RESULTS]);
-                this.fromHistory = true;
             } else if (state.back) {
-                this.handleBackToDashboard();
+                gotoAvailsDashboard();
             }
         } else if (this.props.searchCriteria.availHistoryIds) {
             if (this.props.showSearchResults) {
-                this.props.updateBreadcrumb([AVAILS_HISTORY, SEARCH_RESULTS]);
-            } else {
-                this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}]);
+                NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
             }
         } else {
-            this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}]);
+            if(this.props.showSearchResults) {
+                NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
+            }
         }
     }
 
-    componentDidUpdate() {
-        if (this.props.searchCriteria.availHistoryIds && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {
-            this.props.updateBreadcrumb([AVAILS_HISTORY, SEARCH_RESULTS]);
-            this.fromHistory = true;
-        }
-    }
+    componentDidUpdate(prevProps) {
+        if(prevProps.searchCriteria !== this.props.searchCriteria) {
+            NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
-    handleBackToDashboard() {
-        this.props.searchFormShowAdvancedSearch(false);
-        this.props.searchFormShowSearchResults(false);
-        this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}]);
+            if (this.props.showSearchResults) {
+                if(this.props.currentSearchCriteria.availHistoryIds && this.props.showAdvancedSearch){
+                    NexusBreadcrumb.push(AVAILS_HISTORY);
+                }
+                NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
+            }
+        }
     }
 
     toggleAdvancedSearch() {
@@ -142,19 +139,20 @@ class DashboardContainer extends React.Component {
     }
 
     handleAvailsFreeTextSearch(searchCriteria) {
-        this.props.searchFormUseAdvancedSearch(false);
+        NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         this.props.searchFormShowSearchResults(true);
-        this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}, SEARCH_RESULTS]);
         availSearchHelper.freeTextSearch(searchCriteria);
         this.cleanSelection();
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
-        this.props.searchFormUseAdvancedSearch(true);
-        this.props.searchFormShowSearchResults(true);
-        if (!this.props.searchCriteria.availHistoryIds) {
-            this.props.updateBreadcrumb([{...AVAILS_DASHBOARD, onClick: () => this.handleBackToDashboard()}, SEARCH_RESULTS]);
+        if (this.props.searchCriteria.availHistoryIds) {
+            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
+        }else{
+            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         }
+
+        this.props.searchFormShowSearchResults(true);
         availSearchHelper.advancedSearch(searchCriteria);
         this.cleanSelection();
     }

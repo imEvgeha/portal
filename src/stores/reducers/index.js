@@ -1,13 +1,12 @@
 import {
     LOAD_PROFILE_INFO,
-    LOAD_AVAILS_MAPPING, LOAD_REPORTS, UPDATE_BREADCRUMB,
+    LOAD_AVAILS_MAPPING, LOAD_REPORTS,
 } from '../../constants/action-types';
 
 const initialState = {
     profileInfo: {},
     reports: null,
-    availsMapping: null,
-    breadcrumb: []
+    availsMapping: null
 };
 
 const root = ( state = initialState, action) => {
@@ -18,8 +17,6 @@ const root = ( state = initialState, action) => {
         return { ...state, reports: action.payload};
     case LOAD_AVAILS_MAPPING:
         return { ...state, availsMapping: action.payload};
-    case UPDATE_BREADCRUMB:
-        return { ...state, breadcrumb: action.payload};
     default:
         return state;
     }

@@ -3,7 +3,6 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import config from 'react-global-configuration';
 
-import {updateBreadcrumb} from '../../../stores/actions/index';
 import {saveCreateAvailForm} from '../../../stores/actions/avail/createavail';
 import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
@@ -12,6 +11,8 @@ import {INVALID_DATE} from '../../../constants/messages';
 import {rangeValidation} from '../../../util/Validation';
 import {availService} from '../service/AvailService';
 import store from '../../../stores/index';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
 
 const mapStateToProps = state => {
     return {
@@ -21,7 +22,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    updateBreadcrumb,
     saveCreateAvailForm
 };
 
@@ -30,7 +30,6 @@ const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
 class AvailCreate extends React.Component {
 
     static propTypes = {
-        updateBreadcrumb: t.func,
         saveCreateAvailForm: t.func,
         availsMapping: t.any,
         storedForm: t.object
@@ -57,6 +56,9 @@ class AvailCreate extends React.Component {
     }
 
     componentDidMount() {
+        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
+
+        NexusBreadcrumb.push(AVAILS_CREATE);
         this.setState({
             avail: this.props.storedForm,
         });
@@ -70,6 +72,7 @@ class AvailCreate extends React.Component {
     }
 
     componentWillUnmount() {
+        NexusBreadcrumb.pop();
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
