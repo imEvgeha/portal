@@ -11,8 +11,5 @@ class EditPage extends Component {
     }
 }
 
-EditPage.propTypes = {
-    children: PropTypes.array
-};
 
 export default EditPage;

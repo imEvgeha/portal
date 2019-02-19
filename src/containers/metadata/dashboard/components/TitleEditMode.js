@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Row, Col, Label, Container, Progress, Alert, FormGroup } from 'reactstrap';
+import { Row, Col, Label, Container, Progress, Alert, FormGroup } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { titleService } from '../../service/TitleService';
-import { errorModal } from '../../../../components/modal/ErrorModal';
 
 class TitleEditMode extends Component {
     constructor(props) {
@@ -40,13 +38,10 @@ class TitleEditMode extends Component {
 
 
     componentDidMount() {
-        const titleId = this.props.titleId;
-        titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
-            this.setState({ titleForm, editedForm: titleForm, checkContentType: titleForm.contentType });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: false });
-            console.error('Unable to load Title Data');
+        this.setState({
+            titleForm: this.props.data,
+            editedForm: this.props.data,
+
         });
     }
 
@@ -114,18 +109,11 @@ class TitleEditMode extends Component {
                 episodic: newEpisodic
             }
         });
-    }
-    renderFields = (contentType) => {
-        const { title, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
+    }     
+    render() {
+        const { title, contentType, productionStudioId, productionYear, boxOffice } = this.props.data;
         return (
-            <AvForm id="titleDetail" onValidSubmit={this.onSave} ref={c => (this.form = c)}>
                 <Fragment>
-                    <Row>
-                        <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
-                            <Button className="float-right" id="btnSave" color="primary">Save</Button>
-                            <Button className="float-right" id="btnCancel" onClick={this.props.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
-                        </Col>
-                    </Row>
                     <Container fluid id="titleContainer" onKeyDown={this.props.keyPressed}>
                         <Row>
                             <Col xs="4">
@@ -135,7 +123,7 @@ class TitleEditMode extends Component {
                                 <Row>
                                     <Col>
                                         <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
-                                        <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={title || ''} placeholder="Enter Title" onChange={this.handleOnChange} validate={{
+                                        <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={title || ''} placeholder="Enter Title" onChange={this.props.handleOnChangeEdit} validate={{
                                             required: { errorMessage: 'Field cannot be empty!' },
                                             maxLength: { value: 200 }
                                         }} />
@@ -148,7 +136,7 @@ class TitleEditMode extends Component {
                                     </Col>
                                     <Col>
                                         <Label for="titleProductionStudio">Production Studio</Label>
-                                        <AvField name="productionStudioId" errorMessage="Please enter a valid production studio!" id="titleProductionStudio" value={productionStudioId || ''} placeholder="Enter Studio" onChange={this.handleOnChange} />
+                                        <AvField name="productionStudioId" errorMessage="Please enter a valid production studio!" id="titleProductionStudio" value={productionStudioId || ''} placeholder="Enter Studio" onChange={this.props.handleOnChangeEdit} />
                                     </Col>
                                 </Row>
                                 {
@@ -158,7 +146,7 @@ class TitleEditMode extends Component {
                                                 <Col>
                                                     <Label for="titleBrandName">Brand</Label>
                                                     <AvField type="text" name="brandTitleName" id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
-                                                        onChange={this.handleChangeBrand} required={this.state.isBrandCompleted}
+                                                        onChange={this.props.handleChangeBrand} required={this.state.isBrandCompleted}
                                                     />
                                                 </Col>
                                                 <Col>
@@ -168,7 +156,7 @@ class TitleEditMode extends Component {
                                                         pattern: { value: '^[0-9]+$' },
                                                         minLength: { value: 4 },
                                                         maxLength: { value: 4 }
-                                                    }} placeholder="Enter Brand Release Year" onChange={this.handleChangeBrandProdYear} />
+                                                    }} placeholder="Enter Brand Release Year" onChange={this.props.handleChangeBrandProdYear} />
                                                 </Col>
                                             </Row>
                                             <Row>
@@ -176,7 +164,7 @@ class TitleEditMode extends Component {
                                                     <FormGroup>
                                                         <Label for="titleSeasonNumber">Season</Label>
                                                         <AvField type="text" name="seasonNumber" value={this.state.titleForm.episodic.seasonNumber ? this.state.titleForm.episodic.seasonNumber : ''} id="titleSeasonNumber" placeholder={'Enter Season Number'}
-                                                            onChange={this.handleChangeEpisodic}
+                                                            onChange={this.props.handleChangeEpisodic}
                                                             validate={{
                                                                 maxLength: { value: 3 }
                                                             }}
@@ -189,14 +177,14 @@ class TitleEditMode extends Component {
                                                             <Col md={6}>
                                                                 <FormGroup>
                                                                     <Label for="titleEpisodeNumber">Episode</Label>
-                                                                    <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber ? this.state.titleForm.episodic.episodeNumber : ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
+                                                                    <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber ? this.state.titleForm.episodic.episodeNumber : ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.props.handleChangeEpisodic } />
                                                                 </FormGroup>
                                                             </Col>
                                                             :
                                                             <Col md={6}>
                                                                 <FormGroup>
                                                                     <Label for="titleEpisodeCount">Episode Count</Label>
-                                                                    <AvField type="text" name="episodeCount" value={this.state.titleForm.episodic.episodeCount ? this.state.titleForm.episodic.episodeCount : ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.handleChangeEpisodic} />
+                                                                    <AvField type="text" name="episodeCount" value={this.state.titleForm.episodic.episodeCount ? this.state.titleForm.episodic.episodeCount : ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.props.handleChangeEpisodic } />
                                                                 </FormGroup>
                                                             </Col>
                                                     }
@@ -207,12 +195,12 @@ class TitleEditMode extends Component {
                                                     contentType === 'SEASON' ?
                                                         <Col>
                                                             <Label for="titleSeasonID">Season ID</Label>
-                                                            <AvField type="text" name="seasonId" value={this.state.titleForm.episodic.seasonId ? this.state.titleForm.episodic.seasonId : ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.handleChangeEpisodic} />
+                                                            <AvField type="text" name="seasonId" value={this.state.titleForm.episodic.seasonId ? this.state.titleForm.episodic.seasonId : ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.props.handleChangeEpisodic } />
                                                         </Col>
                                                         :
                                                         <Col>
                                                             <Label for="titleEpisodeID">Episode ID</Label>
-                                                            <AvField type="text" name="episodeId" value={this.state.titleForm.episodic.episodeId ? this.state.titleForm.episodic.episodeId : ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.handleChangeEpisodic} />
+                                                            <AvField type="text" name="episodeId" value={this.state.titleForm.episodic.episodeId ? this.state.titleForm.episodic.episodeId : ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.props.handleChangeEpisodic } />
                                                         </Col>
                                                 }
                                             </Row>
@@ -228,13 +216,13 @@ class TitleEditMode extends Component {
                                             pattern: { value: '^[0-9]+$' },
                                             minLength: { value: 4 },
                                             maxLength: { value: 4 }
-                                        }} placeholder="Enter Release Year" value={productionYear} onChange={this.handleOnChange} />
+                                        }} placeholder="Enter Release Year" value={productionYear} onChange={this.props.handleOnChangeEdit} />
                                     </Col>
                                     <Col>
                                         <Label for="titleBoxOffice">Box Office</Label>
                                         <AvField name="boxOffice" id="titleBoxOffice" type="text" value={boxOffice || ''} placeholder="Enter Box Office" validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
-                                        }} onChange={this.handleOnChange} />
+                                        }} onChange={this.props.handleOnChangeEdit} />
                                     </Col>
                                 </Row>
                                 {
@@ -246,41 +234,14 @@ class TitleEditMode extends Component {
                         </Row>
                     </Container>
                 </Fragment>
-            </AvForm>
         );
-    }
-    onSave = () => {
-        const updatedTitle = this.state.editedForm;
-        this.setState({
-            isLoading: true
-        });
-        titleService.updateTitle(updatedTitle).then(() => {
-            this.setState({
-                isLoading: false,
-                titleForm: this.state.editedForm
-            });
-            this.props.handleSwitchMode();
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
-            console.error('Unable to load Title Data');
-        });
-
-    }
-    render() {
-        const { checkContentType } = this.state;
-        if(!checkContentType)
-        {
-           return null;
-        } else {
-            return this.renderFields(checkContentType);
-        }
     }
 }
 
 TitleEditMode.propTypes = {
-    handleSwitchMode: PropTypes.func.isRequired,
-    titleId: PropTypes.string.isRequired,
-    keyPressed: PropTypes.func
+    keyPressed: PropTypes.func,
+    data: PropTypes.object,
+    handleOnChangeEdit: PropTypes.func.isRequired
 };
 
 export default TitleEditMode;

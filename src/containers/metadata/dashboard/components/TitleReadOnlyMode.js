@@ -1,49 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Row, Col, Container, Alert } from 'reactstrap';
+import { Row, Col, Container, Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { titleService } from '../../service/TitleService';
-import { errorModal } from '../../../../components/modal/ErrorModal';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            titleForm: {
-                title: '',
-                contentType: '',
-                productionYear: '',
-                productionStudioId: '',
-                boxOffice: '',
-                episodic: {
-                    brandProdYear: '',
-                    brandTitleName: '',
-                    episodeId: '',
-                    episodeNumber: '',
-                    seasonId: '',
-                    seasonNumber: ''
-                },
-            }
-        };
-    }
-    componentDidMount() {
-        const titleId = this.props.titleId;
-        titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
-            this.setState({ titleForm, editedForm: titleForm });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: false });
-            console.error('Unable to load Title Data');
-        });
     }
     renderFields = (contentType) => {
-        const { title, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
-
-
+        const { title, productionStudioId, productionYear, boxOffice } = this.props.data;
         return (
             <Fragment>
-                <Row>
-                    <Col className="clearfix"><Button className="float-right" style={{ marginRight: '20px', marginBottom: '10px' }} onClick={this.props.handleSwitchMode}>Edit</Button></Col>
-                </Row>
                 <Container fluid id="titleContainer">
                     <Row style={{ marginTop: '5px' }}>
                         <Col xs="4">
@@ -68,16 +34,16 @@ class TitleReadOnlyMode extends Component {
                                     <Fragment>
                                         <Row>
                                             <Col md={6}>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.state.titleForm.episodic.seasonNumber ? this.state.titleForm.episodic.seasonNumber : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{color: '#999'}}>Empty</span>}</Alert>
                                             </Col>
                                             {
                                                 contentType !== 'SEASON' ?
                                                     <Col md={6}>
-                                                        <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.state.titleForm.episodic.episodeNumber ? this.state.titleForm.episodic.episodeNumber : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                                        <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{color: '#999'}}>Empty</span>}</Alert>
                                                     </Col>
                                                     :
                                                     <Col md={6}>
-                                                        <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.state.titleForm.episodic.episodeCount ? this.state.titleForm.episodic.episodeCount : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                                        <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : <span style={{color: '#999'}}>Empty</span>}</Alert>
                                                     </Col>
                                             }
                                         </Row>
@@ -85,11 +51,11 @@ class TitleReadOnlyMode extends Component {
                                             {
                                                 contentType === 'SEASON' ?
                                                     <Col>
-                                                        <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.state.titleForm.episodic.seasonId ? this.state.titleForm.episodic.seasonId : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                                        <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : <span style={{color: '#999'}}>Empty</span>}</Alert>
                                                     </Col>
                                                     :
                                                     <Col>
-                                                        <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.state.titleForm.episodic.episodeId ? this.state.titleForm.episodic.episodeId : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                                        <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.props.data.episodic.episodeId ? this.data.props.episodic.episodeId : <span style={{color: '#999'}}>Empty</span>}</Alert>
                                                     </Col>
                                             }
                                         </Row>
@@ -112,7 +78,7 @@ class TitleReadOnlyMode extends Component {
         );
     }
     render() {
-        const { contentType } = this.state.titleForm;
+        const { contentType } = this.props.data;
         if (!contentType) {
             return null;
         } else {
@@ -122,8 +88,7 @@ class TitleReadOnlyMode extends Component {
 }
 
 TitleReadOnlyMode.propTypes = {
-    handleSwitchMode: PropTypes.func.isRequired,
-    titleId: PropTypes.string.isRequired
+    data: PropTypes.object
 };
 
 export default TitleReadOnlyMode;

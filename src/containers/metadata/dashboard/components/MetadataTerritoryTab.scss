@@ -17,7 +17,7 @@ html {
 }
 
 /* Style the buttons that are used to open the tab content */
-.tab button {
+.tab span {
   background-color: inherit;
   float: left;
   cursor: pointer;
@@ -33,12 +33,12 @@ html {
 }
 
 /* Change background color of buttons on hover */
-.tab button:hover {
+.tab span:hover {
   background-color: #ddd;
 }
 
 /* Create an active/current tablink class */
-.tab button.active {
+.tab span.active {
   background-color: #ccc;
 }
 
