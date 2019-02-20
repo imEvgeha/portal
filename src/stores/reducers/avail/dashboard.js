@@ -1,7 +1,6 @@
 import {
     DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA,
-    DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH,
     DASHBOARD_RESULT_PAGE__UPDATE,
     DASHBOARD_RESULT_PAGE__SORT,
     DASHBOARD_RESULT_PAGE__LOADING,
@@ -71,9 +70,6 @@ const dashboard = (state = initialState, action) => {
         case DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA:
              saveDashboardState();
             return { ...state, session: {...state.session, searchCriteria: {...action.payload}}};
-        case DASHBOARD_SEARCH_FORM__USE_ADVANCED_SEARCH:
-             saveDashboardState();
-            return { ...state, session: {...state.session, useAdvancedSearch: action.payload}};
         case DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH:
              saveDashboardState();
             return { ...state, session: {...state.session, showAdvancedSearch: action.payload}};

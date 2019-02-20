@@ -7,6 +7,7 @@ import history from './reducers/history';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateAvailSession} from './actions/avail/createavail';
 import {loadHistorySession} from './actions/avail/history';
+import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper.js';
 
 const DASHBOARD_SESSION_VERSION = '0.3';
 const CREATEAVAIL_SESSION_VERSION = '0.1';
@@ -32,6 +33,16 @@ export const saveHistoryState = () => {
 
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
+    setTimeout(() => {
+        const dashboard = store.getState().dashboard;
+        if(dashboard.session.showSearchResults) {
+            if (dashboard.session.showAdvancedSearch) {
+                availSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
+            }else{
+                availSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
+            }
+        }
+    }, 1);
 };
 
 export const saveDashboardState = () => {

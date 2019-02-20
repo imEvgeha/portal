@@ -15,8 +15,6 @@ import {exportService} from '../../service/ExportService';
 import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
-import {updateBreadcrumb} from '../../../../stores/actions/index';
-import {AVAILS_DASHBOARD} from '../../../../constants/breadcrumb';
 
 const mapStateToProps = state => {
     return {
@@ -28,8 +26,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    searchFormUpdateAdvancedSearchCriteria,
-    updateBreadcrumb,
+    searchFormUpdateAdvancedSearchCriteria
 };
 
 const ignoreForCloseable = ['rowInvalid'];
@@ -40,7 +37,6 @@ class AdvancedSearchPanel extends React.Component {
         availTabPage: t.object,
         onSearch: t.func,
         searchFormUpdateAdvancedSearchCriteria: t.func,
-        updateBreadcrumb: t.func,
         onToggleAdvancedSearch: t.func,
         hide: t.bool,
         reportName: t.string,
@@ -299,7 +295,6 @@ class AdvancedSearchPanel extends React.Component {
                         value={' = ' + this.props.searchCriteria.availHistoryIds.subTitle}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
-                            this.props.updateBreadcrumb([{AVAILS_DASHBOARD}]);
                         }}
                         id={'dashboard-avails-advanced-search-' + 'AvailId' + '-criteria'}
                     />

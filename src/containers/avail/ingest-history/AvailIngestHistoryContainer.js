@@ -3,26 +3,10 @@ import React from 'react';
 import AvailsIngestHistoryTable from './components/AvailsIngestHistoryTable';
 import AdvancedHistorySearchPanel from './components/AdvancedHistorySearchPanel';
 import {advancedHistorySearchHelper} from './AdvancedHistorySearchHelper';
-import connect from 'react-redux/es/connect/connect';
-import {updateBreadcrumb} from '../../../stores/actions/index';
-import t from 'prop-types';
-import {AVAILS_HISTORY} from '../../../constants/breadcrumb';
-
-
-const mapStateToProps = () => {
-    return {};
-};
-
-const mapDispatchToProps = {
-    updateBreadcrumb,
-};
-
+import {AVAILS_DASHBOARD, AVAILS_HISTORY_SEARCH_RESULTS} from '../../../constants/breadcrumb';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
 
 class AvailIngestHistoryContainer extends React.Component {
-    static propTypes = {
-        updateBreadcrumb: t.func,
-    };
-
     constructor(props) {
         super(props);
     }
@@ -32,7 +16,11 @@ class AvailIngestHistoryContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updateBreadcrumb([AVAILS_HISTORY]);
+        NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_HISTORY_SEARCH_RESULTS]);
+    }
+
+    componentWillUnmount() {
+        NexusBreadcrumb.pop();
     }
 
     render() {
@@ -49,4 +37,4 @@ class AvailIngestHistoryContainer extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailIngestHistoryContainer);
+export default AvailIngestHistoryContainer;
