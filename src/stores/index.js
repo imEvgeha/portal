@@ -7,10 +7,8 @@ import history from './reducers/history';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateAvailSession} from './actions/avail/createavail';
 import {loadHistorySession} from './actions/avail/history';
-import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper';
-import {advancedHistorySearchHelper} from '../containers/avail/ingest-history/AdvancedHistorySearchHelper';
 
-const DASHBOARD_SESSION_VERSION = '0.2';
+const DASHBOARD_SESSION_VERSION = '0.3';
 const CREATEAVAIL_SESSION_VERSION = '0.1';
 const HISTORY_SESSION_VERSION = '0.3';
 
