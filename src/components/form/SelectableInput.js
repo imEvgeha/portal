@@ -3,6 +3,8 @@ import t from 'prop-types';
 import {Button} from 'reactstrap';
 import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+
 
 export default class SelectableInput extends Component {
 
@@ -30,6 +32,7 @@ export default class SelectableInput extends Component {
             invalid: false,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleOptionsChange = this.handleOptionsChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDateInvalid = this.handleDateInvalid.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
@@ -60,6 +63,10 @@ export default class SelectableInput extends Component {
         this.props.onChange({...this.props.value, [key]: value});
     }
 
+    handleOptionsChange(selectedOptions) {
+        this.props.onChange({...this.props.value, options: selectedOptions});
+    }
+
     handleDateInvalid(value) {
         this.setState({invalid: value});
     }
@@ -81,7 +88,7 @@ export default class SelectableInput extends Component {
 
     isAnyValueSpecified = () => {
         const value = this.props.value;
-        return value.from || value.to || (value.value  && value.value.trim());
+        return value.from || value.to || (value.value  && value.value.trim() || (value.options && value.options.length > 0));
     };
 
     render() {
@@ -114,14 +121,59 @@ export default class SelectableInput extends Component {
             />);
         };
 
+        const renderSelect = (name, displayName) => {
+            console.log(this.props.value);
+            const flavourOptions = [
+                { value: 'vanilla', label: 'Vanilla' },
+                { value: 'chocolate', label: 'Chocolate'},
+                { value: 'strawberry', label: 'Strawberry' },
+                { value: 'salted-caramel', label: 'Salted Caramel' },
+            ];
+
+            const groupedOptions = [
+                {
+                    label: 'Select All',
+                    options: flavourOptions,
+                }
+            ];
+
+            return (
+                <div
+                    id={this.props.id + '-select'}
+                    key={name}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                    className="react-select-container">
+                    <ReactMultiSelectCheckboxes
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={groupedOptions}
+                        value = {this.props.value.options}
+                        onChange={this.handleOptionsChange}
+                    />
+                </div>
+            )
+        };
+
         const renderSelectedInput = () => {
             const selected = this.props.selected;
             const displayName = this.props.displayName;
-            if (this.props.dataType === 'date') {
-                return renderRangeDatepicker(selected, displayName);
-            } else {
-                return renderTextField(selected, displayName);
+
+            switch (this.props.dataType) {
+                case 'text' :
+                    return renderTextField(selected, displayName);
+                case 'number' :
+                    return renderTextField(selected, displayName);
+                case 'year' :
+                    return renderTextField(selected, displayName);
+                case 'date' :
+                    return renderRangeDatepicker(selected, displayName);
+                case 'boolean' :
+                    return renderTextField(selected, displayName);
+                case 'select' :
+                    return renderSelect(selected, displayName);
+                default:
+                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
             }
+
         };
 
         return (

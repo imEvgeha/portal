@@ -16,9 +16,6 @@ import {
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import t from 'prop-types';
-import {
-    loadAvailsMapping
-} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {availSearchHelper} from './AvailSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
@@ -43,7 +40,6 @@ const mapDispatchToProps = {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    loadAvailsMapping,
     resultPageSelect,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
@@ -58,7 +54,6 @@ class DashboardContainer extends React.Component {
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
-        loadAvailsMapping: t.func,
         resultPageSelect: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,

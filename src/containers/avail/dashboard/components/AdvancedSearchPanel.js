@@ -201,7 +201,7 @@ class AdvancedSearchPanel extends React.Component {
 
     isAnyValueSpecified = () => {
         const value = this.state.value;
-        return value && (value.from || value.to || (value.value  && value.value.trim()));
+        return value && (value.from || value.to || (value.value  && value.value.trim()) || (value.options && value.options.length > 0));
     };
 
     getFieldsToShow() {
@@ -250,6 +250,21 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
+        const renderCloseableSelectBtn = (name, displayName) => {
+            return (
+                <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        value={ ' = ' + (this.props.searchCriteria[name].options ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ') : '')}
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+            );
+        };
+
         const renderCloseableDateBtn = (name, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
@@ -272,10 +287,15 @@ class AdvancedSearchPanel extends React.Component {
                     const schema = this.availsMap[key];
                     if (ignoreForCloseable.indexOf(key) === -1) {
                         if (schema) {
-                            if (schema.dataType === 'date') {
-                                return renderCloseableDateBtn(key, schema.displayName);
-                            } else {
-                                return renderCloseableBtn(key, schema.displayName);
+                            switch (schema.dataType) {
+                                case 'date' :
+                                    return renderCloseableDateBtn(key, schema.displayName);
+                                case 'text' :
+                                    return renderCloseableBtn(key, schema.displayName);
+                                case 'select' :
+                                    return renderCloseableSelectBtn(key, schema.displayName);
+                                default:
+                                    console.warn('Unsupported DataType: ' + schema.dataType + ' for field name: ' + schema.displayName);
                             }
                         } else {
                             console.warn('Cannot determine schema for field: ' + key);

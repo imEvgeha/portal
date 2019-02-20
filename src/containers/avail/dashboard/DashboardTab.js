@@ -5,7 +5,6 @@ import DashboardDropableCard from './card/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/DashboardCard';
 import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
-import {loadAvailsMapping} from '../../../stores/actions';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {Can} from '../../../../src/ability';
@@ -20,8 +19,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     resultPageLoading,
     resultPageSort,
-    resultPageUpdate,
-    loadAvailsMapping
+    resultPageUpdate
 };
 
 class DashboardTab extends React.Component {
@@ -29,8 +27,7 @@ class DashboardTab extends React.Component {
         availsMapping: t.any,
         resultPageLoading: t.func,
         resultPageSort: t.func,
-        resultPageUpdate: t.func,
-        loadAvailsMapping: t.func,
+        resultPageUpdate: t.func
     };
 
     static contextTypes = {
