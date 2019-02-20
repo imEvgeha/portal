@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col, Label, Container, Progress, Alert, FormGroup } from 'reactstrap';
-import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 
 class TitleEditMode extends Component {
