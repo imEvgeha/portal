@@ -150,13 +150,11 @@ class TitleEdit extends Component {
                 availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format('YYYY-MM-DD HH:mm:ss') : null,
                 parentId: this.props.match.params.id
             };
-            titleService.addMetadata(newTerritory).then((res) => {
-                console.log(newTerritory);
+            titleService.addMetadata(newTerritory).then(() => {
                 this.cleanTerritoryMetada();
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
                 console.error('Unable to add Territory Metadata');
-                console.log(newTerritory);
             });
         } else {            
             this.cleanTerritoryMetada();
