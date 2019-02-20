@@ -241,7 +241,10 @@ class TitleEditMode extends Component {
 TitleEditMode.propTypes = {
     keyPressed: PropTypes.func,
     data: PropTypes.object,
-    handleOnChangeEdit: PropTypes.func.isRequired
+    handleOnChangeEdit: PropTypes.func.isRequired,
+    handleChangeBrandProdYear: PropTypes.func.isRequired,
+    handleChangeBrand: PropTypes.func.isRequired,
+    handleChangeEpisodic: PropTypes.func.isRequired
 };
 
 export default TitleEditMode;

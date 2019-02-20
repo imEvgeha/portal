@@ -16,31 +16,29 @@ class TerritoryMetadata extends Component {
             isLocalRequired: false,
         };
     }
-    
+
     toggle(tab) {
         if (this.state.activeTab !== tab) {
-          this.setState({
-            activeTab: tab,
-            isLocalRequired: false
-          });
+            this.setState({
+                activeTab: tab,
+                isLocalRequired: false
+            });
         }
     }
     addTerritoryMetadata(tab) {
         if (this.state.activeTab !== tab) {
             this.setState({
-              activeTab: tab,
-              isLocalRequired: true
+                activeTab: tab,
+                isLocalRequired: true
             });
-          }
-          
-    }
+        }
 
-    showFirstField() {
+    }
+    handleSubmit = () => {
         this.setState({
             activeTab: 0
         });
     }
-    
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
@@ -50,27 +48,25 @@ class TerritoryMetadata extends Component {
                         <h2>Territory Metadata</h2>
                     </Col>
                 </Row>
-                <div className='tab'>                
+                <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <span className={'tablinks add-local'}  onClick={ () => { this.addTerritoryMetadata('3'); }} >
-                                <FontAwesome name='plus-circle' size="lg" style={{ marginRight: '5px' }} />
-                            </span>
+                                <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => { this.addTerritoryMetadata('3'); }} key={'3'} size="lg" />
                             : null
-                    } 
+                    }
                     {
-                        this.props.territories && this.props.territories.map((item, i) => {                       
+                        this.props.territories && this.props.territories.map((item, i) => {
                             return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.local}</b></span>;
                         })
-                    }                   
+                    }
                 </div>
                 <TabContent activeTab={this.state.activeTab}>
                     {
                         this.props.territories && this.props.territories.map((item, i) => {
-                                 return (
-                                 <TabPane key={i} tabId={i}>
+                            return (
+                                <TabPane key={i} tabId={i}>
                                     <Row>
-                                        <Col>                                        
+                                        <Col>
                                             <TerritoryMetadataTab key={i} data={item} />
                                         </Col>
                                     </Row>
@@ -78,13 +74,15 @@ class TerritoryMetadata extends Component {
                         })
                     }
                     {
-                        this.props.isEditMode ? 
+                        this.props.isEditMode ?
                             <TabPane tabId="3">
-                            <Row>
-                                <TerritoryMetadataCreateTab isRequired={this.state.isLocalRequired} toggle={this.toggle} handleChange={this.props.handleChange}  />
-                            </Row>
-                        </TabPane>
-                        : null
+                                <Row>
+                                    <Col>
+                                        <TerritoryMetadataCreateTab isRequired={this.state.isLocalRequired} toggle={this.toggle} handleChange={this.props.handleChange} />
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                            : null
                     }
                 </TabContent>
             </Container>

@@ -11,5 +11,8 @@ class EditPage extends Component {
     }
 }
 
+EditPage.propTypes = {
+    children: PropTypes.object.isRequired
+};
 
 export default EditPage;

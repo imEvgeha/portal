@@ -15,16 +15,17 @@ import { AvForm } from 'availity-reactstrap-validation';
 import {
     addTerritoryMetadata,
 } from '../../../../stores/actions/metadata/index';
+import moment from 'moment';
 
 class TitleEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isEditMode: false,
-            activeTab: 0,
             titleForm: {},
             territories: {
-                local: ''
+                parentId: this.props.match.params.id,
+                type: 'territoryMetadata'
             }
         };
     }
@@ -135,18 +136,30 @@ class TitleEdit extends Component {
                 errorModal.open('Error', () => { }, { description: err.message, closable: true });
                 console.error('Unable to load Title Data');
             });
-        }       
-
-        if (this.state.territories.local) {
-            this.addMetadata();
+        } else {
             this.setState({
-                activeTab: 0
+                isEditMode: !this.state.isEditMode
             });
-            titleService.addMetadata(this.state.territories).then((res) => {
+        }
+
+        if (this.state.territories.locale) {
+            const newTerritory = {
+                ...this.state.territories,
+                theatricalReleaseDate: this.state.territories.theatricalReleaseDate ? moment(this.state.territories.theatricalReleaseDate).format('YYYY-MM-DD HH:mm:ss') : null,
+                homeVideoReleaseDate: this.state.territories.homeVideoReleaseDate ? moment(this.state.territories.homeVideoReleaseDate).format('YYYY-MM-DD HH:mm:ss') : null,
+                availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format('YYYY-MM-DD HH:mm:ss') : null,
+                parentId: this.props.match.params.id
+            };
+            titleService.addMetadata(newTerritory).then((res) => {
+                console.log(newTerritory);
+                this.cleanTerritoryMetada();
             }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
                 console.error('Unable to add Territory Metadata');
+                console.log(newTerritory);
             });
+        } else {            
+            this.cleanTerritoryMetada();
         }
     }
 
@@ -172,20 +185,32 @@ class TitleEdit extends Component {
             }
         });
     }
-    addMetadata = () => {
-        this.props.addTerritoryMetadata(this.state.territories);
-        this.form && this.form.reset();
+    // addMetadata = () => {
+    //     this.props.addTerritoryMetadata(this.state.territories);
+    //     this.form && this.form.reset();
+    //     this.setState({
+    //         territories: [
+    //             {
+    //                 local: '',
+    //                 theatricalReleaseDate: '',
+    //                 homeVideoReleaseDate: '',
+    //                 availAnnounceDate: '',
+    //                 boxOffice: '',
+    //                 releaseYear: ''
+    //             }
+    //         ]
+    //     });
+    // }
+    cleanTerritoryMetada = () => {
         this.setState({
-            territories: [
-                {
-                    local: '',
-                    theatricalReleaseYear: '',
-                    homeVideoReleaseYear: '',
-                    availAnnounceDate: '',
-                    boxOffice: '',
-                    releaseYear: ''
-                }
-            ]
+            territories: {
+                locale: null,
+                availAnnounceDate: null,
+                theatricalReleaseDate: null,
+                homeVideoReleaseDate: null,
+                boxOffice: null,
+                releaseYear: null
+            }
         });
     }
     render() {
@@ -198,12 +223,14 @@ class TitleEdit extends Component {
                             {
                                 this.state.isEditMode ?
                                     <Fragment>
-                                        <Button className="float-right" id="btnSave" color="primary">Save</Button>
+                                        <Button className="float-right" id="btnSave" color="primary" style={{ marginRight: '10px' }}>Save</Button>
                                         <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
                                     </Fragment>
                                     :
                                     <Fragment>
-                                        <Col className="clearfix"><Button className="float-right" style={{ marginRight: '20px', marginBottom: '10px' }} onClick={this.handleSwitchMode}>Edit</Button></Col>
+                                        <Col>
+                                            <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
+                                        </Col>
                                     </Fragment>
                             }
                         </Col>
