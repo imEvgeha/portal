@@ -14,20 +14,43 @@ const getSelectValues = (field) => {
     return http.get(config.get('gateway.configuration') + '/configuration-api/v1/' + field + '?page=0&size=10000');
 };
 
+const selectFields = {
+    'genres': {
+    },
+    'licensor': {
+       endpoint: 'licensors'
+    },
+    'studio': {
+        endpoint: 'studios'
+    },
+    'territory': {
+        endpoint: 'territories'
+    },
+    'format': {
+        endpoint: 'formats'
+    },
+    'rating': {
+        endpoint: 'ratings'
+    },
+    'releaseType': {
+        endpoint: 'license-rights-desc'
+    },
+    'availType': {
+        endpoint: 'content-type'
+    }
+}
+
 export const profileService = {
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then( (response) => {
                 response.data.mappings.map((rec) => {
-                    if(rec.javaVariableName === 'genres' || rec.javaVariableName === 'licensor') {
+                    if(selectFields[rec.javaVariableName]){
                         rec.dataType = 'select';
                     }
 
                     if(rec.dataType === 'select'){
-                        let endpoint = rec.javaVariableName;
-                        if(rec.javaVariableName === 'licensor'){
-                            endpoint = 'licensors';
-                        }
+                        let endpoint = selectFields[rec.javaVariableName].endpoint || rec.javaVariableName;
                         getSelectValues(endpoint).then((response) => {
                             store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
                         });
