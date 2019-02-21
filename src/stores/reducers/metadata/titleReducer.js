@@ -33,9 +33,9 @@ const initialState = {
         columnsSize: {}
     },
     territories: [
-        { local: 'UK', theatricalReleaseYear: '2017-02-13', homeVideoReleaseYear: '2016-02-13', availAnnounceDate: '2011-02-13', boxOffice: '7774', releaseYear: '1994'},
-        { local: 'US', theatricalReleaseYear: '2016-02-13', homeVideoReleaseYear: '2018-02-13', availAnnounceDate: '2012-02-13', boxOffice: '5345', releaseYear: '1995'},
-        { local: 'PL', theatricalReleaseYear: '2019-02-13', homeVideoReleaseYear: '2015-02-13', availAnnounceDate: '2013-02-13', boxOffice: '34536', releaseYear: '1998'},
+        { local: 'UK', theatricalReleaseDate: '2017-02-13', homeVideoReleaseDate: '2016-02-13', availAnnounceDate: '2011-02-13', boxOffice: '7774', releaseYear: '1994'},
+        { local: 'US', theatricalReleaseDate: '2016-02-13', homeVideoReleaseDate: '2018-02-13', availAnnounceDate: '2012-02-13', boxOffice: '5345', releaseYear: '1995'},
+        { local: 'PL', theatricalReleaseDate: '2019-02-13', homeVideoReleaseDate: '2015-02-13', availAnnounceDate: '2013-02-13', boxOffice: '34536', releaseYear: '1998'},
     ]
 };
 

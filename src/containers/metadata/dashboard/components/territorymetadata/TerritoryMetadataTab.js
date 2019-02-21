@@ -14,12 +14,12 @@ class TerritoryMetadataTab extends Component {
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                           <b>Theatrical Release Year: </b> {this.props.data.theatricalReleaseYear ? this.props.data.theatricalReleaseYear : <span style={{color: '#999'}}>Empty</span>}
+                           <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? this.props.data.theatricalReleaseDate : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Home Video Release Year: </b> {this.props.data.homeVideoReleaseYear ? this.props.data.homeVideoReleaseYear : <span style={{color: '#999'}}>Empty</span>}
+                            <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? this.props.data.homeVideoReleaseDate : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>

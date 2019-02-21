@@ -7,7 +7,7 @@ import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
-import TerritoryMetadata from './TerritoryMetadata';
+import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import { titleService } from '../../service/TitleService';
 import { errorModal } from '../../../../components/modal/ErrorModal';
 import { Button, Row, Col } from 'reactstrap';
@@ -23,6 +23,7 @@ class TitleEdit extends Component {
         this.state = {
             isEditMode: false,
             titleForm: {},
+            editedForm: {},
             territories: {
                 parentId: this.props.match.params.id,
                 type: 'territoryMetadata'
@@ -79,7 +80,8 @@ class TitleEdit extends Component {
             });
         } else {
             this.setState({
-                isBrandProdYearCompleted: false
+                isBrandProdYearCompleted: false,
+                brandTitleName: null
             });
         }
     }
@@ -101,7 +103,8 @@ class TitleEdit extends Component {
             });
         } else {
             this.setState({
-                isBrandCompleted: false
+                isBrandCompleted: false,
+                brandProdYear: null
             });
         }
     }
@@ -132,6 +135,8 @@ class TitleEdit extends Component {
                     isEditMode: !this.state.isEditMode
                 });
 
+                // window.location = '/metadata/detail/'+this.props.match.params.id;
+
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.message, closable: true });
                 console.error('Unable to load Title Data');
@@ -151,6 +156,8 @@ class TitleEdit extends Component {
                 parentId: this.props.match.params.id
             };
             titleService.addMetadata(newTerritory).then(() => {
+                
+                // window.location = '/metadata/detail/'+this.props.match.params.id;
                 this.cleanTerritoryMetada();
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
@@ -189,12 +196,12 @@ class TitleEdit extends Component {
     //     this.setState({
     //         territories: [
     //             {
-    //                 local: '',
-    //                 theatricalReleaseDate: '',
-    //                 homeVideoReleaseDate: '',
-    //                 availAnnounceDate: '',
-    //                 boxOffice: '',
-    //                 releaseYear: ''
+    //                 local: null,
+    //                 theatricalReleaseDate: null,
+    //                 homeVideoReleaseDate: null,
+    //                 availAnnounceDate: null,
+    //                 boxOffice: null,
+    //                 releaseYear: null
     //             }
     //         ]
     //     });

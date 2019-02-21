@@ -39,7 +39,7 @@ class TerritoryMetadataCreateTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Theatrical Release Year</b>
+                            <b>Theatrical Release Date</b>
                         </Col>
                         <Col md={2}>
                             <AvField type="date" id="territoryTheatricalReleaseDate" 
@@ -50,7 +50,7 @@ class TerritoryMetadataCreateTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Home Video Release Year</b>
+                            <b>Home Video Release Date</b>
                         </Col>
                         <Col md={2}>
 

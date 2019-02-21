@@ -342,7 +342,10 @@ class TitleCreate extends React.Component {
                                                             <Col md={3}>
                                                                 <FormGroup>
                                                                     <Label for="titleEpisodeNumber">Episode</Label>
-                                                                    <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber} disabled={this.state.episodeChecked} id="titleEpisodeNumber" errorMessage="Please enter a valid episode number!" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} />
+                                                                    <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber} disabled={this.state.episodeChecked} id="titleEpisodeNumber" errorMessage="Please enter a valid episode number!" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} 
+                                                                    validate={{
+                                                                        maxLength: { value: 3 }
+                                                                    }}/>
                                                                 </FormGroup>
                                                             </Col>
                                                             <Col md={3}>
@@ -387,7 +390,11 @@ class TitleCreate extends React.Component {
                                         </Col>
                                         <Col>
                                             <Label for="titleBoxOffice">Box Office</Label>
-                                            <AvField name="boxOffice" id="titleBoxOffice" type="text" onChange={this.handleChange} value={this.state.titleForm.boxOffice} placeholder="Enter Box Office" />
+                                            <AvField name="boxOffice" id="titleBoxOffice" type="text" onChange={this.handleChange} value={this.state.titleForm.boxOffice} placeholder="Enter Box Office"
+                                                validate={{
+                                                    pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' }, 
+                                                }}
+                                            />
                                         </Col>
                                     </Row>
                                     {

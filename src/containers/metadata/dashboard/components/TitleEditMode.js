@@ -44,74 +44,8 @@ class TitleEditMode extends Component {
 
         });
     }
-
-    handleOnChange = (e) => {
-        this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                [e.target.name]: e.target.value
-            }
-        });
-    }
-
-    handleChangeBrand = (e) => {
-        const newEpisodic = {
-            ...this.state.editedForm.episodic,
-            brandTitleName: e.target.value
-        };
-        this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                episodic: newEpisodic
-            }
-        });
-        if (e.target.value.length !== 0) {
-            this.setState({
-                isBrandProdYearCompleted: true
-            });
-        } else {
-            this.setState({
-                isBrandProdYearCompleted: false
-            });
-        }
-    }
-
-    handleChangeBrandProdYear = (e) => {
-        const newEpisodic = {
-            ...this.state.editedForm.episodic,
-            brandProdYear: e.target.value
-        };
-        this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                episodic: newEpisodic
-            }
-        });
-        if (e.target.value.length !== 0) {
-            this.setState({
-                isBrandCompleted: true
-            });
-        } else {
-            this.setState({
-                isBrandCompleted: false
-            });
-        }
-    }
-
-    handleChangeEpisodic = (e) => {
-        const newEpisodic = {
-            ...this.state.editedForm.episodic,
-            [e.target.name]: e.target.value
-        };
-        this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                episodic: newEpisodic
-            }
-        });
-    }     
     render() {
-        const { title, contentType, productionStudioId, productionYear, boxOffice } = this.props.data;
+        const { title, contentType, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
         return (
                 <Fragment>
                     <Container fluid id="titleContainer" onKeyDown={this.props.keyPressed}>
@@ -177,7 +111,10 @@ class TitleEditMode extends Component {
                                                             <Col md={6}>
                                                                 <FormGroup>
                                                                     <Label for="titleEpisodeNumber">Episode</Label>
-                                                                    <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber ? this.state.titleForm.episodic.episodeNumber : ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.props.handleChangeEpisodic } />
+                                                                    <AvField type="text" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber ? this.state.titleForm.episodic.episodeNumber : ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.props.handleChangeEpisodic } 
+                                                                    validate={{
+                                                                        maxLength: { value: 3 }
+                                                                    }} />
                                                                 </FormGroup>
                                                             </Col>
                                                             :
