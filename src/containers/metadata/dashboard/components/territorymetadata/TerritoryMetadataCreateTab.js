@@ -7,7 +7,9 @@ class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            territories: {},
+            territories: {
+                releaseYear: ''
+            },
             activeTab: 0
 
         };
@@ -42,10 +44,10 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Theatrical Release Date</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="date" id="territoryTheatricalReleaseDate" 
-                            name="theatricalReleaseDate" 
-                            onChange={this.props.handleChange}
-                            errorMessage="Please enter a valid date!" />
+                            <AvField type="date" id="territoryTheatricalReleaseDate"
+                                name="theatricalReleaseDate"
+                                onChange={this.props.handleChange}
+                                errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -53,7 +55,6 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Home Video Release Date</b>
                         </Col>
                         <Col md={2}>
-
                             <AvField type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
@@ -70,7 +71,7 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Box Office</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="territoryBoxOffice" name="boxOffice" placeholder="Enter Box Office" onChange={this.props.handleChange}
+                            <AvField type="number" id="territoryBoxOffice" name="boxOffice" placeholder="Enter Box Office" onChange={this.props.handleChange}
                                 validate={{
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                 }} />
@@ -81,13 +82,13 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Release Year</b>
                         </Col>
                         <Col md={2}>
-                            <AvField name="releaseYear" type="text" placeholder="Enter Release Year" onChange={this.props.handleChange}
+                            <AvField name="releaseYear" type="text" errorMessage="Please enter a valid year!" placeholder="Enter Release Year" onChange={this.props.handleChange}
                                 validate={{
                                     date: { format: 'YYYY', errorMessage: 'Please enter a valid date!' },
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
-                                    maxLength: { value: 4 },
-                                    minLength: { value: 4 }
-                                }} />
+                                    maxLength: { value: 4 }, minLength: { value: 4 }
+                                }}
+                            />
                         </Col>
                     </Row>
                 </Fragment>

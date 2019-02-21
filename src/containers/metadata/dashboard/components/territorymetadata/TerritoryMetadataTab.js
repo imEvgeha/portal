@@ -9,7 +9,7 @@ class TerritoryMetadataTab extends Component {
                 <Fragment>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Locale: </b> {this.props.data.local ? this.props.data.local : <span style={{color: '#999'}}>Empty</span>}
+                            <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>

@@ -40,6 +40,7 @@ class TerritoryMetadata extends Component {
             activeTab: 0
         });
     }
+
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
@@ -57,7 +58,7 @@ class TerritoryMetadata extends Component {
                     }
                     {
                         this.props.territories && this.props.territories.map((item, i) => {
-                            return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.local}</b></span>;
+                            return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.locale}</b></span>;
                         })
                     }
                 </div>

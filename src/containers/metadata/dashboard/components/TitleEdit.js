@@ -22,9 +22,14 @@ class TitleEdit extends Component {
         super(props);
         this.state = {
             isEditMode: false,
+            invalidBoxOffice: false,
             titleForm: {},
             editedForm: {},
             territories: {
+                parentId: this.props.match.params.id,
+                type: 'territoryMetadata'
+            },
+            editedTerritories: {
                 parentId: this.props.match.params.id,
                 type: 'territoryMetadata'
             }
@@ -61,6 +66,7 @@ class TitleEdit extends Component {
                 [e.target.name]: e.target.value
             }
         });
+
     }
 
     handleChangeBrand = (e) => {
@@ -179,6 +185,7 @@ class TitleEdit extends Component {
             handleChangeBrand={this.handleChangeBrand}
             keyPressed={this.handleKeyDown}
             data={this.state.titleForm}
+            episodic={this.state.titleForm.episodic}
             handleOnChangeEdit={this.handleOnChangeEdit} />;
     };
 
@@ -243,7 +250,7 @@ class TitleEdit extends Component {
                     {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
-                    <TerritoryMetadata handleChange={this.handleChange} isEditMode={this.state.isEditMode} />
+                    <TerritoryMetadata territories={this.state.territories} handleChange={this.handleChange} isEditMode={this.state.isEditMode} />
                 </AvForm>
             </EditPage>
         );

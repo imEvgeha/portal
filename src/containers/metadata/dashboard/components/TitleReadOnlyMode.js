@@ -30,38 +30,40 @@ class TitleReadOnlyMode extends Component {
                                 </Col>
                             </Row>
                             {
-                                contentType !== 'MOVIE' && contentType !== 'BRAND' ?
-                                    <Fragment>
-                                        <Row>
-                                            <Col md={6}>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                            </Col>
-                                            {
-                                                contentType !== 'SEASON' ?
-                                                    <Col md={6}>
-                                                        <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                    </Col>
-                                                    :
-                                                    <Col md={6}>
-                                                        <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                    </Col>
-                                            }
-                                        </Row>
-                                        <Row>
-                                            {
-                                                contentType === 'SEASON' ?
-                                                    <Col>
-                                                        <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                    </Col>
-                                                    :
-                                                    <Col>
-                                                        <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.props.data.episodic.episodeId ? this.data.props.episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                    </Col>
-                                            }
-                                        </Row>
-                                    </Fragment>
-                                    :
-                                    null
+                                this.props.data.episodic ?
+                                    contentType !== 'MOVIE' && contentType !== 'BRAND' ?
+                                        <Fragment>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                </Col>
+                                                {
+                                                    contentType === 'EPISODE' ?
+                                                        <Col md={6}>
+                                                            <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                        :
+                                                        <Col md={6}>
+                                                            <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                }
+                                            </Row>
+                                            <Row>
+                                                {
+                                                    contentType === 'SEASON' ?
+                                                        <Col>
+                                                            <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                        :
+                                                        <Col>
+                                                            <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                }
+                                            </Row>
+                                        </Fragment>
+                                        :
+                                        null
+                                    : null
                             }
                             <Row>
                                 <Col>
@@ -92,7 +94,8 @@ class TitleReadOnlyMode extends Component {
 }
 
 TitleReadOnlyMode.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object.isRequired,
+    episodic: PropTypes.object
 };
 
 export default TitleReadOnlyMode;

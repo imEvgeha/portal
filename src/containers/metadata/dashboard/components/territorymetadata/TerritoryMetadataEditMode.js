@@ -10,7 +10,7 @@ class TerritoryMetadataEditMode extends Component {
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
                         <Col md={4}>
-                            <b>Locale: </b> {this.props.data.local ? this.props.data.local : <span style={{ color: '#999' }}>Empty</span>}
+                            <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -55,7 +55,7 @@ class TerritoryMetadataEditMode extends Component {
                             <b>Box Office</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={this.props.handleChange}
+                            <AvField type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={this.props.handleChange}
                                 validate={{
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                 }} />
@@ -70,8 +70,7 @@ class TerritoryMetadataEditMode extends Component {
                                 validate={{
                                     date: { format: 'YYYY', errorMessage: 'Please enter a valid date!' },
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
-                                    maxLength: { value: 4 },
-                                    minLength: { value: 4 }
+                                    maxLength: { value: 4 }, minLength: { value: 4 }
                                 }} />
                         </Col>
                     </Row>
