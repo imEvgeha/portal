@@ -1,14 +1,23 @@
 import React, {Component} from 'react';
 import t from 'prop-types';
+import {connect} from 'react-redux';
 import {Button} from 'reactstrap';
 import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 
-export default class SelectableInput extends Component {
+const mapStateToProps = state => {
+    return {
+        selectValues: state.root.selectValues
+    };
+};
+
+class SelectableInput extends Component {
 
     static propTypes = {
+        selectValues: t.object,
+
         id: t.string,
         saveText: t.string,
         placeholder: t.string,
@@ -24,6 +33,7 @@ export default class SelectableInput extends Component {
         onSelect: t.func,
         onChange: t.func,
         onSave: t.func,
+
     };
 
     constructor(props) {
@@ -122,18 +132,15 @@ export default class SelectableInput extends Component {
         };
 
         const renderSelect = (name, displayName) => {
-            console.log(this.props.value);
-            const flavourOptions = [
-                { value: 'vanilla', label: 'Vanilla' },
-                { value: 'chocolate', label: 'Chocolate'},
-                { value: 'strawberry', label: 'Strawberry' },
-                { value: 'salted-caramel', label: 'Salted Caramel' },
-            ];
+            let options = [];
+            if(this.props.selected && this .props.selectValues && this.props.selectValues[this.props.selected.value]){
+                options  = this.props.selectValues[this.props.selected.value];
+            }
 
-            const groupedOptions = [
+            const allOptions = [
                 {
                     label: 'Select All',
-                    options: flavourOptions,
+                    options: options.filter((rec) => (rec.value)).map(rec => { return {...rec, label: rec.value}})
                 }
             ];
 
@@ -145,12 +152,12 @@ export default class SelectableInput extends Component {
                     className="react-select-container">
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={groupedOptions}
+                        options={allOptions}
                         value = {this.props.value.options}
                         onChange={this.handleOptionsChange}
                     />
                 </div>
-            )
+            );
         };
 
         const renderSelectedInput = () => {
@@ -205,3 +212,5 @@ export default class SelectableInput extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, null)(SelectableInput);
