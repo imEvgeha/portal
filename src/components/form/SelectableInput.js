@@ -140,7 +140,7 @@ class SelectableInput extends Component {
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: options.filter((rec) => (rec.value)).map(rec => { return {...rec, label: rec.value}})
+                    options: options.filter((rec) => (rec.value)).map(rec => { return {...rec, label: rec.value};})
                 }
             ];
 

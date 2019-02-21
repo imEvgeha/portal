@@ -12,7 +12,7 @@ const getAvailsMapping = () => {
 
 const getSelectValues = (field) => {
     return http.get(config.get('gateway.configuration') + '/configuration-api/v1/' + field + '?page=0&size=10000');
-}
+};
 
 export const profileService = {
     initAvailsMapping: (forceReload) => {
