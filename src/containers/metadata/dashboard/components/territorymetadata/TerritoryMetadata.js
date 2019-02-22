@@ -39,7 +39,7 @@ class TerritoryMetadata extends Component {
     }
     handleSubmit = () => {
         this.setState({
-            activeTab: 0
+            activeTab: CURRENT_TAB
         });
     }
 
@@ -93,7 +93,7 @@ class TerritoryMetadata extends Component {
                                             <TabPane key={i} tabId={i}>
                                             <Row>
                                                 <Col>
-                                                    <TerritoryMetadataEditMode handleChange={this.props.handleChange} key={i} data={item} />
+                                                    <TerritoryMetadataEditMode isRequired={this.state.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
                                                 </Col>
                                             </Row>
                                         </TabPane>);
