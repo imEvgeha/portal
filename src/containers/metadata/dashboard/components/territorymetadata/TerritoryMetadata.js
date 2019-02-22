@@ -9,11 +9,13 @@ import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 
 import connect from 'react-redux/es/connect/connect';
 
+const CURRENT_TAB = 0;
+
 class TerritoryMetadata extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: 0,
+            activeTab: CURRENT_TAB,
             isLocalRequired: false,
         };
     }
