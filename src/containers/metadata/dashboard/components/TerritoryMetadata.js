@@ -8,6 +8,7 @@ import TerritoryMetadataCreateTab from './TerritoryMetadataCreateTab';
 
 import connect from 'react-redux/es/connect/connect';
 
+const CREATE_TAB = 'CREATE_TAB';
 class TerritoryMetadata extends Component {
     constructor(props) {
         super(props);
@@ -34,11 +35,6 @@ class TerritoryMetadata extends Component {
         }
 
     }
-    handleSubmit = () => {
-        this.setState({
-            activeTab: 0
-        });
-    }
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
@@ -51,7 +47,7 @@ class TerritoryMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                                <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => { this.addTerritoryMetadata('3'); }} key={'3'} size="lg" />
+                                <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => { this.addTerritoryMetadata(CREATE_TAB); }} key={'create'} size="lg" />
                             : null
                     }
                     {
@@ -75,7 +71,7 @@ class TerritoryMetadata extends Component {
                     }
                     {
                         this.props.isEditMode ?
-                            <TabPane tabId="3">
+                            <TabPane tabId={CREATE_TAB}>
                                 <Row>
                                     <Col>
                                         <TerritoryMetadataCreateTab isRequired={this.state.isLocalRequired} toggle={this.toggle} handleChange={this.props.handleChange} />

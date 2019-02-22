@@ -10,8 +10,9 @@ import {confirmModal} from '../../../../components/modal/ConfirmModal';
 import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
-import {updateBreadcrumb} from '../../../../stores/actions/metadata/index';
 import { titleMapping } from '../../service/Profile';
+import NexusBreadcrumb from '../../../NexusBreadcrumb';
+import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metadata-breadcrumb-paths';
 
 const mapStateToProps = state => {
     return {
@@ -22,8 +23,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    searchFormUpdateAdvancedSearchCriteria,
-    updateBreadcrumb,
+    searchFormUpdateAdvancedSearchCriteria
 };
 
 const ignoreForCloseable = ['rowInvalid'];
@@ -34,7 +34,6 @@ class AdvancedSearchPanel extends React.Component {
         titleTabPage: t.object,
         onSearch: t.func,
         searchFormUpdateAdvancedSearchCriteria: t.func,
-        updateBreadcrumb: t.func,
         onToggleAdvancedSearch: t.func,
         hide: t.bool,
         reportName: t.string,
@@ -255,7 +254,7 @@ class AdvancedSearchPanel extends React.Component {
                         value={' = ' + this.props.searchCriteria.titleHistoryIds.subTitle}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({titleHistoryIds: null});
-                            this.props.updateBreadcrumb([{name: 'Dashboard', path: 'dashboard'}]);
+                            NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
                         }}
                         id={'dashboard-title-advanced-search-' + 'TitleId' + '-criteria'}
                     />

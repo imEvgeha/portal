@@ -111,7 +111,6 @@ class TitleCreate extends React.Component {
                 boxOffice: this.state.titleForm.boxOffice ? parseInt(this.state.titleForm.boxOffice) : ''
             }
         });
-        console.log(this.state.titleForm);
         titleService.createTitle(this.state.titleForm).then(() => {
             this.form && this.form.reset();
             this.cleanFields();

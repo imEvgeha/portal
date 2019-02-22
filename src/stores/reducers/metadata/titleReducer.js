@@ -32,12 +32,7 @@ const initialState = {
         columns: ['title', 'contentType', 'productionYear'],
         columnsSize: {}
     },
-    territories: [
-        { locale: 'UK', theatricalReleaseDate: '2017-02-13', homeVideoReleaseDate: '2016-02-13', availAnnounceDate: '2011-02-13', boxOffice: '7774', releaseYear: '1994'},
-        { locale: 'US', theatricalReleaseDate: '2016-02-13', homeVideoReleaseDate: '2018-02-13', availAnnounceDate: '2012-02-13', boxOffice: '5345', releaseYear: '1995'},
-        { locale: 'PL', theatricalReleaseDate: '2019-02-13', homeVideoReleaseDate: '2015-02-13', availAnnounceDate: '2013-02-13', boxOffice: '34536', releaseYear: '1998'},
-        { locale: 'ES', theatricalReleaseDate: '2019-03-15', homeVideoReleaseDate: '2015-03-24', availAnnounceDate: '2013-04-19', boxOffice: '66666', releaseYear: '1992'},
-    ]
+    territories: []
 };
 
 

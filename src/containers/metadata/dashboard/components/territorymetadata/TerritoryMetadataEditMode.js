@@ -22,6 +22,9 @@ class TerritoryMetadataEditMode extends Component {
                                 name="theatricalReleaseDate"
                                 value={this.props.data.theatricalReleaseDate}
                                 onChange={this.props.handleChange}
+                                validate={{
+                                    date: { format: 'yyyy-MM-dd', errorMessage: 'Please enter a valid date!' },
+                                }}
                                 errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>

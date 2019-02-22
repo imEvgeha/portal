@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { updateBreadcrumb } from '../../../../stores/actions/metadata/index';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH } from '../../../../constants/metadata-breadcrumb-paths';
@@ -16,6 +15,9 @@ import {
     addTerritoryMetadata,
 } from '../../../../stores/actions/metadata/index';
 import moment from 'moment';
+import NexusBreadcrumb from '../../../NexusBreadcrumb';
+
+const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 class TitleEdit extends Component {
     constructor(props) {
@@ -36,7 +38,8 @@ class TitleEdit extends Component {
         };
     }
     componentDidMount() {
-        this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
+        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
+        NexusBreadcrumb.set([{name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard()}, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
         const titleId = this.props.match.params.id;
         titleService.getTitleById(titleId).then((response) => {
             const titleForm = response.data;
@@ -47,8 +50,15 @@ class TitleEdit extends Component {
         });
     }
 
+    componentWillUnmount() {
+        NexusBreadcrumb.pop();
+    }
+    handleBackToDashboard() {
+        NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
+    }
+
     handleKeyDown = (e) => {
-        if (e.keyCode === 27) {
+        if (e.keyCode === 27) { //Key code for Escape
             this.setState({
                 isEditMode: false
             });
@@ -141,8 +151,6 @@ class TitleEdit extends Component {
                     isEditMode: !this.state.isEditMode
                 });
 
-                // window.location = '/metadata/detail/'+this.props.match.params.id;
-
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.message, closable: true });
                 console.error('Unable to load Title Data');
@@ -156,20 +164,18 @@ class TitleEdit extends Component {
         if (this.state.territories.locale) {
             const newTerritory = {
                 ...this.state.territories,
-                theatricalReleaseDate: this.state.territories.theatricalReleaseDate ? moment(this.state.territories.theatricalReleaseDate).format('YYYY-MM-DD HH:mm:ss') : null,
-                homeVideoReleaseDate: this.state.territories.homeVideoReleaseDate ? moment(this.state.territories.homeVideoReleaseDate).format('YYYY-MM-DD HH:mm:ss') : null,
-                availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format('YYYY-MM-DD HH:mm:ss') : null,
+                theatricalReleaseDate: this.state.territories.theatricalReleaseDate ? moment(this.state.territories.theatricalReleaseDate).format(DATE_FORMAT) : null,
+                homeVideoReleaseDate: this.state.territories.homeVideoReleaseDate ? moment(this.state.territories.homeVideoReleaseDate).format(DATE_FORMAT) : null,
+                availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format(DATE_FORMAT) : null,
                 parentId: this.props.match.params.id
             };
             titleService.addMetadata(newTerritory).then(() => {
-                
-                // window.location = '/metadata/detail/'+this.props.match.params.id;
-                this.cleanTerritoryMetada();
+                this.addMetadata(newTerritory);
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
                 console.error('Unable to add Territory Metadata');
             });
-        } else {            
+        } else {
             this.cleanTerritoryMetada();
         }
     }
@@ -197,22 +203,11 @@ class TitleEdit extends Component {
             }
         });
     }
-    // addMetadata = () => {
-    //     this.props.addTerritoryMetadata(this.state.territories);
-    //     this.form && this.form.reset();
-    //     this.setState({
-    //         territories: [
-    //             {
-    //                 local: null,
-    //                 theatricalReleaseDate: null,
-    //                 homeVideoReleaseDate: null,
-    //                 availAnnounceDate: null,
-    //                 boxOffice: null,
-    //                 releaseYear: null
-    //             }
-    //         ]
-    //     });
-    // }
+    addMetadata = (newTerritory) => {
+        this.props.addTerritoryMetadata(newTerritory);
+        this.form && this.form.reset();
+        this.cleanTerritoryMetada();
+    }
     cleanTerritoryMetada = () => {
         this.setState({
             territories: {
@@ -259,7 +254,6 @@ class TitleEdit extends Component {
 
 
 let mapDispatchToProps = {
-    updateBreadcrumb,
     addTerritoryMetadata
 };
 
@@ -267,7 +261,6 @@ let mapDispatchToProps = {
 
 
 TitleEdit.propTypes = {
-    updateBreadcrumb: t.func,
     match: t.object.isRequired,
     addTerritoryMetadata: t.func,
     territories: t.array
