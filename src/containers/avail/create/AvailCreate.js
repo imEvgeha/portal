@@ -1,54 +1,96 @@
 import React from 'react';
-import {Component} from 'react';
-import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalFooter, ModalHeader, Modal, Button, Label, Input, Progress} from 'reactstrap';
+import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
-import {availService} from '../../service/AvailService';
-import {rangeValidation} from '../../../../util/Validation';
-import NexusDatePicker from '../../../../components/form/NexusDatePicker';
 import config from 'react-global-configuration';
-import {INVALID_DATE} from '../../../../constants/messages';
+
+import {saveCreateAvailForm} from '../../../stores/actions/avail/createavail';
+import {Button, Input, Label} from 'reactstrap';
+import NexusDatePicker from '../../../components/form/NexusDatePicker';
+import {profileService} from '../service/ProfileService';
+import {INVALID_DATE} from '../../../constants/messages';
+import {rangeValidation} from '../../../util/Validation';
+import {availService} from '../service/AvailService';
+import store from '../../../stores/index';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
+
+const mapStateToProps = state => {
+    return {
+        availsMapping: state.root.availsMapping,
+        storedForm: state.createavail.session.form,
+    };
+};
+
+const mapDispatchToProps = {
+    saveCreateAvailForm
+};
+
+const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
 
 class AvailCreate extends React.Component {
+
     static propTypes = {
-        className: t.string,
-        abortLabel: t.string,
-        confirmLabel: t.string,
-        reject: t.func,
-        resolve: t.func,
+        saveCreateAvailForm: t.func,
         availsMapping: t.any,
+        storedForm: t.object
     };
 
-    static defaultProps = {
-        ...Component.defaultProps,
-        confirmLabel: 'Submit',
-        abortLabel: 'Cancel',
-    };
+    static contextTypes = {
+        router: t.object
+    }
 
     constructor(props) {
         super(props);
+
+        this.confirm = this.confirm.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
         this.state = {
             resolutionValidation: config.get('extraValidation.resolution'),
-            modal: true,
-            showCreatedMessage: false,
-            loading: false,
-            errorMessage: '',
             mappingErrorMessage: {},
-            avail: {}
+            avail: {},
+            columns: 1
         };
-
-        this.toggle = this.toggle.bind(this);
-        this.abort = this.abort.bind(this);
-        this.confirm = this.confirm.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.checkAvail = this.checkAvail.bind(this);
-        this.validateTextField = this.validateTextField.bind(this);
-        this.handleInvalidDatePicker = this.handleInvalidDatePicker.bind(this);
-        this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
     }
 
     componentDidMount() {
-        this.addMappingToState(this.props.availsMapping.mappings);
+        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
+
+        NexusBreadcrumb.push(AVAILS_CREATE);
+        this.setState({
+            avail: this.props.storedForm,
+        });
+        if(this.props.availsMapping){
+            this.addMappingToState(this.props.availsMapping.mappings);
+        }else{
+            profileService.initAvailsMapping();
+        }
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+    }
+
+    componentWillUnmount() {
+        NexusBreadcrumb.pop();
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions() {
+        const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
+        if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
+            this.setState({ columns: columns });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.availsMapping != this.props.availsMapping) {
+            this.addMappingToState(this.props.availsMapping.mappings);
+        }
+        if(prevProps.storedForm != this.props.storedForm){
+            this.setState({
+                avail: this.props.storedForm,
+            });
+        }
     }
 
     handleInvalidDatePicker(name, invalid) {
@@ -95,6 +137,7 @@ class AvailCreate extends React.Component {
             this.setState({
                 avail: newAvail,
             });
+            store.dispatch(saveCreateAvailForm(newAvail));
         }
 
         if(!mappingErrorMessage){
@@ -126,20 +169,11 @@ class AvailCreate extends React.Component {
             avail: newAvail,
             mappingErrorMessage: mappingErrorMessage
         });
+        store.dispatch(saveCreateAvailForm(newAvail));
     }
 
     getGroupedMappingName(name) {
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
-        }
-
-    toggle() {
-        this.setState({
-            modal: !this.state.modal
-        });
-    }
-
-    abort() {
-        return this.props.reject();
     }
 
     anyInvalidField(avail, mappingErrorMessage) {
@@ -172,7 +206,7 @@ class AvailCreate extends React.Component {
         return '';
     }
 
-     isAcceptable(data, acceptedValues){
+    isAcceptable(data, acceptedValues){
         if(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1){
             return true;
         }
@@ -196,13 +230,13 @@ class AvailCreate extends React.Component {
                                 }else{
                                     //if the oneOf element has at least one acceptable value
                                     if(overrideField !== name){
-                                         //if is another oneOf element from same group
+                                        //if is another oneOf element from same group
                                         if(this.isAcceptable(overrideValue, this.state.resolutionValidation.values[j])) stillInvalid=false;
                                     }else{
-                                       //if is current field
-                                       if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
-                                       //if not acceptable but also not empty
-                                       if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
+                                        //if is current field
+                                        if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                        //if not acceptable but also not empty
+                                        if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
                                     }
                                 }
                             }else{
@@ -212,13 +246,13 @@ class AvailCreate extends React.Component {
                                 }else{
                                     //if the oneOf element has at least one acceptable value
                                     if(this.state.resolutionValidation.fields[j] !== name){
-                                         //if is another oneOf element from same group
+                                        //if is another oneOf element from same group
                                         if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
                                     }else{
-                                       //if is current field
-                                       if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
-                                       //if not acceptable but also not empty
-                                       if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
+                                        //if is current field
+                                        if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
+                                        //if not acceptable but also not empty
+                                        if(this.validateNotEmpty(value)==='') return 'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed';
                                     }
                                 }
                             }
@@ -295,16 +329,18 @@ class AvailCreate extends React.Component {
 
     confirm() {
         if(this.validateFields()) return;
-        this.setState({loading: true, showCreatedMessage: false});
-        availService.createAvail(this.state.avail).then(() => {
-            this.setState({loading: false, showCreatedMessage: true});
-            let thatAbort = this.abort;
-            setTimeout(function () {
-                thatAbort();
-            }, 1000);
+        availService.createAvail(this.state.avail).then((response) => {
+            this.setState({avail:{}});
+            store.dispatch(saveCreateAvailForm({}));
+            if(response && response.data && response.data.id){
+                this.context.router.history.push('/avails/' + response.data.id);
+            }
         })
-            .catch(() => this.setState({loading: false, errorMessage: 'Avail creation Failed'}));
-        return this.props.resolve();
+            .catch(() => this.setState({errorMessage: 'Avail creation Failed'}));
+    }
+
+    cancel(){
+        this.context.router.history.push('/avails');
     }
 
     addMappingToState = (mappings) => {
@@ -321,42 +357,41 @@ class AvailCreate extends React.Component {
     };
 
     render() {
-        const rowsOnLeft = this.props.availsMapping.mappings.length/2;
-
         const renderFieldTemplate = (name, displayName, required, content) => {
             return (
-                <a href="#" key={name}
-                   className="list-group-item list-group-item-action flex-column align-items-start">
+                <div key={name}
+                   className="list-group-item list-group-item-action"
+                    style={{border:'none'}}>
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
                         <div className="col">
                             {content}
                         </div>
                     </div>
-                </a>
+                </div>
             );
         };
 
-        const renderTextField = (name, displayName, required) => {
+        const renderTextField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
-                <Input type="text" name={name} id={'dashboard-avails-create-modal-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
-                {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
+                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
                         {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                }
+                    }
                 </div>
             ));
         };
 
-        const renderBooleanField = (name, displayName, required) => {
+        const renderBooleanField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <select className="form-control"
                         name={name}
-                        id={'dashboard-avails-create-modal-' + name + '-select'}
+                        id={'avails-create-' + name + '-select'}
                         placeholder={'Enter ' + displayName}
-                        value={this.state.avail[name]}
+                        value={value}
                         onChange={this.handleChange}>
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
@@ -365,99 +400,83 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, required) => {
+        const renderDatepickerField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
                     <NexusDatePicker
-                    id={'dashboard-avails-create-modal-' + name + '-text'}
+                        value={value}
+                        id={'avails-create-' + name + '-text'}
                         date={this.state.avail[name]}
-                    onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
+                        onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
                         onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
-                />
+                    />
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].date &&
-                        <small className="text-danger m-2">
-                            {this.state.mappingErrorMessage[name].date}
-                        </small>
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name].date}
+                    </small>
                     }
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].range &&
-                        <small className="text-danger m-2">
-                            {this.state.mappingErrorMessage[name].range}
-                        </small>
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name].range}
+                    </small>
                     }
                 </div>
             ));
         };
 
-        const renderFields = (mappings) => {
-            return mappings.map((mapping)=> {
-                const excludedFields = ['availId', 'rowEdited'];
-                if(excludedFields.indexOf(mapping.javaVariableName) === -1){
-                    let required = mapping.required && this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) === -1;
+        const renderColumns = [];
+
+        if(this.props.availsMapping) {
+            const renderFields = [];
+
+            this.props.availsMapping.mappings.map((mapping)=> {
+                if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
+                    let required = mapping.required;
+                    const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
-                        case 'text' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'number' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'year' : return renderTextField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'date' : return renderDatepickerField(mapping.javaVariableName, mapping.displayName, required);
-                        case 'boolean' : return renderBooleanField(mapping.javaVariableName, mapping.displayName, required);
+                        case 'text' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'number' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'year' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
                 }
             });
-        };
 
-        return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className = { this.props.className + ' lgModalBox' } fade={false} backdrop={false} size={'lg'}>
-                <ModalHeader toggle={this.toggle}>Create Avail</ModalHeader>
-                <div className={'row'}>
-                    <div className={'col-6'}>
-                        <div className="nx-stylish list-group">
-                            {renderFields(this.props.availsMapping.mappings.slice(0, rowsOnLeft))}
-                        </div>
+            const perColumn = Math.ceil(renderFields.length / this.state.columns);
+
+            for (let i = 0; i < this.state.columns; i++) {
+                renderColumns.push(
+                    <div key={i} className="nx-stylish list-group col">
+                        {renderFields.slice(i*perColumn, (i+1)*perColumn)}
                     </div>
-                    <div className={'col-6'}>
-                        <div className="nx-stylish list-group">
-                            {renderFields(this.props.availsMapping.mappings.slice(rowsOnLeft))}
-                        </div>
-                    </div>
+                );
+            }
+        }
+        return(
+            <div>
+                <div className="nx-stylish row mt-3 mx-5">
+                    {renderColumns}
                 </div>
-                {this.state.loading && <Progress className={'custom-progress'} animated value={100}/>}
-                <ModalFooter>
-                    {this.state.showCreatedMessage && <Label id="dashboard-avails-create-modal-error-message"
-                           className="text-success w-100">Avails created</Label>}
-                    <Label id="dashboard-avails-create-modal-error-message" className="text-danger w-100">
-                        {this.state.errorMessage}
-                    </Label>
-                    <Button id="dashboard-avails-create-modal-create-btn" color="primary" onClick={this.confirm}>{this.props.confirmLabel}</Button>
-                    <Button id="dashboard-avails-create-modal-cancel-btn" color="primary" onClick={this.abort}>{this.props.abortLabel}</Button>
-                </ModalFooter>
-            </Modal>
+                <Label id="avails-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
+                    {this.state.errorMessage}
+                </Label>
+                {this.props.availsMapping &&
+                    <div className="float-right mt-3 mx-5">
+                        <Button className="mr-2" id="avails-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                        <Button className="mr-4" id="avails-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                    </div>
+                }
+            </div>
         );
     }
 }
 
-export const availCreateModal = {
-    open: (onApprove, onCancel, options) => {
-        if (options == null) {
-            options = {};
-        }
-        const props = {
-            ...options,
-            resolve: () => {
-                onApprove();
-            },
-            reject: () => {
-                cleanup();
-                onCancel();
-            }
-        };
-        const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<AvailCreate {...props}/>, wrapper);
-        const cleanup = function () {
-            unmountComponentAtNode(wrapper);
-            return setTimeout(function () {
-                return wrapper.remove();
-            });
-        };
-    }
-};
+export default connect(mapStateToProps, mapDispatchToProps)(AvailCreate);

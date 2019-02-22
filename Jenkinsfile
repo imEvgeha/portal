@@ -1,10 +1,14 @@
 pipeline {
      agent { label 'usla-jknd-p002' }
+
      stages {
+      stage('init') {
+        steps {
+          script { imageTag = ''}
+        }
+      }
          stage('build') {
-           when {
-               expression { env.GIT_BRANCH == 'origin/develop' }
-           }
+           when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
              steps {
                script {
                  tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
@@ -14,19 +18,10 @@ pipeline {
                sh 'yarn build:prod'
              }
          }
-         stage('docker build') {
-           when {
-               expression { env.GIT_BRANCH == 'origin/develop' }
-           }
+         stage('docker image') {
+            when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
              steps {
                sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
-             }
-         }
-         stage('docker push') {
-           when {
-               expression { env.GIT_BRANCH == 'origin/develop' }
-           }           
-             steps {
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
              }
          }
@@ -34,6 +29,9 @@ pipeline {
            steps {
              dir('kubernetes') {
                git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+               script {
+                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+               }  
              }
              dir('kubernetes/nexus-avails/portal') {
                sh "./deploy.sh dev nexus-avails ${imageTag}"

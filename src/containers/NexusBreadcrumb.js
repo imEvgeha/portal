@@ -1,29 +1,24 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import t from 'prop-types';
 import {BreadcrumbItem, Breadcrumb} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
-const mapStateToProps = state => {
-    return {breadcrumb: state.root.breadcrumb};
-};
-
-const mapDispatchToProps = {};
-
 class NexusBreadcrumb extends React.Component {
-    static propTypes = {
-        breadcrumb: t.array,
-    };
+
+    static instance = null;
+    static content = [];
 
     constructor(props) {
         super(props);
-        this.state = {};
+    }
+
+    componentDidMount() {
+        NexusBreadcrumb.instance = this;
     }
 
     render() {
-        const renderLink = (entry) => {
-            if (entry.path) {
-                return <Link to={{pathname: entry.path, state: entry.state}}><span onClick={entry.onClick}>{entry.name}</span></Link>;
+        const renderLink = (entry, last) => {
+            if (!last) {
+                return <Link to={{pathname: entry.path, state: entry.state}} onClick={entry.onClick}>{entry.name}</Link>;
             } else {
                 return entry.name;
             }
@@ -31,11 +26,46 @@ class NexusBreadcrumb extends React.Component {
         return (
             <div style={{zIndex: '500', position: 'relative'}}>
                 <Breadcrumb style={{position: 'relative', background: 'white'}}>
-                    {this.props.breadcrumb.map((entry) => (<BreadcrumbItem key={entry.name}>{renderLink(entry)}</BreadcrumbItem>))}
+                    {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
                 </Breadcrumb>
             </div>
         );
     }
+
+    static push(option) {
+        if(NexusBreadcrumb.empty()) {
+            if(Array.isArray(option)) {
+                NexusBreadcrumb.set(option);
+            }else{
+                NexusBreadcrumb.set([option]);
+            }
+        }else{
+            if(Array.isArray(option)) {
+                NexusBreadcrumb.set(NexusBreadcrumb.content.concat(option));
+            }else{
+                NexusBreadcrumb.set(NexusBreadcrumb.content.concat([option]));
+            }
+        }
+    }
+
+    static pop(){
+        let newOptions = NexusBreadcrumb.content.slice(0, NexusBreadcrumb.content.length-1);
+        NexusBreadcrumb.set(newOptions);
+    }
+
+    static set(options){
+        if(Array.isArray(options)) {
+            NexusBreadcrumb.content = options;
+        }else{
+            NexusBreadcrumb.content = [options];
+        }
+
+        NexusBreadcrumb.instance.setState({});
+    }
+
+    static empty() {
+        return NexusBreadcrumb.content.length === 0;
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NexusBreadcrumb);
+export default NexusBreadcrumb;
