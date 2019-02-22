@@ -16,8 +16,6 @@ import './TitleResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import { resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder } from '../../../../stores/actions/metadata/index';
 import { titleServiceManager } from '../../service/TitleServiceManager';
-
-import {updateBreadcrumb} from '../../../../stores/actions/metadata/index';
 import { Link } from 'react-router-dom';
 import { titleMapping } from '../../service/Profile';
 
@@ -47,8 +45,7 @@ let mapDispatchToProps = {
     resultPageSort,
     resultPageSelect,
     resultPageLoading,
-    resultPageUpdateColumnsOrder,
-    updateBreadcrumb
+    resultPageUpdateColumnsOrder
 };
 
 class TitleResultTable extends React.Component {
@@ -66,8 +63,7 @@ class TitleResultTable extends React.Component {
         resultPageLoading: t.func,
         columnsOrder: t.array,
         columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func,
-        updateBreadcrumb: t.func
+        resultPageUpdateColumnsOrder: t.func
     };
 
     table = null;

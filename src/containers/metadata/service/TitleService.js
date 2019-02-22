@@ -33,5 +33,8 @@ export const titleService = {
     },
     getTitleById: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`);
+    },
+    addMetadata: (territoryMetadata) => {
+        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', territoryMetadata);
     }
 };

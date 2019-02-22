@@ -3,6 +3,7 @@ import {
     METADATA_TITLE_RESULT_PAGE__UPDATE,
     METADATA_TITLE_RESULT_PAGE__LOADING,
     METADATA_TITLE_LOAD_SESSION,
+    TERRITORY_METADATA_ADD
 } from '../../../constants/action-types';
 
 const initialState = {
@@ -30,7 +31,8 @@ const initialState = {
         reportName: '',
         columns: ['title', 'contentType', 'productionYear'],
         columnsSize: {}
-    }
+    },
+    territories: []
 };
 
 
@@ -45,6 +47,8 @@ const metadata = (state = initialState, action) => {
             return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
         case METADATA_TITLE_RESULT_PAGE__LOADING:
             return {...state, titleTabPageLoading: action.payload};
+        case TERRITORY_METADATA_ADD:
+            return { ...state, territories: [...state.territories, action.payload]};
         default:
             return state;
     }
