@@ -212,12 +212,12 @@ class AvailsResultTable extends React.Component {
         let selectedRows = this.table.api.getSelectedRows();
         let selected=[];
         selectedRows.map(row => {
-            selected.push(row.id);
+            selected.push(row);
         });
 
         if(this.table.api.getDisplayedRowCount() > 0){
-            this.props.availTabPageSelection.selected.map(id => {
-                if(selected.indexOf(id) === -1 && this.table.api.getRowNode(id) === null) selected.push(id);
+            this.props.availTabPageSelection.selected.map(sel => {
+                if(selected.indexOf(sel.id) === -1 && this.table.api.getRowNode(sel.id) === null) selected.push(sel);
             });
         } else {
             if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
@@ -296,10 +296,9 @@ class AvailsResultTable extends React.Component {
 
                             if(this.table){
                                 params.successCallback(response.data.data, lastRow);
-
                                 if(this.props.availTabPageSelection.selected.length > 0){
                                     this.table.api.forEachNode(rowNode => {
-                                        if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
+                                        if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
                                             rowNode.setSelected(true);
                                         }
                                     });
