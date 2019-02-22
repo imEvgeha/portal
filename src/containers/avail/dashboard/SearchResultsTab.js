@@ -10,13 +10,15 @@ import {configurationService} from '../service/ConfigurationService';
 import {downloadFile} from '../../../util/Common';
 
 import {
-    resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder,
+    resultPageShowSelected
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
 
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
+        showSelectedAvails: state.dashboard.showSelectedAvails,
         columns: state.dashboard.session.columns,
         availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         reportName: state.dashboard.session.reportName,
@@ -26,7 +28,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    resultPageUpdateColumnsOrder: resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder,
+    resultPageShowSelected
 };
 
 class SearchResultsTab extends React.Component {
@@ -38,7 +41,9 @@ class SearchResultsTab extends React.Component {
         reportName: t.string,
         availsMapping: t.object,
         columnsOrder: t.array,
-        resultPageUpdateColumnsOrder: t.func
+        resultPageUpdateColumnsOrder: t.func,
+        resultPageShowSelected: t.func,
+        showSelectedAvails: t.bool
     };
 
     hideShowColumns={};
@@ -53,6 +58,7 @@ class SearchResultsTab extends React.Component {
         this.selectColumns = this.selectColumns.bind(this);
         this.saveColumns = this.saveColumns.bind(this);
         this.cancelColumns = this.cancelColumns.bind(this);
+        this.toggleShowSelected = this.toggleShowSelected.bind(this);
     }
 
     selectColumnsContentProvider() {
@@ -129,10 +135,19 @@ class SearchResultsTab extends React.Component {
     }
 
     selectedItemsComponent() {
-        if (this.props.availTabPageSelected.length) {
-            return <span className={'nx-container-margin table-top-text'}
-                         id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+        if (this.props.availTabPageSelected.length){
+            if(this.props.showSelectedAvails) {
+                return <a href={'#'} onClick={this.toggleShowSelected}><span className={'nx-container-margin table-top-text'}
+                                                                       id={'dashboard-selected-avails-number'}>Back to search</span></a>;
+            }else {
+                return <a href={'#'} onClick={this.toggleShowSelected}><span className={'nx-container-margin table-top-text'}
+                                                                       id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
+            }
         }
+    }
+
+    toggleShowSelected(){
+        this.props.resultPageShowSelected(!this.props.showSelectedAvails);
     }
 
     handleChangeReport(event) {

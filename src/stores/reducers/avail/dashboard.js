@@ -12,6 +12,7 @@ import {
     DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
+    AVAIL__RESULTS_PAGE__SHOW_SELECTED
 } from '../../../constants/action-types';
 import {saveDashboardState} from '../../index';
 
@@ -22,6 +23,7 @@ const initialState = {
         pageSize: 0,
         total: 0
     },
+    showSelectedAvails: false,
     availTabPageLoading: false,
     freeTextSearch: {
         text: ''
@@ -55,6 +57,8 @@ const dashboard = (state = initialState, action) => {
             return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__LOADING:
             return {...state, availTabPageLoading: action.payload};
+        case AVAIL__RESULTS_PAGE__SHOW_SELECTED:
+            return { ...state, showSelectedAvails: action.payload};
 //  ------------   SESSION Actions   ----------------------------
         case SET_REPORT_NAME:
             saveDashboardState();
