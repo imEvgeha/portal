@@ -10,6 +10,7 @@ import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 import connect from 'react-redux/es/connect/connect';
 
 const CURRENT_TAB = 0;
+const CREATE_TAB = 'CREATE_TAB';
 
 class TerritoryMetadata extends Component {
     constructor(props) {
@@ -55,7 +56,7 @@ class TerritoryMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => { this.addTerritoryMetadata('3'); }} key={'3'} size="lg" />
+                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => { this.addTerritoryMetadata(CREATE_TAB); }} key={CREATE_TAB} size="lg" />
                             : null
                     }
                     {
@@ -80,7 +81,7 @@ class TerritoryMetadata extends Component {
                     {
                         this.props.isEditMode ?
                             <Fragment>
-                                <TabPane tabId="3">
+                                <TabPane tabId={CREATE_TAB}>
                                     <Row>
                                         <Col>
                                             <TerritoryMetadataCreateTab isRequired={this.state.isLocalRequired} toggle={this.toggle} handleChange={this.props.handleChange} />
@@ -91,15 +92,15 @@ class TerritoryMetadata extends Component {
                                     this.props.territories && this.props.territories.map((item, i) => {
                                         return (
                                             <TabPane key={i} tabId={i}>
-                                            <Row>
-                                                <Col>
-                                                    <TerritoryMetadataEditMode isRequired={this.state.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
-                                                </Col>
-                                            </Row>
-                                        </TabPane>);
-                                        })
+                                                <Row>
+                                                    <Col>
+                                                        <TerritoryMetadataEditMode isRequired={this.state.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>);
+                                    })
                                 }
-                           </Fragment>
+                            </Fragment>
                             : null
                     }
                 </TabContent>
