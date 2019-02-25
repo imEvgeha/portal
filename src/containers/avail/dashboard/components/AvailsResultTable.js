@@ -34,7 +34,8 @@ let mapStateToProps = state => {
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
         columnsOrder: state.dashboard.session.columns,
-        columnsSize: state.dashboard.session.columnsSize
+        columnsSize: state.dashboard.session.columnsSize,
+        showSelectedAvails: state.dashboard.showSelectedAvails,
     };
 };
 
@@ -60,7 +61,8 @@ class AvailsResultTable extends React.Component {
         resultPageLoading: t.func,
         columnsOrder: t.array,
         columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func
+        resultPageUpdateColumnsOrder: t.func,
+        showSelectedAvails: t.bool
     };
 
     table = null;
@@ -134,6 +136,10 @@ class AvailsResultTable extends React.Component {
         this.refreshSort();
 
         if(this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
+            this.table.api.setDatasource(this.dataSource);
+        }
+
+        if(this.props.showSelectedAvails !== prevProps.showSelectedAvails){
             this.table.api.setDatasource(this.dataSource);
         }
     }
@@ -275,7 +281,26 @@ class AvailsResultTable extends React.Component {
         });
     }
 
+    getSelectedItems(page, pageSize){
+        let avails = this.props.availTabPageSelection.selected.slice(page * pageSize, (page + 1) * pageSize);
+
+        return {
+            data: {
+                data: avails,
+                message: null,
+                page: page,
+                size: pageSize,
+                total: this.props.availTabPageSelection.selected.length
+            }
+        };
+    }
+
     doSearch(page, pageSize, sortedParams) {
+        if(this.props.showSelectedAvails){
+            return new Promise((resolve) => {
+               resolve(this.getSelectedItems(page, pageSize, sortedParams));
+            });
+        }
         return availServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
@@ -285,8 +310,8 @@ class AvailsResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
+                       //console.log(response);
                         if(response && response.data.total > 0){
-                            //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
                             let lastRow = -1;
