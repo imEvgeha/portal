@@ -292,6 +292,8 @@ class AdvancedSearchPanel extends React.Component {
                                     return renderCloseableDateBtn(key, schema.displayName);
                                 case 'text' :
                                     return renderCloseableBtn(key, schema.displayName);
+                                case 'year' :
+                                    return renderCloseableBtn(key, schema.displayName);
                                 case 'select' :
                                     return renderCloseableSelectBtn(key, schema.displayName);
                                 default:
