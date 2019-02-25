@@ -17,6 +17,7 @@ class SelectableInput extends Component {
 
     static propTypes = {
         selectValues: t.object,
+        filters: t.array,
 
         id: t.string,
         saveText: t.string,
@@ -133,14 +134,23 @@ class SelectableInput extends Component {
 
         const renderSelect = (name, displayName) => {
             let options = [];
-            if(this.props.selected && this .props.selectValues && this.props.selectValues[this.props.selected.value]){
+            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.value]){
                 options  = this.props.selectValues[this.props.selected.value];
             }
+
+            const filters = this.props.filters.filter(filter => filter);
+            let filteredOptions = options;
+
+            filters.forEach(filter => {
+                const fieldName = filter.name + 'Id';
+                const allowedOptions = filter.options.map(({id}) => id);
+                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
+            });
 
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
                         label: rec.value,
                         aliasValue:(rec.aliasId ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null)};})
                 }
