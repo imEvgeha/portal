@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Container, TabContent, TabPane } from 'reactstrap';
+import { Row, Col, Container, TabContent, TabPane, Alert } from 'reactstrap';
 import './MetadataTerritoryTab.scss';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
@@ -61,12 +61,13 @@ class TerritoryMetadata extends Component {
                     }
                     {
                         this.props.territories && this.props.territories.map((item, i) => {
-                            return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.locale}</b></span>;
+                                return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.locale}</b></span>;
                         })
                     }
                 </div>
                 <TabContent activeTab={this.state.activeTab}>
                     {
+                        this.props.territories.length > 0 ?
                         !this.props.isEditMode && this.props.territories.map((item, i) => {
                             return (
                                 <TabPane key={i} tabId={i}>
@@ -76,7 +77,15 @@ class TerritoryMetadata extends Component {
                                         </Col>
                                     </Row>
                                 </TabPane>);
-                        })
+                        }) :
+                        !this.props.isEditMode ? 
+                        <Row>
+                            <Col>
+                            <Alert color="primary">
+                                <FontAwesome name="info" /> <b>No territory metadata.</b>
+                            </Alert>
+                            </Col>
+                        </Row> : null
                     }
                     {
                         this.props.isEditMode ?

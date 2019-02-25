@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 class TerritoryMetadataTab extends Component {
     render() {
@@ -14,17 +17,17 @@ class TerritoryMetadataTab extends Component {
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                           <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? this.props.data.theatricalReleaseDate : <span style={{color: '#999'}}>Empty</span>}
+                           <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT) : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? this.props.data.homeVideoReleaseDate : <span style={{color: '#999'}}>Empty</span>}
+                            <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT) : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Avail Announce Date: </b> {this.props.data.availAnnounceDate ? this.props.data.availAnnounceDate : <span style={{color: '#999'}}>Empty</span>}
+                            <b>Avail Announce Date: </b> {this.props.data.availAnnounceDate ? moment(this.props.data.availAnnounceDate).format(DATE_FORMAT) : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>

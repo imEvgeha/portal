@@ -2,6 +2,10 @@ import React, { Component, Fragment } from 'react';
 import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 class TerritoryMetadataEditMode extends Component {
     render() {
@@ -9,8 +13,11 @@ class TerritoryMetadataEditMode extends Component {
             <div id="territoryContainer">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
-                            <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{ color: '#999' }}>Empty</span>}
+                        <Col md={2}>
+                            <b>Locale </b>
+                        </Col>
+                        <Col md={2}>
+                            {this.props.data.locale ? <b>{this.props.data.locale}</b> : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -20,7 +27,7 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField type="date" id="territoryTheatricalReleaseDate"
                                 name="theatricalReleaseDate"
-                                value={this.props.data.theatricalReleaseDate}
+                                value={moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT)}
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 validate={{
@@ -37,7 +44,7 @@ class TerritoryMetadataEditMode extends Component {
 
                             <AvField type="date" id="territoryHomeVideoReleaseDate"
                                 name="homeVideoReleaseDate"
-                                value={this.props.data.homeVideoReleaseDate}
+                                value={moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT)}
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 errorMessage="Please enter a valid date!" />
@@ -50,7 +57,7 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField type="date" id="territoryAvailAnnounceDate"
                                 name="availAnnounceDate"
-                                value={this.props.data.availAnnounceDate}
+                                value={moment(this.props.data.availAnnounceDate).format(DATE_FORMAT)}
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 errorMessage="Please enter a valid date!" />

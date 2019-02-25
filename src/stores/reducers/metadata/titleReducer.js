@@ -32,7 +32,8 @@ const initialState = {
         columns: ['title', 'contentType', 'productionYear'],
         columnsSize: {}
     },
-    territories: []
+    territories: [],
+    editedTerritories: []
 };
 
 
@@ -43,12 +44,14 @@ const metadata = (state = initialState, action) => {
             return { ...state, session: {...state.session, ...action.payload}};
         case METADATA_TITLE_RESULT_PAGE__UPDATE:
             return {...state, titleTabPage: {...state.titleTabPage, ...action.payload}};
-        case METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH:
+                case METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH:
             return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
         case METADATA_TITLE_RESULT_PAGE__LOADING:
             return {...state, titleTabPageLoading: action.payload};
         case TERRITORY_METADATA_ADD:
             return { ...state, territories: [...state.territories, action.payload]};
+            // case TERRITORY_METADATA_EDIT:
+            // return { ...state, editedTerritories: [...state.territories, action.payload]};
         default:
             return state;
     }

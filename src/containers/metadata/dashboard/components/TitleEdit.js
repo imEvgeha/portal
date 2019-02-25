@@ -203,6 +203,14 @@ class TitleEdit extends Component {
             }
         });
     }
+    // handleEditTerritory = (e) => {
+    //     this.setState({
+    //         editedTerritories: {
+    //             ...this.state.editedTerritories,
+    //             [e.target.name]: e.target.value
+    //         }
+    //     });
+    // }
     addMetadata = (newTerritory) => {
         this.props.addTerritoryMetadata(newTerritory);
         this.form && this.form.reset();
