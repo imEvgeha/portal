@@ -5,6 +5,7 @@ import {Button} from 'reactstrap';
 import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import ISO6391 from 'iso-639-1';
 
 
 const mapStateToProps = state => {
@@ -138,6 +139,10 @@ class SelectableInput extends Component {
                 options  = this.props.selectValues[this.props.selected.value];
             }
 
+            if(this.props.selected.value === 'foreignLanguage'){
+                options = ISO6391.getAllCodes().map(code => {return {value:code, label:ISO6391.getName(code)};});
+            }
+
             let filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
             let filteredOptions = options;
 
@@ -151,7 +156,7 @@ class SelectableInput extends Component {
                 {
                     label: 'Select All',
                     options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                        label: rec.value,
+                        label: rec.label || rec.value,
                         aliasValue:(rec.aliasId ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null)};})
                 }
             ];

@@ -37,8 +37,11 @@ const selectFields = {
     },
     'availType': {
         endpoint: 'content-type'
+    },
+    'foreignLanguage': {
+        endpoint: ''
     }
-}
+};
 
 export const profileService = {
     initAvailsMapping: (forceReload) => {
@@ -50,10 +53,12 @@ export const profileService = {
                     }
 
                     if(rec.dataType === 'select'){
-                        let endpoint = selectFields[rec.javaVariableName].endpoint || rec.javaVariableName;
-                        getSelectValues(endpoint).then((response) => {
-                            store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
-                        });
+                        let endpoint = selectFields[rec.javaVariableName].endpoint != null ? selectFields[rec.javaVariableName].endpoint : rec.javaVariableName;
+                        if(endpoint) {
+                            getSelectValues(endpoint).then((response) => {
+                                store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
+                            });
+                        }
                     }
                 });
                 store.dispatch(loadAvailsMapping({mappings: response.data.mappings.filter((mapping) => (mapping.displayName))}));
