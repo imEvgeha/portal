@@ -88,7 +88,8 @@ class TerritoryMetadataEditMode extends Component {
 
 TerritoryMetadataEditMode.propTypes = {
     data: PropTypes.object,
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    isLocalRequired: PropTypes.bool
 };
 
 
