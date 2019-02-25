@@ -329,7 +329,7 @@ class AdvancedSearchPanel extends React.Component {
                 </button>
                 <SelectableInput
                     options={options}
-                    filters={[this.props.searchCriteria['territory']]}
+                    currentCriteria={this.props.searchCriteria}
                     selected={this.state.selected}
                     value={this.state.value}
                     dataType={this.state.selected ? this.availsMap[this.state.selected.value].dataType : null}

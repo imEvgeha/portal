@@ -17,7 +17,7 @@ class SelectableInput extends Component {
 
     static propTypes = {
         selectValues: t.object,
-        filters: t.array,
+        currentCriteria: t.object,
 
         id: t.string,
         saveText: t.string,
@@ -138,7 +138,7 @@ class SelectableInput extends Component {
                 options  = this.props.selectValues[this.props.selected.value];
             }
 
-            const filters = this.props.filters.filter(filter => filter);
+            let filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
             let filteredOptions = options;
 
             filters.forEach(filter => {
