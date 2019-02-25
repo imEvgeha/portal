@@ -3,6 +3,8 @@ import { Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 class TerritoryMetadataTab extends Component {
     render() {
         return (
@@ -15,17 +17,17 @@ class TerritoryMetadataTab extends Component {
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                           <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? moment(this.props.data.theatricalReleaseDate).format('YYYY-MM-DD') : <span style={{color: '#999'}}>Empty</span>}
+                           <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT) : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? moment(this.props.data.homeVideoReleaseDate).format('YYYY-MM-DD') : <span style={{color: '#999'}}>Empty</span>}
+                            <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT) : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Avail Announce Date: </b> {this.props.data.availAnnounceDate ? moment(this.props.data.availAnnounceDate).format('YYYY-MM-DD') : <span style={{color: '#999'}}>Empty</span>}
+                            <b>Avail Announce Date: </b> {this.props.data.availAnnounceDate ? moment(this.props.data.availAnnounceDate).format(DATE_FORMAT) : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>

@@ -4,6 +4,9 @@ import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 class TerritoryMetadataEditMode extends Component {
     render() {
         return (
@@ -24,7 +27,7 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField type="date" id="territoryTheatricalReleaseDate"
                                 name="theatricalReleaseDate"
-                                value={moment(this.props.data.theatricalReleaseDate).format('YYYY-MM-DD')}
+                                value={moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT)}
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 validate={{
@@ -41,7 +44,7 @@ class TerritoryMetadataEditMode extends Component {
 
                             <AvField type="date" id="territoryHomeVideoReleaseDate"
                                 name="homeVideoReleaseDate"
-                                value={moment(this.props.data.homeVideoReleaseDate).format('YYYY-MM-DD')}
+                                value={moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT)}
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 errorMessage="Please enter a valid date!" />
@@ -54,7 +57,7 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField type="date" id="territoryAvailAnnounceDate"
                                 name="availAnnounceDate"
-                                value={moment(this.props.data.availAnnounceDate).format('YYYY-MM-DD')}
+                                value={moment(this.props.data.availAnnounceDate).format(DATE_FORMAT)}
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 errorMessage="Please enter a valid date!" />
