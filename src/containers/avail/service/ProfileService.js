@@ -47,6 +47,16 @@ export const profileService = {
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then( (response) => {
+                //console.log(response);
+                //Add (temporary, should be in mappings) "format" field, will replace SD, HD, 3D, 4K
+                response.data.mappings[response.data.mappings.length-1]= {
+                    sheetColumnName: 'Format',
+                    displayName: 'Format',
+                    dataType: 'select',
+                    fullTextSearch: 'true',
+                    javaVariableName: 'format',
+                    required: 'true'
+                };
                 response.data.mappings.map((rec) => {
                     if(selectFields[rec.javaVariableName]){
                         rec.dataType = 'select';
