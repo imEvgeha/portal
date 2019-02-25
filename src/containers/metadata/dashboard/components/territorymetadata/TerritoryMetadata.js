@@ -82,7 +82,7 @@ class TerritoryMetadata extends Component {
                         <Row>
                             <Col>
                             <Alert color="primary">
-                                No territory metadata.
+                                <FontAwesome name="info" /> <b>No territory metadata.</b>
                             </Alert>
                             </Col>
                         </Row> : null
