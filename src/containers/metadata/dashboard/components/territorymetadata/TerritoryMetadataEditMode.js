@@ -10,8 +10,11 @@ class TerritoryMetadataEditMode extends Component {
             <div id="territoryContainer">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
-                            <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{ color: '#999' }}>Empty</span>}
+                        <Col md={2}>
+                            <b>Locale </b>
+                        </Col>
+                        <Col md={2}>
+                            {this.props.data.locale ? <b>{this.props.data.locale}</b> : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
