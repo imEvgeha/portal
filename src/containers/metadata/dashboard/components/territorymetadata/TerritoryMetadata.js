@@ -61,7 +61,7 @@ class TerritoryMetadata extends Component {
                     }
                     {
                         this.props.territories && this.props.territories.map((item, i) => {
-                            return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.locale}</b></span>;
+                                return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.locale}</b></span>;
                         })
                     }
                 </div>
