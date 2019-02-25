@@ -78,13 +78,14 @@ class TerritoryMetadata extends Component {
                                     </Row>
                                 </TabPane>);
                         }) :
+                        !this.props.isEditMode ? 
                         <Row>
                             <Col>
                             <Alert color="primary">
                                 No territory metadata.
                             </Alert>
                             </Col>
-                        </Row>
+                        </Row> : null
                     }
                     {
                         this.props.isEditMode ?
