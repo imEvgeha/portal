@@ -170,7 +170,7 @@ class SelectableInput extends Component {
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         options={allOptions}
-                        value = {this.props.value.options}
+                        value = {this.props.value.options || []}
                         onChange={this.handleOptionsChange}
                     />
                 </div>
