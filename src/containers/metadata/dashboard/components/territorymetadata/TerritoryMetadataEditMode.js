@@ -6,6 +6,7 @@ import moment from 'moment';
 
 
 const DATE_FORMAT = 'YYYY-MM-DD';
+const YEAR_FORMAT = 'YYYY';
 
 class TerritoryMetadataEditMode extends Component {
     render() {
@@ -31,7 +32,7 @@ class TerritoryMetadataEditMode extends Component {
                                 onChange={this.props.handleChange}
                                 required={this.props.isLocalRequired}
                                 validate={{
-                                    date: { format: 'yyyy-MM-dd', errorMessage: 'Please enter a valid date!' },
+                                    date: { format: DATE_FORMAT, errorMessage: 'Please enter a valid date!' },
                                 }}
                                 errorMessage="Please enter a valid date!" />
                         </Col>
@@ -81,7 +82,7 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField name="releaseYear" type="text" value={this.props.data.releaseYear} required={this.props.isLocalRequired} placeholder="Enter Release Year" onChange={this.props.handleChange}
                                 validate={{
-                                    date: { format: 'YYYY', errorMessage: 'Please enter a valid date!' },
+                                    date: { format: YEAR_FORMAT, errorMessage: 'Please enter a valid date!' },
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
                                     maxLength: { value: 4 }, minLength: { value: 4 }
                                 }} />

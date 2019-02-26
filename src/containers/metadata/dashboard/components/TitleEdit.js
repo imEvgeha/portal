@@ -18,13 +18,17 @@ import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+const CURRENT_TAB = 0;
+const CREATE_TAB = 'CREATE_TAB';
 
 class TitleEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isEditMode: false,
+            activeTab: CURRENT_TAB,
             invalidBoxOffice: false,
+            isLocalRequired: false,
             titleForm: {},
             editedForm: {},
             territories: {
@@ -38,8 +42,8 @@ class TitleEdit extends Component {
         };
     }
     componentDidMount() {
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
-        NexusBreadcrumb.set([{name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard()}, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
+        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
+        NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
         const titleId = this.props.match.params.id;
         titleService.getTitleById(titleId).then((response) => {
             const titleForm = response.data;
@@ -66,7 +70,7 @@ class TitleEdit extends Component {
     }
 
     handleSwitchMode = () => {
-        this.setState({ isEditMode: !this.state.isEditMode });
+        this.setState({ isEditMode: !this.state.isEditMode, activeTab: CURRENT_TAB });
     }
 
     handleOnChangeEdit = (e) => {
@@ -148,7 +152,8 @@ class TitleEdit extends Component {
                 this.setState({
                     isLoading: false,
                     titleForm: this.state.editedForm,
-                    isEditMode: !this.state.isEditMode
+                    isEditMode: !this.state.isEditMode,
+                    activeTab: CURRENT_TAB
                 });
 
             }).catch((err) => {
@@ -157,7 +162,8 @@ class TitleEdit extends Component {
             });
         } else {
             this.setState({
-                isEditMode: !this.state.isEditMode
+                isEditMode: !this.state.isEditMode,
+                activeTab: CURRENT_TAB
             });
         }
 
@@ -171,6 +177,9 @@ class TitleEdit extends Component {
             };
             titleService.addMetadata(newTerritory).then(() => {
                 this.addMetadata(newTerritory);
+                this.setState({
+                    activeTab: CURRENT_TAB
+                });
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
                 console.error('Unable to add Territory Metadata');
@@ -228,6 +237,25 @@ class TitleEdit extends Component {
             }
         });
     }
+    toggle = (tab) => {
+        this.setState({
+            activeTab: tab,
+            isLocalRequired: false
+        });
+    }
+
+    addTerritoryMetadata = (tab) => {
+        this.setState({
+            activeTab: tab,
+            isLocalRequired: true
+        });
+
+    }
+    handleSubmit = () => {
+        this.setState({
+            activeTab: CURRENT_TAB
+        });
+    }
     render() {
         return (
             <EditPage>
@@ -253,7 +281,15 @@ class TitleEdit extends Component {
                     {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
-                    <TerritoryMetadata territories={this.state.territories} handleChange={this.handleChange} isEditMode={this.state.isEditMode} />
+                    <TerritoryMetadata isLocalRequired={this.state.isLocalRequired}
+                        toggle={this.toggle}
+                        activeTab={this.state.activeTab}
+                        addTerritoryMetadata={this.addTerritoryMetadata}
+                        CREATE_TAB={CREATE_TAB}
+                        handleSubmit={this.handleSubmit}
+                        territories={this.state.territories}
+                        handleChange={this.handleChange}
+                        isEditMode={this.state.isEditMode} />
                 </AvForm>
             </EditPage>
         );
