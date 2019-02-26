@@ -71,8 +71,14 @@ class TitleEditMode extends Component {
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <Label for="titleSeasonNumber">Season</Label>
-                                                    <AvField type="number" name="seasonNumber" errorMessage="Please enter a valid season number!" value={this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : ''} id="titleSeasonNumber" placeholder={'Enter Season Number'}
-                                                        onChange={this.props.handleChangeEpisodic}
+                                                    <AvField
+                                                        type="number"
+                                                        name="seasonNumber"
+                                                        errorMessage="Please enter a valid season number!"
+                                                        value={this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : ''}
+                                                        id="titleSeasonNumber"
+                                                        placeholder={'Enter Season Number'}
+                                                        onChange={(e) => this.props.handleChangeEpisodic(e)}
                                                         validate={{
                                                             maxLength: { value: 3 }
                                                         }}
@@ -85,7 +91,14 @@ class TitleEditMode extends Component {
                                                         <Col md={6}>
                                                             <FormGroup>
                                                                 <Label for="titleEpisodeNumber">Episode</Label>
-                                                                <AvField type="number" name="episodeNumber" errorMessage="Please enter a valid episode number!" value={this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : ''} id="titleEpisodeNumber" placeholder={'Enter Episode Number'} onChange={this.props.handleChangeEpisodic}
+                                                                <AvField
+                                                                    type="number"
+                                                                    name="episodeNumber"
+                                                                    errorMessage="Please enter a valid episode number!"
+                                                                    value={this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : ''}
+                                                                    id="titleEpisodeNumber"
+                                                                    placeholder={'Enter Episode Number'}
+                                                                    onChange={(e) => this.props.handleChangeEpisodic(e)}
                                                                     validate={{
                                                                         maxLength: { value: 3 }
                                                                     }} />
@@ -95,7 +108,13 @@ class TitleEditMode extends Component {
                                                         <Col md={6}>
                                                             <FormGroup>
                                                                 <Label for="titleEpisodeCount">Episode Count</Label>
-                                                                <AvField type="text" name="episodeCount" value={this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''} id="titleEpisodeCount" placeholder={'Enter Episode Count'} onChange={this.props.handleChangeEpisodic} />
+                                                                <AvField
+                                                                    type="text"
+                                                                    name="episodeCount"
+                                                                    value={this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}
+                                                                    id="titleEpisodeCount"
+                                                                    placeholder={'Enter Episode Count'}
+                                                                    onChange={(e) => this.props.handleChangeEpisodic(e)} />
                                                             </FormGroup>
                                                         </Col>
                                                 }
@@ -106,12 +125,23 @@ class TitleEditMode extends Component {
                                                 contentType === 'SEASON' ?
                                                     <Col>
                                                         <Label for="titleSeasonID">Season ID</Label>
-                                                        <AvField type="text" name="seasonId" value={this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : ''} id="titleSeasonID" placeholder={'Enter Season ID'} onChange={this.props.handleChangeEpisodic} />
+                                                        <AvField
+                                                            type="text"
+                                                            name="seasonId"
+                                                            value={this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : ''}
+                                                            id="titleSeasonID" placeholder={'Enter Season ID'}
+                                                            onChange={(e) => this.props.handleChangeEpisodic(e)} />
                                                     </Col>
                                                     :
                                                     <Col>
                                                         <Label for="titleEpisodeID">Episode ID</Label>
-                                                        <AvField type="text" name="episodeId" value={this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : ''} id="titleEpisodeID" placeholder={'Enter Episode ID'} onChange={this.props.handleChangeEpisodic} />
+                                                        <AvField
+                                                            type="text"
+                                                            name="episodeId"
+                                                            value={this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : ''}
+                                                            id="titleEpisodeID"
+                                                            placeholder={'Enter Episode ID'}
+                                                            onChange={(e) => this.props.handleChangeEpisodic(e)} />
                                                     </Col>
                                             }
                                         </Row>
@@ -122,16 +152,29 @@ class TitleEditMode extends Component {
                             <Row style={{ marginTop: '15px' }}>
                                 <Col>
                                     <Label for="titleProductionYear">Release Year<span style={{ color: 'red' }}>*</span></Label>
-                                    <AvField name="productionYear" errorMessage="Please enter a valid year!" id="titleProductionYear" validate={{
-                                        required: { value: true, errorMessage: 'Field cannot be empty!' },
-                                        pattern: { value: '^[0-9]+$' },
-                                        minLength: { value: 4 },
-                                        maxLength: { value: 4 }
-                                    }} placeholder="Enter Release Year" value={productionYear} onChange={this.props.handleOnChangeEdit} />
+                                    <AvField
+                                        name="productionYear"
+                                        errorMessage="Please enter a valid year!"
+                                        id="titleProductionYear"
+                                        validate={{
+                                            required: { value: true, errorMessage: 'Field cannot be empty!' },
+                                            pattern: { value: '^[0-9]+$' },
+                                            minLength: { value: 4 },
+                                            maxLength: { value: 4 }
+                                        }}
+                                        placeholder="Enter Release Year"
+                                        value={productionYear}
+                                        onChange={(e) => this.props.handleOnChangeEdit(e)} />
                                 </Col>
                                 <Col>
                                     <Label for="titleBoxOffice">Box Office</Label>
-                                    <AvField name="boxOffice" id="titleBoxOffice" type="number" onChange={this.props.handleOnChangeEdit} value={boxOffice || '' } placeholder="Enter Box Office"
+                                    <AvField
+                                        name="boxOffice"
+                                        id="titleBoxOffice"
+                                        type="number"
+                                        onChange={(e) => this.props.handleOnChangeEdit(e)}
+                                        value={boxOffice || ''}
+                                        placeholder="Enter Box Office"
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                         }}

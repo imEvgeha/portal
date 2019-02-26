@@ -9,41 +9,11 @@ import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 
 import connect from 'react-redux/es/connect/connect';
 
-const CURRENT_TAB = 0;
-const CREATE_TAB = 'CREATE_TAB';
 
 class TerritoryMetadata extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            activeTab: CURRENT_TAB,
-            isLocalRequired: false,
-        };
     }
-
-    toggle(tab) {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab,
-                isLocalRequired: false
-            });
-        }
-    }
-    addTerritoryMetadata(tab) {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab,
-                isLocalRequired: true
-            });
-        }
-
-    }
-    handleSubmit = () => {
-        this.setState({
-            activeTab: CURRENT_TAB
-        });
-    }
-
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
@@ -56,44 +26,44 @@ class TerritoryMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => { this.addTerritoryMetadata(CREATE_TAB); }} key={CREATE_TAB} size="lg" />
+                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addTerritoryMetadata(this.props.CREATE_TAB)} key={this.props.CREATE_TAB} size="lg" />
                             : null
                     }
                     {
                         this.props.territories && this.props.territories.map((item, i) => {
-                                return <span className={'tablinks'} key={i} onClick={() => { this.toggle(i); }}><b>{item.locale}</b></span>;
+                            return <span className={'tablinks'} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale}</b></span>;
                         })
                     }
                 </div>
-                <TabContent activeTab={this.state.activeTab}>
+                <TabContent activeTab={this.props.activeTab}>
                     {
                         this.props.territories.length > 0 ?
-                        !this.props.isEditMode && this.props.territories.map((item, i) => {
-                            return (
-                                <TabPane key={i} tabId={i}>
-                                    <Row>
-                                        <Col>
-                                            <TerritoryMetadataTab key={i} data={item} />
-                                        </Col>
-                                    </Row>
-                                </TabPane>);
-                        }) :
-                        !this.props.isEditMode ? 
-                        <Row>
-                            <Col>
-                            <Alert color="primary">
-                                <FontAwesome name="info" /> <b>No territory metadata.</b>
-                            </Alert>
-                            </Col>
-                        </Row> : null
+                            !this.props.isEditMode && this.props.territories.map((item, i) => {
+                                return (
+                                    <TabPane key={i} tabId={i}>
+                                        <Row>
+                                            <Col>
+                                                <TerritoryMetadataTab key={i} data={item} />
+                                            </Col>
+                                        </Row>
+                                    </TabPane>);
+                            }) :
+                            !this.props.isEditMode ?
+                                <Row>
+                                    <Col>
+                                        <Alert color="primary">
+                                            <FontAwesome name="info" /> <b>No territory metadata.</b>
+                                        </Alert>
+                                    </Col>
+                                </Row> : null
                     }
                     {
                         this.props.isEditMode ?
                             <Fragment>
-                                <TabPane tabId={CREATE_TAB}>
+                                <TabPane tabId={this.props.CREATE_TAB}>
                                     <Row>
                                         <Col>
-                                            <TerritoryMetadataCreateTab isRequired={this.state.isLocalRequired} toggle={this.toggle} handleChange={this.props.handleChange} />
+                                            <TerritoryMetadataCreateTab isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -103,7 +73,7 @@ class TerritoryMetadata extends Component {
                                             <TabPane key={i} tabId={i}>
                                                 <Row>
                                                     <Col>
-                                                        <TerritoryMetadataEditMode isRequired={this.state.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
+                                                        <TerritoryMetadataEditMode isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
                                                     </Col>
                                                 </Row>
                                             </TabPane>);
@@ -121,7 +91,12 @@ class TerritoryMetadata extends Component {
 TerritoryMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
     territories: PropTypes.array,
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    activeTab: PropTypes.any,
+    isLocalRequired: PropTypes.bool,
+    toggle: PropTypes.func,
+    addTerritoryMetadata: PropTypes.func,
+    CREATE_TAB: PropTypes.string
 };
 
 const mapStateToProps = state => {

@@ -3,6 +3,7 @@ import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 
+
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
@@ -55,7 +56,7 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Home Video Release Date</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                            <AvField type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate"  onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -63,7 +64,7 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Avail Announce Date</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="date" id="territoryAvailAnnounceDate" name="availAnnounceDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                            <AvField type="date" id="territoryAvailAnnounceDate" name="availAnnounceDate"  onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>

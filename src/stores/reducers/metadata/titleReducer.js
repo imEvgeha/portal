@@ -41,17 +41,15 @@ const initialState = {
 const metadata = (state = initialState, action) => {
     switch (action.type) {
         case METADATA_TITLE_LOAD_SESSION:
-            return { ...state, session: {...state.session, ...action.payload}};
+            return { ...state, session: { ...state.session, ...action.payload } };
         case METADATA_TITLE_RESULT_PAGE__UPDATE:
-            return {...state, titleTabPage: {...state.titleTabPage, ...action.payload}};
-                case METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH:
-            return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
+            return { ...state, titleTabPage: { ...state.titleTabPage, ...action.payload } };
+        case METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH:
+            return { ...state, freeTextSearch: { ...state.freeTextSearch, ...action.payload } };
         case METADATA_TITLE_RESULT_PAGE__LOADING:
-            return {...state, titleTabPageLoading: action.payload};
+            return { ...state, titleTabPageLoading: action.payload };
         case TERRITORY_METADATA_ADD:
-            return { ...state, territories: [...state.territories, action.payload]};
-            // case TERRITORY_METADATA_EDIT:
-            // return { ...state, editedTerritories: [...state.territories, action.payload]};
+            return { ...state, territories: [...state.territories, action.payload] };
         default:
             return state;
     }
