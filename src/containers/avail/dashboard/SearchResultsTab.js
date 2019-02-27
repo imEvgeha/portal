@@ -182,7 +182,8 @@ class SearchResultsTab extends React.Component {
                             {this.selectedItemsComponent()}
                         </div>
                         <div  style={{marginRight: '15px'}}>
-                            <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
+                            <div className={'align-content-center ' + (this.props.showSelectedAvails ? 'd-none': 'd-inline-flex')}
+                                 style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
                                 <span className="align-self-center" >Selected report:</span>
                                 {renderReportSelect()}
                             </div>

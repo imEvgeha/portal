@@ -110,12 +110,16 @@ class AvailsResultTable extends React.Component {
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
         let elem = document.querySelector('.vu-advanced-search-panel');
         elem.addEventListener('transitionend', this.updateWindowDimensions);
+        elem = document.querySelector('.vu-free-text-search');
+        elem.addEventListener('transitionend', this.updateWindowDimensions);
         this.refreshColumns();
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
         let elem = document.querySelector('.vu-advanced-search-panel');
+        elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        elem = document.querySelector('.vu-free-text-search');
         elem.removeEventListener('transitionend', this.updateWindowDimensions);
     }
 
@@ -370,8 +374,7 @@ class AvailsResultTable extends React.Component {
             suppressSizeToFit: true,
             suppressMovable: true,
             lockPosition: true,
-            headerComponentFramework: !this.props.showSelectedAvails ? CheckBoxHeader : null,
-            headerCheckboxSelection : this.props.showSelectedAvails
+            headerComponentFramework: CheckBoxHeader
         });
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
@@ -454,7 +457,6 @@ class AvailsResultTable extends React.Component {
                 cacheOverflowSize: '2',
                 maxConcurrentDatasourceRequests: '1',
                 datasource: this.dataSource,
-                onBodyScroll: this.onScroll,
                 enableServerSideSorting: true,
                 onSortChanged: this.onSortChanged
             };
@@ -482,6 +484,7 @@ class AvailsResultTable extends React.Component {
                     onColumnResized={this.onColumnResized}
 
                     enableSorting={true}
+                    onBodyScroll={this.onScroll}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}
