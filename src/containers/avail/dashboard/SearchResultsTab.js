@@ -136,11 +136,12 @@ class SearchResultsTab extends React.Component {
     }
 
     selectedItemsComponent() {
-        if(this.props.showSelectedAvails) {
-            return <a href={'#'} onClick={this.toggleShowSelected}><span className={'nx-container-margin table-top-text'}
-                                                                   id={'dashboard-selected-avails-number'}>Back to search</span></a>;
+        if(this.props.showSelectedAvails){
+            return <span
+                className={'nx-container-margin table-top-text'}
+                id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
         }else {
-            if(this.props.availTabPageSelected.length) {
+            if (this.props.availTabPageSelected.length) {
                 return <a href={'#'} onClick={this.toggleShowSelected}><span
                     className={'nx-container-margin table-top-text'}
                     id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
@@ -182,6 +183,11 @@ class SearchResultsTab extends React.Component {
                                 Results: {this.props.availTabPage.total}
                             </span>
                             {this.selectedItemsComponent()}
+                            {this.props.showSelectedAvails &&
+                                <a href={'#'} onClick={this.toggleShowSelected}><span
+                                    className={'nx-container-margin table-top-text'}
+                                    id={'dashboard-go-to-filter'}>Back to search</span></a>
+                            }
                         </div>
                         <div  style={{marginRight: '15px'}}>
                             <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>

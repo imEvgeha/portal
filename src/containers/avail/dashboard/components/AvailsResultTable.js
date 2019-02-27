@@ -71,7 +71,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            originalData: this.props.availTabPageSelection.selected.slice(0, this.props.availTabPageSelection.selected.length),
+            originalData: this.props.availTabPageSelection.selected.slice(0),
             atLeastOneSelected: false,
             pageSize: config.get('avails.page.size'),
             cols:[],
@@ -154,10 +154,16 @@ class AvailsResultTable extends React.Component {
                 }
             }else{
                 if(!this.props.showSelectedAvails) {
-                    this.setState({originalData: this.props.availTabPageSelection.selected.slice(0, this.props.availTabPageSelection.selected.length)});
+                    this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
                     setTimeout(() => {this.table.api.selectAll();}, 1);
                 }
             }
+        }
+
+        //when we go out of 'See selected avails'
+        if(prevProps.showSelectedAvails !== this.props.showSelectedAvails && this.props.showSelectedAvails === false && !this.props.fromServer){
+            this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
+            setTimeout(() => {this.table.api.selectAll();}, 1);
         }
     }
 
