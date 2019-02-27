@@ -439,94 +439,60 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
+        let rowsProps = {};
         if(this.props.showSelectedAvails) {
-        //if(true) {
-            return (
-                <div
-                    className="ag-theme-balham"
-                    style={{
-                        height: this.state.height,
-                        width: '100%'
-                    }}
-                >
-                    <AgGridReact
-                        key = '1'
-                        ref={this.setTable}
-
-                        rowData={this.state.originalData}
-                        onFirstDataRendered={this.staticDataLoaded}
-
-                        getRowNodeId={data => data.id}
-
-                        defaultColDef={this.state.defaultColDef}
-                        columnDefs={this.cols}
-                        suppressDragLeaveHidesColumns={true}
-                        enableColResize={true}
-                        onDragStopped={this.onColumnReordered}
-                        onColumnResized={this.onColumnResized}
-
-                        enableSorting={true}
-                        onSortChanged={this.onSortChanged}
-
-                        rowSelection="multiple"
-                        onSelectionChanged={this.onSelectionChanged}
-                        suppressRowClickSelection={true}
-
-                        onBodyScroll={this.onScroll}
-
-                        headerHeight='52'
-                        rowHeight='48'
-                    >
-                    </AgGridReact>
-                </div>
-            );
-        }else {
-            return (
-                <div
-                    className="ag-theme-balham"
-                    style={{
-                        height: this.state.height,
-                        width: '100%'
-                    }}
-                >
-                    <AgGridReact
-                        key = '2'
-                        ref={this.setTable}
-
-                        getRowNodeId={data => data.id}
-
-                        defaultColDef={this.state.defaultColDef}
-                        columnDefs={this.cols}
-                        suppressDragLeaveHidesColumns={true}
-                        enableColResize={true}
-                        onDragStopped={this.onColumnReordered}
-                        onColumnResized={this.onColumnResized}
-
-                        rowBuffer='0'
-                        rowModelType='infinite'
-                        paginationPageSize={this.state.pageSize}
-                        infiniteInitialRowCount='0'
-                        cacheOverflowSize='2'
-                        maxConcurrentDatasourceRequests='1'
-                        datasource={this.dataSource}
-
-                        enableSorting={true}
-                        enableServerSideSorting={true}
-                        onSortChanged={this.onSortChanged}
-
-                        rowSelection="multiple"
-                        onSelectionChanged={this.onSelectionChanged}
-                        suppressRowClickSelection={true}
-
-                        onBodyScroll={this.onScroll}
-
-                        headerHeight='52'
-                        rowHeight='48'
-                    >
-                    </AgGridReact>
-                </div>
-            );
+            rowsProps = {
+                rowData: this.state.originalData,
+                onFirstDataRendered: this.staticDataLoaded
+            };
+        } else {
+            rowsProps = {
+                rowBuffer: '0',
+                rowModelType: 'infinite',
+                paginationPageSize: this.state.pageSize,
+                infiniteInitialRowCount: '0',
+                cacheOverflowSize: '2',
+                maxConcurrentDatasourceRequests: '1',
+                datasource: this.dataSource,
+                onBodyScroll: this.onScroll,
+                enableServerSideSorting: true,
+                onSortChanged: this.onSortChanged
+            };
         }
+
+        return(
+            <div
+                className="ag-theme-balham"
+                style={{
+                    height: this.state.height,
+                    width: '100%'
+                }}
+            >
+                <AgGridReact
+                    ref={this.setTable}
+                    {...rowsProps}
+
+                    getRowNodeId={data => data.id}
+
+                    defaultColDef={this.state.defaultColDef}
+                    columnDefs={this.cols}
+                    suppressDragLeaveHidesColumns={true}
+                    enableColResize={true}
+                    onDragStopped={this.onColumnReordered}
+                    onColumnResized={this.onColumnResized}
+
+                    enableSorting={true}
+
+                    rowSelection="multiple"
+                    onSelectionChanged={this.onSelectionChanged}
+                    suppressRowClickSelection={true}
+
+                    headerHeight='52'
+                    rowHeight='48'
+                >
+                </AgGridReact>
+            </div>
+        );
     }
 }
 
