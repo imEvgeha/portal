@@ -11,7 +11,8 @@ import {
     resultPageSelect,
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
-    searchFormSetAdvancedSearchCriteria
+    searchFormSetAdvancedSearchCriteria,
+    resultPageShowSelected
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
@@ -36,7 +37,6 @@ const mapStateToProps = state => {
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         currentSearchCriteria: state.dashboard.session.searchCriteria,
-        showSelectedAvails: state.dashboard.showSelectedAvails
     };
 };
 
@@ -48,7 +48,8 @@ const mapDispatchToProps = {
     resultPageSelect,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
-    searchFormSetAdvancedSearchCriteria
+    searchFormSetAdvancedSearchCriteria,
+    resultPageShowSelected
 };
 
 class DashboardContainer extends React.Component {
@@ -68,7 +69,7 @@ class DashboardContainer extends React.Component {
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         location: t.object,
-        showSelectedAvails: t.bool,
+        resultPageShowSelected: t.func
     };
 
     constructor(props) {
@@ -142,6 +143,7 @@ class DashboardContainer extends React.Component {
 
     handleAvailsFreeTextSearch(searchCriteria) {
         NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
+        this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.freeTextSearch(searchCriteria);
         this.cleanSelection();
@@ -154,6 +156,7 @@ class DashboardContainer extends React.Component {
             NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         }
 
+        this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.advancedSearch(searchCriteria);
         this.cleanSelection();
@@ -170,7 +173,7 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <div className={'container-fluid vu-free-text-search ' + (this.props.showSelectedAvails || this.props.showAdvancedSearch ? 'hide': '')}>
+                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
@@ -190,10 +193,9 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch || this.props.showSelectedAvails} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
                 {!this.props.showSearchResults && <DashboardTab/>}
-                {this.props.showSearchResults && this.props.availsMapping && this.props.showSelectedAvails && <SearchResultsTab/>}
-                {this.props.showSearchResults && this.props.availsMapping && !this.props.showSelectedAvails && <SearchResultsTab/>}
+                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
             </div>
         );
     }

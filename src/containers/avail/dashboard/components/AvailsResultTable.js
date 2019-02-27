@@ -62,7 +62,8 @@ class AvailsResultTable extends React.Component {
         columnsOrder: t.array,
         columnsSize: t.object,
         resultPageUpdateColumnsOrder: t.func,
-        showSelectedAvails: t.bool
+        showSelectedAvails: t.bool,
+        fromServer: t.bool
     };
 
     table = null;
@@ -88,6 +89,7 @@ class AvailsResultTable extends React.Component {
         this.onColumnReordered = this.onColumnReordered.bind(this);
         this.onColumnResized = this.onColumnResized.bind(this);
         this.onSortChanged = this.onSortChanged.bind(this);
+        this.refreshSelected = this.refreshSelected.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
@@ -141,8 +143,21 @@ class AvailsResultTable extends React.Component {
 
         this.refreshSort();
 
-        if(!this.props.showSelectedAvails && this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
+        if(this.props.fromServer && this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
             this.table.api.setDatasource(this.dataSource);
+        }
+
+        if(prevProps.availTabPageSelection !== this.props.availTabPageSelection){
+            if(this.props.fromServer){
+                if(this.props.showSelectedAvails){
+                    this.refreshSelected();
+                }
+            }else{
+                if(!this.props.showSelectedAvails) {
+                    this.setState({originalData: this.props.availTabPageSelection.selected.slice(0, this.props.availTabPageSelection.selected.length)});
+                    setTimeout(() => {this.table.api.selectAll();}, 1);
+                }
+            }
         }
     }
 
@@ -214,9 +229,23 @@ class AvailsResultTable extends React.Component {
         }
     }
 
+    refreshSelected(){
+        if(!this.table) return;
+        this.table.api.deselectAll();
+        this.table.api.forEachNode(rowNode => {
+            if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
+                rowNode.setSelected(true);
+            }
+        });
+    }
+
     onSelectionChangedProcess(){
         registeredOnSelect = false;
         if(!this.table) return;
+
+        //only the visible table changes the stored selected rows
+        if(!this.props.fromServer && !this.props.showSelectedAvails) return;
+        if(this.props.fromServer && this.props.showSelectedAvails) return;
 
         let selected = this.table.api.getSelectedRows().slice(0);
 
@@ -443,7 +472,7 @@ class AvailsResultTable extends React.Component {
 
     render() {
         let rowsProps = {};
-        if(this.props.showSelectedAvails) {
+        if(!this.props.fromServer) {
             rowsProps = {
                 rowData: this.state.originalData,
                 onFirstDataRendered: this.staticDataLoaded

@@ -59,6 +59,7 @@ class SearchResultsTab extends React.Component {
         this.saveColumns = this.saveColumns.bind(this);
         this.cancelColumns = this.cancelColumns.bind(this);
         this.toggleShowSelected = this.toggleShowSelected.bind(this);
+        this.handleChangeReport = this.handleChangeReport.bind(this);
     }
 
     selectColumnsContentProvider() {
@@ -152,6 +153,7 @@ class SearchResultsTab extends React.Component {
     }
 
     handleChangeReport(event) {
+        this.props.resultPageShowSelected(false);
         const reportName = event.target.value;
         configurationService.changeReport(reportName);
     }
@@ -182,8 +184,7 @@ class SearchResultsTab extends React.Component {
                             {this.selectedItemsComponent()}
                         </div>
                         <div  style={{marginRight: '15px'}}>
-                            <div className={'align-content-center ' + (this.props.showSelectedAvails ? 'd-none': 'd-inline-flex')}
-                                 style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
+                            <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
                                 <span className="align-self-center" >Selected report:</span>
                                 {renderReportSelect()}
                             </div>
@@ -191,7 +192,17 @@ class SearchResultsTab extends React.Component {
                             <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
                         </div>
                     </div>
-                    <AvailsResultTable/>
+                    <div className = {this.props.showSelectedAvails ? 'd-none' : ''}>
+                        <AvailsResultTable
+                            fromServer = {true}
+                        />
+                    </div>
+                    <div className = {!this.props.showSelectedAvails ? 'd-none' : ''}>
+                        <AvailsResultTable
+                            fromServer = {false}
+                        />
+                    </div>
+
                 </div>
             </div>
         );
