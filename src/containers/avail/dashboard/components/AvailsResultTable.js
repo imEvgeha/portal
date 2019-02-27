@@ -70,6 +70,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            originalData: this.props.availTabPageSelection.selected.slice(0, this.props.availTabPageSelection.selected.length),
             atLeastOneSelected: false,
             pageSize: config.get('avails.page.size'),
             cols:[],
@@ -124,6 +125,7 @@ class AvailsResultTable extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        if(!this.table) return;
         if(this.props.columnsOrder !== prevProps.columnsOrder) {
             this.refreshColumns();
             for(let i=0; i< Math.min(this.props.columnsOrder.length, prevProps.columnsOrder.length); i++){
@@ -135,11 +137,7 @@ class AvailsResultTable extends React.Component {
 
         this.refreshSort();
 
-        if(this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
-            this.table.api.setDatasource(this.dataSource);
-        }
-
-        if(this.props.showSelectedAvails !== prevProps.showSelectedAvails){
+        if(!this.props.showSelectedAvails && this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
             this.table.api.setDatasource(this.dataSource);
         }
     }
@@ -160,6 +158,7 @@ class AvailsResultTable extends React.Component {
     }
 
     refreshSort(){
+        if(!this.table) return;
         let sortModel=[];
         this.props.availTabPageSort.map(sortCriteria=>{
             sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
@@ -215,21 +214,19 @@ class AvailsResultTable extends React.Component {
         registeredOnSelect = false;
         if(!this.table) return;
 
-        let selectedRows = this.table.api.getSelectedRows();
-        let selected=[];
-        selectedRows.map(row => {
-            selected.push(row);
-        });
+        let selected = this.table.api.getSelectedRows().slice(0);
 
         if(this.table.api.getDisplayedRowCount() > 0){
             this.props.availTabPageSelection.selected.map(sel => {
-                if(selected.indexOf(sel.id) === -1 && this.table.api.getRowNode(sel.id) === null) selected.push(sel);
+                if(selected.filter(rec => (sel.id === rec.id)).length === 0 && this.table.api.getRowNode(sel.id) === null) {
+                    selected.push(sel);
+                }
             });
         } else {
-            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
+            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0) {
                 selected = selected.concat(this.props.availTabPageSelection.selected);
+            }
         }
-
         this.props.resultPageSelect({selected: selected, selectAll: this.areAllVisibleSelected()});
     }
 
@@ -281,26 +278,7 @@ class AvailsResultTable extends React.Component {
         });
     }
 
-    getSelectedItems(page, pageSize){
-        let avails = this.props.availTabPageSelection.selected.slice(page * pageSize, (page + 1) * pageSize);
-
-        return {
-            data: {
-                data: avails,
-                message: null,
-                page: page,
-                size: pageSize,
-                total: this.props.availTabPageSelection.selected.length
-            }
-        };
-    }
-
     doSearch(page, pageSize, sortedParams) {
-        if(this.props.showSelectedAvails){
-            return new Promise((resolve) => {
-               resolve(this.getSelectedItems(page, pageSize, sortedParams));
-            });
-        }
         return availServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
@@ -342,6 +320,10 @@ class AvailsResultTable extends React.Component {
                        console.error(error);
                        params.failCallback();
                    });
+    }
+
+    staticDataLoaded(e){
+        e.api.selectAll();
     }
 
     addLoadedItems(data) {
@@ -388,7 +370,8 @@ class AvailsResultTable extends React.Component {
             suppressSizeToFit: true,
             suppressMovable: true,
             lockPosition: true,
-            headerComponentFramework: CheckBoxHeader
+            headerComponentFramework: !this.props.showSelectedAvails ? CheckBoxHeader : null,
+            headerCheckboxSelection : this.props.showSelectedAvails
         });
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
@@ -456,51 +439,94 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
-        return(
-            <div
-                className="ag-theme-balham"
-                style={{
-                    height: this.state.height,
-                    width: '100%' }}
+        if(this.props.showSelectedAvails) {
+        //if(true) {
+            return (
+                <div
+                    className="ag-theme-balham"
+                    style={{
+                        height: this.state.height,
+                        width: '100%'
+                    }}
+                >
+                    <AgGridReact
+                        key = '1'
+                        ref={this.setTable}
+
+                        rowData={this.state.originalData}
+                        onFirstDataRendered={this.staticDataLoaded}
+
+                        getRowNodeId={data => data.id}
+
+                        defaultColDef={this.state.defaultColDef}
+                        columnDefs={this.cols}
+                        suppressDragLeaveHidesColumns={true}
+                        enableColResize={true}
+                        onDragStopped={this.onColumnReordered}
+                        onColumnResized={this.onColumnResized}
+
+                        enableSorting={true}
+                        onSortChanged={this.onSortChanged}
+
+                        rowSelection="multiple"
+                        onSelectionChanged={this.onSelectionChanged}
+                        suppressRowClickSelection={true}
+
+                        onBodyScroll={this.onScroll}
+
+                        headerHeight='52'
+                        rowHeight='48'
                     >
-                <AgGridReact
-                    ref={this.setTable}
+                    </AgGridReact>
+                </div>
+            );
+        }else {
+            return (
+                <div
+                    className="ag-theme-balham"
+                    style={{
+                        height: this.state.height,
+                        width: '100%'
+                    }}
+                >
+                    <AgGridReact
+                        key = '2'
+                        ref={this.setTable}
 
-                    getRowNodeId= {data => data.id}
+                        getRowNodeId={data => data.id}
 
-                    defaultColDef = {this.state.defaultColDef}
-                    columnDefs= {this.cols}
-                    suppressDragLeaveHidesColumns= {true}
-                    enableColResize= {true}
-                    onDragStopped = {this.onColumnReordered}
-                    onColumnResized = {this.onColumnResized}
+                        defaultColDef={this.state.defaultColDef}
+                        columnDefs={this.cols}
+                        suppressDragLeaveHidesColumns={true}
+                        enableColResize={true}
+                        onDragStopped={this.onColumnReordered}
+                        onColumnResized={this.onColumnResized}
 
-                    rowBuffer= '0'
-                    rowModelType= 'infinite'
-                    paginationPageSize= {this.state.pageSize}
-                    infiniteInitialRowCount= '0'
-                    cacheOverflowSize= '2'
-                    maxConcurrentDatasourceRequests= '1'
-                    datasource= {this.dataSource}
+                        rowBuffer='0'
+                        rowModelType='infinite'
+                        paginationPageSize={this.state.pageSize}
+                        infiniteInitialRowCount='0'
+                        cacheOverflowSize='2'
+                        maxConcurrentDatasourceRequests='1'
+                        datasource={this.dataSource}
 
-                    enableSorting={true}
-                    enableServerSideSorting= {true}
-                    onSortChanged = {this.onSortChanged}
+                        enableSorting={true}
+                        enableServerSideSorting={true}
+                        onSortChanged={this.onSortChanged}
 
-                    rowSelection= "multiple"
-                    onSelectionChanged= {this.onSelectionChanged}
-                    suppressRowClickSelection = {true}
+                        rowSelection="multiple"
+                        onSelectionChanged={this.onSelectionChanged}
+                        suppressRowClickSelection={true}
 
-                    onBodyScroll = {this.onScroll}
+                        onBodyScroll={this.onScroll}
 
-                    headerHeight= '52'
-                    rowHeight= '48'
-
+                        headerHeight='52'
+                        rowHeight='48'
                     >
-                </AgGridReact>
-
-            </div>
-        );
+                    </AgGridReact>
+                </div>
+            );
+        }
     }
 }
 

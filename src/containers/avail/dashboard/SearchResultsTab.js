@@ -135,13 +135,14 @@ class SearchResultsTab extends React.Component {
     }
 
     selectedItemsComponent() {
-        if (this.props.availTabPageSelected.length){
-            if(this.props.showSelectedAvails) {
-                return <a href={'#'} onClick={this.toggleShowSelected}><span className={'nx-container-margin table-top-text'}
-                                                                       id={'dashboard-selected-avails-number'}>Back to search</span></a>;
-            }else {
-                return <a href={'#'} onClick={this.toggleShowSelected}><span className={'nx-container-margin table-top-text'}
-                                                                       id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
+        if(this.props.showSelectedAvails) {
+            return <a href={'#'} onClick={this.toggleShowSelected}><span className={'nx-container-margin table-top-text'}
+                                                                   id={'dashboard-selected-avails-number'}>Back to search</span></a>;
+        }else {
+            if(this.props.availTabPageSelected.length) {
+                return <a href={'#'} onClick={this.toggleShowSelected}><span
+                    className={'nx-container-margin table-top-text'}
+                    id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
             }
         }
     }

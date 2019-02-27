@@ -36,6 +36,7 @@ const mapStateToProps = state => {
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         currentSearchCriteria: state.dashboard.session.searchCriteria,
+        showSelectedAvails: state.dashboard.showSelectedAvails
     };
 };
 
@@ -67,6 +68,7 @@ class DashboardContainer extends React.Component {
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         location: t.object,
+        showSelectedAvails: t.bool,
     };
 
     constructor(props) {
@@ -168,7 +170,7 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
+                <div className={'container-fluid vu-free-text-search ' + (this.props.showSelectedAvails || this.props.showAdvancedSearch ? 'hide': '')}>
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
@@ -188,9 +190,10 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch || this.props.showSelectedAvails} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
                 {!this.props.showSearchResults && <DashboardTab/>}
-                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
+                {this.props.showSearchResults && this.props.availsMapping && this.props.showSelectedAvails && <SearchResultsTab/>}
+                {this.props.showSearchResults && this.props.availsMapping && !this.props.showSelectedAvails && <SearchResultsTab/>}
             </div>
         );
     }
