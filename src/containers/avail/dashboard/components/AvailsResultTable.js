@@ -128,7 +128,7 @@ class AvailsResultTable extends React.Component {
 
     updateWindowDimensions() {
         let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
-        this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
+        this.setState({ height: window.innerHeight - offsetTop - 10});
     }
 
     componentDidUpdate(prevProps) {
@@ -166,8 +166,10 @@ class AvailsResultTable extends React.Component {
             this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
             setTimeout(() => {this.table.api.selectAll();}, 1);
         }
-        if(prevProps.hidden !== this.props.hidden && this.props.hidden){
+        if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
             this.updateWindowDimensions();
+            this.refreshSelected();
+            this.onScroll();
         }
     }
 
@@ -272,31 +274,18 @@ class AvailsResultTable extends React.Component {
     }
 
     isOneVisibleSelected(){
-        let first = this.table.api.getFirstDisplayedRow();
-        let last = this.table.api.getLastDisplayedRow();
-
-        for (let i = first; i < last + 1; i++) {
-            let node = this.table.api.getDisplayedRowAtIndex(i);
-            if(node.isSelected()) {
-                return true;
-            }
-        }
-
-        return false;
+        const visibleRange = this.table.api.getVerticalPixelRange();
+        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop < visibleRange.bottom));
+        const selectedNodes = visibleNodes.filter(({selected}) => selected);
+        return selectedNodes.length > 0;
     }
 
     areAllVisibleSelected(){
-        let first = this.table.api.getFirstDisplayedRow();
-        let last = this.table.api.getLastDisplayedRow();
+        const visibleRange = this.table.api.getVerticalPixelRange();
+        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop < visibleRange.bottom));
+        const selectedNodes = visibleNodes.filter(({selected}) => selected);
 
-        for (let i = first; i < last + 1; i++) {
-            let node = this.table.api.getDisplayedRowAtIndex(i);
-            if(!node.isSelected()) {
-               return false;
-            }
-        }
-
-        return true;
+        return visibleNodes.length === selectedNodes.length;
     }
 
     editAvail(newAvail) {
@@ -482,12 +471,13 @@ class AvailsResultTable extends React.Component {
         let rowsProps = {};
         if(!this.props.fromServer) {
             rowsProps = {
+                rowBuffer: '0',
                 rowData: this.state.originalData,
                 onFirstDataRendered: this.staticDataLoaded
             };
         } else {
             rowsProps = {
-                rowBuffer: '0',
+                rowBuffer: '50',
                 rowModelType: 'infinite',
                 paginationPageSize: this.state.pageSize,
                 infiniteInitialRowCount: '0',
@@ -504,7 +494,7 @@ class AvailsResultTable extends React.Component {
                 <div
                     className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
                     style={{
-                        height: this.state.height,
+                        height: this.state.height + 'px',
                         width: '100%'
                     }}
                 >
