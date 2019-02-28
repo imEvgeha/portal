@@ -8,7 +8,6 @@ import {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    resultPageSelect,
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
@@ -45,7 +44,6 @@ const mapDispatchToProps = {
     resultPageSort,
     resultPageUpdate,
     loadAvailsMapping,
-    resultPageSelect,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
@@ -61,7 +59,6 @@ class DashboardContainer extends React.Component {
         resultPageSort: t.func,
         resultPageUpdate: t.func,
         loadAvailsMapping: t.func,
-        resultPageSelect: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
@@ -78,7 +75,6 @@ class DashboardContainer extends React.Component {
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
-        this.cleanSelection = this.cleanSelection.bind(this);
     }
 
     componentDidMount() {
@@ -146,7 +142,6 @@ class DashboardContainer extends React.Component {
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.freeTextSearch(searchCriteria);
-        this.cleanSelection();
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
@@ -159,15 +154,6 @@ class DashboardContainer extends React.Component {
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.advancedSearch(searchCriteria);
-        this.cleanSelection();
-    }
-
-    cleanSelection() {
-        let availTabPageSelection = {
-            selected: this.props.selected,
-            selectAll: false
-        };
-        this.props.resultPageSelect(availTabPageSelection);
     }
 
     render() {

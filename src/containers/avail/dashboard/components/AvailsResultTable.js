@@ -73,7 +73,6 @@ class AvailsResultTable extends React.Component {
         super(props);
         this.state = {
             originalData: this.props.availTabPageSelection.selected.slice(0),
-            atLeastOneSelected: false,
             pageSize: config.get('avails.page.size'),
             cols:[],
             defaultColDef: {
@@ -230,14 +229,9 @@ class AvailsResultTable extends React.Component {
 
     onScroll(){
         const allVisibleSelected = this.areAllVisibleSelected();
-        if(allVisibleSelected !== this.props.availTabPageSelection.selectAll) {
-            this.props.resultPageSelect({selected: this.props.availTabPageSelection.selected, selectAll: allVisibleSelected});
-            return;
-        }
         const oneVisibleSelected = this.isOneVisibleSelected();
-        if(oneVisibleSelected !== this.state.atLeastOneSelected) {
-            this.props.resultPageSelect({selected: this.props.availTabPageSelection.selected, selectAll: allVisibleSelected});
-            this.setState({atLeastOneSelected:oneVisibleSelected});
+        if(allVisibleSelected !== this.props.availTabPageSelection.selectAll || oneVisibleSelected === this.props.availTabPageSelection.selectNone) {
+            this.props.resultPageSelect({selected: this.props.availTabPageSelection.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
         }
     }
 
@@ -270,7 +264,7 @@ class AvailsResultTable extends React.Component {
                 selected = selected.concat(this.props.availTabPageSelection.selected);
             }
         }
-        this.props.resultPageSelect({selected: selected, selectAll: this.areAllVisibleSelected()});
+        this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
     }
 
     isOneVisibleSelected(){
@@ -550,39 +544,26 @@ class CheckBoxHeaderInternal extends Component {
     }
 
     onCheckBoxClick(){
-        let first = this.props.api.getFirstDisplayedRow();
-        let last = this.props.api.getLastDisplayedRow();
+        const visibleRange = this.props.api.getVerticalPixelRange();
+        const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop < visibleRange.bottom));
 
         if(!this.props.availTabPageSelection.selectAll) {
-            for (let i = first; i < last + 1; i++) {
-                let node = this.props.api.getDisplayedRowAtIndex(i);
-                if(!node.isSelected()) {
-                    node.setSelected(true);
-                }
-            }
+            const notSelectedNodes = visibleNodes.filter(({selected}) => !selected);
+            notSelectedNodes.forEach(node => {
+                node.setSelected(true);
+            });
         }
         else {
-            for (let i = first; i < last + 1; i++) {
-                let node = this.props.api.getDisplayedRowAtIndex(i);
-                if (node.isSelected()) {
-                    node.setSelected(false);
-                }
-            }
+            const selectedNodes = visibleNodes.filter(({selected}) => selected);
+            selectedNodes.forEach(node => {
+                node.setSelected(false);
+            });
         }
     }
 
     render() {
-        let allVisibleSelected = this.props.availTabPageSelection.selectAll;
-        let atLeastOneVisibleSelected = false;
-        let first = this.props.api.getFirstDisplayedRow();
-        let last = this.props.api.getLastDisplayedRow();
-
-        for (let i = first; !atLeastOneVisibleSelected && i < last + 1; i++) {
-            let node = this.props.api.getDisplayedRowAtIndex(i);
-            if(node.isSelected()) {
-                atLeastOneVisibleSelected = true;
-            }
-        }
+        const allVisibleSelected = this.props.availTabPageSelection.selectAll;
+        const atLeastOneVisibleSelected = !this.props.availTabPageSelection.selectNone;
 
         return (
             <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>

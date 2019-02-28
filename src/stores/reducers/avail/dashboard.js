@@ -31,6 +31,7 @@ const initialState = {
     session: {
         availTabPageSelection: {
             selected: [],
+            selectNone: true,
             selectAll: false
         },
         useAdvancedSearch: false,
