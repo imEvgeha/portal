@@ -160,7 +160,7 @@ class AvailsResultTable extends React.Component {
             }else{
                 if(!this.props.showSelectedAvails) {
                     this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
-                    setTimeout(() => {this.table.api.selectAll();}, 1);
+                    setTimeout(() => {this.refreshSelected();}, 1);
                 }
             }
         }
@@ -173,7 +173,6 @@ class AvailsResultTable extends React.Component {
         if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
             this.updateWindowDimensions();
             this.refreshSelected();
-            this.onScroll();
         }
     }
 
