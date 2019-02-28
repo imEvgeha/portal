@@ -55,7 +55,9 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Home Video Release Date</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate"  onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                            <AvField validate={{
+                                date: { format: 'YYYY-mm-DD' }
+                            }} type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate"  onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -82,7 +84,7 @@ class TerritoryMetadataCreateTab extends Component {
                             <b>Release Year</b>
                         </Col>
                         <Col md={2}>
-                            <AvField name="releaseYear" type="text" errorMessage="Please enter a valid year!" placeholder="Enter Release Year" onChange={this.props.handleChange}
+                            <AvField name="releaseYear" type="number" errorMessage="Please enter a valid year!" placeholder="Enter Release Year" onChange={this.props.handleChange}
                                 validate={{
                                     date: { format: 'YYYY', errorMessage: 'Please enter a valid date!' },
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },

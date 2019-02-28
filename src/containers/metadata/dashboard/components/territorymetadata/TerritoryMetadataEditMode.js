@@ -9,6 +9,15 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 const YEAR_FORMAT = 'YYYY';
 
 class TerritoryMetadataEditMode extends Component {
+
+    getValidDate = (date) => {
+        if(date) {
+            return moment(date).format(DATE_FORMAT);
+        }
+        return date;
+    };
+
+
     render() {
         return (
             <div id="territoryContainer">
@@ -28,9 +37,8 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField type="date" id="territoryTheatricalReleaseDate"
                                 name="theatricalReleaseDate"
-                                value={moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT)}
+                                value={this.getValidDate(this.props.data.theatricalReleaseDate)}
                                 onChange={this.props.handleChange}
-                                required={this.props.isLocalRequired}
                                 validate={{
                                     date: { format: DATE_FORMAT, errorMessage: 'Please enter a valid date!' },
                                 }}
@@ -45,9 +53,8 @@ class TerritoryMetadataEditMode extends Component {
 
                             <AvField type="date" id="territoryHomeVideoReleaseDate"
                                 name="homeVideoReleaseDate"
-                                value={moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT)}
+                                value={this.getValidDate(this.props.data.homeVideoReleaseDate)}
                                 onChange={this.props.handleChange}
-                                required={this.props.isLocalRequired}
                                 errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
@@ -58,9 +65,8 @@ class TerritoryMetadataEditMode extends Component {
                         <Col md={2}>
                             <AvField type="date" id="territoryAvailAnnounceDate"
                                 name="availAnnounceDate"
-                                value={moment(this.props.data.availAnnounceDate).format(DATE_FORMAT)}
+                                value={this.getValidDate(this.props.data.availAnnounceDate)}
                                 onChange={this.props.handleChange}
-                                required={this.props.isLocalRequired}
                                 errorMessage="Please enter a valid date!" />
                         </Col>
                     </Row>
@@ -80,9 +86,8 @@ class TerritoryMetadataEditMode extends Component {
                             <b>Release Year</b>
                         </Col>
                         <Col md={2}>
-                            <AvField name="releaseYear" type="text" value={this.props.data.releaseYear} required={this.props.isLocalRequired} placeholder="Enter Release Year" onChange={this.props.handleChange}
+                            <AvField name="releaseYear" type="number" value={this.props.data.releaseYear} required={this.props.isLocalRequired} placeholder="Enter Release Year" onChange={this.props.handleChange}
                                 validate={{
-                                    date: { format: YEAR_FORMAT, errorMessage: 'Please enter a valid date!' },
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
                                     maxLength: { value: 4 }, minLength: { value: 4 }
                                 }} />
