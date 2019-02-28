@@ -198,13 +198,15 @@ class SearchResultsTab extends React.Component {
                             <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
                         </div>
                     </div>
-                    <div className = {this.props.showSelectedAvails ? 'd-none' : ''}>
+                    <div>
                         <AvailsResultTable
+                            hidden={this.props.showSelectedAvails}
                             fromServer = {true}
                         />
                     </div>
-                    <div className = {!this.props.showSelectedAvails ? 'd-none' : ''}>
+                    <div>
                         <AvailsResultTable
+                            hidden={!this.props.showSelectedAvails}
                             fromServer = {false}
                         />
                     </div>

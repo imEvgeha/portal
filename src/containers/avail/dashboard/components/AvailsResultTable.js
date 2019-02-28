@@ -63,7 +63,8 @@ class AvailsResultTable extends React.Component {
         columnsSize: t.object,
         resultPageUpdateColumnsOrder: t.func,
         showSelectedAvails: t.bool,
-        fromServer: t.bool
+        fromServer: t.bool,
+        hidden: t.bool
     };
 
     table = null;
@@ -165,6 +166,9 @@ class AvailsResultTable extends React.Component {
             this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
             setTimeout(() => {this.table.api.selectAll();}, 1);
         }
+        if(prevProps.hidden !== this.props.hidden && this.props.hidden){
+            this.updateWindowDimensions();
+        }
     }
 
     parseColumnsSchema() {
@@ -249,9 +253,7 @@ class AvailsResultTable extends React.Component {
         registeredOnSelect = false;
         if(!this.table) return;
 
-        //only the visible table changes the stored selected rows
-        if(!this.props.fromServer && !this.props.showSelectedAvails) return;
-        if(this.props.fromServer && this.props.showSelectedAvails) return;
+        if(this.props.hidden) return;
 
         let selected = this.table.api.getSelectedRows().slice(0);
 
@@ -498,37 +500,39 @@ class AvailsResultTable extends React.Component {
         }
 
         return(
-            <div
-                className="ag-theme-balham"
-                style={{
-                    height: this.state.height,
-                    width: '100%'
-                }}
-            >
-                <AgGridReact
-                    ref={this.setTable}
-                    {...rowsProps}
-
-                    getRowNodeId={data => data.id}
-
-                    defaultColDef={this.state.defaultColDef}
-                    columnDefs={this.cols}
-                    suppressDragLeaveHidesColumns={true}
-                    enableColResize={true}
-                    onDragStopped={this.onColumnReordered}
-                    onColumnResized={this.onColumnResized}
-
-                    enableSorting={true}
-                    onBodyScroll={this.onScroll}
-
-                    rowSelection="multiple"
-                    onSelectionChanged={this.onSelectionChanged}
-                    suppressRowClickSelection={true}
-
-                    headerHeight='52'
-                    rowHeight='48'
+            <div>
+                <div
+                    className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
+                    style={{
+                        height: this.state.height,
+                        width: '100%'
+                    }}
                 >
-                </AgGridReact>
+                    <AgGridReact
+                        ref={this.setTable}
+                        {...rowsProps}
+
+                        getRowNodeId={data => data.id}
+
+                        defaultColDef={this.state.defaultColDef}
+                        columnDefs={this.cols}
+                        suppressDragLeaveHidesColumns={true}
+                        enableColResize={true}
+                        onDragStopped={this.onColumnReordered}
+                        onColumnResized={this.onColumnResized}
+
+                        enableSorting={true}
+                        onBodyScroll={this.onScroll}
+
+                        rowSelection="multiple"
+                        onSelectionChanged={this.onSelectionChanged}
+                        suppressRowClickSelection={true}
+
+                        headerHeight='52'
+                        rowHeight='48'
+                    >
+                    </AgGridReact>
+                </div>
             </div>
         );
     }
