@@ -43,7 +43,7 @@ class TerritoryMetadata extends Component {
                                     <TabPane key={i} tabId={i}>
                                         <Row>
                                             <Col>
-                                                <TerritoryMetadataTab key={i} data={item} />
+                                                <TerritoryMetadataTab  key={i} data={item} />
                                             </Col>
                                         </Row>
                                     </TabPane>);
@@ -63,7 +63,7 @@ class TerritoryMetadata extends Component {
                                 <TabPane tabId={this.props.CREATE_TAB}>
                                     <Row>
                                         <Col>
-                                            <TerritoryMetadataCreateTab isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
+                                            <TerritoryMetadataCreateTab validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -73,7 +73,7 @@ class TerritoryMetadata extends Component {
                                             <TabPane key={i} tabId={i}>
                                                 <Row>
                                                     <Col>
-                                                        <TerritoryMetadataEditMode isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
+                                                        <TerritoryMetadataEditMode validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
                                                     </Col>
                                                 </Row>
                                             </TabPane>);
@@ -96,7 +96,8 @@ TerritoryMetadata.propTypes = {
     isLocalRequired: PropTypes.bool,
     toggle: PropTypes.func,
     addTerritoryMetadata: PropTypes.func,
-    CREATE_TAB: PropTypes.string
+    CREATE_TAB: PropTypes.string,
+    validSubmit: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {

@@ -282,6 +282,7 @@ class TitleEdit extends Component {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
                     <TerritoryMetadata isLocalRequired={this.state.isLocalRequired}
+                                       validSubmit={this.handleOnSave}
                         toggle={this.toggle}
                         activeTab={this.state.activeTab}
                         addTerritoryMetadata={this.addTerritoryMetadata}
