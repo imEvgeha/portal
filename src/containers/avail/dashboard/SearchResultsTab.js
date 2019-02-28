@@ -129,7 +129,7 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        exportService.exportAvails(this.props.availTabPageSelected, this.props.columns)
+        exportService.exportAvails(this.props.availTabPageSelected.map(({id}) => id), this.props.columns)
         .then(function (response) {
             downloadFile(response.data);
         });
