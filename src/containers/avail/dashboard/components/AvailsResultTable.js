@@ -91,6 +91,7 @@ class AvailsResultTable extends React.Component {
         this.onSortChanged = this.onSortChanged.bind(this);
         this.refreshSelected = this.refreshSelected.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
+        this.clearAllSelected = this.clearAllSelected.bind(this);
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
         this.onEdit = this.onEdit.bind(this);
@@ -105,6 +106,10 @@ class AvailsResultTable extends React.Component {
             rowCount: null, // behave as infinite scroll
             getRows: this.getRows
         };
+
+        if(this.props.setClearAllSelected) {
+            this.props.setClearAllSelected(this.clearAllSelected);
+        }
 
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
@@ -243,6 +248,12 @@ class AvailsResultTable extends React.Component {
                 rowNode.setSelected(true);
             }
         });
+    }
+
+    clearAllSelected(){
+        if(this.table){
+            this.table.api.deselectAll();
+        }
     }
 
     onSelectionChangedProcess(){

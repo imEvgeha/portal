@@ -188,6 +188,11 @@ class SearchResultsTab extends React.Component {
                                     className={'nx-container-margin table-top-text'}
                                     id={'dashboard-go-to-filter'}>Back to search</span></a>
                             }
+                            {this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0 &&
+                            <a href={'#'} onClick={() => this.clearAllSelected()}><span
+                                className={'nx-container-margin table-top-text'}
+                                id={'dashboard-clear-all-selected'}>Clear All</span></a>
+                            }
                         </div>
                         <div  style={{marginRight: '15px'}}>
                             <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
@@ -206,6 +211,7 @@ class SearchResultsTab extends React.Component {
                     </div>
                     <div>
                         <AvailsResultTable
+                            setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
                             fromServer = {false}
                         />
