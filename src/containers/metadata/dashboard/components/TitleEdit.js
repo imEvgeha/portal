@@ -148,7 +148,6 @@ class TitleEdit extends Component {
             this.setState({
                 isLoading: true
             });
-            console.log(updatedTitle)
             titleService.updateTitle(updatedTitle).then(() => {
                 this.setState({
                     isLoading: false,
