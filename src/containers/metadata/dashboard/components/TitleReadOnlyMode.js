@@ -8,7 +8,6 @@ class TitleReadOnlyMode extends Component {
     }
     renderFields = (contentType) => {
         const { title, productionStudioId, productionYear, boxOffice } = this.props.data;
-        console.log(this.props.data.episodic);
         return (
             <Fragment>
                 <Container fluid id="titleContainer">
