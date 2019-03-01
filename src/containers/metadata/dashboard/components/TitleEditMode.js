@@ -12,14 +12,13 @@ class TitleEditMode extends Component {
             seasonChecked: false,
             episodeChecked: false,
             brandChecked: false,
-            isBrandProdYearCompleted: false,
             isBrandCompleted: false,
 
             checkContentType: '',
         };
     }
     render() {
-        const { title, contentType, productionStudioId, productionYear, boxOffice } = this.props.data;
+        const { title, contentType, productionStudioId, releaseYear, boxOffice } = this.props.data;
         return (
             <Fragment>
                 <Container fluid id="titleContainer" onKeyDown={this.props.keyPressed}>
@@ -56,15 +55,6 @@ class TitleEditMode extends Component {
                                                 <AvField type="text" name="brandTitleName" id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
                                                     onChange={this.props.handleChangeBrand} required={this.state.isBrandCompleted}
                                                 />
-                                            </Col>
-                                            <Col>
-                                                <Label for="titleBrandProductionYear">Brand Release Year</Label>
-                                                <AvField name="brandProdYear" id="titleBrandProductionYear" required={this.state.isBrandProdYearCompleted} errorMessage="Please enter a valid year!" validate={{
-                                                    required: { errorMessage: 'Field cannot be empty!' },
-                                                    pattern: { value: '^[0-9]+$' },
-                                                    minLength: { value: 4 },
-                                                    maxLength: { value: 4 }
-                                                }} placeholder="Enter Brand Release Year" onChange={this.props.handleChangeBrandProdYear} />
                                             </Col>
                                         </Row>
                                         <Row>
@@ -151,11 +141,11 @@ class TitleEditMode extends Component {
                             }
                             <Row style={{ marginTop: '15px' }}>
                                 <Col>
-                                    <Label for="titleProductionYear">Release Year<span style={{ color: 'red' }}>*</span></Label>
+                                    <Label for="titleReleaseYear">Release Year<span style={{ color: 'red' }}>*</span></Label>
                                     <AvField
-                                        name="productionYear"
+                                        name="releaseYear"
                                         errorMessage="Please enter a valid year!"
-                                        id="titleProductionYear"
+                                        id="titleReleaseYear"
                                         validate={{
                                             required: { value: true, errorMessage: 'Field cannot be empty!' },
                                             pattern: { value: '^[0-9]+$' },
@@ -163,7 +153,7 @@ class TitleEditMode extends Component {
                                             maxLength: { value: 4 }
                                         }}
                                         placeholder="Enter Release Year"
-                                        value={productionYear}
+                                        value={releaseYear}
                                         onChange={(e) => this.props.handleOnChangeEdit(e)} />
                                 </Col>
                                 <Col>
@@ -198,7 +188,6 @@ TitleEditMode.propTypes = {
     keyPressed: PropTypes.func,
     data: PropTypes.object,
     handleOnChangeEdit: PropTypes.func.isRequired,
-    handleChangeBrandProdYear: PropTypes.func.isRequired,
     handleChangeBrand: PropTypes.func.isRequired,
     handleChangeEpisodic: PropTypes.func.isRequired
 };

@@ -28,11 +28,10 @@ class TitleCreate extends React.Component {
             titleForm: {
                 title: '',
                 contentType: '',
-                productionYear: '',
+                releaseYear: '',
                 productionStudioId: '',
                 boxOffice: '',
                 episodic: {
-                    brandProdYear: '',
                     brandTitleName: '',
                     episodeId: '',
                     episodeNumber: '',
@@ -129,11 +128,10 @@ class TitleCreate extends React.Component {
             titleForm: {
                 title: '',
                 contentType: '',
-                productionYear: '',
+                releaseYear: '',
                 productionStudioId: '',
                 boxOffice: '',
                 episodic: {
-                    brandProdYear: '',
                     brandTitleName: '',
                     episodeId: '',
                     episodeNumber: '',
@@ -176,36 +174,13 @@ class TitleCreate extends React.Component {
             });
         }
     }
-    handleChangeBrandProdYear = (e) => {
-        const newEpisodic = {
-            ...this.state.titleForm.episodic,
-            brandProdYear: e.target.value
-        };
-        this.setState({
-            titleForm: {
-                ...this.state.titleForm,
-                episodic: newEpisodic
-            }
-        });
-        if (e.target.value.length !== 0) {
-            this.setState({
-                isBrandCompleted: true,
-                isSeasonNumberRequired: true
-            });
-        } else {
-            this.setState({
-                isBrandCompleted: false,
-                isSeasonNumberRequired: false
-            });
-        }
-    }
     handleSelect = (e) => {
         if (e.target.value === 'Season') {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: true,
                 brandChecked: false,
-                isReleaseYearRequired: true,
+                isReleaseYearRequired: false,
                 isBrandCompleted: true,
                 isBrandYearCompleted: true,
                 isSeasonNumberRequired: true,
@@ -240,7 +215,7 @@ class TitleCreate extends React.Component {
                 seasonChecked: true,
                 episodeChecked: true,
                 brandChecked: true,
-                isReleaseYearRequired: true,
+                isReleaseYearRequired: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
@@ -281,7 +256,6 @@ class TitleCreate extends React.Component {
                     contentType: e.target.value,
                     episodic: {
                         brandTitleName: '',
-                        brandProdYear: '',
                         episodeId: '',
                         episodeNumber: '',
                         episodeCount: '',
@@ -346,15 +320,6 @@ class TitleCreate extends React.Component {
                                                         onChange={this.handleChangeBrand} required={this.state.isBrandCompleted}
                                                     />
                                                 </Col>
-                                                <Col>
-                                                    <Label for="titleBrandProductionYear">Brand Release Year {this.state.isBrandCompleted || this.state.isBrandYearCompleted ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                                    <AvField name="brandProdYear" id="titleBrandProductionYear" value={this.state.titleForm.episodic.brandProdYear} required={this.state.isBrandYearCompleted} errorMessage="Please enter a valid year!" validate={{
-                                                        required: { value: this.state.isBrandYearCompleted, errorMessage: 'Field cannot be empty!' },
-                                                        pattern: { value: '^[0-9]+$' },
-                                                        minLength: { value: 4 },
-                                                        maxLength: { value: 4 }
-                                                    }} placeholder="Enter Brand Release Year" disabled={this.state.brandChecked} onChange={this.handleChangeBrandProdYear} />
-                                                </Col>
                                             </Row>
                                             : null
                                     }
@@ -417,13 +382,13 @@ class TitleCreate extends React.Component {
                                     }
                                     <Row style={{ marginTop: '15px' }}>
                                         <Col>
-                                            <Label for="titleProductionYear">Release Year{!this.state.isReleaseYearRequired ? null : <span style={{ color: 'red' }}>*</span>}</Label>
-                                            <AvField name="productionYear" errorMessage="Please enter a valid year!" id="titleProductionYear" validate={{
+                                            <Label for="titleReleaseYear">Release Year{!this.state.isReleaseYearRequired ? null : <span style={{ color: 'red' }}>*</span>}</Label>
+                                            <AvField name="releaseYear" errorMessage="Please enter a valid year!" id="titleReleaseYear" validate={{
                                                 required: { value: this.state.isReleaseYearRequired, errorMessage: 'Field cannot be empty!' },
                                                 pattern: { value: '^[0-9]+$' },
                                                 minLength: { value: 4 },
                                                 maxLength: { value: 4 }
-                                            }} placeholder="Enter Release Year" value={this.state.titleForm.productionYear} onChange={this.handleChange} />
+                                            }} placeholder="Enter Release Year" value={this.state.titleForm.releaseYear} onChange={this.handleChange} />
                                         </Col>
                                         <Col>
                                             <Label for="titleBoxOffice">Box Office</Label>

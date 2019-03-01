@@ -7,7 +7,7 @@ class TitleReadOnlyMode extends Component {
         super(props);
     }
     renderFields = (contentType) => {
-        const { title, productionStudioId, productionYear, boxOffice } = this.props.data;
+        const { title, productionStudioId, releaseYear, boxOffice } = this.props.data;
         return (
             <Fragment>
                 <Container fluid id="titleContainer">
@@ -30,7 +30,7 @@ class TitleReadOnlyMode extends Component {
                                 </Col>
                             </Row>
                             {
-                                this.props.data.episodic.seasonNumber || this.props.data.episodic.episodeNumber || this.props.data.episodic.episodeCount || this.props.data.episodic.seasonId || this.props.data.episodic.episodeId ?
+                                this.props.data.episodic !== null  ?
                                     contentType !== 'MOVIE' && contentType !== 'BRAND' ?
                                         <Fragment>
                                             <Row>
@@ -67,7 +67,7 @@ class TitleReadOnlyMode extends Component {
                             }
                             <Row>
                                 <Col>
-                                    <Alert color="light" id="titleProductionYear"><b>Release Year: </b>{productionYear ? productionYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                    <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                                 <Col>
                                     <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{ color: '#999' }}>Empty</span>}</Alert>

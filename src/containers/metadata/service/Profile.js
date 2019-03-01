@@ -11,8 +11,8 @@ export const titleMapping = {
             fullTextSearch: 'true'
         },
         {
-            displayName: 'Production Year',
-            javaVariableName: 'productionYear',
+            displayName: 'Release Year',
+            javaVariableName: 'releaseYear',
             fullTextSearch: 'true'
         }
     ]
