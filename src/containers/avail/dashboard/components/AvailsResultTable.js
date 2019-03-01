@@ -122,11 +122,9 @@ class AvailsResultTable extends React.Component {
     componentDidUpdate(prevProps) {
         if(this.props.columnsOrder != prevProps.columnsOrder) {
             this.refreshColumns();
-            for(let i=0; i< Math.min(this.props.columnsOrder.length, prevProps.columnsOrder.length); i++){
-                this.table.columnApi.moveColumn(this.props.columnsOrder[i], i+1);
-            }
-
-            this.setState({});
+            setTimeout(()=>{
+                this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
+            },1);
         }
 
         this.refreshSort();
@@ -342,7 +340,7 @@ class AvailsResultTable extends React.Component {
                     newCols.push(colDef[acc]);
                 }
             });
-            this.cols = newCols;
+            this.setState({ cols: newCols});
         }
     }
 
@@ -416,7 +414,7 @@ class AvailsResultTable extends React.Component {
                     getRowNodeId= {data => data.id}
 
                     defaultColDef = {this.state.defaultColDef}
-                    columnDefs= {this.cols}
+                    columnDefs= {this.state.cols}
                     suppressDragLeaveHidesColumns= {true}
                     enableColResize= {true}
                     onDragStopped = {this.onColumnReordered}
