@@ -29,7 +29,7 @@ const initialState = {
         titleTabPageSort: [],
         searchCriteria: {},
         reportName: '',
-        columns: ['title', 'contentType', 'productionYear'],
+        columns: ['title', 'contentType', 'releaseYear'],
         columnsSize: {}
     },
     territories: [],
