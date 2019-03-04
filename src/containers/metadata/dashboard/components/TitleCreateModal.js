@@ -110,7 +110,9 @@ class TitleCreate extends React.Component {
                 boxOffice: this.state.titleForm.boxOffice ? parseInt(this.state.titleForm.boxOffice) : ''
             }
         });
-        titleService.createTitle(this.state.titleForm).then(() => {
+
+        let title = this.getTitleWithoutEmptyField();
+        titleService.createTitle(title).then(() => {
             this.form && this.form.reset();
             this.cleanFields();
             this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false });
@@ -123,6 +125,38 @@ class TitleCreate extends React.Component {
         });
 
     }
+
+    getTitleWithoutEmptyField() {
+        let title = {};
+        for(let titleField in this.state.titleForm) {
+            if(titleField === 'episodic') {
+                title[titleField] = this.getEpisodicWithoutEmptyFields();
+            }
+            else if(this.state.titleForm[titleField]) {
+                title[titleField] = this.state.titleForm[titleField];
+            } else {
+                title[titleField] = null;
+            }
+        }
+
+        return title;
+    }
+
+    getEpisodicWithoutEmptyFields() {
+        let episodic = {};
+        let doAddEpisodic = false;
+        for(let episodicField in this.state.titleForm.episodic) {
+            if(this.state.titleForm.episodic[episodicField]) {
+                episodic[episodicField] = this.state.titleForm.episodic[episodicField];
+                doAddEpisodic = true;
+            } else {
+                episodic[episodicField] = null;
+            }
+        }
+
+        return doAddEpisodic ? episodic : null;
+    }
+
     cleanFields = () => {
         this.setState({
             titleForm: {
