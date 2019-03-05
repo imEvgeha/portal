@@ -179,7 +179,8 @@ class AvailDetails extends React.Component {
                             }
                         }
 
-                        if(stillInvalid) return <small>{'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value'}</small>;
+                        const fields = this.state.resolutionValidation.fields.map((value) => this.props.availsMapping.mappings.find(mapping => mapping.javaVariableName === value).displayName);
+                        if(stillInvalid) return <small>{'At least one of the ' + fields.join(', ') + ' needs to have correct value'}</small>;
                         else return '';
                     }
                 }
