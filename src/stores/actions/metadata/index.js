@@ -17,7 +17,8 @@ import {
     METADATA_TITLE_SET_REPORT_NAME,
     METADATA_TITLE_UPDATE_BREADCRUMB,
     METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
-    TERRITORY_METADATA_ADD
+    TERRITORY_METADATA_ADD,
+    TERRITORY_METADATA_LOAD_BY_ID
 } from '../../../constants/action-types';
 
 
@@ -45,4 +46,5 @@ export const updateBreadcrumb = payload => ({type: METADATA_TITLE_UPDATE_BREADCR
 export const resultPageUpdateColumnsOrder = results => ({ type: METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER, payload: results });
 
 export const addTerritoryMetadata = results => ({ type: TERRITORY_METADATA_ADD, payload: results });
+export const getTerritoryMetadataById = results => ({ type: TERRITORY_METADATA_LOAD_BY_ID, payload: results });
 

@@ -38,7 +38,7 @@ class TerritoryMetadataEditMode extends Component {
                                <AvField type="date" id="territoryTheatricalReleaseDate"
                                         name="theatricalReleaseDate"
                                         value={this.getValidDate(this.props.data.theatricalReleaseDate)}
-                                        onChange={this.props.handleChange}
+                                        onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         validate={{
                                             date: { format: DATE_FORMAT, errorMessage: 'Please enter a valid date!' },
                                         }}
@@ -54,7 +54,7 @@ class TerritoryMetadataEditMode extends Component {
                                <AvField type="date" id="territoryHomeVideoReleaseDate"
                                         name="homeVideoReleaseDate"
                                         value={this.getValidDate(this.props.data.homeVideoReleaseDate)}
-                                        onChange={this.props.handleChange}
+                                        onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         errorMessage="Please enter a valid date!" />
                            </Col>
                        </Row>
@@ -66,7 +66,7 @@ class TerritoryMetadataEditMode extends Component {
                                <AvField type="date" id="territoryAvailAnnounceDate"
                                         name="availAnnounceDate"
                                         value={this.getValidDate(this.props.data.availAnnounceDate)}
-                                        onChange={this.props.handleChange}
+                                        onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         errorMessage="Please enter a valid date!" />
                            </Col>
                        </Row>
@@ -75,7 +75,7 @@ class TerritoryMetadataEditMode extends Component {
                                <b>Box Office</b>
                            </Col>
                            <Col md={2}>
-                               <AvField type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} required={this.props.isLocalRequired} placeholder="Enter Box Office" onChange={this.props.handleChange}
+                               <AvField type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} required={this.props.isLocalRequired} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                         }} />
@@ -86,7 +86,7 @@ class TerritoryMetadataEditMode extends Component {
                                <b>Release Year</b>
                            </Col>
                            <Col md={2}>
-                               <AvField name="releaseYear" type="number" value={this.props.data.releaseYear} required={this.props.isLocalRequired} placeholder="Enter Release Year" onChange={this.props.handleChange}
+                               <AvField name="releaseYear" type="number" value={this.props.data.releaseYear} required={this.props.isLocalRequired} placeholder="Enter Release Year" onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
                                             maxLength: { value: 4 }, minLength: { value: 4 }

@@ -21,6 +21,7 @@ const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
 
+
 class TitleEdit extends Component {
     constructor(props) {
         super(props);
@@ -31,14 +32,10 @@ class TitleEdit extends Component {
             isLocalRequired: false,
             titleForm: {},
             editedForm: {},
-            territories: {
-                parentId: this.props.match.params.id,
-                type: 'territoryMetadata'
-            },
-            editedTerritories: {
-                parentId: this.props.match.params.id,
-                type: 'territoryMetadata'
-            }
+            territories: {},
+            territory: [],
+            updatedTerritories: [],
+
         };
     }
     componentDidMount() {
@@ -52,6 +49,17 @@ class TitleEdit extends Component {
             errorModal.open('Error', () => { }, { description: err.message, closable: true });
             console.error('Unable to load Title Data');
         });
+        titleService.getTerritoryMetadataById(titleId).then((response) => {
+            const territory = response.data;
+            this.setState({
+                territory: territory
+            });
+        }).catch((err) => {
+            errorModal.open('Error', () => { }, { description: err.message, closable: true });
+            console.error('Unable to load Title Data');
+        });
+
+
     }
 
     componentWillUnmount() {
@@ -160,12 +168,33 @@ class TitleEdit extends Component {
                 errorModal.open('Error', () => { }, { description: err.message, closable: true });
                 console.error('Unable to load Title Data');
             });
+
         } else {
             this.setState({
                 isEditMode: !this.state.isEditMode,
                 activeTab: CURRENT_TAB
             });
         }
+
+        this.state.updatedTerritories.forEach(t => {
+            const dataFormated = {
+                ...t,
+                theatricalReleaseDate: t.theatricalReleaseDate ? moment(t.theatricalReleaseDate).format(DATE_FORMAT) : null,
+                homeVideoReleaseDate: t.homeVideoReleaseDate ? moment(t.homeVideoReleaseDate).format(DATE_FORMAT) : null,
+                availAnnounceDate: t.availAnnounceDate ? moment(t.availAnnounceDate).format(DATE_FORMAT) : null,
+            };
+            titleService.updateTerritoryMetadata(dataFormated).then((response) => {
+                let list = [].concat(this.state.territory);
+                let foundIndex = list.findIndex(x => x.id == response.data.id);
+                list[foundIndex] = response.data;
+                this.setState({
+                    territory: list
+                });
+            }).catch((err) => {
+                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+                console.error('Unable to edit Title Data');
+            });
+        });
 
         if (this.state.territories.locale) {
             const newTerritory = {
@@ -178,6 +207,7 @@ class TitleEdit extends Component {
             titleService.addMetadata(newTerritory).then(() => {
                 this.addMetadata(newTerritory);
                 this.setState({
+                    territory: [newTerritory, ...this.state.territory],
                     activeTab: CURRENT_TAB
                 });
             }).catch((err) => {
@@ -189,20 +219,23 @@ class TitleEdit extends Component {
         }
     }
 
-    readOnly = () => {
-        return <TitleReadOnlyMode data={this.state.titleForm} />;
-    };
-
-    editMode = () => {
-        return <TitleEditMode
-            handleChangeEpisodic={this.handleChangeEpisodic}
-            handleChangeBrandProdYear={this.handleChangeBrandProdYear}
-            handleChangeBrand={this.handleChangeBrand}
-            keyPressed={this.handleKeyDown}
-            data={this.state.titleForm}
-            episodic={this.state.titleForm.episodic}
-            handleOnChangeEdit={this.handleOnChangeEdit} />;
-    };
+    handleEditChange = (e, data) => {
+        let edited = this.state.updatedTerritories.find(e => e.id === data.id);
+        if (edited) {
+            edited[e.target.name] = e.target.value;
+            let newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
+            newOne.push(edited);
+            this.setState({
+                updatedTerritories: newOne
+            });
+        } else {
+            edited = Object.assign({}, data);
+            edited[e.target.name] = e.target.value;
+            this.setState({
+                updatedTerritories: [edited, ...this.state.updatedTerritories]
+            });
+        }
+    }
 
     handleChange = (e) => {
         this.setState({
@@ -212,14 +245,6 @@ class TitleEdit extends Component {
             }
         });
     }
-    // handleEditTerritory = (e) => {
-    //     this.setState({
-    //         editedTerritories: {
-    //             ...this.state.editedTerritories,
-    //             [e.target.name]: e.target.value
-    //         }
-    //     });
-    // }
     addMetadata = (newTerritory) => {
         this.props.addTerritoryMetadata(newTerritory);
         this.form && this.form.reset();
@@ -255,7 +280,23 @@ class TitleEdit extends Component {
         this.setState({
             activeTab: CURRENT_TAB
         });
-    }
+    }    
+
+    readOnly = () => {
+        return <TitleReadOnlyMode data={this.state.titleForm} />;
+    };
+
+    editMode = () => {
+        return <TitleEditMode
+            handleChangeEpisodic={this.handleChangeEpisodic}
+            handleChangeBrandProdYear={this.handleChangeBrandProdYear}
+            handleChangeBrand={this.handleChangeBrand}
+            keyPressed={this.handleKeyDown}
+            data={this.state.titleForm}
+            episodic={this.state.titleForm.episodic}
+            handleOnChangeEdit={this.handleOnChangeEdit} />;
+    };
+
     render() {
         return (
             <EditPage>
@@ -281,15 +322,18 @@ class TitleEdit extends Component {
                     {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
-                    <TerritoryMetadata isLocalRequired={this.state.isLocalRequired}
-                                       validSubmit={this.handleOnSave}
+                    <TerritoryMetadata
+                        isLocalRequired={this.state.isLocalRequired}
+                        validSubmit={this.handleOnSave}
                         toggle={this.toggle}
                         activeTab={this.state.activeTab}
                         addTerritoryMetadata={this.addTerritoryMetadata}
                         CREATE_TAB={CREATE_TAB}
                         handleSubmit={this.handleSubmit}
                         territories={this.state.territories}
+                        territory={this.state.territory}
                         handleChange={this.handleChange}
+                        handleEditChange={this.handleEditChange}
                         isEditMode={this.state.isEditMode} />
                 </AvForm>
             </EditPage>
@@ -307,8 +351,7 @@ let mapDispatchToProps = {
 
 TitleEdit.propTypes = {
     match: t.object.isRequired,
-    addTerritoryMetadata: t.func,
-    territories: t.array
+    addTerritoryMetadata: t.func
 };
 
 export default connect(null, mapDispatchToProps)(TitleEdit);
