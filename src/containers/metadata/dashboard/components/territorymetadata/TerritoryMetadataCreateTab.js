@@ -8,9 +8,7 @@ class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            territories: {
-                releaseYear: ''
-            },
+            territories: [],
             activeTab: 0
 
         };

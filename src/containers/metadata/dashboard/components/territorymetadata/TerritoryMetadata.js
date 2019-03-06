@@ -7,8 +7,6 @@ import TerritoryMetadataTab from './TerritoryMetadataTab';
 import TerritoryMetadataCreateTab from './TerritoryMetadataCreateTab';
 import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 
-import connect from 'react-redux/es/connect/connect';
-
 
 class TerritoryMetadata extends Component {
     constructor(props) {
@@ -30,15 +28,15 @@ class TerritoryMetadata extends Component {
                             : null
                     }
                     {
-                        this.props.territories && this.props.territories.map((item, i) => {
+                        this.props.territory && this.props.territory.map((item, i) => {
                             return <span className={'tablinks'} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale}</b></span>;
                         })
                     }
                 </div>
                 <TabContent activeTab={this.props.activeTab}>
                     {
-                        this.props.territories.length > 0 ?
-                            !this.props.isEditMode && this.props.territories.map((item, i) => {
+                        this.props.territory && this.props.territory.length > 0 ?
+                            !this.props.isEditMode && this.props.territory.map((item, i) => {
                                 return (
                                     <TabPane key={i} tabId={i}>
                                         <Row>
@@ -68,12 +66,12 @@ class TerritoryMetadata extends Component {
                                     </Row>
                                 </TabPane>
                                 {
-                                    this.props.territories && this.props.territories.map((item, i) => {
+                                    this.props.territory && this.props.territory.map((item, i) => {
                                         return (
                                             <TabPane key={i} tabId={i}>
                                                 <Row>
                                                     <Col>
-                                                        <TerritoryMetadataEditMode validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} key={i} data={item} />
+                                                        <TerritoryMetadataEditMode validSubmit={this.props.validSubmit} handleChange={this.props.handleEditChange} key={i} data={item} />
                                                     </Col>
                                                 </Row>
                                             </TabPane>);
@@ -90,22 +88,17 @@ class TerritoryMetadata extends Component {
 
 TerritoryMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
-    territories: PropTypes.array,
+    territory: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     isLocalRequired: PropTypes.bool,
     toggle: PropTypes.func,
     addTerritoryMetadata: PropTypes.func,
     CREATE_TAB: PropTypes.string,
-    validSubmit: PropTypes.func.isRequired
-};
-
-const mapStateToProps = state => {
-    return {
-        territories: state.titleReducer.territories,
-    };
+    validSubmit: PropTypes.func.isRequired,
+    handleEditChange: PropTypes.func
 };
 
 
 
-export default connect(mapStateToProps)(TerritoryMetadata);
+export default TerritoryMetadata;

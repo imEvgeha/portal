@@ -9,12 +9,7 @@ class TitleEditMode extends Component {
 
         this.state = {
             loading: false,
-            seasonChecked: false,
-            episodeChecked: false,
-            brandChecked: false,
             isBrandCompleted: false,
-
-            checkContentType: '',
         };
     }
     render() {

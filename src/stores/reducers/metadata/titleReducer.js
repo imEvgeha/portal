@@ -3,7 +3,8 @@ import {
     METADATA_TITLE_RESULT_PAGE__UPDATE,
     METADATA_TITLE_RESULT_PAGE__LOADING,
     METADATA_TITLE_LOAD_SESSION,
-    TERRITORY_METADATA_ADD
+    TERRITORY_METADATA_ADD,
+    TERRITORY_METADATA_LOAD_BY_ID
 } from '../../../constants/action-types';
 
 const initialState = {
@@ -48,6 +49,8 @@ const metadata = (state = initialState, action) => {
             return { ...state, freeTextSearch: { ...state.freeTextSearch, ...action.payload } };
         case METADATA_TITLE_RESULT_PAGE__LOADING:
             return { ...state, titleTabPageLoading: action.payload };
+        case TERRITORY_METADATA_LOAD_BY_ID:
+            return { ...state, territories: [...state.territories, action.payload] };
         case TERRITORY_METADATA_ADD:
             return { ...state, territories: [...state.territories, action.payload] };
         default:
