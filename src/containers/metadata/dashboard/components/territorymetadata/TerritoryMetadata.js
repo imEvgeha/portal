@@ -7,8 +7,6 @@ import TerritoryMetadataTab from './TerritoryMetadataTab';
 import TerritoryMetadataCreateTab from './TerritoryMetadataCreateTab';
 import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 
-import connect from 'react-redux/es/connect/connect';
-
 
 class TerritoryMetadata extends Component {
     constructor(props) {

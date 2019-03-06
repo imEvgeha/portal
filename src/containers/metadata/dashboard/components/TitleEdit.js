@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH } from '../../../../constants/metadata-breadcrumb-paths';
 import './TitleEdit.scss';
@@ -11,9 +10,6 @@ import { titleService } from '../../service/TitleService';
 import { errorModal } from '../../../../components/modal/ErrorModal';
 import { Button, Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
-import {
-    addTerritoryMetadata,
-} from '../../../../stores/actions/metadata/index';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 
@@ -204,10 +200,10 @@ class TitleEdit extends Component {
                 availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format(DATE_FORMAT) : null,
                 parentId: this.props.match.params.id
             };
-            titleService.addMetadata(newTerritory).then(() => {
-                this.addMetadata(newTerritory);
+            titleService.addMetadata(newTerritory).then((response) => {             
+                this.cleanTerritoryMetada();
                 this.setState({
-                    territory: [newTerritory, ...this.state.territory],
+                    territory: [response.data, ...this.state.territory],
                     activeTab: CURRENT_TAB
                 });
             }).catch((err) => {
@@ -245,12 +241,8 @@ class TitleEdit extends Component {
             }
         });
     }
-    addMetadata = (newTerritory) => {
-        this.props.addTerritoryMetadata(newTerritory);
+    cleanTerritoryMetada = () => {        
         this.form && this.form.reset();
-        this.cleanTerritoryMetada();
-    }
-    cleanTerritoryMetada = () => {
         this.setState({
             territories: {
                 locale: null,
@@ -342,16 +334,11 @@ class TitleEdit extends Component {
 }
 
 
-let mapDispatchToProps = {
-    addTerritoryMetadata
-};
-
 
 
 
 TitleEdit.propTypes = {
-    match: t.object.isRequired,
-    addTerritoryMetadata: t.func
+    match: t.object.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(TitleEdit);
+export default TitleEdit;
