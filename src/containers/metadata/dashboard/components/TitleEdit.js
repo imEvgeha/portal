@@ -204,7 +204,8 @@ class TitleEdit extends Component {
                 this.cleanTerritoryMetada();
                 this.setState({
                     territory: [response.data, ...this.state.territory],
-                    activeTab: CURRENT_TAB
+                    activeTab: CURRENT_TAB,
+                    isLocalRequired: false
                 });
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });

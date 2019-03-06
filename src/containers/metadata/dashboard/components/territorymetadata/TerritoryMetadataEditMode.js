@@ -75,7 +75,7 @@ class TerritoryMetadataEditMode extends Component {
                                <b>Box Office</b>
                            </Col>
                            <Col md={2}>
-                               <AvField type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} required={this.props.isLocalRequired} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
+                               <AvField type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice}  placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                         }} />
@@ -86,7 +86,7 @@ class TerritoryMetadataEditMode extends Component {
                                <b>Release Year</b>
                            </Col>
                            <Col md={2}>
-                               <AvField name="releaseYear" type="number" value={this.props.data.releaseYear} required={this.props.isLocalRequired} placeholder="Enter Release Year" onChange={(e) => this.props.handleChange(e, this.props.data)}
+                               <AvField name="releaseYear" type="number" value={this.props.data.releaseYear} placeholder="Enter Release Year" onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
                                             maxLength: { value: 4 }, minLength: { value: 4 }
@@ -103,7 +103,6 @@ class TerritoryMetadataEditMode extends Component {
 TerritoryMetadataEditMode.propTypes = {
     data: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
-    isLocalRequired: PropTypes.bool,
     validSubmit: PropTypes.func.isRequired,
 };
 
