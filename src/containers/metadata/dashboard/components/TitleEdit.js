@@ -167,7 +167,7 @@ class TitleEdit extends Component {
                 availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format(DATE_FORMAT) : null,
                 parentId: this.props.match.params.id
             };
-            titleService.addMetadata(newTerritory).then((response) => {             
+            titleService.addMetadata(newTerritory).then((response) => {
                 this.cleanTerritoryMetada();
                 this.setState({
                     territory: [response.data, ...this.state.territory],
@@ -209,7 +209,7 @@ class TitleEdit extends Component {
             }
         });
     }
-    cleanTerritoryMetada = () => {        
+    cleanTerritoryMetada = () => {
         this.form && this.form.reset();
         this.setState({
             territories: {
@@ -240,7 +240,7 @@ class TitleEdit extends Component {
         this.setState({
             activeTab: CURRENT_TAB
         });
-    }    
+    }
 
     readOnly = () => {
         return <TitleReadOnlyMode data={this.state.titleForm} />;
@@ -289,7 +289,6 @@ class TitleEdit extends Component {
                         addTerritoryMetadata={this.addTerritoryMetadata}
                         CREATE_TAB={CREATE_TAB}
                         handleSubmit={this.handleSubmit}
-                        territories={this.state.territories}
                         territory={this.state.territory}
                         handleChange={this.handleChange}
                         handleEditChange={this.handleEditChange}
