@@ -22,7 +22,7 @@ class AvailHistoryRecordRenderer extends React.Component {
 
         let filename = 'Unknown';
         if(attachment.link) {
-            attachment.link.split(/(\\|\/)/g).pop();
+            filename = attachment.link.split(/(\\|\/)/g).pop();
         }
 
         historyService.getAvailHistoryAttachment(attachment.id)
