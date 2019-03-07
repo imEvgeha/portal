@@ -18,7 +18,12 @@ class AvailHistoryRecordRenderer extends React.Component {
     }
 
     getDownloadLink(attachment){
-        const filename = attachment.link.split(/(\\|\/)/g).pop();
+        if(!attachment.id) return;
+
+        let filename = 'Unknown';
+        if(attachment.link) {
+            attachment.link.split(/(\\|\/)/g).pop();
+        }
 
         historyService.getAvailHistoryAttachment(attachment.id)
         .then(response => {
@@ -48,7 +53,10 @@ class AvailHistoryRecordRenderer extends React.Component {
                     email = attachment;
                     return '';
                 }else{
-                    let filename = attachment.link.split(/(\\|\/)/g).pop();
+                    let filename = 'Unknown';
+                    if(attachment.link) {
+                        filename = attachment.link.split(/(\\|\/)/g).pop();
+                    }
                     if(!firstName) firstName = filename;
 
                     return (
