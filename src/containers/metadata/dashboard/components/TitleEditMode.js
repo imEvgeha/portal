@@ -9,7 +9,7 @@ class TitleEditMode extends Component {
 
         this.state = {
             loading: false,
-            isBrandCompleted: false,
+            isSeriesCompleted: false,
         };
     }
     render() {
@@ -42,13 +42,13 @@ class TitleEditMode extends Component {
                                 </Col>
                             </Row>
                             {
-                                contentType !== 'MOVIE' && contentType !== 'BRAND' ?
+                                contentType !== 'MOVIE' && contentType !== 'SERIES' ?
                                     <Fragment>
                                         <Row>
                                             <Col>
-                                                <Label for="titleBrandName">Brand</Label>
-                                                <AvField type="text" name="brandTitleName" id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
-                                                    onChange={this.props.handleChangeBrand} required={this.state.isBrandCompleted}
+                                                <Label for="titleSeriesName">Series</Label>
+                                                <AvField type="text" name="seriesTitleName" id="titleSeriesName" placeholder={'Enter Series Name'} errorMessage="Field cannot be empty!"
+                                                    onChange={this.props.handleChangeSeries} required={this.state.isSeriesCompleted}
                                                 />
                                             </Col>
                                         </Row>
@@ -183,7 +183,7 @@ TitleEditMode.propTypes = {
     keyPressed: PropTypes.func,
     data: PropTypes.object,
     handleOnChangeEdit: PropTypes.func.isRequired,
-    handleChangeBrand: PropTypes.func.isRequired,
+    handleChangeSeries: PropTypes.func.isRequired,
     handleChangeEpisodic: PropTypes.func.isRequired
 };
 

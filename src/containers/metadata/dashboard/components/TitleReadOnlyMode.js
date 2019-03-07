@@ -31,7 +31,7 @@ class TitleReadOnlyMode extends Component {
                             </Row>
                             {
                                 this.props.data.episodic !== null  ?
-                                    contentType !== 'MOVIE' && contentType !== 'BRAND' ?
+                                    contentType !== 'MOVIE' && contentType !== 'SERIES' ?
                                         <Fragment>
                                             <Row>
                                                 <Col md={6}>
