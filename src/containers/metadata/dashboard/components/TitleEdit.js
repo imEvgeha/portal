@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import t from 'prop-types';
-import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH } from '../../../../constants/metadata-breadcrumb-paths';
+import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -315,6 +315,7 @@ class TitleEdit extends Component {
                     {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
+
                     <TerritoryMetadata
                         isLocalRequired={this.state.isLocalRequired}
                         validSubmit={this.handleOnSave}

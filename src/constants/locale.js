@@ -1,3 +1,4 @@
+//ISO 3166-1 alpha 2 country codes
 export const locale = [
     { localeCode: 'AF', countryName: 'Afghanistan' },
     { localeCode: 'AL', countryName: 'Albania' },
