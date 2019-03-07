@@ -14,6 +14,7 @@ class TitleEditMode extends Component {
     }
     render() {
         const { title, contentType, productionStudioId, releaseYear, boxOffice } = this.props.data;
+        console.log(this.props.data);
         return (
             <Fragment>
                 <Container fluid id="titleContainer" onKeyDown={this.props.keyPressed}>
@@ -60,7 +61,7 @@ class TitleEditMode extends Component {
                                                         type="number"
                                                         name="seasonNumber"
                                                         errorMessage="Please enter a valid season number!"
-                                                        value={this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : ''}
+                                                        value={this.props.data.episodic !== null && this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : ''}
                                                         id="titleSeasonNumber"
                                                         placeholder={'Enter Season Number'}
                                                         onChange={(e) => this.props.handleChangeEpisodic(e)}
@@ -80,7 +81,7 @@ class TitleEditMode extends Component {
                                                                     type="number"
                                                                     name="episodeNumber"
                                                                     errorMessage="Please enter a valid episode number!"
-                                                                    value={this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : ''}
+                                                                    value={this.props.data.episodic !== null && this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : ''}
                                                                     id="titleEpisodeNumber"
                                                                     placeholder={'Enter Episode Number'}
                                                                     onChange={(e) => this.props.handleChangeEpisodic(e)}
@@ -96,7 +97,7 @@ class TitleEditMode extends Component {
                                                                 <AvField
                                                                     type="text"
                                                                     name="episodeCount"
-                                                                    value={this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}
+                                                                    value={this.props.data.episodic !== null && this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}
                                                                     id="titleEpisodeCount"
                                                                     placeholder={'Enter Episode Count'}
                                                                     onChange={(e) => this.props.handleChangeEpisodic(e)} />
@@ -113,7 +114,7 @@ class TitleEditMode extends Component {
                                                         <AvField
                                                             type="text"
                                                             name="seasonId"
-                                                            value={this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : ''}
+                                                            value={this.props.data.episodic !== null && this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : ''}
                                                             id="titleSeasonID" placeholder={'Enter Season ID'}
                                                             onChange={(e) => this.props.handleChangeEpisodic(e)} />
                                                     </Col>
@@ -123,7 +124,7 @@ class TitleEditMode extends Component {
                                                         <AvField
                                                             type="text"
                                                             name="episodeId"
-                                                            value={this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : ''}
+                                                            value={this.props.data.episodic !== null && this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : ''}
                                                             id="titleEpisodeID"
                                                             placeholder={'Enter Episode ID'}
                                                             onChange={(e) => this.props.handleChangeEpisodic(e)} />
