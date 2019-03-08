@@ -345,8 +345,8 @@ class TitleResultTable extends React.Component {
         const content = params.valueFormatted || params.value || error;
         if (params.value !== undefined) {
             if (content) {
-                return (                    
-                    <Link to={'metadata/detail/'+params.data.id}>
+                return (
+                    <Link to={'metadata/detail/' + params.data.id}>
                         <div
                             title={error}
                             style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}>
@@ -372,7 +372,7 @@ class TitleResultTable extends React.Component {
             });
         }
         if (params.colDef.headerName !== '' && error) {
-            return { backgroundColor: '#f2dede'};
+            return { backgroundColor: '#f2dede' };
         } else {
             return null;
         }

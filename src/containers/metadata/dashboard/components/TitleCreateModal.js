@@ -17,10 +17,9 @@ class TitleCreate extends React.Component {
             loading: false,
             seasonChecked: true,
             episodeChecked: true,
-            brandChecked: true,
+            seriesChecked: true,
 
-            isBrandCompleted: false,
-            isBrandYearCompleted: false,
+            isSeriesCompleted: false,
             isReleaseYearRequired: true,
             isSeasonNumberRequired: false,
             isEpisodeNumberRequired: false,
@@ -32,7 +31,7 @@ class TitleCreate extends React.Component {
                 productionStudioId: '',
                 boxOffice: '',
                 episodic: {
-                    brandTitleName: '',
+                    seriesTitleName: '',
                     episodeId: '',
                     episodeNumber: '',
                     episodeCount: '',
@@ -50,10 +49,9 @@ class TitleCreate extends React.Component {
             errorMessage: '',
             seasonChecked: true,
             episodeChecked: true,
-            brandChecked: true,
+            seriesChecked: true,
             isReleaseYearRequired: true,
-            isBrandCompleted: false,
-            isBrandYearCompleted: false,
+            isSeriesCompleted: false,
         });
     }
     handleChange = (e) => {
@@ -91,13 +89,11 @@ class TitleCreate extends React.Component {
         });
         if (e.target.value.length !== 0) {
             this.setState({
-                isBrandYearCompleted: true,
-                isBrandCompleted: true
+                isSeriesCompleted: true
             });
         } else {
             this.setState({
-                isBrandYearCompleted: false,
-                isBrandCompleted: false
+                isSeriesCompleted: false
             });
         }
     }
@@ -166,7 +162,7 @@ class TitleCreate extends React.Component {
                 productionStudioId: '',
                 boxOffice: '',
                 episodic: {
-                    brandTitleName: '',
+                    seriesTitleName: '',
                     episodeId: '',
                     episodeNumber: '',
                     episodeCount: '',
@@ -176,19 +172,18 @@ class TitleCreate extends React.Component {
             },
             seasonChecked: true,
             episodeChecked: true,
-            brandChecked: true,
+            seriesChecked: true,
             loading: false,
             isFailed: false,
             isReleaseYearRequired: true,
-            isBrandCompleted: false,
-            isBrandYearCompleted: false,
+            isSeriesCompleted: false,
             isEpisodeNumberRequired: false,
         });
     }
-    handleChangeBrand = (e) => {
+    handleChangeSeries = (e) => {
         const newEpisodic = {
             ...this.state.titleForm.episodic,
-            brandTitleName: e.target.value
+            seriesTitleName: e.target.value
         };
         this.setState({
             titleForm: {
@@ -198,12 +193,10 @@ class TitleCreate extends React.Component {
         });
         if (e.target.value.length !== 0) {
             this.setState({
-                isBrandYearCompleted: true,
                 isSeasonNumberRequired: true,
             });
         } else {
             this.setState({
-                isBrandYearCompleted: false,
                 isSeasonNumberRequired: false
             });
         }
@@ -213,10 +206,9 @@ class TitleCreate extends React.Component {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: true,
-                brandChecked: false,
+                seriesChecked: false,
                 isReleaseYearRequired: false,
-                isBrandCompleted: true,
-                isBrandYearCompleted: true,
+                isSeriesCompleted: true,
                 isSeasonNumberRequired: true,
                 titleForm: {
                     ...this.state.titleForm,
@@ -233,10 +225,9 @@ class TitleCreate extends React.Component {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
-                brandChecked: false,
+                seriesChecked: false,
                 isReleaseYearRequired: true,
-                isBrandCompleted: true,
-                isBrandYearCompleted: true,
+                isSeriesCompleted: true,
                 isEpisodeNumberRequired: true,
                 isSeasonNumberRequired: true,
                 titleForm: {
@@ -244,11 +235,11 @@ class TitleCreate extends React.Component {
                     contentType: e.target.value
                 }
             });
-        } else if (e.target.value === 'Brand') {
+        } else if (e.target.value === 'Series') {
             this.setState({
                 seasonChecked: true,
                 episodeChecked: true,
-                brandChecked: true,
+                seriesChecked: true,
                 isReleaseYearRequired: false,
                 titleForm: {
                     ...this.state.titleForm,
@@ -268,7 +259,7 @@ class TitleCreate extends React.Component {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
-                brandChecked: false,
+                seriesChecked: false,
                 isReleaseYearRequired: true,
                 isEpisodeNumberRequired: false,
                 isSeasonNumberRequired: false,
@@ -281,15 +272,14 @@ class TitleCreate extends React.Component {
             this.setState({
                 seasonChecked: true,
                 episodeChecked: true,
-                brandChecked: true,
+                seriesChecked: true,
                 isReleaseYearRequired: true,
-                isBrandCompleted: true,
-                isBrandYearCompleted: true,
+                isSeriesCompleted: true,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
                     episodic: {
-                        brandTitleName: '',
+                        seriesTitleName: '',
                         episodeId: '',
                         episodeNumber: '',
                         episodeCount: '',
@@ -333,7 +323,7 @@ class TitleCreate extends React.Component {
                                                 errorMessage="Field cannot be empty!">
                                                 <option value={''}>Select Content Type</option>
                                                 <option value="Movie">Movie</option>
-                                                <option value="Brand">Brand</option>
+                                                <option value="Series">Series</option>
                                                 <option value="Episode">Episode</option>
                                                 <option value="Season">Season</option>
                                                 <option value="Event">Event</option>
@@ -346,12 +336,12 @@ class TitleCreate extends React.Component {
                                         </Col>
                                     </Row>
                                     {
-                                        !this.state.brandChecked ?
+                                        !this.state.seriesChecked ?
                                             <Row>
                                                 <Col>
-                                                    <Label for="titleBrandName">Brand {this.state.isBrandYearCompleted || this.state.isBrandCompleted ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                                    <AvField type="text" name="brandTitleName" disabled={this.state.brandChecked} value={this.state.titleForm.episodic.brandTitleName} id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
-                                                        onChange={this.handleChangeBrand} required={this.state.isBrandCompleted}
+                                                    <Label for="titleSeriesName">Series {this.state.isSeriesCompleted ? <span style={{ color: 'red' }}>*</span> : null}</Label>
+                                                    <AvField type="text" name="seriesTitleName" disabled={this.state.seriesChecked} value={this.state.titleForm.episodic.seriesTitleName} id="titleSeriesName" placeholder={'Enter Series Name'} errorMessage="Field cannot be empty!"
+                                                        onChange={this.handleChangeSeries} required={this.state.isSeriesCompleted}
                                                     />
                                                 </Col>
                                             </Row>
