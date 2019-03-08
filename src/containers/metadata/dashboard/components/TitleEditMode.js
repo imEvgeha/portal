@@ -9,7 +9,7 @@ class TitleEditMode extends Component {
 
         this.state = {
             loading: false,
-            isBrandCompleted: false,
+            isSeriesCompleted: false,
         };
     }
     render() {
@@ -42,94 +42,100 @@ class TitleEditMode extends Component {
                                 </Col>
                             </Row>
                             {
-                                contentType !== 'MOVIE' && contentType !== 'BRAND' ?
+                                contentType !== 'MOVIE' && contentType !== 'SERIES' ?
                                     <Fragment>
-                                        <Row>
-                                            <Col>
-                                                <Label for="titleBrandName">Brand</Label>
-                                                <AvField type="text" name="brandTitleName" id="titleBrandName" placeholder={'Enter Brand Name'} errorMessage="Field cannot be empty!"
-                                                    onChange={this.props.handleChangeBrand} required={this.state.isBrandCompleted}
-                                                />
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col md={6}>
-                                                <FormGroup>
-                                                    <Label for="titleSeasonNumber">Season</Label>
-                                                    <AvField
-                                                        type="number"
-                                                        name="seasonNumber"
-                                                        errorMessage="Please enter a valid season number!"
-                                                        value={this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : ''}
-                                                        id="titleSeasonNumber"
-                                                        placeholder={'Enter Season Number'}
-                                                        onChange={(e) => this.props.handleChangeEpisodic(e)}
-                                                        validate={{
-                                                            maxLength: { value: 3 }
-                                                        }}
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                            <React.Fragment>
-                                                {
-                                                    contentType !== 'SEASON' ?
+                                        {
+                                            this.props.data.episodic !== null ?
+                                                <Fragment>
+                                                    <Row>
+                                                        <Col>
+                                                            <Label for="titleSeriesName">Series</Label>
+                                                            <AvField type="text" name="seriesTitleName" id="titleSeriesName" placeholder={'Enter Series Name'} errorMessage="Field cannot be empty!"
+                                                                onChange={this.props.handleChangeSeries} required={this.state.isSeriesCompleted}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                    <Row>
                                                         <Col md={6}>
                                                             <FormGroup>
-                                                                <Label for="titleEpisodeNumber">Episode</Label>
+                                                                <Label for="titleSeasonNumber">Season</Label>
                                                                 <AvField
                                                                     type="number"
-                                                                    name="episodeNumber"
-                                                                    errorMessage="Please enter a valid episode number!"
-                                                                    value={this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : ''}
-                                                                    id="titleEpisodeNumber"
-                                                                    placeholder={'Enter Episode Number'}
+                                                                    name="seasonNumber"
+                                                                    errorMessage="Please enter a valid season number!"
+                                                                    value={this.props.data.episodic !== null && this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : ''}
+                                                                    id="titleSeasonNumber"
+                                                                    placeholder={'Enter Season Number'}
                                                                     onChange={(e) => this.props.handleChangeEpisodic(e)}
                                                                     validate={{
                                                                         maxLength: { value: 3 }
-                                                                    }} />
+                                                                    }}
+                                                                />
                                                             </FormGroup>
                                                         </Col>
-                                                        :
-                                                        <Col md={6}>
-                                                            <FormGroup>
-                                                                <Label for="titleEpisodeCount">Episode Count</Label>
-                                                                <AvField
-                                                                    type="text"
-                                                                    name="episodeCount"
-                                                                    value={this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}
-                                                                    id="titleEpisodeCount"
-                                                                    placeholder={'Enter Episode Count'}
-                                                                    onChange={(e) => this.props.handleChangeEpisodic(e)} />
-                                                            </FormGroup>
-                                                        </Col>
-                                                }
-                                            </React.Fragment>
-                                        </Row>
-                                        <Row>
-                                            {
-                                                contentType === 'SEASON' ?
-                                                    <Col>
-                                                        <Label for="titleSeasonID">Season ID</Label>
-                                                        <AvField
-                                                            type="text"
-                                                            name="seasonId"
-                                                            value={this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : ''}
-                                                            id="titleSeasonID" placeholder={'Enter Season ID'}
-                                                            onChange={(e) => this.props.handleChangeEpisodic(e)} />
-                                                    </Col>
-                                                    :
-                                                    <Col>
-                                                        <Label for="titleEpisodeID">Episode ID</Label>
-                                                        <AvField
-                                                            type="text"
-                                                            name="episodeId"
-                                                            value={this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : ''}
-                                                            id="titleEpisodeID"
-                                                            placeholder={'Enter Episode ID'}
-                                                            onChange={(e) => this.props.handleChangeEpisodic(e)} />
-                                                    </Col>
-                                            }
-                                        </Row>
+                                                        <Fragment>
+                                                            {
+                                                                contentType !== 'SEASON' ?
+                                                                    <Col md={6}>
+                                                                        <FormGroup>
+                                                                            <Label for="titleEpisodeNumber">Episode</Label>
+                                                                            <AvField
+                                                                                type="number"
+                                                                                name="episodeNumber"
+                                                                                errorMessage="Please enter a valid episode number!"
+                                                                                value={this.props.data.episodic !== null && this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : ''}
+                                                                                id="titleEpisodeNumber"
+                                                                                placeholder={'Enter Episode Number'}
+                                                                                onChange={(e) => this.props.handleChangeEpisodic(e)}
+                                                                                validate={{
+                                                                                    maxLength: { value: 3 }
+                                                                                }} />
+                                                                        </FormGroup>
+                                                                    </Col>
+                                                                    :
+                                                                    <Col md={6}>
+                                                                        <FormGroup>
+                                                                            <Label for="titleEpisodeCount">Episode Count</Label>
+                                                                            <AvField
+                                                                                type="text"
+                                                                                name="episodeCount"
+                                                                                value={this.props.data.episodic !== null && this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}
+                                                                                id="titleEpisodeCount"
+                                                                                placeholder={'Enter Episode Count'}
+                                                                                onChange={(e) => this.props.handleChangeEpisodic(e)} />
+                                                                        </FormGroup>
+                                                                    </Col>
+                                                            }
+                                                        </Fragment>
+                                                    </Row>
+                                                    <Row>
+                                                        {
+                                                            contentType === 'SEASON' ?
+                                                                <Col>
+                                                                    <Label for="titleSeasonID">Season ID</Label>
+                                                                    <AvField
+                                                                        type="text"
+                                                                        name="seasonId"
+                                                                        value={this.props.data.episodic !== null && this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : ''}
+                                                                        id="titleSeasonID" placeholder={'Enter Season ID'}
+                                                                        onChange={(e) => this.props.handleChangeEpisodic(e)} />
+                                                                </Col>
+                                                                :
+                                                                <Col>
+                                                                    <Label for="titleEpisodeID">Episode ID</Label>
+                                                                    <AvField
+                                                                        type="text"
+                                                                        name="episodeId"
+                                                                        value={this.props.data.episodic !== null && this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : ''}
+                                                                        id="titleEpisodeID"
+                                                                        placeholder={'Enter Episode ID'}
+                                                                        onChange={(e) => this.props.handleChangeEpisodic(e)} />
+                                                                </Col>
+                                                        }
+                                                    </Row>
+                                                </Fragment>
+                                                : null
+                                        }
                                     </Fragment>
                                     :
                                     null
@@ -183,7 +189,7 @@ TitleEditMode.propTypes = {
     keyPressed: PropTypes.func,
     data: PropTypes.object,
     handleOnChangeEdit: PropTypes.func.isRequired,
-    handleChangeBrand: PropTypes.func.isRequired,
+    handleChangeSeries: PropTypes.func.isRequired,
     handleChangeEpisodic: PropTypes.func.isRequired
 };
 
