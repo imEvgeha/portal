@@ -1,4 +1,4 @@
-const resolutionFormat = [
+export const resolutionFormat = [
     'HD',
     'SD',
     '4K',

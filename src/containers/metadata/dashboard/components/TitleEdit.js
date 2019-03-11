@@ -12,6 +12,8 @@ import { Button, Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
+import EditorialMetadataTab from "./editorialmetadata/EditorialMetadataTab";
+import EditorialMetadata from "./editorialmetadata/EditorialMetadata";
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -23,17 +25,22 @@ class TitleEdit extends Component {
         super(props);
         this.state = {
             isEditMode: false,
-            activeTab: CURRENT_TAB,
+            territoryMetadataActiveTab: CURRENT_TAB,
+            editorialMetadataActiveTab: CURRENT_TAB,
             invalidBoxOffice: false,
-            isLocalRequired: false,
+            areTerritoryMetadataFieldsRequired: false,
+            areEditorialMetadataFieldsRequired: false,
             titleForm: {},
             editedForm: {},
             territories: {},
             territory: [],
             updatedTerritories: [],
-
+            editorialMetadata: [],
+            updatedEditorialMetadata: [],
+            editorialMetadataForCreate: {}
         };
     }
+
     componentDidMount() {
         if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
         NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
@@ -61,6 +68,7 @@ class TitleEdit extends Component {
     componentWillUnmount() {
         NexusBreadcrumb.pop();
     }
+
     handleBackToDashboard() {
         NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
     }
@@ -71,11 +79,14 @@ class TitleEdit extends Component {
                 isEditMode: false
             });
         }
-    }
+    };
 
+    /**
+     * Title
+     */
     handleSwitchMode = () => {
-        this.setState({ isEditMode: !this.state.isEditMode, activeTab: CURRENT_TAB });
-    }
+        this.setState({ isEditMode: !this.state.isEditMode, territoryMetadataActiveTab: CURRENT_TAB , editorialMetadataActiveTab: CURRENT_TAB});
+    };
 
     handleOnChangeEdit = (e) => {
         this.setState({
@@ -84,8 +95,7 @@ class TitleEdit extends Component {
                 [e.target.name]: e.target.value
             }
         });
-
-    }
+    };
 
     handleChangeSeries = (e) => {
         const newEpisodic = {
@@ -98,7 +108,7 @@ class TitleEdit extends Component {
                 episodic: newEpisodic
             }
         });
-    }
+    };
 
     handleChangeEpisodic = (e) => {
         const newEpisodic = {
@@ -111,9 +121,23 @@ class TitleEdit extends Component {
                 episodic: newEpisodic
             }
         });
-    }
+    };
 
-    handleOnSave = () => {
+    readOnly = () => {
+        return <TitleReadOnlyMode data={this.state.titleForm} />;
+    };
+
+    editMode = () => {
+        return <TitleEditMode
+            handleChangeEpisodic={this.handleChangeEpisodic}
+            handleChangeSeries={this.handleChangeSeries}
+            keyPressed={this.handleKeyDown}
+            data={this.state.titleForm}
+            episodic={this.state.titleForm.episodic}
+            handleOnChangeEdit={this.handleOnChangeEdit} />;
+    };
+
+    handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm) {
             const updatedTitle = this.state.editedForm;
             this.setState({
@@ -124,7 +148,8 @@ class TitleEdit extends Component {
                     isLoading: false,
                     titleForm: this.state.editedForm,
                     isEditMode: !this.state.isEditMode,
-                    activeTab: CURRENT_TAB
+                    territoryMetadataActiveTab: CURRENT_TAB,
+                    editorialMetadataActiveTab: CURRENT_TAB
                 });
 
             }).catch((err) => {
@@ -135,10 +160,78 @@ class TitleEdit extends Component {
         } else {
             this.setState({
                 isEditMode: !this.state.isEditMode,
-                activeTab: CURRENT_TAB
+                territoryMetadataActiveTab: CURRENT_TAB,
+                editorialMetadataActiveTab: CURRENT_TAB
             });
         }
+    }
 
+    /**
+     * Territory Metadata
+     */
+    handleTerritoryMetadataEditChange = (e, data) => {
+        let edited = this.state.updatedTerritories.find(e => e.id === data.id);
+        if (edited) {
+            edited[e.target.name] = e.target.value;
+            let newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
+            newOne.push(edited);
+            this.setState({
+                updatedTerritories: newOne
+            });
+        } else {
+            edited = Object.assign({}, data);
+            edited[e.target.name] = e.target.value;
+            this.setState({
+                updatedTerritories: [edited, ...this.state.updatedTerritories]
+            });
+        }
+    };
+
+    handleTerritoryMetadataChange = (e) => {
+        this.setState({
+            territories: {
+                ...this.state.territories,
+                [e.target.name]: e.target.value
+            }
+        });
+    };
+
+    cleanTerritoryMetada = () => {
+        this.form && this.form.reset();
+        this.setState({
+            territories: {
+                locale: null,
+                availAnnounceDate: null,
+                theatricalReleaseDate: null,
+                homeVideoReleaseDate: null,
+                boxOffice: null,
+                releaseYear: null
+            }
+        });
+    };
+
+    toggleTerritoryMetadata = (tab) => {
+        this.setState({
+            territoryMetadataActiveTab: tab,
+            areTerritoryMetadataFieldsRequired: false
+        });
+    };
+
+    addTerritoryMetadata = (tab) => {
+        this.setState({
+            territoryMetadataActiveTab: tab,
+            areTerritoryMetadataFieldsRequired: true
+        });
+
+    };
+
+    handleTerritoryMetadataSubmit = () => {
+        this.setState({
+            territoryMetadataActiveTab: CURRENT_TAB
+        });
+    };
+
+    handleTerritoryMetadataOnSave = () => {
         this.state.updatedTerritories.forEach(t => {
             const dataFormated = {
                 ...t,
@@ -171,8 +264,8 @@ class TitleEdit extends Component {
                 this.cleanTerritoryMetada();
                 this.setState({
                     territory: [response.data, ...this.state.territory],
-                    activeTab: CURRENT_TAB,
-                    isLocalRequired: false
+                    territoryMetadataActiveTab: CURRENT_TAB,
+                    areTerritoryMetadataFieldsRequired: false
                 });
             }).catch((err) => {
                 errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
@@ -181,80 +274,119 @@ class TitleEdit extends Component {
         } else {
             this.cleanTerritoryMetada();
         }
-    }
+    };
 
-    handleEditChange = (e, data) => {
-        let edited = this.state.updatedTerritories.find(e => e.id === data.id);
+
+    /**
+     * Editorial Metadata
+     */
+    handleEditorialMetadataEditChange = (e, data) => {
+        let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (edited) {
             edited[e.target.name] = e.target.value;
-            let newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
+            let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
             newOne.push(edited);
             this.setState({
-                updatedTerritories: newOne
+                updatedEditorialMetadata: newOne
             });
         } else {
             edited = Object.assign({}, data);
             edited[e.target.name] = e.target.value;
             this.setState({
-                updatedTerritories: [edited, ...this.state.updatedTerritories]
+                updatedEditorialMetadata: [edited, ...this.state.updatedEditorialMetadata]
             });
         }
-    }
+    };
 
-    handleChange = (e) => {
+    handleEditorialMetadataChange = (e) => {
         this.setState({
-            territories: {
-                ...this.state.territories,
+            editorialMetadataForCreate: {
+                ...this.state.editorialMetadataForCreate,
                 [e.target.name]: e.target.value
             }
         });
-    }
-    cleanTerritoryMetada = () => {
-        this.form && this.form.reset();
+    };
+
+    handleSynopsisEditorialMetadataChange = (e) => {
+        const newSynopsis = {
+            ...this.state.editorialMetadataForCreate.synopsis,
+            [e.target.name]: e.target.value
+        };
         this.setState({
-            territories: {
-                locale: null,
-                availAnnounceDate: null,
-                theatricalReleaseDate: null,
-                homeVideoReleaseDate: null,
-                boxOffice: null,
-                releaseYear: null
+            editedForm: {
+                ...this.state.editorialMetadataForCreate,
+                synopsis: newSynopsis
             }
         });
-    }
-    toggle = (tab) => {
-        this.setState({
-            activeTab: tab,
-            isLocalRequired: false
-        });
-    }
-
-    addTerritoryMetadata = (tab) => {
-        this.setState({
-            activeTab: tab,
-            isLocalRequired: true
-        });
-
-    }
-    handleSubmit = () => {
-        this.setState({
-            activeTab: CURRENT_TAB
-        });
-    }
-
-    readOnly = () => {
-        return <TitleReadOnlyMode data={this.state.titleForm} />;
     };
 
-    editMode = () => {
-        return <TitleEditMode
-            handleChangeEpisodic={this.handleChangeEpisodic}
-            handleChangeSeries={this.handleChangeSeries}
-            keyPressed={this.handleKeyDown}
-            data={this.state.titleForm}
-            episodic={this.state.titleForm.episodic}
-            handleOnChangeEdit={this.handleOnChangeEdit} />;
+    handleTitleEditorialMetadataChange = (e) => {
+        const newTitle = {
+            ...this.state.editorialMetadataForCreate.title,
+            [e.target.name]: e.target.value
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editorialMetadataForCreate,
+                title: newTitle
+            }
+        });
     };
+
+    cleanEditorialMetada = () => {
+        this.form && this.form.reset();
+        this.setState({
+            editorialMetadataForCreate: {
+                parentId: null,
+                locale: null,
+                language: null,
+                service: null,
+                format: null,
+                title: null,
+                synopsis: null,
+                copyright: null,
+                awards: null,
+                seasonNumber: null,
+                episodeNumber: null,
+                seriesName: null,
+            }
+        });
+    };
+
+    toggleEditorialMetadata = (tab) => {
+        this.setState({
+            editorialMetadataActiveTab: tab,
+            areEditorialMetadataFieldsRequired: false
+        });
+    };
+
+    addEditorialMetadata = (tab) => {
+        this.setState({
+            editorialMetadataActiveTab: tab,
+            areEditorialMetadataFieldsRequired: true
+        });
+
+    };
+
+    handleEditorialMetadataSubmit = () => {
+        this.setState({
+            editorialMetadataActiveTab: CURRENT_TAB
+        });
+    };
+
+
+    /**
+     * Common
+     */
+    handleOnSave = () => {
+        this.handleTitleOnSave();
+        this.handleTerritoryMetadataOnSave();
+
+    };
+
+
+
+
 
     render() {
         return (
@@ -281,18 +413,34 @@ class TitleEdit extends Component {
                     {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
+                    <EditorialMetadata
+                        areFieldsRequired={this.state.areTerritoryMetadataFieldsRequired}
+                        validSubmit={this.handleOnSave}
+                        toggle={this.toggleEditorialMetadata}
+                        activeTab={this.state.editorialMetadataActiveTab}
+                        addEditorialMetadata={this.addEditorialMetadata}
+                        CREATE_TAB={CREATE_TAB}
+                        handleSubmit={this.handleEditorialMetadataSubmit}
+                        editorialMetadata={this.state.editorialMetadata}
+                        handleChange={this.handleEditorialMetadataChange}
+                        handleTitleChange={this.handleTitleEditorialMetadataChange}
+                        handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}
+                        handleEditChange={this.handleEditorialMetadataEditChange}
+                        isEditMode={this.state.isEditMode}
+                        titleContentType={this.state.titleForm.contentType}
+                    />
 
                     <TerritoryMetadata
-                        isLocalRequired={this.state.isLocalRequired}
+                        isLocalRequired={this.state.areTerritoryMetadataFieldsRequired}
                         validSubmit={this.handleOnSave}
-                        toggle={this.toggle}
-                        activeTab={this.state.activeTab}
+                        toggle={this.toggleTerritoryMetadata}
+                        activeTab={this.state.territoryMetadataActiveTab}
                         addTerritoryMetadata={this.addTerritoryMetadata}
                         CREATE_TAB={CREATE_TAB}
-                        handleSubmit={this.handleSubmit}
+                        handleSubmit={this.handleTerritoryMetadataSubmit}
                         territory={this.state.territory}
-                        handleChange={this.handleChange}
-                        handleEditChange={this.handleEditChange}
+                        handleChange={this.handleTerritoryMetadataChange}
+                        handleEditChange={this.handleTerritoryMetadataEditChange}
                         isEditMode={this.state.isEditMode} />
                 </AvForm>
             </EditPage>

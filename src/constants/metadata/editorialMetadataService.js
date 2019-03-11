@@ -1,4 +1,4 @@
-const editorialMetadataService = [
+export const editorialMetadataService = [
     'Just In',
     'OTT',
     'DFM',
