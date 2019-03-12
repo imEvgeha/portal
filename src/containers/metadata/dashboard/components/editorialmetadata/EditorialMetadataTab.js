@@ -22,7 +22,7 @@ class EditorialMetadataTab extends Component {
                     </Row>
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
-                            <b>Brief Title:</b> {this.props.data.title ? (this.props.data.title.title ? this.props.data.title.title : this.emptySpan()) : this.emptySpan()}
+                            <b>Display Title:</b> {this.props.data.title ? (this.props.data.title.title ? this.props.data.title.title : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
