@@ -18,7 +18,7 @@ class EditorialMetadataCreateTab extends Component {
 
     render() {
         return (
-            <div id="territoryContainer">
+            <div id="editorialContainer">
                 <Fragment>
                     <Row style={{padding: '15px'}}>
                         <Col>
