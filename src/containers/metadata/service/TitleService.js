@@ -33,7 +33,8 @@ export const titleService = {
     getTitleById: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`);
     },
-    addMetadata: (territoryMetadata) => {
+
+    addTerritoryMetadata: (territoryMetadata) => {
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', territoryMetadata);
     },
     getTerritoryMetadataById: (id) => {
@@ -41,5 +42,9 @@ export const titleService = {
     },
     updateTerritoryMetadata: (editedTerritoryMetadata) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', editedTerritoryMetadata);
-    }
+    },
+
+    addEditorialMetadata: (editorialMetadata) => {
+        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editorialMetadata);
+    },
 };

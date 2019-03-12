@@ -249,10 +249,10 @@ export const locale = [
     { localeCode: 'ZM', countryName: 'Zambia' },
     { localeCode: 'ZW', countryName: 'Zimbabwe' },
     { localeCode: 'AX', countryName: 'Åland Islands' },
-
 ];
 
-export default {
-    locale
-};
+export function getCountryNameByLocaleCode(localeCode) {
+    return locale.find(value => value.localeCode === localeCode).countryName;
+}
+
 

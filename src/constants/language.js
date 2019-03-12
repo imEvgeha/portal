@@ -1,4 +1,5 @@
 //RFC 5646 language format
+
 export const language = [
     { code: 'ar', language: 'Arabic' },
     { code: 'zh', language: 'Chinese' },
@@ -22,7 +23,7 @@ export const language = [
 
 ];
 
-export default {
-    language
-};
+export function getLanguageByCode(code) {
+    return language.find(value => value.code === code).language;
+}
 

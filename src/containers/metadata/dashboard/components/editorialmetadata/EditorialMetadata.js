@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col, Container, TabContent, TabPane, Alert } from 'reactstrap';
-// import './MetadataTerritoryTab.scss';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
+import {getLanguageByCode} from '../../../../../constants/language';
 
 class EditorialMetadata extends Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class EditorialMetadata extends Component {
                     }
                     {
                         this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className={'tablinks'} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + item.language + ' ' + item.format}</b></span>;
+                            return <span className={'tablinks'} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
                         })
                     }
                 </div>

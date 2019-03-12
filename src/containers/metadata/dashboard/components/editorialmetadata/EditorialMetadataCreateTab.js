@@ -13,7 +13,6 @@ class EditorialMetadataCreateTab extends Component {
         this.state = {
             editorialMetadata: [],
             activeTab: 0
-
         };
     }
 
@@ -98,17 +97,17 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Series Name</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialSeriesName" name="seriesName"
+                            <AvField type="number" id="editorialSeriesName" name="seriesName"
                                      onChange={this.props.handleChange}
                                      validate={{
-                                         maxLength: {value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.'},
+                                         maxLength: {value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.'}
                                      }}/>
                         </Col>
                         <Col md={2}>
                             <b>Season Number</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialSeriesNumber" name="seriesNumber"
+                            <AvField type="number" id="editorialSeriesNumber" name="seriesNumber"
                                      onChange={this.props.handleChange}
                                      validate={{
                                          pattern: {value: '^[0-9]+$', errorMessage: 'Please enter a number'},
@@ -121,7 +120,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>}
                         {this.props.titleContentType === 'EPISODE' &&
                         <Col>
-                            <AvField type="text" id="editorialSeriesNumber" name="seriesNumber"
+                            <AvField type="number" id="editorialEpisodeNumber" name="episodeNumber"
                                      onChange={this.props.handleChange}
                                      validate={{
                                          pattern: {value: '^[0-9]+$', errorMessage: 'Please enter a number'},
@@ -175,7 +174,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialMediumTitle" name="mediumTitle"
                                      onChange={this.props.handleTitleChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Medium Title. Max 200 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -187,7 +186,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialLongTitle" name="longTitle"
                                      onChange={this.props.handleTitleChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Long Title. Max 200 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -199,7 +198,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialSortTitle" name="sortTitle"
                                      onChange={this.props.handleTitleChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Sort Title. Max 200 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -212,7 +211,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialShortSynopsis" name="shortSynopsis"
                                      onChange={this.props.handleSynopsisChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Short Synopsis. Max 500 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Short Synopsis. Max 500 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -224,7 +223,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialMediumSynopsis" name="mediumSynopsis"
                                      onChange={this.props.handleSynopsisChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -236,7 +235,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialLongSynopsis" name="longSynopsis"
                                      onChange={this.props.handleSynopsisChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Long Synopsis. Max 500 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Long Synopsis. Max 500 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -249,7 +248,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialCopyright" name="copyright"
                                      onChange={this.props.handleChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Copyright. Max 200 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -261,7 +260,7 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialAwards" name="awards"
                                      onChange={this.props.handleChange}
                                      validate={{
-                                         maxLength: {value: 200}, errorMessage: 'Too long Awards. Max 200 symbols.'
+                                         maxLength: {value: 200, errorMessage: 'Too long Awards. Max 200 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
