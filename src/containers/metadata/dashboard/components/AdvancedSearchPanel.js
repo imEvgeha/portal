@@ -12,7 +12,7 @@ import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
 import { titleMapping } from '../../service/Profile';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
-import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metadata-breadcrumb-paths';
+import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
 
 const mapStateToProps = state => {
     return {

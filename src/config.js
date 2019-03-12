@@ -1,7 +1,7 @@
 export const defaultConfiguration = {
     gateway: {
         url: 'https://availsapi.dev.vubiquity.com',
-        titleUrl: 'http://localhost:8090',
+        titleUrl: 'http://localhost:8082',
         configuration: 'https://configapi.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
@@ -47,7 +47,7 @@ export const defaultConfiguration = {
         resolution: {
             type: 'oneOf',
             fields: ['sd', 'hd', 'f3d', 'f4k'],
-            values: [['SD'], ['HD'], ['3D'], ['4K/UHD']]
+            values: [['X'], ['X'], ['X'], ['X']]
         }
     }
 };

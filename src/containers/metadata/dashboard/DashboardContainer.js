@@ -22,7 +22,7 @@ import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
     BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH,
     BREADCRUMB_METADATA_TITLE_HISTORY_PATH, 
-    BREADCRUMB_METADATA_SEARCH_RESULTS_PATH} from '../../../constants/metadata-breadcrumb-paths';
+    BREADCRUMB_METADATA_SEARCH_RESULTS_PATH} from '../../../constants/metadata/metadata-breadcrumb-paths';
 import moment from 'moment';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 
