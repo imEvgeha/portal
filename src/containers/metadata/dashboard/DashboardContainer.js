@@ -135,7 +135,7 @@ class DashboardContainer extends React.Component {
     }
 
     handleTitleFreeTextSearch(searchCriteria) {
-        this.props.searchFormUseAdvancedSearch(false);
+        // this.props.searchFormUseAdvancedSearch(false);
         this.props.searchFormShowSearchResults(true);        
         NexusBreadcrumb.set([{name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard()}, {name: 'Search Results'}]);
         titleSearchHelper.freeTextSearch(searchCriteria);

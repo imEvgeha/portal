@@ -163,8 +163,12 @@ class TitleResultTable extends React.Component {
     parseColumnsSchema() {
         if (titleMapping) {
             titleMapping.mappings.map(column => colDef[column.javaVariableName] = {
-                field: column.javaVariableName,
                 headerName: column.displayName,
+                filter: 'agTextColumnFilter',
+                filterParams: {
+                    filterOptions: ['contains', 'notContains']
+                },
+                field: column.javaVariableName,
                 cellRendererFramework: this.loadingRenderer,
                 width: 623
             });
@@ -413,6 +417,8 @@ class TitleResultTable extends React.Component {
                     enableSorting={true}
                     enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
+
+                    enableFilter
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}
