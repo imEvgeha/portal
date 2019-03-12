@@ -381,7 +381,6 @@ class TitleResultTable extends React.Component {
             return null;
         }
     }
-
     render() {
         return (
             <div
@@ -419,6 +418,8 @@ class TitleResultTable extends React.Component {
                     onSortChanged={this.onSortChanged}
 
                     enableFilter
+                    //floatingFilter
+                    //floatingFiltersHeight={50}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}
