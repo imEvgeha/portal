@@ -20,6 +20,16 @@ class EditorialMetadataTab extends Component {
                         <Col md={3}><b>Format: </b> {this.props.data.format ? this.props.data.format : this.emptySpan()}</Col>
                         <Col md={3}><b>Service: </b> {this.props.data.service ? this.props.data.service : this.emptySpan()}</Col>
                     </Row>
+
+                    {(this.props.titleContentType === 'EPISODE' || this.props.titleContentType === 'SEASON') &&
+                    <Row style={{padding: '15px'}}>
+                        <Col md={3}><b>Series Name: </b> {this.props.data.seriesName ? this.props.data.seriesName : this.emptySpan()}</Col>
+                        <Col md={3}><b>Season Number: </b> {this.props.data.seasonNumber ? this.props.data.seasonNumber : this.emptySpan()}</Col>
+                        {this.props.titleContentType === 'EPISODE' &&
+                        <Col md={3}><b>Episode Number: </b> {this.props.data.episodeNumber ? this.props.data.episodeNumber : this.emptySpan()}</Col>
+                        }
+                    </Row>}
+
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
                             <b>Display Title:</b> {this.props.data.title ? (this.props.data.title.title ? this.props.data.title.title : this.emptySpan()) : this.emptySpan()}
@@ -58,6 +68,16 @@ class EditorialMetadataTab extends Component {
                     <Row style={{padding: '15px'}}>
                         <Col md={4}>
                             <b>Long Synopsis:</b> {this.props.data.synopsis ? (this.props.data.synopsis.longDescription ? this.props.data.synopsis.longDescription : this.emptySpan()) : this.emptySpan()}
+                        </Col>
+                    </Row>
+                    <Row style={{padding: '15px'}}>
+                        <Col md={4}>
+                            <b>Copyright:</b> {this.props.data.copyright ? this.props.data.copyright : this.emptySpan()}
+                        </Col>
+                    </Row>
+                    <Row style={{padding: '15px'}}>
+                        <Col md={4}>
+                            <b>Awards:</b> {this.props.data.awards ? this.props.data.awards : this.emptySpan()}
                         </Col>
                     </Row>
                 </Fragment>

@@ -374,6 +374,7 @@ class TitleEdit extends Component {
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             let newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
+            console.log(newEditorialMetadata);
             titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
                 this.cleanEditorialMetadata();
                 this.setState({

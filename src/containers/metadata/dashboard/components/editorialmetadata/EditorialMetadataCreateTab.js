@@ -107,7 +107,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Season Number</b>
                         </Col>
                         <Col>
-                            <AvField type="number" id="editorialSeriesNumber" name="seriesNumber"
+                            <AvField type="number" id="editorialSeasonNumber" name="seasonNumber"
                                      onChange={this.props.handleChange}
                                      validate={{
                                          pattern: {value: '^[0-9]+$', errorMessage: 'Please enter a number'},
