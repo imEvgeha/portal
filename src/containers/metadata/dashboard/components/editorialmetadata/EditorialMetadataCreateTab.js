@@ -107,7 +107,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Season Number</b>
                         </Col>
                         <Col>
-                            <AvField type="number" id="editorialSeriesNumber" name="seriesNumber"
+                            <AvField type="number" id="editorialSeasonNumber" name="seasonNumber"
                                      onChange={this.props.handleChange}
                                      validate={{
                                          pattern: {value: '^[0-9]+$', errorMessage: 'Please enter a number'},
@@ -135,7 +135,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Display Title</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="editorialDisplayTitle" name="displayTitle"
+                            <AvField type="text" id="editorialDisplayTitle" name="title"
                                      onChange={this.props.handleTitleChange}
                                      validate={{
                                          maxLength: {value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.'}
@@ -147,22 +147,10 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Brief Title</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="editorialBriefTitle" name="briefTitle"
+                            <AvField type="text" id="editorialBriefTitle" name="shortTitle"
                                      onChange={this.props.handleTitleChange}
                                      validate={{
                                          maxLength: {value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.'}
-                                     }}/>
-                        </Col>
-                    </Row>
-                    <Row style={{padding: '15px'}}>
-                        <Col md={2}>
-                            <b>Medium Title</b>
-                        </Col>
-                        <Col md={2}>
-                            <AvField type="text" id="editorialMediumTitle" name="mediumTitle"
-                                     onChange={this.props.handleTitleChange}
-                                     validate={{
-                                         maxLength: {value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.'}
                                      }}/>
                         </Col>
                     </Row>
@@ -208,7 +196,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Short Synopsis</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="editorialShortSynopsis" name="shortSynopsis"
+                            <AvField type="text" id="editorialShortSynopsis" name="description"
                                      onChange={this.props.handleSynopsisChange}
                                      validate={{
                                          maxLength: {value: 200, errorMessage: 'Too long Short Synopsis. Max 500 symbols.'}
@@ -220,7 +208,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Medium Synopsis</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="editorialMediumSynopsis" name="mediumSynopsis"
+                            <AvField type="text" id="editorialMediumSynopsis" name="shortDescription"
                                      onChange={this.props.handleSynopsisChange}
                                      validate={{
                                          maxLength: {value: 200, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.'}
@@ -232,7 +220,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Long Synopsis</b>
                         </Col>
                         <Col md={2}>
-                            <AvField type="text" id="editorialLongSynopsis" name="longSynopsis"
+                            <AvField type="text" id="editorialLongSynopsis" name="longDescription"
                                      onChange={this.props.handleSynopsisChange}
                                      validate={{
                                          maxLength: {value: 200, errorMessage: 'Too long Long Synopsis. Max 500 symbols.'}
