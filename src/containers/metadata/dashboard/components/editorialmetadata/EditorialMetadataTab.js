@@ -31,52 +31,52 @@ class EditorialMetadataTab extends Component {
                     </Row>}
 
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Display Title:</b> {this.props.data.title ? (this.props.data.title.title ? this.props.data.title.title : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Brief Title:</b> {this.props.data.title ? (this.props.data.title.shortTitle ? this.props.data.title.shortTitle : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Medium Title:</b> {this.props.data.title ? (this.props.data.title.mediumTitle ? this.props.data.title.mediumTitle : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Long Title:</b> {this.props.data.title ? (this.props.data.title.longTitle ? this.props.data.title.longTitle : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Short Title:</b> {this.props.data.title ? (this.props.data.title.sortTitle ? this.props.data.title.sortTitle : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Short Synopsis:</b> {this.props.data.synopsis ? (this.props.data.synopsis.description ? this.props.data.synopsis.description : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Med Synopsis:</b> {this.props.data.synopsis ? (this.props.data.synopsis.shortDescription ? this.props.data.synopsis.shortDescription : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Long Synopsis:</b> {this.props.data.synopsis ? (this.props.data.synopsis.longDescription ? this.props.data.synopsis.longDescription : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Copyright:</b> {this.props.data.copyright ? this.props.data.copyright : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{padding: '15px'}}>
-                        <Col md={4}>
+                        <Col style={{wordWrap: 'break-word'}}>
                             <b>Awards:</b> {this.props.data.awards ? this.props.data.awards : this.emptySpan()}
                         </Col>
                     </Row>
