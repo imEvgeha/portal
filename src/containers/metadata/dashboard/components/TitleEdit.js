@@ -374,7 +374,6 @@ class TitleEdit extends Component {
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             let newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
-            console.log(newEditorialMetadata);
             titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
                 this.cleanEditorialMetadata();
                 this.setState({
@@ -474,6 +473,7 @@ class TitleEdit extends Component {
                         handleEditChange={this.handleEditorialMetadataEditChange}
                         isEditMode={this.state.isEditMode}
                         titleContentType={this.state.titleForm.contentType}
+                        editorialMetadataLength={this.state.editorialMetadataForCreate}
                     />
 
                     <TerritoryMetadata

@@ -64,6 +64,7 @@ class EditorialMetadata extends Component {
                                                 areFieldsRequired={this.props.areFieldsRequired}
                                                 handleChange={this.props.handleChange}
                                                 handleTitleChange={this.props.handleTitleChange}
+                                                editorialMetadataLength={this.props.editorialMetadataLength}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 titleContentType={this.props.titleContentType}/>
                                         </Col>
@@ -91,7 +92,8 @@ EditorialMetadata.propTypes = {
     CREATE_TAB: PropTypes.string,
     validSubmit: PropTypes.func.isRequired,
     handleEditChange: PropTypes.func,
-    titleContentType: PropTypes.string
+    titleContentType: PropTypes.string,
+    editorialMetadataLength: PropTypes.object
 };
 
 
