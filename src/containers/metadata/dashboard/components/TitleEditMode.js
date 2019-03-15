@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Row, Col, Label, Container, Progress, Alert, FormGroup } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
+import CoreMetadataEditMode from './territorymetadata/coremetadata/CoreMetadataEditMode';
 
 class TitleEditMode extends Component {
     constructor(props) {
@@ -179,6 +180,7 @@ class TitleEditMode extends Component {
                             }
                         </Col>
                     </Row>
+                    <CoreMetadataEditMode />
                 </Container>
             </Fragment>
         );

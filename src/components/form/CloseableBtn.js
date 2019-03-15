@@ -10,6 +10,7 @@ export default class CloseableBtn extends Component {
         value: t.string,
         disabled: t.bool,
         highlighted: t.bool,
+        style: t.object,
 
         onClick: t.func,
         onClose: t.func,
@@ -43,7 +44,7 @@ export default class CloseableBtn extends Component {
                     onClick={this.props.onClick}
                     title={this.props.title + this.props.value}
                     disabled={this.props.disabled}
-                    style={{width: '100%', textAlign: 'left', position: 'relative'}}>
+                    style={{width: '100%', textAlign: 'left', position: 'relative', ...this.props.style}}>
                 <div style={{width: '100%', overflow: 'hidden', paddingRight: '20px', textOverflow: 'ellipsis'}}>
                     <small><strong>{this.props.title}</strong>{this.props.value}</small>
                 </div>
