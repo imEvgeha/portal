@@ -1,7 +1,6 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
-import config from 'react-global-configuration';
 
 import {saveCreateAvailForm} from '../../../stores/actions/avail/createavail';
 import {Button, Input, Label} from 'reactstrap';
@@ -13,10 +12,12 @@ import {availService} from '../service/AvailService';
 import store from '../../../stores/index';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
+        selectValues: state.root.selectValues,
         storedForm: state.createavail.session.form,
     };
 };
@@ -30,6 +31,7 @@ const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
 class AvailCreate extends React.Component {
 
     static propTypes = {
+        selectValues: t.object,
         saveCreateAvailForm: t.func,
         availsMapping: t.any,
         storedForm: t.object
@@ -289,6 +291,52 @@ class AvailCreate extends React.Component {
             ));
         };
 
+        const renderMultiSelectField = (name, displayName, required, value) => {
+            let options = [];
+            let valArr=[];
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            const allOptions = [
+                {
+                    label: 'Select All',
+                    options: options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                        label: rec.label || rec.value,
+                        aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
+                }
+            ];
+
+            if(allOptions[0].options.length > 0 && value){
+                valArr = value.split(',').map(val => {return allOptions[0].options.filter(opt => opt.value === val).length === 1 ? allOptions[0].options.filter(opt => opt.value === val)[0] : null;});
+            }
+
+            let handleOptionsChange = (selectedOptions) => {
+                let val = selectedOptions.map(({value}) => value).join(',');
+                this.checkAvail(name, val, null, true);
+            }
+
+            return renderFieldTemplate(name, displayName, required, (
+                <div
+                    id={'avails-create-' + name + '-select'}
+                    key={name}
+                    className="react-select-container"
+                >
+                    <ReactMultiSelectCheckboxes
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={allOptions}
+                        value={valArr}
+                        onChange={handleOptionsChange}
+                    />
+                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                    }
+                </div>
+            ));
+        };
+
         const renderBooleanField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <select className="form-control"
@@ -338,16 +386,28 @@ class AvailCreate extends React.Component {
                     let required = mapping.required;
                     const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
-                        case 'text' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'string' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'number' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'integer' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'year' : renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'double' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'select' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
+                        case 'language' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'multilanguage' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'duration' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                             break;
+                        case 'time' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'date' : //renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                             break;
+                         case 'boolean' : //renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }

@@ -219,18 +219,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "affiliate",
-  "sheetColumnName": "Affiliate",
-  "displayName": "Affiliate",
-  "dataType": "multiselect",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/affiliates",
-  "queryParamName": "affiliate",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
   "javaVariableName": "affiliateExclude",
   "sheetColumnName": "Affiliate Exclude",
   "displayName": "Affiliate Exclude",
@@ -671,18 +659,6 @@
   "dataType": "boolean",
   "searchDataType": "boolean",
   "queryParamName": "hfr",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "ngAudio",
-  "sheetColumnName": "NG Audio",
-  "displayName": "NG Audio",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "options": ["Atmos", "DTSX", "Auro3D"],
-  "queryParamName": "ngAudio",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,

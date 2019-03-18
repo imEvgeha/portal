@@ -23,10 +23,11 @@ export const profileService = {
                 response.data.mappings.map((rec) => {
                     if(rec.dataType === 'select' || rec.dataType === 'multiselect'){
                         if(rec.options){
-                            store.dispatch(loadSelectLists(rec.javaVariableName, rec.options));
+                            store.dispatch(loadSelectLists(rec.javaVariableName, rec.options.map((option) => {return {id:option, type:rec.javaVariableName, value:option};})));
                         }else {
                             if(rec.configEndpoint) {
                                 getSelectValues(rec.configEndpoint).then((response) => {
+                                    //console.log('RECEIVED', rec.configEndpoint, response);
                                     store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
                                 });
                             }else{
