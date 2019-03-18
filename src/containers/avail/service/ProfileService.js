@@ -6,41 +6,13 @@ import {errorModal} from '../../../components/modal/ErrorModal';
 
 const http = Http.create({noDefaultErrorHandling: true});
 
-const getAvailsMapping = () => {    
-    return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/mapping-data');
+const getAvailsMapping = () => {
+    return http.get('/profile/availMapping.json');
+    //return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/mapping-data');
 };
 
 const getSelectValues = (field) => {
-    return http.get(config.get('gateway.configuration') + '/configuration-api/v1/' + field + '?page=0&size=10000');
-};
-
-const selectFields = {
-    'genres': {
-    },
-    'licensor': {
-       endpoint: 'licensors'
-    },
-    'studio': {
-        endpoint: 'studios'
-    },
-    'territory': {
-        endpoint: 'territories'
-    },
-    'format': {
-        endpoint: 'formats'
-    },
-    'rating': {
-        endpoint: 'ratings'
-    },
-    'releaseType': {
-        endpoint: 'license-rights-desc'
-    },
-    'availType': {
-        endpoint: 'content-type'
-    },
-    'foreignLanguage': {
-        endpoint: ''
-    }
+    return http.get(config.get('gateway.configuration') + '/configuration-api/v1' + field + '?page=0&size=10000');
 };
 
 export const profileService = {
@@ -48,26 +20,18 @@ export const profileService = {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then( (response) => {
                 //console.log(response);
-                //Add (temporary, should be in mappings) "format" field, will replace SD, HD, 3D, 4K
-                response.data.mappings[response.data.mappings.length-1]= {
-                    sheetColumnName: 'Format',
-                    displayName: 'Format',
-                    dataType: 'select',
-                    fullTextSearch: 'true',
-                    javaVariableName: 'format',
-                    required: 'true'
-                };
                 response.data.mappings.map((rec) => {
-                    if(selectFields[rec.javaVariableName]){
-                        rec.dataType = 'select';
-                    }
-
-                    if(rec.dataType === 'select'){
-                        let endpoint = selectFields[rec.javaVariableName].endpoint != null ? selectFields[rec.javaVariableName].endpoint : rec.javaVariableName;
-                        if(endpoint) {
-                            getSelectValues(endpoint).then((response) => {
-                                store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
-                            });
+                    if(rec.dataType === 'select' || rec.dataType === 'multiselect'){
+                        if(rec.options){
+                            store.dispatch(loadSelectLists(rec.javaVariableName, rec.options));
+                        }else {
+                            if(rec.configEndpoint) {
+                                getSelectValues(rec.configEndpoint).then((response) => {
+                                    store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
+                                });
+                            }else{
+                                console.warn('MISSING options or endpoint: for ', rec.javaVariableName);
+                            }
                         }
                     }
                 });
