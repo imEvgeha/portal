@@ -49,7 +49,6 @@ class AvailDetails extends React.Component {
         this.emptyValueText = 'Enter';
 
         this.state = {
-            resolutionValidation: config.get('extraValidation.resolution'),
             errorMessage: '',
             columns: 1
         };
@@ -142,50 +141,14 @@ class AvailDetails extends React.Component {
         return data.trim() ? '' : <small>Field can not be empty</small>;
     }
 
-    isAcceptable(data, acceptedValues){
-        return !!(data && acceptedValues && acceptedValues.indexOf(data.trim()) > -1);
-
-    }
-
     validateTextField(target, field) {
-        if(this.state.resolutionValidation.fields.indexOf(field) > -1 && target.type !== 'checkbox' && target.newValue){
-            target.newValue = target.newValue.toUpperCase();
-        }
         const value =  target.newValue ? target.newValue.trim() : '';
 
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === field) {
-
-                if(this.state.resolutionValidation.type === 'oneOf'){
-                    if(this.state.resolutionValidation.fields.indexOf(mapping.javaVariableName) > -1){
-                        //if this field belongs to 'oneOf' extra validation
-                        let stillInvalid = true; //is presumed invalid until one valid value is found
-                        for(let j=0; j < this.state.resolutionValidation.fields.length; j++){
-                            if(this.state.resolutionValidation.values == null || j >=  this.state.resolutionValidation.values.length || this.state.resolutionValidation.values[j] == null){
-                                //if no required value just check against empty
-                                if(this.validateNotEmpty(this.state.avail[this.state.resolutionValidation.fields[j]]) === '') stillInvalid = false;
-                            }else{
-                                //if the oneOf element has at least one acceptable value
-                                if(this.state.resolutionValidation.fields[j] !== field){
-                                    //if is another oneOf element from same group
-                                    if(this.isAcceptable(this.state.avail[this.state.resolutionValidation.fields[j]], this.state.resolutionValidation.values[j])) stillInvalid=false;
-                                }else{
-                                    //if is current field
-                                    if(this.isAcceptable(value, this.state.resolutionValidation.values[j])) return '';
-                                    //if not acceptable but also not empty
-                                    if(this.validateNotEmpty(value)==='') return <small>{'Only ' + this.state.resolutionValidation.values[j].join(', ') + ' or empty values are allowed'}</small>;
-                                }
-                            }
-                        }
-
-                        if(stillInvalid) return <small>{'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value'}</small>;
-                        else return '';
-                    }
-                }
                 if(mapping.required) return this.validateNotEmpty(value);
             }
-
         }
         return '';
     }
