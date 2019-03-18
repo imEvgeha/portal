@@ -13,6 +13,7 @@ import store from '../../../stores/index';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import Select from 'react-select';
 
 const mapStateToProps = state => {
     return {
@@ -318,7 +319,7 @@ class AvailCreate extends React.Component {
 
             return renderFieldTemplate(name, displayName, required, (
                 <div
-                    id={'avails-create-' + name + '-select'}
+                    id={'avails-create-' + name + '-multiselect'}
                     key={name}
                     className="react-select-container"
                 >
@@ -326,6 +327,49 @@ class AvailCreate extends React.Component {
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         options={allOptions}
                         value={valArr}
+                        onChange={handleOptionsChange}
+                    />
+                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                    }
+                </div>
+            ));
+        };
+
+        const renderSelectField = (name, displayName, required, value) => {
+            let options = [];
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
+            
+            if(options.length > 0 && value){
+                val = options.filter(opt => opt.value === value).length === 1 ? options.filter(opt => opt.value === value)[0] : null;
+                options.unshift({value: '', label: value ? 'Select...' : ''});
+            }
+
+            let handleOptionsChange = (option) => {
+                this.checkAvail(name, option.value ? option.value : null, null, true);
+            }
+
+            return renderFieldTemplate(name, displayName, required, (
+                <div
+                    id={'avails-create-' + name + '-select'}
+                    key={name}
+                    className="react-select-container"
+                >
+                    <Select
+                        name={name}
+                        isSearchable
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={options}
+                        value={val}
                         onChange={handleOptionsChange}
                     />
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
@@ -392,7 +436,7 @@ class AvailCreate extends React.Component {
                             break;
                         case 'double' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'select' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'select' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
