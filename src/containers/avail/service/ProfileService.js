@@ -3,6 +3,7 @@ import config from 'react-global-configuration';
 import store from '../../../stores/index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
+import ISO6391 from 'iso-639-1';
 
 const http = Http.create({noDefaultErrorHandling: true});
 
@@ -34,6 +35,9 @@ export const profileService = {
                                 console.warn('MISSING options or endpoint: for ', rec.javaVariableName);
                             }
                         }
+                    }
+                    if(rec.dataType === 'language' || rec.dataType === 'multilanguage'){
+                        store.dispatch(loadSelectLists(rec.javaVariableName, ISO6391.getAllCodes().map(code => {return {value:code, label:ISO6391.getName(code)};})));
                     }
                 });
                 store.dispatch(loadAvailsMapping({mappings: response.data.mappings.filter((mapping) => (mapping.displayName))}));

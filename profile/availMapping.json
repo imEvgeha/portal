@@ -275,17 +275,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "holdbackLanguage",
-  "sheetColumnName": "Holdback Language",
-  "displayName": "Holdback Language",
-  "dataType": "multilanguage",
-  "searchDataType": "multilanguage",
-  "queryParamName": "holdbackLanguage",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
   "javaVariableName": "allowedLanguages",
   "sheetColumnName": "Allowed Languages",
   "displayName": "Allowed Languages",
@@ -395,7 +384,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true
 }, {
   "javaVariableName": "episodic.eposodeTitle",
   "sheetColumnName": "Eposode Title",

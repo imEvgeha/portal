@@ -14,6 +14,7 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
+import { AvField, AvForm } from 'availity-reactstrap-validation';
 
 const mapStateToProps = state => {
     return {
@@ -279,10 +280,82 @@ class AvailCreate extends React.Component {
             );
         };
 
-        const renderTextField = (name, displayName, required, value) => {
+        const renderStringField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
                     <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
+                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                    }
+                </div>
+            ));
+        };
+
+        const renderIntegerField = (name, displayName, required, value) => {
+            return renderFieldTemplate(name, displayName, required, (
+                <div>
+                    <AvForm>
+                        <AvField
+                                value={value}
+                                name={name}
+                                id={'avails-create-' + name + '-text'}
+                                placeholder={'Enter ' + displayName}
+                                onChange={this.handleChange}
+                                type="text"
+                                validate={{number: true}}
+                                errorMessage="Please enter a valid number!"
+                        />
+                    </AvForm>
+                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                    }
+                </div>
+            ));
+        };
+
+        const renderDoubleField = (name, displayName, required, value) => {
+            return renderFieldTemplate(name, displayName, required, (
+                <div>
+                    <AvForm>
+                        <AvField
+                            value={value}
+                            name={name}
+                            id={'avails-create-' + name + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            onChange={this.handleChange}
+                            type="text"
+                            validate={{number: true}}
+                            errorMessage="Please enter a valid number!"
+                        />
+                    </AvForm>
+                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                    }
+                </div>
+            ));
+        };
+
+        const renderDurationField = (name, displayName, required, value) => {
+            return renderFieldTemplate(name, displayName, required, (
+                <div>
+                    <AvForm>
+                        <AvField
+                            value={value}
+                            name={name}
+                            id={'avails-create-' + name + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            onChange={this.handleChange}
+                            type="text"
+                            validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
+                            errorMessage="Please enter a valid number!"
+                        />
+                    </AvForm>
                     {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
                         {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
@@ -309,14 +382,13 @@ class AvailCreate extends React.Component {
             ];
 
             if(allOptions[0].options.length > 0 && value){
-                valArr = value.split(',').map(val => {return allOptions[0].options.filter(opt => opt.value === val).length === 1 ? allOptions[0].options.filter(opt => opt.value === val)[0] : null;});
+                valArr = value.split(',').map(val => {return allOptions[0].options.filter(opt => opt.value === val).length === 1 ? allOptions[0].options.filter(opt => opt.value === val)[0] : null;}).filter(option => option);
             }
 
             let handleOptionsChange = (selectedOptions) => {
                 let val = selectedOptions.map(({value}) => value).join(',');
                 this.checkAvail(name, val, null, true);
             }
-
             return renderFieldTemplate(name, displayName, required, (
                 <div
                     id={'avails-create-' + name + '-multiselect'}
@@ -430,27 +502,27 @@ class AvailCreate extends React.Component {
                     let required = mapping.required;
                     const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
-                        case 'string' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'string' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'integer' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'integer' : renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'double' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'double' : renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'select' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'language' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'language' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'multilanguage' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'multilanguage' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'duration' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'duration' : renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
-                        case 'time' : //renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'time' : renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'date' : //renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
-                         case 'boolean' : //renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
