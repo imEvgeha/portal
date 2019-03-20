@@ -29,7 +29,6 @@ let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         availTabPageSort: state.dashboard.session.availTabPageSort,
-        freeTextSearch: state.dashboard.freeTextSearch,
         availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
@@ -51,7 +50,6 @@ class AvailsResultTable extends React.Component {
         availsMapping: t.any,
         availTabPage: t.object,
         availTabPageSort: t.array,
-        freeTextSearch: t.object,
         availTabPageSelection: t.object,
         availTabPageLoading: t.bool,
         resultPageUpdate: t.func,
@@ -202,8 +200,8 @@ class AvailsResultTable extends React.Component {
                 if(selected.indexOf(id) === -1 && e.api.getRowNode(id) === null) selected.push(id);
             });
         } else {
-            if(this.props.availTabPageSelection.selection && this.props.availTabPageSelection.selection.length > 0)
-                selected = selected.concat(this.props.availTabPageSelection.selection);
+            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
+                selected = selected.concat(this.props.availTabPageSelection.selected);
         }
 
         let allLoadedSelected = true;

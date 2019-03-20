@@ -23,10 +23,10 @@ const initialState = {
         total: 0
     },
     availTabPageLoading: false,
-    freeTextSearch: {
-        text: ''
-    },
     session: {
+        freeTextSearch: {
+            text: ''
+        },
         availTabPageSelection: {
             selected: [],
             selectAll: false
@@ -51,11 +51,13 @@ const dashboard = (state = initialState, action) => {
             return { ...state, session: {...state.session, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__UPDATE:
             return {...state, availTabPage: {...state.availTabPage, ...action.payload}};
-        case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
-            return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
+
         case DASHBOARD_RESULT_PAGE__LOADING:
             return {...state, availTabPageLoading: action.payload};
 //  ------------   SESSION Actions   ----------------------------
+        case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
+            saveDashboardState();
+            return { ...state, session: {...state.session, freeTextSearch: action.payload}};
         case SET_REPORT_NAME:
             saveDashboardState();
             return {...state, session: {...state.session, reportName: action.payload}};

@@ -51,16 +51,18 @@ function init() {
                 loadDashboardState();
                 loadCreateAvailState();
                 loadHistoryState();
+
+                render(
+                    <Provider store={store}>
+                        <App/>
+                    </Provider>,
+                    document.querySelector('#app')
+                );
             });
 
             updateAbility(keycloak.instance);
 
-            render(
-                <Provider store={store}>
-                    <App/>
-                </Provider>,
-                document.querySelector('#app')
-            );
+
         } else {
             keycloak.instance.login();
         }
