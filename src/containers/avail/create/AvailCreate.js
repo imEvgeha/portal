@@ -123,20 +123,20 @@ class AvailCreate extends React.Component {
     }
 
     checkAvail(name, value, setNewValue, save) {
-        let validationError = this.validateTextField(name, value);
+        const validationError = this.validateField(name, value);
 
         let errorMessage = {range: '', date: '', text: validationError};
-
-        let newAvail = {...this.avail, [name]: value};
+        this.mappingErrorMessage[name] = errorMessage;
 
         if(setNewValue){
+
+            let newAvail = {...this.avail, [name]: value};
+
             this.avail = newAvail;
             if(save) {
                 store.dispatch(saveCreateAvailForm(newAvail));
             }
         }
-
-        this.mappingErrorMessage[name] = errorMessage;
     }
 
     handleDatepickerChange(name, displayName, date) {
@@ -189,9 +189,14 @@ class AvailCreate extends React.Component {
         return '';
     }
 
-    validateTextField(name, value) {
+    validateField(name, value) {
         const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
-        if(map && map.required) return this.validateNotEmpty(value);
+        if(map && map.required) {
+            if(Array.isArray(value)){
+                return value.length === 0 ? 'Field can not be empty' : '';
+            }
+            return this.validateNotEmpty(value);
+        }
         return '';
     }
 
@@ -345,28 +350,34 @@ class AvailCreate extends React.Component {
 
         const renderMultiSelectField = (name, displayName, required, value) => {
             let options = [];
-            let valArr=[];
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
             }
 
+            //fields with enpoints (these have ids)
+            const filterKeys = Object.keys(this.avail).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            let filters = filterKeys.map((key) => this.avail[key]).filter(x => (Array.isArray(x) ? x.length : x));
+
+            let filteredOptions = options;
+            filters.map(filter => {
+                const fieldName = filter[0].type + 'Id';
+                const allowedOptions = filter.map(({id}) => id);
+                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
+            });
+
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
                         label: rec.label || rec.value,
                         aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
                 }
             ];
 
-            if(allOptions[0].options.length > 0 && value){
-                valArr = value.split(',').map(val => {return allOptions[0].options.filter(opt => opt.value === val).length === 1 ? allOptions[0].options.filter(opt => opt.value === val)[0] : null;}).filter(option => option);
-            }
-
             let handleOptionsChange = (selectedOptions) => {
-                let val = selectedOptions.map(({value}) => value).join(',');
-                this.checkAvail(name, val, true, true);
-            }
+                this.checkAvail(name, selectedOptions, true, true);
+            };
+
             return renderFieldTemplate(name, displayName, required, (
                 <div
                     id={'avails-create-' + name + '-multiselect'}
@@ -376,7 +387,7 @@ class AvailCreate extends React.Component {
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         options={allOptions}
-                        value={valArr}
+                        value={value}
                         onChange={handleOptionsChange}
                     />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
@@ -397,16 +408,16 @@ class AvailCreate extends React.Component {
 
             options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
                 label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
             
             if(options.length > 0 && value){
-                val = options.filter(opt => opt.value === value).length === 1 ? options.filter(opt => opt.value === value)[0] : null;
+                val = value[0];
                 options.unshift({value: '', label: value ? 'Select...' : ''});
             }
 
             let handleOptionsChange = (option) => {
-                this.checkAvail(name, option.value ? option.value : null, true, true);
-            }
+                this.checkAvail(name, option.value ? [option] : null, true, true);
+            };
 
             return renderFieldTemplate(name, displayName, required, (
                 <div
