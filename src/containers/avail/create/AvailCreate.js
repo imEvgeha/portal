@@ -51,8 +51,9 @@ class AvailCreate extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
+        this.mappingErrorMessage = {};
+
         this.state = {
-            mappingErrorMessage: {},
             avail: {},
             columns: 1
         };
@@ -66,7 +67,7 @@ class AvailCreate extends React.Component {
             avail: this.props.storedForm,
         });
         if(this.props.availsMapping){
-            this.addMappingToState(this.props.availsMapping.mappings);
+            this.initMappingErrors(this.props.availsMapping.mappings);
         }else{
             profileService.initAvailsMapping();
         }
@@ -87,7 +88,7 @@ class AvailCreate extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping != this.props.availsMapping) {
-            this.addMappingToState(this.props.availsMapping.mappings);
+            this.initMappingErrors(this.props.availsMapping.mappings);
         }
         if(prevProps.storedForm != this.props.storedForm){
             this.setState({
@@ -97,29 +98,26 @@ class AvailCreate extends React.Component {
     }
 
     handleInvalidDatePicker(name, invalid) {
-        const mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
         const groupedMappingName = this.getGroupedMappingName(name);
         if (invalid) {
-            mappingErrorMessage[name] = {date: INVALID_DATE};
-            if(mappingErrorMessage[groupedMappingName] && mappingErrorMessage[groupedMappingName].range) {
-                mappingErrorMessage[groupedMappingName].range = '';
+            this.mappingErrorMessage[name] = {date: INVALID_DATE};
+            if(this.mappingErrorMessage[groupedMappingName] && this.mappingErrorMessage[groupedMappingName].range) {
+                this.mappingErrorMessage[groupedMappingName].range = '';
             }
         } else {
-            mappingErrorMessage[name] = {...mappingErrorMessage[name], date: ''};
+            this.mappingErrorMessage[name].date = '';
         }
-        this.setState({
-            mappingErrorMessage: mappingErrorMessage
-        });
+
+        this.setState({});
     }
 
     handleChange({target}) {
         const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
         const name = target.name;
-
-        this.checkAvail(name, value, null, true);
+        this.checkAvail(name, value, true);
     }
 
-    checkAvail(name, value, mappingErrorMessage, setNewValue) {
+    checkAvail(name, value, setNewValue) {
         let validationError = this.validateTextField(name, value);
 
         let errorMessage = {range: '', date: '', text: validationError};
@@ -130,37 +128,32 @@ class AvailCreate extends React.Component {
             this.setState({
                 avail: newAvail,
             });
+
             store.dispatch(saveCreateAvailForm(newAvail));
+
         }
 
-        if(!mappingErrorMessage){
-            this.setState({
-                mappingErrorMessage: {...this.state.mappingErrorMessage, [name]: errorMessage}
-            });
+        this.mappingErrorMessage[name] = errorMessage;
+        this.anyInvalidField(newAvail);
 
-            this.anyInvalidField(newAvail, this.state.mappingErrorMessage);
-        }else{
-            mappingErrorMessage[name] = errorMessage;
-        }
+        this.setState({});
     }
 
     handleDatepickerChange(name, displayName, date) {
         const newAvail = {...this.state.avail};
         newAvail[name] = date;
         const groupedMappingName = this.getGroupedMappingName(name);
-        const mappingErrorMessage = this.state.mappingErrorMessage;
 
-        if (mappingErrorMessage[groupedMappingName] && !mappingErrorMessage[groupedMappingName].date) {
+        if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
             const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
-            mappingErrorMessage[name].range = errorMessage;
-            if (mappingErrorMessage[groupedMappingName]) {
-                mappingErrorMessage[groupedMappingName].range = errorMessage;
+            this.mappingErrorMessage[name].range = errorMessage;
+            if (this.mappingErrorMessage[groupedMappingName]) {
+                this.mappingErrorMessage[groupedMappingName].range = errorMessage;
             }
         }
 
         this.setState({
             avail: newAvail,
-            mappingErrorMessage: mappingErrorMessage
         });
         store.dispatch(saveCreateAvailForm(newAvail));
     }
@@ -169,16 +162,16 @@ class AvailCreate extends React.Component {
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
     }
 
-    anyInvalidField(avail, mappingErrorMessage) {
-        if (this.isAnyErrors(mappingErrorMessage) || this.areMandatoryFieldsEmpty(avail)) {
+    anyInvalidField(avail) {
+        if (this.isAnyErrors() || this.areMandatoryFieldsEmpty(avail)) {
             return true;
         } else {
             return false;
         }
     }
 
-    isAnyErrors(mappingErrorMessage) {
-        for (const [, value] of Object.entries(mappingErrorMessage)) {
+    isAnyErrors() {
+        for (const [, value] of Object.entries(this.mappingErrorMessage)) {
             if(value.date) {
                 return true;
             }
@@ -221,18 +214,13 @@ class AvailCreate extends React.Component {
     }
 
     validateFields(){
-        let mappingErrorMessage = Object.assign({}, this.state.mappingErrorMessage);
         this.props.availsMapping.mappings.map((mapping) => {
             if(mapping.dataType === 'date') return;
-            this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], mappingErrorMessage, false);
-        });
-
-        this.setState({
-            mappingErrorMessage: mappingErrorMessage
+            this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], false);
         });
 
         let newAvail = {...this.state.avail};
-        return this.anyInvalidField(newAvail, mappingErrorMessage);
+        return this.anyInvalidField(newAvail);
     }
 
     confirm() {
@@ -251,7 +239,7 @@ class AvailCreate extends React.Component {
         this.context.router.history.push('/avails');
     }
 
-    addMappingToState = (mappings) => {
+    initMappingErrors = (mappings) => {
         let mappingErrorMessage = {};
         mappings.map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
@@ -261,7 +249,7 @@ class AvailCreate extends React.Component {
             };
         });
 
-        this.setState({mappingErrorMessage: mappingErrorMessage});
+        this.mappingErrorMessage =  mappingErrorMessage;
     };
 
     render() {
@@ -284,9 +272,9 @@ class AvailCreate extends React.Component {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
                     <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
                     }
                 </div>
@@ -308,9 +296,9 @@ class AvailCreate extends React.Component {
                                 errorMessage="Please enter a valid number!"
                         />
                     </AvForm>
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
                     }
                 </div>
@@ -332,9 +320,9 @@ class AvailCreate extends React.Component {
                             errorMessage="Please enter a valid number!"
                         />
                     </AvForm>
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
                     }
                 </div>
@@ -356,9 +344,9 @@ class AvailCreate extends React.Component {
                             errorMessage="Please enter a valid number!"
                         />
                     </AvForm>
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
                     }
                 </div>
@@ -387,7 +375,7 @@ class AvailCreate extends React.Component {
 
             let handleOptionsChange = (selectedOptions) => {
                 let val = selectedOptions.map(({value}) => value).join(',');
-                this.checkAvail(name, val, null, true);
+                this.checkAvail(name, val, true);
             }
             return renderFieldTemplate(name, displayName, required, (
                 <div
@@ -401,9 +389,9 @@ class AvailCreate extends React.Component {
                         value={valArr}
                         onChange={handleOptionsChange}
                     />
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
                     }
                 </div>
@@ -427,7 +415,7 @@ class AvailCreate extends React.Component {
             }
 
             let handleOptionsChange = (option) => {
-                this.checkAvail(name, option.value ? option.value : null, null, true);
+                this.checkAvail(name, option.value ? option.value : null, true);
             }
 
             return renderFieldTemplate(name, displayName, required, (
@@ -444,9 +432,9 @@ class AvailCreate extends React.Component {
                         value={val}
                         onChange={handleOptionsChange}
                     />
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name] ? this.state.mappingErrorMessage[name].text ? this.state.mappingErrorMessage[name].text : '' : ''}
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
                     }
                 </div>
@@ -478,14 +466,14 @@ class AvailCreate extends React.Component {
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
                         onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
                     />
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].date &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].date &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name].date}
+                        {this.mappingErrorMessage[name].date}
                     </small>
                     }
-                    {this.state.mappingErrorMessage[name] && this.state.mappingErrorMessage[name].range &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].range &&
                     <small className="text-danger m-2">
-                        {this.state.mappingErrorMessage[name].range}
+                        {this.mappingErrorMessage[name].range}
                     </small>
                     }
                 </div>
