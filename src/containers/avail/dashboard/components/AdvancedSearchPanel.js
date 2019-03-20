@@ -234,6 +234,7 @@ class AdvancedSearchPanel extends React.Component {
 
         const fieldsToShow = this.getSortedFieldsToShow().map((field) => (field.name));
         const options = this.searchOptions.filter((option) => (!(fieldsToShow.indexOf(option.value) > -1)));
+        options.sort((a,b) => a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1);
 
         const renderCloseableBtn = (name, displayName) => {
             return (

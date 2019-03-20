@@ -16,8 +16,6 @@ import './TitleResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import { resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder } from '../../../../stores/actions/metadata/index';
 import { titleServiceManager } from '../../service/TitleServiceManager';
-
-import {updateBreadcrumb} from '../../../../stores/actions/metadata/index';
 import { Link } from 'react-router-dom';
 import { titleMapping } from '../../service/Profile';
 
@@ -47,8 +45,7 @@ let mapDispatchToProps = {
     resultPageSort,
     resultPageSelect,
     resultPageLoading,
-    resultPageUpdateColumnsOrder,
-    updateBreadcrumb
+    resultPageUpdateColumnsOrder
 };
 
 class TitleResultTable extends React.Component {
@@ -66,8 +63,7 @@ class TitleResultTable extends React.Component {
         resultPageLoading: t.func,
         columnsOrder: t.array,
         columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func,
-        updateBreadcrumb: t.func
+        resultPageUpdateColumnsOrder: t.func
     };
 
     table = null;
@@ -167,8 +163,12 @@ class TitleResultTable extends React.Component {
     parseColumnsSchema() {
         if (titleMapping) {
             titleMapping.mappings.map(column => colDef[column.javaVariableName] = {
-                field: column.javaVariableName,
                 headerName: column.displayName,
+                filter: 'agTextColumnFilter',
+                filterParams: {
+                    filterOptions: ['contains', 'notContains']
+                },
+                field: column.javaVariableName,
                 cellRendererFramework: this.loadingRenderer,
                 width: 623
             });
@@ -349,8 +349,8 @@ class TitleResultTable extends React.Component {
         const content = params.valueFormatted || params.value || error;
         if (params.value !== undefined) {
             if (content) {
-                return (                    
-                    <Link to={'metadata/detail/'+params.data.id}>
+                return (
+                    <Link to={'metadata/detail/' + params.data.id}>
                         <div
                             title={error}
                             style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}>
@@ -376,12 +376,11 @@ class TitleResultTable extends React.Component {
             });
         }
         if (params.colDef.headerName !== '' && error) {
-            return { backgroundColor: '#f2dede'};
+            return { backgroundColor: '#f2dede' };
         } else {
             return null;
         }
     }
-
     render() {
         return (
             <div
@@ -417,6 +416,10 @@ class TitleResultTable extends React.Component {
                     enableSorting={true}
                     enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
+
+                    enableFilter
+                    //floatingFilter
+                    //floatingFiltersHeight={50}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}

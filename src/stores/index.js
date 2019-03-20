@@ -7,10 +7,9 @@ import history from './reducers/history';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateAvailSession} from './actions/avail/createavail';
 import {loadHistorySession} from './actions/avail/history';
-import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper';
-import {advancedHistorySearchHelper} from '../containers/avail/ingest-history/AdvancedHistorySearchHelper';
+import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper.js';
 
-const DASHBOARD_SESSION_VERSION = '0.2';
+const DASHBOARD_SESSION_VERSION = '0.3';
 const CREATEAVAIL_SESSION_VERSION = '0.1';
 const HISTORY_SESSION_VERSION = '0.3';
 
@@ -27,9 +26,6 @@ export default store;
 
 export const loadHistoryState = () => {
     loadFromWebLocalStorage('history', loadHistorySession, HISTORY_SESSION_VERSION);
-    setTimeout(() => {
-        advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
-    }, 1);
 };
 export const saveHistoryState = () => {
     saveToWebLocalStorage('history', HISTORY_SESSION_VERSION);
@@ -43,7 +39,7 @@ export const loadDashboardState = () => {
             if (dashboard.session.showAdvancedSearch) {
                 availSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
             }else{
-                availSearchHelper.freeTextSearch(dashboard.freeTextSearch);
+                availSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
             }
         }
     }, 1);

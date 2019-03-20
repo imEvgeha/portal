@@ -29,7 +29,6 @@ let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         availTabPageSort: state.dashboard.session.availTabPageSort,
-        freeTextSearch: state.dashboard.freeTextSearch,
         availTabPageSelection: state.dashboard.session.availTabPageSelection,
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
@@ -52,7 +51,6 @@ class AvailsResultTable extends React.Component {
         availsMapping: t.any,
         availTabPage: t.object,
         availTabPageSort: t.array,
-        freeTextSearch: t.object,
         availTabPageSelection: t.object,
         availTabPageLoading: t.bool,
         resultPageUpdate: t.func,
@@ -139,11 +137,9 @@ class AvailsResultTable extends React.Component {
         if(!this.table) return;
         if(this.props.columnsOrder !== prevProps.columnsOrder) {
             this.refreshColumns();
-            for(let i=0; i< Math.min(this.props.columnsOrder.length, prevProps.columnsOrder.length); i++){
-                this.table.columnApi.moveColumn(this.props.columnsOrder[i], i+1);
-            }
-
-            this.setState({});
+            setTimeout(()=>{
+                this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
+            },1);
         }
 
         this.refreshSort();
@@ -270,9 +266,8 @@ class AvailsResultTable extends React.Component {
                 }
             });
         } else {
-            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0) {
+            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
                 selected = selected.concat(this.props.availTabPageSelection.selected);
-            }
         }
         this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
     }
@@ -412,7 +407,7 @@ class AvailsResultTable extends React.Component {
                     newCols.push(colDef[acc]);
                 }
             });
-            this.cols = newCols;
+            this.setState({ cols: newCols});
         }
     }
 
@@ -508,12 +503,12 @@ class AvailsResultTable extends React.Component {
 
                         getRowNodeId={data => data.id}
 
-                        defaultColDef={this.state.defaultColDef}
-                        columnDefs={this.cols}
-                        suppressDragLeaveHidesColumns={true}
-                        enableColResize={true}
-                        onDragStopped={this.onColumnReordered}
-                        onColumnResized={this.onColumnResized}
+                        defaultColDef = {this.state.defaultColDef}
+                        columnDefs= {this.state.cols}
+                        suppressDragLeaveHidesColumns= {true}
+                        enableColResize= {true}
+                        onDragStopped = {this.onColumnReordered}
+                        onColumnResized = {this.onColumnResized}
 
                         enableSorting={true}
                         onBodyScroll={this.onScroll}

@@ -17,15 +17,14 @@ import {
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import t from 'prop-types';
-import {
-    updateBreadcrumb
-} from '../../../stores/actions/metadata/index';
 import {titleSearchHelper} from '../dashboard/TitleSearchHelper';
 import { 
     BREADCRUMB_METADATA_DASHBOARD_PATH,
     BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH,
-    BREADCRUMB_METADATA_TITLE_HISTORY_PATH } from '../../../constants/metadata-breadcrumb-paths';
+    BREADCRUMB_METADATA_TITLE_HISTORY_PATH, 
+    BREADCRUMB_METADATA_SEARCH_RESULTS_PATH} from '../../../constants/metadata/metadata-breadcrumb-paths';
 import moment from 'moment';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
 
 const mapStateToProps = state => {
     return {
@@ -46,8 +45,7 @@ const mapDispatchToProps = {
     resultPageSelect,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
-    searchFormSetAdvancedSearchCriteria,
-    updateBreadcrumb,
+    searchFormSetAdvancedSearchCriteria
 };
 
 class DashboardContainer extends React.Component {
@@ -61,7 +59,6 @@ class DashboardContainer extends React.Component {
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
-        updateBreadcrumb: t.func,
         selected: t.array,
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
@@ -81,7 +78,7 @@ class DashboardContainer extends React.Component {
         this.cleanSelection = this.cleanSelection.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount() {   
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.titleHistory) {
@@ -93,33 +90,44 @@ class DashboardContainer extends React.Component {
                 this.props.searchFormShowAdvancedSearch(true);
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);
                 this.handleTitleAdvancedSearch(criteria);
-                this.props.updateBreadcrumb([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
+                NexusBreadcrumb.push([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
                 this.fromHistory = true;
             } else if (state.back) {
                 this.handleBackToDashboard();
             }
-        } else if (this.props.searchCriteria.titleHistoryIds) {
-            if (this.props.showSearchResults) {                
-                this.props.updateBreadcrumb([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
-            } else {         
-                this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH]);
+        } else if (this.props.searchCriteria.availHistoryIds) {
+            if (this.props.showSearchResults) {
+                NexusBreadcrumb.push([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH]);
             }
         } else {
-            this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH]);
+            if(this.props.showSearchResults) {
+                NexusBreadcrumb.push([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
+            }
         }
     }
 
-    componentDidUpdate() {
-        if (this.props.searchCriteria.titleHistoryIds && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {            
-            this.props.updateBreadcrumb([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
+    componentDidUpdate(prevProps) {
+        if (this.props.searchCriteria.titleHistoryIds && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {       
+            NexusBreadcrumb.push([BREADCRUMB_METADATA_TITLE_HISTORY_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
             this.fromHistory = true;
+        }
+
+        if(prevProps.searchCriteria !== this.props.searchCriteria) {
+            NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
+
+            if (this.props.showSearchResults) {
+                if(this.props.showAdvancedSearch){
+                    NexusBreadcrumb.push(BREADCRUMB_METADATA_TITLE_HISTORY_PATH);
+                }
+                NexusBreadcrumb.push(BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH);
+            }
         }
     }
 
     handleBackToDashboard() {
         this.props.searchFormShowAdvancedSearch(false);
         this.props.searchFormShowSearchResults(false);
-        this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH]);
+        NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
     }
 
     toggleAdvancedSearch() {
@@ -127,9 +135,9 @@ class DashboardContainer extends React.Component {
     }
 
     handleTitleFreeTextSearch(searchCriteria) {
-        this.props.searchFormUseAdvancedSearch(false);
-        this.props.searchFormShowSearchResults(true);
-        this.props.updateBreadcrumb([{name: 'Dashboard', path: '/dashboard', onClick: () => this.handleBackToDashboard()}, {name: 'Search Results'}]);
+        // this.props.searchFormUseAdvancedSearch(false);
+        this.props.searchFormShowSearchResults(true);        
+        NexusBreadcrumb.set([{name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard()}, {name: 'Search Results'}]);
         titleSearchHelper.freeTextSearch(searchCriteria);
         this.cleanSelection();
     }
@@ -137,8 +145,8 @@ class DashboardContainer extends React.Component {
     handleTitleAdvancedSearch(searchCriteria) {
         this.props.searchFormUseAdvancedSearch(true);
         this.props.searchFormShowSearchResults(true);
-        if (!this.props.searchCriteria.titleHistoryIds) {
-            this.props.updateBreadcrumb([BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_NO_PATH]);
+        if (!this.props.searchCriteria.titleHistoryIds) {        
+            NexusBreadcrumb.set([BREADCRUMB_METADATA_DASHBOARD_PATH]);  
         }
         titleSearchHelper.advancedSearch(searchCriteria);
         this.cleanSelection();

@@ -1,49 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Row, Col, Container, Alert } from 'reactstrap';
+import { Row, Col, Container, Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { titleService } from '../../service/TitleService';
-import { errorModal } from '../../../../components/modal/ErrorModal';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            titleForm: {
-                title: '',
-                contentType: '',
-                productionYear: '',
-                productionStudioId: '',
-                boxOffice: '',
-                episodic: {
-                    brandProdYear: '',
-                    brandTitleName: '',
-                    episodeId: '',
-                    episodeNumber: '',
-                    seasonId: '',
-                    seasonNumber: ''
-                },
-            }
-        };
-    }
-    componentDidMount() {
-        const titleId = this.props.titleId;
-        titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
-            this.setState({ titleForm, editedForm: titleForm });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: false });
-            console.error('Unable to load Title Data');
-        });
     }
     renderFields = (contentType) => {
-        const { title, productionStudioId, productionYear, boxOffice } = this.state.titleForm;
-
-
+        const { title, productionStudioId, releaseYear, boxOffice } = this.props.data;
         return (
             <Fragment>
-                <Row>
-                    <Col className="clearfix"><Button className="float-right" style={{ marginRight: '20px', marginBottom: '10px' }} onClick={this.props.handleSwitchMode}>Edit</Button></Col>
-                </Row>
                 <Container fluid id="titleContainer">
                     <Row style={{ marginTop: '5px' }}>
                         <Col xs="4">
@@ -52,57 +18,59 @@ class TitleReadOnlyMode extends Component {
                         <Col>
                             <Row>
                                 <Col>
-                                    <Alert color="light" id="titleName"><h2><b>Title: </b>{title ? title : <span style={{color: '#999'}}>Empty</span>}</h2></Alert>
+                                    <Alert color="light" id="titleName"><h2><b>Title: </b>{title ? title : <span style={{ color: '#999' }}>Empty</span>}</h2></Alert>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? contentType : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? contentType : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                                 <Col>
-                                    <Alert color="light" id="titleProductionStudioId"><b>Production Studio: </b>{productionStudioId ? productionStudioId : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                    <Alert color="light" id="titleProductionStudioId"><b>Production Studio: </b>{productionStudioId ? productionStudioId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                             </Row>
                             {
-                                contentType !== 'MOVIE' && contentType !== 'BRAND' ?
-                                    <Fragment>
-                                        <Row>
-                                            <Col md={6}>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.state.titleForm.episodic.seasonNumber ? this.state.titleForm.episodic.seasonNumber : <span style={{color: '#999'}}>Empty</span>}</Alert>
-                                            </Col>
-                                            {
-                                                contentType !== 'SEASON' ?
-                                                    <Col md={6}>
-                                                        <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.state.titleForm.episodic.episodeNumber ? this.state.titleForm.episodic.episodeNumber : <span style={{color: '#999'}}>Empty</span>}</Alert>
-                                                    </Col>
-                                                    :
-                                                    <Col md={6}>
-                                                        <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.state.titleForm.episodic.episodeCount ? this.state.titleForm.episodic.episodeCount : <span style={{color: '#999'}}>Empty</span>}</Alert>
-                                                    </Col>
-                                            }
-                                        </Row>
-                                        <Row>
-                                            {
-                                                contentType === 'SEASON' ?
-                                                    <Col>
-                                                        <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.state.titleForm.episodic.seasonId ? this.state.titleForm.episodic.seasonId : <span style={{color: '#999'}}>Empty</span>}</Alert>
-                                                    </Col>
-                                                    :
-                                                    <Col>
-                                                        <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.state.titleForm.episodic.episodeId ? this.state.titleForm.episodic.episodeId : <span style={{color: '#999'}}>Empty</span>}</Alert>
-                                                    </Col>
-                                            }
-                                        </Row>
-                                    </Fragment>
-                                    :
-                                    null
+                                this.props.data.episodic !== null  ?
+                                    contentType !== 'MOVIE' && contentType !== 'SERIES' ?
+                                        <Fragment>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                </Col>
+                                                {
+                                                    contentType === 'EPISODE' ?
+                                                        <Col md={6}>
+                                                            <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                        :
+                                                        <Col md={6}>
+                                                            <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                }
+                                            </Row>
+                                            <Row>
+                                                {
+                                                    contentType === 'SEASON' ?
+                                                        <Col>
+                                                            <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                        :
+                                                        <Col>
+                                                            <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                        </Col>
+                                                }
+                                            </Row>
+                                        </Fragment>
+                                        :
+                                        null
+                                    : null
                             }
                             <Row>
                                 <Col>
-                                    <Alert color="light" id="titleProductionYear"><b>Release Year: </b>{productionYear ? productionYear : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                    <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                                 <Col>
-                                    <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{color: '#999'}}>Empty</span>}</Alert>
+                                    <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                             </Row>
                         </Col>
@@ -112,18 +80,22 @@ class TitleReadOnlyMode extends Component {
         );
     }
     render() {
-        const { contentType } = this.state.titleForm;
-        if (!contentType) {
-            return null;
+        if (this.props.data) {
+            const { contentType } = this.props.data;
+            if (!contentType) {
+                return null;
+            } else {
+                return this.renderFields(contentType);
+            }
         } else {
-            return this.renderFields(contentType);
+            return null;
         }
     }
 }
 
 TitleReadOnlyMode.propTypes = {
-    handleSwitchMode: PropTypes.func.isRequired,
-    titleId: PropTypes.string.isRequired
+    data: PropTypes.object.isRequired,
+    episodic: PropTypes.object
 };
 
 export default TitleReadOnlyMode;

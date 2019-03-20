@@ -3,6 +3,13 @@ import t from 'prop-types';
 import {searchFormUpdateTextSearch} from '../../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
 
+
+const mapStateToProps = state => {
+    return {
+        freeTextSearch: state.dashboard.session.freeTextSearch
+    };
+};
+
 const mapDispatchToProps = {
     searchFormUpdateTextSearch
 };
@@ -13,13 +20,14 @@ class FreeTextSearch extends React.Component {
         searchFormUpdateTextSearch: t.func,
         onSearch: t.func,
         containerId: t.string,
-        disabled: t.bool
+        disabled: t.bool,
+        freeTextSearch: t.object
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
+            text: props.freeTextSearch.text,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -69,4 +77,4 @@ class FreeTextSearch extends React.Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(FreeTextSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(FreeTextSearch);

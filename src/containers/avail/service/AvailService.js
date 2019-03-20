@@ -4,6 +4,7 @@ import moment from 'moment';
 import {momentToISO, prepareSortMatrixParam} from '../../../util/Common';
 
 const http = Http.create();
+const httpNoError = Http.create({noDefaultErrorHandling:true});
 
 const prepareAvail = function (avail) {
 
@@ -42,7 +43,7 @@ export const availService = {
     },
 
     getAvail: (id) => {
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/' + id);
+        return httpNoError.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/' + id);
     },
 
     updateAvails: (availDiff, id) => {

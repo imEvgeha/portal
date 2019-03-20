@@ -96,7 +96,7 @@ class AvailDetails extends React.Component {
                 })
                 .catch(() => {
                     this.setState({
-                        errorMessage: 'Cannot retrieve avail'
+                        errorMessage: 'Sorry we could not find avail'
                     });
                 });
         }
@@ -179,7 +179,8 @@ class AvailDetails extends React.Component {
                             }
                         }
 
-                        if(stillInvalid) return <small>{'At least one of the ' + this.state.resolutionValidation.values.join(', ').toUpperCase() + ' needs to have correct value'}</small>;
+                        const fields = this.state.resolutionValidation.fields.map((value) => this.props.availsMapping.mappings.find(mapping => mapping.javaVariableName === value).displayName);
+                        if(stillInvalid) return <small>{'At least one of the ' + fields.join(', ') + ' needs to have correct value'}</small>;
                         else return '';
                     }
                 }
@@ -365,7 +366,7 @@ class AvailDetails extends React.Component {
                 {
                     this.state.errorMessage &&
                         <div id='avails-edit-error' className='text-danger w-100'>
-                            <Label id='avails-edit-error-message' className='text-danger w-100'>
+                            <Label id='avails-edit-error-message' className='text-danger w-100 pl-3'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
