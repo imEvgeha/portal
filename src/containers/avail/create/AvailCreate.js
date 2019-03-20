@@ -49,6 +49,7 @@ class AvailCreate extends React.Component {
         this.confirm = this.confirm.bind(this);
         this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeSave = this.handleChangeSave.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.mappingErrorMessage = {};
@@ -92,7 +93,6 @@ class AvailCreate extends React.Component {
         }
         if(prevProps.storedForm !== this.props.storedForm){
             this.avail = this.props.storedForm;
-            this.setState({});
         }
     }
 
@@ -113,10 +113,16 @@ class AvailCreate extends React.Component {
     handleChange({target}) {
         const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
         const name = target.name;
-        this.checkAvail(name, value, true);
+        this.checkAvail(name, value, true, false);
     }
 
-    checkAvail(name, value, setNewValue) {
+    handleChangeSave({target}) {
+        const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
+        const name = target.name;
+        this.checkAvail(name, value, true, true);
+    }
+
+    checkAvail(name, value, setNewValue, save) {
         let validationError = this.validateTextField(name, value);
 
         let errorMessage = {range: '', date: '', text: validationError};
@@ -125,15 +131,12 @@ class AvailCreate extends React.Component {
 
         if(setNewValue){
             this.avail = newAvail;
-            this.setState({});
-
-            store.dispatch(saveCreateAvailForm(newAvail));
+            if(save) {
+                store.dispatch(saveCreateAvailForm(newAvail));
+            }
         }
 
         this.mappingErrorMessage[name] = errorMessage;
-        this.anyInvalidField(newAvail);
-
-        this.setState({});
     }
 
     handleDatepickerChange(name, displayName, date) {
@@ -156,8 +159,8 @@ class AvailCreate extends React.Component {
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
     }
 
-    anyInvalidField(avail) {
-        if (this.isAnyErrors() || this.areMandatoryFieldsEmpty(avail)) {
+    anyInvalidField() {
+        if (this.isAnyErrors() || this.areMandatoryFieldsEmpty()) {
             return true;
         } else {
             return false;
@@ -187,23 +190,13 @@ class AvailCreate extends React.Component {
     }
 
     validateTextField(name, value) {
-        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
-            let mapping = this.props.availsMapping.mappings[i];
-            if(mapping.javaVariableName === name) {
-                if(mapping.required) return this.validateNotEmpty(value);
-            }
-        }
+        const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
+        if(map && map.required) return this.validateNotEmpty(value);
         return '';
     }
 
-    areMandatoryFieldsEmpty(avail) {
-        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
-            let mapping = this.props.availsMapping.mappings[i];
-            //check fields not belonging to 'oneOf' validations
-            //return true and get out as soon as one mandatory field is found not valid
-            if(mapping.required && !avail[mapping.javaVariableName]) return true;
-        }
-
+    areMandatoryFieldsEmpty() {
+        if(this.props.availsMapping.mappings.find(x => x.required && !this.avail[x.javaVariableName])) return true;
         return false;
     }
 
@@ -212,9 +205,8 @@ class AvailCreate extends React.Component {
             if(mapping.dataType === 'date') return;
             this.checkAvail(mapping.javaVariableName, this.avail[mapping.javaVariableName], false);
         });
-
-        let newAvail = {...this.avail};
-        return this.anyInvalidField(newAvail);
+        this.setState({});
+        return this.anyInvalidField();
     }
 
     confirm() {
@@ -222,7 +214,7 @@ class AvailCreate extends React.Component {
         availService.createAvail(this.avail).then((response) => {
             this.avail={};
             this.setState({});
-            store.dispatch(saveCreateAvailForm({}));
+            saveCreateAvailForm({});
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
@@ -266,7 +258,7 @@ class AvailCreate extends React.Component {
         const renderStringField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
-                    <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
+                    <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange} onBlur={this.handleChangeSave}/>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
@@ -286,6 +278,7 @@ class AvailCreate extends React.Component {
                                 id={'avails-create-' + name + '-text'}
                                 placeholder={'Enter ' + displayName}
                                 onChange={this.handleChange}
+                                onBlur={this.handleChangeSave}
                                 type="text"
                                 validate={{number: true}}
                                 errorMessage="Please enter a valid number!"
@@ -310,6 +303,7 @@ class AvailCreate extends React.Component {
                             id={'avails-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
+                            onBlur={this.handleChangeSave}
                             type="text"
                             validate={{number: true}}
                             errorMessage="Please enter a valid number!"
@@ -334,6 +328,7 @@ class AvailCreate extends React.Component {
                             id={'avails-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
+                            onBlur={this.handleChangeSave}
                             type="text"
                             validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
                             errorMessage="Please enter a valid number!"
@@ -370,7 +365,7 @@ class AvailCreate extends React.Component {
 
             let handleOptionsChange = (selectedOptions) => {
                 let val = selectedOptions.map(({value}) => value).join(',');
-                this.checkAvail(name, val, true);
+                this.checkAvail(name, val, true, true);
             }
             return renderFieldTemplate(name, displayName, required, (
                 <div
@@ -410,7 +405,7 @@ class AvailCreate extends React.Component {
             }
 
             let handleOptionsChange = (option) => {
-                this.checkAvail(name, option.value ? option.value : null, true);
+                this.checkAvail(name, option.value ? option.value : null, true, true);
             }
 
             return renderFieldTemplate(name, displayName, required, (
@@ -443,7 +438,8 @@ class AvailCreate extends React.Component {
                         id={'avails-create-' + name + '-select'}
                         placeholder={'Enter ' + displayName}
                         value={value}
-                        onChange={this.handleChange}>
+                        onChange={this.handleChange}
+                        onBlur={this.handleChangeSave}>
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
