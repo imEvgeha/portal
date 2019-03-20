@@ -324,7 +324,7 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderDurationField = (name, displayName, required, value) => {
+        const renderTimeField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
                     <AvForm>
@@ -499,9 +499,9 @@ class AvailCreate extends React.Component {
                             break;
                         case 'multilanguage' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'duration' : renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'duration' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
-                        case 'time' : renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
