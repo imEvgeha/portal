@@ -49,7 +49,7 @@ class NexusBreadcrumb extends React.Component {
     }
 
     static pop(){
-        let newOptions = NexusBreadcrumb.content.slice(0, NexusBreadcrumb.content.length-1);
+        let newOptions = NexusBreadcrumb.content.slice(0, -1);
         NexusBreadcrumb.set(newOptions);
     }
 

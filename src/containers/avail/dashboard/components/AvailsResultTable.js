@@ -33,7 +33,8 @@ let mapStateToProps = state => {
         availTabPageLoading: state.dashboard.availTabPageLoading,
         availsMapping: state.root.availsMapping,
         columnsOrder: state.dashboard.session.columns,
-        columnsSize: state.dashboard.session.columnsSize
+        columnsSize: state.dashboard.session.columnsSize,
+        showSelectedAvails: state.dashboard.showSelectedAvails,
     };
 };
 
@@ -58,7 +59,10 @@ class AvailsResultTable extends React.Component {
         resultPageLoading: t.func,
         columnsOrder: t.array,
         columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func
+        resultPageUpdateColumnsOrder: t.func,
+        showSelectedAvails: t.bool,
+        fromServer: t.bool,
+        hidden: t.bool
     };
 
     table = null;
@@ -66,6 +70,7 @@ class AvailsResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            originalData: this.props.availTabPageSelection.selected.slice(0),
             pageSize: config.get('avails.page.size'),
             cols:[],
             defaultColDef: {
@@ -82,11 +87,14 @@ class AvailsResultTable extends React.Component {
         this.onColumnReordered = this.onColumnReordered.bind(this);
         this.onColumnResized = this.onColumnResized.bind(this);
         this.onSortChanged = this.onSortChanged.bind(this);
+        this.refreshSelected = this.refreshSelected.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
+        this.clearAllSelected = this.clearAllSelected.bind(this);
+        this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
         this.onEdit = this.onEdit.bind(this);
 
-        if(colDef.length==0){
+        if(colDef.length === 0){
             this.parseColumnsSchema();
         }
     }
@@ -97,11 +105,17 @@ class AvailsResultTable extends React.Component {
             getRows: this.getRows
         };
 
+        if(this.props.setClearAllSelected) {
+            this.props.setClearAllSelected(this.clearAllSelected);
+        }
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
 
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
         let elem = document.querySelector('.vu-advanced-search-panel');
+        elem.addEventListener('transitionend', this.updateWindowDimensions);
+        elem = document.querySelector('.vu-free-text-search');
         elem.addEventListener('transitionend', this.updateWindowDimensions);
         this.refreshColumns();
     }
@@ -110,15 +124,18 @@ class AvailsResultTable extends React.Component {
         window.removeEventListener('resize', this.updateWindowDimensions);
         let elem = document.querySelector('.vu-advanced-search-panel');
         elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        elem = document.querySelector('.vu-free-text-search');
+        elem.removeEventListener('transitionend', this.updateWindowDimensions);
     }
 
     updateWindowDimensions() {
         let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
-        this.setState({ height: (window.innerHeight - offsetTop - 10) + 'px' });
+        this.setState({ height: window.innerHeight - offsetTop - 10});
     }
 
     componentDidUpdate(prevProps) {
-        if(this.props.columnsOrder != prevProps.columnsOrder) {
+        if(!this.table) return;
+        if(this.props.columnsOrder !== prevProps.columnsOrder) {
             this.refreshColumns();
             setTimeout(()=>{
                 this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
@@ -127,8 +144,31 @@ class AvailsResultTable extends React.Component {
 
         this.refreshSort();
 
-        if(this.props.availTabPageLoading != prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
+        if(this.props.fromServer && this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
             this.table.api.setDatasource(this.dataSource);
+        }
+
+        if(prevProps.availTabPageSelection !== this.props.availTabPageSelection){
+            if(this.props.fromServer){
+                if(this.props.showSelectedAvails){
+                    this.refreshSelected();
+                }
+            }else{
+                if(!this.props.showSelectedAvails) {
+                    this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
+                    setTimeout(() => {this.refreshSelected();}, 1);
+                }
+            }
+        }
+
+        //when we go out of 'See selected avails'
+        if(prevProps.showSelectedAvails !== this.props.showSelectedAvails && this.props.showSelectedAvails === false && !this.props.fromServer){
+            this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
+            setTimeout(() => {this.table.api.selectAll();}, 1);
+        }
+        if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
+            this.updateWindowDimensions();
+            this.refreshSelected();
         }
     }
 
@@ -148,6 +188,7 @@ class AvailsResultTable extends React.Component {
     }
 
     refreshSort(){
+        if(!this.table) return;
         let sortModel=[];
         this.props.availTabPageSort.map(sortCriteria=>{
             sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
@@ -156,11 +197,11 @@ class AvailsResultTable extends React.Component {
         let currentSortModel=this.table.api.getSortModel();
         let toChangeSortModel=false;
 
-        if(currentSortModel.length!=sortModel.length) toChangeSortModel=true;
+        if(currentSortModel.length !== sortModel.length) toChangeSortModel=true;
 
         for(let i=0; i < sortModel.length && !toChangeSortModel; i++){
-            if(sortModel[i].colId != currentSortModel[i].colId) toChangeSortModel = true;
-            if(sortModel[i].sortCriteria != currentSortModel[i].sortCriteria) toChangeSortModel = true;
+            if(sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
+            if(sortModel[i].sortCriteria !== currentSortModel[i].sortCriteria) toChangeSortModel = true;
         }
 
         if(toChangeSortModel){
@@ -173,43 +214,77 @@ class AvailsResultTable extends React.Component {
         let newSort = [];
         if(sortParams.length > 0){
             sortParams.map(criteria =>{
-                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort == 'desc'});
+                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort === 'desc'});
             });
         }
         this.props.resultPageSort(newSort);
     }
 
-    onSelectionChanged(e){
+    onSelectionChanged(){
         if(!registeredOnSelect){
             registeredOnSelect = true;
-            setTimeout(this.onSelectionChangedProcess, 1, e);
+            setTimeout(this.onSelectionChangedProcess, 1);
         }
     }
 
-    onSelectionChangedProcess(e){
-        registeredOnSelect = false;
+    onScroll(){
+        const allVisibleSelected = this.areAllVisibleSelected();
+        const oneVisibleSelected = this.isOneVisibleSelected();
+        if(allVisibleSelected !== this.props.availTabPageSelection.selectAll || oneVisibleSelected === this.props.availTabPageSelection.selectNone) {
+            this.props.resultPageSelect({selected: this.props.availTabPageSelection.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
+        }
+    }
 
-        let selectedRows = e.api.getSelectedRows();
-        let selected=[];
-        selectedRows.map(row => {
-            selected.push(row.id);
+    refreshSelected(){
+        if(!this.table) return;
+        this.table.api.deselectAll();
+        this.table.api.forEachNode(rowNode => {
+            if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
+                rowNode.setSelected(true);
+            }
         });
+    }
 
-        if(e.api.getDisplayedRowCount() > 0){
-            this.props.availTabPageSelection.selected.map(id => {
-                if(selected.indexOf(id) === -1 && e.api.getRowNode(id) === null) selected.push(id);
+    clearAllSelected(){
+        if(this.table){
+            this.table.api.deselectAll();
+        }
+    }
+
+    onSelectionChangedProcess(){
+        registeredOnSelect = false;
+        if(!this.table) return;
+
+        if(this.props.hidden) return;
+
+        let selected = this.table.api.getSelectedRows().slice(0);
+
+        if(this.table.api.getDisplayedRowCount() > 0){
+            this.props.availTabPageSelection.selected.map(sel => {
+                if(selected.filter(rec => (sel.id === rec.id)).length === 0 && this.table.api.getRowNode(sel.id) === null) {
+                    selected.push(sel);
+                }
             });
         } else {
             if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
                 selected = selected.concat(this.props.availTabPageSelection.selected);
         }
+        this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
+    }
 
-        let allLoadedSelected = true;
+    isOneVisibleSelected(){
+        const visibleRange = this.table.api.getVerticalPixelRange();
+        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop < visibleRange.bottom));
+        const selectedNodes = visibleNodes.filter(({selected}) => selected);
+        return selectedNodes.length > 0;
+    }
 
-        e.api.forEachNode( node => {
-            if(!node.isSelected()) allLoadedSelected = false;
-        });
-        this.props.resultPageSelect({selected: selected, selectAll: allLoadedSelected});
+    areAllVisibleSelected(){
+        const visibleRange = this.table.api.getVerticalPixelRange();
+        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop < visibleRange.bottom));
+        const selectedNodes = visibleNodes.filter(({selected}) => selected);
+
+        return visibleNodes.length === selectedNodes.length;
     }
 
     editAvail(newAvail) {
@@ -237,13 +312,13 @@ class AvailsResultTable extends React.Component {
     }
 
     getRows(params){
-        if(this.table && this.table.api.getDisplayedRowCount()==0){
+        if(this.table && this.table.api.getDisplayedRowCount() === 0){
             this.table.api.showLoadingOverlay();
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
+                       //console.log(response);
                         if(response && response.data.total > 0){
-                            //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
                             let lastRow = -1;
@@ -253,17 +328,16 @@ class AvailsResultTable extends React.Component {
 
                             if(this.table){
                                 params.successCallback(response.data.data, lastRow);
-
                                 if(this.props.availTabPageSelection.selected.length > 0){
                                     this.table.api.forEachNode(rowNode => {
-                                        if(rowNode.data && this.props.availTabPageSelection.selected.indexOf(rowNode.data.id) > -1){
+                                        if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
                                             rowNode.setSelected(true);
                                         }
                                     });
                                 }
 
                                 this.table.api.hideOverlay();
-                                this.onSelectionChanged(this.table);
+                                this.onSelectionChanged();
                             }
                         }else{
                             if(this.table){
@@ -275,6 +349,10 @@ class AvailsResultTable extends React.Component {
                        console.error(error);
                        params.failCallback();
                    });
+    }
+
+    staticDataLoaded(e){
+        e.api.selectAll();
     }
 
     addLoadedItems(data) {
@@ -289,19 +367,10 @@ class AvailsResultTable extends React.Component {
         }
     }
 
-    resetLoadedItems(){
-        this.props.resultPageUpdate({
-            pages: 0,
-            avails: [],
-            pageSize: 0,
-            total:0
-        });
-    }
-
     onColumnReordered(e) {
         let cols = [];
         e.columnApi.getAllGridColumns().map(column => {
-            if(column.colDef.headerName!='') cols.push(column.colDef.field);
+            if(column.colDef.headerName !== '') cols.push(column.colDef.field);
         });
         this.props.resultPageUpdateColumnsOrder(cols);
     }
@@ -387,7 +456,6 @@ class AvailsResultTable extends React.Component {
             params.data.validationErrors.forEach( e => {
              if(e.fieldName === params.colDef.field){
                  error = e;
-                 return;
              }
             });
         }
@@ -399,47 +467,61 @@ class AvailsResultTable extends React.Component {
     }
 
     render() {
+        let rowsProps = {};
+        if(!this.props.fromServer) {
+            rowsProps = {
+                rowBuffer: '0',
+                rowData: this.state.originalData,
+                onFirstDataRendered: this.staticDataLoaded
+            };
+        } else {
+            rowsProps = {
+                rowBuffer: '50',
+                rowModelType: 'infinite',
+                paginationPageSize: this.state.pageSize,
+                infiniteInitialRowCount: '0',
+                cacheOverflowSize: '2',
+                maxConcurrentDatasourceRequests: '1',
+                datasource: this.dataSource,
+                enableServerSideSorting: true,
+                onSortChanged: this.onSortChanged
+            };
+        }
+
         return(
-            <div
-                className="ag-theme-balham"
-                style={{
-                    height: this.state.height,
-                    width: '100%' }}
+            <div>
+                <div
+                    className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
+                    style={{
+                        height: this.state.height + 'px',
+                        width: '100%'
+                    }}
+                >
+                    <AgGridReact
+                        ref={this.setTable}
+                        {...rowsProps}
+
+                        getRowNodeId={data => data.id}
+
+                        defaultColDef = {this.state.defaultColDef}
+                        columnDefs= {this.state.cols}
+                        suppressDragLeaveHidesColumns= {true}
+                        enableColResize= {true}
+                        onDragStopped = {this.onColumnReordered}
+                        onColumnResized = {this.onColumnResized}
+
+                        enableSorting={true}
+                        onBodyScroll={this.onScroll}
+
+                        rowSelection="multiple"
+                        onSelectionChanged={this.onSelectionChanged}
+                        suppressRowClickSelection={true}
+
+                        headerHeight='52'
+                        rowHeight='48'
                     >
-                <AgGridReact
-                    ref={this.setTable}
-
-                    getRowNodeId= {data => data.id}
-
-                    defaultColDef = {this.state.defaultColDef}
-                    columnDefs= {this.state.cols}
-                    suppressDragLeaveHidesColumns= {true}
-                    enableColResize= {true}
-                    onDragStopped = {this.onColumnReordered}
-                    onColumnResized = {this.onColumnResized}
-
-                    rowBuffer= '50'
-                    rowModelType= 'infinite'
-                    paginationPageSize= {this.state.pageSize}
-                    infiniteInitialRowCount= '0'
-                    cacheOverflowSize= '2'
-                    maxConcurrentDatasourceRequests= '1'
-                    datasource= {this.dataSource}
-
-                    enableSorting={true}
-                    enableServerSideSorting= {true}
-                    onSortChanged = {this.onSortChanged}
-
-                    rowSelection= "multiple"
-                    onSelectionChanged= {this.onSelectionChanged}
-                    suppressRowClickSelection = {true}
-
-                    headerHeight= '52'
-                    rowHeight= '48'
-
-                    >
-                </AgGridReact>
-
+                    </AgGridReact>
+                </div>
             </div>
         );
     }
@@ -455,15 +537,10 @@ mapStateToProps = state => {
     };
 };
 
-mapDispatchToProps = {
-    resultPageSelect
-};
-
 class CheckBoxHeaderInternal extends Component {
     static propTypes = {
         availTabPageSelection: t.object,
         api: t.object,
-        resultPageSelect: t.func
     };
 
     constructor(props) {
@@ -472,35 +549,35 @@ class CheckBoxHeaderInternal extends Component {
     }
 
     onCheckBoxClick(){
+        const visibleRange = this.props.api.getVerticalPixelRange();
+        const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop < visibleRange.bottom));
+
         if(!this.props.availTabPageSelection.selectAll) {
-            this.props.api.forEachNode(node=>{
-                if(!node.isSelected()) {
-                    node.setSelected(true);
-                }
+            const notSelectedNodes = visibleNodes.filter(({selected}) => !selected);
+            notSelectedNodes.forEach(node => {
+                node.setSelected(true);
             });
         }
         else {
-            this.props.api.deselectAll();
-            this.props.resultPageSelect({selected: [], selectAll: false});
+            const selectedNodes = visibleNodes.filter(({selected}) => selected);
+            selectedNodes.forEach(node => {
+                node.setSelected(false);
+            });
         }
     }
 
     render() {
-        let allLoadedSelected = true;
-        let atLeastOneLoadedSelected = false;
+        const allVisibleSelected = this.props.availTabPageSelection.selectAll;
+        const atLeastOneVisibleSelected = !this.props.availTabPageSelection.selectNone;
 
-        this.props.api.forEachNode(node => {
-            if(node.isSelected()) atLeastOneLoadedSelected = true;
-            else allLoadedSelected = false;
-        });
         return (
             <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
-                <span className={`ag-icon ag-icon-checkbox-checked ${atLeastOneLoadedSelected && allLoadedSelected ? '' : 'ag-hidden'}`}></span>
-                <span className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneLoadedSelected ? '' : 'ag-hidden'}`}></span>
-                <span className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneLoadedSelected && !allLoadedSelected ? '' : 'ag-hidden'}`}></span>
+                <span className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
+                <span className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}> </span>
+                <span className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
             </span>
         );
     }
 }
 
-let CheckBoxHeader = connect(mapStateToProps, mapDispatchToProps)(CheckBoxHeaderInternal);
+let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
