@@ -52,9 +52,9 @@ class AvailCreate extends React.Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.mappingErrorMessage = {};
+        this.avail = {},
 
         this.state = {
-            avail: {},
             columns: 1
         };
     }
@@ -63,14 +63,14 @@ class AvailCreate extends React.Component {
         if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
         NexusBreadcrumb.push(AVAILS_CREATE);
-        this.setState({
-            avail: this.props.storedForm,
-        });
+        this.avail = this.props.storedForm;
+
         if(this.props.availsMapping){
             this.initMappingErrors(this.props.availsMapping.mappings);
         }else{
             profileService.initAvailsMapping();
         }
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     }
@@ -87,13 +87,12 @@ class AvailCreate extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.availsMapping != this.props.availsMapping) {
+        if (prevProps.availsMapping !== this.props.availsMapping) {
             this.initMappingErrors(this.props.availsMapping.mappings);
         }
-        if(prevProps.storedForm != this.props.storedForm){
-            this.setState({
-                avail: this.props.storedForm,
-            });
+        if(prevProps.storedForm !== this.props.storedForm){
+            this.avail = this.props.storedForm;
+            this.setState({});
         }
     }
 
@@ -122,15 +121,13 @@ class AvailCreate extends React.Component {
 
         let errorMessage = {range: '', date: '', text: validationError};
 
-        let newAvail = {...this.state.avail, [name]: value};
+        let newAvail = {...this.avail, [name]: value};
 
         if(setNewValue){
-            this.setState({
-                avail: newAvail,
-            });
+            this.avail = newAvail;
+            this.setState({});
 
             store.dispatch(saveCreateAvailForm(newAvail));
-
         }
 
         this.mappingErrorMessage[name] = errorMessage;
@@ -140,22 +137,19 @@ class AvailCreate extends React.Component {
     }
 
     handleDatepickerChange(name, displayName, date) {
-        const newAvail = {...this.state.avail};
-        newAvail[name] = date;
+        this.avail[name] = date;
         const groupedMappingName = this.getGroupedMappingName(name);
 
         if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
-            const errorMessage = rangeValidation(name, displayName, date, this.state.avail);
+            const errorMessage = rangeValidation(name, displayName, date, this.avail);
             this.mappingErrorMessage[name].range = errorMessage;
             if (this.mappingErrorMessage[groupedMappingName]) {
                 this.mappingErrorMessage[groupedMappingName].range = errorMessage;
             }
         }
 
-        this.setState({
-            avail: newAvail,
-        });
-        store.dispatch(saveCreateAvailForm(newAvail));
+        store.dispatch(saveCreateAvailForm(this.avail));
+        this.setState({});
     }
 
     getGroupedMappingName(name) {
@@ -216,17 +210,18 @@ class AvailCreate extends React.Component {
     validateFields(){
         this.props.availsMapping.mappings.map((mapping) => {
             if(mapping.dataType === 'date') return;
-            this.checkAvail(mapping.javaVariableName, this.state.avail[mapping.javaVariableName], false);
+            this.checkAvail(mapping.javaVariableName, this.avail[mapping.javaVariableName], false);
         });
 
-        let newAvail = {...this.state.avail};
+        let newAvail = {...this.avail};
         return this.anyInvalidField(newAvail);
     }
 
     confirm() {
         if(this.validateFields()) return;
-        availService.createAvail(this.state.avail).then((response) => {
-            this.setState({avail:{}});
+        availService.createAvail(this.avail).then((response) => {
+            this.avail={};
+            this.setState({});
             store.dispatch(saveCreateAvailForm({}));
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
@@ -462,7 +457,7 @@ class AvailCreate extends React.Component {
                     <NexusDatePicker
                         value={value}
                         id={'avails-create-' + name + '-text'}
-                        date={this.state.avail[name]}
+                        date={this.avail[name]}
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
                         onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
                     />
@@ -488,7 +483,7 @@ class AvailCreate extends React.Component {
             this.props.availsMapping.mappings.map((mapping)=> {
                 if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
                     let required = mapping.required;
-                    const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
+                    const value = this.avail ? this.avail[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
                         case 'string' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
