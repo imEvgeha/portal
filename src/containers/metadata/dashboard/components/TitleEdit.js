@@ -210,7 +210,7 @@ class TitleEdit extends Component {
     toggleTerritoryMetadata = (tab) => {
         this.setState({
             territoryMetadataActiveTab: tab,
-            areTerritoryMetadataFieldsRequired: false
+            areTerritoryMetadataFieldsRequired: false,
         });
     };
 
@@ -262,10 +262,8 @@ class TitleEdit extends Component {
                 this.setState({
                     territory: [response.data, ...this.state.territory],
                     territoryMetadataActiveTab: CURRENT_TAB,
-                    areTerritoryMetadataFieldsRequired: false
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
+            }).catch(() => {
                 console.error('Unable to add Territory Metadata');
             });
         } else {
@@ -378,11 +376,9 @@ class TitleEdit extends Component {
                 this.cleanEditorialMetadata();
                 this.setState({
                     editorialMetadata: [response.data, ...this.state.editorialMetadata],
-                    editorialMetadataActiveTab: CURRENT_TAB,
-                    areEditorialMetadataFieldsRequired: false
+                    editorialMetadataActiveTab: CURRENT_TAB
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
+            }).catch(() => {
                 console.error('Unable to add Editorial Metadata');
             });
         } else {
@@ -431,6 +427,10 @@ class TitleEdit extends Component {
         this.handleTitleOnSave();
         this.handleTerritoryMetadataOnSave();
         this.handleEditorialMetadataOnSave();
+        this.setState({
+            areEditorialMetadataFieldsRequired: false,
+            areTerritoryMetadataFieldsRequired: false,
+        });
     };
 
     render() {
