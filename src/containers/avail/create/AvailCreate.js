@@ -83,9 +83,9 @@ class AvailCreate extends React.Component {
     }
 
     updateWindowDimensions() {
-        const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
-        if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
-            this.setState({ columns: columns });
+        // const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
+        // if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
+        //     this.setState({ columns: columns });
     }
 
     componentDidUpdate(prevProps) {
@@ -529,12 +529,13 @@ class AvailCreate extends React.Component {
 
             for (let i = 0; i < this.state.columns; i++) {
                 renderColumns.push(
-                    <div key={i} className="nx-stylish list-group col">
+                    <div key={i} className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
                         {renderFields.slice(i*perColumn, (i+1)*perColumn)}
                     </div>
                 );
             }
         }
+
         return(
             <div>
                 <div className="nx-stylish row mt-3 mx-5">
@@ -544,7 +545,7 @@ class AvailCreate extends React.Component {
                     {this.state.errorMessage}
                 </Label>
                 {this.props.availsMapping &&
-                    <div className="float-right mt-3 mx-5">
+                    <div className="float-right mt-1 mx-5">
                         <Button className="mr-2" id="avails-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
                         <Button className="mr-4" id="avails-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                     </div>
