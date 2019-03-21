@@ -9,7 +9,7 @@ const isNotEmpty = function(obj){
         return obj.length > 0;
     }
     return obj && safeTrim(obj);
-}
+};
 
 const parse = function(value){
     if(typeof  value === 'string')
@@ -22,12 +22,12 @@ const parse = function(value){
         return parse(value.value);
 
     return null;
-}
+};
 
 const populate = function(key, value, location){
     const dotPos = key.indexOf('.');
     if(dotPos > 0) {
-        const firstKey = key.split('.')[0]
+        const firstKey = key.split('.')[0];
         const restKey = key.substring(dotPos+1);
         if(!location[firstKey])
             location[firstKey]={};
@@ -35,7 +35,7 @@ const populate = function(key, value, location){
     }else{
         location[key] = parse(value);
     }
-}
+};
 
 const prepareAvail = function (avail) {
     let availCopy = {};
