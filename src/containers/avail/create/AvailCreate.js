@@ -15,6 +15,7 @@ import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
+import {safeTrim} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -129,9 +130,7 @@ class AvailCreate extends React.Component {
         this.mappingErrorMessage[name] = errorMessage;
 
         if(setNewValue){
-
             let newAvail = {...this.avail, [name]: value};
-
             this.avail = newAvail;
             if(save) {
                 store.dispatch(saveCreateAvailForm(newAvail));
@@ -140,18 +139,20 @@ class AvailCreate extends React.Component {
     }
 
     handleDatepickerChange(name, displayName, date) {
-        this.avail[name] = date;
-        const groupedMappingName = this.getGroupedMappingName(name);
+        this.checkAvail(name, date, true, true);
+        if(!this.mappingErrorMessage[name].text) {
+            const groupedMappingName = this.getGroupedMappingName(name);
 
-        if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
-            const errorMessage = rangeValidation(name, displayName, date, this.avail);
-            this.mappingErrorMessage[name].range = errorMessage;
-            if (this.mappingErrorMessage[groupedMappingName]) {
-                this.mappingErrorMessage[groupedMappingName].range = errorMessage;
+            if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
+                const errorMessage = rangeValidation(name, displayName, date, this.avail);
+                this.mappingErrorMessage[name].range = errorMessage;
+                if (this.mappingErrorMessage[groupedMappingName]) {
+                    this.mappingErrorMessage[groupedMappingName].range = errorMessage;
+                }
             }
         }
 
-        store.dispatch(saveCreateAvailForm(this.avail));
+        store.dispatch(saveCreateAvailForm({...this.avail}));
         this.setState({});
     }
 
@@ -183,7 +184,7 @@ class AvailCreate extends React.Component {
     }
 
     validateNotEmpty(data) {
-        if (!data || !data.trim()) {
+        if (!data || !safeTrim(data)) {
             return 'Field can not be empty';
         }
         return '';
@@ -207,7 +208,6 @@ class AvailCreate extends React.Component {
 
     validateFields(){
         this.props.availsMapping.mappings.map((mapping) => {
-            if(mapping.dataType === 'date') return;
             this.checkAvail(mapping.javaVariableName, this.avail[mapping.javaVariableName], false);
         });
         this.setState({});
@@ -471,6 +471,11 @@ class AvailCreate extends React.Component {
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].date &&
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name].date}
+                    </small>
+                    }
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.mappingErrorMessage[name].text}
                     </small>
                     }
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].range &&
