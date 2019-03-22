@@ -8,16 +8,20 @@ import {Button, Label} from 'reactstrap';
 
 import {availService} from '../service/AvailService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
+import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
 import {rangeValidation} from '../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../ability';
 import './AvailDetails.scss';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
+import Select from 'react-select';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const mapStateToProps = state => {
    return {
        availsMapping: state.root.availsMapping,
+       selectValues: state.root.selectValues,
    };
 };
 
@@ -27,6 +31,7 @@ const READONLY_FIELDS = ['rowEdited'];
 class AvailDetails extends React.Component {
 
     static propTypes = {
+        selectValues: t.object,
         availsMapping: t.any,
         match: t.any,
         location: t.any
@@ -47,6 +52,7 @@ class AvailDetails extends React.Component {
         this.getAvailData = this.getAvailData.bind(this);
 
         this.emptyValueText = 'Enter';
+        this.fields = {};
 
         this.state = {
             errorMessage: '',
@@ -76,9 +82,9 @@ class AvailDetails extends React.Component {
     }
 
     updateWindowDimensions() {
-        const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
-        if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
-            this.setState({ columns: columns });
+        // const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
+        // if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
+        //     this.setState({ columns: columns });
     }
 
     getAvailData() {
@@ -87,7 +93,8 @@ class AvailDetails extends React.Component {
                 .then(res => {
                     if(res && res.data){
                         this.setState({
-                            avail: res.data
+                            avail: res.data,
+                            flatAvail: this.flattenAvail(res.data)
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({name: res.data.title, path: '/avails/' + res.data.id});
@@ -111,10 +118,32 @@ class AvailDetails extends React.Component {
         });
     }
 
-    handleDatepickerSubmit(name, date, cancel) {
-        this.update(name, date, () => {
+    handleEditableSubmit(name, value, cancel) {
+        this.update(name, value, () => {
             cancel();
         });
+    }
+
+    getDeepValue(source, location){
+        const dotPos = location.indexOf('.');
+        if(dotPos > 0) {
+            const firstKey = location.split('.')[0];
+            const restKey = location.substring(dotPos+1);
+            return source[firstKey] ? this.getDeepValue(source[firstKey], restKey) : null;
+        }else{
+            return source[location];
+        }
+    }
+
+    flattenAvail(avail){
+        let availCopy = {};
+
+        this.props.availsMapping.mappings.forEach(map => {
+            const val = this.getDeepValue(avail, map.javaVariableName);
+            if(val) availCopy[map.javaVariableName] = val;
+        });
+
+        return availCopy;
     }
 
     update(name, value, onError) {
@@ -123,7 +152,7 @@ class AvailDetails extends React.Component {
             .then(res => {
                 let editedAvail = res.data;
                 this.setState({
-                    avail: editedAvail,
+                    avail: this.flattenAvail(editedAvail),
                     errorMessage: ''
                 });
                 NexusBreadcrumb.pop();
@@ -222,6 +251,7 @@ class AvailDetails extends React.Component {
                 />
             ));
         };
+
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
                 <Editable
@@ -239,6 +269,153 @@ class AvailDetails extends React.Component {
             ));
 
         };
+
+        const renderSelectField = (name, displayName, value, error, readOnly, required) => {
+            let priorityError = null;
+            if(error){
+                priorityError = <div title = {error}
+                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+                    {error}
+                </div>;
+            }
+
+            let ref
+            if(this.fields[name]){
+                ref = this.fields[name];
+
+            }else{
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [];
+            let selectedVal = ref.current? ref.current.state.value : value;
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+
+            if(options.length > 0 && selectedVal){
+                val = options.find((opt) => opt.value === selectedVal);
+                options.unshift({value: '', label: value ? 'Select...' : ''});
+            }
+
+            let handleOptionsChange = (option) => {
+                ref.current.handleChange(option.value ? option.value : null);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+                <EditableBaseComponent
+                    ref={ref}
+                    value={value}
+                    priorityDisplay={priorityError}
+                    name={name}
+                    disabled={readOnly}
+                    displayName={displayName}
+                    validate={() => {}}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    helperComponent={<Select
+                        name={name}
+                        isSearchable
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={options}
+                        value={val}
+                        onChange={handleOptionsChange}
+                    />}
+                />
+            ));
+        };
+
+        const renderMultiSelectField = (name, displayName, value, error, readOnly, required) => {
+            let priorityError = null;
+            if(error){
+                priorityError = <div title = {error}
+                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+                    {error}
+                </div>;
+            }
+
+            let ref
+            if(this.fields[name]){
+                ref = this.fields[name];
+
+            }else{
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [];
+            let selectedVal = ref.current? ref.current.state.value : value;
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            //fields with enpoints (these have ids)
+            const filterKeys = Object.keys(this.state.flatAvail).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            let filters = filterKeys.map((key) => {
+                if(this.state.flatAvail[key] && this.props.selectValues[key]) {
+                    const filt = this.state.flatAvail[key].split(',').map(val => {
+                        const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
+                        return candidates.length ? candidates : null;
+                    }).filter(x => x).flat();
+                    return filt.length ? filt : null;
+                }
+            }).filter(x => x);//.filter(x => (Array.isArray(x) ? x.length : x));
+
+            let filteredOptions = options;
+            filters.map(filter => {
+                const fieldName = filter[0].type + 'Id';
+                const allowedOptions = filter.map(({id}) => id);
+                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
+            });
+
+            const allOptions = [
+                {
+                    label: 'Select All',
+                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                        label: rec.label || rec.value,
+                        aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
+                }
+            ];
+
+            if(allOptions[0].options && allOptions[0].options.length > 0 && selectedVal){
+                val = selectedVal.split(',').map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
+            }
+
+            let handleOptionsChange = (selectedOptions) => {
+                const selVal = selectedOptions.map(({value}) => value).join(',');
+                ref.current.handleChange(selVal ? selVal : null);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+                <EditableBaseComponent
+                    ref={ref}
+                    value={value}
+                    priorityDisplay={priorityError}
+                    name={name}
+                    disabled={readOnly}
+                    displayName={displayName}
+                    validate={() => {}}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    helperComponent={<ReactMultiSelectCheckboxes
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={allOptions}
+                        value={val}
+                        onChange={handleOptionsChange}
+                    />}
+                />
+            ));
+        };
+
         const renderDatepickerField = (name, displayName, value, error, readOnly, required) => {
             let priorityError = null;
             if(error){
@@ -254,15 +431,15 @@ class AvailDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={(date) => rangeValidation(name, displayName, date, this.state.avail)}
-                    onChange={(date, cancel) => this.handleDatepickerSubmit(name, date, cancel)}
+                    validate={(date) => rangeValidation(name, displayName, date, this.state.flatAvail)}
+                    onChange={(date, cancel) => this.handleEditableSubmit(name, date, cancel)}
                 />
             ));
         };
 
         const renderColumns = [];
 
-        if(this.state.avail && this.props.availsMapping) {
+        if(this.state.flatAvail && this.props.availsMapping) {
             const renderFields = [];
             const cannotUpdate = cannot('update', 'Avail');
 
@@ -286,24 +463,31 @@ class AvailDetails extends React.Component {
                     }
 
                     const readOnly = cannotUpdate || READONLY_FIELDS.indexOf(mapping.javaVariableName) > -1;
-                    const value = this.state.avail ? this.state.avail[mapping.javaVariableName] : '';
+                    const value = this.state.flatAvail ? this.state.flatAvail[mapping.javaVariableName] : '';
                     const required = mapping.required;
                     switch (mapping.dataType) {
-                        case 'text':
-                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                        case 'number':
-                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'integer': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                        case 'year':
-                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'double': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                        case 'date':
-                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                        case 'boolean':
-                            renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'multiselect': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
+                        case 'language': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                        case 'multilanguage': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                        case 'duration': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
+                         case 'time': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                             break;
+                        case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                             break;
+                        case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
@@ -313,7 +497,7 @@ class AvailDetails extends React.Component {
 
             for (let i = 0; i < this.state.columns; i++) {
                 renderColumns.push(
-                    <div key={i} className={'nx-stylish list-group col-' + 12 / this.state.columns}>
+                    <div key={i} className={'nx-stylish list-group col-' + 12 / this.state.columns} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
                         {renderFields.slice(i*perColumn, (i+1)*perColumn)}
                     </div>
                 );
