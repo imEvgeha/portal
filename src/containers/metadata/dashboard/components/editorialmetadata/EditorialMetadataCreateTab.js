@@ -126,7 +126,7 @@ class EditorialMetadataCreateTab extends Component {
                             </Col>
                             {this.props.titleContentType === 'EPISODE' &&
                                 <Col md={2}>
-                                    <b>Season Number</b>
+                                    <b>Episode Number</b>
                                 </Col>}
                             {this.props.titleContentType === 'EPISODE' &&
                                 <Col>
