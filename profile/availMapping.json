@@ -787,12 +787,23 @@
   "enableEdit": true,
   "required": false
 }, {
+  "javaVariableName": "description",
+  "sheetColumnName": "Description",
+  "displayName": "Description",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "descriptionMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
   "javaVariableName": "bonus",
   "sheetColumnName": "Bonus",
   "displayName": "Bonus",
-  "dataType": "integer",
-  "searchDataType": "integer",
-  "queryParamName": "bonus",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "bonusMatch",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
