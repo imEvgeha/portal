@@ -477,7 +477,7 @@ class TitleEdit extends Component {
                         handleEditChange={this.handleEditorialMetadataEditChange}
                         isEditMode={this.state.isEditMode}
                         titleContentType={this.state.titleForm.contentType}
-                        editorialMetadataLength={this.state.editorialMetadataForCreate}
+                        editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                     />
 
                     <TerritoryMetadata
