@@ -1,0 +1,1 @@
+export const EDITORIAL_METADATA_PREFIX = 'prefix_editorial';

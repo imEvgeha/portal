@@ -13,11 +13,11 @@ import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
+import {EDITORIAL_METADATA_PREFIX} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
-
 
 class TitleEdit extends Component {
     constructor(props) {
@@ -276,9 +276,10 @@ class TitleEdit extends Component {
      * Editorial Metadata document
      */
     handleEditorialMetadataEditChange = (e, data) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (edited) {
-            edited[e.target.name] = e.target.value;
+            edited[targetName] = e.target.value;
             let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
             newOne.push(edited);
             this.setState({
@@ -286,7 +287,7 @@ class TitleEdit extends Component {
             });
         } else {
             edited = Object.assign({}, data);
-            edited[e.target.name] = e.target.value;
+            edited[targetName] = e.target.value;
             this.setState({
                 updatedEditorialMetadata: [edited, ...this.state.updatedEditorialMetadata]
             });
@@ -294,18 +295,20 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
-                [e.target.name]: e.target.value
+                [targetName]: e.target.value
             }
         });
     };
 
     handleSynopsisEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newSynopsis = {
             ...this.state.editorialMetadataForCreate.synopsis,
-            [e.target.name]: e.target.value
+            [targetName]: e.target.value
         };
         this.setState({
             editorialMetadataForCreate: {
@@ -316,9 +319,10 @@ class TitleEdit extends Component {
     };
 
     handleTitleEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newTitle = {
             ...this.state.editorialMetadataForCreate.title,
-            [e.target.name]: e.target.value
+            [targetName]: e.target.value
         };
         this.setState({
             editorialMetadataForCreate: {

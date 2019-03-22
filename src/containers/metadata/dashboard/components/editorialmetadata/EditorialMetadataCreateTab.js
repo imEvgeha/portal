@@ -6,6 +6,7 @@ import { locale } from '../../../../../constants/locale';
 import { language } from '../../../../../constants/language';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
+import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
 
 class EditorialMetadataCreateTab extends Component {
     constructor(props) {
@@ -20,6 +21,10 @@ class EditorialMetadataCreateTab extends Component {
         return name ? name.length : 0;
     }
 
+    getNameWithPrefix(name) {
+        return EDITORIAL_METADATA_PREFIX + name;
+    }
+
     render() {
         const { synopsis, title, copyright, awards } = this.props.editorialMetadataLength;
         return (
@@ -31,7 +36,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>
                         <Col md={2}>
                             <AvField type="select"
-                                name="locale"
+                                name={this.getNameWithPrefix('locale')}
                                 id="editorialLocal"
                                 required={this.props.areFieldsRequired}
                                 onChange={this.props.handleChange}
@@ -49,7 +54,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>
                         <Col md={2}>
                             <AvField type="select"
-                                name="language"
+                                name={this.getNameWithPrefix('language')}
                                 id="editorialLanguage"
                                 required={this.props.areFieldsRequired}
                                 onChange={this.props.handleChange}
@@ -67,7 +72,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>
                         <Col md={2}>
                             <AvField type="select"
-                                name="format"
+                                name={this.getNameWithPrefix('format')}
                                 id="editorialFormat"
                                 onChange={this.props.handleChange}>
                                 <option value={''}>Select Format</option>
@@ -83,7 +88,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>
                         <Col md={2}>
                             <AvField type="select"
-                                name="service"
+                                name={this.getNameWithPrefix('service')}
                                 id="editorialService"
                                 onChange={this.props.handleChange}>
                                 <option value={''}>Select Service</option>
@@ -102,7 +107,7 @@ class EditorialMetadataCreateTab extends Component {
                                 <b>Series Name</b>
                             </Col>
                             <Col>
-                                <AvField type="number" id="editorialSeriesName" name="seriesName"
+                                <AvField type="number" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
                                     onChange={this.props.handleChange}
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
@@ -112,7 +117,7 @@ class EditorialMetadataCreateTab extends Component {
                                 <b>Season Number</b>
                             </Col>
                             <Col>
-                                <AvField type="number" id="editorialSeasonNumber" name="seasonNumber"
+                                <AvField type="number" id="editorialSeasonNumber" name={this.getNameWithPrefix('seasonNumber')}
                                     onChange={this.props.handleChange}
                                     validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
@@ -125,7 +130,7 @@ class EditorialMetadataCreateTab extends Component {
                                 </Col>}
                             {this.props.titleContentType === 'EPISODE' &&
                                 <Col>
-                                    <AvField type="number" id="editorialEpisodeNumber" name="episodeNumber"
+                                    <AvField type="number" id="editorialEpisodeNumber" name={this.getNameWithPrefix('episodeNumber')}
                                         onChange={this.props.handleChange}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
@@ -140,7 +145,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Display Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialDisplayTitle" name="title"
+                            <AvField type="text" id="editorialDisplayTitle" name={this.getNameWithPrefix('title')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.' }
@@ -153,7 +158,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Brief Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialBriefTitle" name="shortTitle"
+                            <AvField type="text" id="editorialBriefTitle" name={this.getNameWithPrefix('shortTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.' }
@@ -166,7 +171,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Medium Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialMediumTitle" name="mediumTitle"
+                            <AvField type="text" id="editorialMediumTitle" name={this.getNameWithPrefix('mediumTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.' }
@@ -179,7 +184,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Long Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialLongTitle" name="longTitle"
+                            <AvField type="text" id="editorialLongTitle" name={this.getNameWithPrefix('longTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.' }
@@ -192,7 +197,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Sort Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialSortTitle" name="sortTitle"
+                            <AvField type="text" id="editorialSortTitle" name={this.getNameWithPrefix('sortTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.' }
@@ -206,7 +211,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Short Synopsis</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialShortSynopsis" name="description"
+                            <AvField type="text" id="editorialShortSynopsis" name={this.getNameWithPrefix('description')}
                                 onChange={this.props.handleSynopsisChange}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Short Synopsis. Max 500 symbols.' }
@@ -219,7 +224,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Medium Synopsis</b>
                         </Col>
                         <Col>
-                            <AvField type="textarea" id="editorialMediumSynopsis" name="shortDescription"
+                            <AvField type="textarea" id="editorialMediumSynopsis" name={this.getNameWithPrefix('shortDescription')}
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 onChange={this.props.handleSynopsisChange}
@@ -234,7 +239,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Long Synopsis</b>
                         </Col>
                         <Col>
-                            <AvField type="textarea" id="editorialLongSynopsis" name="longDescription"
+                            <AvField type="textarea" id="editorialLongSynopsis" name={this.getNameWithPrefix('longDescription')}
                                 onChange={this.props.handleSynopsisChange}
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
@@ -250,7 +255,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Copyright</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialCopyright" name="copyright"
+                            <AvField type="text" id="editorialCopyright" name={this.getNameWithPrefix('copyright')}
                                 onChange={this.props.handleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.' }
@@ -263,7 +268,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Awards</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialAwards" name="awards"
+                            <AvField type="text" id="editorialAwards" name={this.getNameWithPrefix('awards')}
                                 onChange={this.props.handleChange}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Awards. Max 500 symbols.' }
