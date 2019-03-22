@@ -17,6 +17,7 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 const mapStateToProps = state => {
    return {
@@ -24,9 +25,6 @@ const mapStateToProps = state => {
        selectValues: state.root.selectValues,
    };
 };
-
-const EXCLUDED_FIELDS = ['availId'];
-const READONLY_FIELDS = ['rowEdited'];
 
 class AvailDetails extends React.Component {
 
@@ -252,6 +250,60 @@ class AvailDetails extends React.Component {
             ));
         };
 
+        const renderAvField = (name, displayName, value, error, readOnly, required, validation) => {
+            const ref = React.createRef();
+            let priorityError = null;
+            if(error){
+                priorityError = <div title = {error}
+                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+                    {error}
+                </div>;
+            }
+
+            let handleValueChange = (newVal) => {
+                ref.current.handleChange(newVal);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+                <EditableBaseComponent
+                    ref={ref}
+                    value={value}
+                    priorityDisplay={priorityError}
+                    name={name}
+                    disabled={readOnly}
+                    displayName={displayName}
+                    validate={() => {}}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    helperComponent={<AvForm>
+                        <AvField
+                            value={value}
+                            name={name}
+                            placeholder={'Enter ' + displayName}
+                            onChange={(e) => {handleValueChange(e.target.value);}}
+                            type="text"
+                            validate={validation}
+                            errorMessage="Please enter a valid number!"
+                        />
+                    </AvForm>}
+                />
+            ));
+        };
+
+        const renderIntegerField = (name, displayName, value, error, readOnly, required) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, {number : true});
+        };
+
+        const renderDoubleField = (name, displayName, value, error, readOnly, required) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, {number : true});
+        };
+
+        const renderTimeField = (name, displayName, value, error, readOnly, required) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, {pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}});
+        };
+
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
                 <Editable
@@ -279,7 +331,7 @@ class AvailDetails extends React.Component {
                 </div>;
             }
 
-            let ref
+            let ref;
             if(this.fields[name]){
                 ref = this.fields[name];
 
@@ -341,7 +393,7 @@ class AvailDetails extends React.Component {
                 </div>;
             }
 
-            let ref
+            let ref;
             if(this.fields[name]){
                 ref = this.fields[name];
 
@@ -444,7 +496,7 @@ class AvailDetails extends React.Component {
             const cannotUpdate = cannot('update', 'Avail');
 
             this.props.availsMapping.mappings.map((mapping)=> {
-                if (EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1) {
+                if (mapping.enableEdit) {
                     let error = null;
                     if (this.state.avail && this.state.avail.validationErrors) {
                         this.state.avail.validationErrors.forEach(e => {
@@ -462,15 +514,15 @@ class AvailDetails extends React.Component {
                         });
                     }
 
-                    const readOnly = cannotUpdate || READONLY_FIELDS.indexOf(mapping.javaVariableName) > -1;
+                    const readOnly = cannotUpdate || mapping.readOnly;
                     const value = this.state.flatAvail ? this.state.flatAvail[mapping.javaVariableName] : '';
                     const required = mapping.required;
                     switch (mapping.dataType) {
                         case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                        case 'integer': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                        case 'double': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'double': renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
                         case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
@@ -482,7 +534,7 @@ class AvailDetails extends React.Component {
                             break;
                         case 'duration': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                         case 'time': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                              break;
                         case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                              break;
