@@ -360,8 +360,8 @@ class AvailCreate extends React.Component {
 
             let filteredOptions = options;
             filters.map(filter => {
-                const fieldName = filter[0].type + 'Id';
-                const allowedOptions = filter.map(({id}) => id);
+                const fieldName = (Array.isArray(filter) ? filter[0].type : filter.type) + 'Id';
+                const allowedOptions = Array.isArray(filter) ? filter.map(({id}) => id) : [filter.id];
                 filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
             });
 
@@ -411,12 +411,12 @@ class AvailCreate extends React.Component {
                 aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
             
             if(options.length > 0 && value){
-                val = value[0];
+                val = value;
                 options.unshift({value: '', label: value ? 'Select...' : ''});
             }
 
             let handleOptionsChange = (option) => {
-                this.checkAvail(name, option.value ? [option] : null, true, true);
+                this.checkAvail(name, option.value ? option : null, true, true);
             };
 
             return renderFieldTemplate(name, displayName, required, (

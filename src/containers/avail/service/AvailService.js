@@ -16,7 +16,7 @@ const parse = function(value){
         return safeTrim(value);
 
     if(Array.isArray(value))
-        return value.map(val => parse(val)).join(',');
+        return value.map(val => parse(val));
 
     if ('value' in value)
         return parse(value.value);

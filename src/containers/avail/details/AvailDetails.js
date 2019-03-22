@@ -412,7 +412,7 @@ class AvailDetails extends React.Component {
             const filterKeys = Object.keys(this.state.flatAvail).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
             let filters = filterKeys.map((key) => {
                 if(this.state.flatAvail[key] && this.props.selectValues[key]) {
-                    const filt = this.state.flatAvail[key].split(',').map(val => {
+                    const filt = (Array.isArray(this.state.flatAvail[key]) ? this.state.flatAvail[key] : [this.state.flatAvail[key]]).map(val => {
                         const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
                         return candidates.length ? candidates : null;
                     }).filter(x => x).flat();
@@ -437,11 +437,11 @@ class AvailDetails extends React.Component {
             ];
 
             if(allOptions[0].options && allOptions[0].options.length > 0 && selectedVal){
-                val = selectedVal.split(',').map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
+                val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
             }
 
             let handleOptionsChange = (selectedOptions) => {
-                const selVal = selectedOptions.map(({value}) => value).join(',');
+                const selVal = selectedOptions.map(({value}) => value);
                 ref.current.handleChange(selVal ? selVal : null);
                 setTimeout(() => {
                     this.setState({});

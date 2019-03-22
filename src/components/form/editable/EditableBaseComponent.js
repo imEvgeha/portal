@@ -7,7 +7,7 @@ class EditableBaseComponent extends Component {
     static propTypes = {
         helperComponent: t.object,
         validate: t.func,
-        value: t.string,
+        value: t.oneOfType([t.string, t.array]),
         displayName: t.string,
         disabled: t.bool,
         onChange: t.func,
@@ -100,7 +100,7 @@ class EditableBaseComponent extends Component {
             return (<span
                 onClick={this.handleShowHelperComponent}
                 className={this.props.disabled ? 'disabled' : ''}>
-                       {value}
+                       {Array.isArray(value) ? value.join(',') : value}
                    </span>);
         };
 
