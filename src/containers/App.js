@@ -11,10 +11,13 @@ import AvailDetails  from './avail/details/AvailDetails';
 import AvailCreate  from './avail/create/AvailCreate';
 import AvailIngestHistoryContainer from './avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer';
+import ContractDashboardContainer from './contract/dashboard/ContractContainer';
+import ContractProfileContainer from './contract/profile/ContractProfileContainer.jsx';
 import {canRender} from '../ability';
 import Welcome from './Welcome';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import TitleEdit from './metadata/dashboard/components/TitleEdit';
+import "../assets/scss/material-dashboard-pro-react.css?v=1.4.0";
 
 export default class App extends React.Component {
 
@@ -33,6 +36,8 @@ export default class App extends React.Component {
                             <Route exact path="/avails/:id" component={canRender(AvailDetails, 'read', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />
+                        <Route exact path="/contract" component={ContractDashboardContainer} />
+                        <Route exact path="/contractprofile" component={ContractProfileContainer} />
                         <Route exact path="/metadata/detail/:id" component={TitleEdit} />
                     </div>
                 </div>
