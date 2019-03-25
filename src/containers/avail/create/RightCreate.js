@@ -2,7 +2,7 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 
-import {saveCreateAvailForm} from '../../../stores/actions/avail/createavail';
+import {saveCreateRightForm} from '../../../stores/actions/avail/createright';
 import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
@@ -11,7 +11,7 @@ import {rangeValidation} from '../../../util/Validation';
 import {rightsService} from '../service/RightsService';
 import store from '../../../stores/index';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
+import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
@@ -21,12 +21,12 @@ const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
         selectValues: state.root.selectValues,
-        storedForm: state.createavail.session.form,
+        storedForm: state.createright.session.form,
     };
 };
 
 const mapDispatchToProps = {
-    saveCreateAvailForm
+    saveCreateRightForm
 };
 
 const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
@@ -35,7 +35,7 @@ class RightCreate extends React.Component {
 
     static propTypes = {
         selectValues: t.object,
-        saveCreateAvailForm: t.func,
+        saveCreateRightForm: t.func,
         availsMapping: t.any,
         storedForm: t.object
     };
@@ -59,7 +59,7 @@ class RightCreate extends React.Component {
     componentDidMount() {
         if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
-        NexusBreadcrumb.push(AVAILS_CREATE);
+        NexusBreadcrumb.push(RIGHT_CREATE);
         this.avail = this.props.storedForm;
 
         if(this.props.availsMapping){
@@ -118,7 +118,7 @@ class RightCreate extends React.Component {
             let newAvail = {...this.avail, [name]: value};
             this.avail = newAvail;
             if(save) {
-                store.dispatch(saveCreateAvailForm(newAvail));
+                store.dispatch(saveCreateRightForm(newAvail));
             }
         }
     }
@@ -137,7 +137,7 @@ class RightCreate extends React.Component {
             }
         }
 
-        store.dispatch(saveCreateAvailForm({...this.avail}));
+        store.dispatch(saveCreateRightForm({...this.avail}));
         this.setState({});
     }
 
@@ -204,7 +204,7 @@ class RightCreate extends React.Component {
         rightsService.create(this.avail).then((response) => {
             this.avail={};
             this.setState({});
-            saveCreateAvailForm({});
+            saveCreateRightForm({});
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
@@ -517,7 +517,7 @@ class RightCreate extends React.Component {
                     </div>
                 </div>
                 <Label id="avails-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
-                    {this.state.errorMessage}
+                    {this.state && this.state.errorMessage}
                 </Label>
                 {this.props.availsMapping &&
                     <div className="float-right mt-1 mx-5">

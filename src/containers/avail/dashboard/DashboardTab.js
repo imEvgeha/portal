@@ -43,7 +43,7 @@ class DashboardTab extends React.Component {
 
     }
 
-    createAvail = () => {
+    createRight = () => {
         this.context.router.history.push('avails/create');
     };
 
@@ -56,7 +56,7 @@ class DashboardTab extends React.Component {
                     </Can>
                     {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
                     <Can I="create" a="Avail">
-                        <DashboardCard title="Create New Edit Version" action={this.createAvail} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-avails'}/>
+                        <DashboardCard title="Create New Edit Version" action={this.createRight} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-right'}/>
                     </Can>
                     {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                     {<DashboardLatestAvailsCard/>}

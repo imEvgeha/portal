@@ -46,15 +46,13 @@ class RightDetails extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.cancel = this.cancel.bind(this);
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.getAvailData = this.getAvailData.bind(this);
 
         this.emptyValueText = 'Enter';
         this.fields = {};
 
         this.state = {
-            errorMessage: '',
-            columns: 1
+            errorMessage: ''
         };
     }
 
@@ -66,8 +64,6 @@ class RightDetails extends React.Component {
         if(this.refresh === null){
             this.refresh = setInterval(this.getAvailData, config.get('avails.edit.refresh.interval'));
         }
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
     }
 
     componentWillUnmount() {
@@ -76,13 +72,6 @@ class RightDetails extends React.Component {
             this.refresh = null;
         }
         NexusBreadcrumb.pop();
-        window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-
-    updateWindowDimensions() {
-        // const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
-        // if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
-        //     this.setState({ columns: columns });
     }
 
     getAvailData() {
@@ -489,10 +478,10 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderColumns = [];
+        const renderFields = [];
 
         if(this.state.flatAvail && this.props.availsMapping) {
-            const renderFields = [];
+
             const cannotUpdate = cannot('update', 'Avail');
 
             this.props.availsMapping.mappings.map((mapping)=> {
@@ -545,21 +534,14 @@ class RightDetails extends React.Component {
                     }
                 }
             });
-            const perColumn = Math.ceil(renderFields.length / this.state.columns);
-
-            for (let i = 0; i < this.state.columns; i++) {
-                renderColumns.push(
-                    <div key={i} className={'nx-stylish list-group col-' + 12 / this.state.columns} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
-                        {renderFields.slice(i*perColumn, (i+1)*perColumn)}
-                    </div>
-                );
-            }
         }
 
         return(
             <div>
                 <div className="nx-stylish row mt-3 mx-5">
-                    {renderColumns}
+                    <div className={'nx-stylish list-group col-12'} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                        {renderFields}
+                    </div>
                 </div>
                 {
                     this.state.errorMessage &&

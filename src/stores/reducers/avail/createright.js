@@ -1,7 +1,7 @@
 import {
-    AVAIL__CREATE__FORM_UPDATE, LOAD_CREATEAVAIL_SESSION
+    RIGHT__CREATE__FORM_UPDATE, LOAD_CREATERIGHT_SESSION
 } from '../../../constants/action-types';
-import {saveCreateAvailState} from '../../index';
+import {saveCreateRightState} from '../../index';
 
 const initialState = {
     session:{
@@ -9,16 +9,16 @@ const initialState = {
     }
 };
 
-const createavail = (state = initialState, action) => {
+const createright = (state = initialState, action) => {
     switch (action.type) {
-        case LOAD_CREATEAVAIL_SESSION:
+        case LOAD_CREATERIGHT_SESSION:
             return { ...state, session: {...state.session, ...action.payload}};
-        case AVAIL__CREATE__FORM_UPDATE:
-            saveCreateAvailState();
+        case RIGHT__CREATE__FORM_UPDATE:
+            saveCreateRightState();
             return {...state, session: {...state.session, form: action.payload}};
         default:
             return state;
     }
 };
 
-export default createavail;
+export default createright;
