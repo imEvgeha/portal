@@ -37,17 +37,17 @@ const populate = function(key, value, location){
     }
 };
 
-const prepareAvail = function (avail) {
-    let availCopy = {};
-    Object.keys(avail).forEach(key => {
-        if(isNotEmpty(avail[key])){
-            populate(key, avail[key], availCopy);
+const prepareRight = function (right) {
+    let rightCopy = {};
+    Object.keys(right).forEach(key => {
+        if(isNotEmpty(right[key])){
+            populate(key, right[key], rightCopy);
         }
     });
-    return availCopy;
+    return rightCopy;
 };
 
-export const availService = {
+export const rightsService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
@@ -67,15 +67,15 @@ export const availService = {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
-    createAvail: (avail) => {
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights', prepareAvail(avail));
+    create: (right) => {
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights', prepareRight(right));
     },
 
-    getAvail: (id) => {
+    get: (id) => {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id);
     },
 
-    updateAvails: (availDiff, id) => {
-        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareAvail(availDiff));
+    update: (rightDiff, id) => {
+        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff));
     },
 };

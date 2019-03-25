@@ -6,13 +6,13 @@ import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
 import {Button, Label} from 'reactstrap';
 
-import {availService} from '../service/AvailService';
+import {rightsService} from '../service/RightsService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
 import {rangeValidation} from '../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../ability';
-import './AvailDetails.scss';
+import './RightDetails.scss';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
@@ -26,7 +26,7 @@ const mapStateToProps = state => {
    };
 };
 
-class AvailDetails extends React.Component {
+class RightDetails extends React.Component {
 
     static propTypes = {
         selectValues: t.object,
@@ -87,7 +87,7 @@ class AvailDetails extends React.Component {
 
     getAvailData() {
         if(this.props.match && this.props.match.params && this.props.match.params.id){
-            availService.getAvail(this.props.match.params.id)
+            rightsService.get(this.props.match.params.id)
                 .then(res => {
                     if(res && res.data){
                         this.setState({
@@ -146,7 +146,7 @@ class AvailDetails extends React.Component {
 
     update(name, value, onError) {
         let updatedAvail = {[name]: value};
-        availService.updateAvails(updatedAvail, this.state.avail.id)
+        rightsService.update(updatedAvail, this.state.avail.id)
             .then(res => {
                 let editedAvail = res.data;
                 this.setState({
@@ -579,4 +579,4 @@ class AvailDetails extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, null)(AvailDetails);
+export default connect(mapStateToProps, null)(RightDetails);

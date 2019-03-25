@@ -1,6 +1,6 @@
 import store from '../../../stores/index';
 import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/avail/dashboard';
-import {availService} from './AvailService';
+import {rightsService} from './RightsService';
 
 export const availServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements
@@ -14,9 +14,9 @@ export const availServiceManager = {
     //this function is just a wrapper that decides which service function (and API as a result) to call depending on data in search criteria
     doSearch: (page, pageSize, sortedParams) => {
         if(store.getState().dashboard.session.searchCriteria.text){
-            return availServiceManager.callService(availService.freeTextSearch, page, pageSize, sortedParams);
+            return availServiceManager.callService(rightsService.freeTextSearch, page, pageSize, sortedParams);
         }else{
-            return availServiceManager.callService(availService.advancedSearch, page, pageSize, sortedParams);
+            return availServiceManager.callService(rightsService.advancedSearch, page, pageSize, sortedParams);
         }
     },
 

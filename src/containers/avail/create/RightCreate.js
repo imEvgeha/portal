@@ -8,7 +8,7 @@ import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rangeValidation} from '../../../util/Validation';
-import {availService} from '../service/AvailService';
+import {rightsService} from '../service/RightsService';
 import store from '../../../stores/index';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, AVAILS_CREATE} from '../../../constants/breadcrumb';
@@ -31,7 +31,7 @@ const mapDispatchToProps = {
 
 const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
 
-class AvailCreate extends React.Component {
+class RightCreate extends React.Component {
 
     static propTypes = {
         selectValues: t.object,
@@ -51,14 +51,9 @@ class AvailCreate extends React.Component {
         this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSave = this.handleChangeSave.bind(this);
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.mappingErrorMessage = {};
-        this.avail = {},
-
-        this.state = {
-            columns: 1
-        };
+        this.avail = {};
     }
 
     componentDidMount() {
@@ -72,20 +67,10 @@ class AvailCreate extends React.Component {
         }else{
             profileService.initAvailsMapping();
         }
-
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
     }
 
     componentWillUnmount() {
         NexusBreadcrumb.pop();
-        window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-
-    updateWindowDimensions() {
-        // const columns = window.innerWidth > 1240 ? 3 : (window.innerWidth > 830 ? 2 : 1);
-        // if(this.state.columns !== columns) //performance optimization, state changed (triggers render) only when columns number changes
-        //     this.setState({ columns: columns });
     }
 
     componentDidUpdate(prevProps) {
@@ -114,16 +99,16 @@ class AvailCreate extends React.Component {
     handleChange({target}) {
         const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
         const name = target.name;
-        this.checkAvail(name, value, true, false);
+        this.checkRight(name, value, true, false);
     }
 
     handleChangeSave({target}) {
         const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
         const name = target.name;
-        this.checkAvail(name, value, true, true);
+        this.checkRight(name, value, true, true);
     }
 
-    checkAvail(name, value, setNewValue, save) {
+    checkRight(name, value, setNewValue, save) {
         const validationError = this.validateField(name, value);
 
         let errorMessage = {range: '', date: '', text: validationError};
@@ -139,7 +124,7 @@ class AvailCreate extends React.Component {
     }
 
     handleDatepickerChange(name, displayName, date) {
-        this.checkAvail(name, date, true, true);
+        this.checkRight(name, date, true, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
 
@@ -208,7 +193,7 @@ class AvailCreate extends React.Component {
 
     validateFields(){
         this.props.availsMapping.mappings.map((mapping) => {
-            this.checkAvail(mapping.javaVariableName, this.avail[mapping.javaVariableName], false);
+            this.checkRight(mapping.javaVariableName, this.avail[mapping.javaVariableName], false);
         });
         this.setState({});
         return this.anyInvalidField();
@@ -216,7 +201,7 @@ class AvailCreate extends React.Component {
 
     confirm() {
         if(this.validateFields()) return;
-        availService.createAvail(this.avail).then((response) => {
+        rightsService.create(this.avail).then((response) => {
             this.avail={};
             this.setState({});
             saveCreateAvailForm({});
@@ -375,7 +360,7 @@ class AvailCreate extends React.Component {
             ];
 
             let handleOptionsChange = (selectedOptions) => {
-                this.checkAvail(name, selectedOptions, true, true);
+                this.checkRight(name, selectedOptions, true, true);
             };
 
             return renderFieldTemplate(name, displayName, required, (
@@ -416,7 +401,7 @@ class AvailCreate extends React.Component {
             }
 
             let handleOptionsChange = (option) => {
-                this.checkAvail(name, option.value ? option : null, true, true);
+                this.checkRight(name, option.value ? option : null, true, true);
             };
 
             return renderFieldTemplate(name, displayName, required, (
@@ -487,11 +472,9 @@ class AvailCreate extends React.Component {
             ));
         };
 
-        const renderColumns = [];
+        const renderFields = [];
 
         if(this.props.availsMapping) {
-            const renderFields = [];
-
             this.props.availsMapping.mappings.map((mapping)=> {
                 if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
                     let required = mapping.required;
@@ -524,22 +507,14 @@ class AvailCreate extends React.Component {
                     }
                 }
             });
-
-            const perColumn = Math.ceil(renderFields.length / this.state.columns);
-
-            for (let i = 0; i < this.state.columns; i++) {
-                renderColumns.push(
-                    <div key={i} className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
-                        {renderFields.slice(i*perColumn, (i+1)*perColumn)}
-                    </div>
-                );
-            }
         }
 
         return(
             <div>
                 <div className="nx-stylish row mt-3 mx-5">
-                    {renderColumns}
+                    <div className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                        {renderFields}
+                    </div>
                 </div>
                 <Label id="avails-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
                     {this.state.errorMessage}
@@ -555,4 +530,4 @@ class AvailCreate extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(RightCreate);

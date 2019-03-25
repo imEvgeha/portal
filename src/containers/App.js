@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom';
 import Navbar from './Navbar';
 import AvailDashboardContainer  from './avail/dashboard/DashboardContainer';
-import AvailDetails  from './avail/details/AvailDetails';
-import AvailCreate  from './avail/create/AvailCreate';
+import AvailDetails  from './avail/details/RightDetails';
+import AvailCreate  from './avail/create/RightCreate';
 import AvailIngestHistoryContainer from './avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer';
 import {canRender} from '../ability';
