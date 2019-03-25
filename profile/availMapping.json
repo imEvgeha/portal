@@ -16,7 +16,7 @@
   "displayName": "Studio",
   "dataType": "select",
   "searchDataType": "multiselect",
-  "configEndpoint": "/studios",
+  "configEndpoint": "/production-studios",
   "queryParamName": "studio",
   "readOnly": false,
   "enableSearch": true,

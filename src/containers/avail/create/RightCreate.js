@@ -29,8 +29,6 @@ const mapDispatchToProps = {
     saveCreateRightForm
 };
 
-const EXCLUDED_FIELDS = ['availId', 'rowEdited'];
-
 class RightCreate extends React.Component {
 
     static propTypes = {
@@ -476,7 +474,7 @@ class RightCreate extends React.Component {
 
         if(this.props.availsMapping) {
             this.props.availsMapping.mappings.map((mapping)=> {
-                if(EXCLUDED_FIELDS.indexOf(mapping.javaVariableName) === -1){
+                if(mapping.enableEdit && !mapping.readOnly){
                     let required = mapping.required;
                     const value = this.avail ? this.avail[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
