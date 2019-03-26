@@ -313,7 +313,6 @@ class AvailsResultTable extends React.Component {
     }
 
     getRows(params){
-        console.log('getRows', params);
         if(this.table && this.table.api.getDisplayedRowCount() === 0){
             this.table.api.showLoadingOverlay();
         }
