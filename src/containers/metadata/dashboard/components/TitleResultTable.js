@@ -433,8 +433,6 @@ class TitleResultTable extends React.Component {
                     onSortChanged={this.onSortChanged}
 
                     enableFilter
-                    floatingFilter
-                    floatingFiltersHeight={50}
                     onFilterChanged={this.handleFilterChanged}
 
                     rowSelection="multiple"
