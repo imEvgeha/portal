@@ -63,6 +63,8 @@ export const rightsService = {
         const params = {};
         const convertMap = {};
         store.getState().root.availsMapping.mappings.forEach(mapping => {convertMap[mapping.javaVariableName] = mapping.queryParamName;});
+        convertMap.availHistoryIds = 'availHistoryIds';
+        convertMap.rowInvalid = 'rowInvalid';
 
         for (let key in searchCriteria) {
             if(convertMap.hasOwnProperty(key)) {
