@@ -13,11 +13,11 @@ import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
+import {EDITORIAL_METADATA_PREFIX} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
-
 
 class TitleEdit extends Component {
     constructor(props) {
@@ -210,7 +210,7 @@ class TitleEdit extends Component {
     toggleTerritoryMetadata = (tab) => {
         this.setState({
             territoryMetadataActiveTab: tab,
-            areTerritoryMetadataFieldsRequired: false
+            areTerritoryMetadataFieldsRequired: false,
         });
     };
 
@@ -262,10 +262,8 @@ class TitleEdit extends Component {
                 this.setState({
                     territory: [response.data, ...this.state.territory],
                     territoryMetadataActiveTab: CURRENT_TAB,
-                    areTerritoryMetadataFieldsRequired: false
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
+            }).catch(() => {
                 console.error('Unable to add Territory Metadata');
             });
         } else {
@@ -278,9 +276,10 @@ class TitleEdit extends Component {
      * Editorial Metadata document
      */
     handleEditorialMetadataEditChange = (e, data) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (edited) {
-            edited[e.target.name] = e.target.value;
+            edited[targetName] = e.target.value;
             let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
             newOne.push(edited);
             this.setState({
@@ -288,7 +287,7 @@ class TitleEdit extends Component {
             });
         } else {
             edited = Object.assign({}, data);
-            edited[e.target.name] = e.target.value;
+            edited[targetName] = e.target.value;
             this.setState({
                 updatedEditorialMetadata: [edited, ...this.state.updatedEditorialMetadata]
             });
@@ -296,18 +295,20 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
-                [e.target.name]: e.target.value
+                [targetName]: e.target.value
             }
         });
     };
 
     handleSynopsisEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newSynopsis = {
             ...this.state.editorialMetadataForCreate.synopsis,
-            [e.target.name]: e.target.value
+            [targetName]: e.target.value
         };
         this.setState({
             editorialMetadataForCreate: {
@@ -318,9 +319,10 @@ class TitleEdit extends Component {
     };
 
     handleTitleEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newTitle = {
             ...this.state.editorialMetadataForCreate.title,
-            [e.target.name]: e.target.value
+            [targetName]: e.target.value
         };
         this.setState({
             editorialMetadataForCreate: {
@@ -378,11 +380,9 @@ class TitleEdit extends Component {
                 this.cleanEditorialMetadata();
                 this.setState({
                     editorialMetadata: [response.data, ...this.state.editorialMetadata],
-                    editorialMetadataActiveTab: CURRENT_TAB,
-                    areEditorialMetadataFieldsRequired: false
+                    editorialMetadataActiveTab: CURRENT_TAB
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
+            }).catch(() => {
                 console.error('Unable to add Editorial Metadata');
             });
         } else {
@@ -431,6 +431,10 @@ class TitleEdit extends Component {
         this.handleTitleOnSave();
         this.handleTerritoryMetadataOnSave();
         this.handleEditorialMetadataOnSave();
+        this.setState({
+            areEditorialMetadataFieldsRequired: false,
+            areTerritoryMetadataFieldsRequired: false,
+        });
     };
 
     render() {
@@ -473,7 +477,7 @@ class TitleEdit extends Component {
                         handleEditChange={this.handleEditorialMetadataEditChange}
                         isEditMode={this.state.isEditMode}
                         titleContentType={this.state.titleForm.contentType}
-                        editorialMetadataLength={this.state.editorialMetadataForCreate}
+                        editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                     />
 
                     <TerritoryMetadata
