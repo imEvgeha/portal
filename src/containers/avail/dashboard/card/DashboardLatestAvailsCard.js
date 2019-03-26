@@ -76,7 +76,10 @@ export default class DashboardLatestAvailsCard extends React.Component {
         let toReturn='';
         if(params.data.attachments){
             params.data.attachments.forEach( attachment => {
-                let filename = attachment.link.split(/(\\|\/)/g).pop();
+                let filename = 'Unknown';
+                if(attachment.link) {
+                    filename = attachment.link.split(/(\\|\/)/g).pop();
+                }
                 switch (attachment.attachmentType) {
                     case 'Excel':
                         toReturn += filename + ', ';

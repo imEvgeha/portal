@@ -90,7 +90,7 @@ class RightDetails extends React.Component {
                 })
                 .catch(() => {
                     this.setState({
-                        errorMessage: 'Cannot retrieve avail'
+                        errorMessage: 'Sorry, we could not find right!'
                     });
                 });
         }
@@ -535,7 +535,7 @@ class RightDetails extends React.Component {
                 {
                     this.state.errorMessage &&
                         <div id='avails-edit-error' className='text-danger w-100'>
-                            <Label id='avails-edit-error-message' className='text-danger w-100'>
+                            <Label id='avails-edit-error-message' className='text-danger w-100 pl-3'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>

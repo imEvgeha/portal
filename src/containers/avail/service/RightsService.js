@@ -4,6 +4,7 @@ import {prepareSortMatrixParam, safeTrim} from '../../../util/Common';
 import store from '../../../stores/index';
 
 const http = Http.create();
+const httpNoError = Http.create({noDefaultErrorHandling:true});
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -80,7 +81,7 @@ export const rightsService = {
     },
 
     get: (id) => {
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id);
+        return httpNoError.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id);
     },
 
     update: (rightDiff, id) => {
