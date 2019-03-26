@@ -6,7 +6,7 @@ import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ISO6391 from 'iso-639-1';
-import {AvField, AvForm} from "availity-reactstrap-validation";
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 
 const mapStateToProps = state => {
@@ -235,23 +235,14 @@ class SelectableInput extends Component {
 
             switch (this.props.dataType) {
                 case 'string' : return renderTextField(selected, displayName);
-                    break;
                 case 'integer' : return renderNumberField(selected, displayName);
-                    break;
                 case 'double' : return renderNumberField(selected, displayName);
-                    break;
                 case 'multiselect' : return renderSelect(selected, displayName, this.props.dataType);
-                    break;
                 case 'multilanguage' : return renderSelect(selected, displayName, this.props.dataType);
-                    break;
                 case 'duration' : return renderNumberField(selected, displayName);
-                    break;
                 case 'time' : return renderTimeField(selected, displayName);
-                    break;
                 case 'date' : return renderRangeDatepicker(selected, displayName);
-                    break;
                 case 'boolean' : return renderBooleanField(selected, displayName);
-                    break;
                 default:
                     console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
             }

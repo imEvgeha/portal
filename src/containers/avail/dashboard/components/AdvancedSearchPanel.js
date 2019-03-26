@@ -289,23 +289,14 @@ class AdvancedSearchPanel extends React.Component {
                         if (schema) {
                             switch (schema.searchDataType) {
                                 case 'string' : return renderCloseableBtn(key, schema.displayName);
-                                    break;
                                 case 'integer' : return renderCloseableBtn(key, schema.displayName);
-                                    break;
                                 case 'double' : return renderCloseableBtn(key, schema.displayName);
-                                    break;
                                 case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
-                                    break;
                                 case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
-                                    break;
                                 case 'duration' : return renderCloseableBtn(key, schema.displayName);
-                                    break;
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
-                                    break;
                                 case 'date' : return renderCloseableDateBtn(key, schema.displayName);
-                                    break;
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
-                                    break;
                                 default:
                                     console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
                             }

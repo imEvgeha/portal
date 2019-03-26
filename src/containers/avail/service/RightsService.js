@@ -61,7 +61,7 @@ export const rightsService = {
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
         const convertMap = {};
-        store.getState().root.availsMapping.mappings.forEach(mapping => {convertMap[mapping.javaVariableName] = mapping.queryParamName});
+        store.getState().root.availsMapping.mappings.forEach(mapping => {convertMap[mapping.javaVariableName] = mapping.queryParamName;});
 
         for (let key in searchCriteria) {
             if(convertMap.hasOwnProperty(key)) {
