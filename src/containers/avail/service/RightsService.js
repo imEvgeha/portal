@@ -1,6 +1,7 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import {prepareSortMatrixParam, safeTrim} from '../../../util/Common';
+import moment from 'moment';
+import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Common';
 import store from '../../../stores/index';
 
 const http = Http.create();
@@ -16,6 +17,10 @@ const isNotEmpty = function(obj){
 const parse = function(value){
     if(typeof  value === 'string')
         return safeTrim(value);
+
+    if(value instanceof moment){
+        return momentToISO(value);
+    }
 
     if(Array.isArray(value))
         return value.map(val => parse(val));
