@@ -185,7 +185,6 @@ class TitleResultTable extends React.Component {
             });
         }
         this.props.resultPageSort(newSort);
-        console.log(newSort)
     }
 
     onSelectionChanged(e) {
@@ -387,10 +386,13 @@ class TitleResultTable extends React.Component {
         titleSearchHelper.freeTextSearch(searchCriteria);
     }
 
-    handleFilterChanged = (e) => {
-        this.handleTitleFreeTextSearch(e.api.getFilterModel().contentType);
+    // handleFilterChanged = (e) => {
+    //     const { filter } = e.api.getFilterModel().contentType;
+    //     if(e.api.getFilterModel().contentType) {            
+    //         this.handleTitleFreeTextSearch(e.api.getFilterModel().contentType);
+    //     }
         
-    }
+    // }
     render() {
         return (
             <div
@@ -427,10 +429,10 @@ class TitleResultTable extends React.Component {
                     enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
 
-                    enableFilter
-                    floatingFilter
-                    floatingFiltersHeight={50}
-                    onFilterChanged={this.handleFilterChanged}
+                    // enableFilter
+                    // floatingFilter
+                    // floatingFiltersHeight={50}
+                    // onFilterChanged={this.handleFilterChanged}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}

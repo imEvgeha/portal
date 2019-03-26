@@ -47,11 +47,11 @@ function prepareSortMatrixParam(sortedParams) {
 }
 function prepareSortMatrixParamTitles(sortedParams) {
     let matrix = '';
-    if(sortedParams){
-        sortedParams.forEach((entry) => {
-            matrix += '?sort=' + entry.id + ',' + (entry.desc ? 'DESC' : 'ASC');
-        });
-    }
+        if(sortedParams){
+            sortedParams.forEach((entry) => {
+                matrix += '?sort=' + entry.id + ',' + (entry.desc ? 'DESC' : 'ASC');
+            });
+        }
     return matrix;
 }
 function mergeDeep(target, source) {

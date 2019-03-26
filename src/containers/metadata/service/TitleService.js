@@ -15,7 +15,6 @@ export const titleService = {
         }
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles/search' + prepareSortMatrixParamTitles(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
-
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
         for (let key in searchCriteria) {
