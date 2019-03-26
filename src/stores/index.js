@@ -2,16 +2,15 @@ import {combineReducers, createStore } from 'redux';
 import root from './reducers/index';
 import titleReducer from './reducers/metadata/titleReducer';
 import dashboard from './reducers/avail/dashboard';
-import createavail from './reducers/avail/createavail';
+import createright from './reducers/avail/createright';
 import history from './reducers/history';
 import {loadDashboardSession} from './actions/avail/dashboard';
-import {loadCreateAvailSession} from './actions/avail/createavail';
+import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
-import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper';
-import {advancedHistorySearchHelper} from '../containers/avail/ingest-history/AdvancedHistorySearchHelper';
+import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper.js';
 
-const DASHBOARD_SESSION_VERSION = '0.2';
-const CREATEAVAIL_SESSION_VERSION = '0.1';
+const DASHBOARD_SESSION_VERSION = '0.5';
+const CREATERIGHT_SESSION_VERSION = '0.2';
 const HISTORY_SESSION_VERSION = '0.3';
 
 const reducers = combineReducers({
@@ -19,7 +18,7 @@ const reducers = combineReducers({
     titleReducer,
     dashboard,
     history,
-    createavail
+    createright
 });
 const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); // REDUX DEVTOOLS allows you to see your action and state changes real-time in the browser.
 
@@ -27,9 +26,6 @@ export default store;
 
 export const loadHistoryState = () => {
     loadFromWebLocalStorage('history', loadHistorySession, HISTORY_SESSION_VERSION);
-    setTimeout(() => {
-        advancedHistorySearchHelper.advancedSearch(store.getState().history.session.advancedSearchCriteria);
-    }, 1);
 };
 export const saveHistoryState = () => {
     saveToWebLocalStorage('history', HISTORY_SESSION_VERSION);
@@ -43,7 +39,7 @@ export const loadDashboardState = () => {
             if (dashboard.session.showAdvancedSearch) {
                 availSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
             }else{
-                availSearchHelper.freeTextSearch(dashboard.freeTextSearch);
+                availSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
             }
         }
     }, 1);
@@ -53,12 +49,12 @@ export const saveDashboardState = () => {
     saveToWebLocalStorage('dashboard', DASHBOARD_SESSION_VERSION);
 };
 
-export const loadCreateAvailState = () => {
-    loadFromWebLocalStorage('createavail', loadCreateAvailSession, CREATEAVAIL_SESSION_VERSION);
+export const loadCreateRightState = () => {
+    loadFromWebLocalStorage('createright', loadCreateRightSession, CREATERIGHT_SESSION_VERSION);
 };
 
-export const saveCreateAvailState = () => {
-    saveToWebLocalStorage('createavail', CREATEAVAIL_SESSION_VERSION);
+export const saveCreateRightState = () => {
+    saveToWebLocalStorage('createright', CREATERIGHT_SESSION_VERSION);
 };
 
 

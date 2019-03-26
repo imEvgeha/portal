@@ -14,6 +14,7 @@ class Confirm extends React.Component{
         abortLabel: t.string,
         reject: t.func,
         resolve: t.func,
+        scrollable: t.bool
     };
 
     constructor(props) {
@@ -51,7 +52,11 @@ class Confirm extends React.Component{
         let modalBody;
         if (this.props.description) {
             modalBody = (
-                <ModalBody>{this.props.description}</ModalBody>
+                <ModalBody
+                    style = {this.props.scrollable ? {overflowY:'scroll', height:'calc(100vh - 220px)'} : null}
+                >
+                    {this.props.description}
+                </ModalBody>
             );
         }
 

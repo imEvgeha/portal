@@ -46,6 +46,7 @@ module.exports = {
             // relative path is from src
             { from: 'src/favicon.ico' }, // <- your path to favicon
             { from: 'profile/config.json' },
+            { from: 'profile/availMapping.json' }
         ])
     ],
     devServer: {

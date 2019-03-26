@@ -12,6 +12,7 @@ import {
     DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
+    AVAIL__RESULTS_PAGE__SHOW_SELECTED
 } from '../../../constants/action-types';
 import {saveDashboardState} from '../../index';
 
@@ -22,13 +23,15 @@ const initialState = {
         pageSize: 0,
         total: 0
     },
+    showSelectedAvails: false,
     availTabPageLoading: false,
-    freeTextSearch: {
-        text: ''
-    },
     session: {
+        freeTextSearch: {
+            text: ''
+        },
         availTabPageSelection: {
             selected: [],
+            selectNone: true,
             selectAll: false
         },
         useAdvancedSearch: false,
@@ -38,7 +41,7 @@ const initialState = {
         availTabPageSort: [],
         searchCriteria: {},
         reportName: '',
-        columns: ['title', 'studio', 'territory', 'genres', 'vodStart', 'vodEnd'],
+        columns: ['title', 'studio', 'territory', 'genres', 'start', 'end'],
         columnsSize: {}
     }
 };
@@ -51,11 +54,15 @@ const dashboard = (state = initialState, action) => {
             return { ...state, session: {...state.session, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__UPDATE:
             return {...state, availTabPage: {...state.availTabPage, ...action.payload}};
-        case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
-            return { ...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
+
         case DASHBOARD_RESULT_PAGE__LOADING:
             return {...state, availTabPageLoading: action.payload};
+        case AVAIL__RESULTS_PAGE__SHOW_SELECTED:
+            return { ...state, showSelectedAvails: action.payload};
 //  ------------   SESSION Actions   ----------------------------
+        case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
+            saveDashboardState();
+            return { ...state, session: {...state.session, freeTextSearch: action.payload}};
         case SET_REPORT_NAME:
             saveDashboardState();
             return {...state, session: {...state.session, reportName: action.payload}};

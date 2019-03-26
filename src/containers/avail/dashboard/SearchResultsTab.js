@@ -10,13 +10,15 @@ import {configurationService} from '../service/ConfigurationService';
 import {downloadFile} from '../../../util/Common';
 
 import {
-    resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder,
+    resultPageShowSelected
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
 
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
+        showSelectedAvails: state.dashboard.showSelectedAvails,
         columns: state.dashboard.session.columns,
         availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         reportName: state.dashboard.session.reportName,
@@ -26,7 +28,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    resultPageUpdateColumnsOrder: resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder,
+    resultPageShowSelected
 };
 
 class SearchResultsTab extends React.Component {
@@ -38,7 +41,9 @@ class SearchResultsTab extends React.Component {
         reportName: t.string,
         availsMapping: t.object,
         columnsOrder: t.array,
-        resultPageUpdateColumnsOrder: t.func
+        resultPageUpdateColumnsOrder: t.func,
+        resultPageShowSelected: t.func,
+        showSelectedAvails: t.bool
     };
 
     hideShowColumns={};
@@ -54,9 +59,8 @@ class SearchResultsTab extends React.Component {
         this.selectColumns = this.selectColumns.bind(this);
         this.saveColumns = this.saveColumns.bind(this);
         this.cancelColumns = this.cancelColumns.bind(this);
-        this.selectColumns = this.selectColumns.bind(this);
-
-
+        this.toggleShowSelected = this.toggleShowSelected.bind(this);
+        this.handleChangeReport = this.handleChangeReport.bind(this);
     }
 
     selectColumns() {
@@ -120,7 +124,7 @@ class SearchResultsTab extends React.Component {
         confirmModal.open('Select Visible Columns',
             this.saveColumns,
             this.cancelColumns,
-            {confirmLabel: 'OK', description: options}
+            {confirmLabel: 'OK', description: options, scrollable:true}
         );
     }
 
@@ -183,20 +187,32 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        exportService.exportAvails(this.props.availTabPageSelected, this.props.columns)
+        exportService.exportAvails(this.props.availTabPageSelected.map(({id}) => id), this.props.columns)
         .then(function (response) {
             downloadFile(response.data);
         });
     }
 
     selectedItemsComponent() {
-        if (this.props.availTabPageSelected.length) {
-            return <span className={'nx-container-margin table-top-text'}
-                         id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+        if(this.props.showSelectedAvails){
+            return <span
+                className={'nx-container-margin table-top-text'}
+                id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+        }else {
+            if (this.props.availTabPageSelected.length) {
+                return <a href={'#'} onClick={this.toggleShowSelected}><span
+                    className={'nx-container-margin table-top-text'}
+                    id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
+            }
         }
     }
 
+    toggleShowSelected(){
+        this.props.resultPageShowSelected(!this.props.showSelectedAvails);
+    }
+
     handleChangeReport(event) {
+        this.props.resultPageShowSelected(false);
         const reportName = event.target.value;
         configurationService.changeReport(reportName);
     }
@@ -225,6 +241,16 @@ class SearchResultsTab extends React.Component {
                                 Results: {this.props.availTabPage.total}
                             </span>
                             {this.selectedItemsComponent()}
+                            {this.props.showSelectedAvails &&
+                                <a href={'#'} onClick={this.toggleShowSelected}><span
+                                    className={'nx-container-margin table-top-text'}
+                                    id={'dashboard-go-to-filter'}>Back to search</span></a>
+                            }
+                            {this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0 &&
+                            <a href={'#'} onClick={() => this.clearAllSelected()}><span
+                                className={'nx-container-margin table-top-text'}
+                                id={'dashboard-clear-all-selected'}>Clear All</span></a>
+                            }
                         </div>
                         <div  style={{marginRight: '15px'}}>
                             <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
@@ -235,7 +261,20 @@ class SearchResultsTab extends React.Component {
                             <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
                         </div>
                     </div>
-                    <AvailsResultTable/>
+                    <div>
+                        <AvailsResultTable
+                            hidden={this.props.showSelectedAvails}
+                            fromServer = {true}
+                        />
+                    </div>
+                    <div>
+                        <AvailsResultTable
+                            setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
+                            hidden={!this.props.showSelectedAvails}
+                            fromServer = {false}
+                        />
+                    </div>
+
                 </div>
             </div>
         );

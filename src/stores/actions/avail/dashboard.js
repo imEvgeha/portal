@@ -11,6 +11,7 @@ import {
     DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
+    AVAIL__RESULTS_PAGE__SHOW_SELECTED
 } from '../../../constants/action-types';
 
 export const loadDashboardSession = state => ({type: LOAD_DASHBOARD_SESSION, payload: state});
@@ -25,5 +26,6 @@ export const searchFormShowSearchResults = show => ({type: DASHBOARD_SEARCH_FORM
 export const resultPageUpdate = results => ({ type: DASHBOARD_RESULT_PAGE__UPDATE, payload: results });
 export const resultPageSort = sortCriteria => ({ type: DASHBOARD_RESULT_PAGE__SORT, payload: sortCriteria });
 export const resultPageSelect = selection => ({ type: DASHBOARD_RESULT_PAGE__SELECT_ROW, payload: selection });
+export const resultPageShowSelected = show => ({ type: AVAIL__RESULTS_PAGE__SHOW_SELECTED, payload: show });
 export const resultPageLoading = loading => ({ type: DASHBOARD_RESULT_PAGE__LOADING, payload: loading });
 export const resultPageUpdateColumnsOrder = results => ({ type: DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER, payload: results });

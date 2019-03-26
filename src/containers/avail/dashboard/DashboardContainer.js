@@ -8,17 +8,14 @@ import {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    resultPageSelect,
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
-    searchFormSetAdvancedSearchCriteria
+    searchFormSetAdvancedSearchCriteria,
+    resultPageShowSelected
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import t from 'prop-types';
-import {
-    loadAvailsMapping
-} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {availSearchHelper} from './AvailSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
@@ -43,11 +40,10 @@ const mapDispatchToProps = {
     resultPageLoading,
     resultPageSort,
     resultPageUpdate,
-    loadAvailsMapping,
-    resultPageSelect,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
-    searchFormSetAdvancedSearchCriteria
+    searchFormSetAdvancedSearchCriteria,
+    resultPageShowSelected
 };
 
 class DashboardContainer extends React.Component {
@@ -58,8 +54,6 @@ class DashboardContainer extends React.Component {
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
-        loadAvailsMapping: t.func,
-        resultPageSelect: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
@@ -67,6 +61,7 @@ class DashboardContainer extends React.Component {
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         location: t.object,
+        resultPageShowSelected: t.func
     };
 
     constructor(props) {
@@ -75,7 +70,6 @@ class DashboardContainer extends React.Component {
         this.toggleAdvancedSearch = this.toggleAdvancedSearch.bind(this);
         this.handleAvailsFreeTextSearch = this.handleAvailsFreeTextSearch.bind(this);
         this.handleAvailsAdvancedSearch = this.handleAvailsAdvancedSearch.bind(this);
-        this.cleanSelection = this.cleanSelection.bind(this);
     }
 
     componentDidMount() {
@@ -140,9 +134,9 @@ class DashboardContainer extends React.Component {
 
     handleAvailsFreeTextSearch(searchCriteria) {
         NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
+        this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.freeTextSearch(searchCriteria);
-        this.cleanSelection();
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
@@ -152,17 +146,9 @@ class DashboardContainer extends React.Component {
             NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         }
 
+        this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         availSearchHelper.advancedSearch(searchCriteria);
-        this.cleanSelection();
-    }
-
-    cleanSelection() {
-        let availTabPageSelection = {
-            selected: this.props.selected,
-            selectAll: false
-        };
-        this.props.resultPageSelect(availTabPageSelection);
     }
 
     render() {

@@ -201,7 +201,7 @@ class AdvancedSearchPanel extends React.Component {
 
     isAnyValueSpecified = () => {
         const value = this.state.value;
-        return value && (value.from || value.to || (value.value  && value.value.trim()));
+        return value && (value.from || value.to || (value.value  && value.value.trim()) || (value.options && value.options.length > 0));
     };
 
     getFieldsToShow() {
@@ -226,7 +226,7 @@ class AdvancedSearchPanel extends React.Component {
             this.searchOptions = [];
             this.props.availsMapping.mappings.forEach( (mapping) => {
                 this.availsMap[mapping.javaVariableName] = mapping;
-                if (mapping.fullTextSearch === 'true') {
+                if (mapping.enableSearch) {
                     this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
                 }
             });
@@ -242,6 +242,21 @@ class AdvancedSearchPanel extends React.Component {
                     <CloseableBtn
                         title={displayName}
                         value={ ' = ' + this.props.searchCriteria[name].value }
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+            );
+        };
+
+        const renderCloseableSelectBtn = (name, displayName) => {
+            return (
+                <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        value={ ' = ' + (this.props.searchCriteria[name].options ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ') : '')}
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
@@ -273,10 +288,18 @@ class AdvancedSearchPanel extends React.Component {
                     const schema = this.availsMap[key];
                     if (ignoreForCloseable.indexOf(key) === -1) {
                         if (schema) {
-                            if (schema.dataType === 'date') {
-                                return renderCloseableDateBtn(key, schema.displayName);
-                            } else {
-                                return renderCloseableBtn(key, schema.displayName);
+                            switch (schema.searchDataType) {
+                                case 'string' : return renderCloseableBtn(key, schema.displayName);
+                                case 'integer' : return renderCloseableBtn(key, schema.displayName);
+                                case 'double' : return renderCloseableBtn(key, schema.displayName);
+                                case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'duration' : return renderCloseableBtn(key, schema.displayName);
+                                case 'time' : return renderCloseableBtn(key, schema.displayName);
+                                case 'date' : return renderCloseableDateBtn(key, schema.displayName);
+                                case 'boolean' : return renderCloseableBtn(key, schema.displayName);
+                                default:
+                                    console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
                             }
                         } else {
                             console.warn('Cannot determine schema for field: ' + key);
@@ -310,9 +333,10 @@ class AdvancedSearchPanel extends React.Component {
                 </button>
                 <SelectableInput
                     options={options}
+                    currentCriteria={this.props.searchCriteria}
                     selected={this.state.selected}
                     value={this.state.value}
-                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].dataType : null}
+                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].searchDataType : null}
                     displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
                     id={'dashboard-avails-advanced-search-selectable'}
 

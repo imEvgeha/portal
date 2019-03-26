@@ -22,7 +22,9 @@ export const availSearchHelper = {
                     response[key] = safeTrim(criteria);
                 } else if (criteria.value || criteria.value === false) {
                     response[key] = safeTrim(criteria.value);
-                } else {
+                } else if(criteria.options) {
+                    response[key] = safeTrim(Array.from(new Set(criteria.options.map(({aliasValue, value}) => aliasValue || value))).join(','));
+                } else{
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);
                     }
