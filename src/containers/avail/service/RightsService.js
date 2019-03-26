@@ -1,6 +1,7 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import {prepareSortMatrixParam, safeTrim} from '../../../util/Common';
+import store from '../../../stores/index';
 
 const http = Http.create();
 
@@ -59,9 +60,16 @@ export const rightsService = {
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
+        const convertMap = {};
+        store.getState().root.availsMapping.mappings.forEach(mapping => {convertMap[mapping.javaVariableName] = mapping.queryParamName});
+
         for (let key in searchCriteria) {
-            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                params[key] = searchCriteria[key];
+            if(convertMap.hasOwnProperty(key)) {
+                if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                    params[convertMap[key]] = searchCriteria[key];
+                }
+            }else{
+                console.warn('queryParamName for ' + key + ' NOT FOUND');
             }
         }
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});

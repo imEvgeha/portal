@@ -68,7 +68,7 @@ function getDeepValue(source, location){
     if(dotPos > 0) {
         const firstKey = location.split('.')[0];
         const restKey = location.substring(dotPos+1);
-        return source[firstKey] ? this.getDeepValue(source[firstKey], restKey) : null;
+        return source[firstKey] ? getDeepValue(source[firstKey], restKey) : null;
     }else{
         return source[location];
     }
