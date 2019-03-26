@@ -313,6 +313,7 @@ class AvailsResultTable extends React.Component {
     }
 
     getRows(params){
+        console.log('getRows', params);
         if(this.table && this.table.api.getDisplayedRowCount() === 0){
             this.table.api.showLoadingOverlay();
         }
@@ -432,8 +433,11 @@ class AvailsResultTable extends React.Component {
             });
         }
 
-        let val = getDeepValue(params.data, params.colDef.field);
-        if(val === Object(val) && !Array.isArray(val)){
+        let val;
+        if(params.data) {
+            val = getDeepValue(params.data, params.colDef.field);
+        }
+        if(val && val === Object(val) && !Array.isArray(val)){
             val = JSON.stringify(val);
         }
         const content = error || params.valueFormatted || val;

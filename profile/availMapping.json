@@ -552,7 +552,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "rating.value",
+  "javaVariableName": "rating.ratingValue",
   "sheetColumnName": "Rating",
   "displayName": "Rating",
   "dataType": "select",
