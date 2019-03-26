@@ -124,7 +124,7 @@ class SearchResultsTab extends React.Component {
         confirmModal.open('Select Visible Columns',
             this.saveColumns,
             this.cancelColumns,
-            {confirmLabel: 'OK', description: options}
+            {confirmLabel: 'OK', description: options, scrollable:true}
         );
     }
 
