@@ -94,6 +94,7 @@ class TitleEdit extends Component {
         });
     };
 
+
     handleChangeSeries = (e) => {
         const newEpisodic = {
             ...this.state.editedForm.episodic,
@@ -119,6 +120,19 @@ class TitleEdit extends Component {
             }
         });
     };
+    
+    handleOnExternalIds = (e) => {
+        const newExternalIds = {
+            ...this.state.editedForm.externalIds,
+            [e.target.name]: e.target.value
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                externalIds: newExternalIds
+            }
+        });
+    }
 
     readOnly = () => {
         return <TitleReadOnlyMode data={this.state.titleForm} />;
@@ -127,6 +141,7 @@ class TitleEdit extends Component {
     editMode = () => {
         return <TitleEditMode
             handleChangeEpisodic={this.handleChangeEpisodic}
+            handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
             data={this.state.titleForm}
@@ -431,6 +446,7 @@ class TitleEdit extends Component {
         this.handleTitleOnSave();
         this.handleTerritoryMetadataOnSave();
         this.handleEditorialMetadataOnSave();
+        console.log(this.state.editedForm)
     };
 
     render() {

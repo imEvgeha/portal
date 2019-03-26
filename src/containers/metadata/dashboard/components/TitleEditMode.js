@@ -28,7 +28,17 @@ class TitleEditMode extends Component {
       contentType,
       productionStudioId,
       releaseYear,
-      boxOffice
+      boxOffice,
+      animated,
+      duration,
+      eventType,
+      seasonFinale,
+      seasonPremiere,
+      totalNumberOfSeasons,
+      licensors,
+      originalLanguage,
+      countryOfOrigin,
+      totalNumberOfEpisodes
     } = this.props.data;
     return (
       <Fragment>
@@ -198,6 +208,7 @@ class TitleEditMode extends Component {
 
                                   <AvField
                                     type='number'
+                                    value={totalNumberOfEpisodes}
                                     name='totalNumberOfEpisodes'
                                     id='totalNumberOfEpisodes'
                                     placeholder='Episodes'
@@ -236,6 +247,7 @@ class TitleEditMode extends Component {
 
                       <AvField
                         type='number'
+                        value={totalNumberOfSeasons}
                         name='totalNumberOfSeasons'
                         id='totalNumberOfSeasons'
                         placeholder='Seasons'
@@ -249,6 +261,7 @@ class TitleEditMode extends Component {
                   <Label for='duration'>Duration</Label>
                   <Input
                     type='time'
+                    value={duration}
                     name='duration'
                     step='2'
                     id='duration'
@@ -260,34 +273,29 @@ class TitleEditMode extends Component {
                   <Label for='countryOfOrigin'>Country of Origin</Label>
                   <Input
                     type='select'
+                    value={countryOfOrigin}
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
+                    <option value=''>Select Country of Origin</option>
                     <option value='USA'>USA</option>
+                    <option value='PL'>PL</option>
+                    <option value='GB'>GB</option>
                   </Input>
                 </Col>
                 <Col>
                   <Label for='animated'>Animated</Label>
                   <Input
                     type='select'
+                    value={animated}                    
                     name='animated'
                     id='animated'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
-                    <option value='Y'>Y</option>
-                    <option value='N'>N</option>
-                  </Input>
-                </Col>
-                <Col>
-                  <Label for='originalLanguage'>Original Language</Label>
-                  <Input
-                    type='select'
-                    name='originalLanguage'
-                    id='originalLanguage'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='English'>English</option>
+                  <option value={''}>Select Animated</option>
+                    <option value={true}>Y</option>
+                    <option value={false}>N</option>
                   </Input>
                 </Col>
               </Row>
@@ -296,26 +304,45 @@ class TitleEditMode extends Component {
                   <Label for='eventType'>Event Type</Label>
                   <Input
                     type='select'
+                    value={eventType}
                     name='eventType'
                     id='eventType'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
-                    <option value='live'>Live</option>
+                    <option value='Liv'>Select Event Type</option>
+                    <option value='Live'>Live</option>
                     <option value='TapeDelayed'>Tape Delayed</option>
                     <option value='Taped'>Taped</option>
                   </Input>
                 </Col>
                 <Col>
-                  <Label for='licensor'>Licensor</Label>
+                  <Label for='licensors'>Licensor</Label>
                   <Input
                     type='text'
-                    name='licensor'
-                    id='licensor'
+                    value={licensors}
+                    name='licensors'
+                    id='licensors'
                     placeholder='Enter Licensor'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   />
                 </Col>
-                <Col>
+              </Row>
+              <Row>                
+              <Col>
+                  <Label for='originalLanguage'>Original Language</Label>
+                  <Input
+                    type='select'
+                    value={originalLanguage}
+                    name='originalLanguage'
+                    id='originalLanguage'
+                    onChange={e => this.props.handleOnChangeEdit(e)}
+                  >
+                    <option value=''>Select Original Language</option>
+                    <option value='English'>English</option>
+                    <option value='German'>German</option>
+                  </Input>
+                </Col>
+              <Col>
                   <Label for='seriesReleaseYear'>Series Release Year</Label>
                   <Input
                     type='text'
@@ -329,24 +356,28 @@ class TitleEditMode extends Component {
                   <Label for='seasonPremiere'>Season Premiere</Label>
                   <Input
                     type='select'
+                    value={seasonPremiere}
                     name='seasonPremiere'
                     id='seasonPremiere'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
-                    <option value='Yes'>Yes</option>
-                    <option value='No'>No</option>
+                    <option value={''}>Select Season Premiere</option>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
                   </Input>
                 </Col>
                 <Col>
                   <Label for='seasonFinale'>Season Finale</Label>
                   <Input
                     type='select'
+                    value={seasonFinale}
                     name='seasonFinale'
                     id='seasonFinale`'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
-                    <option value='Yes'>Yes</option>
-                    <option value='No'>No</option>
+                    <option value={''}>Select Season Finale</option>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
                   </Input>
                 </Col>
               </Row>
@@ -380,7 +411,7 @@ class TitleEditMode extends Component {
                     id='titleBoxOffice'
                     type='number'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    value={boxOffice || ''}
+                    value={boxOffice}
                     placeholder='Enter Box Office'
                     validate={{
                       pattern: {
@@ -398,7 +429,7 @@ class TitleEditMode extends Component {
               ) : null}
             </Col>
           </Row>
-          <CoreMetadataEditMode />
+          <CoreMetadataEditMode data={this.props.data} onChange={this.props.handleOnChangeEdit} handleOnExternalIds={this.props.handleOnExternalIds}  />
         </Container>
       </Fragment>
     );
@@ -410,7 +441,8 @@ TitleEditMode.propTypes = {
   data: PropTypes.object,
   handleOnChangeEdit: PropTypes.func.isRequired,
   handleChangeSeries: PropTypes.func.isRequired,
-  handleChangeEpisodic: PropTypes.func.isRequired
+  handleChangeEpisodic: PropTypes.func.isRequired,
+  handleOnExternalIds: PropTypes.func
 };
 
 export default TitleEditMode;
