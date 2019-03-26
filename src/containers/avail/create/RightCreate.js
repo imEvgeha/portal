@@ -207,7 +207,7 @@ class RightCreate extends React.Component {
                 this.context.router.history.push('/avails/' + response.data.id);
             }
         })
-            .catch(() => this.setState({errorMessage: 'Avail creation Failed'}));
+            .catch(() => this.setState({errorMessage: 'Right creation Failed'}));
     }
 
     cancel(){

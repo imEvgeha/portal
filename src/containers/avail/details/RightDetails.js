@@ -90,7 +90,7 @@ class RightDetails extends React.Component {
                 })
                 .catch(() => {
                     this.setState({
-                        errorMessage: 'Sorry, we could not find right!'
+                        errorMessage: 'Sorry, we could not find a right with id ' + this.props.match.params.id + ' !'
                     });
                 });
         }
@@ -136,7 +136,7 @@ class RightDetails extends React.Component {
             })
             .catch(() => {
                 this.setState({
-                    errorMessage: 'Avail edit failed'
+                    errorMessage: 'Right edit failed'
                 });
                 onError();
             });
@@ -534,14 +534,14 @@ class RightDetails extends React.Component {
                 </div>
                 {
                     this.state.errorMessage &&
-                        <div id='avails-edit-error' className='text-danger w-100'>
+                        <div id='avails-edit-error' className='text-danger w-100 float-left position-absolute'>
                             <Label id='avails-edit-error-message' className='text-danger w-100 pl-3'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
                 }
                 {this.props.availsMapping &&
-                    <div className="float-right mt-5 mx-5 px-5">
+                    <div className="float-right mt-5 mx-5 px-5 float-right">
                         <Button className="mr-5" id="avails-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                     </div>
                 }
