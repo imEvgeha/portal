@@ -279,17 +279,6 @@ class TitleEditMode extends Component {
                     <option value='N'>N</option>
                   </Input>
                 </Col>
-                <Col>
-                  <Label for='originalLanguage'>Original Language</Label>
-                  <Input
-                    type='select'
-                    name='originalLanguage'
-                    id='originalLanguage'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='English'>English</option>
-                  </Input>
-                </Col>
               </Row>
               <Row style={{marginTop: '10px'}}>
                 <Col>
@@ -315,7 +304,20 @@ class TitleEditMode extends Component {
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   />
                 </Col>
-                <Col>
+              </Row>
+              <Row>                
+              <Col>
+                  <Label for='originalLanguage'>Original Language</Label>
+                  <Input
+                    type='select'
+                    name='originalLanguage'
+                    id='originalLanguage'
+                    onChange={e => this.props.handleOnChangeEdit(e)}
+                  >
+                    <option value='English'>English</option>
+                  </Input>
+                </Col>
+              <Col>
                   <Label for='seriesReleaseYear'>Series Release Year</Label>
                   <Input
                     type='text'

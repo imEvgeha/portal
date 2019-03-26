@@ -194,6 +194,7 @@ class CoreMetadataEditMode extends Component {
           </Col>
         </Row>
         <hr />
+        <h4>External IDs</h4>
         <Row style={{ marginTop: '10px' }}>
           <Col md={1}>
             <Label for='eidrLevel1'>EIDR Level 1 </Label>
