@@ -18,6 +18,7 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {getDeepValue} from '../../../util/Common';
 
 const mapStateToProps = state => {
    return {
@@ -111,25 +112,13 @@ class RightDetails extends React.Component {
         });
     }
 
-    getDeepValue(source, location){
-        const dotPos = location.indexOf('.');
-        if(dotPos > 0) {
-            const firstKey = location.split('.')[0];
-            const restKey = location.substring(dotPos+1);
-            return source[firstKey] ? this.getDeepValue(source[firstKey], restKey) : null;
-        }else{
-            return source[location];
-        }
-    }
-
     flattenAvail(avail){
         let availCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
-            const val = this.getDeepValue(avail, map.javaVariableName);
+            const val = getDeepValue(avail, map.javaVariableName);
             if(val) availCopy[map.javaVariableName] = val;
         });
-
         return availCopy;
     }
 

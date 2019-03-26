@@ -226,7 +226,7 @@ class AdvancedSearchPanel extends React.Component {
             this.searchOptions = [];
             this.props.availsMapping.mappings.forEach( (mapping) => {
                 this.availsMap[mapping.javaVariableName] = mapping;
-                if (mapping.fullTextSearch === 'true') {
+                if (mapping.enableSearch) {
                     this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
                 }
             });
@@ -287,17 +287,27 @@ class AdvancedSearchPanel extends React.Component {
                     const schema = this.availsMap[key];
                     if (ignoreForCloseable.indexOf(key) === -1) {
                         if (schema) {
-                            switch (schema.dataType) {
-                                case 'date' :
-                                    return renderCloseableDateBtn(key, schema.displayName);
-                                case 'text' :
-                                    return renderCloseableBtn(key, schema.displayName);
-                                case 'year' :
-                                    return renderCloseableBtn(key, schema.displayName);
-                                case 'select' :
-                                    return renderCloseableSelectBtn(key, schema.displayName);
+                            switch (schema.searchDataType) {
+                                case 'string' : return renderCloseableBtn(key, schema.displayName);
+                                    break;
+                                case 'integer' : return renderCloseableBtn(key, schema.displayName);
+                                    break;
+                                case 'double' : return renderCloseableBtn(key, schema.displayName);
+                                    break;
+                                case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
+                                    break;
+                                case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
+                                    break;
+                                case 'duration' : return renderCloseableBtn(key, schema.displayName);
+                                    break;
+                                case 'time' : return renderCloseableBtn(key, schema.displayName);
+                                    break;
+                                case 'date' : return renderCloseableDateBtn(key, schema.displayName);
+                                    break;
+                                case 'boolean' : return renderCloseableBtn(key, schema.displayName);
+                                    break;
                                 default:
-                                    console.warn('Unsupported DataType: ' + schema.dataType + ' for field name: ' + schema.displayName);
+                                    console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
                             }
                         } else {
                             console.warn('Cannot determine schema for field: ' + key);
@@ -334,7 +344,7 @@ class AdvancedSearchPanel extends React.Component {
                     currentCriteria={this.props.searchCriteria}
                     selected={this.state.selected}
                     value={this.state.value}
-                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].dataType : null}
+                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].searchDataType : null}
                     displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
                     id={'dashboard-avails-advanced-search-selectable'}
 

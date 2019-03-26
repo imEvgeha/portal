@@ -6,6 +6,7 @@ import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ISO6391 from 'iso-639-1';
+import {AvField, AvForm} from "availity-reactstrap-validation";
 
 
 const mapStateToProps = state => {
@@ -109,7 +110,7 @@ class SelectableInput extends Component {
                 <input type="text" className="form-control"
                     id={this.props.id + '-text'}
                     placeholder={'Enter ' + displayName}
-                    name={name}
+                    name={name.value}
                     ref={this.refInput}
                     value={this.props.value && this.props.value.value ? this.props.value.value : '' }
                     onChange={this.handleInputChange}
@@ -117,10 +118,61 @@ class SelectableInput extends Component {
             </div>);
         };
 
+        const renderNumberField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <AvForm>
+                    <AvField
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                        type="text"
+                        validate={{number: true}}
+                        errorMessage="Please enter a valid number!"
+                    />
+                </AvForm>
+            </div>);
+        };
+
+        const renderTimeField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <AvForm>
+                    <AvField
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                        type="text"
+                        validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
+                        errorMessage="Please enter a valid number!"
+                    />
+                </AvForm>
+            </div>);
+        };
+
+        const renderBooleanField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <select className="form-control"
+                        id={this.props.id + '-boolean'}
+                        name={name.value}
+                        placeholder={'Enter ' + displayName}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}>
+                    <option value="">None selected</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>);
+        };
+
         const renderRangeDatepicker = (name, displayName) => {
             return (
                 <RangeDatapicker
-                    key={name}
+                    key={name.value}
                     id={this.props.id + '-datepicker'}
                     ref={this.refDatePicker}
                     hideLabel={true}
@@ -133,13 +185,13 @@ class SelectableInput extends Component {
             />);
         };
 
-        const renderSelect = (name, displayName) => {
+        const renderSelect = (name, displayName, type) => {
             let options = [];
             if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.value]){
                 options  = this.props.selectValues[this.props.selected.value];
             }
 
-            if(this.props.selected.value === 'foreignLanguage'){
+            if(type === 'multilanguage'){
                 options = ISO6391.getAllCodes().map(code => {return {value:code, label:ISO6391.getName(code)};});
             }
 
@@ -164,7 +216,7 @@ class SelectableInput extends Component {
             return (
                 <div
                     id={this.props.id + '-select'}
-                    key={name}
+                    key={name.value}
                     style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
                     className="react-select-container">
                     <ReactMultiSelectCheckboxes
@@ -182,18 +234,24 @@ class SelectableInput extends Component {
             const displayName = this.props.displayName;
 
             switch (this.props.dataType) {
-                case 'text' :
-                    return renderTextField(selected, displayName);
-                case 'number' :
-                    return renderTextField(selected, displayName);
-                case 'year' :
-                    return renderTextField(selected, displayName);
-                case 'date' :
-                    return renderRangeDatepicker(selected, displayName);
-                case 'boolean' :
-                    return renderTextField(selected, displayName);
-                case 'select' :
-                    return renderSelect(selected, displayName);
+                case 'string' : return renderTextField(selected, displayName);
+                    break;
+                case 'integer' : return renderNumberField(selected, displayName);
+                    break;
+                case 'double' : return renderNumberField(selected, displayName);
+                    break;
+                case 'multiselect' : return renderSelect(selected, displayName, this.props.dataType);
+                    break;
+                case 'multilanguage' : return renderSelect(selected, displayName, this.props.dataType);
+                    break;
+                case 'duration' : return renderNumberField(selected, displayName);
+                    break;
+                case 'time' : return renderTimeField(selected, displayName);
+                    break;
+                case 'date' : return renderRangeDatepicker(selected, displayName);
+                    break;
+                case 'boolean' : return renderBooleanField(selected, displayName);
+                    break;
                 default:
                     console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
             }
