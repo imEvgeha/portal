@@ -386,16 +386,16 @@ class TitleResultTable extends React.Component {
         titleSearchHelper.freeTextSearch(searchCriteria);
     }
 
-    handleFilterChanged = (e) => {
-        const { contentType: { filter } } = e.api.getFilterModel();
-        const filterObj = {
-            contentType: filter
-        };
-        if(e.api.getFilterModel()) {            
-            this.handleTitleFreeTextSearch(filterObj);
-        }
+    // handleFilterChanged = (e) => {
+    //     const { contentType: { filter } } = e.api.getFilterModel();
+    //     const filterObj = {
+    //         contentType: filter
+    //     };
+    //     if(e.api.getFilterModel()) {            
+    //         this.handleTitleFreeTextSearch(filterObj);
+    //     }
         
-    }
+    // }
     render() {
         return (
             <div
@@ -432,8 +432,8 @@ class TitleResultTable extends React.Component {
                     enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
 
-                    enableFilter
-                    onFilterChanged={this.handleFilterChanged}
+                    // enableFilter
+                    // onFilterChanged={this.handleFilterChanged}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}
