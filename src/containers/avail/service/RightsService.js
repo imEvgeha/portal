@@ -61,7 +61,7 @@ export const rightsService = {
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
