@@ -17,6 +17,7 @@ import './AvailResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
 import {availServiceManager} from '../../service/AvailServiceManager';
+import {getDeepValue} from '../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -431,8 +432,12 @@ class AvailsResultTable extends React.Component {
             });
         }
 
-        const content = error || params.valueFormatted || params.value;
-        if (params.value !== undefined) {
+        let val = getDeepValue(params.data, params.colDef.field);
+        if(val === Object(val) && !Array.isArray(val)){
+            val = JSON.stringify(val);
+        }
+        const content = error || params.valueFormatted || val;
+        if (val !== undefined) {
             if (content) {
                 return(
                     <Link to={{ pathname: '/avails/' + params.data.id }}>
@@ -444,7 +449,7 @@ class AvailsResultTable extends React.Component {
                     </Link>
                 );
             }
-            else return params.value;
+            else return val;
         } else {
             return <img src={LoadingGif}/>;
         }

@@ -5,7 +5,6 @@ import DashboardDropableCard from './card/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/DashboardCard';
 import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
-import {loadAvailsMapping} from '../../../stores/actions';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {Can} from '../../../../src/ability';
@@ -20,8 +19,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     resultPageLoading,
     resultPageSort,
-    resultPageUpdate,
-    loadAvailsMapping
+    resultPageUpdate
 };
 
 class DashboardTab extends React.Component {
@@ -29,8 +27,7 @@ class DashboardTab extends React.Component {
         availsMapping: t.any,
         resultPageLoading: t.func,
         resultPageSort: t.func,
-        resultPageUpdate: t.func,
-        loadAvailsMapping: t.func,
+        resultPageUpdate: t.func
     };
 
     static contextTypes = {
@@ -46,7 +43,7 @@ class DashboardTab extends React.Component {
 
     }
 
-    createAvail = () => {
+    createRight = () => {
         this.context.router.history.push('avails/create');
     };
 
@@ -59,7 +56,7 @@ class DashboardTab extends React.Component {
                     </Can>
                     {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
                     <Can I="create" a="Avail">
-                        <DashboardCard title="Create New Edit Version" action={this.createAvail} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-avails'}/>
+                        <DashboardCard title="Create New Edit Version" action={this.createRight} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-right'}/>
                     </Can>
                     {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                     {<DashboardLatestAvailsCard/>}

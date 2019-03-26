@@ -41,7 +41,7 @@ const initialState = {
         availTabPageSort: [],
         searchCriteria: {},
         reportName: '',
-        columns: ['title', 'studio', 'territory', 'genres', 'vodStart', 'vodEnd'],
+        columns: ['title', 'studio', 'territory', 'genres'],
         columnsSize: {}
     }
 };

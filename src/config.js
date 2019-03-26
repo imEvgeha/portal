@@ -42,12 +42,5 @@ export const defaultConfiguration = {
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0
-    },
-    extraValidation: {
-        resolution: {
-            type: 'oneOf',
-            fields: ['sd', 'hd', 'f3d', 'f4k'],
-            values: [['X'], ['X'], ['X'], ['X']]
-        }
     }
 };
