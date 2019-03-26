@@ -41,7 +41,7 @@ const initialState = {
         availTabPageSort: [],
         searchCriteria: {},
         reportName: '',
-        columns: ['title', 'studio', 'territory', 'genres'],
+        columns: ['title', 'studio', 'territory', 'genres', 'start', 'end'],
         columnsSize: {}
     }
 };
