@@ -502,7 +502,7 @@ class RightDetails extends React.Component {
                             if (e.fieldName === mapping.javaVariableName) {
                                 error = e.message;
                                 if (e.sourceDetails) {
-                                    if (e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                                    if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
                                     if (e.sourceDetails.fileName) {
                                         error += ', in file ' + e.sourceDetails.fileName
                                             + ', row number ' + e.sourceDetails.rowId
