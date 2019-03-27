@@ -99,6 +99,7 @@ class EditableBaseComponent extends Component {
         const displayFunc = (value)=>{
             return (<span
                 onClick={this.handleShowHelperComponent}
+                style={{width:'100%'}}
                 className={this.props.disabled ? 'disabled' : ''}>
                        {Array.isArray(value) ? value.join(',') : value}
                    </span>);
@@ -117,10 +118,10 @@ class EditableBaseComponent extends Component {
                         return (
                             <span
                                 className="displayDate"
-                                style={{color: '#808080', cursor: 'pointer'}}
+                                style={{color: '#808080', cursor: 'pointer', width:'100%'}}
                                 onClick={this.handleShowHelperComponent}>
-                            {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
-                        </span>
+                                {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
+                            </span>
                         );
                     }
                 }
@@ -128,7 +129,7 @@ class EditableBaseComponent extends Component {
         };
 
         return (
-            <div>
+            <div className="editable-container">
                 {
                     this.state.helperComponentStatus ?
                         <div>

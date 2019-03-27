@@ -414,7 +414,7 @@ class RightDetails extends React.Component {
                 }
             ];
 
-            if(allOptions[0].options && allOptions[0].options.length > 0 && selectedVal){
+            if(allOptions[0].options && allOptions[0].options.length > 0 && selectedVal && Array.isArray(selectedVal)){
                 val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
             }
 
