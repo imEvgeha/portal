@@ -136,7 +136,7 @@ class RightDetails extends React.Component {
             })
             .catch(() => {
                 this.setState({
-                    errorMessage: 'Right edit failed'
+                    errorMessage: 'Editing right failed'
                 });
                 onError();
             });
