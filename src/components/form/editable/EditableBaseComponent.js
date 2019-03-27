@@ -99,7 +99,7 @@ class EditableBaseComponent extends Component {
         const displayFunc = (value)=>{
             return (<span
                 onClick={this.handleShowHelperComponent}
-                style={{width:'100%'}}
+                style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
                 className={this.props.disabled ? 'disabled' : ''}>
                        {Array.isArray(value) ? value.join(',') : value}
                    </span>);
@@ -132,11 +132,11 @@ class EditableBaseComponent extends Component {
             <div className="editable-container">
                 {
                     this.state.helperComponentStatus ?
-                        <div>
-                            <div className="dPicker" style={{ marginBottom: '5px', minWidth:'500px' }}>
+                        <div style={{width:'100%'}}>
+                            <div className="dPicker" style={{ marginBottom: '5px', minWidth:'500px', width:'90%'}}>
                                 {this.props.helperComponent}
                             </div>
-                            <div style={{ float: 'left' }}>
+                            <div style={{ float: 'left', paddingLeft: '10px'}}>
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}

@@ -202,7 +202,7 @@ class RightCreate extends React.Component {
         rightsService.create(this.avail).then((response) => {
             this.avail={};
             this.setState({});
-            saveCreateRightForm({});
+            store.dispatch(saveCreateRightForm({}));
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
@@ -235,7 +235,7 @@ class RightCreate extends React.Component {
                     style={{border:'none'}}>
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
-                        <div className="col">
+                        <div className="col-8">
                             {content}
                         </div>
                     </div>
@@ -369,6 +369,27 @@ class RightCreate extends React.Component {
                 >
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
+                            if(value && value.length > 0){
+                                return (
+                                    <div
+                                        style={{width:'100%'}}
+                                    >
+                                        <div
+                                            style={{maxWidth:'90%', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                        >
+                                            {value.map(({value}) => value).join(', ')}
+                                        </div>
+                                        <div
+                                            style={{width:'10%', float:'left', paddingLeft:'5px'}}
+                                        >
+                                            {' (' + value.length + ' selected)'}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return placeholderButtonLabel;
+                        }}
                         options={allOptions}
                         value={value}
                         onChange={handleOptionsChange}

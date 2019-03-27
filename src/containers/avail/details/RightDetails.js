@@ -438,6 +438,27 @@ class RightDetails extends React.Component {
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     helperComponent={<ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
+                            if(value && value.length > 0){
+                                return (
+                                    <div
+                                        style={{width:'100%'}}
+                                    >
+                                        <div
+                                            style={{maxWidth:'90%', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                        >
+                                            {value.map(({value}) => value).join(', ')}
+                                        </div>
+                                        <div
+                                            style={{width:'10%', float:'left', paddingLeft:'5px'}}
+                                        >
+                                            {' (' + value.length + ' selected)'}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return placeholderButtonLabel;
+                        }}
                         options={allOptions}
                         value={val}
                         onChange={handleOptionsChange}
