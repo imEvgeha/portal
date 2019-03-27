@@ -454,7 +454,11 @@ class RightsResultTable extends React.Component {
             }
             else return val;
         } else {
-            return <img src={LoadingGif}/>;
+            if(params.data){
+                return '';
+            }else {
+                return <img src={LoadingGif}/>;
+            }
         }
     }
 
