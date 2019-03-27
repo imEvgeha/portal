@@ -4,10 +4,10 @@ import {
     searchFormSetAdvancedSearchCriteria,
 } from '../../../stores/actions/avail/dashboard';
 
-import {availServiceManager} from '../service/AvailServiceManager';
+import {rightServiceManager} from '../service/RightServiceManager';
 import {momentToISO, safeTrim} from '../../../util/Common';
 
-export const availSearchHelper = {
+export const rightSearchHelper = {
 
     loadAdvancedSearchForm: (filter) => {
         store.dispatch(searchFormSetAdvancedSearchCriteria(filter));
@@ -43,11 +43,11 @@ export const availSearchHelper = {
     },
 
     freeTextSearch(searchCriteria) {
-        availServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
+        rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 
     advancedSearch(searchCriteria) {
-        availServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
+        rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     }
 
 };

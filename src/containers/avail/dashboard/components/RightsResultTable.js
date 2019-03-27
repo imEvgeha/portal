@@ -16,7 +16,7 @@ import './RightsResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
-import {availServiceManager} from '../../service/AvailServiceManager';
+import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue} from '../../../../util/Common';
 
 const colDef = [];
@@ -309,7 +309,7 @@ class RightsResultTable extends React.Component {
     }
 
     doSearch(page, pageSize, sortedParams) {
-        return availServiceManager.doSearch(page, pageSize, sortedParams);
+        return rightServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){

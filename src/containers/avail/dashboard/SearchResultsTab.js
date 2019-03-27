@@ -176,7 +176,7 @@ class SearchResultsTab extends React.Component {
     exportAvails = () => {
         if (this.props.availTabPageSelected.length === 0) {
             alertModal.open('Action required', () => {
-            }, {description: 'Please select at least one avail'});
+            }, {description: 'Please select at least one right'});
         } else {
             confirmModal.open('Confirm download',
                 this.requestFile,

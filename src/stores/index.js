@@ -7,7 +7,7 @@ import history from './reducers/history';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
-import {availSearchHelper} from '../containers/avail/dashboard/AvailSearchHelper.js';
+import {rightSearchHelper} from '../containers/avail/dashboard/RightSearchHelper.js';
 
 const DASHBOARD_SESSION_VERSION = '0.4';
 const CREATERIGHT_SESSION_VERSION = '0.2';
@@ -37,9 +37,9 @@ export const loadDashboardState = () => {
         const dashboard = store.getState().dashboard;
         if(dashboard.session.showSearchResults) {
             if (dashboard.session.showAdvancedSearch) {
-                availSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
+                rightSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
             }else{
-                availSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
+                rightSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
             }
         }
     }, 1);

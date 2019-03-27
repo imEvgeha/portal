@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 import store from '../../../stores/index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
-import {availSearchHelper} from '../dashboard/AvailSearchHelper';
+import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {resultPageUpdateColumnsOrder, resultPageSort} from '../../../stores/actions/avail/dashboard';
 
 const httpWithoutErrorHandling = Http.create({noDefaultErrorHandling: false});
@@ -22,16 +22,16 @@ const loadReportToStore = (report) => {
     }
 
     store.dispatch(resultPageSort(sortedBy));
-    availSearchHelper.loadAdvancedSearchForm(report.orderedFilter ? report.orderedFilter : {});
-    availSearchHelper.advancedSearch(report.orderedFilter ? report.orderedFilter : {});
+    rightSearchHelper.loadAdvancedSearchForm(report.orderedFilter ? report.orderedFilter : {});
+    rightSearchHelper.advancedSearch(report.orderedFilter ? report.orderedFilter : {});
 };
 
 const resetToNoReport = () => {
     store.dispatch(setReportName(''));
     store.dispatch(resultPageUpdateColumnsOrder());
     store.dispatch(resultPageSort([]));
-    availSearchHelper.loadAdvancedSearchForm({});
-    availSearchHelper.advancedSearch({});
+    rightSearchHelper.loadAdvancedSearchForm({});
+    rightSearchHelper.advancedSearch({});
 };
 
 const readReportFromStore = () => {

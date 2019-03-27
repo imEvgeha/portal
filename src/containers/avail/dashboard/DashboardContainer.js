@@ -17,7 +17,7 @@ import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
 import t from 'prop-types';
 import {profileService} from '../service/ProfileService';
-import {availSearchHelper} from './AvailSearchHelper';
+import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
 import moment from 'moment';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
@@ -136,7 +136,7 @@ class DashboardContainer extends React.Component {
         NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
-        availSearchHelper.freeTextSearch(searchCriteria);
+        rightSearchHelper.freeTextSearch(searchCriteria);
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
@@ -148,7 +148,7 @@ class DashboardContainer extends React.Component {
 
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
-        availSearchHelper.advancedSearch(searchCriteria);
+        rightSearchHelper.advancedSearch(searchCriteria);
     }
 
     render() {

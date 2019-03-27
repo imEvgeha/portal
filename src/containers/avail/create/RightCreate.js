@@ -51,14 +51,14 @@ class RightCreate extends React.Component {
         this.handleChangeSave = this.handleChangeSave.bind(this);
 
         this.mappingErrorMessage = {};
-        this.avail = {};
+        this.right = {};
     }
 
     componentDidMount() {
         if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
         NexusBreadcrumb.push(RIGHT_CREATE);
-        this.avail = this.props.storedForm;
+        this.right = this.props.storedForm;
 
         if(this.props.availsMapping){
             this.initMappingErrors(this.props.availsMapping.mappings);
@@ -76,7 +76,7 @@ class RightCreate extends React.Component {
             this.initMappingErrors(this.props.availsMapping.mappings);
         }
         if(prevProps.storedForm !== this.props.storedForm){
-            this.avail = this.props.storedForm;
+            this.right = this.props.storedForm;
         }
     }
 
@@ -113,10 +113,10 @@ class RightCreate extends React.Component {
         this.mappingErrorMessage[name] = errorMessage;
 
         if(setNewValue){
-            let newAvail = {...this.avail, [name]: value};
-            this.avail = newAvail;
+            let newRight = {...this.right, [name]: value};
+            this.right = newRight;
             if(save) {
-                store.dispatch(saveCreateRightForm(newAvail));
+                store.dispatch(saveCreateRightForm(newRight));
             }
         }
     }
@@ -127,7 +127,7 @@ class RightCreate extends React.Component {
             const groupedMappingName = this.getGroupedMappingName(name);
 
             if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
-                const errorMessage = rangeValidation(name, displayName, date, this.avail);
+                const errorMessage = rangeValidation(name, displayName, date, this.right);
                 this.mappingErrorMessage[name].range = errorMessage;
                 if (this.mappingErrorMessage[groupedMappingName]) {
                     this.mappingErrorMessage[groupedMappingName].range = errorMessage;
@@ -135,7 +135,7 @@ class RightCreate extends React.Component {
             }
         }
 
-        store.dispatch(saveCreateRightForm({...this.avail}));
+        store.dispatch(saveCreateRightForm({...this.right}));
         this.setState({});
     }
 
@@ -185,13 +185,13 @@ class RightCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty() {
-        if(this.props.availsMapping.mappings.find(x => x.required && !this.avail[x.javaVariableName])) return true;
+        if(this.props.availsMapping.mappings.find(x => x.required && !this.right[x.javaVariableName])) return true;
         return false;
     }
 
     validateFields(){
         this.props.availsMapping.mappings.map((mapping) => {
-            this.checkRight(mapping.javaVariableName, this.avail[mapping.javaVariableName], false);
+            this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
         });
         this.setState({});
         return this.anyInvalidField();
@@ -199,8 +199,8 @@ class RightCreate extends React.Component {
 
     confirm() {
         if(this.validateFields()) return;
-        rightsService.create(this.avail).then((response) => {
-            this.avail={};
+        rightsService.create(this.right).then((response) => {
+            this.right={};
             this.setState({});
             store.dispatch(saveCreateRightForm({}));
             if(response && response.data && response.data.id){
@@ -246,7 +246,7 @@ class RightCreate extends React.Component {
         const renderStringField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
-                    <Input defaultValue={value} type="text" name={name} id={'avails-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange} onBlur={this.handleChangeSave}/>
+                    <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange} onBlur={this.handleChangeSave}/>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
@@ -263,7 +263,7 @@ class RightCreate extends React.Component {
                         <AvField
                                 value={value}
                                 name={name}
-                                id={'avails-create-' + name + '-text'}
+                                id={'right-create-' + name + '-text'}
                                 placeholder={'Enter ' + displayName}
                                 onChange={this.handleChange}
                                 onBlur={this.handleChangeSave}
@@ -288,7 +288,7 @@ class RightCreate extends React.Component {
                         <AvField
                             value={value}
                             name={name}
-                            id={'avails-create-' + name + '-text'}
+                            id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
                             onBlur={this.handleChangeSave}
@@ -313,7 +313,7 @@ class RightCreate extends React.Component {
                         <AvField
                             value={value}
                             name={name}
-                            id={'avails-create-' + name + '-text'}
+                            id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
                             onBlur={this.handleChangeSave}
@@ -338,8 +338,8 @@ class RightCreate extends React.Component {
             }
 
             //fields with enpoints (these have ids)
-            const filterKeys = Object.keys(this.avail).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
-            let filters = filterKeys.map((key) => this.avail[key]).filter(x => (Array.isArray(x) ? x.length : x));
+            const filterKeys = Object.keys(this.right).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            let filters = filterKeys.map((key) => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
 
             let filteredOptions = options;
             filters.map(filter => {
@@ -363,7 +363,7 @@ class RightCreate extends React.Component {
 
             return renderFieldTemplate(name, displayName, required, (
                 <div
-                    id={'avails-create-' + name + '-multiselect'}
+                    id={'right-create-' + name + '-multiselect'}
                     key={name}
                     className="react-select-container"
                 >
@@ -425,7 +425,7 @@ class RightCreate extends React.Component {
 
             return renderFieldTemplate(name, displayName, required, (
                 <div
-                    id={'avails-create-' + name + '-select'}
+                    id={'right-create-' + name + '-select'}
                     key={name}
                     className="react-select-container"
                 >
@@ -450,7 +450,7 @@ class RightCreate extends React.Component {
             return renderFieldTemplate(name, displayName, required, (
                 <select className="form-control"
                         name={name}
-                        id={'avails-create-' + name + '-select'}
+                        id={'right-create-' + name + '-select'}
                         placeholder={'Enter ' + displayName}
                         value={value}
                         onChange={this.handleChange}
@@ -467,8 +467,8 @@ class RightCreate extends React.Component {
                 <div>
                     <NexusDatePicker
                         value={value}
-                        id={'avails-create-' + name + '-text'}
-                        date={this.avail[name]}
+                        id={'right-create-' + name + '-text'}
+                        date={this.right[name]}
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
                         onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
                     />
@@ -497,7 +497,7 @@ class RightCreate extends React.Component {
             this.props.availsMapping.mappings.map((mapping)=> {
                 if(mapping.enableEdit && !mapping.readOnly){
                     let required = mapping.required;
-                    const value = this.avail ? this.avail[mapping.javaVariableName] : '';
+                    const value = this.right ? this.right[mapping.javaVariableName] : '';
                     switch (mapping.dataType) {
                         case 'string' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
@@ -535,13 +535,13 @@ class RightCreate extends React.Component {
                         {renderFields}
                     </div>
                 </div>
-                <Label id="avails-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
+                <Label id="right-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
                     {this.state && this.state.errorMessage}
                 </Label>
                 {this.props.availsMapping &&
                     <div className="float-right mt-1 mx-5">
-                        <Button className="mr-2" id="avails-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
-                        <Button className="mr-4" id="avails-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                        <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                        <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                     </div>
                 }
             </div>

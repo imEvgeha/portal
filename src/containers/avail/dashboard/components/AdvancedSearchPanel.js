@@ -6,7 +6,7 @@ import {
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
-import {availSearchHelper} from '../AvailSearchHelper';
+import {rightSearchHelper} from '../RightSearchHelper';
 import {configurationService} from '../../service/ConfigurationService';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
@@ -154,7 +154,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        exportService.bulkExportAvails(availSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
+        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
         .then(function (response) {
             downloadFile(response.data);
         })
@@ -175,7 +175,7 @@ class AdvancedSearchPanel extends React.Component {
 
     handleClear() {
         this.handleSelect(null);
-        availSearchHelper.clearAdvancedSearchForm();
+        rightSearchHelper.clearAdvancedSearchForm();
     }
 
     handleSave() {
