@@ -4,7 +4,7 @@ import React from 'react';
 import {alertModal} from '../../../components/modal/AlertModal';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import t from 'prop-types';
-import AvailsResultTable from './components/AvailsResultTable';
+import RightsResultTable from './components/RightsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
 import {downloadFile} from '../../../util/Common';
@@ -262,13 +262,13 @@ class SearchResultsTab extends React.Component {
                         </div>
                     </div>
                     <div>
-                        <AvailsResultTable
+                        <RightsResultTable
                             hidden={this.props.showSelectedAvails}
                             fromServer = {true}
                         />
                     </div>
                     <div>
-                        <AvailsResultTable
+                        <RightsResultTable
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
                             fromServer = {false}

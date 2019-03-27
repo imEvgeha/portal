@@ -12,7 +12,7 @@ import LoadingGif from '../../../../img/loading.gif';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import './AvailResultTable.scss';
+import './RightsResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
@@ -47,7 +47,7 @@ let mapDispatchToProps = {
     resultPageUpdateColumnsOrder
 };
 
-class AvailsResultTable extends React.Component {
+class RightsResultTable extends React.Component {
     static propTypes = {
         availsMapping: t.any,
         availTabPage: t.object,
@@ -535,7 +535,7 @@ class AvailsResultTable extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailsResultTable);
+export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
 
 import {Component} from 'react';
 
