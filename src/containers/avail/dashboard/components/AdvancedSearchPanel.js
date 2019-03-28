@@ -6,7 +6,7 @@ import {
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
-import {availSearchHelper} from '../AvailSearchHelper';
+import {rightSearchHelper} from '../RightSearchHelper';
 import {configurationService} from '../../service/ConfigurationService';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
@@ -154,7 +154,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        exportService.bulkExportAvails(availSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
+        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
         .then(function (response) {
             downloadFile(response.data);
         })
@@ -175,7 +175,7 @@ class AdvancedSearchPanel extends React.Component {
 
     handleClear() {
         this.handleSelect(null);
-        availSearchHelper.clearAdvancedSearchForm();
+        rightSearchHelper.clearAdvancedSearchForm();
     }
 
     handleSave() {
@@ -282,6 +282,22 @@ class AdvancedSearchPanel extends React.Component {
             </div>);
         };
 
+        const renderCloseableDurationBtn = (name, displayName) => {
+            function prepareDuration(prefix, value) {
+                return value ? prefix + ' ' + value : '';
+            }
+            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    onClick={() => this.selectField(name)}
+                    onClose={() => this.removeField(name)}
+                    highlighted={this.state.blink === name}
+                    value={prepareDuration(' from', this.props.searchCriteria[name].from) + ' ' + prepareDuration('to', this.props.searchCriteria[name].to)}
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
+            </div>);
+        };
+
         const renderCloseable = () => {
             if (this.availsMap != null) {
                 return Array.from(fieldsToShow).map((key) => {
@@ -294,7 +310,7 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'double' : return renderCloseableBtn(key, schema.displayName);
                                 case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
                                 case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
-                                case 'duration' : return renderCloseableBtn(key, schema.displayName);
+                                case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
                                 case 'date' : return renderCloseableDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);

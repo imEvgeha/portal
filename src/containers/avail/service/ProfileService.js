@@ -9,7 +9,6 @@ const http = Http.create({noDefaultErrorHandling: true});
 
 const getAvailsMapping = () => {
     return http.get('/availMapping.json');
-    //return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/mapping-data');
 };
 
 const getSelectValues = (field) => {
@@ -20,7 +19,6 @@ export const profileService = {
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then( (response) => {
-                //console.log(response);
                 response.data.mappings.map((rec) => {
                     if(rec.dataType === 'select' || rec.dataType === 'multiselect'){
                         if(rec.options){
@@ -28,7 +26,6 @@ export const profileService = {
                         }else {
                             if(rec.configEndpoint) {
                                 getSelectValues(rec.configEndpoint).then((response) => {
-                                    //console.log('RECEIVED', rec.configEndpoint, response);
                                     store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
                                 });
                             }else{

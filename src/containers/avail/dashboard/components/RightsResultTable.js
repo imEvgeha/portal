@@ -12,11 +12,11 @@ import LoadingGif from '../../../../img/loading.gif';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import './AvailResultTable.scss';
+import './RightsResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
-import {availServiceManager} from '../../service/AvailServiceManager';
+import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue} from '../../../../util/Common';
 
 const colDef = [];
@@ -47,7 +47,7 @@ let mapDispatchToProps = {
     resultPageUpdateColumnsOrder
 };
 
-class AvailsResultTable extends React.Component {
+class RightsResultTable extends React.Component {
     static propTypes = {
         availsMapping: t.any,
         availTabPage: t.object,
@@ -309,7 +309,7 @@ class AvailsResultTable extends React.Component {
     }
 
     doSearch(page, pageSize, sortedParams) {
-        return availServiceManager.doSearch(page, pageSize, sortedParams);
+        return rightServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){
@@ -419,7 +419,7 @@ class AvailsResultTable extends React.Component {
                 if(e.fieldName === params.colDef.field){
                     error = e.message;
                     if(e.sourceDetails){
-                        if(e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                        if(e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
                         if(e.sourceDetails.fileName){
                             error += ', in file ' + e.sourceDetails.fileName
                                    + ', row number ' + e.sourceDetails.rowId
@@ -454,7 +454,11 @@ class AvailsResultTable extends React.Component {
             }
             else return val;
         } else {
-            return <img src={LoadingGif}/>;
+            if(params.data){
+                return '';
+            }else {
+                return <img src={LoadingGif}/>;
+            }
         }
     }
 
@@ -535,7 +539,7 @@ class AvailsResultTable extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AvailsResultTable);
+export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
 
 import {Component} from 'react';
 

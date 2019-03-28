@@ -47,7 +47,7 @@ class RightDetails extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.cancel = this.cancel.bind(this);
-        this.getAvailData = this.getAvailData.bind(this);
+        this.getRightData = this.getRightData.bind(this);
 
         this.emptyValueText = 'Enter';
         this.fields = {};
@@ -61,9 +61,9 @@ class RightDetails extends React.Component {
         if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
         NexusBreadcrumb.push({name: '', path: '/avails/'});
         profileService.initAvailsMapping();
-        this.getAvailData();
+        this.getRightData();
         if(this.refresh === null){
-            this.refresh = setInterval(this.getAvailData, config.get('avails.edit.refresh.interval'));
+            this.refresh = setInterval(this.getRightData, config.get('avails.edit.refresh.interval'));
         }
     }
 
@@ -75,14 +75,14 @@ class RightDetails extends React.Component {
         NexusBreadcrumb.pop();
     }
 
-    getAvailData() {
+    getRightData() {
         if(this.props.match && this.props.match.params && this.props.match.params.id){
             rightsService.get(this.props.match.params.id)
                 .then(res => {
                     if(res && res.data){
                         this.setState({
-                            avail: res.data,
-                            flatAvail: this.flattenAvail(res.data)
+                            right: res.data,
+                            flatRight: this.flattenRight(res.data)
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({name: res.data.title, path: '/avails/' + res.data.id});
@@ -100,9 +100,9 @@ class RightDetails extends React.Component {
         const name = editable.props.title;
         const value = editable.value ? editable.value.trim() : editable.value;
         this.update(name, value, () => {
-            editable.setState({availLastEditSucceed: false});
-            editable.value = this.state.avail[name];
-            editable.newValue = this.state.avail[name];
+            editable.setState({rightLastEditSucceed: false});
+            editable.value = this.state.right[name];
+            editable.newValue = this.state.right[name];
         });
     }
 
@@ -112,31 +112,31 @@ class RightDetails extends React.Component {
         });
     }
 
-    flattenAvail(avail){
-        let availCopy = {};
+    flattenRight(right){
+        let rightCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
-            const val = getDeepValue(avail, map.javaVariableName);
-            if(val) availCopy[map.javaVariableName] = val;
+            const val = getDeepValue(right, map.javaVariableName);
+            if(val) rightCopy[map.javaVariableName] = val;
         });
-        return availCopy;
+        return rightCopy;
     }
 
     update(name, value, onError) {
-        let updatedAvail = {[name]: value};
-        rightsService.update(updatedAvail, this.state.avail.id)
+        let updatedRight = {[name]: value};
+        rightsService.update(updatedRight, this.state.right.id)
             .then(res => {
-                let editedAvail = res.data;
+                let editedRight = res.data;
                 this.setState({
-                    avail: this.flattenAvail(editedAvail),
+                    right: this.flattenRight(editedRight),
                     errorMessage: ''
                 });
                 NexusBreadcrumb.pop();
-                NexusBreadcrumb.push({name: editedAvail.title, path: '/avails/' + editedAvail.id});
+                NexusBreadcrumb.push({name: editedRight.title, path: '/avails/' + editedRight.id});
             })
             .catch(() => {
                 this.setState({
-                    errorMessage: 'Right edit failed'
+                    errorMessage: 'Editing right failed'
                 });
                 onError();
             });
@@ -187,7 +187,7 @@ class RightDetails extends React.Component {
                         <div
                             onClick = {this.onFieldClicked}
                             className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
-                            id={'avails-detail-' + name + '-field'}>
+                            id={'right-detail-' + name + '-field'}>
                             <div className="editable-field-content">
                                 {content}
                             </div>
@@ -387,10 +387,10 @@ class RightDetails extends React.Component {
             }
 
             //fields with enpoints (these have ids)
-            const filterKeys = Object.keys(this.state.flatAvail).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            const filterKeys = Object.keys(this.state.flatRight).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
             let filters = filterKeys.map((key) => {
-                if(this.state.flatAvail[key] && this.props.selectValues[key]) {
-                    const filt = (Array.isArray(this.state.flatAvail[key]) ? this.state.flatAvail[key] : [this.state.flatAvail[key]]).map(val => {
+                if(this.state.flatRight[key] && this.props.selectValues[key]) {
+                    const filt = (Array.isArray(this.state.flatRight[key]) ? this.state.flatRight[key] : [this.state.flatRight[key]]).map(val => {
                         const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
                         return candidates.length ? candidates : null;
                     }).filter(x => x).flat();
@@ -438,6 +438,27 @@ class RightDetails extends React.Component {
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     helperComponent={<ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
+                            if(value && value.length > 0){
+                                return (
+                                    <div
+                                        style={{width:'100%'}}
+                                    >
+                                        <div
+                                            style={{maxWidth:'90%', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                        >
+                                            {value.map(({value}) => value).join(', ')}
+                                        </div>
+                                        <div
+                                            style={{width:'10%', float:'left', paddingLeft:'5px'}}
+                                        >
+                                            {' (' + value.length + ' selected)'}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return placeholderButtonLabel;
+                        }}
                         options={allOptions}
                         value={val}
                         onChange={handleOptionsChange}
@@ -461,7 +482,7 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={(date) => rangeValidation(name, displayName, date, this.state.flatAvail)}
+                    validate={(date) => rangeValidation(name, displayName, date, this.state.flatRight)}
                     onChange={(date, cancel) => this.handleEditableSubmit(name, date, cancel)}
                 />
             ));
@@ -469,19 +490,19 @@ class RightDetails extends React.Component {
 
         const renderFields = [];
 
-        if(this.state.flatAvail && this.props.availsMapping) {
+        if(this.state.flatRight && this.props.availsMapping) {
 
             const cannotUpdate = cannot('update', 'Avail');
 
             this.props.availsMapping.mappings.map((mapping)=> {
                 if (mapping.enableEdit) {
                     let error = null;
-                    if (this.state.avail && this.state.avail.validationErrors) {
-                        this.state.avail.validationErrors.forEach(e => {
+                    if (this.state.right && this.state.right.validationErrors) {
+                        this.state.right.validationErrors.forEach(e => {
                             if (e.fieldName === mapping.javaVariableName) {
                                 error = e.message;
                                 if (e.sourceDetails) {
-                                    if (e.sourceDetails.originalValue) error += ' \'' + e.sourceDetails.originalValue + '\'';
+                                    if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
                                     if (e.sourceDetails.fileName) {
                                         error += ', in file ' + e.sourceDetails.fileName
                                             + ', row number ' + e.sourceDetails.rowId
@@ -493,7 +514,7 @@ class RightDetails extends React.Component {
                     }
 
                     const readOnly = cannotUpdate || mapping.readOnly;
-                    const value = this.state.flatAvail ? this.state.flatAvail[mapping.javaVariableName] : '';
+                    const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
                     const required = mapping.required;
                     switch (mapping.dataType) {
                         case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
@@ -534,15 +555,15 @@ class RightDetails extends React.Component {
                 </div>
                 {
                     this.state.errorMessage &&
-                        <div id='avails-edit-error' className='text-danger w-100 float-left position-absolute'>
-                            <Label id='avails-edit-error-message' className='text-danger w-100 pl-3'>
+                        <div id='right-edit-error' className='text-danger w-100 float-left position-absolute'>
+                            <Label id='right-edit-error-message' className='text-danger w-100 pl-3'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
                 }
                 {this.props.availsMapping &&
                     <div className="float-right mt-5 mx-5 px-5 float-right">
-                        <Button className="mr-5" id="avails-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                        <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                     </div>
                 }
             </div>
