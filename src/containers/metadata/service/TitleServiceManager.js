@@ -13,7 +13,7 @@ export const titleServiceManager = {
     //called by the table either as result of other systems triggering the table (page 0) or scrolling the table (page > 0)
     //this function is just a wrapper that decides which service function (and API as a result) to call depending on data in search criteria
     doSearch: (page, pageSize, sortedParams) => {
-        if(store.getState().titleReducer.session.searchCriteria.text){
+        if(store.getState().titleReducer.freeTextSearch.title){
             return titleServiceManager.callService(titleService.freeTextSearch, page, pageSize, sortedParams);
         }else{
             return titleServiceManager.callService(titleService.advancedSearch, page, pageSize, sortedParams);

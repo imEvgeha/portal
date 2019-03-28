@@ -18,6 +18,7 @@ import { resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, 
 import { titleServiceManager } from '../../service/TitleServiceManager';
 import { Link } from 'react-router-dom';
 import { titleMapping } from '../../service/Profile';
+import { titleSearchHelper } from '../TitleSearchHelper';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -381,6 +382,20 @@ class TitleResultTable extends React.Component {
             return null;
         }
     }
+    handleTitleFreeTextSearch(searchCriteria) {
+        titleSearchHelper.freeTextSearch(searchCriteria);
+    }
+
+    // handleFilterChanged = (e) => {
+    //     const { contentType: { filter } } = e.api.getFilterModel();
+    //     const filterObj = {
+    //         contentType: filter
+    //     };
+    //     if(e.api.getFilterModel()) {            
+    //         this.handleTitleFreeTextSearch(filterObj);
+    //     }
+        
+    // }
     render() {
         return (
             <div
@@ -417,9 +432,8 @@ class TitleResultTable extends React.Component {
                     enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
 
-                    enableFilter
-                    //floatingFilter
-                    //floatingFiltersHeight={50}
+                    // enableFilter
+                    // onFilterChanged={this.handleFilterChanged}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}

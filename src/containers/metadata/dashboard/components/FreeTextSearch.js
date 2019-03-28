@@ -12,7 +12,7 @@ class FreeTextSearch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
+            title: '',
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -35,17 +35,17 @@ class FreeTextSearch extends React.Component {
 
     handleSearch() {
         this.props.searchFormUpdateTextSearch({
-            text: this.state.text
+            title: this.state.title
         });
-        this.props.onSearch({text: this.state.text});
+        this.props.onSearch({title: this.state.title});
     }
 
     render() {
         return (<div className="input-group stylish-input-group">
             <input type="text" className="form-control" placeholder="Search"
-                name={'text'}
+                name={'title'}
                 disabled={this.props.disabled}
-                value={this.state.text}
+                value={this.state.title}
                 onChange={this.handleInputChange}
                 id={this.props.containerId + '-freetext-search-text'}
                 onKeyPress={this._handleKeyPress}/>
