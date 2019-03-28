@@ -6,12 +6,10 @@ import {
   Container,
   Progress,
   Alert,
-  FormGroup,
-  Input
+  FormGroup
 } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import CoreMetadataEditMode from './territorymetadata/coremetadata/CoreMetadataEditMode';
 
 class TitleEditMode extends Component {
   constructor(props) {
@@ -189,22 +187,6 @@ class TitleEditMode extends Component {
                               placeholder={'Enter Season ID'}
                               onChange={e => this.props.handleChangeEpisodic(e)}
                             />
-                            <Fragment>
-                              <Row>
-                                <Col>
-                                  <Label for='totalNumberOfEpisodes'>
-                                    Episodes
-                                  </Label>
-
-                                  <AvField
-                                    type='number'
-                                    name='totalNumberOfEpisodes'
-                                    id='totalNumberOfEpisodes'
-                                    placeholder='Episodes'
-                                  />
-                                </Col>
-                              </Row>
-                            </Fragment>
                           </Col>
                         ) : (
                           <Col>
@@ -228,130 +210,7 @@ class TitleEditMode extends Component {
                     </Fragment>
                   ) : null}
                 </Fragment>
-              ) : (
-                <Fragment>
-                  <Row>
-                    <Col>
-                      <Label for='totalNumberOfSeasons'>Seasons</Label>
-
-                      <AvField
-                        type='number'
-                        name='totalNumberOfSeasons'
-                        id='totalNumberOfSeasons'
-                        placeholder='Seasons'
-                      />
-                    </Col>
-                  </Row>
-                </Fragment>
-              )}
-              <Row>
-                <Col>
-                  <Label for='duration'>Duration</Label>
-                  <Input
-                    type='time'
-                    name='duration'
-                    step='2'
-                    id='duration'
-                    placeholder='Enter Duration'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  />
-                </Col>
-                <Col>
-                  <Label for='countryOfOrigin'>Country of Origin</Label>
-                  <Input
-                    type='select'
-                    name='countryOfOrigin'
-                    id='countryOfOrigin'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='USA'>USA</option>
-                  </Input>
-                </Col>
-                <Col>
-                  <Label for='animated'>Animated</Label>
-                  <Input
-                    type='select'
-                    name='animated'
-                    id='animated'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='Y'>Y</option>
-                    <option value='N'>N</option>
-                  </Input>
-                </Col>
-              </Row>
-              <Row style={{marginTop: '10px'}}>
-                <Col>
-                  <Label for='eventType'>Event Type</Label>
-                  <Input
-                    type='select'
-                    name='eventType'
-                    id='eventType'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='live'>Live</option>
-                    <option value='TapeDelayed'>Tape Delayed</option>
-                    <option value='Taped'>Taped</option>
-                  </Input>
-                </Col>
-                <Col>
-                  <Label for='licensor'>Licensor</Label>
-                  <Input
-                    type='text'
-                    name='licensor'
-                    id='licensor'
-                    placeholder='Enter Licensor'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  />
-                </Col>
-              </Row>
-              <Row>                
-              <Col>
-                  <Label for='originalLanguage'>Original Language</Label>
-                  <Input
-                    type='select'
-                    name='originalLanguage'
-                    id='originalLanguage'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='English'>English</option>
-                  </Input>
-                </Col>
-              <Col>
-                  <Label for='seriesReleaseYear'>Series Release Year</Label>
-                  <Input
-                    type='text'
-                    name='seriesReleaseYear'
-                    id='seriesReleaseYear'
-                    placeholder='Enter Series Release Year'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  />
-                </Col>
-                <Col>
-                  <Label for='seasonPremiere'>Season Premiere</Label>
-                  <Input
-                    type='select'
-                    name='seasonPremiere'
-                    id='seasonPremiere'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='Yes'>Yes</option>
-                    <option value='No'>No</option>
-                  </Input>
-                </Col>
-                <Col>
-                  <Label for='seasonFinale'>Season Finale</Label>
-                  <Input
-                    type='select'
-                    name='seasonFinale'
-                    id='seasonFinale`'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value='Yes'>Yes</option>
-                    <option value='No'>No</option>
-                  </Input>
-                </Col>
-              </Row>
+              ) : null }
               <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='titleReleaseYear'>
@@ -400,7 +259,6 @@ class TitleEditMode extends Component {
               ) : null}
             </Col>
           </Row>
-          <CoreMetadataEditMode />
         </Container>
       </Fragment>
     );
