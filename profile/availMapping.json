@@ -266,7 +266,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "language",
+  "javaVariableName": "language.language",
   "sheetColumnName": "Language",
   "displayName": "Language",
   "dataType": "language",
@@ -277,7 +277,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "audioType",
+  "javaVariableName": "language.audioType",
   "sheetColumnName": "Audio Type",
   "displayName": "Audio Type",
   "dataType": "select",
