@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Button} from 'reactstrap';
 import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
+import RangeDuration from './RangeDuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ISO6391 from 'iso-639-1';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -46,12 +47,13 @@ class SelectableInput extends Component {
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleOptionsChange = this.handleOptionsChange.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleDateInvalid = this.handleDateInvalid.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleInvalid = this.handleInvalid.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.isAnyValueSpecified = this.isAnyValueSpecified.bind(this);
         this.refInput = React.createRef();
         this.refDatePicker = React.createRef();
+        this.refDuration = React.createRef();
     }
 
     componentDidUpdate(prevProps) {
@@ -72,7 +74,7 @@ class SelectableInput extends Component {
         this.props.onChange({...this.props.value, value: value});
     }
 
-    handleDateChange(key, value) {
+    handleChange(key, value) {
         this.props.onChange({...this.props.value, [key]: value});
     }
 
@@ -80,7 +82,7 @@ class SelectableInput extends Component {
         this.props.onChange({...this.props.value, options: selectedOptions});
     }
 
-    handleDateInvalid(value) {
+    handleInvalid(value) {
         this.setState({invalid: value});
     }
 
@@ -95,6 +97,8 @@ class SelectableInput extends Component {
                 this.refInput.current.focus();
             } else if (this.refDatePicker.current) {
                 this.refDatePicker.current.focus();
+            } else if (this.refDuration.current) {
+                this.refDuration.current.focus();
             }
         }, 10);
     }
@@ -169,6 +173,22 @@ class SelectableInput extends Component {
             </div>);
         };
 
+        const renderRangeDurationField = (name, displayName) => {
+            return (
+                <RangeDuration
+                    key={name.value}
+                    id={this.props.id + '-duration'}
+                    ref={this.refDuration}
+                    hideLabel={true}
+                    displayName={displayName}
+                    value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
+                    onFromDurationChange={(value) => this.handleChange('from', value)}
+                    onToDurationChange={(value) => this.handleChange('to', value)}
+                    onInvalid={this.handleInvalid}
+                    handleKeyPress={this._handleKeyPress}
+                />);
+        };
+
         const renderRangeDatepicker = (name, displayName) => {
             return (
                 <RangeDatapicker
@@ -178,9 +198,9 @@ class SelectableInput extends Component {
                     hideLabel={true}
                     displayName={displayName}
                     value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
-                    onFromDateChange={(value) => this.handleDateChange('from', value)}
-                    onToDateChange={(value) => this.handleDateChange('to', value)}
-                    onInvalid={this.handleDateInvalid}
+                    onFromDateChange={(value) => this.handleChange('from', value)}
+                    onToDateChange={(value) => this.handleChange('to', value)}
+                    onInvalid={this.handleInvalid}
                     handleKeyPress={this._handleKeyPress}
             />);
         };
@@ -239,7 +259,7 @@ class SelectableInput extends Component {
                 case 'double' : return renderNumberField(selected, displayName);
                 case 'multiselect' : return renderSelect(selected, displayName, this.props.dataType);
                 case 'multilanguage' : return renderSelect(selected, displayName, this.props.dataType);
-                case 'duration' : return renderNumberField(selected, displayName);
+                case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
                 case 'date' : return renderRangeDatepicker(selected, displayName);
                 case 'boolean' : return renderBooleanField(selected, displayName);
