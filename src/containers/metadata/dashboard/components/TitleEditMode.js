@@ -29,16 +29,16 @@ class TitleEditMode extends Component {
       productionStudioId,
       releaseYear,
       boxOffice,
-      animated,
-      duration,
-      eventType,
-      seasonFinale,
-      seasonPremiere,
-      totalNumberOfSeasons,
-      licensors,
-      originalLanguage,
-      countryOfOrigin,
-      totalNumberOfEpisodes
+      // animated,
+      // duration,
+      // eventType,
+      // seasonFinale,
+      // seasonPremiere,
+      // totalNumberOfSeasons,
+      // licensors,
+      // originalLanguage,
+      // countryOfOrigin,
+      // totalNumberOfEpisodes
     } = this.props.data;
     return (
       <Fragment>
@@ -289,8 +289,8 @@ class TitleEditMode extends Component {
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
                   <option value={''}>Select Animated</option>
-                    <option value={!!true}>Y</option>
-                    <option value={!!false}>N</option>
+                    <option value={true}>Y</option>
+                    <option value={false}>N</option>
                   </Input>
                 </Col>
               </Row>

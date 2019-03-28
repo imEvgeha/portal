@@ -7,7 +7,6 @@ import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import { titleService } from '../../service/TitleService';
-import { errorModal } from '../../../../components/modal/ErrorModal';
 import { Button, Row, Col } from 'reactstrap';
 import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
@@ -47,8 +46,7 @@ class TitleEdit extends Component {
         titleService.getTitleById(titleId).then((response) => {
             const titleForm = response.data;
             this.setState({ titleForm, editedForm: titleForm });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
+        }).catch(() => {
             console.error('Unable to load Title Data');
         });
         titleService.getTerritoryMetadataById(titleId).then((response) => {
@@ -56,8 +54,7 @@ class TitleEdit extends Component {
             this.setState({
                 territory: territory
             });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
+        }).catch(() => {
             console.error('Unable to load Title Data');
         });
     }
@@ -163,12 +160,26 @@ class TitleEdit extends Component {
             handleOnChangeEdit={this.handleOnChangeEdit} />;
     };
 
+    removeBooleanQuotes = (newAdditionalFields, fieldName) => {
+        if(newAdditionalFields[fieldName]) {
+            if(newAdditionalFields[fieldName] === 'true') {
+                newAdditionalFields[fieldName] = true;
+            } else if(newAdditionalFields[fieldName] === 'false'){
+                newAdditionalFields[fieldName] = false;
+            }
+        } 
+    }
+
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm) {
             this.setState({
                 isLoading: true
             });
             let newAdditionalFields = this.getAdditionalFieldsaWithoutEmptyField();
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
+            this.removeBooleanQuotes(newAdditionalFields, 'animated');
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
+            console.log(newAdditionalFields);
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -178,8 +189,7 @@ class TitleEdit extends Component {
                     editorialMetadataActiveTab: CURRENT_TAB
                 });
 
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+            }).catch(() => {
                 console.error('Unable to load Title Data');
             });
 
@@ -272,8 +282,7 @@ class TitleEdit extends Component {
                 this.setState({
                     territory: list
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+            }).catch(() => {
                 console.error('Unable to edit Title Data');
             });
         });
@@ -293,8 +302,7 @@ class TitleEdit extends Component {
                     territoryMetadataActiveTab: CURRENT_TAB,
                     areTerritoryMetadataFieldsRequired: false
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
+            }).catch(() => {
                 console.error('Unable to add Territory Metadata');
             });
         } else {
@@ -410,8 +418,7 @@ class TitleEdit extends Component {
                     editorialMetadataActiveTab: CURRENT_TAB,
                     areEditorialMetadataFieldsRequired: false
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.response.data.description, closable: true });
+            }).catch(() => {
                 console.error('Unable to add Editorial Metadata');
             });
         } else {
@@ -454,42 +461,35 @@ class TitleEdit extends Component {
     }
 
     getAdditionalFieldsaWithoutEmptyField() {
-        let additionalfields = {};
+        let additionalFields = {};
         for(let fields in this.state.editedForm) {
             if(fields === 'externalIds') {
-                additionalfields[fields] = this.getEpisodicSubObjectWithoutEmptyFields('externalIds');
+                additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
             } 
             else if (fields === 'advisories') {
-                additionalfields[fields] = this.getEpisodicSubObjectWithoutEmptyFields('advisories');
+                additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
             }
             else if(this.state.editedForm[fields]) {
-                additionalfields[fields] = this.state.editedForm[fields];
+                additionalFields[fields] = this.state.editedForm[fields];
             } else {
-                additionalfields[fields] = null;
+                additionalFields[fields] = null;
             }
         }
-
-        return additionalfields;
+        return additionalFields;
     }
 
     getAdditionalFieldsWithoutEmptyFields(subField) {
         let subObject = {};
-        let doAddSubject = false;
+        let doAddSubObject = false;
         for(let field in this.state.editedForm[subField]) {
-            if(this.state.editedForm[field]) {
-                doAddSubject = true;
-                subObject = this.state.editedForm[field];
                 if(this.state.editedForm[subField][field]) {
                     subObject[field] = this.state.editedForm[subField][field];
-                    doAddSubject = true;
+                    doAddSubObject = true;
                 } else {
                     subField[field] = null;
                 }
-            } else {
-                subField = null;
-            }
         }
-        return doAddSubject ? subObject : null;
+        return doAddSubObject ? subObject : null;
     }
 
     /**
@@ -499,7 +499,6 @@ class TitleEdit extends Component {
         this.handleTitleOnSave();
         this.handleTerritoryMetadataOnSave();
         this.handleEditorialMetadataOnSave();
-        console.log(this.state.editedForm)
     };
 
     render() {

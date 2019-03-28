@@ -131,6 +131,7 @@ class CoreMetadataEditMode extends Component {
               <CloseableBtn
                 style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
                 title={'PG'}
+                onClick={() => {return;}}
                 highlighted={false}
                 id={'core-metadata-tags'}
                 onClose={() => alert('Test')}
@@ -138,6 +139,7 @@ class CoreMetadataEditMode extends Component {
               <CloseableBtn
                 style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
                 title={'PG'}
+                onClick={() => {return;}}
                 highlighted={false}
                 id={'core-metadata-tags'}
                 onClose={() => alert('Test')}
@@ -145,6 +147,7 @@ class CoreMetadataEditMode extends Component {
               <CloseableBtn
                 style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
                 title={'PG'}
+                onClick={() => {return;}}
                 highlighted={false}
                 id={'core-metadata-tags'}
                 onClose={() => alert('Test')}
@@ -152,6 +155,7 @@ class CoreMetadataEditMode extends Component {
               <CloseableBtn
                 style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
                 title={'PG'}
+                onClick={() => {return;}}
                 highlighted={false}
                 id={'core-metadata-tags'}
                 onClose={() => alert('Test')}
@@ -159,6 +163,7 @@ class CoreMetadataEditMode extends Component {
               <CloseableBtn
                 style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
                 title={'PG'}
+                onClick={() => {return;}}
                 highlighted={false}
                 id={'core-metadata-tags'}
                 onClose={() => alert('Test')}
