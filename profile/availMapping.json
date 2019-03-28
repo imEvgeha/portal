@@ -283,7 +283,7 @@
   "dataType": "select",
   "searchDataType": "multiselect",
   "queryParamName": "audioType",
-  "options": ["Stereo", "Dolby"],
+  "options": ["Stereo", "Dolby51"],
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
