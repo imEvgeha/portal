@@ -134,12 +134,26 @@ class TitleEdit extends Component {
         });
     }
 
+    handleOnAdvisories = (e) => {
+        const newAdvisory = {
+            ...this.state.editedForm.advisories,
+            [e.target.name]: e.target.value
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                advisories: newAdvisory
+            }
+        });
+    }
+
     readOnly = () => {
         return <TitleReadOnlyMode data={this.state.titleForm} />;
     };
 
     editMode = () => {
         return <TitleEditMode
+            handleOnAdvisories={this.handleOnAdvisories}
             handleChangeEpisodic={this.handleChangeEpisodic}
             handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
@@ -151,11 +165,11 @@ class TitleEdit extends Component {
 
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm) {
-            const updatedTitle = this.state.editedForm;
             this.setState({
                 isLoading: true
             });
-            titleService.updateTitle(updatedTitle).then(() => {
+            let newAdditionalFields = this.getAdditionalFieldsaWithoutEmptyField();
+            titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
                     titleForm: this.state.editedForm,
@@ -437,6 +451,45 @@ class TitleEdit extends Component {
         }
 
         return doAddSubObject ? subObject : null;
+    }
+
+    getAdditionalFieldsaWithoutEmptyField() {
+        let additionalfields = {};
+        for(let fields in this.state.editedForm) {
+            if(fields === 'externalIds') {
+                additionalfields[fields] = this.getEpisodicSubObjectWithoutEmptyFields('externalIds');
+            } 
+            else if (fields === 'advisories') {
+                additionalfields[fields] = this.getEpisodicSubObjectWithoutEmptyFields('advisories');
+            }
+            else if(this.state.editedForm[fields]) {
+                additionalfields[fields] = this.state.editedForm[fields];
+            } else {
+                additionalfields[fields] = null;
+            }
+        }
+
+        return additionalfields;
+    }
+
+    getAdditionalFieldsWithoutEmptyFields(subField) {
+        let subObject = {};
+        let doAddSubject = false;
+        for(let field in this.state.editedForm[subField]) {
+            if(this.state.editedForm[field]) {
+                doAddSubject = true;
+                subObject = this.state.editedForm[field];
+                if(this.state.editedForm[subField][field]) {
+                    subObject[field] = this.state.editedForm[subField][field];
+                    doAddSubject = true;
+                } else {
+                    subField[field] = null;
+                }
+            } else {
+                subField = null;
+            }
+        }
+        return doAddSubject ? subObject : null;
     }
 
     /**

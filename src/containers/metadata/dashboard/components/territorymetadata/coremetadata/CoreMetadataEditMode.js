@@ -18,11 +18,11 @@ import PropTypes from 'prop-types';
 
 class CoreMetadataEditMode extends Component {
   render() {
-    const {
-      advisoriesCode,
-      awards,
-      ratings
-    } = this.props.data;
+    // const {
+    //   advisoriesCode,
+    //   awards,
+    //   ratings
+    // } = this.props.data;
     return (
       <Fragment>
         <Row>
@@ -123,7 +123,6 @@ class CoreMetadataEditMode extends Component {
               <Label for='exampleEmail'>Ratings</Label>
               <Input
                 type='text'
-                value={ratings}
                 onChange={(e) => this.props.onChange(e)}
                 name='ratings'
                 id='ratings'
@@ -171,9 +170,8 @@ class CoreMetadataEditMode extends Component {
               <Label for='exampleEmail'>Advisories</Label>
               <Input
                 type='text'
-                // value={advisoriesCode}
-                onChange={(e) => this.props.onChange(e)}
-                name='advisories'
+                onChange={(e) => this.props.handleOnAdvisories(e)}
+                name='advisoriesFreeText'
                 id='advisories'
                 placeholder='Advisories'
               />
@@ -184,7 +182,6 @@ class CoreMetadataEditMode extends Component {
               <Label for='exampleSelect'>Advisory Code</Label>
               <Input
                 type='select'
-                value={advisoriesCode}
                 onChange={(e) => this.props.onChange(e)}
                 name='advisoryCode'
                 id='advisoryCode'
@@ -204,7 +201,6 @@ class CoreMetadataEditMode extends Component {
               <Input
                 type='text'
                 name='awards'
-                value={awards}
                 onChange={(e) => this.props.onChange(e)}
                 id='awards'
                 placeholder='Awards'
@@ -220,7 +216,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='eidrLevel1'
               id='eidrLevel1'
@@ -235,7 +230,6 @@ class CoreMetadataEditMode extends Component {
               type='text'
               name='tmsId'
               id='tmsId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.tmsId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               placeholder='TMS ID'
             />
@@ -248,7 +242,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='eidrLevel2'
               id='eidrLevel2'
@@ -261,7 +254,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='xFinityId'
               id='xFinityId'
@@ -277,7 +269,6 @@ class CoreMetadataEditMode extends Component {
             <Input
               type='text'
               name='dmaId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.dmaId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               id='dmaId'
               placeholder='DMA ID'
@@ -289,7 +280,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId :  null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='licensorTitleId'
               id='licensorTitleId'
@@ -304,7 +294,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.isan : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='isan'
               id='isan'
@@ -319,7 +308,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='overrideMsvAssociationId'
               id='overrideMsvAssociationId'
@@ -334,7 +322,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.alid : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='alId'
               id='alId'
@@ -347,7 +334,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.vzId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='vzId'
               id='vzId'
@@ -362,7 +348,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.cid : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='cId'
               id='cId'
@@ -375,7 +360,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.movidaId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='movidaId'
               id='movidaId'
@@ -390,7 +374,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.isrc : null}
               onChange={this.props.handleOnExternalIds}
               name='isrc'
               id='isrc'
@@ -404,7 +387,6 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Input
               type='text'
-              value={this.props.data.externalIds ? this.props.data.externalIds.movidaTitleId : null}
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='movidaTitleId'
               id='movidaTitleId'
@@ -420,7 +402,8 @@ class CoreMetadataEditMode extends Component {
 CoreMetadataEditMode.propTypes = {
   data: PropTypes.object,
   onChange: PropTypes.func,
-  handleOnExternalIds: PropTypes.func
+  handleOnExternalIds: PropTypes.func,
+  handleOnAdvisories: PropTypes.func
 };
 
 export default CoreMetadataEditMode;

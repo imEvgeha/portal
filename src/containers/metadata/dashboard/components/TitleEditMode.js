@@ -60,7 +60,7 @@ class TitleEditMode extends Component {
                     name='title'
                     errorMessage='Please enter a valid title!'
                     id='title'
-                    value={title || ''}
+                    value={title ? title : ''}
                     placeholder='Enter Title'
                     onChange={this.props.handleOnChangeEdit}
                     validate={{
@@ -83,7 +83,7 @@ class TitleEditMode extends Component {
                     name='productionStudioId'
                     errorMessage='Please enter a valid production studio!'
                     id='titleProductionStudio'
-                    value={productionStudioId || ''}
+                    value={productionStudioId ? productionStudioId : ''}
                     placeholder='Enter Studio'
                     onChange={this.props.handleOnChangeEdit}
                   />
@@ -208,7 +208,6 @@ class TitleEditMode extends Component {
 
                                   <AvField
                                     type='number'
-                                    value={totalNumberOfEpisodes}
                                     name='totalNumberOfEpisodes'
                                     id='totalNumberOfEpisodes'
                                     placeholder='Episodes'
@@ -247,7 +246,6 @@ class TitleEditMode extends Component {
 
                       <AvField
                         type='number'
-                        value={totalNumberOfSeasons}
                         name='totalNumberOfSeasons'
                         id='totalNumberOfSeasons'
                         placeholder='Seasons'
@@ -261,7 +259,6 @@ class TitleEditMode extends Component {
                   <Label for='duration'>Duration</Label>
                   <Input
                     type='time'
-                    value={duration}
                     name='duration'
                     step='2'
                     id='duration'
@@ -273,7 +270,6 @@ class TitleEditMode extends Component {
                   <Label for='countryOfOrigin'>Country of Origin</Label>
                   <Input
                     type='select'
-                    value={countryOfOrigin}
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
@@ -287,15 +283,14 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='animated'>Animated</Label>
                   <Input
-                    type='select'
-                    value={animated}                    
+                    type='select'                  
                     name='animated'
                     id='animated'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
                   <option value={''}>Select Animated</option>
-                    <option value={true}>Y</option>
-                    <option value={false}>N</option>
+                    <option value={!!true}>Y</option>
+                    <option value={!!false}>N</option>
                   </Input>
                 </Col>
               </Row>
@@ -304,12 +299,11 @@ class TitleEditMode extends Component {
                   <Label for='eventType'>Event Type</Label>
                   <Input
                     type='select'
-                    value={eventType}
                     name='eventType'
                     id='eventType'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
-                    <option value='Liv'>Select Event Type</option>
+                    <option value=''>Select Event Type</option>
                     <option value='Live'>Live</option>
                     <option value='TapeDelayed'>Tape Delayed</option>
                     <option value='Taped'>Taped</option>
@@ -319,7 +313,6 @@ class TitleEditMode extends Component {
                   <Label for='licensors'>Licensor</Label>
                   <Input
                     type='text'
-                    value={licensors}
                     name='licensors'
                     id='licensors'
                     placeholder='Enter Licensor'
@@ -332,7 +325,6 @@ class TitleEditMode extends Component {
                   <Label for='originalLanguage'>Original Language</Label>
                   <Input
                     type='select'
-                    value={originalLanguage}
                     name='originalLanguage'
                     id='originalLanguage'
                     onChange={e => this.props.handleOnChangeEdit(e)}
@@ -356,7 +348,6 @@ class TitleEditMode extends Component {
                   <Label for='seasonPremiere'>Season Premiere</Label>
                   <Input
                     type='select'
-                    value={seasonPremiere}
                     name='seasonPremiere'
                     id='seasonPremiere'
                     onChange={e => this.props.handleOnChangeEdit(e)}
@@ -370,7 +361,6 @@ class TitleEditMode extends Component {
                   <Label for='seasonFinale'>Season Finale</Label>
                   <Input
                     type='select'
-                    value={seasonFinale}
                     name='seasonFinale'
                     id='seasonFinale`'
                     onChange={e => this.props.handleOnChangeEdit(e)}
@@ -400,7 +390,7 @@ class TitleEditMode extends Component {
                       maxLength: { value: 4 }
                     }}
                     placeholder='Enter Release Year'
-                    value={releaseYear}
+                    value={releaseYear ? releaseYear : ''}
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   />
                 </Col>
@@ -411,7 +401,7 @@ class TitleEditMode extends Component {
                     id='titleBoxOffice'
                     type='number'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    value={boxOffice}
+                    value={boxOffice ? boxOffice : ''}
                     placeholder='Enter Box Office'
                     validate={{
                       pattern: {
@@ -429,7 +419,7 @@ class TitleEditMode extends Component {
               ) : null}
             </Col>
           </Row>
-          <CoreMetadataEditMode data={this.props.data} onChange={this.props.handleOnChangeEdit} handleOnExternalIds={this.props.handleOnExternalIds}  />
+          <CoreMetadataEditMode data={this.props.data} handleOnAdvisories={this.props.handleOnAdvisories} onChange={this.props.handleOnChangeEdit} handleOnExternalIds={this.props.handleOnExternalIds}  />
         </Container>
       </Fragment>
     );
@@ -442,7 +432,8 @@ TitleEditMode.propTypes = {
   handleOnChangeEdit: PropTypes.func.isRequired,
   handleChangeSeries: PropTypes.func.isRequired,
   handleChangeEpisodic: PropTypes.func.isRequired,
-  handleOnExternalIds: PropTypes.func
+  handleOnExternalIds: PropTypes.func,
+  handleOnAdvisories: PropTypes.func
 };
 
 export default TitleEditMode;
