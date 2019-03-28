@@ -82,30 +82,6 @@ class TerritoryMetadataEditMode extends Component {
                         </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col md={2}>
-                                <b>Original Air Date</b>
-                            </Col>
-                            <Col md={2}>
-                                <AvField type="date" id="territoryOriginalAirDate"
-                                    name="OriginalAirDate"
-                                    // value={this.getValidDate(this.props.data.availAnnounceDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    errorMessage="Please enter a valid date!" />
-                            </Col>
-                        </Row>
-                        <Row style={{ padding: '15px' }}>
-                            <Col md={2}>
-                                <b>EST Release Date</b>
-                            </Col>
-                            <Col md={2}>
-                                <AvField type="date" id="territoryESTReleaseDate"
-                                    name="EstReleaseDate"
-                                    // value={this.getValidDate(this.props.data.availAnnounceDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    errorMessage="Please enter a valid date!" />
-                            </Col>
-                        </Row>
-                        <Row style={{ padding: '15px' }}>
-                            <Col md={2}>
                                 <b>Release Year</b>
                             </Col>
                             <Col md={2}>

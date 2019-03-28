@@ -78,28 +78,6 @@ class TerritoryMetadataCreateTab extends Component {
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
-                            <Col md={2}>
-                                <b>Original Air Date</b>
-                            </Col>
-                            <Col md={2}>
-                                <AvField type="date" id="territoryOriginalAirDate"
-                                    name="originalAirDate"
-                                    onChange={this.props.handleChange}
-                                    errorMessage="Please enter a valid date!" />
-                            </Col>
-                        </Row>
-                        <Row style={{ padding: '15px' }}>
-                            <Col md={2}>
-                                <b>EST Release Date</b>
-                            </Col>
-                            <Col md={2}>
-                                <AvField type="date" id="territoryEstReleaseDate"
-                                    name="estReleaseYear"
-                                    onChange={this.props.handleChange}
-                                    errorMessage="Please enter a valid date!" />
-                            </Col>
-                        </Row>
-                    <Row style={{ padding: '15px' }}>
                         <Col md={2}>
                             <b>Release Year</b>
                         </Col>
