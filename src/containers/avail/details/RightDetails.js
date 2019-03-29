@@ -19,6 +19,8 @@ import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {getDeepValue} from '../../../util/Common';
+import moment from 'moment';
+import {momentToISO} from '../../../util/Common';
 
 const mapStateToProps = state => {
    return {
@@ -107,6 +109,13 @@ class RightDetails extends React.Component {
     }
 
     handleEditableSubmit(name, value, cancel) {
+        const schema = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
+        switch (schema.dataType) {
+            case 'date': value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
+                break;
+            case 'localdate': value = value && moment(value).isValid() ? momentToISO(value) : value;
+                break;
+        }
         this.update(name, value, () => {
             cancel();
         });
@@ -533,10 +542,12 @@ class RightDetails extends React.Component {
                             break;
                         case 'duration': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                             break;
-                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value ? value.substr(0, 10) : value, error, readOnly, required));
                              break;
+                        case 'localdate': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                            break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
                              break;
                         default:

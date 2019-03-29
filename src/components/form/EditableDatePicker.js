@@ -143,7 +143,7 @@ class EditableDatePicker extends Component {
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
-                                    onClick={() => this.submit(this.state.date ? this.state.date.toISOString() : null)}
+                                    onClick={() => this.submit(this.state.date)}
                                     color="success"><i className="fa fa-check"></i>
                                 </Button>
                                 <Button
