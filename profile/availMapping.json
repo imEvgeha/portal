@@ -32,7 +32,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "licensor",
   "sheetColumnName": "Licensor",
