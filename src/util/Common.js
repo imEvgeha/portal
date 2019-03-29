@@ -45,7 +45,15 @@ function prepareSortMatrixParam(sortedParams) {
     }
     return matrix;
 }
-
+function prepareSortMatrixParamTitles(sortedParams) {
+    let matrix = '';
+        if(sortedParams){
+            sortedParams.forEach((entry) => {
+                matrix += '?sort=' + entry.id + ',' + (entry.desc ? 'DESC' : 'ASC');
+            });
+        }
+    return matrix;
+}
 function mergeDeep(target, source) {
     let output = Object.assign({}, target);
     if (isObject(target) && isObject(source)) {
@@ -74,4 +82,4 @@ function getDeepValue(source, location){
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles};

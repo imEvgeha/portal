@@ -9,7 +9,7 @@ import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
 import {rightSearchHelper} from '../containers/avail/dashboard/RightSearchHelper.js';
 
-const DASHBOARD_SESSION_VERSION = '0.4';
+const DASHBOARD_SESSION_VERSION = '0.5';
 const CREATERIGHT_SESSION_VERSION = '0.2';
 const HISTORY_SESSION_VERSION = '0.3';
 
