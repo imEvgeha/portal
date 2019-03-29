@@ -137,7 +137,8 @@ class RightDetails extends React.Component {
             .then(res => {
                 let editedRight = res.data;
                 this.setState({
-                    right: this.flattenRight(editedRight),
+                    right: res.data,
+                    flatRight: this.flattenRight(res.data),
                     errorMessage: ''
                 });
                 NexusBreadcrumb.pop();
