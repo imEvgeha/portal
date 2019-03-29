@@ -174,15 +174,25 @@ class RightsResultTable extends React.Component {
     }
 
     parseColumnsSchema() {
+        let formatter = (column) => {
+            switch (column.dataType) {
+                case 'localdate' : return function(params){
+                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L');
+                    else return undefined;
+                };
+                case 'date' : return function(params){
+                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName].substr(0, 10)).format('L');
+                    else return undefined;
+                };
+                default: return null;
+            }
+        };
         if(this.props.availsMapping){
             this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {
                 field:column.javaVariableName,
                 headerName:column.displayName,
                 cellRendererFramework: this.loadingRenderer,
-                valueFormatter: column.dataType==='date' ? function(params) {
-                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L');
-                    else return undefined;
-                } : null,
+                valueFormatter: formatter(column),
                 width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250
             });
         }
