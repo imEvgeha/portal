@@ -2,7 +2,6 @@ import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
 import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Common';
-import store from '../../../stores/index';
 
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
