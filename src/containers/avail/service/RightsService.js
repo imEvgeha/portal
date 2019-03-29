@@ -66,18 +66,9 @@ export const rightsService = {
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        const convertMap = {};
-        store.getState().root.availsMapping.mappings.forEach(mapping => {convertMap[mapping.javaVariableName] = mapping.queryParamName;});
-        convertMap.availHistoryIds = 'availHistoryIds';
-        convertMap.rowInvalid = 'invalid';
-
         for (let key in searchCriteria) {
-            if(convertMap.hasOwnProperty(key)) {
-                if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                    params[convertMap[key]] = searchCriteria[key];
-                }
-            }else{
-                console.warn('queryParamName for ' + key + ' NOT FOUND');
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                params[key] = searchCriteria[key];
             }
         }
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
