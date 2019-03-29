@@ -9,14 +9,40 @@ import {
   ListGroupItem,
   Card,
   CardHeader,
-  CardBody
+  CardBody,
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
 import CloseableBtn from '../../../../../../components/form/CloseableBtn';
 import PropTypes from 'prop-types';
+import { AvField } from 'availity-reactstrap-validation';
+import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
+import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 
 class CoreMetadataEditMode extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+       isCastModalOpen: false,
+       isCrewModalOpen: false
+    };
+  }
+  renderModal = (modalName) => {
+      if(modalName === 'cast') {
+        this.setState({
+          isCastModalOpen: !this.state.isCastModalOpen
+        });
+      } else if(modalName === 'crew') {
+        this.setState({
+          isCrewModalOpen: !this.state.isCrewModalOpen
+        });
+      } else {
+        this.setState({
+          isCrewModalOpen: false,
+          isCastModalOpen: false
+        });
+      }
+  }
   render() {
     // const {
     //   advisoriesCode,
@@ -29,8 +55,9 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Card id='cardContainer'>
               <CardHeader className='clearfix'>
-                <h4 className='float-left'>Crew</h4>
+                <h4 className='float-left'>Cast</h4>
                 <FontAwesome
+                  onClick={() => this.renderModal('cast')}
                   className='float-right'
                   name='plus-circle'
                   style={{ marginTop: '8px', cursor: 'pointer' }}
@@ -48,7 +75,7 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   <ListGroupItem>
-                    Cras justo odio
+                    Firstname Lastname
                     <FontAwesome
                       className='float-right'
                       name='times-circle'
@@ -58,7 +85,7 @@ class CoreMetadataEditMode extends Component {
                     />
                   </ListGroupItem>
                   <ListGroupItem>
-                    Cras justo odio
+                    Firstname Lastname
                     <FontAwesome
                       className='float-right'
                       name='times-circle'
@@ -68,7 +95,7 @@ class CoreMetadataEditMode extends Component {
                     />
                   </ListGroupItem>
                   <ListGroupItem>
-                    Cras justo odio
+                    Firstname Lastname
                     <FontAwesome
                       className='float-right'
                       name='times-circle'
@@ -84,9 +111,10 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <Card id='cardContainer'>
               <CardHeader className='clearfix'>
-                <h4 className='float-left'>Cast</h4>
+                <h4 className='float-left'>Crew</h4>
                 <FontAwesome
                   className='float-right'
+                  onClick={() => this.renderModal('crew')}
                   name='plus-circle'
                   style={{ marginTop: '8px', cursor: 'pointer' }}
                   color='#111'
@@ -103,7 +131,7 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   <ListGroupItem>
-                    Cras justo odio
+                    <span style={{fontSize: '14px', color: '#666'}}>Directed by:</span> Firstname Lastname
                     <FontAwesome
                       className='float-right'
                       name='times-circle'
@@ -173,12 +201,15 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <FormGroup>
               <Label for='exampleEmail'>Advisories</Label>
-              <Input
+              <AvField
                 type='text'
                 onChange={(e) => this.props.handleOnAdvisories(e)}
                 name='advisoriesFreeText'
                 id='advisories'
                 placeholder='Advisories'
+                validate={{
+                  maxLength: { value: 500 }
+                }}
               />
             </FormGroup>
           </Col>
@@ -203,12 +234,15 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <FormGroup>
               <Label for='exampleSelect'>Awards</Label>
-              <Input
+              <AvField
                 type='text'
                 name='awards'
                 onChange={(e) => this.props.onChange(e)}
                 id='awards'
                 placeholder='Awards'
+                validate={{
+                  maxLength: { value: 500 }
+                }}
               />
             </FormGroup>
           </Col>
@@ -219,24 +253,30 @@ class CoreMetadataEditMode extends Component {
             <Label for='eidrLevel1'>EIDR Level 1 </Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='eidrLevel1'
               id='eidrLevel1'
               placeholder='EIDR Level 1'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
           <Col md={1}>
             <Label for='tmsId'>TMS ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               name='tmsId'
               id='tmsId'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               placeholder='TMS ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
@@ -245,24 +285,30 @@ class CoreMetadataEditMode extends Component {
             <Label for='eidrLevel2'>EIDR Level 2 </Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='eidrLevel2'
               id='eidrLevel2'
               placeholder='EIDR Level 2'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
           <Col md={1}>
             <Label for='xFinityId'>Xfinity Movie ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='xFinityId'
               id='xFinityId'
               placeholder='Xfiniy Movie ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
@@ -271,24 +317,30 @@ class CoreMetadataEditMode extends Component {
             <Label for='dmaId'>DMA ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               name='dmaId'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               id='dmaId'
               placeholder='DMA ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
           <Col md={1}>
             <Label for='licensorTitleId'>Licensor Title ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='licensorTitleId'
               id='licensorTitleId'
               placeholder='Licensor Title ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
@@ -297,12 +349,15 @@ class CoreMetadataEditMode extends Component {
             <Label for='isan'>ISAN</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='isan'
               id='isan'
               placeholder='ISAN'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
           <Col md={1}>
@@ -311,12 +366,15 @@ class CoreMetadataEditMode extends Component {
             </Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='overrideMsvAssociationId'
               id='overrideMsvAssociationId'
               placeholder='Override MSV Association ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
@@ -325,24 +383,30 @@ class CoreMetadataEditMode extends Component {
             <Label for='alId'>AL ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='alId'
               id='alId'
               placeholder='AL ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
           <Col md={1}>
             <Label for='vzId'>VZ ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='vzId'
               id='vzId'
               placeholder='VZ ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
@@ -351,24 +415,30 @@ class CoreMetadataEditMode extends Component {
             <Label for='cId'>C ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='cId'
               id='cId'
               placeholder='C ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
           <Col md={1}>
             <Label for='movidaId'>Movida ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='movidaId'
               id='movidaId'
               placeholder='Movie ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
@@ -377,12 +447,15 @@ class CoreMetadataEditMode extends Component {
             <Label for='isrc'>ISRC</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={this.props.handleOnExternalIds}
               name='isrc'
               id='isrc'
               placeholder='ISRC'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
 
@@ -390,15 +463,20 @@ class CoreMetadataEditMode extends Component {
             <Label for='movidaTitleId'>Movida Title ID</Label>
           </Col>
           <Col>
-            <Input
+            <AvField
               type='text'
               onChange={(e) => this.props.handleOnExternalIds(e)}
               name='movidaTitleId'
               id='movidaTitleId'
               placeholder='Movida Title ID'
+              validate={{
+                maxLength: { value: 200 }
+              }}
             />
           </Col>
         </Row>
+        <CoreMetadataCreateCastModal isCastModalOpen={this.state.isCastModalOpen} renderCastModal={this.renderModal} />
+        <CoreMetadataCreateCrewModal isCrewModalOpen={this.state.isCrewModalOpen} renderCrewModal={this.renderModal} />        
       </Fragment>
     );
   }
@@ -408,7 +486,7 @@ CoreMetadataEditMode.propTypes = {
   data: PropTypes.object,
   onChange: PropTypes.func,
   handleOnExternalIds: PropTypes.func,
-  handleOnAdvisories: PropTypes.func
+  handleOnAdvisories: PropTypes.func,  
 };
 
 export default CoreMetadataEditMode;

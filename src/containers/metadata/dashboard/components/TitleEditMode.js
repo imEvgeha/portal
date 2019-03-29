@@ -158,7 +158,6 @@ class TitleEditMode extends Component {
                             </Col>
                           ) : (
                             <Col md={6}>
-                              <FormGroup>
                                 <Label for='titleEpisodeCount'>
                                   Episode Count
                                 </Label>
@@ -177,7 +176,6 @@ class TitleEditMode extends Component {
                                     this.props.handleChangeEpisodic(e)
                                   }
                                 />
-                              </FormGroup>
                             </Col>
                           )}
                         </Fragment>
@@ -211,6 +209,10 @@ class TitleEditMode extends Component {
                                     name='totalNumberOfEpisodes'
                                     id='totalNumberOfEpisodes'
                                     placeholder='Episodes'
+                                    errorMessage="Please enter a valid episode number!"
+                                    validate={{
+                                      maxLength: { value: 3 }
+                                    }}
                                   />
                                 </Col>
                               </Row>
@@ -249,6 +251,10 @@ class TitleEditMode extends Component {
                         name='totalNumberOfSeasons'
                         id='totalNumberOfSeasons'
                         placeholder='Seasons'
+                        errorMessage="Please enter a valid season number!"
+                        validate={{
+                          maxLength: { value: 3 }
+                        }}
                       />
                     </Col>
                   </Row>
@@ -275,9 +281,8 @@ class TitleEditMode extends Component {
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
                     <option value=''>Select Country of Origin</option>
-                    <option value='USA'>USA</option>
                     <option value='PL'>PL</option>
-                    <option value='GB'>GB</option>
+                    <option value='GB'>UK</option>
                   </Input>
                 </Col>
                 <Col>
@@ -344,32 +349,38 @@ class TitleEditMode extends Component {
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   />
                 </Col>
-                <Col>
-                  <Label for='seasonPremiere'>Season Premiere</Label>
-                  <Input
-                    type='select'
-                    name='seasonPremiere'
-                    id='seasonPremiere'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value={''}>Select Season Premiere</option>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                  </Input>
-                </Col>
-                <Col>
-                  <Label for='seasonFinale'>Season Finale</Label>
-                  <Input
-                    type='select'
-                    name='seasonFinale'
-                    id='seasonFinale`'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  >
-                    <option value={''}>Select Season Finale</option>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                  </Input>
-                </Col>
+                {
+                  contentType === 'EPISODE' ? (
+                    <Fragment>
+                      <Col>
+                        <Label for='seasonPremiere'>Season Premiere</Label>
+                        <Input
+                          type='select'
+                          name='seasonPremiere'
+                          id='seasonPremiere'
+                          onChange={e => this.props.handleOnChangeEdit(e)}
+                        >
+                          <option value={''}>Select Season Premiere</option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>No</option>
+                        </Input>
+                      </Col>
+                      <Col>
+                        <Label for='seasonFinale'>Season Finale</Label>
+                        <Input
+                          type='select'
+                          name='seasonFinale'
+                          id='seasonFinale`'
+                          onChange={e => this.props.handleOnChangeEdit(e)}
+                        >
+                          <option value={''}>Select Season Finale</option>
+                          <option value={true}>Yes</option>
+                          <option value={false}>No</option>
+                        </Input>
+                      </Col>
+                    </Fragment>
+                  ) : null
+                }
               </Row>
               <Row style={{ marginTop: '15px' }}>
                 <Col>
