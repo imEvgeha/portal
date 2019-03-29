@@ -9,7 +9,7 @@ export const exportService = {
         return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/export', {columnNames: columns, rightsIds: rightsIDs}, {responseType: 'arraybuffer'});
     },
 
-    bulkExportAvails: (searchCriteria) => {
+    bulkExportAvails: (searchCriteria, columns) => {
         const params = {};
         for (let key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
