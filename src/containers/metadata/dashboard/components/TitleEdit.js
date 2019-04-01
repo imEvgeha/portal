@@ -500,11 +500,17 @@ class TitleEdit extends Component {
         this.handleEditorialMetadataOnSave();
     };
 
+    onKeyPress(event) {
+        if (event.which === 13 /* Enter */) {
+          event.preventDefault();
+        }
+    }
+
     render() {
         return (
             <EditPage>
 
-                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} ref={c => (this.form = c)}>
+                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} ref={c => (this.form = c)} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
                             {

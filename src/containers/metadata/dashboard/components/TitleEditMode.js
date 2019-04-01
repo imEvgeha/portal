@@ -31,7 +31,7 @@ class TitleEditMode extends Component {
       boxOffice,
       // animated,
       // duration,
-      // eventType,
+      eventType,
       // seasonFinale,
       // seasonPremiere,
       // totalNumberOfSeasons,
@@ -305,6 +305,7 @@ class TitleEditMode extends Component {
                   <Input
                     type='select'
                     name='eventType'
+                    value={{eventType}}
                     id='eventType'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >

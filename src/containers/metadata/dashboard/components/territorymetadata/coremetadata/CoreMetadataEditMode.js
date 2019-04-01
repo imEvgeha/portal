@@ -9,7 +9,7 @@ import {
   ListGroupItem,
   Card,
   CardHeader,
-  CardBody,
+  CardBody
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
@@ -19,30 +19,150 @@ import { AvField } from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 
+const CAST = 'CAST';
+const CREW = 'CREW';
+
 class CoreMetadataEditMode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       isCastModalOpen: false,
-       isCrewModalOpen: false
+      isCastModalOpen: false,
+      isCrewModalOpen: false,
+      ratings: [],
+      ratingValue: '',
+      cast: [],
+      crew: [],
+      castInputValue: '',
+      crewInputValue: ''
     };
   }
-  renderModal = (modalName) => {
-      if(modalName === 'cast') {
-        this.setState({
-          isCastModalOpen: !this.state.isCastModalOpen
-        });
-      } else if(modalName === 'crew') {
-        this.setState({
-          isCrewModalOpen: !this.state.isCrewModalOpen
-        });
-      } else {
-        this.setState({
-          isCrewModalOpen: false,
-          isCastModalOpen: false
-        });
+  renderModal = modalName => {
+    this.cleanCastInput();
+    if (modalName === CAST) {
+      this.setState({
+        isCastModalOpen: !this.state.isCastModalOpen
+      });
+    } else if (modalName === CREW) {
+      this.setState({
+        isCrewModalOpen: !this.state.isCrewModalOpen
+      });
+    } else {
+      this.setState({
+        isCrewModalOpen: false,
+        isCastModalOpen: false
+      });
+    }
+  };
+
+  addRating = rating => {
+    if (rating === '') {
+      return;
+    } else {
+      rating = rating.trim();
+
+      if (!this.state.ratings.indexOf(rating) > -1) {
+        let ratings = this.state.ratings.concat({ rating });
+        this.updateRatings(ratings);
       }
+    }
+  };
+
+  updateValue = value => {
+    if (value === '') return;
+    this.setState({
+      ratingValue: value
+    });
+  };
+
+  removeRating = removeRating => {
+    let ratings = this.state.ratings.filter(rating => rating !== removeRating);
+    this.updateRatings(ratings);
+  };
+
+  updateRatings = ratings => {
+    this.setState({
+      ratings
+    });
+  };
+
+  addCast = () => {
+      if(this.state.castInputValue) {
+        if (!this.state.cast.indexOf(this.state.castInputValue) > -1) {
+          let cast = this.state.cast.concat(this.state.castInputValue);
+          this.updateCasts(cast);
+          this.cleanCastInput();
+        }
+      } else return;
+  };
+
+  updateCastValue = value => {
+    if (value === '') return;
+    this.setState({
+      castInputValue: value
+    });
+  };
+
+  removeCast = removeCast => {
+    let cast = this.state.cast.filter(cast => cast !== removeCast);
+    this.updateCasts(cast);
+  };
+
+  updateCasts = cast => {
+    this.setState({
+      cast
+    });
+  };
+
+  cleanCastInput = () => {
+    this.setState({
+      castInputValue: ''
+    });
   }
+
+  addCrew = () => {
+    if(this.state.crewInputValue) {
+      if (!this.state.crew.indexOf(this.state.crewInputValue) > -1) {
+        let crew = this.state.crew.concat(this.state.crewInputValue);
+        this.updateCrews(crew);
+        this.cleanCrewInput();
+      }
+    } else return;
+};
+
+updateCrewValue = value => {
+  if (value === '') return;
+  this.setState({
+    crewInputValue: value
+  });
+};
+
+removeCrew = removeCrew => {
+  let crew = this.state.crew.filter(crew => crew !== removeCrew);
+  this.updateCrews(crew);
+};
+
+updateCrews = crew => {
+  this.setState({
+    crew
+  });
+};
+
+cleanCrewInput = () => {
+  this.setState({
+    crewInputValue: ''
+  });
+}
+
+  _handleKeyPress = e => {
+    if (e.keyCode === 13) {
+      //Key code for Enter
+      this.addRating(this.state.ratingValue);
+      this.setState({
+        ratingValue: ''
+      });
+    }
+  };
+
   render() {
     // const {
     //   advisoriesCode,
@@ -57,7 +177,7 @@ class CoreMetadataEditMode extends Component {
               <CardHeader className='clearfix'>
                 <h4 className='float-left'>Cast</h4>
                 <FontAwesome
-                  onClick={() => this.renderModal('cast')}
+                  onClick={() => this.renderModal(CAST)}
                   className='float-right'
                   name='plus-circle'
                   style={{ marginTop: '8px', cursor: 'pointer' }}
@@ -74,36 +194,20 @@ class CoreMetadataEditMode extends Component {
                   }}
                   id='listContainer'
                 >
-                  <ListGroupItem>
-                    Firstname Lastname
-                    <FontAwesome
-                      className='float-right'
-                      name='times-circle'
-                      style={{ marginTop: '5px', cursor: 'pointer' }}
-                      color='#111'
-                      size='lg'
-                    />
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Firstname Lastname
-                    <FontAwesome
-                      className='float-right'
-                      name='times-circle'
-                      style={{ marginTop: '5px', cursor: 'pointer' }}
-                      color='#111'
-                      size='lg'
-                    />
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Firstname Lastname
-                    <FontAwesome
-                      className='float-right'
-                      name='times-circle'
-                      style={{ marginTop: '5px', cursor: 'pointer' }}
-                      color='#111'
-                      size='lg'
-                    />
-                  </ListGroupItem>
+                  {this.state.cast &&
+                    this.state.cast.map((cast, i) => (
+                      <ListGroupItem key={i}>
+                        {cast}
+                        <FontAwesome
+                          className='float-right'
+                          name='times-circle'
+                          style={{ marginTop: '5px', cursor: 'pointer' }}
+                          color='#111'
+                          size='lg'
+                          onClick={() => this.removeCast(cast)}
+                        />
+                      </ListGroupItem>
+                    ))}
                 </ListGroup>
               </CardBody>
             </Card>
@@ -114,7 +218,7 @@ class CoreMetadataEditMode extends Component {
                 <h4 className='float-left'>Crew</h4>
                 <FontAwesome
                   className='float-right'
-                  onClick={() => this.renderModal('crew')}
+                  onClick={() => this.renderModal(CREW)}
                   name='plus-circle'
                   style={{ marginTop: '8px', cursor: 'pointer' }}
                   color='#111'
@@ -130,16 +234,23 @@ class CoreMetadataEditMode extends Component {
                   }}
                   id='listContainer'
                 >
-                  <ListGroupItem>
-                    <span style={{fontSize: '14px', color: '#666'}}>Directed by:</span> Firstname Lastname
-                    <FontAwesome
-                      className='float-right'
-                      name='times-circle'
-                      style={{ marginTop: '8px', cursor: 'pointer' }}
-                      color='#111'
-                      size='lg'
-                    />
-                  </ListGroupItem>
+                    {this.state.crew &&
+                    this.state.crew.map((crew, i) => (
+                      <ListGroupItem key={i}>
+                        <span style={{ fontSize: '14px', color: '#666' }}>
+                        Directed by:
+                        </span>{' '}
+                        {crew}
+                        <FontAwesome
+                          className='float-right'
+                          name='times-circle'
+                          style={{ marginTop: '5px', cursor: 'pointer' }}
+                          color='#111'
+                          size='lg'
+                          onClick={() => this.removeCrew(crew)}
+                        />
+                      </ListGroupItem>
+                    ))}
                 </ListGroup>
               </CardBody>
             </Card>
@@ -151,51 +262,32 @@ class CoreMetadataEditMode extends Component {
               <Label for='exampleEmail'>Ratings</Label>
               <Input
                 type='text'
-                onChange={(e) => this.props.onChange(e)}
+                // onChange={(e) => this.props.onChange(e)}
+                onChange={e => this.updateValue(e.target.value)}
                 name='ratings'
                 id='ratings'
+                value={this.state.ratingValue}
+                onKeyDown={this._handleKeyPress}
                 placeholder='Ratings'
               />
-              <CloseableBtn
-                style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
-                title={'PG'}
-                onClick={() => {return;}}
-                highlighted={false}
-                id={'core-metadata-tags'}
-                onClose={() => alert('Test')}
-              />
-              <CloseableBtn
-                style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
-                title={'PG'}
-                onClick={() => {return;}}
-                highlighted={false}
-                id={'core-metadata-tags'}
-                onClose={() => alert('Test')}
-              />
-              <CloseableBtn
-                style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
-                title={'PG'}
-                onClick={() => {return;}}
-                highlighted={false}
-                id={'core-metadata-tags'}
-                onClose={() => alert('Test')}
-              />
-              <CloseableBtn
-                style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
-                title={'PG'}
-                onClick={() => {return;}}
-                highlighted={false}
-                id={'core-metadata-tags'}
-                onClose={() => alert('Test')}
-              />
-              <CloseableBtn
-                style={{ marginTop: '5px', width: 'auto', marginRight: '5px' }}
-                title={'PG'}
-                onClick={() => {return;}}
-                highlighted={false}
-                id={'core-metadata-tags'}
-                onClose={() => alert('Test')}
-              />
+              {this.state.ratings &&
+                this.state.ratings.map((rating, i) => (
+                  <CloseableBtn
+                    style={{
+                      marginTop: '5px',
+                      width: 'auto',
+                      marginRight: '5px'
+                    }}
+                    title={rating.rating}
+                    key={i}
+                    onClick={() => {
+                      return;
+                    }}
+                    highlighted={false}
+                    id={'core-metadata-tags-' + i}
+                    onClose={() => this.removeRating(rating)}
+                  />
+                ))}
             </FormGroup>
           </Col>
           <Col>
@@ -203,7 +295,7 @@ class CoreMetadataEditMode extends Component {
               <Label for='exampleEmail'>Advisories</Label>
               <AvField
                 type='text'
-                onChange={(e) => this.props.handleOnAdvisories(e)}
+                onChange={e => this.props.handleOnAdvisories(e)}
                 name='advisoriesFreeText'
                 id='advisories'
                 placeholder='Advisories'
@@ -218,7 +310,7 @@ class CoreMetadataEditMode extends Component {
               <Label for='exampleSelect'>Advisory Code</Label>
               <Input
                 type='select'
-                onChange={(e) => this.props.onChange(e)}
+                onChange={e => this.props.onChange(e)}
                 name='advisoryCode'
                 id='advisoryCode'
               >
@@ -237,7 +329,7 @@ class CoreMetadataEditMode extends Component {
               <AvField
                 type='text'
                 name='awards'
-                onChange={(e) => this.props.onChange(e)}
+                onChange={e => this.props.onChange(e)}
                 id='awards'
                 placeholder='Awards'
                 validate={{
@@ -255,7 +347,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='eidrLevel1'
               id='eidrLevel1'
               placeholder='EIDR Level 1'
@@ -272,7 +364,7 @@ class CoreMetadataEditMode extends Component {
               type='text'
               name='tmsId'
               id='tmsId'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               placeholder='TMS ID'
               validate={{
                 maxLength: { value: 200 }
@@ -287,7 +379,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='eidrLevel2'
               id='eidrLevel2'
               placeholder='EIDR Level 2'
@@ -302,7 +394,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='xFinityId'
               id='xFinityId'
               placeholder='Xfiniy Movie ID'
@@ -320,7 +412,7 @@ class CoreMetadataEditMode extends Component {
             <AvField
               type='text'
               name='dmaId'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               id='dmaId'
               placeholder='DMA ID'
               validate={{
@@ -334,7 +426,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='licensorTitleId'
               id='licensorTitleId'
               placeholder='Licensor Title ID'
@@ -351,7 +443,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='isan'
               id='isan'
               placeholder='ISAN'
@@ -368,7 +460,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='overrideMsvAssociationId'
               id='overrideMsvAssociationId'
               placeholder='Override MSV Association ID'
@@ -385,7 +477,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='alId'
               id='alId'
               placeholder='AL ID'
@@ -400,7 +492,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='vzId'
               id='vzId'
               placeholder='VZ ID'
@@ -417,7 +509,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='cId'
               id='cId'
               placeholder='C ID'
@@ -432,7 +524,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='movidaId'
               id='movidaId'
               placeholder='Movie ID'
@@ -465,7 +557,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={(e) => this.props.handleOnExternalIds(e)}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='movidaTitleId'
               id='movidaTitleId'
               placeholder='Movida Title ID'
@@ -475,8 +567,22 @@ class CoreMetadataEditMode extends Component {
             />
           </Col>
         </Row>
-        <CoreMetadataCreateCastModal isCastModalOpen={this.state.isCastModalOpen} renderCastModal={this.renderModal} />
-        <CoreMetadataCreateCrewModal isCrewModalOpen={this.state.isCrewModalOpen} renderCrewModal={this.renderModal} />        
+        <CoreMetadataCreateCastModal
+          isCastModalOpen={this.state.isCastModalOpen}
+          renderCastModal={this.renderModal}
+          addCast={this.addCast}
+          updateCastValue={this.updateCastValue}
+          castInputValue={this.state.castInputValue}
+          cleanCastInput={this.cleanCastInput}
+        />
+        <CoreMetadataCreateCrewModal
+          isCrewModalOpen={this.state.isCrewModalOpen}
+          renderCrewModal={this.renderModal}
+          addCrew={this.addCrew}
+          updateCrewValue={this.updateCrewValue}
+          crewInputValue={this.state.crewInputValue}
+          cleanCrewInput={this.cleanCrewInput}
+        />
       </Fragment>
     );
   }
@@ -486,7 +592,7 @@ CoreMetadataEditMode.propTypes = {
   data: PropTypes.object,
   onChange: PropTypes.func,
   handleOnExternalIds: PropTypes.func,
-  handleOnAdvisories: PropTypes.func,  
+  handleOnAdvisories: PropTypes.func
 };
 
 export default CoreMetadataEditMode;
