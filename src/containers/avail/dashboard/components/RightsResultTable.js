@@ -177,7 +177,7 @@ class RightsResultTable extends React.Component {
         let formatter = (column) => {
             switch (column.dataType) {
                 case 'localdate' : return function(params){
-                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L');
+                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L') + ' ' + moment(params.data[column.javaVariableName]).format('HH:mm');
                     else return undefined;
                 };
                 case 'date' : return function(params){

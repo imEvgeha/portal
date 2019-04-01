@@ -487,6 +487,7 @@ class RightDetails extends React.Component {
             }
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
                 <EditableDatePicker
+                    showTime={readOnly}
                     value={value}
                     priorityDisplay={priorityError}
                     name={name}

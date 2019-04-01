@@ -5,7 +5,7 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 
 import {rightServiceManager} from '../service/RightServiceManager';
-import {momentToISO, safeTrim} from '../../../util/Common';
+import {safeTrim} from '../../../util/Common';
 import moment from 'moment';
 
 export const rightSearchHelper = {

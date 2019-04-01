@@ -13,7 +13,8 @@ class EditableDatePicker extends Component {
         displayName: t.string,
         disabled: t.bool,
         onChange: t.func,
-        priorityDisplay: t.any
+        priorityDisplay: t.any,
+        showTime: t.bool
     };
 
     constructor(props) {
@@ -108,10 +109,10 @@ class EditableDatePicker extends Component {
                 return displayFunc(this.props.priorityDisplay);
             } else {
                 if(this.state.showStateDate){
-                    return displayFunc(this.state.date ? moment(this.state.date).format('L') : '');
+                    return displayFunc(this.state.date ? moment(this.state.date).format('L') + (this.props.showTime ? ' ' + moment(this.state.date).format('HH:mm') : '' ) : '');
                 } else {
                     if(this.props.value){
-                        return displayFunc(this.props.value ? moment(this.props.value).format('L') : '');
+                        return displayFunc(this.props.value ? moment(this.props.value).format('L') + (this.props.showTime ? ' ' + moment(this.state.date).format('HH:mm') : '' ) : '');
                     }else {
                         return (
                             <span
