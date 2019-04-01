@@ -266,9 +266,25 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableDateBtn = (name, displayName) => {
+        const renderCloseableLocalDateBtn = (name, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
+            }
+            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    onClick={() => this.selectField(name)}
+                    onClose={() => this.removeField(name)}
+                    highlighted={this.state.blink === name}
+                    value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
+            </div>);
+        };
+
+        const renderCloseableDateBtn = (name, displayName) => {
+            function prepareDate(prefix, date) {
+                return date ? prefix + ' ' + moment.utc(date).format('L') : '';
             }
             return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
                 <CloseableBtn
@@ -313,6 +329,7 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
                                 case 'date' : return renderCloseableDateBtn(key, schema.displayName);
+                                case 'localdate' : return renderCloseableLocalDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
                                 default:
                                     console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
