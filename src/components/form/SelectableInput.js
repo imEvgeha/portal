@@ -75,6 +75,15 @@ class SelectableInput extends Component {
     }
 
     handleChange(key, value) {
+        if(value) {
+            if (this.props.dataType === 'date') {
+                value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            }
+            if (this.props.dataType === 'localdate') {
+                value = value.format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            }
+        }
+
         this.props.onChange({...this.props.value, [key]: value});
     }
 
@@ -262,6 +271,7 @@ class SelectableInput extends Component {
                 case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
                 case 'date' : return renderRangeDatepicker(selected, displayName);
+                case 'localdate' : return renderRangeDatepicker(selected, displayName);
                 case 'boolean' : return renderBooleanField(selected, displayName);
                 default:
                     console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);

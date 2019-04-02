@@ -15,7 +15,7 @@ import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
-import {safeTrim} from '../../../util/Common';
+import {momentToISO, safeTrim} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -122,7 +122,12 @@ class RightCreate extends React.Component {
     }
 
     handleDatepickerChange(name, displayName, date) {
-        this.checkRight(name, date, true, true);
+        const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
+        let val = date;
+        if(date && mapping.dataType === 'date') {
+            val = momentToISO(date);
+        }
+        this.checkRight(name, val, true, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
 
@@ -466,9 +471,8 @@ class RightCreate extends React.Component {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
                     <NexusDatePicker
-                        value={value}
                         id={'right-create-' + name + '-text'}
-                        date={this.right[name]}
+                        date={value}
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
                         onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
                     />
@@ -517,7 +521,9 @@ class RightCreate extends React.Component {
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'localdate' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value ? value.substr(0, 10) : value));
                              break;
                          case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
