@@ -117,8 +117,8 @@
   "required": true
 }, {
   "javaVariableName": "coreTitleId",
-  "sheetColumnName": "Contract Title Id",
-  "displayName": "Contract Title Id",
+  "sheetColumnName": "Core Title Id",
+  "displayName": "Core Title Id",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "coreTitleIdMatch",
@@ -379,8 +379,8 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seasonTitle",
-  "sheetColumnName": "Series Title",
-  "displayName": "Series Title",
+  "sheetColumnName": "Season Title",
+  "displayName": "Season Title",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "seasonTitleMatch",
@@ -1021,8 +1021,8 @@
   "required": false
 }, {
   "javaVariableName": "cmContentIds.volumeContentId",
-  "sheetColumnName": "Colume Content ID",
-  "displayName": "Colume Content ID",
+  "sheetColumnName": "Volume Content ID",
+  "displayName": "Volume Content ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "volumeContentIdMatch",
@@ -1054,8 +1054,8 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seriesId",
-  "sheetColumnName": "EIDR series ID",
-  "displayName": "EIDR series ID",
+  "sheetColumnName": "EIDR Series ID",
+  "displayName": "EIDR Series ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeriesIdMatch",
@@ -1098,11 +1098,22 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeId",
-  "sheetColumnName": "EIDR episode ID",
-  "displayName": "EIDR episode ID",
+  "sheetColumnName": "EIDR Episode ID",
+  "displayName": "EIDR Episode ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEpisodeIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.editId",
+  "sheetColumnName": "EIDR Edit ID",
+  "displayName": "EIDR Edit ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrEditIdMatch",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -1334,6 +1345,17 @@
   "dataType": "double",
   "searchDataType": "double",
   "queryParamName": "boxOffice",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "platform",
+  "sheetColumnName": "Platform",
+  "displayName": "Platform",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "platform",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,

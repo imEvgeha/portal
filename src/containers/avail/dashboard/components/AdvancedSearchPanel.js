@@ -22,6 +22,7 @@ const mapStateToProps = state => {
         reportName: state.dashboard.session.reportName,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
+        columns: state.dashboard.session.columns,
     };
 };
 
@@ -41,6 +42,7 @@ class AdvancedSearchPanel extends React.Component {
         hide: t.bool,
         reportName: t.string,
         availsMapping: t.object,
+        columns: t.array,
     };
 
     constructor(props) {
@@ -154,7 +156,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
+        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), this.props.columns)
         .then(function (response) {
             downloadFile(response.data);
         })
