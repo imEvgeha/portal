@@ -29,15 +29,15 @@ class TitleEditMode extends Component {
       productionStudioId,
       releaseYear,
       boxOffice,
-      // animated,
-      // duration,
+      animated,
+      duration,
       eventType,
       // seasonFinale,
       // seasonPremiere,
       // totalNumberOfSeasons,
       // licensors,
       // originalLanguage,
-      // countryOfOrigin,
+      countryOfOrigin,
       // totalNumberOfEpisodes
     } = this.props.data;
     return (
@@ -268,7 +268,9 @@ class TitleEditMode extends Component {
                     name='duration'
                     step='2'
                     id='duration'
+                    pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}"
                     placeholder='Enter Duration'
+                    max="23:00"
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   />
                 </Col>
@@ -278,7 +280,8 @@ class TitleEditMode extends Component {
                     type='select'
                     name='countryOfOrigin'
                     id='countryOfOrigin'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
+                    onChange={e => this.props.handleOnChangeEdit(e)}                    
+                    defaultValue={countryOfOrigin ? countryOfOrigin : ''}
                   >
                     <option value=''>Select Country of Origin</option>
                     <option value='PL'>PL</option>
@@ -292,6 +295,7 @@ class TitleEditMode extends Component {
                     name='animated'
                     id='animated'
                     onChange={e => this.props.handleOnChangeEdit(e)}
+                    defaultValue={animated ? animated : ''}
                   >
                   <option value={''}>Select Animated</option>
                     <option value={true}>Y</option>
@@ -305,13 +309,13 @@ class TitleEditMode extends Component {
                   <Input
                     type='select'
                     name='eventType'
-                    value={{eventType}}
                     id='eventType'
                     onChange={e => this.props.handleOnChangeEdit(e)}
+                    defaultValue={eventType ? eventType : ''}
                   >
-                    <option value=''>Select Event Type</option>
+                    <option value='' >Select Event Type</option>
                     <option value='Live'>Live</option>
-                    <option value='TapeDelayed'>Tape Delayed</option>
+                    <option value='Tape Delayed'>Tape Delayed</option>
                     <option value='Taped'>Taped</option>
                   </Input>
                 </Col>
@@ -339,16 +343,6 @@ class TitleEditMode extends Component {
                     <option value='English'>English</option>
                     <option value='German'>German</option>
                   </Input>
-                </Col>
-              <Col>
-                  <Label for='seriesReleaseYear'>Series Release Year</Label>
-                  <Input
-                    type='text'
-                    name='seriesReleaseYear'
-                    id='seriesReleaseYear'
-                    placeholder='Enter Series Release Year'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  />
                 </Col>
                 {
                   contentType === 'EPISODE' ? (

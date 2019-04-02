@@ -350,6 +350,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='eidrLevel1'
               id='eidrLevel1'
+              value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1: ''}
               placeholder='EIDR Level 1'
               validate={{
                 maxLength: { value: 200 }
@@ -363,7 +364,8 @@ cleanCrewInput = () => {
             <AvField
               type='text'
               name='tmsId'
-              id='tmsId'
+              id='tmsId'              
+              value={this.props.data.externalIds ? this.props.data.externalIds.tmsId: ''}
               onChange={e => this.props.handleOnExternalIds(e)}
               placeholder='TMS ID'
               validate={{
@@ -381,7 +383,8 @@ cleanCrewInput = () => {
               type='text'
               onChange={e => this.props.handleOnExternalIds(e)}
               name='eidrLevel2'
-              id='eidrLevel2'
+              id='eidrLevel2'              
+              value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2: ''}
               placeholder='EIDR Level 2'
               validate={{
                 maxLength: { value: 200 }
@@ -389,14 +392,15 @@ cleanCrewInput = () => {
             />
           </Col>
           <Col md={1}>
-            <Label for='xFinityId'>Xfinity Movie ID</Label>
+            <Label for='xfinityMovieId'>Xfinity Movie ID</Label>
           </Col>
           <Col>
             <AvField
               type='text'
               onChange={e => this.props.handleOnExternalIds(e)}
-              name='xFinityId'
-              id='xFinityId'
+              name='xfinityMovieId'
+              id='xfinityMovieId'              
+              value={this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId: ''}
               placeholder='Xfiniy Movie ID'
               validate={{
                 maxLength: { value: 200 }
@@ -414,6 +418,7 @@ cleanCrewInput = () => {
               name='dmaId'
               onChange={e => this.props.handleOnExternalIds(e)}
               id='dmaId'
+              value={this.props.data.externalIds ? this.props.data.externalIds.dmaId: ''}
               placeholder='DMA ID'
               validate={{
                 maxLength: { value: 200 }
@@ -429,6 +434,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='licensorTitleId'
               id='licensorTitleId'
+              value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId: ''}
               placeholder='Licensor Title ID'
               validate={{
                 maxLength: { value: 200 }
@@ -446,6 +452,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='isan'
               id='isan'
+              value={this.props.data.externalIds ? this.props.data.externalIds.isan: ''}
               placeholder='ISAN'
               validate={{
                 maxLength: { value: 200 }
@@ -463,6 +470,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='overrideMsvAssociationId'
               id='overrideMsvAssociationId'
+              value={this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId: ''}
               placeholder='Override MSV Association ID'
               validate={{
                 maxLength: { value: 200 }
@@ -472,15 +480,16 @@ cleanCrewInput = () => {
         </Row>
         <Row style={{ marginTop: '10px' }}>
           <Col md={1}>
-            <Label for='alId'>AL ID</Label>
+            <Label for='alid'>ALID</Label>
           </Col>
           <Col>
             <AvField
               type='text'
               onChange={e => this.props.handleOnExternalIds(e)}
-              name='alId'
-              id='alId'
-              placeholder='AL ID'
+              name='alid'
+              id='alid'
+              value={this.props.data.externalIds ? this.props.data.externalIds.alid: ''}
+              placeholder='ALID'
               validate={{
                 maxLength: { value: 200 }
               }}
@@ -495,6 +504,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='vzId'
               id='vzId'
+              value={this.props.data.externalIds ? this.props.data.externalIds.vzId: ''}
               placeholder='VZ ID'
               validate={{
                 maxLength: { value: 200 }
@@ -504,14 +514,15 @@ cleanCrewInput = () => {
         </Row>
         <Row style={{ marginTop: '10px' }}>
           <Col md={1}>
-            <Label for='cId'>C ID</Label>
+            <Label for='cid'>C ID</Label>
           </Col>
           <Col>
             <AvField
               type='text'
               onChange={e => this.props.handleOnExternalIds(e)}
-              name='cId'
-              id='cId'
+              name='cid'
+              id='cid'
+              value={this.props.data.externalIds ? this.props.data.externalIds.cid: ''}
               placeholder='C ID'
               validate={{
                 maxLength: { value: 200 }
@@ -527,6 +538,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='movidaId'
               id='movidaId'
+              value={this.props.data.externalIds ? this.props.data.externalIds.movidaId: ''}
               placeholder='Movie ID'
               validate={{
                 maxLength: { value: 200 }
@@ -544,6 +556,7 @@ cleanCrewInput = () => {
               onChange={this.props.handleOnExternalIds}
               name='isrc'
               id='isrc'
+              value={this.props.data.externalIds ? this.props.data.externalIds.isrc: ''}
               placeholder='ISRC'
               validate={{
                 maxLength: { value: 200 }
@@ -560,6 +573,7 @@ cleanCrewInput = () => {
               onChange={e => this.props.handleOnExternalIds(e)}
               name='movidaTitleId'
               id='movidaTitleId'
+              value={this.props.data.externalIds ? this.props.data.externalIds.movidaTitleId: ''}
               placeholder='Movida Title ID'
               validate={{
                 maxLength: { value: 200 }
