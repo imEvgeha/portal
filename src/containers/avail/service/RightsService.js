@@ -53,6 +53,9 @@ const populate = function(key, value, location){
         }else {
             if (!location[firstKey])
                 location[firstKey] = {};
+            if(key === 'retailer.retailerId1'){
+                value = value.split(',');
+            }
             populate(restKey, value, location[firstKey]);
         }
     }else{
