@@ -35,9 +35,26 @@ const populate = function(key, value, location){
     if(dotPos > 0) {
         const firstKey = key.split('.')[0];
         const restKey = key.substring(dotPos+1);
-        if(!location[firstKey])
-            location[firstKey]={};
-        populate(restKey, value, location[firstKey]);
+        if(firstKey === 'languages') {
+            if (!location[firstKey])
+                location[firstKey] = [];
+            const container = location[firstKey];
+            value=parse(value);
+            if(typeof  value === 'string') {
+                value = parse(value.split(','));
+            }
+            for(let i = 0; i < value.length; i++){
+                if(container.length <= i){
+                    container.push({[restKey]: value[i]});
+                }else{
+                    container[i][restKey] = value[i];
+                }
+            }
+        }else {
+            if (!location[firstKey])
+                location[firstKey] = {};
+            populate(restKey, value, location[firstKey]);
+        }
     }else{
         location[key] = parse(value);
     }

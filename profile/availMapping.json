@@ -266,10 +266,10 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "language.language",
+  "javaVariableName": "languages.language",
   "sheetColumnName": "Language",
   "displayName": "Language",
-  "dataType": "language",
+  "dataType": "multilanguage",
   "searchDataType": "multilanguage",
   "queryParamName": "language",
   "readOnly": false,
@@ -277,10 +277,10 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "language.audioType",
+  "javaVariableName": "languages.audioType",
   "sheetColumnName": "Audio Type",
   "displayName": "Audio Type",
-  "dataType": "select",
+  "dataType": "string",
   "searchDataType": "multiselect",
   "queryParamName": "audioType",
   "options": ["Stereo", "Dolby51"],
