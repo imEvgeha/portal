@@ -19,6 +19,30 @@ const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
 
+const emptyTerritory = {
+    locale: null,
+    availAnnounceDate: null,
+    theatricalReleaseDate: null,
+    homeVideoReleaseDate: null,
+    boxOffice: null,
+    releaseYear: null
+};
+
+const emptyEditorial = {
+    parentId: null,
+    locale: null,
+    language: null,
+    service: null,
+    format: null,
+    title: null,
+    synopsis: null,
+    copyright: null,
+    awards: null,
+    seasonNumber: null,
+    episodeNumber: null,
+    seriesName: null,
+};
+
 class TitleEdit extends Component {
     constructor(props) {
         super(props);
@@ -82,7 +106,12 @@ class TitleEdit extends Component {
      * Title document
      */
     handleSwitchMode = () => {
-        this.setState({ isEditMode: !this.state.isEditMode, territoryMetadataActiveTab: CURRENT_TAB , editorialMetadataActiveTab: CURRENT_TAB});
+        this.setState({ isEditMode: !this.state.isEditMode,
+            territoryMetadataActiveTab: CURRENT_TAB,
+            editorialMetadataActiveTab: CURRENT_TAB,
+            territories: emptyTerritory,
+            editorialMetadataForCreate: emptyEditorial
+        });
     };
 
     handleOnChangeEdit = (e) => {
@@ -196,14 +225,7 @@ class TitleEdit extends Component {
     cleanTerritoryMetadata = () => {
         this.form && this.form.reset();
         this.setState({
-            territories: {
-                locale: null,
-                availAnnounceDate: null,
-                theatricalReleaseDate: null,
-                homeVideoReleaseDate: null,
-                boxOffice: null,
-                releaseYear: null
-            }
+            territories: emptyTerritory
         });
     };
 
@@ -335,20 +357,7 @@ class TitleEdit extends Component {
     cleanEditorialMetadata = () => {
         this.form && this.form.reset();
         this.setState({
-            editorialMetadataForCreate: {
-                parentId: null,
-                locale: null,
-                language: null,
-                service: null,
-                format: null,
-                title: null,
-                synopsis: null,
-                copyright: null,
-                awards: null,
-                seasonNumber: null,
-                episodeNumber: null,
-                seriesName: null,
-            }
+            editorialMetadataForCreate: emptyEditorial
         });
     };
 
