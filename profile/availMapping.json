@@ -1273,17 +1273,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "retailer.retailerId1",
-  "sheetColumnName": "Retailer ID",
-  "displayName": "Retailer ID",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "retailerId1Match",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
   "javaVariableName": "retailer.retailerSeriesId",
   "sheetColumnName": "Retailer Series ID",
   "displayName": "Retailer Series ID",
