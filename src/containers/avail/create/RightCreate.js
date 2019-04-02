@@ -77,6 +77,7 @@ class RightCreate extends React.Component {
         }
         if(prevProps.storedForm !== this.props.storedForm){
             this.right = this.props.storedForm;
+            this.setState({});
         }
     }
 

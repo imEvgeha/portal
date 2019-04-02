@@ -147,7 +147,6 @@ class RightDetails extends React.Component {
                 updatedRight['languages.language'] = this.state.flatRight['languages.language'];
             }
         }
-        console.log(updatedRight);
         rightsService.update(updatedRight, this.state.right.id)
             .then(res => {
                 let editedRight = res.data;
@@ -308,17 +307,18 @@ class RightDetails extends React.Component {
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            const options=[{ key:'t', value: 'true', text: 'Yes' }, { key:'f', value: 'false', text: 'No' }];
+            const val = value ? options[0] : options[1];
+
+            return renderFieldTemplate(name, displayName, val, error, readOnly, required, (
                 <Editable
                     title={name}
                     name={name}
                     dataType="select"
                     disabled={readOnly}
                     handleSubmit={this.handleSubmit}
-                    value={value}
-                    options={[
-                        { key:'t', value: 'true', text: 'Yes' },
-                        { key:'f', value: 'false', text: 'No' }]}
+                    value={val.value}
+                    options={options}
                 />
 
             ));
