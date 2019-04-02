@@ -6,7 +6,7 @@ const http = Http.create();
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
         http.defaults.timeout = config.get('avails.export.http.timeout');
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/export', {columnNames: columns, rightsIds: rightsIDs}, {responseType: 'arraybuffer'});
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/export', {columnNames: columns, rightIds: rightsIDs}, {responseType: 'arraybuffer'});
     },
 
     bulkExportAvails: (searchCriteria, columns) => {
