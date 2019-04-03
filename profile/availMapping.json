@@ -1454,7 +1454,7 @@
   "displayName": "Subtitles",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
-  "queryParamName": "stringMatch",
+  "queryParamName": "subtitles",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
