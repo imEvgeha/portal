@@ -263,7 +263,11 @@ class RightDetails extends React.Component {
             }
 
             let handleValueChange = (newVal) => {
-                ref.current.handleChange(newVal);
+                if(validation && validation.number === true){
+                    ref.current.handleChange(Number(newVal));
+                }else {
+                    ref.current.handleChange(newVal);
+                }
                 setTimeout(() => {
                     this.setState({});
                 }, 1);

@@ -24,6 +24,9 @@ const parse = function(value){
     if(Array.isArray(value))
         return value.map(val => parse(val));
 
+    if(typeof  value === 'number')
+        return value;
+
     if ('value' in value)
         return parse(value.value);
 

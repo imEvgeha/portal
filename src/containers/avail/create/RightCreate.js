@@ -82,7 +82,7 @@ class RightCreate extends React.Component {
     }
 
     handleChange({target}) {
-        const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
+        const value = target.type === 'checkbox' ? target.checked : (target.value ? safeTrim(target.value) : '');
         const name = target.name;
         this.checkRight(name, value, true);
     }
@@ -249,7 +249,7 @@ class RightCreate extends React.Component {
                                 name={name}
                                 id={'right-create-' + name + '-text'}
                                 placeholder={'Enter ' + displayName}
-                                onChange={this.handleChange}
+                                onChange={(val) => this.handleChange(Number(val))}
                                 type="text"
                                 validate={{number: true}}
                                 errorMessage="Please enter a valid number!"
