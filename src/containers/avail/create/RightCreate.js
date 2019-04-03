@@ -343,8 +343,11 @@ class RightCreate extends React.Component {
                 options  = this.props.selectValues[name];
             }
 
-            //fields with enpoints (these have ids)
-            const filterKeys = Object.keys(this.right).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            //fields with endpoints (these have ids)
+            const filterKeys = Object.keys(this.right).filter((key) => {
+                const map = this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key);
+                return map && map.configEndpoint;
+            });
             let filters = filterKeys.map((key) => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
 
             let filteredOptions = options;
