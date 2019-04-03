@@ -204,7 +204,10 @@ class RightCreate extends React.Component {
     }
 
     confirm() {
-        if(this.validateFields()) return;
+        if(this.validateFields()) {
+            this.setState({errorMessage: 'Not all mandatory fields are filled or not all filled fields are valid'});
+            return;
+        }
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
