@@ -6,6 +6,8 @@ import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
 import {Button, Label} from 'reactstrap';
 
+import store from '../../../stores/index';
+import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
@@ -21,11 +23,13 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {getDeepValue} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
+import BlockUi from 'react-block-ui';
 
 const mapStateToProps = state => {
    return {
        availsMapping: state.root.availsMapping,
        selectValues: state.root.selectValues,
+       blocking: state.root.blocking,
    };
 };
 
@@ -35,7 +39,8 @@ class RightDetails extends React.Component {
         selectValues: t.object,
         availsMapping: t.any,
         match: t.any,
-        location: t.any
+        location: t.any,
+        blocking: t.bool
     };
 
     static contextTypes = {
@@ -147,6 +152,7 @@ class RightDetails extends React.Component {
                 updatedRight['languages.language'] = this.state.flatRight['languages.language'];
             }
         }
+        store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
             .then(res => {
                 let editedRight = res.data;
@@ -157,11 +163,13 @@ class RightDetails extends React.Component {
                 });
                 NexusBreadcrumb.pop();
                 NexusBreadcrumb.push({name: editedRight.title, path: '/avails/' + editedRight.id});
+                store.dispatch(blockUI(false));
             })
             .catch(() => {
                 this.setState({
                     errorMessage: 'Editing right failed'
                 });
+                store.dispatch(blockUI(false));
                 onError();
             });
     }
@@ -580,24 +588,28 @@ class RightDetails extends React.Component {
 
         return(
             <div>
-                <div className="nx-stylish row mt-3 mx-5">
-                    <div className={'nx-stylish list-group col-12'} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
-                        {renderFields}
-                    </div>
-                </div>
-                {
-                    this.state.errorMessage &&
-                        <div id='right-edit-error' className='text-danger w-100 float-left position-absolute'>
-                            <Label id='right-edit-error-message' className='text-danger w-100 pl-3'>
-                                {this.state.errorMessage}
-                            </Label>
+                <BlockUi tag="div" blocking={this.props.blocking}>
+                    <div className="nx-stylish row mt-3 mx-5">
+                        <div className={'nx-stylish list-group col-12'} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                            {renderFields}
                         </div>
-                }
-                {this.props.availsMapping &&
-                    <div className="float-right mt-5 mx-5 px-5 float-right">
-                        <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                     </div>
-                }
+                    {
+                        this.state.errorMessage &&
+                            <div id='right-edit-error' className='text-danger w-100 float-left position-absolute'>
+                                <Label id='right-edit-error-message' className='text-danger w-100 pl-3'>
+                                    {this.state.errorMessage}
+                                </Label>
+                            </div>
+                    }
+                    {this.props.availsMapping &&
+                        <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                            <div className="mt-5 mx-5 px-5">
+                                <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                            </div>
+                        </div>
+                    }
+                </BlockUi>
             </div>
         );
     }
