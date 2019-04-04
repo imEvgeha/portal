@@ -82,4 +82,17 @@ function getDeepValue(source, location){
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles};
+function getUrlParamIfExists(name, defaultValue = ''){
+    let toReturn = defaultValue;
+    if (window && window.location && window.location.search){
+        let query = window.location.search.substring(1);
+        let params = query.split('&');
+        let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
+        if(param){
+            toReturn =  param.split('=')[1];
+        }
+    }
+    return toReturn;
+}
+
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, getUrlParamIfExists};
