@@ -22,6 +22,20 @@ class TitleEditMode extends Component {
       isSeriesCompleted: false
     };
   }
+
+  getHour = () => {
+
+    let newDuration = this.props.data.duration.split(':');
+    let hour = newDuration[0];
+    // console.log('Hour:',hour, 'Duration: ',this.props.data.duration);
+    return hour;
+  }
+  getMinute = () => {
+    let newDuration = this.props.data.duration.split(':');
+    let minute = newDuration[1];
+    // console.log('Minute:',minute, 'Duration: ',this.props.data.duration);
+    return minute;
+  }
   render() {
     const {
       title,
@@ -117,7 +131,7 @@ class TitleEditMode extends Component {
                               errorMessage='Please enter a valid season number!'
                               value={
                                 this.props.data.episodic !== null &&
-                                this.props.data.episodic.seasonNumber
+                                  this.props.data.episodic.seasonNumber
                                   ? this.props.data.episodic.seasonNumber
                                   : ''
                               }
@@ -141,7 +155,7 @@ class TitleEditMode extends Component {
                                   errorMessage='Please enter a valid episode number!'
                                   value={
                                     this.props.data.episodic !== null &&
-                                    this.props.data.episodic.episodeNumber
+                                      this.props.data.episodic.episodeNumber
                                       ? this.props.data.episodic.episodeNumber
                                       : ''
                                   }
@@ -157,7 +171,7 @@ class TitleEditMode extends Component {
                               </FormGroup>
                             </Col>
                           ) : (
-                            <Col md={6}>
+                              <Col md={6}>
                                 <Label for='titleEpisodeCount'>
                                   Episode Count
                                 </Label>
@@ -166,7 +180,7 @@ class TitleEditMode extends Component {
                                   name='episodeCount'
                                   value={
                                     this.props.data.episodic !== null &&
-                                    this.props.data.episodic.episodeCount
+                                      this.props.data.episodic.episodeCount
                                       ? this.props.data.episodic.episodeCount
                                       : ''
                                   }
@@ -176,8 +190,8 @@ class TitleEditMode extends Component {
                                     this.props.handleChangeEpisodic(e)
                                   }
                                 />
-                            </Col>
-                          )}
+                              </Col>
+                            )}
                         </Fragment>
                       </Row>
                       <Row>
@@ -189,7 +203,7 @@ class TitleEditMode extends Component {
                               name='seasonId'
                               value={
                                 this.props.data.episodic !== null &&
-                                this.props.data.episodic.seasonId
+                                  this.props.data.episodic.seasonId
                                   ? this.props.data.episodic.seasonId
                                   : ''
                               }
@@ -219,60 +233,68 @@ class TitleEditMode extends Component {
                             </Fragment>
                           </Col>
                         ) : (
-                          <Col>
-                            <Label for='titleEpisodeID'>Episode ID</Label>
-                            <AvField
-                              type='text'
-                              name='episodeId'
-                              value={
-                                this.props.data.episodic !== null &&
-                                this.props.data.episodic.episodeId
-                                  ? this.props.data.episodic.episodeId
-                                  : ''
-                              }
-                              id='titleEpisodeID'
-                              placeholder={'Enter Episode ID'}
-                              onChange={e => this.props.handleChangeEpisodic(e)}
-                            />
-                          </Col>
-                        )}
+                            <Col>
+                              <Label for='titleEpisodeID'>Episode ID</Label>
+                              <AvField
+                                type='text'
+                                name='episodeId'
+                                value={
+                                  this.props.data.episodic !== null &&
+                                    this.props.data.episodic.episodeId
+                                    ? this.props.data.episodic.episodeId
+                                    : ''
+                                }
+                                id='titleEpisodeID'
+                                placeholder={'Enter Episode ID'}
+                                onChange={e => this.props.handleChangeEpisodic(e)}
+                              />
+                            </Col>
+                          )}
                       </Row>
                     </Fragment>
                   ) : null}
                 </Fragment>
               ) : (
-                <Fragment>
-                  <Row>
-                    <Col>
-                      <Label for='totalNumberOfSeasons'>Seasons</Label>
+                  <Fragment>
+                    <Row>
+                      <Col>
+                        <Label for='totalNumberOfSeasons'>Seasons</Label>
 
-                      <AvField
-                        type='number'
-                        name='totalNumberOfSeasons'
-                        id='totalNumberOfSeasons'
-                        placeholder='Seasons'
-                        errorMessage="Please enter a valid season number!"
-                        validate={{
-                          maxLength: { value: 3 }
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                </Fragment>
-              )}
+                        <AvField
+                          type='number'
+                          name='totalNumberOfSeasons'
+                          id='totalNumberOfSeasons'
+                          placeholder='Seasons'
+                          errorMessage="Please enter a valid season number!"
+                          validate={{
+                            maxLength: { value: 3 }
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  </Fragment>
+                )}
               <Row>
                 <Col>
                   <Label for='duration'>Duration</Label>
-                  <Input
-                    type='time'
-                    name='duration'
-                    step='2'
-                    id='duration'
-                    pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}"
-                    placeholder='Enter Duration'
-                    max="23:00"
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  />
+                  <Row>
+                    <Col>
+                      <AvField name="hour" value={duration ? this.getHour() : ''} type="number" max="24" placeholder="HH" style={{ textAlign: 'center' }}
+                        validate={{
+                          maxLength: { value: 2, errorMessage: 'Please enter a valid hour!' }, minLength: { value: 2, errorMessage: 'Please enter a valid hour!' }
+                        }}
+                        onChange={e => this.props.handleOnChangeEdit(e)}
+                      />
+                    </Col>
+                    <Col>
+                      <AvField name="minute" value={duration ? this.getMinute() : ''} type="number" max="59" placeholder="MM" style={{ textAlign: 'center' }}
+                        validate={{
+                          maxLength: { value: 2, errorMessage: 'Please enter a valid minute!' }, minLength: { value: 2, errorMessage: 'Please enter a valid minute!' }
+                        }}
+                        onChange={e => this.props.handleOnChangeEdit(e)}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
                 <Col>
                   <Label for='countryOfOrigin'>Country of Origin</Label>
@@ -280,7 +302,7 @@ class TitleEditMode extends Component {
                     type='select'
                     name='countryOfOrigin'
                     id='countryOfOrigin'
-                    onChange={e => this.props.handleOnChangeEdit(e)}                    
+                    onChange={e => this.props.handleOnChangeEdit(e)}
                     defaultValue={countryOfOrigin ? countryOfOrigin : ''}
                   >
                     <option value=''>Select Country of Origin</option>
@@ -291,19 +313,19 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='animated'>Animated</Label>
                   <Input
-                    type='select'                  
+                    type='select'
                     name='animated'
                     id='animated'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                     defaultValue={animated ? animated : ''}
                   >
-                  <option value={''}>Select Animated</option>
+                    <option value={''}>Select Animated</option>
                     <option value={true}>Y</option>
                     <option value={false}>N</option>
                   </Input>
                 </Col>
               </Row>
-              <Row style={{marginTop: '10px'}}>
+              <Row style={{ marginTop: '10px' }}>
                 <Col>
                   <Label for='eventType'>Event Type</Label>
                   <Input
@@ -319,19 +341,9 @@ class TitleEditMode extends Component {
                     <option value='Taped'>Taped</option>
                   </Input>
                 </Col>
-                <Col>
-                  <Label for='licensors'>Licensor</Label>
-                  <Input
-                    type='text'
-                    name='licensors'
-                    id='licensors'
-                    placeholder='Enter Licensor'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                  />
-                </Col>
               </Row>
-              <Row>                
-              <Col>
+              <Row>
+                <Col>
                   <Label for='originalLanguage'>Original Language</Label>
                   <Input
                     type='select'
@@ -425,7 +437,24 @@ class TitleEditMode extends Component {
               ) : null}
             </Col>
           </Row>
-          <CoreMetadataEditMode data={this.props.data} handleOnAdvisories={this.props.handleOnAdvisories} onChange={this.props.handleOnChangeEdit} handleOnExternalIds={this.props.handleOnExternalIds}  />
+          <CoreMetadataEditMode
+            data={this.props.data}
+            handleOnAdvisories={this.props.handleOnAdvisories}
+            onChange={this.props.handleOnChangeEdit}
+            handleOnExternalIds={this.props.handleOnExternalIds}
+            isCastModalOpen={this.props.isCastModalOpen}
+            isCrewModalOpen={this.props.isCrewModalOpen}
+            renderModal={this.props.renderModal}
+            castInputValue={this.props.castInputValue}
+            removeCast={this.props.removeCast}
+            addCast={this.props.addCast}
+            updateCastValue={this.props.updateCastValue}
+            ratingValue={this.props.ratingValue}
+            removeRating={this.props.removeRating}
+            _handleKeyPress={this.props._handleKeyPress}
+            editedTitle={this.props.editedTitle}
+            updateValue={this.props.updateValue}
+          />
         </Container>
       </Fragment>
     );
@@ -439,7 +468,23 @@ TitleEditMode.propTypes = {
   handleChangeSeries: PropTypes.func.isRequired,
   handleChangeEpisodic: PropTypes.func.isRequired,
   handleOnExternalIds: PropTypes.func,
-  handleOnAdvisories: PropTypes.func
+  handleOnAdvisories: PropTypes.func,
+  updateValue: PropTypes.func,
+  editedTitle: PropTypes.array,
+  _handleKeyPress: PropTypes.func,
+  removeRating: PropTypes.func,
+  ratingValue: PropTypes.string,
+  updateCastValue: PropTypes.func,
+  addCast: PropTypes.func,
+  removeCast: PropTypes.func,
+  castInputValue: PropTypes.string,
+  renderModal: PropTypes.func,
+  isCrewModalOpen: PropTypes.bool,
+  isCastModalOpen: PropTypes.bool
+
+
+
+
 };
 
 export default TitleEditMode;

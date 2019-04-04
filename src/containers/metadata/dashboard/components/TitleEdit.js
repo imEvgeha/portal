@@ -16,6 +16,8 @@ import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
+const CAST = 'CAST';
+const CREW = 'CREW';
 
 
 class TitleEdit extends Component {
@@ -35,7 +37,15 @@ class TitleEdit extends Component {
             updatedTerritories: [],
             editorialMetadata: [],
             updatedEditorialMetadata: [],
-            editorialMetadataForCreate: {}
+            editorialMetadataForCreate: {},
+            isCastModalOpen: false,
+            isCrewModalOpen: false,
+            ratings: [],
+            ratingValue: '',
+            cast: [],
+            crew: [],
+            castInputValue: '',
+            crewInputValue: ''
         };
     }
 
@@ -79,7 +89,7 @@ class TitleEdit extends Component {
      * Title document
      */
     handleSwitchMode = () => {
-        this.setState({ isEditMode: !this.state.isEditMode, territoryMetadataActiveTab: CURRENT_TAB , editorialMetadataActiveTab: CURRENT_TAB});
+        this.setState({ isEditMode: !this.state.isEditMode, territoryMetadataActiveTab: CURRENT_TAB, editorialMetadataActiveTab: CURRENT_TAB });
     };
 
     handleOnChangeEdit = (e) => {
@@ -117,7 +127,7 @@ class TitleEdit extends Component {
             }
         });
     };
-    
+
     handleOnExternalIds = (e) => {
         const newExternalIds = {
             ...this.state.editedForm.externalIds,
@@ -150,24 +160,36 @@ class TitleEdit extends Component {
 
     editMode = () => {
         return <TitleEditMode
+            isCastModalOpen={this.state.isCastModalOpen}
+            isCrewModalOpen={this.state.isCrewModalOpen}
+            renderModal={this.renderModal}
+            castInputValue={this.state.castInputValue}
+            updateCastValue={this.updateCastValue}
+            ratingValue={this.state.ratingValue}
+            removeRating={this.removeRating}
+            removeCast={this.removeCast}
+            updateValue={this.updateValue}
+            addCast={this.addCast}
             handleOnAdvisories={this.handleOnAdvisories}
             handleChangeEpisodic={this.handleChangeEpisodic}
             handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
+            _handleKeyPress={this._handleKeyPress}
             data={this.state.titleForm}
+            editedTitle={this.state.editedForm}
             episodic={this.state.titleForm.episodic}
             handleOnChangeEdit={this.handleOnChangeEdit} />;
     };
 
     removeBooleanQuotes = (newAdditionalFields, fieldName) => {
-        if(newAdditionalFields[fieldName]) {
-            if(newAdditionalFields[fieldName] === 'true') {
+        if (newAdditionalFields[fieldName]) {
+            if (newAdditionalFields[fieldName] === 'true') {
                 newAdditionalFields[fieldName] = true;
-            } else if(newAdditionalFields[fieldName] === 'false'){
+            } else if (newAdditionalFields[fieldName] === 'false') {
                 newAdditionalFields[fieldName] = false;
             }
-        } 
+        }
     }
 
     handleTitleOnSave = () => {
@@ -178,7 +200,13 @@ class TitleEdit extends Component {
             let newAdditionalFields = this.getAdditionalFieldsaWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
-            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');    
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
+            newAdditionalFields = {
+                ...newAdditionalFields,
+                duration: newAdditionalFields.hour + ':' + newAdditionalFields.minute + ':00'
+            };
+            delete newAdditionalFields.hour;
+            delete newAdditionalFields.minute;
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -427,14 +455,14 @@ class TitleEdit extends Component {
 
     getEditorialMetadataWithoutEmptyField() {
         let editorial = {};
-        for(let editorialField in this.state.editorialMetadataForCreate) {
-            if(editorialField === 'title') {
+        for (let editorialField in this.state.editorialMetadataForCreate) {
+            if (editorialField === 'title') {
                 editorial[editorialField] = this.getEpisodicSubObjectWithoutEmptyFields('title');
             }
-            else if(editorialField === 'synopsis') {
+            else if (editorialField === 'synopsis') {
                 editorial[editorialField] = this.getEpisodicSubObjectWithoutEmptyFields('synopsis');
             }
-            else if(this.state.editorialMetadataForCreate[editorialField]) {
+            else if (this.state.editorialMetadataForCreate[editorialField]) {
                 editorial[editorialField] = this.state.editorialMetadataForCreate[editorialField];
             } else {
                 editorial[editorialField] = null;
@@ -447,8 +475,8 @@ class TitleEdit extends Component {
     getEpisodicSubObjectWithoutEmptyFields(subField) {
         let subObject = {};
         let doAddSubObject = false;
-        for(let field in this.state.editorialMetadataForCreate[subField]) {
-            if(this.state.editorialMetadataForCreate[subField][field]) {
+        for (let field in this.state.editorialMetadataForCreate[subField]) {
+            if (this.state.editorialMetadataForCreate[subField][field]) {
                 subObject[field] = this.state.editorialMetadataForCreate[subField][field];
                 doAddSubObject = true;
             } else {
@@ -461,14 +489,14 @@ class TitleEdit extends Component {
 
     getAdditionalFieldsaWithoutEmptyField() {
         let additionalFields = {};
-        for(let fields in this.state.editedForm) {
-            if(fields === 'externalIds') {
+        for (let fields in this.state.editedForm) {
+            if (fields === 'externalIds') {
                 additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
-            } 
+            }
             else if (fields === 'advisories') {
                 additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
             }
-            else if(this.state.editedForm[fields]) {
+            else if (this.state.editedForm[fields]) {
                 additionalFields[fields] = this.state.editedForm[fields];
             } else {
                 additionalFields[fields] = null;
@@ -480,13 +508,13 @@ class TitleEdit extends Component {
     getAdditionalFieldsWithoutEmptyFields(subField) {
         let subObject = {};
         let doAddSubObject = false;
-        for(let field in this.state.editedForm[subField]) {
-                if(this.state.editedForm[subField][field]) {
-                    subObject[field] = this.state.editedForm[subField][field];
-                    doAddSubObject = true;
-                } else {
-                    subField[field] = null;
-                }
+        for (let field in this.state.editedForm[subField]) {
+            if (this.state.editedForm[subField][field]) {
+                subObject[field] = this.state.editedForm[subField][field];
+                doAddSubObject = true;
+            } else {
+                subField[field] = null;
+            }
         }
         return doAddSubObject ? subObject : null;
     }
@@ -502,9 +530,112 @@ class TitleEdit extends Component {
 
     onKeyPress(event) {
         if (event.which === 13 /* Enter */) {
-          event.preventDefault();
+            event.preventDefault();
         }
     }
+
+    /* Title core additional fields */
+    renderModal = modalName => {
+        this.cleanCastInput();
+        if (modalName === CAST) {
+            this.setState({
+                isCastModalOpen: !this.state.isCastModalOpen
+            });
+        } else if (modalName === CREW) {
+            this.setState({
+                isCrewModalOpen: !this.state.isCrewModalOpen
+            });
+        } else {
+            this.setState({
+                isCrewModalOpen: false,
+                isCastModalOpen: false
+            });
+        }
+    };
+
+    addRating = rating => {
+        if (rating === '') {
+            return;
+        } else {
+            rating = rating.trim();
+                let ratings = this.state.ratings.concat({ rating });
+                this.updateRatings(ratings);
+        }
+    };
+
+    updateValue = value => {
+        if (value === '') return;
+        this.setState({
+            ratingValue: value
+        });
+    };
+
+    removeRating = removeRating => {
+        let ratings = this.state.ratings.filter(rating => rating !== removeRating);
+        this.updateRatings(ratings);
+    };
+
+    updateRatings = ratings => {
+        this.setState({
+            ratings
+        });
+    };
+
+    addCast = (personType) => {
+        if (this.state.castInputValue) {
+            let newCastObject = {
+                displayName: this.state.castInputValue,
+                personType: personType
+            };
+            let castCrewArray = [newCastObject];
+            if (!this.state.editedForm.castCrew) {
+                castCrewArray = [newCastObject];
+            } else {
+                castCrewArray = [newCastObject, ...this.state.editedForm.castCrew]; 
+            }
+
+            this.setState({
+                ...this.state.editedForm,
+                editedForm: {
+                    castCrew: castCrewArray
+                }
+            });
+            this.cleanCastInput();
+        } else return;
+    };
+
+    updateCastValue = value => {
+        if (value === '') return;
+        this.setState({
+            castInputValue: value
+        });
+    };
+
+    removeCast = removeCast => {
+        let cast = this.state.editedForm.castCrew.filter(cast => cast !== removeCast);
+        this.setState({
+            ...this.state.editedForm,
+            editedForm: {
+                castCrew: cast
+            }
+        });
+    };
+
+    cleanCastInput = () => {
+        this.setState({
+            castInputValue: ''
+        });
+    }
+
+    _handleKeyPress = e => {
+        if (e.keyCode === 13) {
+            //Key code for Enter
+            this.addRating(this.state.ratingValue);
+            this.setState({
+                ratingValue: ''
+            });
+        }
+    };
 
     render() {
         return (

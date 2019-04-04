@@ -19,149 +19,11 @@ import { AvField } from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 
+
 const CAST = 'CAST';
 const CREW = 'CREW';
 
-class CoreMetadataEditMode extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isCastModalOpen: false,
-      isCrewModalOpen: false,
-      ratings: [],
-      ratingValue: '',
-      cast: [],
-      crew: [],
-      castInputValue: '',
-      crewInputValue: ''
-    };
-  }
-  renderModal = modalName => {
-    this.cleanCastInput();
-    if (modalName === CAST) {
-      this.setState({
-        isCastModalOpen: !this.state.isCastModalOpen
-      });
-    } else if (modalName === CREW) {
-      this.setState({
-        isCrewModalOpen: !this.state.isCrewModalOpen
-      });
-    } else {
-      this.setState({
-        isCrewModalOpen: false,
-        isCastModalOpen: false
-      });
-    }
-  };
-
-  addRating = rating => {
-    if (rating === '') {
-      return;
-    } else {
-      rating = rating.trim();
-
-      if (!this.state.ratings.indexOf(rating) > -1) {
-        let ratings = this.state.ratings.concat({ rating });
-        this.updateRatings(ratings);
-      }
-    }
-  };
-
-  updateValue = value => {
-    if (value === '') return;
-    this.setState({
-      ratingValue: value
-    });
-  };
-
-  removeRating = removeRating => {
-    let ratings = this.state.ratings.filter(rating => rating !== removeRating);
-    this.updateRatings(ratings);
-  };
-
-  updateRatings = ratings => {
-    this.setState({
-      ratings
-    });
-  };
-
-  addCast = () => {
-      if(this.state.castInputValue) {
-        if (!this.state.cast.indexOf(this.state.castInputValue) > -1) {
-          let cast = this.state.cast.concat(this.state.castInputValue);
-          this.updateCasts(cast);
-          this.cleanCastInput();
-        }
-      } else return;
-  };
-
-  updateCastValue = value => {
-    if (value === '') return;
-    this.setState({
-      castInputValue: value
-    });
-  };
-
-  removeCast = removeCast => {
-    let cast = this.state.cast.filter(cast => cast !== removeCast);
-    this.updateCasts(cast);
-  };
-
-  updateCasts = cast => {
-    this.setState({
-      cast
-    });
-  };
-
-  cleanCastInput = () => {
-    this.setState({
-      castInputValue: ''
-    });
-  }
-
-  addCrew = () => {
-    if(this.state.crewInputValue) {
-      if (!this.state.crew.indexOf(this.state.crewInputValue) > -1) {
-        let crew = this.state.crew.concat(this.state.crewInputValue);
-        this.updateCrews(crew);
-        this.cleanCrewInput();
-      }
-    } else return;
-};
-
-updateCrewValue = value => {
-  if (value === '') return;
-  this.setState({
-    crewInputValue: value
-  });
-};
-
-removeCrew = removeCrew => {
-  let crew = this.state.crew.filter(crew => crew !== removeCrew);
-  this.updateCrews(crew);
-};
-
-updateCrews = crew => {
-  this.setState({
-    crew
-  });
-};
-
-cleanCrewInput = () => {
-  this.setState({
-    crewInputValue: ''
-  });
-}
-
-  _handleKeyPress = e => {
-    if (e.keyCode === 13) {
-      //Key code for Enter
-      this.addRating(this.state.ratingValue);
-      this.setState({
-        ratingValue: ''
-      });
-    }
-  };
+class CoreMetadataEditMode extends Component { 
 
   render() {
     // const {
@@ -177,7 +39,7 @@ cleanCrewInput = () => {
               <CardHeader className='clearfix'>
                 <h4 className='float-left'>Cast</h4>
                 <FontAwesome
-                  onClick={() => this.renderModal(CAST)}
+                  onClick={() => this.props.renderModal(CAST)}
                   className='float-right'
                   name='plus-circle'
                   style={{ marginTop: '8px', cursor: 'pointer' }}
@@ -194,17 +56,17 @@ cleanCrewInput = () => {
                   }}
                   id='listContainer'
                 >
-                  {this.state.cast &&
-                    this.state.cast.map((cast, i) => (
+                  {this.props.editedTitle.castCrew &&
+                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
                       <ListGroupItem key={i}>
-                        {cast}
+                        {cast.displayName}
                         <FontAwesome
                           className='float-right'
                           name='times-circle'
                           style={{ marginTop: '5px', cursor: 'pointer' }}
                           color='#111'
                           size='lg'
-                          onClick={() => this.removeCast(cast)}
+                          onClick={() => this.props.removeCast(cast)}
                         />
                       </ListGroupItem>
                     ))}
@@ -218,7 +80,7 @@ cleanCrewInput = () => {
                 <h4 className='float-left'>Crew</h4>
                 <FontAwesome
                   className='float-right'
-                  onClick={() => this.renderModal(CREW)}
+                  onClick={() => this.props.renderModal(CREW)}
                   name='plus-circle'
                   style={{ marginTop: '8px', cursor: 'pointer' }}
                   color='#111'
@@ -234,20 +96,20 @@ cleanCrewInput = () => {
                   }}
                   id='listContainer'
                 >
-                    {this.state.crew &&
-                    this.state.crew.map((crew, i) => (
+                    {this.props.editedTitle.castCrew &&
+                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
                       <ListGroupItem key={i}>
                         <span style={{ fontSize: '14px', color: '#666' }}>
                         Directed by:
                         </span>{' '}
-                        {crew}
+                        {crew.displayName}
                         <FontAwesome
                           className='float-right'
                           name='times-circle'
                           style={{ marginTop: '5px', cursor: 'pointer' }}
                           color='#111'
                           size='lg'
-                          onClick={() => this.removeCrew(crew)}
+                          onClick={() => this.props.removeCast(crew)}
                         />
                       </ListGroupItem>
                     ))}
@@ -263,15 +125,15 @@ cleanCrewInput = () => {
               <Input
                 type='text'
                 // onChange={(e) => this.props.onChange(e)}
-                onChange={e => this.updateValue(e.target.value)}
+                onChange={e => this.props.updateValue(e.target.value)}
                 name='ratings'
                 id='ratings'
-                value={this.state.ratingValue}
-                onKeyDown={this._handleKeyPress}
+                value={this.props.ratingValue}
+                onKeyDown={this.props._handleKeyPress}
                 placeholder='Ratings'
               />
-              {this.state.ratings &&
-                this.state.ratings.map((rating, i) => (
+              {this.props.ratings &&
+                this.props.ratings.map((rating, i) => (
                   <CloseableBtn
                     style={{
                       marginTop: '5px',
@@ -285,7 +147,7 @@ cleanCrewInput = () => {
                     }}
                     highlighted={false}
                     id={'core-metadata-tags-' + i}
-                    onClose={() => this.removeRating(rating)}
+                    onClose={() => this.props.removeRating(rating)}
                   />
                 ))}
             </FormGroup>
@@ -582,20 +444,20 @@ cleanCrewInput = () => {
           </Col>
         </Row>
         <CoreMetadataCreateCastModal
-          isCastModalOpen={this.state.isCastModalOpen}
-          renderCastModal={this.renderModal}
-          addCast={this.addCast}
-          updateCastValue={this.updateCastValue}
-          castInputValue={this.state.castInputValue}
-          cleanCastInput={this.cleanCastInput}
+          isCastModalOpen={this.props.isCastModalOpen}
+          renderCastModal={this.props.renderModal}
+          addCast={this.props.addCast}
+          updateCastValue={this.props.updateCastValue}
+          castInputValue={this.props.castInputValue}
+          cleanCastInput={this.props.cleanCastInput}
         />
         <CoreMetadataCreateCrewModal
-          isCrewModalOpen={this.state.isCrewModalOpen}
-          renderCrewModal={this.renderModal}
-          addCrew={this.addCrew}
-          updateCrewValue={this.updateCrewValue}
-          crewInputValue={this.state.crewInputValue}
-          cleanCrewInput={this.cleanCrewInput}
+          isCrewModalOpen={this.props.isCrewModalOpen}
+          renderCrewModal={this.props.renderModal}
+          addCast={this.props.addCast}
+          updateCastValue={this.props.updateCastValue}
+          castInputValue={this.props.castInputValue}
+          cleanCastInput={this.props.cleanCastInput}
         />
       </Fragment>
     );
@@ -606,7 +468,23 @@ CoreMetadataEditMode.propTypes = {
   data: PropTypes.object,
   onChange: PropTypes.func,
   handleOnExternalIds: PropTypes.func,
-  handleOnAdvisories: PropTypes.func
+  handleOnAdvisories: PropTypes.func,
+  isCrewModalOpen: PropTypes.bool,
+  isCastModalOpen: PropTypes.bool,
+  renderModal: PropTypes.func,
+  castInputValue: PropTypes.string,
+  updateCastValue: PropTypes.func,
+  ratingValue: PropTypes.string,
+  ratings: PropTypes.array,
+  updateValue: PropTypes.func,
+  removeRating: PropTypes.func,
+  removeCast: PropTypes.func,
+  castCrew: PropTypes.array,
+  editedTitle: PropTypes.object,
+  _handleKeyPress: PropTypes.func,
+  cleanCastInput: PropTypes.func,
+  addCast: PropTypes.func
+
 };
 
 export default CoreMetadataEditMode;

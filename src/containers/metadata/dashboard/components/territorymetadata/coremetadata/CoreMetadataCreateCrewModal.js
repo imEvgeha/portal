@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 
-const CREW = CREW;
+const CREW = 'CREW';
 
 class CoreMetadataCreateCrewModal extends Component {
   render() {
@@ -19,10 +19,17 @@ class CoreMetadataCreateCrewModal extends Component {
             Create Crew
           </ModalHeader>
           <ModalBody>
-            <AvField name='crewInputValue' type='text' value={this.props.crewInputValue} onChange={e => this.props.updateCrewValue(e.target.value)} placeholder='Enter Crew' />
+            <AvField type="select" name="castInputValue" id="exampleSelect" onChange={e => this.props.updateCastValue(e.target.value)}>
+              <option value={''}>Select a Crew</option>
+              <option>Firsname Lastname1</option>
+              <option>Firsname Lastname2</option>
+              <option>Firsname Lastname3</option>
+              <option>Firsname Lastname4</option>
+              <option>Firsname Lastname5</option>
+            </AvField>
           </ModalBody>
           <ModalFooter>
-            <Button color='primary' onClick={() => this.props.addCrew()}>
+            <Button color='primary' onClick={() => this.props.addCast('director')}>
               Save
             </Button>{' '}
             <Button color='secondary' onClick={() => this.props.renderCrewModal(CREW)}>
@@ -39,9 +46,8 @@ CoreMetadataCreateCrewModal.propTypes = {
   className: PropTypes.string,
   renderCrewModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
-  addCrew: PropTypes.func,
-  updateCrewValue: PropTypes.func,
-  crewInputValue: PropTypes.string
+  addCast: PropTypes.func,
+  updateCastValue: PropTypes.func
 };
 
 export default CoreMetadataCreateCrewModal;

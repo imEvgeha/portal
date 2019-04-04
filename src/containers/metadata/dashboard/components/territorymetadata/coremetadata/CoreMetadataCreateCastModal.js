@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 
-const CAST = CAST;
+const CAST = 'CAST';
 
 class CoreMetadataCreateCastModal extends Component {
   render() {
@@ -19,10 +19,17 @@ class CoreMetadataCreateCastModal extends Component {
             Create Cast
           </ModalHeader>
           <ModalBody>
-            <AvField name='castInputValue' type='text' value={this.props.castInputValue} onChange={e => this.props.updateCastValue(e.target.value)} placeholder='Enter Cast' />
+            <AvField type="select" name="castInputValue" id="exampleSelect" onChange={e => this.props.updateCastValue(e.target.value)}>
+              <option value={''}>Select a Cast</option>
+              <option>Firsname Lastname1</option>
+              <option>Firsname Lastname2</option>
+              <option>Firsname Lastname3</option>
+              <option>Firsname Lastname4</option>
+              <option>Firsname Lastname5</option>
+            </AvField>
           </ModalBody>
           <ModalFooter>
-            <Button color='primary' onClick={() => this.props.addCast()}>
+            <Button color='primary' onClick={() => this.props.addCast('actor')}>
               Save
             </Button>{' '}
             <Button color='secondary' onClick={() => this.props.renderCastModal(CAST)}>
