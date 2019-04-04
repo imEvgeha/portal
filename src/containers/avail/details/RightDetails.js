@@ -126,13 +126,27 @@ class RightDetails extends React.Component {
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
-            if(val) rightCopy[map.javaVariableName] = val;
+            if(val) {
+                if(Array.isArray(val) && map.dataType === 'string') {
+                    rightCopy[map.javaVariableName] = val.join(',');
+                }else {
+                    rightCopy[map.javaVariableName] = val;
+                }
+            }
+
         });
         return rightCopy;
     }
 
     update(name, value, onError) {
         let updatedRight = {[name]: value};
+        if(name.indexOf('.') > 0 && name.split('.')[0] === 'languages'){
+            if(name.split('.')[1] === 'language'){
+                updatedRight['languages.audioType'] = this.state.flatRight['languages.audioType'];
+            }else{
+                updatedRight['languages.language'] = this.state.flatRight['languages.language'];
+            }
+        }
         rightsService.update(updatedRight, this.state.right.id)
             .then(res => {
                 let editedRight = res.data;
@@ -249,7 +263,11 @@ class RightDetails extends React.Component {
             }
 
             let handleValueChange = (newVal) => {
-                ref.current.handleChange(newVal);
+                if(validation && validation.number === true){
+                    ref.current.handleChange(Number(newVal));
+                }else {
+                    ref.current.handleChange(newVal);
+                }
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
@@ -293,17 +311,18 @@ class RightDetails extends React.Component {
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            const options=[{ key:'t', value: 'true', text: 'Yes' }, { key:'f', value: 'false', text: 'No' }];
+            const val = value ? options[0] : options[1];
+
+            return renderFieldTemplate(name, displayName, val, error, readOnly, required, (
                 <Editable
                     title={name}
                     name={name}
                     dataType="select"
                     disabled={readOnly}
                     handleSubmit={this.handleSubmit}
-                    value={value}
-                    options={[
-                        { key:'t', value: 'true', text: 'Yes' },
-                        { key:'f', value: 'false', text: 'No' }]}
+                    value={val.value}
+                    options={options}
                 />
 
             ));

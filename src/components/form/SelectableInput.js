@@ -250,6 +250,27 @@ class SelectableInput extends Component {
                     className="react-select-container">
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
+                            if(value && value.length > 0){
+                                return (
+                                    <div
+                                        style={{width:'90%'}}
+                                    >
+                                        <div
+                                            style={{maxWidth:'calc(100% - 90px)', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                        >
+                                            {value.map(({value}) => value).join(', ')}
+                                        </div>
+                                        <div
+                                            style={{width:'90px', float:'left', paddingLeft:'5px'}}
+                                        >
+                                            {' (' + value.length + ' selected)'}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return placeholderButtonLabel;
+                        }}
                         options={allOptions}
                         value = {this.props.value.options || []}
                         onChange={this.handleOptionsChange}
