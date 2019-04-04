@@ -13,7 +13,7 @@ import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
-import {EDITORIAL_METADATA_PREFIX} from '../../../../constants/metadata/metadataComponent';
+import {EDITORIAL_METADATA_PREFIX, EDITORIAL_METADATA_SYNOPSIS} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -67,27 +67,46 @@ class TitleEdit extends Component {
     componentDidMount() {
         if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
         NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
+
         const titleId = this.props.match.params.id;
-        titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
-            this.setState({ titleForm, editedForm: titleForm });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
-            console.error('Unable to load Title Data');
-        });
-        titleService.getTerritoryMetadataById(titleId).then((response) => {
-            const territory = response.data;
-            this.setState({
-                territory: territory
-            });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
-            console.error('Unable to load Title Data');
-        });
+        this.loadTitle(titleId);
+        this.loadTerritoryMetadata(titleId);
+        this.loadEditorialMetadata(titleId);
     }
 
     componentWillUnmount() {
         NexusBreadcrumb.pop();
+    }
+
+    loadTitle(titleId) {
+        titleService.getTitleById(titleId).then((response) => {
+            const titleForm = response.data;
+            this.setState({ titleForm, editedForm: titleForm });
+        }).catch(() => {
+            console.error('Unable to load Title Data');
+        });
+    }
+
+    loadTerritoryMetadata(titleId) {
+        titleService.getTerritoryMetadataById(titleId).then((response) => {
+            const territoryMetadata = response.data;
+            this.setState({
+                territory: territoryMetadata
+            });
+        }).catch(() => {
+            console.error('Unable to load Territory Metadata');
+        });
+    }
+
+    loadEditorialMetadata(titleId) {
+        titleService.getEditorialMetadataById(titleId).then((response) => {
+            const editorialMetadata = response.data;
+            this.setState({
+                editorialMetadata: editorialMetadata
+            });
+        }).catch(() => {
+            console.error('Unable to load Editorial Metadata');
+        });
     }
 
     handleBackToDashboard() {
@@ -298,10 +317,14 @@ class TitleEdit extends Component {
      * Editorial Metadata document
      */
     handleEditorialMetadataEditChange = (e, data) => {
+
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
+        isSynopsis ? targetName = targetName.replace(EDITORIAL_METADATA_SYNOPSIS, '') : targetName;
+
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (edited) {
-            edited[targetName] = e.target.value;
+            isSynopsis ? edited['synopsis'][targetName] = e.target.value : edited[targetName] = e.target.value;
             let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
             newOne.push(edited);
             this.setState({
@@ -309,11 +332,14 @@ class TitleEdit extends Component {
             });
         } else {
             edited = Object.assign({}, data);
-            edited[targetName] = e.target.value;
+            console.log(edited);
+            console.log(edited['synopsis'])
+            isSynopsis ? edited['synopsis'][targetName] = e.target.value : edited[targetName] = e.target.value;
             this.setState({
                 updatedEditorialMetadata: [edited, ...this.state.updatedEditorialMetadata]
             });
         }
+        console.log(this.state.updatedEditorialMetadata);
     };
 
     handleEditorialMetadataChange = (e) => {

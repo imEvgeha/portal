@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import {getLanguageByCode} from '../../../../../constants/language';
+import EditorialMetadataEditMode from "./EditorialMetadataEditMode";
 
 class EditorialMetadata extends Component {
     constructor(props) {
@@ -70,6 +71,18 @@ class EditorialMetadata extends Component {
                                         </Col>
                                     </Row>
                                 </TabPane>
+                                {
+                                    this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
+                                        return (
+                                            <TabPane key={i} tabId={i}>
+                                                <Row>
+                                                    <Col>
+                                                        <EditorialMetadataEditMode validSubmit={this.props.validSubmit} handleChange={this.props.handleEditChange} key={i} data={item} />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>);
+                                    })
+                                }
                             </Fragment>
                             : null
                     }
