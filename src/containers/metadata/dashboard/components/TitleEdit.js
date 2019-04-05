@@ -40,12 +40,14 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {},
             isCastModalOpen: false,
             isCrewModalOpen: false,
-            ratings: [],
+            ratingSystem: '',
             ratingValue: '',
             cast: [],
             crew: [],
-            castInputValue: '',
-            crewInputValue: ''
+            castCrewInputValue: '',
+            crewInputValue: '',
+            advisoriesFreeText: '',
+            advisoryCode: ''
         };
     }
 
@@ -141,6 +143,50 @@ class TitleEdit extends Component {
         });
     }
 
+    addAdvisoryCodes = (advisory) => {
+        if(advisory === '') {
+            return;
+        } else {
+            let advisoriesCode = [this.state.advisoryCode];
+            if(!this.state.editedForm.advisories) {
+                advisoriesCode = [this.state.advisoryCode];
+            }else {
+                advisoriesCode = [this.state.advisoryCode, ...this.state.editedForm.advisories.advisoriesCode];
+            }
+            this.setState({
+                ...this.state.editedForm,
+                editedForm: {
+                    ...this.state.editedForm.advisories,
+                    advisories: {
+                        advisoriesCode: advisoriesCode
+                    }
+                }
+            });
+        }
+
+    }
+    removeAdvisoryCodes = (removeAdvisory) => {
+            let advisoriesCode = this.state.editedForm.advisories.advisoriesCode.filter(rating => rating !== removeAdvisory);
+            this.setState({
+                ...this.state.editedForm,
+                editedForm: {
+                    ...this.state.editedForm.advisories,
+                    advisories: {
+                        advisoriesCode: advisoriesCode
+                    }
+                }
+            });
+    }
+    handleOnAdvisoriesCodeUpdate = (value) => {
+        if (value === '') {
+            return;
+        } else {
+            this.setState({
+                advisoryCode: value
+            });
+        }
+    }
+
     handleOnAdvisories = (e) => {
         const newAdvisory = {
             ...this.state.editedForm.advisories,
@@ -152,6 +198,7 @@ class TitleEdit extends Component {
                 advisories: newAdvisory
             }
         });
+
     }
 
     readOnly = () => {
@@ -163,19 +210,26 @@ class TitleEdit extends Component {
             isCastModalOpen={this.state.isCastModalOpen}
             isCrewModalOpen={this.state.isCrewModalOpen}
             renderModal={this.renderModal}
-            castInputValue={this.state.castInputValue}
-            updateCastValue={this.updateCastValue}
+            castCrewInputValue={this.state.castCrewInputValue}
+            updateCastCrewValue={this.updateCastCrewValue}
             ratingValue={this.state.ratingValue}
             removeRating={this.removeRating}
             removeCast={this.removeCast}
+            ratingSystem={this.state.ratingSystem}
             updateValue={this.updateValue}
-            addCast={this.addCast}
+            ratings={this.state.editedForm.ratings}
+            advisoryCodeList={this.state.editedForm.advisories}
+            removeAdvisoryCodes={this.removeAdvisoryCodes}
+            addCastCrew={this.addCastCrew}
             handleOnAdvisories={this.handleOnAdvisories}
             handleChangeEpisodic={this.handleChangeEpisodic}
             handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
             _handleKeyPress={this._handleKeyPress}
+            _handleAddAdvisoryCode={this._handleAddAdvisoryCode}
+            handleOnAdvisoriesCodeUpdate={this.handleOnAdvisoriesCodeUpdate}
+            advisoryCode={this.state.advisoryCode}
             data={this.state.titleForm}
             editedTitle={this.state.editedForm}
             episodic={this.state.titleForm.episodic}
@@ -201,10 +255,10 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
-            newAdditionalFields = {
-                ...newAdditionalFields,
-                duration: newAdditionalFields.hour + ':' + newAdditionalFields.minute + ':00'
-            };
+            // newAdditionalFields = {
+            //     ...newAdditionalFields,
+            //     duration: newAdditionalFields.hour + ':' + newAdditionalFields.minute + ':00'
+            // };
             delete newAdditionalFields.hour;
             delete newAdditionalFields.minute;
             titleService.updateTitle(newAdditionalFields).then(() => {
@@ -557,10 +611,25 @@ class TitleEdit extends Component {
         if (rating === '') {
             return;
         } else {
-            rating = rating.trim();
-                let ratings = this.state.ratings.concat({ rating });
-                this.updateRatings(ratings);
+            let newRatingObject = {
+                rating: this.state.ratingValue,
+                ratingSystem: this.state.ratingSystem
+            };
+            let ratingArray = [newRatingObject];
+            if(!this.state.editedForm.ratings) {
+                ratingArray = [newRatingObject];
+            } else {
+                ratingArray = [newRatingObject, ...this.state.editedForm.ratings];
+            }
+
+            this.setState({
+                ...this.state.editedForm,
+                editedForm: {
+                    ratings: ratingArray
+                }
+            });
         }
+
     };
 
     updateValue = value => {
@@ -571,20 +640,20 @@ class TitleEdit extends Component {
     };
 
     removeRating = removeRating => {
-        let ratings = this.state.ratings.filter(rating => rating !== removeRating);
-        this.updateRatings(ratings);
-    };
-
-    updateRatings = ratings => {
+        let rating = this.state.editedForm.ratings.filter(rating => rating !== removeRating);
         this.setState({
-            ratings
+            ...this.state.editedForm,
+            editedForm: {
+                ratings: rating
+            }
         });
+
     };
 
-    addCast = (personType) => {
-        if (this.state.castInputValue) {
+    addCastCrew = (personType) => {
+        if (this.state.castCrewInputValue) {
             let newCastObject = {
-                displayName: this.state.castInputValue,
+                displayName: this.state.castCrewInputValue,
                 personType: personType
             };
             let castCrewArray = [newCastObject];
@@ -604,10 +673,10 @@ class TitleEdit extends Component {
         } else return;
     };
 
-    updateCastValue = value => {
+    updateCastCrewValue = value => {
         if (value === '') return;
         this.setState({
-            castInputValue: value
+            castCrewInputValue: value
         });
     };
 
@@ -623,7 +692,7 @@ class TitleEdit extends Component {
 
     cleanCastInput = () => {
         this.setState({
-            castInputValue: ''
+            castCrewInputValue: ''
         });
     }
 
@@ -636,6 +705,15 @@ class TitleEdit extends Component {
             });
         }
     };
+
+    _handleAddAdvisoryCode = e => {
+        if(e.keyCode === 13) {
+            this.addAdvisoryCodes(this.state.advisoryCode);
+            this.setState({
+                advisoryCode: ''
+            });
+        }
+    }
 
     render() {
         return (

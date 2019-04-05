@@ -120,11 +120,25 @@ class CoreMetadataEditMode extends Component {
         </Row>
         <Row>
           <Col>
+          <FormGroup>
+              <Label for='ratingSystem'>Rating System</Label>
+              <Input
+                type='select'
+                onChange={e => this.props.onChange(e)}
+                name='ratingSystem'
+                id='ratingSystem'
+                defaultValue={this.props.ratingSystem}
+              >
+                <option value={''}>Select Rating System</option>
+                <option value={'MPAA'}>MPAA</option>
+              </Input>
+            </FormGroup>
+          </Col>
+          <Col>
             <FormGroup>
-              <Label for='exampleEmail'>Ratings</Label>
+              <Label for='ratings'>Ratings</Label>
               <Input
                 type='text'
-                // onChange={(e) => this.props.onChange(e)}
                 onChange={e => this.props.updateValue(e.target.value)}
                 name='ratings'
                 id='ratings'
@@ -154,13 +168,13 @@ class CoreMetadataEditMode extends Component {
           </Col>
           <Col>
             <FormGroup>
-              <Label for='exampleEmail'>Advisories</Label>
+              <Label for='advisoriesFreeText'>Advisories</Label>
               <AvField
                 type='text'
                 onChange={e => this.props.handleOnAdvisories(e)}
                 name='advisoriesFreeText'
                 id='advisories'
-                placeholder='Advisories'
+                placeholder='Advisories'                
                 validate={{
                   maxLength: { value: 500 }
                 }}
@@ -169,25 +183,39 @@ class CoreMetadataEditMode extends Component {
           </Col>
           <Col>
             <FormGroup>
-              <Label for='exampleSelect'>Advisory Code</Label>
+              <Label for='advisoryCode'>Advisory Code</Label>
               <Input
-                type='select'
-                onChange={e => this.props.onChange(e)}
+                type='text'
+                onChange={e => this.props.handleOnAdvisoriesCodeUpdate(e.target.value)}
+                value={this.props.advisoryCode}
+                placeholder="Advisory Codes"
+                onKeyDown={this.props._handleAddAdvisoryCode}
                 name='advisoryCode'
                 id='advisoryCode'
-              >
-                <option value={''}>Select Advisory Code</option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-              </Input>
+              />
+              {this.props.advisoryCodeList &&
+                this.props.advisoryCodeList.advisoriesCode.map((advisory, i) => (
+                  <CloseableBtn
+                    style={{
+                      marginTop: '5px',
+                      width: 'auto',
+                      marginRight: '5px'
+                    }}
+                    title={advisory}
+                    key={i}
+                    onClick={() => {
+                      return;
+                    }}
+                    highlighted={false}
+                    id={'core-metadata-tags-' + i}
+                    onClose={() => this.props.removeAdvisoryCodes(advisory)}
+                  />
+                ))}
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for='exampleSelect'>Awards</Label>
+              <Label for='awards'>Awards</Label>
               <AvField
                 type='text'
                 name='awards'
@@ -446,16 +474,16 @@ class CoreMetadataEditMode extends Component {
         <CoreMetadataCreateCastModal
           isCastModalOpen={this.props.isCastModalOpen}
           renderCastModal={this.props.renderModal}
-          addCast={this.props.addCast}
-          updateCastValue={this.props.updateCastValue}
+          addCastCrew={this.props.addCastCrew}
+          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
           renderCrewModal={this.props.renderModal}
-          addCast={this.props.addCast}
-          updateCastValue={this.props.updateCastValue}
+          addCastCrew={this.props.addCastCrew}
+          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
         />
@@ -473,7 +501,7 @@ CoreMetadataEditMode.propTypes = {
   isCastModalOpen: PropTypes.bool,
   renderModal: PropTypes.func,
   castInputValue: PropTypes.string,
-  updateCastValue: PropTypes.func,
+  updateCastCrewValue: PropTypes.func,
   ratingValue: PropTypes.string,
   ratings: PropTypes.array,
   updateValue: PropTypes.func,
@@ -483,8 +511,13 @@ CoreMetadataEditMode.propTypes = {
   editedTitle: PropTypes.object,
   _handleKeyPress: PropTypes.func,
   cleanCastInput: PropTypes.func,
-  addCast: PropTypes.func
-
+  addCastCrew: PropTypes.func,
+  ratingSystem: PropTypes.string,
+  _handleAddAdvisoryCode: PropTypes.func,
+  handleOnAdvisoriesCodeUpdate: PropTypes.func,
+  advisoryCode: PropTypes.string,
+  advisoryCodeList: PropTypes.object,
+  removeAdvisoryCodes: PropTypes.func
 };
 
 export default CoreMetadataEditMode;

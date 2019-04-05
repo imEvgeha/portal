@@ -23,19 +23,19 @@ class TitleEditMode extends Component {
     };
   }
 
-  getHour = () => {
+  // getHour = () => {
 
-    let newDuration = this.props.data.duration.split(':');
-    let hour = newDuration[0];
-    // console.log('Hour:',hour, 'Duration: ',this.props.data.duration);
-    return hour;
-  }
-  getMinute = () => {
-    let newDuration = this.props.data.duration.split(':');
-    let minute = newDuration[1];
-    // console.log('Minute:',minute, 'Duration: ',this.props.data.duration);
-    return minute;
-  }
+  //   let newDuration = this.props.data.duration.split(':');
+  //   let hour = newDuration[0];
+  //   // console.log('Hour:',hour, 'Duration: ',this.props.data.duration);
+  //   return hour;
+  // }
+  // getMinute = () => {
+  //   let newDuration = this.props.data.duration.split(':');
+  //   let minute = newDuration[1];
+  //   // console.log('Minute:',minute, 'Duration: ',this.props.data.duration);
+  //   return minute;
+  // }
   render() {
     const {
       title,
@@ -44,7 +44,7 @@ class TitleEditMode extends Component {
       releaseYear,
       boxOffice,
       animated,
-      duration,
+      // duration,
       eventType,
       // seasonFinale,
       // seasonPremiere,
@@ -278,7 +278,7 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='duration'>Duration</Label>
                   <Row>
-                    <Col>
+                    {/* <Col>
                       <AvField name="hour" value={duration ? this.getHour() : ''} type="number" max="24" placeholder="HH" style={{ textAlign: 'center' }}
                         validate={{
                           maxLength: { value: 2, errorMessage: 'Please enter a valid hour!' }, minLength: { value: 2, errorMessage: 'Please enter a valid hour!' }
@@ -292,6 +292,14 @@ class TitleEditMode extends Component {
                           maxLength: { value: 2, errorMessage: 'Please enter a valid minute!' }, minLength: { value: 2, errorMessage: 'Please enter a valid minute!' }
                         }}
                         onChange={e => this.props.handleOnChangeEdit(e)}
+                      />
+                    </Col> */}
+                    <Col>
+                      <AvField  
+                        type="time"
+                        name="duration"
+                        id="duration"
+                        onChange={(e) => this.props.handleOnChangeEdit(e)}
                       />
                     </Col>
                   </Row>
@@ -441,15 +449,22 @@ class TitleEditMode extends Component {
             data={this.props.data}
             handleOnAdvisories={this.props.handleOnAdvisories}
             onChange={this.props.handleOnChangeEdit}
+            _handleAddAdvisoryCode={this.props._handleAddAdvisoryCode}
             handleOnExternalIds={this.props.handleOnExternalIds}
             isCastModalOpen={this.props.isCastModalOpen}
             isCrewModalOpen={this.props.isCrewModalOpen}
             renderModal={this.props.renderModal}
             castInputValue={this.props.castInputValue}
             removeCast={this.props.removeCast}
-            addCast={this.props.addCast}
-            updateCastValue={this.props.updateCastValue}
+            ratings={this.props.ratings}
+            advisoryCodeList={this.props.advisoryCodeList}
+            removeAdvisoryCodes={this.props.removeAdvisoryCodes}
+            addCastCrew={this.props.addCastCrew}
+            updateCastCrewValue={this.props.updateCastCrewValue}
+            advisoryCode={this.props.advisoriesCode}
+            handleOnAdvisoriesCodeUpdate={this.props.handleOnAdvisoriesCodeUpdate}
             ratingValue={this.props.ratingValue}
+            ratingSystem={this.props.ratingSystem}
             removeRating={this.props.removeRating}
             _handleKeyPress={this.props._handleKeyPress}
             editedTitle={this.props.editedTitle}
@@ -470,20 +485,24 @@ TitleEditMode.propTypes = {
   handleOnExternalIds: PropTypes.func,
   handleOnAdvisories: PropTypes.func,
   updateValue: PropTypes.func,
-  editedTitle: PropTypes.array,
+  editedTitle: PropTypes.object,
   _handleKeyPress: PropTypes.func,
   removeRating: PropTypes.func,
+  ratings: PropTypes.array,
   ratingValue: PropTypes.string,
-  updateCastValue: PropTypes.func,
-  addCast: PropTypes.func,
+  updateCastCrewValue: PropTypes.func,
+  addCastCrew: PropTypes.func,
   removeCast: PropTypes.func,
   castInputValue: PropTypes.string,
   renderModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
-  isCastModalOpen: PropTypes.bool
-
-
-
+  isCastModalOpen: PropTypes.bool,
+  ratingSystem: PropTypes.string,
+  _handleAddAdvisoryCode: PropTypes.func,
+  advisoriesCode: PropTypes.string,
+  handleOnAdvisoriesCodeUpdate: PropTypes.func,
+  advisoryCodeList: PropTypes.object,
+  removeAdvisoryCodes: PropTypes.func
 
 };
 

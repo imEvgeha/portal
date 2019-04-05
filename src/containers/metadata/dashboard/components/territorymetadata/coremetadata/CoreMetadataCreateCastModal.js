@@ -19,7 +19,7 @@ class CoreMetadataCreateCastModal extends Component {
             Create Cast
           </ModalHeader>
           <ModalBody>
-            <AvField type="select" name="castInputValue" id="exampleSelect" onChange={e => this.props.updateCastValue(e.target.value)}>
+            <AvField type="select" name="castInputValue" id="exampleSelect" onChange={e => this.props.updateCastCrewValue(e.target.value)}>
               <option value={''}>Select a Cast</option>
               <option>Firsname Lastname1</option>
               <option>Firsname Lastname2</option>
@@ -29,7 +29,7 @@ class CoreMetadataCreateCastModal extends Component {
             </AvField>
           </ModalBody>
           <ModalFooter>
-            <Button color='primary' onClick={() => this.props.addCast('actor')}>
+            <Button color='primary' onClick={() => this.props.addCastCrew('actor')}>
               Save
             </Button>{' '}
             <Button color='secondary' onClick={() => this.props.renderCastModal(CAST)}>
@@ -46,8 +46,8 @@ CoreMetadataCreateCastModal.propTypes = {
   className: PropTypes.string,
   renderCastModal: PropTypes.func,
   isCastModalOpen: PropTypes.bool,
-  updateCastValue: PropTypes.func,
-  addCast: PropTypes.func,
+  updateCastCrewValue: PropTypes.func,
+  addCastCrew: PropTypes.func,
   castInputValue: PropTypes.string
 };
 
