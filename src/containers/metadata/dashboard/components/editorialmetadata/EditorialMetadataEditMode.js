@@ -8,7 +8,8 @@ import { editorialMetadataService } from '../../../../../constants/metadata/edit
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {
     EDITORIAL_METADATA_PREFIX,
-    EDITORIAL_METADATA_SYNOPSIS
+    EDITORIAL_METADATA_SYNOPSIS,
+    EDITORIAL_METADATA_TITLE
 } from '../../../../../constants/metadata/metadataComponent';
 
 class EditorialMetadataEditMode extends Component {
@@ -30,6 +31,10 @@ class EditorialMetadataEditMode extends Component {
 
     getSynopsisPrefix(name) {
         return EDITORIAL_METADATA_PREFIX + EDITORIAL_METADATA_SYNOPSIS + name;
+    }
+
+    getEditorialTitlePrefix(name) {
+        return EDITORIAL_METADATA_PREFIX + EDITORIAL_METADATA_TITLE + name;
     }
 
     prepareFieldsForUpdate = () => {
@@ -55,7 +60,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('locale')}
                                 id="editorialLocal"
-                                onChange={this.props.handleChange}
+                                onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={this.props.data.locale}>
                                 {
                                     locale && locale.map((item, i) => {
@@ -71,7 +76,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('language')}
                                 id="editorialLanguage"
-                                onChange={this.props.handleChange}
+                                onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={this.props.data.language}>
                                 {
                                     language && language.map((item, i) => {
@@ -87,7 +92,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('format')}
                                 id="editorialFormat"
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={this.props.data.format}>
                                 <option value={''}>Select Format</option>
                                 {
@@ -104,7 +109,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('service')}
                                 id="editorialService"
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={this.props.data.service}>
                                 <option value={''}>Select Service</option>
                                 {
@@ -123,7 +128,7 @@ class EditorialMetadataEditMode extends Component {
                             </Col>
                             <Col>
                                 <AvField type="tex" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
-                                    onChange={this.props.handleChange}
+                                   onChange={(e) => this.props.handleChange(e, this.props.data)}
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }}
@@ -135,7 +140,7 @@ class EditorialMetadataEditMode extends Component {
                             </Col>
                             <Col>
                                 <AvField type="number" id="editorialSeasonNumber" name={this.getNameWithPrefix('seasonNumber')}
-                                    onChange={this.props.handleChange}
+                                   onChange={(e) => this.props.handleChange(e, this.props.data)}
                                     validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                         maxLength: { value: 3, errorMessage: 'Max 3 digits' }
@@ -149,7 +154,7 @@ class EditorialMetadataEditMode extends Component {
                             {this.props.titleContentType === 'EPISODE' &&
                                 <Col>
                                     <AvField type="number" id="editorialEpisodeNumber" name={this.getNameWithPrefix('episodeNumber')}
-                                        onChange={this.props.handleChange}
+                                       onChange={(e) => this.props.handleChange(e, this.props.data)}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                             maxLength: { value: 3, errorMessage: 'Max 3 digits' }
@@ -164,8 +169,8 @@ class EditorialMetadataEditMode extends Component {
                             <b>Display Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialDisplayTitle" name={this.getNameWithPrefix('title')}
-                                onChange={this.props.handleChange}
+                            <AvField type="text" id="editorialDisplayTitle" name={this.getEditorialTitlePrefix('title')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.' }
                                 }}
@@ -178,8 +183,8 @@ class EditorialMetadataEditMode extends Component {
                             <b>Brief Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialBriefTitle" name={this.getNameWithPrefix('shortTitle')}
-                                onChange={this.props.handleChange}
+                            <AvField type="text" id="editorialBriefTitle" name={this.getEditorialTitlePrefix('shortTitle')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.' }
                                 }}
@@ -192,8 +197,8 @@ class EditorialMetadataEditMode extends Component {
                             <b>Medium Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialMediumTitle" name={this.getNameWithPrefix('mediumTitle')}
-                                onChange={this.props.handleChange}
+                            <AvField type="text" id="editorialMediumTitle" name={this.getEditorialTitlePrefix('mediumTitle')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.' }
                                 }}
@@ -206,8 +211,8 @@ class EditorialMetadataEditMode extends Component {
                             <b>Long Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialLongTitle" name={this.getNameWithPrefix('longTitle')}
-                                onChange={this.props.handleChange}
+                            <AvField type="text" id="editorialLongTitle" name={this.getEditorialTitlePrefix('longTitle')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.' }
                                 }}
@@ -220,8 +225,8 @@ class EditorialMetadataEditMode extends Component {
                             <b>Sort Title</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialSortTitle" name={this.getNameWithPrefix('sortTitle')}
-                                onChange={this.props.handleChange}
+                            <AvField type="text" id="editorialSortTitle" name={this.getEditorialTitlePrefix('sortTitle')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.' }
                                 }}
@@ -236,7 +241,7 @@ class EditorialMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <AvField type="text" id="editorialShortSynopsis" name={this.getSynopsisPrefix('description')}
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Short Synopsis. Max 500 symbols.' }
                                 }}
@@ -252,7 +257,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="textarea" id="editorialMediumSynopsis" name={this.getSynopsisPrefix('shortDescription')}
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.' }
                                 }}
@@ -265,7 +270,7 @@ class EditorialMetadataEditMode extends Component {
                             <b>Long Synopsis</b>
                         </Col>                        <Col>
                             <AvField type="textarea" id="editorialLongSynopsis" name={this.getSynopsisPrefix('longDescription')}
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
@@ -282,7 +287,7 @@ class EditorialMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <AvField type="text" id="editorialCopyright" name={this.getNameWithPrefix('copyright')}
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.' }
                                 }}
@@ -296,7 +301,7 @@ class EditorialMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <AvField type="text" id="editorialAwards" name={this.getNameWithPrefix('awards')}
-                                onChange={this.props.handleChange}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Awards. Max 500 symbols.' }
                                 }}

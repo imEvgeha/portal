@@ -13,7 +13,7 @@ import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
-import {EDITORIAL_METADATA_PREFIX, EDITORIAL_METADATA_SYNOPSIS} from '../../../../constants/metadata/metadataComponent';
+import {EDITORIAL_METADATA_PREFIX, EDITORIAL_METADATA_SYNOPSIS, EDITORIAL_METADATA_TITLE} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -320,26 +320,40 @@ class TitleEdit extends Component {
 
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
-        isSynopsis ? targetName = targetName.replace(EDITORIAL_METADATA_SYNOPSIS, '') : targetName;
+        let isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
 
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
-        if (edited) {
-            isSynopsis ? edited['synopsis'][targetName] = e.target.value : edited[targetName] = e.target.value;
-            let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
-            newOne.push(edited);
-            this.setState({
-                updatedEditorialMetadata: newOne
-            });
-        } else {
+        if (!edited) {
             edited = Object.assign({}, data);
-            console.log(edited);
-            console.log(edited['synopsis'])
-            isSynopsis ? edited['synopsis'][targetName] = e.target.value : edited[targetName] = e.target.value;
-            this.setState({
-                updatedEditorialMetadata: [edited, ...this.state.updatedEditorialMetadata]
-            });
         }
-        console.log(this.state.updatedEditorialMetadata);
+
+        if(isSynopsis) {
+            targetName = targetName.replace(EDITORIAL_METADATA_SYNOPSIS, '');
+            this.updateEditorialMetadataInnerObject(edited, 'synopsis', targetName, e.target.value);
+        } else if(isEditorialTitle) {
+            targetName = targetName.replace(EDITORIAL_METADATA_TITLE, '');
+            this.updateEditorialMetadataInnerObject(edited, 'title', targetName, e.target.value);
+        } else {
+            edited[targetName] = e.target.value;
+        }
+
+        let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
+        newOne.push(edited);
+        this.setState({
+            updatedEditorialMetadata: newOne
+        });
+        console.log(data);
+        console.log(newOne);
+    };
+
+    updateEditorialMetadataInnerObject = (edited, objectName, objectField, objectFieldValue) => {
+        if(edited[objectName]) {
+            edited[objectName][objectField] = objectFieldValue;
+        } else {
+            let newObject = {};
+            newObject[objectField] = objectFieldValue;
+            edited[objectName] = newObject;
+        }
     };
 
     handleEditorialMetadataChange = (e) => {
