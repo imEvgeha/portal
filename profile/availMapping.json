@@ -1317,7 +1317,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "retailer.retailerVoumeId",
+  "javaVariableName": "retailer.retailerVolumeId",
   "sheetColumnName": "Retailer Voume ID",
   "displayName": "Retailer Voume ID",
   "dataType": "string",
