@@ -2,6 +2,9 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 
+import store from '../../../stores/index';
+import {blockUI} from '../../../stores/actions/index';
+import BlockUi from 'react-block-ui';
 import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
@@ -19,6 +22,7 @@ const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
         selectValues: state.root.selectValues,
+        blocking: state.root.blocking
     };
 };
 
@@ -26,7 +30,8 @@ class RightCreate extends React.Component {
 
     static propTypes = {
         selectValues: t.object,
-        availsMapping: t.any
+        availsMapping: t.any,
+        blocking: t.bool
     };
 
     static contextTypes = {
@@ -184,14 +189,19 @@ class RightCreate extends React.Component {
             this.setState({errorMessage: 'Not all mandatory fields are filled or not all filled fields are valid'});
             return;
         }
+        store.dispatch(blockUI(true));
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
+            store.dispatch(blockUI(false));
         })
-            .catch(() => this.setState({errorMessage: 'Right creation Failed'}));
+            .catch(() => {
+                this.setState({errorMessage: 'Right creation Failed'});
+                store.dispatch(blockUI(false));
+            });
     }
 
     cancel(){
@@ -514,20 +524,24 @@ class RightCreate extends React.Component {
 
         return(
             <div>
-                <div className="nx-stylish row mt-3 mx-5">
-                    <div className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
-                        {renderFields}
+                <BlockUi tag="div" blocking={this.props.blocking}>
+                    <div className="nx-stylish row mt-3 mx-5">
+                        <div className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                            {renderFields}
+                        </div>
                     </div>
-                </div>
-                <Label id="right-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
-                    {this.state && this.state.errorMessage}
-                </Label>
-                {this.props.availsMapping &&
-                    <div className="float-right mt-1 mx-5">
-                        <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
-                        <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
-                    </div>
-                }
+                    <Label id="right-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
+                        {this.state && this.state.errorMessage}
+                    </Label>
+                    {this.props.availsMapping &&
+                        <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                            <div className="mt-1 mx-5">
+                                <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                                <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                            </div>
+                        </div>
+                    }
+                </BlockUi>
             </div>
         );
     }
