@@ -1,4 +1,6 @@
 import moment from 'moment';
+import React, {Fragment} from 'react';
+import t from 'prop-types';
 
 const formatISO = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
 
@@ -82,17 +84,56 @@ function getDeepValue(source, location){
     }
 }
 
-function getUrlParamIfExists(name, defaultValue = ''){
-    let toReturn = defaultValue;
-    if (window && window.location && window.location.search){
-        let query = window.location.search.substring(1);
-        let params = query.split('&');
-        let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
-        if(param){
-            toReturn =  param.split('=')[1];
+
+
+const URL = {
+    getParamIfExists: function (name, defaultValue = ''){
+        let toReturn = defaultValue;
+        if (window && window.location && window.location.search){
+            let query = window.location.search.substring(1);
+            let params = query.split('&');
+            let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
+            if(param){
+                toReturn =  param.split('=')[1];
+            }
         }
+        return toReturn;
+    },
+
+    getBooleanParam: function(name, defaultValue = false) {
+        const val = this.getParamIfExists(name, null);
+        if(val === 'true'){
+            return true;
+        }
+        return defaultValue;
+    },
+
+    isEmbedded: function(){
+        return this.getBooleanParam('embedded');
     }
-    return toReturn;
+};
+
+class IfEmbedded extends React.Component {
+    static propTypes = {
+        children: t.any,
+        value:t.bool
+    }
+
+    static defaultProps = {
+        value: true
+    }
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Fragment>
+                {URL.isEmbedded() === this.props.value && this.props.children}
+            </Fragment>
+        );
+    }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, getUrlParamIfExists};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, URL, IfEmbedded};

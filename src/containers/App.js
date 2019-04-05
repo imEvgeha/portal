@@ -6,7 +6,7 @@ import {
     Switch
 } from 'react-router-dom';
 
-import {getUrlParamIfExists} from './../util/Common';
+import {IfEmbedded} from './../util/Common';
 import Navbar from './Navbar';
 import AvailDashboardContainer  from './avail/dashboard/DashboardContainer';
 import AvailDetails  from './avail/details/RightDetails';
@@ -21,14 +21,12 @@ import TitleEdit from './metadata/dashboard/components/TitleEdit';
 export default class App extends React.Component {
 
     render() {
-        let embedded = getUrlParamIfExists('embedded', false) === 'true';
-
         return (
             <Router>
                 <div>
-                    {!embedded &&
+                    <IfEmbedded value={false}>
                         <Navbar/>
-                    }
+                    </IfEmbedded>
                     <NexusBreadcrumb/>
                     <div>
                         <Route exact path="/" component={Welcome}/>
