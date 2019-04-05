@@ -1318,11 +1318,11 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerVolumeId",
-  "sheetColumnName": "Retailer Voume ID",
-  "displayName": "Retailer Voume ID",
+  "sheetColumnName": "Retailer Volume ID",
+  "displayName": "Retailer Volume ID",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "retailerVoumeIdMatch",
+  "queryParamName": "retailerVolumeIdMatch",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -1356,17 +1356,6 @@
   "dataType": "double",
   "searchDataType": "double",
   "queryParamName": "boxOffice",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "platform",
-  "sheetColumnName": "Platform",
-  "displayName": "Platform",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "platform",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
