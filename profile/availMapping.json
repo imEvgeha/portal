@@ -1,7 +1,6 @@
 {"mappings":
 [{
   "javaVariableName": "title",
-  "sheetColumnName": "Title",
   "displayName": "Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -12,7 +11,6 @@
   "required": true
 }, {
   "javaVariableName": "studio",
-  "sheetColumnName": "Studio",
   "displayName": "Studio",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -24,7 +22,6 @@
   "required": true
 }, {
   "javaVariableName": "platform",
-  "sheetColumnName": "Platform",
   "displayName": "Platform",
   "dataType": "string",
   "searchDataType": "string",
@@ -35,7 +32,6 @@
   "required": false
 }, {
   "javaVariableName": "licensor",
-  "sheetColumnName": "Licensor",
   "displayName": "Licensor",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -47,7 +43,6 @@
   "required": true
 }, {
   "javaVariableName": "rightStatus",
-  "sheetColumnName": "Right Status",
   "displayName": "Right Status",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -59,7 +54,6 @@
   "required": true
 }, {
   "javaVariableName": "rightContractStatus",
-  "sheetColumnName": "Right Contract Status",
   "displayName": "Right Contract Status",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -71,7 +65,6 @@
   "required": true
 }, {
   "javaVariableName": "status",
-  "sheetColumnName": "Status",
   "displayName": "Status",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -83,7 +76,6 @@
   "required": true
 }, {
   "javaVariableName": "contractId",
-  "sheetColumnName": "Contract Id",
   "displayName": "Contract Id",
   "dataType": "string",
   "searchDataType": "string",
@@ -94,7 +86,6 @@
   "required": false
 }, {
   "javaVariableName": "vuContractId",
-  "sheetColumnName": "VU Contract Id",
   "displayName": "VU Contract Id",
   "dataType": "string",
   "searchDataType": "string",
@@ -105,7 +96,6 @@
   "required": false
 }, {
   "javaVariableName": "titleStatus",
-  "sheetColumnName": "Title Status",
   "displayName": "Title Status",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -117,7 +107,6 @@
   "required": true
 }, {
   "javaVariableName": "coreTitleId",
-  "sheetColumnName": "Core Title Id",
   "displayName": "Core Title Id",
   "dataType": "string",
   "searchDataType": "string",
@@ -128,7 +117,6 @@
   "required": false
 }, {
   "javaVariableName": "licensee",
-  "sheetColumnName": "Licensee",
   "displayName": "Licensee",
   "dataType": "string",
   "searchDataType": "string",
@@ -139,7 +127,6 @@
   "required": false
 }, {
   "javaVariableName": "storeLanguage",
-  "sheetColumnName": "Store Language",
   "displayName": "Store Language",
   "dataType": "language",
   "searchDataType": "multilanguage",
@@ -150,7 +137,6 @@
   "required": false
 }, {
   "javaVariableName": "ALID",
-  "sheetColumnName": "ALID",
   "displayName": "ALID",
   "dataType": "string",
   "searchDataType": "string",
@@ -161,7 +147,6 @@
   "required": false
 }, {
   "javaVariableName": "CID",
-  "sheetColumnName": "CID",
   "displayName": "CID",
   "dataType": "string",
   "searchDataType": "string",
@@ -172,7 +157,6 @@
   "required": false
 }, {
   "javaVariableName": "licenseType",
-  "sheetColumnName": "License Type",
   "displayName": "License Type",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -184,7 +168,6 @@
   "required": true
 }, {
   "javaVariableName": "licenseRightsDescription",
-  "sheetColumnName": "License Rights Description",
   "displayName": "License Rights Description",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -196,7 +179,6 @@
   "required": true
 }, {
   "javaVariableName": "territory",
-  "sheetColumnName": "Territory",
   "displayName": "Territory",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
@@ -208,7 +190,6 @@
   "required": true
 }, {
   "javaVariableName": "territoryExcluded",
-  "sheetColumnName": "Territory Excluded",
   "displayName": "Territory Excluded",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
@@ -220,7 +201,6 @@
   "required": false
 }, {
   "javaVariableName": "genres",
-  "sheetColumnName": "Genres",
   "displayName": "Genres",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
@@ -232,7 +212,6 @@
   "required": false
 }, {
   "javaVariableName": "affiliate",
-  "sheetColumnName": "Affiliate",
   "displayName": "Affiliate",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
@@ -244,7 +223,6 @@
   "required": false
 }, {
   "javaVariableName": "affiliateExclude",
-  "sheetColumnName": "Affiliate Exclude",
   "displayName": "Affiliate Exclude",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
@@ -256,7 +234,6 @@
   "required": false
 }, {
   "javaVariableName": "assetLanguage",
-  "sheetColumnName": "Asset Language",
   "displayName": "Asset Language",
   "dataType": "language",
   "searchDataType": "multilanguage",
@@ -267,7 +244,6 @@
   "required": false
 }, {
   "javaVariableName": "languages.language",
-  "sheetColumnName": "Language",
   "displayName": "Language",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
@@ -278,7 +254,6 @@
   "required": false
 }, {
   "javaVariableName": "languages.audioType",
-  "sheetColumnName": "Audio Type",
   "displayName": "Audio Type",
   "dataType": "string",
   "searchDataType": "multiselect",
@@ -290,7 +265,6 @@
   "required": false
 }, {
   "javaVariableName": "localizationType",
-  "sheetColumnName": "Localization Type",
   "displayName": "Localization Type",
   "dataType": "string",
   "searchDataType": "string",
@@ -301,7 +275,6 @@
   "required": false
 }, {
   "javaVariableName": "holdbackLanguage",
-  "sheetColumnName": "Holdback Language",
   "displayName": "Holdback Language",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
@@ -312,7 +285,6 @@
   "required": false
 }, {
   "javaVariableName": "allowedLanguages",
-  "sheetColumnName": "Allowed Languages",
   "displayName": "Allowed Languages",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
@@ -323,7 +295,6 @@
   "required": false
 }, {
   "javaVariableName": "requiredFulfillmentLanguages",
-  "sheetColumnName": "Required Fulfillment Languages",
   "displayName": "Required Fulfillment Languages",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
@@ -334,7 +305,6 @@
   "required": false
 }, {
   "javaVariableName": "contentType",
-  "sheetColumnName": "Content Type",
   "displayName": "Content Type",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -346,7 +316,6 @@
   "required": true
 }, {
   "javaVariableName": "displayTitle",
-  "sheetColumnName": "Display Title",
   "displayName": "Display Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -357,7 +326,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seriesTitle",
-  "sheetColumnName": "Series Title",
   "displayName": "Series Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -368,7 +336,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seriesDisplayTitle",
-  "sheetColumnName": "Series Display Title",
   "displayName": "Series Display Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -379,7 +346,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seasonTitle",
-  "sheetColumnName": "Season Title",
   "displayName": "Season Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -390,7 +356,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seasonDisplayTitle",
-  "sheetColumnName": "Season Display Title",
   "displayName": "Season Display Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -401,7 +366,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seasonNumber",
-  "sheetColumnName": "Season Number",
   "displayName": "Season Number",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -412,7 +376,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.eposodeTitle",
-  "sheetColumnName": "Eposode Title",
   "displayName": "Eposode Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -423,7 +386,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.episodeDisplayTitle",
-  "sheetColumnName": "Episode Display Title",
   "displayName": "Episode Display Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -434,7 +396,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.episodeNumber",
-  "sheetColumnName": "Episode Number",
   "displayName": "Episode Number",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -445,7 +406,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.volumeTitle",
-  "sheetColumnName": "Volume Title",
   "displayName": "Volume Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -456,7 +416,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.volumeDisplayTitle",
-  "sheetColumnName": "Volume Display Title",
   "displayName": "Volume Display Title",
   "dataType": "string",
   "searchDataType": "string",
@@ -467,7 +426,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.volumeNumber",
-  "sheetColumnName": "Volume Number",
   "displayName": "Volume Number",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -478,7 +436,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.distributionNumber",
-  "sheetColumnName": "Distribution Number",
   "displayName": "Distribution Number",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -489,7 +446,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.volumeDistributionNumber",
-  "sheetColumnName": "Volume Distribution Number",
   "displayName": "Volume Distribution Number",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -500,7 +456,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.episodeCount",
-  "sheetColumnName": "Episode Count",
   "displayName": "Episode Count",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -511,7 +466,6 @@
   "required": false
 }, {
   "javaVariableName": "episodic.seasonCount",
-  "sheetColumnName": "Season Count",
   "displayName": "Season Count",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -522,7 +476,6 @@
   "required": false
 }, {
   "javaVariableName": "groupIdentity",
-  "sheetColumnName": "Group Identity",
   "displayName": "Group Identity",
   "dataType": "string",
   "searchDataType": "string",
@@ -533,7 +486,6 @@
   "required": false
 }, {
   "javaVariableName": "companyDisplayCredit",
-  "sheetColumnName": "Company Display Credit",
   "displayName": "Company Display Credit",
   "dataType": "string",
   "searchDataType": "string",
@@ -544,7 +496,6 @@
   "required": false
 }, {
   "javaVariableName": "releaseYear",
-  "sheetColumnName": "Release Year",
   "displayName": "Release Year",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -555,7 +506,6 @@
   "required": false
 }, {
   "javaVariableName": "releaseHistoryOriginal",
-  "sheetColumnName": "Release History Original",
   "displayName": "Release History Original",
   "dataType": "date",
   "searchDataType": "date",
@@ -566,7 +516,6 @@
   "required": false
 }, {
   "javaVariableName": "releaseHistoryPhysicalHV",
-  "sheetColumnName": "Release History Physical HV",
   "displayName": "Release History Physical HV",
   "dataType": "date",
   "searchDataType": "date",
@@ -577,7 +526,6 @@
   "required": false
 }, {
   "javaVariableName": "rating.ratingSystem",
-  "sheetColumnName": "Rating System",
   "displayName": "Rating system",
   "dataType": "string",
   "searchDataType": "string",
@@ -588,7 +536,6 @@
   "required": false
 }, {
   "javaVariableName": "rating.ratingValue",
-  "sheetColumnName": "Rating Value",
   "displayName": "Rating Value",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -600,7 +547,6 @@
   "required": false
 }, {
   "javaVariableName": "rating.ratingReason",
-  "sheetColumnName": "Rating Reason",
   "displayName": "Rating Reason",
   "dataType": "string",
   "searchDataType": "string",
@@ -611,7 +557,6 @@
   "required": false
 }, {
   "javaVariableName": "format",
-  "sheetColumnName": "Format",
   "displayName": "Format",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -623,7 +568,6 @@
   "required": true
 }, {
   "javaVariableName": "captions.captionIncluded",
-  "sheetColumnName": "Caption Included",
   "displayName": "Caption Included",
   "dataType": "boolean",
   "searchDataType": "boolean",
@@ -634,7 +578,6 @@
   "required": false
 }, {
   "javaVariableName": "caption.captionExemption",
-  "sheetColumnName": "Caption Exemption",
   "displayName": "Caption Exemption",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -645,7 +588,6 @@
   "required": false
 }, {
   "javaVariableName": "any",
-  "sheetColumnName": "Any",
   "displayName": "Any",
   "dataType": "string",
   "searchDataType": "string",
@@ -656,7 +598,6 @@
   "required": false
 }, {
   "javaVariableName": "totalRuntime",
-  "sheetColumnName": "Total Runtime",
   "displayName": "Total Runtime",
   "dataType": "time",
   "searchDataType": "time",
@@ -667,7 +608,6 @@
   "required": false
 }, {
   "javaVariableName": "hdr",
-  "sheetColumnName": "HDR",
   "displayName": "HDR",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -679,7 +619,6 @@
   "required": false
 }, {
   "javaVariableName": "wcg",
-  "sheetColumnName": "WCG",
   "displayName": "WCG",
   "dataType": "boolean",
   "searchDataType": "boolean",
@@ -690,7 +629,6 @@
   "required": false
 }, {
   "javaVariableName": "hfr",
-  "sheetColumnName": "HFR",
   "displayName": "HFR",
   "dataType": "boolean",
   "searchDataType": "boolean",
@@ -701,7 +639,6 @@
   "required": false
 }, {
   "javaVariableName": "ngAudio",
-  "sheetColumnName": "NG Audio",
   "displayName": "NG Audio",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -713,7 +650,6 @@
   "required": false
 }, {
   "javaVariableName": "availStart",
-  "sheetColumnName": "Avail Start",
   "displayName": "Avail Start",
   "dataType": "date",
   "searchDataType": "date",
@@ -724,7 +660,6 @@
   "required": false
 }, {
   "javaVariableName": "availEnd",
-  "sheetColumnName": "Avail End",
   "displayName": "Avail End",
   "dataType": "date",
   "searchDataType": "date",
@@ -735,7 +670,6 @@
   "required": false
 }, {
   "javaVariableName": "start",
-  "sheetColumnName": "Start",
   "displayName": "Start",
   "dataType": "date",
   "searchDataType": "date",
@@ -746,7 +680,6 @@
   "required": true
 }, {
   "javaVariableName": "end",
-  "sheetColumnName": "End",
   "displayName": "End",
   "dataType": "date",
   "searchDataType": "date",
@@ -757,7 +690,6 @@
   "required": true
 }, {
   "javaVariableName": "startLag",
-  "sheetColumnName": "Start Lag",
   "displayName": "Start Lag",
   "dataType": "duration",
   "searchDataType": "duration",
@@ -768,7 +700,6 @@
   "required": false
 }, {
   "javaVariableName": "endLag",
-  "sheetColumnName": "End Lag",
   "displayName": "End Lag",
   "dataType": "duration",
   "searchDataType": "duration",
@@ -779,7 +710,6 @@
   "required": false
 }, {
   "javaVariableName": "windowDuration",
-  "sheetColumnName": "Window Duration",
   "displayName": "Window Duration",
   "dataType": "duration",
   "searchDataType": "duration",
@@ -790,7 +720,6 @@
   "required": false
 }, {
   "javaVariableName": "pricing.priceType",
-  "sheetColumnName": "Price Type",
   "displayName": "Price Type",
   "dataType": "string",
   "searchDataType": "string",
@@ -801,7 +730,6 @@
   "required": false
 }, {
   "javaVariableName": "pricing.priceValue",
-  "sheetColumnName": "Price Value",
   "displayName": "Price Value",
   "dataType": "double",
   "searchDataType": "double",
@@ -812,7 +740,6 @@
   "required": false
 }, {
   "javaVariableName": "pricing.priceCurrency",
-  "sheetColumnName": "Price Currency",
   "displayName": "Price Currency",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -823,7 +750,6 @@
   "required": false
 }, {
   "javaVariableName": "srp",
-  "sheetColumnName": "SRP",
   "displayName": "SRP",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -834,7 +760,6 @@
   "required": false
 }, {
   "javaVariableName": "description",
-  "sheetColumnName": "Description",
   "displayName": "Description",
   "dataType": "string",
   "searchDataType": "string",
@@ -845,7 +770,6 @@
   "required": false
 }, {
   "javaVariableName": "bonus",
-  "sheetColumnName": "Bonus",
   "displayName": "Bonus",
   "dataType": "string",
   "searchDataType": "string",
@@ -856,7 +780,6 @@
   "required": false
 }, {
   "javaVariableName": "download",
-  "sheetColumnName": "Download",
   "displayName": "Download",
   "dataType": "string",
   "searchDataType": "string",
@@ -867,7 +790,6 @@
   "required": false
 }, {
   "javaVariableName": "otherTerms",
-  "sheetColumnName": "Other Terms",
   "displayName": "Other Terms",
   "dataType": "string",
   "searchDataType": "string",
@@ -878,7 +800,6 @@
   "required": false
 }, {
   "javaVariableName": "otherInstructions",
-  "sheetColumnName": "Other Instructions",
   "displayName": "Other Instructions",
   "dataType": "string",
   "searchDataType": "string",
@@ -889,7 +810,6 @@
   "required": false
 }, {
   "javaVariableName": "suppressionLiftDate",
-  "sheetColumnName": "Suppression Lift Date",
   "displayName": "Suppression Lift Date",
   "dataType": "date",
   "searchDataType": "date",
@@ -900,7 +820,6 @@
   "required": false
 }, {
   "javaVariableName": "specialPreOrderFulfillDate",
-  "sheetColumnName": "Special Pre Order Fulfill Date",
   "displayName": "Special Pre Order Fulfill Date",
   "dataType": "date",
   "searchDataType": "date",
@@ -911,7 +830,6 @@
   "required": false
 }, {
   "javaVariableName": "announceDate",
-  "sheetColumnName": "Announce Date",
   "displayName": "Announce Date",
   "dataType": "date",
   "searchDataType": "date",
@@ -922,7 +840,6 @@
   "required": false
 }, {
   "javaVariableName": "rentalDuration",
-  "sheetColumnName": "Rental Duration",
   "displayName": "Rental Duration",
   "dataType": "duration",
   "searchDataType": "duration",
@@ -933,7 +850,6 @@
   "required": false
 }, {
   "javaVariableName": "watchDuration",
-  "sheetColumnName": "Watch Duration",
   "displayName": "Watch Duration",
   "dataType": "duration",
   "searchDataType": "duration",
@@ -944,7 +860,6 @@
   "required": false
 }, {
   "javaVariableName": "exclusive",
-  "sheetColumnName": "Exclusive",
   "displayName": "Exclusive",
   "dataType": "string",
   "searchDataType": "string",
@@ -955,7 +870,6 @@
   "required": false
 }, {
   "javaVariableName": "exclusiveAttributes",
-  "sheetColumnName": "Exclusive Attributes",
   "displayName": "Exclusive Attributes",
   "dataType": "string",
   "searchDataType": "string",
@@ -966,7 +880,6 @@
   "required": false
 }, {
   "javaVariableName": "brandingRights",
-  "sheetColumnName": "Branding Rights",
   "displayName": "Branding Rights",
   "dataType": "boolean",
   "searchDataType": "boolean",
@@ -977,7 +890,6 @@
   "required": false
 }, {
   "javaVariableName": "brandingRightsAttributes",
-  "sheetColumnName": "Branding Rights Attributes",
   "displayName": "Branding Rights Attributes",
   "dataType": "string",
   "searchDataType": "string",
@@ -988,7 +900,6 @@
   "required": false
 }, {
   "javaVariableName": "cmContentIds.contentId",
-  "sheetColumnName": "Content ID",
   "displayName": "Content ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -999,7 +910,6 @@
   "required": false
 }, {
   "javaVariableName": "cmContentIds.seriesContentId",
-  "sheetColumnName": "Series Content ID",
   "displayName": "Series Content ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1010,7 +920,6 @@
   "required": false
 }, {
   "javaVariableName": "cmContentIds.seasonContentId",
-  "sheetColumnName": "Season Content ID",
   "displayName": "Season Content ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1021,7 +930,6 @@
   "required": false
 }, {
   "javaVariableName": "cmContentIds.volumeContentId",
-  "sheetColumnName": "Volume Content ID",
   "displayName": "Volume Content ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1032,7 +940,6 @@
   "required": false
 }, {
   "javaVariableName": "cmContentIds.episodeContentId",
-  "sheetColumnName": "Episode Content ID",
   "displayName": "Episode Content ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1043,7 +950,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.titleId",
-  "sheetColumnName": "EIDR Title ID",
   "displayName": "EIDR Title ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1054,8 +960,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seriesId",
-  "sheetColumnName": "EIDR Series ID",
-  "displayName": "EIDR Series ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeriesIdMatch",
@@ -1065,7 +969,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seasonId",
-  "sheetColumnName": "EIDR Season ID",
   "displayName": "EIDR Season ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1076,7 +979,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeTitleId",
-  "sheetColumnName": "EIDR Title ID",
   "displayName": "EIDR Title ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1087,7 +989,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.volumeId",
-  "sheetColumnName": "EIDR Volume ID",
   "displayName": "EIDR Volume ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1098,7 +999,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeId",
-  "sheetColumnName": "EIDR Episode ID",
   "displayName": "EIDR Episode ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1109,7 +1009,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.editId",
-  "sheetColumnName": "EIDR Edit ID",
   "displayName": "EIDR Edit ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1120,7 +1019,6 @@
   "required": false
 }, {
   "javaVariableName": "eidr.encodeId",
-  "sheetColumnName": "EIDR Encode ID",
   "displayName": "EIDR Encode ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1131,7 +1029,6 @@
   "required": false
 }, {
   "javaVariableName": "altId",
-  "sheetColumnName": "Alt ID",
   "displayName": "Alt ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1142,7 +1039,6 @@
   "required": false
 }, {
   "javaVariableName": "seriesAltId",
-  "sheetColumnName": "Series Alt ID",
   "displayName": "Series Alt ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1153,7 +1049,6 @@
   "required": false
 }, {
   "javaVariableName": "seasonAltId",
-  "sheetColumnName": "Season Alt ID",
   "displayName": "Season Alt ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1164,7 +1059,6 @@
   "required": false
 }, {
   "javaVariableName": "volumeAltId",
-  "sheetColumnName": "Volume Alt ID",
   "displayName": "Volume Alt ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1175,7 +1069,6 @@
   "required": false
 }, {
   "javaVariableName": "episodeAltId",
-  "sheetColumnName": "Episode Alt ID",
   "displayName": "Episode Alt ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1186,7 +1079,6 @@
   "required": false
 }, {
   "javaVariableName": "availId",
-  "sheetColumnName": "Avail ID",
   "displayName": "Avail ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1197,7 +1089,6 @@
   "required": false
 }, {
   "javaVariableName": "uvId",
-  "sheetColumnName": "UV ID",
   "displayName": "UV ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1208,7 +1099,6 @@
   "required": false
 }, {
   "javaVariableName": "dmaId",
-  "sheetColumnName": "DMA ID",
   "displayName": "DMA ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1219,8 +1109,7 @@
   "required": false
 }, {
   "javaVariableName": "reportingId",
-  "sheetColumnName": "Alt ID",
-  "displayName": "Alt ID",
+  "displayName": "Reporting ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "reportingIdMatch",
@@ -1230,7 +1119,6 @@
   "required": false
 }, {
   "javaVariableName": "metadata",
-  "sheetColumnName": "Metadata",
   "displayName": "Metadata",
   "dataType": "string",
   "searchDataType": "string",
@@ -1241,7 +1129,6 @@
   "required": false
 }, {
   "javaVariableName": "packageLabel",
-  "sheetColumnName": "Package Label",
   "displayName": "Package Label",
   "dataType": "string",
   "searchDataType": "string",
@@ -1252,7 +1139,6 @@
   "required": false
 }, {
   "javaVariableName": "exceptionFlag",
-  "sheetColumnName": "Exception Flag",
   "displayName": "Exception Flag",
   "dataType": "boolean",
   "searchDataType": "boolean",
@@ -1263,7 +1149,6 @@
   "required": false
 }, {
   "javaVariableName": "serviceProvider",
-  "sheetColumnName": "Service Provider",
   "displayName": "Service Provider",
   "dataType": "string",
   "searchDataType": "string",
@@ -1274,7 +1159,6 @@
   "required": false
 }, {
   "javaVariableName": "bundledALIds",
-  "sheetColumnName": "Bundled AL IDs",
   "displayName": "Bundled AL IDs",
   "dataType": "string",
   "searchDataType": "string",
@@ -1285,7 +1169,6 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerId1",
-  "sheetColumnName": "Retailer ID",
   "displayName": "Retailer ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1296,7 +1179,6 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerSeriesId",
-  "sheetColumnName": "Retailer Series ID",
   "displayName": "Retailer Series ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1307,7 +1189,6 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerSeasonId",
-  "sheetColumnName": "Retailer Season ID",
   "displayName": "Retailer Season ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1318,7 +1199,6 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerVolumeId",
-  "sheetColumnName": "Retailer Volume ID",
   "displayName": "Retailer Volume ID",
   "dataType": "string",
   "searchDataType": "string",
@@ -1329,7 +1209,6 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerEpisodeId1",
-  "sheetColumnName": "Retailer Episode Id1",
   "displayName": "Retailer Episode Id1",
   "dataType": "string",
   "searchDataType": "string",
@@ -1340,7 +1219,6 @@
   "required": false
 }, {
   "javaVariableName": "retailer.retailerSpare1",
-  "sheetColumnName": "Retailer Spare 1",
   "displayName": "Retailer Spare 1",
   "dataType": "string",
   "searchDataType": "string",
@@ -1351,7 +1229,6 @@
   "required": false
 }, {
   "javaVariableName": "boxOffice",
-  "sheetColumnName": "Box Office",
   "displayName": "Box Office",
   "dataType": "double",
   "searchDataType": "double",
@@ -1362,7 +1239,6 @@
   "required": false
 }, {
   "javaVariableName": "usBoxOffice",
-  "sheetColumnName": "US Box Office",
   "displayName": "US Box Office",
   "dataType": "double",
   "searchDataType": "double",
@@ -1373,7 +1249,6 @@
   "required": false
 }, {
   "javaVariableName": "daysFromLVR",
-  "sheetColumnName": "Days From LVR",
   "displayName": "Days From LVR",
   "dataType": "date",
   "searchDataType": "date",
@@ -1384,7 +1259,6 @@
   "required": false
 }, {
   "javaVariableName": "audioDescription",
-  "sheetColumnName": "Audio Description",
   "displayName": "Audio Description",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
@@ -1395,7 +1269,6 @@
   "required": false
 }, {
   "javaVariableName": "imdbLink",
-  "sheetColumnName": "IMDB Link",
   "displayName": "IMDB Link",
   "dataType": "string",
   "searchDataType": "string",
@@ -1406,7 +1279,6 @@
   "required": false
 }, {
   "javaVariableName": "termYear",
-  "sheetColumnName": "Term Year",
   "displayName": "Term Year",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -1417,7 +1289,6 @@
   "required": false
 }, {
   "javaVariableName": "reLicensed",
-  "sheetColumnName": "Re-Licensed",
   "displayName": "Re-Licensed",
   "dataType": "boolean",
   "searchDataType": "boolean",
@@ -1428,7 +1299,6 @@
   "required": false
 }, {
   "javaVariableName": "reWork",
-  "sheetColumnName": "Re-Work",
   "displayName": "Re-Work",
   "dataType": "string",
   "searchDataType": "string",
@@ -1439,7 +1309,6 @@
   "required": false
 }, {
   "javaVariableName": "contractualCategory",
-  "sheetColumnName": "Contractual Category",
   "displayName": "Contractual Category",
   "dataType": "string",
   "searchDataType": "string",
@@ -1450,7 +1319,6 @@
   "required": false
 }, {
   "javaVariableName": "productType",
-  "sheetColumnName": "Product Type",
   "displayName": "Product Type",
   "dataType": "string",
   "searchDataType": "string",
@@ -1461,7 +1329,6 @@
   "required": false
 }, {
   "javaVariableName": "subtitles",
-  "sheetColumnName": "Subtitles",
   "displayName": "Subtitles",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
@@ -1472,7 +1339,6 @@
   "required": false
 }, {
   "javaVariableName": "startTime",
-  "sheetColumnName": "Start Time",
   "displayName": "Start Time",
   "dataType": "time",
   "searchDataType": "time",
@@ -1483,7 +1349,6 @@
   "required": false
 }, {
   "javaVariableName": "materialDeliveryDate",
-  "sheetColumnName": "Material Delivery Date",
   "displayName": "Material Delivery Date",
   "dataType": "date",
   "searchDataType": "date",
@@ -1494,7 +1359,6 @@
   "required": false
 }, {
   "javaVariableName": "createdAt",
-  "sheetColumnName": "Created At",
   "displayName": "Created At",
   "dataType": "localdate",
   "searchDataType": "localdate",
@@ -1505,7 +1369,6 @@
   "required": false
 }, {
   "javaVariableName": "updatedAt",
-  "sheetColumnName": "Updated At",
   "displayName": "Updated At",
   "dataType": "localdate",
   "searchDataType": "localdate",
