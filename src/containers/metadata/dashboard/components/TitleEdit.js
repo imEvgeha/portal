@@ -284,8 +284,7 @@ class TitleEdit extends Component {
                 this.setState({
                     territory: list
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+            }).catch(() => {
                 console.error('Unable to edit Title Data');
             });
         });
@@ -422,6 +421,18 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataOnSave = () => {
+        this.state.updatedEditorialMetadata.forEach(e => {
+            titleService.updateEditorialMetadata(e).then((response) => {
+                let list = [].concat(this.state.editorialMetadata);
+                let foundIndex = list.findIndex(x => x.id === response.data.id);
+                list[foundIndex] = response.data;
+                this.setState({
+                    editorialMetadata: list
+                });
+            }).catch(() => {
+                console.error('Unable to edit Editorial Metadata');
+            });
+        });
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             let newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;

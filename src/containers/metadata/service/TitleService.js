@@ -50,5 +50,8 @@ export const titleService = {
     },
     getEditorialMetadataById: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/editorialmetadata?titleId=${id}`);
-    }
+    },
+    updateEditorialMetadata: (editedEditorialMetadata) => {
+        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
+    },
 };
