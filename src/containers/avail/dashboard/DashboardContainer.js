@@ -11,6 +11,7 @@ import {
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
+    searchFormUpdateAdvancedSearchCriteria,
     resultPageShowSelected
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
@@ -28,6 +29,7 @@ const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
+        selectValues: state.root.selectValues,
         selected: state.dashboard.session.availTabPageSelection.selected,
         showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
         showSearchResults: state.dashboard.session.showSearchResults,
@@ -43,12 +45,14 @@ const mapDispatchToProps = {
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
-    resultPageShowSelected
+    resultPageShowSelected,
+    searchFormUpdateAdvancedSearchCriteria
 };
 
 class DashboardContainer extends React.Component {
     static propTypes = {
         availsMapping: t.any,
+        selectValues: t.object,
         searchCriteria: t.any,
         currentSearchCriteria: t.any,
         resultPageLoading: t.func,
@@ -57,6 +61,7 @@ class DashboardContainer extends React.Component {
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
+        searchFormUpdateAdvancedSearchCriteria: t.func,
         selected: t.array,
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
@@ -76,6 +81,11 @@ class DashboardContainer extends React.Component {
         NexusBreadcrumb.set(AVAILS_DASHBOARD);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
+
+        if(this.props.availsMapping){
+            this.getSearchCriteriaFromURL();
+        }
+
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.availHistory) {
@@ -116,6 +126,16 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        if(prevProps.availsMapping !== this.props.availsMapping){
+            this.getSearchCriteriaFromURL();
+        }
+
+        if(prevProps.selectValues !== this.props.selectValues){
+            if(this.props.availsMapping) {
+                this.getSearchCriteriaFromURL();
+            }
+        }
+
         if(prevProps.searchCriteria !== this.props.searchCriteria) {
             NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
@@ -125,6 +145,67 @@ class DashboardContainer extends React.Component {
                 }
                 NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
             }
+        }
+    }
+
+    getSearchCriteriaFromURL(){
+        let params=null;
+        if(this.props.location && this.props.location.search){
+            params = this.props.location.search.substr(1).split('&');
+            if(params.length === 0) return 0;
+        }else{
+            return 0;
+        }
+
+        const criteria = {};
+        let found = -1;
+
+        params.forEach(param => {
+            const vals = param.split('=');
+            if(vals.length === 2){
+                let name = vals[0];
+                const val = vals[1];
+                let subkey = null;
+                let map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
+                if(!map && name.endsWith('From')){
+                    subkey = 'from';
+                    name = name.substring(0, name.length - 4);
+                }
+                if(!map && name.endsWith('To')){
+                    subkey = 'to';
+                    name = name.substring(0, name.length - 2);
+                }
+                if(subkey) {
+                    map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
+                    if (map && ['date', 'localdate', 'duration'].indexOf(map.dataType) === -1) map = null;
+                }
+                if(map){
+                    if(!criteria[name]) found++;
+                    if(!subkey){
+                        if(map.searchDataType === 'multiselect' || map.searchDataType === 'multilanguage'){
+                            let vals = val.split(',');
+                            let allOptions = this.props.selectValues[map.javaVariableName];
+                            if(allOptions) {
+                                allOptions.map((rec) => rec.label = rec.value);
+                                vals = vals.map((opt) => allOptions.find((rec) => rec.value === opt)).filter((v) => v);
+                                if(vals.length > 0) {
+                                    criteria[name] = {name: name, order: found, options: vals};
+                                }
+                            }
+                        }else {
+                            criteria[name] = {name: name, order: found, value: val};
+                        }
+                    }else{
+                        criteria[name] = criteria[name] || {name: name, order: found};
+                        criteria[name][subkey] = val;
+                    }
+                }
+            }
+        });
+
+        if(found) {
+            this.props.searchFormUpdateAdvancedSearchCriteria(criteria);
+            this.handleAvailsAdvancedSearch(criteria);
         }
     }
 
