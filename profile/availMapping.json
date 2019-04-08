@@ -68,7 +68,7 @@
   "displayName": "Status",
   "dataType": "select",
   "searchDataType": "multiselect",
-  "options": ["Pending", "Selected", "Planned", "TitleMatched", "Published"],
+  "options": ["Pending", "Selected", "Planned", "TitleMatched", "Consolidated", "Published"],
   "queryParamName": "status",
   "readOnly": false,
   "enableSearch": true,
@@ -124,7 +124,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true
 }, {
   "javaVariableName": "storeLanguage",
   "displayName": "Store Language",
@@ -1248,6 +1248,16 @@
   "enableEdit": true,
   "required": false
 }, {
+  "javaVariableName": "boxOfficeComment",
+  "displayName": "Box Office Comment",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "boxOfficeCommentMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
   "javaVariableName": "daysFromLVR",
   "displayName": "Days From LVR",
   "dataType": "date",
@@ -1288,11 +1298,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "reLicensed",
-  "displayName": "Re-Licensed",
+  "javaVariableName": "reLicence",
+  "displayName": "Re-License",
   "dataType": "boolean",
   "searchDataType": "boolean",
-  "queryParamName": "reLicensed",
+  "queryParamName": "reLicence",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -1373,6 +1383,26 @@
   "dataType": "localdate",
   "searchDataType": "localdate",
   "queryParamName": "updatedAt",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "createdBy",
+  "displayName": "Created By",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "createdBy",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "modifiedBy",
+  "displayName": "Modified By",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "modifiedBy",
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
