@@ -21,6 +21,7 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {getDeepValue} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
+import {URL} from '../../../util/Common';
 
 const mapStateToProps = state => {
    return {
@@ -169,7 +170,7 @@ class RightDetails extends React.Component {
     }
 
     cancel(){
-        this.context.router.history.push('/avails');
+        this.context.router.history.push('/avails' + URL.search());
     }
 
     onFieldClicked(e){

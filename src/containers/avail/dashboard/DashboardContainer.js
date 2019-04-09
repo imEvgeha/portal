@@ -2,6 +2,7 @@ import './DashboardContainer.scss';
 
 import React from 'react';
 import {connect} from 'react-redux';
+import {IfEmbedded, URL} from '../../../util/Common';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
@@ -24,12 +25,14 @@ import moment from 'moment';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {gotoAvailsDashboard} from '../../Navbar';
+import {rightServiceManager} from '../service/RightServiceManager';
+
+const PASS_THROUGH = ['availHistoryIds', 'invalid'];
 
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
-        selectValues: state.root.selectValues,
         selected: state.dashboard.session.availTabPageSelection.selected,
         showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
         showSearchResults: state.dashboard.session.showSearchResults,
@@ -52,7 +55,6 @@ const mapDispatchToProps = {
 class DashboardContainer extends React.Component {
     static propTypes = {
         availsMapping: t.any,
-        selectValues: t.object,
         searchCriteria: t.any,
         currentSearchCriteria: t.any,
         resultPageLoading: t.func,
@@ -82,8 +84,9 @@ class DashboardContainer extends React.Component {
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
 
-        if(this.props.availsMapping){
-            this.getSearchCriteriaFromURL();
+        if(URL.hasParams()){
+            this.getSearchCriteriaFromURL()
+            return;
         }
 
         if (this.props.location && this.props.location.state) {
@@ -100,8 +103,8 @@ class DashboardContainer extends React.Component {
                 }
                 subTitle += moment(state.availHistory.received).format('llll');
                 const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
-                if (state.rowInvalid !== undefined) {
-                    criteria.rowInvalid = {value: state.rowInvalid};
+                if (state.invalid !== undefined) {
+                    criteria.invalid = {value: state.invalid};
                 }
 
                 if(this.props.showSearchResults) {
@@ -126,17 +129,11 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.availsMapping !== this.props.availsMapping){
+        if(prevProps.availsMapping !== this.props.availsMapping) {
             this.getSearchCriteriaFromURL();
         }
 
-        if(prevProps.selectValues !== this.props.selectValues){
-            if(this.props.availsMapping) {
-                this.getSearchCriteriaFromURL();
-            }
-        }
-
-        if(prevProps.searchCriteria !== this.props.searchCriteria) {
+        if(!URL.hasParams() && prevProps.searchCriteria !== this.props.searchCriteria) {
             NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
             if (this.props.showSearchResults) {
@@ -149,64 +146,56 @@ class DashboardContainer extends React.Component {
     }
 
     getSearchCriteriaFromURL(){
-        let params=null;
-        if(this.props.location && this.props.location.search){
-            params = this.props.location.search.substr(1).split('&');
-            if(params.length === 0) return 0;
-        }else{
-            return 0;
+        if(!this.props.availsMapping) {
+            return false;
         }
+        let params=null;
+        if(URL.hasParams()){
+            params = this.props.location.search.substr(1).split('&');
+        }else return false;
 
         const criteria = {};
-        let found = -1;
+        let found = false;
+        this.props.location.state={};
 
         params.forEach(param => {
             const vals = param.split('=');
             if(vals.length === 2){
                 let name = vals[0];
                 const val = vals[1];
-                let subkey = null;
-                let map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
-                if(!map && name.endsWith('From')){
-                    subkey = 'from';
-                    name = name.substring(0, name.length - 4);
-                }
-                if(!map && name.endsWith('To')){
-                    subkey = 'to';
-                    name = name.substring(0, name.length - 2);
-                }
-                if(subkey) {
+                let map;
+
+                if(!PASS_THROUGH.includes(name)) {
+                    let subkey = null;
                     map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
-                    if (map && ['date', 'localdate', 'duration'].indexOf(map.dataType) === -1) map = null;
-                }
-                if(map){
-                    if(!criteria[name]) found++;
-                    if(!subkey){
-                        if(map.searchDataType === 'multiselect' || map.searchDataType === 'multilanguage'){
-                            let vals = val.split(',');
-                            let allOptions = this.props.selectValues[map.javaVariableName];
-                            if(allOptions) {
-                                allOptions.map((rec) => rec.label = rec.value);
-                                vals = vals.map((opt) => allOptions.find((rec) => rec.value === opt)).filter((v) => v);
-                                if(vals.length > 0) {
-                                    criteria[name] = {name: name, order: found, options: vals};
-                                }
-                            }
-                        }else {
-                            criteria[name] = {name: name, order: found, value: val};
-                        }
-                    }else{
-                        criteria[name] = criteria[name] || {name: name, order: found};
-                        criteria[name][subkey] = val;
+                    if (!map && name.endsWith('From')) {
+                        subkey = 'from';
+                        name = name.substring(0, name.length - 4);
                     }
+                    if (!map && name.endsWith('To')) {
+                        subkey = 'to';
+                        name = name.substring(0, name.length - 2);
+                    }
+                    if (subkey) {
+                        map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
+                        if (map && ['date', 'localdate', 'duration'].indexOf(map.dataType) === -1) map = null;
+                    }
+                }
+                if(PASS_THROUGH.includes(name) || map){
+                    criteria[name]=val;
+                    found=true;
                 }
             }
         });
 
-        if(found) {
-            this.props.searchFormUpdateAdvancedSearchCriteria(criteria);
-            this.handleAvailsAdvancedSearch(criteria);
+        if(found || URL.hasParams()) {
+            this.props.resultPageShowSelected(false);
+            this.props.searchFormShowSearchResults(true);
+            rightServiceManager.search(criteria);
+            NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
         }
+
+        return found;
     }
 
     toggleAdvancedSearch() {
@@ -235,28 +224,30 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
-                    <div>
-                        <table style={{width: '100%'}}>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
-                                            onSearch={this.handleAvailsFreeTextSearch}/>
-                                    </td>
-                                    <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
-                                        <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
-                                            id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
-                                            <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <IfEmbedded value={false}>
+                    <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
+                        <div>
+                            <table style={{width: '100%'}}>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
+                                                onSearch={this.handleAvailsFreeTextSearch}/>
+                                        </td>
+                                        <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
+                                            <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
+                                                id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
+                                                <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
-                {!this.props.showSearchResults && <DashboardTab/>}
+                    {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                    {!this.props.showSearchResults && <DashboardTab/>}
+                </IfEmbedded>
                 {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
             </div>
         );

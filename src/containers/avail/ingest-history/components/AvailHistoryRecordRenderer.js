@@ -125,7 +125,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
+                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, invalid: 'false'}}}>
                                     Success:
                                 </Link>)
                                 :
@@ -136,7 +136,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
+                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, invalid: 'false'}}}>
                                     {this.props.data.successfullyProcessed}
                                 </Link>)
                                 :
@@ -149,7 +149,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
+                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, invalid: 'true'}}}>
                                     Errors:
                                 </Link>)
                                 :
@@ -160,7 +160,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
+                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, invalid: 'true'}}}>
                                     {this.props.data.failedToProcess}
                                 </Link>)
                                 :

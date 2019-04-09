@@ -30,7 +30,7 @@ const mapDispatchToProps = {
     searchFormUpdateAdvancedSearchCriteria
 };
 
-const ignoreForCloseable = ['rowInvalid'];
+const ignoreForCloseable = ['invalid'];
 
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
@@ -121,7 +121,7 @@ class AdvancedSearchPanel extends React.Component {
 
     handleInvalidChange(event) {
         const value = event.target.value;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, rowInvalid: {value: value}});
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, invalid: {value: value}});
     }
 
     addSearchField() {
@@ -389,7 +389,7 @@ class AdvancedSearchPanel extends React.Component {
                         <select className="form-control border-1 d-inline"
                                 id={'dashboard-avails-report-select'}
                                 onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : ''}
+                                value={this.props.searchCriteria.invalid ? this.props.searchCriteria.invalid.value : ''}
                                 style={{width: '100px', background: 'initial', margin: '0 5px'}}
                         >
                             <option value="">All</option>

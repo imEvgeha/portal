@@ -89,8 +89,8 @@ function getDeepValue(source, location){
 const URL = {
     getParamIfExists: function (name, defaultValue = ''){
         let toReturn = defaultValue;
-        if (window && window.location && window.location.search){
-            let query = window.location.search.substring(1);
+        if (this.search()){
+            let query = this.search().substring(1);
             let params = query.split('&');
             let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
             if(param){
@@ -110,6 +110,20 @@ const URL = {
 
     isEmbedded: function(){
         return this.getBooleanParam('embedded');
+    },
+
+    hasParams: function(){
+        if(this.search()){
+            const params = this.search().substr(1).split('&');
+            if(params.length > 0) return true;
+        }
+        return false;
+    },
+
+    search: function() {
+        if(window && window.location){
+            return window.location.search;
+        } return null;
     }
 };
 

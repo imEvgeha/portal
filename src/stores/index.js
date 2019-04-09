@@ -4,6 +4,7 @@ import titleReducer from './reducers/metadata/titleReducer';
 import dashboard from './reducers/avail/dashboard';
 import createright from './reducers/avail/createright';
 import history from './reducers/history';
+import {URL} from '../util/Common';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
@@ -35,7 +36,7 @@ export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
     setTimeout(() => {
         const dashboard = store.getState().dashboard;
-        if(dashboard.session.showSearchResults) {
+        if(dashboard.session.showSearchResults && !URL.hasParams()) {
             if (dashboard.session.showAdvancedSearch) {
                 rightSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
             }else{
