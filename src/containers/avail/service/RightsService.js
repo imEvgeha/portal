@@ -14,7 +14,7 @@ const isNotEmpty = function(obj){
 };
 
 const parse = function(value){
-    if(typeof  value === 'string')
+    if(typeof value === 'string')
         return safeTrim(value);
 
     if(value instanceof moment){
@@ -24,10 +24,10 @@ const parse = function(value){
     if(Array.isArray(value))
         return value.map(val => parse(val));
 
-    if(typeof  value === 'number')
+    if(typeof value === 'number')
         return value;
 
-    if ('value' in value)
+    if (value && 'value' in value)
         return parse(value.value);
 
     return null;
@@ -66,10 +66,10 @@ const populate = function(key, value, location){
     }
 };
 
-const prepareRight = function (right) {
+const prepareRight = function (right, keepNulls = false) {
     let rightCopy = {};
     Object.keys(right).forEach(key => {
-        if(isNotEmpty(right[key])){
+        if(keepNulls || isNotEmpty(right[key])){
             populate(key, right[key], rightCopy);
         }
     });
@@ -105,6 +105,6 @@ export const rightsService = {
     },
 
     update: (rightDiff, id) => {
-        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff));
+        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff, true));
     },
 };
