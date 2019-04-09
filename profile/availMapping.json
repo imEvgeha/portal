@@ -11,7 +11,7 @@
   "required": true
 }, {
   "javaVariableName": "studio",
-  "displayName": "Studio",
+  "displayName": "Production Studio",
   "dataType": "select",
   "searchDataType": "multiselect",
   "configEndpoint": "/production-studios",
@@ -104,7 +104,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "coreTitleId",
   "displayName": "Core Title Id",
@@ -176,7 +176,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "territory",
   "displayName": "Territory",
@@ -979,7 +979,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeTitleId",
-  "displayName": "EIDR Title ID",
+  "displayName": "EIDR Episode Title ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEpisodeTitleIdMatch",
