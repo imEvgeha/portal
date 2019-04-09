@@ -103,6 +103,13 @@ class TitleEdit extends Component {
         });
     };
 
+    handleOnChangeTitleDuration = (duration) => {
+        this.setState({
+            ...this.state.editedForm,
+            duration: duration
+        });
+    }
+
 
     handleChangeSeries = (e) => {
         const newEpisodic = {
@@ -153,28 +160,33 @@ class TitleEdit extends Component {
             }else {
                 advisoriesCode = [this.state.advisoryCode, ...this.state.editedForm.advisories.advisoriesCode];
             }
-            this.setState({
+
+            let updatedAdvisory = {
+                ...this.state.editedForm.advisories,
+                advisoriesCode: advisoriesCode
+            };
+            let updateEditForm = {
                 ...this.state.editedForm,
-                editedForm: {
-                    ...this.state.editedForm.advisories,
-                    advisories: {
-                        advisoriesCode: advisoriesCode
-                    }
-                }
+                advisories: updatedAdvisory
+            };
+            this.setState({
+                editedForm: updateEditForm
             });
         }
-
     }
     removeAdvisoryCodes = (removeAdvisory) => {
             let advisoriesCode = this.state.editedForm.advisories.advisoriesCode.filter(rating => rating !== removeAdvisory);
-            this.setState({
+
+            let updatedAdvisory = {
+                ...this.state.editedForm.advisories,
+                advisoriesCode: advisoriesCode
+            };
+            let updateEditForm = {
                 ...this.state.editedForm,
-                editedForm: {
-                    ...this.state.editedForm.advisories,
-                    advisories: {
-                        advisoriesCode: advisoriesCode
-                    }
-                }
+                advisories: updatedAdvisory
+            }
+            this.setState({
+                editedForm: updateEditForm
             });
     }
     handleOnAdvisoriesCodeUpdate = (value) => {
@@ -214,7 +226,7 @@ class TitleEdit extends Component {
             updateCastCrewValue={this.updateCastCrewValue}
             ratingValue={this.state.ratingValue}
             removeRating={this.removeRating}
-            removeCast={this.removeCast}
+            removeCastCrew={this.removeCastCrew}
             ratingSystem={this.state.ratingSystem}
             updateValue={this.updateValue}
             ratings={this.state.editedForm.ratings}
@@ -233,6 +245,7 @@ class TitleEdit extends Component {
             data={this.state.titleForm}
             editedTitle={this.state.editedForm}
             episodic={this.state.titleForm.episodic}
+            handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
             handleOnChangeEdit={this.handleOnChangeEdit} />;
     };
 
@@ -255,12 +268,6 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
-            // newAdditionalFields = {
-            //     ...newAdditionalFields,
-            //     duration: newAdditionalFields.hour + ':' + newAdditionalFields.minute + ':00'
-            // };
-            delete newAdditionalFields.hour;
-            delete newAdditionalFields.minute;
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -622,12 +629,16 @@ class TitleEdit extends Component {
                 ratingArray = [newRatingObject, ...this.state.editedForm.ratings];
             }
 
-            this.setState({
+            let updateEditForm = {
                 ...this.state.editedForm,
-                editedForm: {
-                    ratings: ratingArray
-                }
+                ratings: ratingArray
+            };
+
+            this.setState({
+                editedForm: updateEditForm
             });
+
+
         }
 
     };
@@ -641,11 +652,13 @@ class TitleEdit extends Component {
 
     removeRating = removeRating => {
         let rating = this.state.editedForm.ratings.filter(rating => rating !== removeRating);
-        this.setState({
+
+        let updateEditForm = {
             ...this.state.editedForm,
-            editedForm: {
-                ratings: rating
-            }
+            ratings: rating
+        };
+        this.setState({
+            editedForm: updateEditForm
         });
 
     };
@@ -663,11 +676,13 @@ class TitleEdit extends Component {
                 castCrewArray = [newCastObject, ...this.state.editedForm.castCrew]; 
             }
 
-            this.setState({
+            let updateEditForm = {
                 ...this.state.editedForm,
-                editedForm: {
-                    castCrew: castCrewArray
-                }
+                castCrew: castCrewArray
+            };
+
+            this.setState({
+                editedForm: updateEditForm
             });
             this.cleanCastInput();
         } else return;
@@ -680,13 +695,15 @@ class TitleEdit extends Component {
         });
     };
 
-    removeCast = removeCast => {
-        let cast = this.state.editedForm.castCrew.filter(cast => cast !== removeCast);
-        this.setState({
+    removeCastCrew = removeCastCrew => {
+        let cast = this.state.editedForm.castCrew.filter(cast => cast !== removeCastCrew);
+
+        let updateEditForm = {
             ...this.state.editedForm,
-            editedForm: {
-                castCrew: cast
-            }
+            castCrew: cast
+        };
+        this.setState({
+           editedForm: updateEditForm
         });
     };
 

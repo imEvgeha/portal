@@ -66,7 +66,7 @@ class CoreMetadataEditMode extends Component {
                           style={{ marginTop: '5px', cursor: 'pointer' }}
                           color='#111'
                           size='lg'
-                          onClick={() => this.props.removeCast(cast)}
+                          onClick={() => this.props.removeCastCrew(cast)}
                         />
                       </ListGroupItem>
                     ))}
@@ -109,7 +109,7 @@ class CoreMetadataEditMode extends Component {
                           style={{ marginTop: '5px', cursor: 'pointer' }}
                           color='#111'
                           size='lg'
-                          onClick={() => this.props.removeCast(crew)}
+                          onClick={() => this.props.removeCastCrew(crew)}
                         />
                       </ListGroupItem>
                     ))}
@@ -127,7 +127,7 @@ class CoreMetadataEditMode extends Component {
                 onChange={e => this.props.onChange(e)}
                 name='ratingSystem'
                 id='ratingSystem'
-                defaultValue={this.props.ratingSystem}
+                defaultValue={this.props.editedTitle.ratingSystem}
               >
                 <option value={''}>Select Rating System</option>
                 <option value={'MPAA'}>MPAA</option>
@@ -174,6 +174,7 @@ class CoreMetadataEditMode extends Component {
                 onChange={e => this.props.handleOnAdvisories(e)}
                 name='advisoriesFreeText'
                 id='advisories'
+                value={this.props.advisoryCodeList ? this.props.advisoryCodeList.advisoriesFreeText : ''}
                 placeholder='Advisories'                
                 validate={{
                   maxLength: { value: 500 }
@@ -506,7 +507,7 @@ CoreMetadataEditMode.propTypes = {
   ratings: PropTypes.array,
   updateValue: PropTypes.func,
   removeRating: PropTypes.func,
-  removeCast: PropTypes.func,
+  removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
   editedTitle: PropTypes.object,
   _handleKeyPress: PropTypes.func,

@@ -23,19 +23,6 @@ class TitleEditMode extends Component {
     };
   }
 
-  // getHour = () => {
-
-  //   let newDuration = this.props.data.duration.split(':');
-  //   let hour = newDuration[0];
-  //   // console.log('Hour:',hour, 'Duration: ',this.props.data.duration);
-  //   return hour;
-  // }
-  // getMinute = () => {
-  //   let newDuration = this.props.data.duration.split(':');
-  //   let minute = newDuration[1];
-  //   // console.log('Minute:',minute, 'Duration: ',this.props.data.duration);
-  //   return minute;
-  // }
   render() {
     const {
       title,
@@ -44,7 +31,7 @@ class TitleEditMode extends Component {
       releaseYear,
       boxOffice,
       animated,
-      // duration,
+      duration,
       eventType,
       // seasonFinale,
       // seasonPremiere,
@@ -278,28 +265,19 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='duration'>Duration</Label>
                   <Row>
-                    {/* <Col>
-                      <AvField name="hour" value={duration ? this.getHour() : ''} type="number" max="24" placeholder="HH" style={{ textAlign: 'center' }}
-                        validate={{
-                          maxLength: { value: 2, errorMessage: 'Please enter a valid hour!' }, minLength: { value: 2, errorMessage: 'Please enter a valid hour!' }
-                        }}
-                        onChange={e => this.props.handleOnChangeEdit(e)}
-                      />
-                    </Col>
-                    <Col>
-                      <AvField name="minute" value={duration ? this.getMinute() : ''} type="number" max="59" placeholder="MM" style={{ textAlign: 'center' }}
-                        validate={{
-                          maxLength: { value: 2, errorMessage: 'Please enter a valid minute!' }, minLength: { value: 2, errorMessage: 'Please enter a valid minute!' }
-                        }}
-                        onChange={e => this.props.handleOnChangeEdit(e)}
-                      />
-                    </Col> */}
                     <Col>
                       <AvField  
-                        type="time"
+                        type="text"
                         name="duration"
+                        value={duration}
                         id="duration"
                         onChange={(e) => this.props.handleOnChangeEdit(e)}
+                        placeholder="hh:mm:ss"
+                        validate={{
+                          pattern :{value: '^(2[0-3]|1[0-9]|[0-9]):[0-5]?[0-9]:[0-5]?[0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
+                          maxLength: { value: 8 },
+                          minLength: { value: 8 }
+                        }}
                       />
                     </Col>
                   </Row>
@@ -455,13 +433,13 @@ class TitleEditMode extends Component {
             isCrewModalOpen={this.props.isCrewModalOpen}
             renderModal={this.props.renderModal}
             castInputValue={this.props.castInputValue}
-            removeCast={this.props.removeCast}
+            removeCastCrew={this.props.removeCastCrew}
             ratings={this.props.ratings}
             advisoryCodeList={this.props.advisoryCodeList}
             removeAdvisoryCodes={this.props.removeAdvisoryCodes}
             addCastCrew={this.props.addCastCrew}
             updateCastCrewValue={this.props.updateCastCrewValue}
-            advisoryCode={this.props.advisoriesCode}
+            advisoryCode={this.props.advisoryCode}
             handleOnAdvisoriesCodeUpdate={this.props.handleOnAdvisoriesCodeUpdate}
             ratingValue={this.props.ratingValue}
             ratingSystem={this.props.ratingSystem}
@@ -492,7 +470,7 @@ TitleEditMode.propTypes = {
   ratingValue: PropTypes.string,
   updateCastCrewValue: PropTypes.func,
   addCastCrew: PropTypes.func,
-  removeCast: PropTypes.func,
+  removeCastCrew: PropTypes.func,
   castInputValue: PropTypes.string,
   renderModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
@@ -502,7 +480,9 @@ TitleEditMode.propTypes = {
   advisoriesCode: PropTypes.string,
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
   advisoryCodeList: PropTypes.object,
-  removeAdvisoryCodes: PropTypes.func
+  removeAdvisoryCodes: PropTypes.func,
+  handleOnChangeTitleDuration: PropTypes.func,
+  advisoryCode: PropTypes.string
 
 };
 
