@@ -16,9 +16,14 @@ class TerritoryMetadataEditMode extends Component {
         return date;
     };
 
+    shouldComponentUpdate(nextProps) {
+        let differentData = this.props.data !== nextProps.data;
+        return differentData;
+    }
 
     render() {
         return (
+
             <div id="territoryContainer">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>

@@ -7,12 +7,13 @@ import {locale} from '../../../../../constants/locale';
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            territories: [],
-            activeTab: 0
-
-        };
     }
+
+    shouldComponentUpdate(nextProps) {
+        let differentRequired = this.props.isRequired !== nextProps.isRequired;
+        return differentRequired;
+    }
+
     render() {
         return (
             <div id="territoryContainer">

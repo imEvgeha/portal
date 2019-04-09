@@ -13,7 +13,7 @@ import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
-import {EDITORIAL_METADATA_PREFIX} from '../../../../constants/metadata/metadataComponent';
+import {EDITORIAL_METADATA_PREFIX, EDITORIAL_METADATA_SYNOPSIS, EDITORIAL_METADATA_TITLE} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -67,27 +67,46 @@ class TitleEdit extends Component {
     componentDidMount() {
         if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
         NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
+
         const titleId = this.props.match.params.id;
-        titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
-            this.setState({ titleForm, editedForm: titleForm });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
-            console.error('Unable to load Title Data');
-        });
-        titleService.getTerritoryMetadataById(titleId).then((response) => {
-            const territory = response.data;
-            this.setState({
-                territory: territory
-            });
-        }).catch((err) => {
-            errorModal.open('Error', () => { }, { description: err.message, closable: true });
-            console.error('Unable to load Title Data');
-        });
+        this.loadTitle(titleId);
+        this.loadTerritoryMetadata(titleId);
+        this.loadEditorialMetadata(titleId);
     }
 
     componentWillUnmount() {
         NexusBreadcrumb.pop();
+    }
+
+    loadTitle(titleId) {
+        titleService.getTitleById(titleId).then((response) => {
+            const titleForm = response.data;
+            this.setState({ titleForm, editedForm: titleForm });
+        }).catch(() => {
+            console.error('Unable to load Title Data');
+        });
+    }
+
+    loadTerritoryMetadata(titleId) {
+        titleService.getTerritoryMetadataById(titleId).then((response) => {
+            const territoryMetadata = response.data;
+            this.setState({
+                territory: territoryMetadata
+            });
+        }).catch(() => {
+            console.error('Unable to load Territory Metadata');
+        });
+    }
+
+    loadEditorialMetadata(titleId) {
+        titleService.getEditorialMetadataById(titleId).then((response) => {
+            const editorialMetadata = response.data;
+            this.setState({
+                editorialMetadata: editorialMetadata
+            });
+        }).catch(() => {
+            console.error('Unable to load Editorial Metadata');
+        });
     }
 
     handleBackToDashboard() {
@@ -113,6 +132,8 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: emptyEditorial
         });
     };
+
+
 
     handleOnChangeEdit = (e) => {
         this.setState({
@@ -265,10 +286,12 @@ class TitleEdit extends Component {
                 this.setState({
                     territory: list
                 });
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+            }).catch(() => {
                 console.error('Unable to edit Title Data');
             });
+        });
+        this.setState({
+            updatedTerritories: []
         });
 
         if (this.state.territories.locale) {
@@ -298,21 +321,40 @@ class TitleEdit extends Component {
      * Editorial Metadata document
      */
     handleEditorialMetadataEditChange = (e, data) => {
+
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
+        let isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
+
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
-        if (edited) {
-            edited[targetName] = e.target.value;
-            let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
-            newOne.push(edited);
-            this.setState({
-                updatedEditorialMetadata: newOne
-            });
-        } else {
+        if (!edited) {
             edited = Object.assign({}, data);
+        }
+
+        if(isSynopsis) {
+            targetName = targetName.replace(EDITORIAL_METADATA_SYNOPSIS, '');
+            this.updateEditorialMetadataInnerObject(edited, 'synopsis', targetName, e.target.value);
+        } else if(isEditorialTitle) {
+            targetName = targetName.replace(EDITORIAL_METADATA_TITLE, '');
+            this.updateEditorialMetadataInnerObject(edited, 'title', targetName, e.target.value);
+        } else {
             edited[targetName] = e.target.value;
-            this.setState({
-                updatedEditorialMetadata: [edited, ...this.state.updatedEditorialMetadata]
-            });
+        }
+
+        let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
+        newOne.push(edited);
+        this.setState({
+            updatedEditorialMetadata: newOne
+        });
+    };
+
+    updateEditorialMetadataInnerObject = (edited, objectName, objectField, objectFieldValue) => {
+        if(edited[objectName]) {
+            edited[objectName][objectField] = objectFieldValue;
+        } else {
+            let newObject = {};
+            newObject[objectField] = objectFieldValue;
+            edited[objectName] = newObject;
         }
     };
 
@@ -382,6 +424,22 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataOnSave = () => {
+        this.state.updatedEditorialMetadata.forEach(e => {
+            titleService.updateEditorialMetadata(e).then((response) => {
+                let list = [].concat(this.state.editorialMetadata);
+                let foundIndex = list.findIndex(x => x.id === response.data.id);
+                list[foundIndex] = response.data;
+                this.setState({
+                    editorialMetadata: list
+                });
+            }).catch(() => {
+                console.error('Unable to edit Editorial Metadata');
+            });
+        });
+        this.setState({
+            updatedEditorialMetadata: []
+        });
+
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             let newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
@@ -477,7 +535,7 @@ class TitleEdit extends Component {
                         toggle={this.toggleEditorialMetadata}
                         activeTab={this.state.editorialMetadataActiveTab}
                         addEditorialMetadata={this.addEditorialMetadata}
-                        CREATE_TAB={CREATE_TAB}
+                        createEditorialTab={CREATE_TAB}
                         handleSubmit={this.handleEditorialMetadataSubmit}
                         editorialMetadata={this.state.editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
@@ -495,7 +553,7 @@ class TitleEdit extends Component {
                         toggle={this.toggleTerritoryMetadata}
                         activeTab={this.state.territoryMetadataActiveTab}
                         addTerritoryMetadata={this.addTerritoryMetadata}
-                        CREATE_TAB={CREATE_TAB}
+                        createTerritoryTab={CREATE_TAB}
                         handleSubmit={this.handleTerritoryMetadataSubmit}
                         territory={this.state.territory}
                         handleChange={this.handleTerritoryMetadataChange}
