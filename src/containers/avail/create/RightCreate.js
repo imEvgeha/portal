@@ -2,14 +2,15 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 
-import {saveCreateRightForm} from '../../../stores/actions/avail/createright';
+import store from '../../../stores/index';
+import {blockUI} from '../../../stores/actions/index';
+import BlockUi from 'react-block-ui';
 import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rangeValidation} from '../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import store from '../../../stores/index';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
@@ -21,21 +22,16 @@ const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
         selectValues: state.root.selectValues,
-        storedForm: state.createright.session.form,
+        blocking: state.root.blocking
     };
-};
-
-const mapDispatchToProps = {
-    saveCreateRightForm
 };
 
 class RightCreate extends React.Component {
 
     static propTypes = {
         selectValues: t.object,
-        saveCreateRightForm: t.func,
         availsMapping: t.any,
-        storedForm: t.object
+        blocking: t.bool
     };
 
     static contextTypes = {
@@ -48,7 +44,6 @@ class RightCreate extends React.Component {
         this.confirm = this.confirm.bind(this);
         this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangeSave = this.handleChangeSave.bind(this);
 
         this.mappingErrorMessage = {};
         this.right = {};
@@ -58,7 +53,7 @@ class RightCreate extends React.Component {
         if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
 
         NexusBreadcrumb.push(RIGHT_CREATE);
-        this.right = this.props.storedForm;
+        this.right = {};
 
         if(this.props.availsMapping){
             this.initMappingErrors(this.props.availsMapping.mappings);
@@ -74,9 +69,6 @@ class RightCreate extends React.Component {
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping) {
             this.initMappingErrors(this.props.availsMapping.mappings);
-        }
-        if(prevProps.storedForm !== this.props.storedForm){
-            this.right = this.props.storedForm;
         }
     }
 
@@ -95,18 +87,12 @@ class RightCreate extends React.Component {
     }
 
     handleChange({target}) {
-        const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
+        const value = target.type === 'checkbox' ? target.checked : (target.value ? safeTrim(target.value) : '');
         const name = target.name;
-        this.checkRight(name, value, true, false);
+        this.checkRight(name, value, true);
     }
 
-    handleChangeSave({target}) {
-        const value = target.type === 'checkbox' ? target.checked : (target.value ? target.value.trim() : '');
-        const name = target.name;
-        this.checkRight(name, value, true, true);
-    }
-
-    checkRight(name, value, setNewValue, save) {
+    checkRight(name, value, setNewValue) {
         const validationError = this.validateField(name, value);
 
         let errorMessage = {range: '', date: '', text: validationError};
@@ -115,9 +101,6 @@ class RightCreate extends React.Component {
         if(setNewValue){
             let newRight = {...this.right, [name]: value};
             this.right = newRight;
-            if(save) {
-                store.dispatch(saveCreateRightForm(newRight));
-            }
         }
     }
 
@@ -140,7 +123,6 @@ class RightCreate extends React.Component {
             }
         }
 
-        store.dispatch(saveCreateRightForm({...this.right}));
         this.setState({});
     }
 
@@ -203,16 +185,23 @@ class RightCreate extends React.Component {
     }
 
     confirm() {
-        if(this.validateFields()) return;
+        if(this.validateFields()) {
+            this.setState({errorMessage: 'Not all mandatory fields are filled or not all filled fields are valid'});
+            return;
+        }
+        store.dispatch(blockUI(true));
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
-            store.dispatch(saveCreateRightForm({}));
             if(response && response.data && response.data.id){
                 this.context.router.history.push('/avails/' + response.data.id);
             }
+            store.dispatch(blockUI(false));
         })
-            .catch(() => this.setState({errorMessage: 'Right creation Failed'}));
+            .catch(() => {
+                this.setState({errorMessage: 'Right creation Failed'});
+                store.dispatch(blockUI(false));
+            });
     }
 
     cancel(){
@@ -251,7 +240,7 @@ class RightCreate extends React.Component {
         const renderStringField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, (
                 <div>
-                    <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange} onBlur={this.handleChangeSave}/>
+                    <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
@@ -270,8 +259,7 @@ class RightCreate extends React.Component {
                                 name={name}
                                 id={'right-create-' + name + '-text'}
                                 placeholder={'Enter ' + displayName}
-                                onChange={this.handleChange}
-                                onBlur={this.handleChangeSave}
+                                onChange={(val) => this.handleChange(Number(val))}
                                 type="text"
                                 validate={{number: true}}
                                 errorMessage="Please enter a valid number!"
@@ -296,7 +284,6 @@ class RightCreate extends React.Component {
                             id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
-                            onBlur={this.handleChangeSave}
                             type="text"
                             validate={{number: true}}
                             errorMessage="Please enter a valid number!"
@@ -321,7 +308,6 @@ class RightCreate extends React.Component {
                             id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
-                            onBlur={this.handleChangeSave}
                             type="text"
                             validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
                             errorMessage="Please enter a valid number!"
@@ -342,8 +328,11 @@ class RightCreate extends React.Component {
                 options  = this.props.selectValues[name];
             }
 
-            //fields with enpoints (these have ids)
-            const filterKeys = Object.keys(this.right).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            //fields with endpoints (these have ids)
+            const filterKeys = Object.keys(this.right).filter((key) => {
+                const map = this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key);
+                return map && map.configEndpoint;
+            });
             let filters = filterKeys.map((key) => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
 
             let filteredOptions = options;
@@ -458,8 +447,7 @@ class RightCreate extends React.Component {
                         id={'right-create-' + name + '-select'}
                         placeholder={'Enter ' + displayName}
                         value={value}
-                        onChange={this.handleChange}
-                        onBlur={this.handleChangeSave}>
+                        onChange={this.handleChange}>
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
@@ -536,23 +524,27 @@ class RightCreate extends React.Component {
 
         return(
             <div>
-                <div className="nx-stylish row mt-3 mx-5">
-                    <div className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
-                        {renderFields}
+                <BlockUi tag="div" blocking={this.props.blocking}>
+                    <div className="nx-stylish row mt-3 mx-5">
+                        <div className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                            {renderFields}
+                        </div>
                     </div>
-                </div>
-                <Label id="right-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
-                    {this.state && this.state.errorMessage}
-                </Label>
-                {this.props.availsMapping &&
-                    <div className="float-right mt-1 mx-5">
-                        <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
-                        <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
-                    </div>
-                }
+                    <Label id="right-create-error-message" className="text-danger w-100 mt-2 ml-5 pl-3">
+                        {this.state && this.state.errorMessage}
+                    </Label>
+                    {this.props.availsMapping &&
+                        <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                            <div className="mt-1 mx-5">
+                                <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                                <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                            </div>
+                        </div>
+                    }
+                </BlockUi>
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RightCreate);
+export default connect(mapStateToProps, null)(RightCreate);

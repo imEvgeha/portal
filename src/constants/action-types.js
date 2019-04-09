@@ -1,3 +1,5 @@
+export const BLOCK_UI = 'BLOCK_UI';
+
 export const LOAD_PROFILE_INFO = 'LOAD_PROFILE_INFO';
 export const LOAD_AVAILS_MAPPING = 'LOAD_AVAILS_MAPPING';
 export const LOAD_REPORTS = 'LOAD_REPORTS';

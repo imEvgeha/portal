@@ -14,7 +14,7 @@ const isNotEmpty = function(obj){
 };
 
 const parse = function(value){
-    if(typeof  value === 'string')
+    if(typeof value === 'string')
         return safeTrim(value);
 
     if(value instanceof moment){
@@ -24,7 +24,10 @@ const parse = function(value){
     if(Array.isArray(value))
         return value.map(val => parse(val));
 
-    if ('value' in value)
+    if(typeof value === 'number')
+        return value;
+
+    if (value && 'value' in value)
         return parse(value.value);
 
     return null;
@@ -35,18 +38,38 @@ const populate = function(key, value, location){
     if(dotPos > 0) {
         const firstKey = key.split('.')[0];
         const restKey = key.substring(dotPos+1);
-        if(!location[firstKey])
-            location[firstKey]={};
-        populate(restKey, value, location[firstKey]);
+        if(firstKey === 'languages') {
+            if (!location[firstKey])
+                location[firstKey] = [];
+            const container = location[firstKey];
+            value=parse(value);
+            if(typeof  value === 'string') {
+                value = parse(value.split(','));
+            }
+            for(let i = 0; i < value.length; i++){
+                if(container.length <= i){
+                    container.push({[restKey]: value[i]});
+                }else{
+                    container[i][restKey] = value[i];
+                }
+            }
+        }else {
+            if (!location[firstKey])
+                location[firstKey] = {};
+            if(key === 'retailer.retailerId1'){
+                value = value.split(',');
+            }
+            populate(restKey, value, location[firstKey]);
+        }
     }else{
         location[key] = parse(value);
     }
 };
 
-const prepareRight = function (right) {
+const prepareRight = function (right, keepNulls = false) {
     let rightCopy = {};
     Object.keys(right).forEach(key => {
-        if(isNotEmpty(right[key])){
+        if(keepNulls || isNotEmpty(right[key])){
             populate(key, right[key], rightCopy);
         }
     });
@@ -82,6 +105,6 @@ export const rightsService = {
     },
 
     update: (rightDiff, id) => {
-        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff));
+        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff, true));
     },
 };

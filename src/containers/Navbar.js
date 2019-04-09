@@ -13,8 +13,16 @@ import {Can} from '../ability';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
 
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
+import { Loader } from 'react-loaders';
+
+
 const mapStateToProps = state => {
-    return {profileInfo: state.root.profileInfo};
+    return {
+        blocking: state.root.blocking,
+        profileInfo: state.root.profileInfo
+    };
 };
 
 const mapDispatchToProps = {
@@ -27,6 +35,7 @@ class NavbarConnect extends React.Component {
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         profileInfo: t.any,
+        blocking: t.bool
     };
 
     constructor(props) {
@@ -46,50 +55,52 @@ class NavbarConnect extends React.Component {
 
     render() {
         return (
-            <nav className="navbar navbar-NEXUS navbar-expand-md">
-                <span className="navbar-brand">
-                    <a className="navbar-brand Nlogo" href="#"> </a>
-                </span>
-                <ul className="navbar-nav">
-                    <Can I="read" a="Avail">
-                        <li className="nav-item">
-                            <span className="nav-link" href="#" onClick={gotoAvailsDashboard}>
-                                <NavLink activeClassName="navActive" to="/avails"  id="avail-tab">Avails</NavLink>
+            <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
+                <nav className="navbar navbar-NEXUS navbar-expand-md">
+                    <span className="navbar-brand">
+                        <a className="navbar-brand Nlogo" href="#"> </a>
+                    </span>
+                    <ul className="navbar-nav">
+                        <Can I="read" a="Avail">
+                            <li className="nav-item">
+                                <span className="nav-link" href="#" onClick={gotoAvailsDashboard}>
+                                    <NavLink activeClassName="navActive" to="/avails"  id="avail-tab">Avails</NavLink>
+                                </span>
+                            </li>
+                        </Can>
+                        <li className="">
+                            <span className="nav-link" href="#" >
+                                <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
                             </span>
                         </li>
-                    </Can>
-                    <li className="">
-                        <span className="nav-link" href="#" >
-                            <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
-                        </span>
-                    </li>
-                </ul>
-                <ul className="nav navbar-nav ml-auto">
-                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
-                        inNavbar={true} nav={true}>
-                        <DropdownToggle caret nav={true} id="navbar-dropdown-btn">
-                            <FontAwesome name='user-circle' style={{marginRight: '5px'}}/>
-                            {this.props.profileInfo.name}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem header>
-                                {keycloak.instance.hasResourceRole('user') && keycloak.hasResourceRole(
-                                    'manage') ? 'user, manage' : ''}
-                                {keycloak.instance.hasResourceRole('user')
-                  && !keycloak.instance.hasResourceRole(
-                      'manage') ? 'user' : ''}
-                                {!keycloak.instance.hasResourceRole('user')
-                  && keycloak.instance.hasResourceRole(
-                      'manage') ? 'user' : ''}
-                            </DropdownItem>
-                            <DropdownItem divider/>
-                            <DropdownItem onClick={keycloak.instance.logout}>
-                                <span id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</span>
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                </ul>
-            </nav>
+                    </ul>
+                    <ul className="nav navbar-nav ml-auto">
+                        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
+                            inNavbar={true} nav={true}>
+                            <DropdownToggle caret nav={true} id="navbar-dropdown-btn">
+                                <FontAwesome name='user-circle' style={{marginRight: '5px'}}/>
+                                {this.props.profileInfo.name}
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem header>
+                                    {keycloak.instance.hasResourceRole('user') && keycloak.hasResourceRole(
+                                        'manage') ? 'user, manage' : ''}
+                                    {keycloak.instance.hasResourceRole('user')
+                      && !keycloak.instance.hasResourceRole(
+                          'manage') ? 'user' : ''}
+                                    {!keycloak.instance.hasResourceRole('user')
+                      && keycloak.instance.hasResourceRole(
+                          'manage') ? 'user' : ''}
+                                </DropdownItem>
+                                <DropdownItem divider/>
+                                <DropdownItem onClick={keycloak.instance.logout}>
+                                    <span id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</span>
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </ul>
+                </nav>
+            </BlockUi>
         );
     }
 }
