@@ -553,7 +553,7 @@ class TitleEdit extends Component {
                         toggle={this.toggleTerritoryMetadata}
                         activeTab={this.state.territoryMetadataActiveTab}
                         addTerritoryMetadata={this.addTerritoryMetadata}
-                        CREATE_TAB={CREATE_TAB}
+                        createTerritoryTab={CREATE_TAB}
                         handleSubmit={this.handleTerritoryMetadataSubmit}
                         territory={this.state.territory}
                         handleChange={this.handleTerritoryMetadataChange}
