@@ -15,10 +15,12 @@ import {
 class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            editorialMetadata: [],
-            activeTab: 0
-        };
+    }
+
+    shouldComponentUpdate(nextProps) {
+        let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
+        let differentData = this.props.data !== nextProps.data;
+        return differentData || differentTitleContentType;
     }
 
     handleFieldLength = (name) => {
@@ -127,7 +129,7 @@ class EditorialMetadataEditMode extends Component {
                                 <b>Series Name</b>
                             </Col>
                             <Col>
-                                <AvField type="tex" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
+                                <AvField type="text" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }

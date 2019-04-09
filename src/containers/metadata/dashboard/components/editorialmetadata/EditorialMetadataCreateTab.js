@@ -11,10 +11,13 @@ import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metad
 class EditorialMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            editorialMetadata: [],
-            activeTab: 0
-        };
+    }
+
+    shouldComponentUpdate(nextProps) {
+        let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
+        let differentEditorialMetadataForCreate = this.props.editorialMetadataForCreate !== nextProps.editorialMetadataForCreate;
+        let differentFieldsRequired = this.props.areFieldsRequired !== nextProps.areFieldsRequired;
+        return differentEditorialMetadataForCreate || differentTitleContentType || differentFieldsRequired;
     }
 
     handleFieldLength = (name) => {
@@ -107,7 +110,7 @@ class EditorialMetadataCreateTab extends Component {
                                 <b>Series Name</b>
                             </Col>
                             <Col>
-                                <AvField type="tex" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
+                                <AvField type="text" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
                                     onChange={this.props.handleChange}
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }

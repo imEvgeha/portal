@@ -133,6 +133,8 @@ class TitleEdit extends Component {
         });
     };
 
+
+
     handleOnChangeEdit = (e) => {
         this.setState({
             editedForm: {
@@ -288,6 +290,9 @@ class TitleEdit extends Component {
                 console.error('Unable to edit Title Data');
             });
         });
+        this.setState({
+            updatedTerritories: []
+        });
 
         if (this.state.territories.locale) {
             const newTerritory = {
@@ -341,8 +346,6 @@ class TitleEdit extends Component {
         this.setState({
             updatedEditorialMetadata: newOne
         });
-        console.log(data);
-        console.log(newOne);
     };
 
     updateEditorialMetadataInnerObject = (edited, objectName, objectField, objectFieldValue) => {
@@ -433,6 +436,10 @@ class TitleEdit extends Component {
                 console.error('Unable to edit Editorial Metadata');
             });
         });
+        this.setState({
+            updatedEditorialMetadata: []
+        });
+
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             let newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
@@ -528,7 +535,7 @@ class TitleEdit extends Component {
                         toggle={this.toggleEditorialMetadata}
                         activeTab={this.state.editorialMetadataActiveTab}
                         addEditorialMetadata={this.addEditorialMetadata}
-                        CREATE_TAB={CREATE_TAB}
+                        createEditorialTab={CREATE_TAB}
                         handleSubmit={this.handleEditorialMetadataSubmit}
                         editorialMetadata={this.state.editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
