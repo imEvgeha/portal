@@ -184,7 +184,7 @@ class TitleEdit extends Component {
             let updateEditForm = {
                 ...this.state.editedForm,
                 advisories: updatedAdvisory
-            }
+            };
             this.setState({
                 editedForm: updateEditForm
             });
