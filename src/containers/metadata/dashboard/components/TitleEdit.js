@@ -1,23 +1,32 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import t from 'prop-types';
-import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
+import {
+    BREADCRUMB_METADATA_DASHBOARD_PATH,
+    BREADCRUMB_METADATA_SEARCH_RESULTS_PATH,
+    BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH
+} from '../../../../constants/metadata/metadata-breadcrumb-paths';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
-import { titleService } from '../../service/TitleService';
-import { errorModal } from '../../../../components/modal/ErrorModal';
-import { Button, Row, Col } from 'reactstrap';
-import { AvForm } from 'availity-reactstrap-validation';
+import {titleService} from '../../service/TitleService';
+import {Button, Col, Row} from 'reactstrap';
+import {AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
-import {EDITORIAL_METADATA_PREFIX, EDITORIAL_METADATA_SYNOPSIS, EDITORIAL_METADATA_TITLE} from '../../../../constants/metadata/metadataComponent';
+import {
+    EDITORIAL_METADATA_PREFIX,
+    EDITORIAL_METADATA_SYNOPSIS,
+    EDITORIAL_METADATA_TITLE
+} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
+const CAST = 'CAST';
+const CREW = 'CREW';
 
 const emptyTerritory = {
     locale: null,
@@ -60,7 +69,17 @@ class TitleEdit extends Component {
             updatedTerritories: [],
             editorialMetadata: [],
             updatedEditorialMetadata: [],
-            editorialMetadataForCreate: {}
+            editorialMetadataForCreate: {},
+            isCastModalOpen: false,
+            isCrewModalOpen: false,
+            ratingSystem: '',
+            ratingValue: '',
+            cast: [],
+            crew: [],
+            castCrewInputValue: '',
+            crewInputValue: '',
+            advisoriesFreeText: '',
+            advisoryCode: ''
         };
     }
 
@@ -133,14 +152,19 @@ class TitleEdit extends Component {
         });
     };
 
-
-
     handleOnChangeEdit = (e) => {
         this.setState({
             editedForm: {
                 ...this.state.editedForm,
                 [e.target.name]: e.target.value
             }
+        });
+    };
+
+    handleOnChangeTitleDuration = (duration) => {
+        this.setState({
+            ...this.state.editedForm,
+            duration: duration
         });
     };
 
@@ -170,27 +194,135 @@ class TitleEdit extends Component {
         });
     };
 
+    handleOnExternalIds = (e) => {
+        const newExternalIds = {
+            ...this.state.editedForm.externalIds,
+            [e.target.name]: e.target.value
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                externalIds: newExternalIds
+            }
+        });
+    };
+
+    addAdvisoryCodes = (advisory) => {
+        if(advisory !== '') {
+            let advisoriesCode = [this.state.advisoryCode];
+            if(!this.state.editedForm.advisories) {
+                advisoriesCode = [this.state.advisoryCode];
+            }else {
+                advisoriesCode = [this.state.advisoryCode, ...this.state.editedForm.advisories.advisoriesCode];
+            }
+
+            let updatedAdvisory = {
+                ...this.state.editedForm.advisories,
+                advisoriesCode: advisoriesCode
+            };
+            let updateEditForm = {
+                ...this.state.editedForm,
+                advisories: updatedAdvisory
+            };
+            this.setState({
+                editedForm: updateEditForm
+            });
+        }
+    };
+
+    removeAdvisoryCodes = (removeAdvisory) => {
+            let advisoriesCode = this.state.editedForm.advisories.advisoriesCode.filter(rating => rating !== removeAdvisory);
+
+            let updatedAdvisory = {
+                ...this.state.editedForm.advisories,
+                advisoriesCode: advisoriesCode
+            };
+            let updateEditForm = {
+                ...this.state.editedForm,
+                advisories: updatedAdvisory
+            };
+            this.setState({
+                editedForm: updateEditForm
+            });
+    };
+
+    handleOnAdvisoriesCodeUpdate = (value) => {
+        if (value !== '') {
+            this.setState({
+                advisoryCode: value
+            });
+        }
+    };
+
+    handleOnAdvisories = (e) => {
+        const newAdvisory = {
+            ...this.state.editedForm.advisories,
+            [e.target.name]: e.target.value
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                advisories: newAdvisory
+            }
+        });
+    };
+
     readOnly = () => {
         return <TitleReadOnlyMode data={this.state.titleForm} />;
     };
 
     editMode = () => {
         return <TitleEditMode
+            isCastModalOpen={this.state.isCastModalOpen}
+            isCrewModalOpen={this.state.isCrewModalOpen}
+            renderModal={this.renderModal}
+            castCrewInputValue={this.state.castCrewInputValue}
+            updateCastCrewValue={this.updateCastCrewValue}
+            ratingValue={this.state.ratingValue}
+            removeRating={this.removeRating}
+            removeCastCrew={this.removeCastCrew}
+            ratingSystem={this.state.ratingSystem}
+            updateValue={this.updateValue}
+            ratings={this.state.editedForm.ratings}
+            advisoryCodeList={this.state.editedForm.advisories}
+            removeAdvisoryCodes={this.removeAdvisoryCodes}
+            addCastCrew={this.addCastCrew}
+            handleOnAdvisories={this.handleOnAdvisories}
             handleChangeEpisodic={this.handleChangeEpisodic}
+            handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
+            _handleKeyPress={this._handleKeyPress}
+            _handleAddAdvisoryCode={this._handleAddAdvisoryCode}
+            handleOnAdvisoriesCodeUpdate={this.handleOnAdvisoriesCodeUpdate}
+            advisoryCode={this.state.advisoryCode}
             data={this.state.titleForm}
+            editedTitle={this.state.editedForm}
             episodic={this.state.titleForm.episodic}
+            handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
             handleOnChangeEdit={this.handleOnChangeEdit} />;
+    };
+
+    removeBooleanQuotes = (newAdditionalFields, fieldName) => {
+        if (newAdditionalFields[fieldName]) {
+            if (newAdditionalFields[fieldName] === 'true') {
+                newAdditionalFields[fieldName] = true;
+            } else if (newAdditionalFields[fieldName] === 'false') {
+                newAdditionalFields[fieldName] = false;
+            }
+        }
     };
 
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm) {
-            const updatedTitle = this.state.editedForm;
             this.setState({
                 isLoading: true
             });
-            titleService.updateTitle(updatedTitle).then(() => {
+            let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
+            this.removeBooleanQuotes(newAdditionalFields, 'animated');
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
+            titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
                     titleForm: this.state.editedForm,
@@ -198,12 +330,9 @@ class TitleEdit extends Component {
                     territoryMetadataActiveTab: CURRENT_TAB,
                     editorialMetadataActiveTab: CURRENT_TAB
                 });
-
-            }).catch((err) => {
-                errorModal.open('Error', () => { }, { description: err.message, closable: true });
+            }).catch(() => {
                 console.error('Unable to load Title Data');
             });
-
         } else {
             this.setState({
                 isEditMode: !this.state.isEditMode,
@@ -315,7 +444,6 @@ class TitleEdit extends Component {
             this.cleanTerritoryMetadata();
         }
     };
-
 
     /**
      * Editorial Metadata document
@@ -491,6 +619,40 @@ class TitleEdit extends Component {
         return doAddSubObject ? subObject : null;
     }
 
+    getAdditionalFieldsWithoutEmptyField() {
+        let additionalFields = {};
+        for (let fields in this.state.editedForm) {
+            if (fields === 'externalIds') {
+                additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
+            }
+            else if (fields === 'advisories') {
+                additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
+            }
+            else if (this.state.editedForm[fields]) {
+                additionalFields[fields] = this.state.editedForm[fields];
+            } else {
+                additionalFields[fields] = null;
+            }
+        }
+
+        return additionalFields;
+    }
+
+    getAdditionalFieldsWithoutEmptyFields(subField) {
+        let subObject = {};
+        let doAddSubObject = false;
+        for (let field in this.state.editedForm[subField]) {
+            if (this.state.editedForm[subField][field]) {
+                subObject[field] = this.state.editedForm[subField][field];
+                doAddSubObject = true;
+            } else {
+                subField[field] = null;
+            }
+        }
+
+        return doAddSubObject ? subObject : null;
+    }
+
     /**
      * Common
      */
@@ -504,11 +666,144 @@ class TitleEdit extends Component {
         });
     };
 
+    onKeyPress(event) {
+        if (event.which === 13 /* Enter */) {
+            event.preventDefault();
+        }
+    }
+
+    /**
+     * Title core additional fields
+     */
+    renderModal = modalName => {
+        this.cleanCastInput();
+        if (modalName === CAST) {
+            this.setState({
+                isCastModalOpen: !this.state.isCastModalOpen
+            });
+        } else if (modalName === CREW) {
+            this.setState({
+                isCrewModalOpen: !this.state.isCrewModalOpen
+            });
+        } else {
+            this.setState({
+                isCrewModalOpen: false,
+                isCastModalOpen: false
+            });
+        }
+    };
+
+    addRating = rating => {
+        if (rating !== '') {
+            let ratingArray = [{
+                rating: this.state.ratingValue,
+                ratingSystem: this.state.ratingSystem
+            }];
+
+            if(this.state.editedForm.ratings) {
+                ratingArray = [...ratingArray, ...this.state.editedForm.ratings];
+            }
+
+            let updateEditForm = {
+                ...this.state.editedForm,
+                ratings: ratingArray
+            };
+            this.setState({
+                editedForm: updateEditForm
+            });
+        }
+    };
+
+    updateValue = value => {
+        if (value !== '') {
+            this.setState({
+                ratingValue: value
+            });
+        }
+    };
+
+    removeRating = removeRating => {
+        let rating = this.state.editedForm.ratings.filter(rating => rating !== removeRating);
+        let updateEditForm = {
+            ...this.state.editedForm,
+            ratings: rating
+        };
+        this.setState({
+            editedForm: updateEditForm
+        });
+    };
+
+    addCastCrew = (personType) => {
+        if (this.state.castCrewInputValue) {
+            let castCrewArray = [{
+                displayName: this.state.castCrewInputValue,
+                personType: personType
+            }];
+            if (this.state.editedForm.castCrew) {
+                castCrewArray = [...castCrewArray, ...this.state.editedForm.castCrew];
+            }
+
+            let updateEditForm = {
+                ...this.state.editedForm,
+                castCrew: castCrewArray
+            };
+
+            this.setState({
+                editedForm: updateEditForm
+            });
+            this.cleanCastInput();
+        }
+    };
+
+    updateCastCrewValue = value => {
+        if (value !== '') {
+            this.setState({
+                castCrewInputValue: value
+            });
+        }
+    };
+
+    removeCastCrew = removeCastCrew => {
+        let cast = this.state.editedForm.castCrew.filter(cast => cast !== removeCastCrew);
+        let updateEditForm = {
+            ...this.state.editedForm,
+            castCrew: cast
+        };
+        this.setState({
+           editedForm: updateEditForm
+        });
+    };
+
+    cleanCastInput = () => {
+        this.setState({
+            castCrewInputValue: ''
+        });
+    };
+
+    _handleKeyPress = e => {
+        if (e.keyCode === 13) {
+            //Key code for Enter
+            this.addRating(this.state.ratingValue);
+            this.setState({
+                ratingValue: ''
+            });
+        }
+    };
+
+    _handleAddAdvisoryCode = e => {
+        if(e.keyCode === 13) {
+            this.addAdvisoryCodes(this.state.advisoryCode);
+            this.setState({
+                advisoryCode: ''
+            });
+        }
+    };
+
     render() {
         return (
             <EditPage>
 
-                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} ref={c => (this.form = c)}>
+                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} ref={c => (this.form = c)} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
                             {
