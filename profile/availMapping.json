@@ -532,7 +532,7 @@
   "queryParamName": "ratingSystemMatch",
   "readOnly": false,
   "enableSearch": true,
-  "enableEdit": false,
+  "enableEdit": true,
   "required": false
 }, {
   "javaVariableName": "rating.ratingValue",
@@ -960,6 +960,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seriesId",
+  "displayName": "EIDR Series ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeriesIdMatch",
