@@ -139,7 +139,7 @@ class RightDetails extends React.Component {
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
-            if(val || val === false) {
+            if(val || val === false || val === null) {
                 if(Array.isArray(val) && map.dataType === 'string') {
                     rightCopy[map.javaVariableName] = val.join(',');
                 }else {
@@ -327,39 +327,53 @@ class RightDetails extends React.Component {
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
-            const ref = React.createRef();
-            const displayFunc = (val) => {
-                if(error){
-                    return (<div title = {error}
-                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',
-                                     color: error ? '#a94442' : null
-                                 }}
-                    > {error} </div>);
-                }else{
-                    return val;
-                }
+            let priorityError = null;
+            if(error){
+                priorityError = <div title = {error}
+                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+                    {error}
+                </div>;
+            }
+
+            let ref;
+            if(this.fields[name]){
+                ref = this.fields[name];
+
+            }else{
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [ {server: null, value: 1, label: 'Select...', display: null},
+                            {server: false, value: 2, label: 'No', display: 'No'},
+                            {server: true, value: 3, label: 'Yes', display: 'Yes'}];
+            const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
+
+            let handleOptionsChange = (option) => {
+                ref.current.handleChange(option.display);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
             };
 
-            const options=[{value: 1, text: 'No' }, {value: 2, text: 'Yes' }];
-            const val = value === undefined ? value : (value ? 2 : 1);
-            const displayV = val === undefined ? val : options[val - 1].text;
-
-            return renderFieldTemplate(name, displayName, displayV, error, readOnly, required, (
-                <Editable
+            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, (
+                <EditableBaseComponent
                     ref={ref}
-                    title={name}
-                    dataType="select"
+                    value={options.find((opt) => opt.server === value).display}
+                    priorityDisplay={priorityError}
+                    name={name}
                     disabled={readOnly}
-                    emptyValueText={displayFunc(readOnly ? '' : this.emptyValueText + ' ' + displayName)}
-                    placeholder={this.emptyValueText + ' ' + displayName}
-                    handleSubmit={this.handleSubmit}
-                    value={val}
-                    options={options}
-                    display={(value) => displayFunc(value)}
-
+                    displayName={displayName}
+                    validate={() => {}}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({display}) => display == value).server, cancel) }
+                    helperComponent={<Select
+                        name={name}
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={options}
+                        value={val}
+                        onChange={handleOptionsChange}
+                    />}
                 />
             ));
-
         };
 
         const renderSelectField = (name, displayName, value, error, readOnly, required) => {
