@@ -20,7 +20,7 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {getDeepValue} from '../../../util/Common';
+import {getDeepValue, safeTrim} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
@@ -105,7 +105,15 @@ class RightDetails extends React.Component {
 
     handleSubmit(editable) {
         const name = editable.props.title;
-        const value = editable.value ? editable.value.trim() : editable.value;
+        let value = editable.value;
+        if(editable.props.dataType === 'select'){
+            const opts = [false, true];
+            const selectedOpt = editable.state.options.find((opt) => opt.text === value);
+            value = selectedOpt ? opts[selectedOpt.value - 1] : null;
+        }
+
+        value = safeTrim(value);
+
         this.update(name, value, () => {
             editable.setState({rightLastEditSucceed: false});
             editable.value = this.state.right[name];
@@ -131,7 +139,7 @@ class RightDetails extends React.Component {
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
-            if(val) {
+            if(val || val === false) {
                 if(Array.isArray(val) && map.dataType === 'string') {
                     rightCopy[map.javaVariableName] = val.join(',');
                 }else {
@@ -319,20 +327,37 @@ class RightDetails extends React.Component {
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
-            const options=[{ key:'t', value: 'true', text: 'Yes' }, { key:'f', value: 'false', text: 'No' }];
-            const val = value ? options[0] : options[1];
+            const ref = React.createRef();
+            const displayFunc = (val) => {
+                if(error){
+                    return (<div title = {error}
+                                 style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',
+                                     color: error ? '#a94442' : null
+                                 }}
+                    > {error} </div>);
+                }else{
+                    return val;
+                }
+            };
 
-            return renderFieldTemplate(name, displayName, val, error, readOnly, required, (
+            const options=[{value: 1, text: 'No' }, {value: 2, text: 'Yes' }];
+            const val = value === undefined ? value : (value ? 2 : 1);
+            const displayV = val === undefined ? val : options[val - 1].text;
+
+            return renderFieldTemplate(name, displayName, displayV, error, readOnly, required, (
                 <Editable
+                    ref={ref}
                     title={name}
-                    name={name}
                     dataType="select"
                     disabled={readOnly}
+                    emptyValueText={displayFunc(readOnly ? '' : this.emptyValueText + ' ' + displayName)}
+                    placeholder={this.emptyValueText + ' ' + displayName}
                     handleSubmit={this.handleSubmit}
-                    value={val.value}
+                    value={val}
                     options={options}
-                />
+                    display={(value) => displayFunc(value)}
 
+                />
             ));
 
         };
