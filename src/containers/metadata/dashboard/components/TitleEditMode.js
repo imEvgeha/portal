@@ -118,7 +118,7 @@ class TitleEditMode extends Component {
                               errorMessage='Please enter a valid season number!'
                               value={
                                 this.props.data.episodic !== null &&
-                                  this.props.data.episodic.seasonNumber
+                                this.props.data.episodic.seasonNumber
                                   ? this.props.data.episodic.seasonNumber
                                   : ''
                               }
@@ -142,7 +142,7 @@ class TitleEditMode extends Component {
                                   errorMessage='Please enter a valid episode number!'
                                   value={
                                     this.props.data.episodic !== null &&
-                                      this.props.data.episodic.episodeNumber
+                                    this.props.data.episodic.episodeNumber
                                       ? this.props.data.episodic.episodeNumber
                                       : ''
                                   }
@@ -266,7 +266,7 @@ class TitleEditMode extends Component {
                   <Label for='duration'>Duration</Label>
                   <Row>
                     <Col>
-                      <AvField  
+                      <AvField
                         type="text"
                         name="duration"
                         value={duration}

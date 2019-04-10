@@ -1,0 +1,1411 @@
+{"mappings":
+[{
+  "javaVariableName": "title",
+  "displayName": "Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "titleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "studio",
+  "displayName": "Production Studio",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/production-studios",
+  "queryParamName": "studio",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "platform",
+  "displayName": "Platform",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "platformMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "licensor",
+  "displayName": "Licensor",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/licensors",
+  "queryParamName": "licensor",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "rightStatus",
+  "displayName": "Right Status",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Pending", "Confirmed", "Tentative", "Canceled", "Withdrawn"],
+  "queryParamName": "rightStatus",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "rightContractStatus",
+  "displayName": "Right Contract Status",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Pending", "Matched", "ManualOverride"],
+  "queryParamName": "rightContractStatus",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "status",
+  "displayName": "Status",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Pending", "Selected", "Planned", "TitleMatched", "Consolidated", "Published"],
+  "queryParamName": "status",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "contractId",
+  "displayName": "Contract Id",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "contractIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "vuContractId",
+  "displayName": "VU Contract Id",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "vuContractIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "titleStatus",
+  "displayName": "Title Status",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Pending", "Approved"],
+  "queryParamName": "titleStatus",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "coreTitleId",
+  "displayName": "Core Title Id",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "coreTitleIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "licensee",
+  "displayName": "Licensee",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "licenseeMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "storeLanguage",
+  "displayName": "Store Language",
+  "dataType": "language",
+  "searchDataType": "multilanguage",
+  "queryParamName": "storeLanguage",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "ALID",
+  "displayName": "ALID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "ALIDMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "CID",
+  "displayName": "CID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "CIDMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "licenseType",
+  "displayName": "License Type",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/licence-types",
+  "queryParamName": "licenseType",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "licenseRightsDescription",
+  "displayName": "License Rights Description",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/license-rights-desc",
+  "queryParamName": "licenseRightsDescription",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "territory",
+  "displayName": "Territory",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/territories",
+  "queryParamName": "territory",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "territoryExcluded",
+  "displayName": "Territory Excluded",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/territories",
+  "queryParamName": "territoryExcluded",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "genres",
+  "displayName": "Genres",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/genres",
+  "queryParamName": "genres",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "affiliate",
+  "displayName": "Affiliate",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/affiliates",
+  "queryParamName": "affiliate",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "affiliateExclude",
+  "displayName": "Affiliate Exclude",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/affiliates",
+  "queryParamName": "affiliateExclude",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "assetLanguage",
+  "displayName": "Asset Language",
+  "dataType": "language",
+  "searchDataType": "multilanguage",
+  "queryParamName": "assetLanguage",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "languages.language",
+  "displayName": "Language",
+  "dataType": "multilanguage",
+  "searchDataType": "multilanguage",
+  "queryParamName": "language",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "languages.audioType",
+  "displayName": "Audio Type",
+  "dataType": "string",
+  "searchDataType": "multiselect",
+  "queryParamName": "audioType",
+  "options": ["Stereo", "Dolby51"],
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "localizationType",
+  "displayName": "Localization Type",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "localizationTypeMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "holdbackLanguage",
+  "displayName": "Holdback Language",
+  "dataType": "multilanguage",
+  "searchDataType": "multilanguage",
+  "queryParamName": "holdbackLanguage",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "allowedLanguages",
+  "displayName": "Allowed Languages",
+  "dataType": "multilanguage",
+  "searchDataType": "multilanguage",
+  "queryParamName": "allowedLanguages",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "requiredFulfillmentLanguages",
+  "displayName": "Required Fulfillment Languages",
+  "dataType": "multilanguage",
+  "searchDataType": "multilanguage",
+  "queryParamName": "requiredFulfillmentLanguages",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "contentType",
+  "displayName": "Content Type",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/content-types",
+  "queryParamName": "contentType",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "displayTitle",
+  "displayName": "Display Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "displayTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.seriesTitle",
+  "displayName": "Series Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seriesTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.seriesDisplayTitle",
+  "displayName": "Series Display Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seriesDisplayTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.seasonTitle",
+  "displayName": "Season Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seasonTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.seasonDisplayTitle",
+  "displayName": "Season Display Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seasonDisplayTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.seasonNumber",
+  "displayName": "Season Number",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "seasonNumber",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.eposodeTitle",
+  "displayName": "Eposode Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eposodeTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.episodeDisplayTitle",
+  "displayName": "Episode Display Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "episodeDisplayTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.episodeNumber",
+  "displayName": "Episode Number",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "episodeNumber",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.volumeTitle",
+  "displayName": "Volume Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "volumeTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.volumeDisplayTitle",
+  "displayName": "Volume Display Title",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "volumeDisplayTitleMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.volumeNumber",
+  "displayName": "Volume Number",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "volumeNumber",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.distributionNumber",
+  "displayName": "Distribution Number",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "distributionNumber",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.volumeDistributionNumber",
+  "displayName": "Volume Distribution Number",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "volumeDistributionNumber",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.episodeCount",
+  "displayName": "Episode Count",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "episodeCount",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodic.seasonCount",
+  "displayName": "Season Count",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "seasonCount",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "groupIdentity",
+  "displayName": "Group Identity",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "groupIdentityMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "companyDisplayCredit",
+  "displayName": "Company Display Credit",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "companyDisplayCreditMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "releaseYear",
+  "displayName": "Release Year",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "releaseYear",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "releaseHistoryOriginal",
+  "displayName": "Release History Original",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "releaseHistoryOriginal",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "releaseHistoryPhysicalHV",
+  "displayName": "Release History Physical HV",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "releaseHistoryPhysicalHV",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "rating.ratingSystem",
+  "displayName": "Rating system",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "ratingSystemMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": false,
+  "required": false
+}, {
+  "javaVariableName": "rating.ratingValue",
+  "displayName": "Rating Value",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/ratings",
+  "queryParamName": "rating",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "rating.ratingReason",
+  "displayName": "Rating Reason",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "ratingReasonMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "format",
+  "displayName": "Format",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/formats",
+  "queryParamName": "format",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "captions.captionIncluded",
+  "displayName": "Caption Included",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "captionIncluded",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "caption.captionExemption",
+  "displayName": "Caption Exemption",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "captionExemption",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "any",
+  "displayName": "Any",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "anyMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "totalRuntime",
+  "displayName": "Total Runtime",
+  "dataType": "time",
+  "searchDataType": "time",
+  "queryParamName": "totalRuntime",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "hdr",
+  "displayName": "HDR",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["DV", "DolbyVision", "HDR10"],
+  "queryParamName": "hdr",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "wcg",
+  "displayName": "WCG",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "wcg",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "hfr",
+  "displayName": "HFR",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "hfr",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "ngAudio",
+  "displayName": "NG Audio",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Atmos", "DTSX", "Auro3D"],
+  "queryParamName": "ngAudio",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "availStart",
+  "displayName": "Avail Start",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "availStart",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "availEnd",
+  "displayName": "Avail End",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "availEnd",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "start",
+  "displayName": "Start",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "start",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "end",
+  "displayName": "End",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "end",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "startLag",
+  "displayName": "Start Lag",
+  "dataType": "duration",
+  "searchDataType": "duration",
+  "queryParamName": "startLag",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "endLag",
+  "displayName": "End Lag",
+  "dataType": "duration",
+  "searchDataType": "duration",
+  "queryParamName": "endLag",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "windowDuration",
+  "displayName": "Window Duration",
+  "dataType": "duration",
+  "searchDataType": "duration",
+  "queryParamName": "windowDuration",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "pricing.priceType",
+  "displayName": "Price Type",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "priceTypeMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "pricing.priceValue",
+  "displayName": "Price Value",
+  "dataType": "double",
+  "searchDataType": "double",
+  "queryParamName": "priceValue",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "pricing.priceCurrency",
+  "displayName": "Price Currency",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "priceCurrency",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "srp",
+  "displayName": "SRP",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "srp",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "description",
+  "displayName": "Description",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "descriptionMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "bonus",
+  "displayName": "Bonus",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "bonusMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "download",
+  "displayName": "Download",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "downloadMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "otherTerms",
+  "displayName": "Other Terms",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "otherTermsMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "otherInstructions",
+  "displayName": "Other Instructions",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "otherInstructionsMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "suppressionLiftDate",
+  "displayName": "Suppression Lift Date",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "suppressionLiftDate",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "specialPreOrderFulfillDate",
+  "displayName": "Special Pre Order Fulfill Date",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "specialPreOrderFulfillDate",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "announceDate",
+  "displayName": "Announce Date",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "announceDate",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "rentalDuration",
+  "displayName": "Rental Duration",
+  "dataType": "duration",
+  "searchDataType": "duration",
+  "queryParamName": "rentalDuration",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "watchDuration",
+  "displayName": "Watch Duration",
+  "dataType": "duration",
+  "searchDataType": "duration",
+  "queryParamName": "watchDuration",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "exclusive",
+  "displayName": "Exclusive",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "exclusiveMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "exclusiveAttributes",
+  "displayName": "Exclusive Attributes",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "exclusiveAttributesMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "brandingRights",
+  "displayName": "Branding Rights",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "brandingRights",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "brandingRightsAttributes",
+  "displayName": "Branding Rights Attributes",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "brandingRightsAttributesMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "cmContentIds.contentId",
+  "displayName": "Content ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "contentIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "cmContentIds.seriesContentId",
+  "displayName": "Series Content ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seriesContentIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "cmContentIds.seasonContentId",
+  "displayName": "Season Content ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seasonContentIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "cmContentIds.volumeContentId",
+  "displayName": "Volume Content ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "volumeContentIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "cmContentIds.episodeContentId",
+  "displayName": "Episode Content ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "episodeContentIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.titleId",
+  "displayName": "EIDR Title ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrTitleIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.seriesId",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrSeriesIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.seasonId",
+  "displayName": "EIDR Season ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrSeasonIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.episodeTitleId",
+  "displayName": "EIDR Episode Title ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrEpisodeTitleIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.volumeId",
+  "displayName": "EIDR Volume ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrVolumeIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.episodeId",
+  "displayName": "EIDR Episode ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrEpisodeIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.editId",
+  "displayName": "EIDR Edit ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrEditIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "eidr.encodeId",
+  "displayName": "EIDR Encode ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "eidrEncodeIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "altId",
+  "displayName": "Alt ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "altIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "seriesAltId",
+  "displayName": "Series Alt ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seriesAltIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "seasonAltId",
+  "displayName": "Season Alt ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "seasonAltIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "volumeAltId",
+  "displayName": "Volume Alt ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "volumeAltIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "episodeAltId",
+  "displayName": "Episode Alt ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "episodeAltIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "availId",
+  "displayName": "Avail ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "availId",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": false,
+  "required": false
+}, {
+  "javaVariableName": "uvId",
+  "displayName": "UV ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "uvIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "dmaId",
+  "displayName": "DMA ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "dmaIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "reportingId",
+  "displayName": "Reporting ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "reportingIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "metadata",
+  "displayName": "Metadata",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "metadataMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "packageLabel",
+  "displayName": "Package Label",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "packageLabelMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "exceptionFlag",
+  "displayName": "Exception Flag",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "exceptionFlag",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "serviceProvider",
+  "displayName": "Service Provider",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "serviceProviderMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "bundledALIds",
+  "displayName": "Bundled AL IDs",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "bundledALIdsMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "retailer.retailerId1",
+  "displayName": "Retailer ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "retailerId1Match",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "retailer.retailerSeriesId",
+  "displayName": "Retailer Series ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "retailerSeriesIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "retailer.retailerSeasonId",
+  "displayName": "Retailer Season ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "retailerSeasonIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "retailer.retailerVolumeId",
+  "displayName": "Retailer Volume ID",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "retailerVolumeIdMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "retailer.retailerEpisodeId1",
+  "displayName": "Retailer Episode Id1",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "retailerEpisodeId1Match",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "retailer.retailerSpare1",
+  "displayName": "Retailer Spare 1",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "retailerSpare1Match",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "boxOffice",
+  "displayName": "Box Office",
+  "dataType": "double",
+  "searchDataType": "double",
+  "queryParamName": "boxOffice",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "usBoxOffice",
+  "displayName": "US Box Office",
+  "dataType": "double",
+  "searchDataType": "double",
+  "queryParamName": "usBoxOffice",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "boxOfficeComment",
+  "displayName": "Box Office Comment",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "boxOfficeCommentMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "daysFromLVR",
+  "displayName": "Days From LVR",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "daysFromLVR",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "audioDescription",
+  "displayName": "Audio Description",
+  "dataType": "multilanguage",
+  "searchDataType": "multilanguage",
+  "queryParamName": "audioDescription",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "imdbLink",
+  "displayName": "IMDB Link",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "imdbLinkMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "termYear",
+  "displayName": "Term Year",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "termYear",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "reLicence",
+  "displayName": "Re-License",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "reLicence",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "reWork",
+  "displayName": "Re-Work",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "stringMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "contractualCategory",
+  "displayName": "Contractual Category",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "stringMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "productType",
+  "displayName": "Product Type",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "stringMatch",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "subtitles",
+  "displayName": "Subtitles",
+  "dataType": "multilanguage",
+  "searchDataType": "multilanguage",
+  "queryParamName": "subtitles",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "startTime",
+  "displayName": "Start Time",
+  "dataType": "time",
+  "searchDataType": "time",
+  "queryParamName": "startTime",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "materialDeliveryDate",
+  "displayName": "Material Delivery Date",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "materialDeliveryDate",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "createdAt",
+  "displayName": "Created At",
+  "dataType": "localdate",
+  "searchDataType": "localdate",
+  "queryParamName": "createdAt",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "updatedAt",
+  "displayName": "Updated At",
+  "dataType": "localdate",
+  "searchDataType": "localdate",
+  "queryParamName": "updatedAt",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "createdBy",
+  "displayName": "Created By",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "createdBy",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "modifiedBy",
+  "displayName": "Modified By",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "modifiedBy",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}
+]}

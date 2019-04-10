@@ -1,12 +1,27 @@
 import React, {Component} from 'react';
 import t from 'prop-types';
+import {connect} from 'react-redux';
 import {Button} from 'reactstrap';
 import Select from 'react-select';
 import RangeDatapicker from './RangeDatapicker';
+import RangeDuration from './RangeDuration';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import ISO6391 from 'iso-639-1';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 
-export default class SelectableInput extends Component {
+
+const mapStateToProps = state => {
+    return {
+        selectValues: state.root.selectValues
+    };
+};
+
+class SelectableInput extends Component {
 
     static propTypes = {
+        selectValues: t.object,
+        currentCriteria: t.object,
+
         id: t.string,
         saveText: t.string,
         placeholder: t.string,
@@ -22,6 +37,7 @@ export default class SelectableInput extends Component {
         onSelect: t.func,
         onChange: t.func,
         onSave: t.func,
+
     };
 
     constructor(props) {
@@ -30,12 +46,14 @@ export default class SelectableInput extends Component {
             invalid: false,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleDateInvalid = this.handleDateInvalid.bind(this);
+        this.handleOptionsChange = this.handleOptionsChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleInvalid = this.handleInvalid.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.isAnyValueSpecified = this.isAnyValueSpecified.bind(this);
         this.refInput = React.createRef();
         this.refDatePicker = React.createRef();
+        this.refDuration = React.createRef();
     }
 
     componentDidUpdate(prevProps) {
@@ -56,11 +74,24 @@ export default class SelectableInput extends Component {
         this.props.onChange({...this.props.value, value: value});
     }
 
-    handleDateChange(key, value) {
+    handleChange(key, value) {
+        if(value) {
+            if (this.props.dataType === 'date') {
+                value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            }
+            if (this.props.dataType === 'localdate') {
+                value = value.format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            }
+        }
+
         this.props.onChange({...this.props.value, [key]: value});
     }
 
-    handleDateInvalid(value) {
+    handleOptionsChange(selectedOptions) {
+        this.props.onChange({...this.props.value, options: selectedOptions});
+    }
+
+    handleInvalid(value) {
         this.setState({invalid: value});
     }
 
@@ -75,13 +106,15 @@ export default class SelectableInput extends Component {
                 this.refInput.current.focus();
             } else if (this.refDatePicker.current) {
                 this.refDatePicker.current.focus();
+            } else if (this.refDuration.current) {
+                this.refDuration.current.focus();
             }
         }, 10);
     }
 
     isAnyValueSpecified = () => {
         const value = this.props.value;
-        return value.from || value.to || (value.value  && value.value.trim());
+        return value.from || value.to || (value.value  && value.value.trim() || (value.options && value.options.length > 0));
     };
 
     render() {
@@ -90,7 +123,7 @@ export default class SelectableInput extends Component {
                 <input type="text" className="form-control"
                     id={this.props.id + '-text'}
                     placeholder={'Enter ' + displayName}
-                    name={name}
+                    name={name.value}
                     ref={this.refInput}
                     value={this.props.value && this.props.value.value ? this.props.value.value : '' }
                     onChange={this.handleInputChange}
@@ -98,30 +131,173 @@ export default class SelectableInput extends Component {
             </div>);
         };
 
+        const renderNumberField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <AvForm>
+                    <AvField
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                        type="text"
+                        validate={{number: true}}
+                        errorMessage="Please enter a valid number!"
+                    />
+                </AvForm>
+            </div>);
+        };
+
+        const renderTimeField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <AvForm>
+                    <AvField
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                        type="text"
+                        validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
+                        errorMessage="Please enter a valid number!"
+                    />
+                </AvForm>
+            </div>);
+        };
+
+        const renderBooleanField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <select className="form-control"
+                        id={this.props.id + '-boolean'}
+                        name={name.value}
+                        placeholder={'Enter ' + displayName}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}>
+                    <option value="">None selected</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>);
+        };
+
+        const renderRangeDurationField = (name, displayName) => {
+            return (
+                <RangeDuration
+                    key={name.value}
+                    id={this.props.id + '-duration'}
+                    ref={this.refDuration}
+                    hideLabel={true}
+                    displayName={displayName}
+                    value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
+                    onFromDurationChange={(value) => this.handleChange('from', value)}
+                    onToDurationChange={(value) => this.handleChange('to', value)}
+                    onInvalid={this.handleInvalid}
+                    handleKeyPress={this._handleKeyPress}
+                />);
+        };
+
         const renderRangeDatepicker = (name, displayName) => {
             return (
                 <RangeDatapicker
-                    key={name}
+                    key={name.value}
                     id={this.props.id + '-datepicker'}
                     ref={this.refDatePicker}
                     hideLabel={true}
                     displayName={displayName}
                     value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
-                    onFromDateChange={(value) => this.handleDateChange('from', value)}
-                    onToDateChange={(value) => this.handleDateChange('to', value)}
-                    onInvalid={this.handleDateInvalid}
+                    onFromDateChange={(value) => this.handleChange('from', value)}
+                    onToDateChange={(value) => this.handleChange('to', value)}
+                    onInvalid={this.handleInvalid}
                     handleKeyPress={this._handleKeyPress}
             />);
+        };
+
+        const renderSelect = (name, displayName, type) => {
+            let options = [];
+            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.value]){
+                options  = this.props.selectValues[this.props.selected.value];
+            }
+
+            if(type === 'multilanguage'){
+                options = ISO6391.getAllCodes().map(code => {return {value:code, label:ISO6391.getName(code)};});
+            }
+
+            let filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
+            let filteredOptions = options;
+
+            filters.forEach(filter => {
+                const fieldName = filter.name + 'Id';
+                const allowedOptions = filter.options.map(({id}) => id);
+                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
+            });
+
+            const allOptions = [
+                {
+                    label: 'Select All',
+                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                        label: rec.label || rec.value,
+                        aliasValue:(rec.aliasId ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null)};})
+                }
+            ];
+
+            return (
+                <div
+                    id={this.props.id + '-select'}
+                    key={name.value}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                    className="react-select-container">
+                    <ReactMultiSelectCheckboxes
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
+                            if(value && value.length > 0){
+                                return (
+                                    <div
+                                        style={{width:'90%'}}
+                                    >
+                                        <div
+                                            style={{maxWidth:'calc(100% - 90px)', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                        >
+                                            {value.map(({value}) => value).join(', ')}
+                                        </div>
+                                        <div
+                                            style={{width:'90px', float:'left', paddingLeft:'5px'}}
+                                        >
+                                            {' (' + value.length + ' selected)'}
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return placeholderButtonLabel;
+                        }}
+                        options={allOptions}
+                        value = {this.props.value.options || []}
+                        onChange={this.handleOptionsChange}
+                    />
+                </div>
+            );
         };
 
         const renderSelectedInput = () => {
             const selected = this.props.selected;
             const displayName = this.props.displayName;
-            if (this.props.dataType === 'date') {
-                return renderRangeDatepicker(selected, displayName);
-            } else {
-                return renderTextField(selected, displayName);
+
+            switch (this.props.dataType) {
+                case 'string' : return renderTextField(selected, displayName);
+                case 'integer' : return renderNumberField(selected, displayName);
+                case 'double' : return renderNumberField(selected, displayName);
+                case 'multiselect' : return renderSelect(selected, displayName, this.props.dataType);
+                case 'multilanguage' : return renderSelect(selected, displayName, this.props.dataType);
+                case 'duration' : return renderRangeDurationField(selected, displayName);
+                case 'time' : return renderTimeField(selected, displayName);
+                case 'date' : return renderRangeDatepicker(selected, displayName);
+                case 'localdate' : return renderRangeDatepicker(selected, displayName);
+                case 'boolean' : return renderBooleanField(selected, displayName);
+                default:
+                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
             }
+
         };
 
         return (
@@ -153,3 +329,5 @@ export default class SelectableInput extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, null)(SelectableInput);

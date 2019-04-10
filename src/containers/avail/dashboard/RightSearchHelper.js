@@ -4,10 +4,11 @@ import {
     searchFormSetAdvancedSearchCriteria,
 } from '../../../stores/actions/avail/dashboard';
 
-import {availServiceManager} from '../service/AvailServiceManager';
-import {momentToISO, safeTrim} from '../../../util/Common';
+import {rightServiceManager} from '../service/RightServiceManager';
+import {safeTrim} from '../../../util/Common';
+import moment from 'moment';
 
-export const availSearchHelper = {
+export const rightSearchHelper = {
 
     loadAdvancedSearchForm: (filter) => {
         store.dispatch(searchFormSetAdvancedSearchCriteria(filter));
@@ -22,12 +23,16 @@ export const availSearchHelper = {
                     response[key] = safeTrim(criteria);
                 } else if (criteria.value || criteria.value === false) {
                     response[key] = safeTrim(criteria.value);
-                } else {
+                } else if(criteria.options) {
+                    response[key] = safeTrim(Array.from(new Set(criteria.options.map(({aliasValue, value}) => aliasValue || value))).join(','));
+                } else{
                     if (criteria.from) {
-                        response[key + 'From'] = momentToISO(criteria.from);
+                        response[key + 'From'] = moment(criteria.from).toISOString();
                     }
                     if (criteria.to) {
-                        response[key + 'To'] = momentToISO(criteria.to);
+                        const val = moment(criteria.to);
+                        if(criteria.to.indexOf('Z')>-1) val.utc();
+                        response[key + 'To'] = val.endOf('day').toISOString();
                     }
                 }
             }
@@ -41,11 +46,11 @@ export const availSearchHelper = {
     },
 
     freeTextSearch(searchCriteria) {
-        availServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
+        rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 
     advancedSearch(searchCriteria) {
-        availServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
+        rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     }
 
 };

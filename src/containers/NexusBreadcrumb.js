@@ -2,7 +2,23 @@ import React from 'react';
 import {BreadcrumbItem, Breadcrumb} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
+import t from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
+import { Loader } from 'react-loaders';
+
+const mapStateToProps = state => {
+    return {
+        blocking: state.root.blocking
+    };
+};
+
 class NexusBreadcrumb extends React.Component {
+
+    static propTypes = {
+        blocking: t.bool
+    };
 
     static instance = null;
     static content = [];
@@ -24,11 +40,13 @@ class NexusBreadcrumb extends React.Component {
             }
         };
         return (
-            <div style={{zIndex: '500', position: 'relative'}}>
-                <Breadcrumb style={{position: 'relative', background: 'white'}}>
-                    {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
-                </Breadcrumb>
-            </div>
+            <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
+                <div style={{zIndex: '500', position: 'relative'}}>
+                    <Breadcrumb style={{position: 'relative', background: 'white'}}>
+                        {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
+                    </Breadcrumb>
+                </div>
+            </BlockUi>
         );
     }
 
@@ -49,7 +67,7 @@ class NexusBreadcrumb extends React.Component {
     }
 
     static pop(){
-        let newOptions = NexusBreadcrumb.content.slice(0, NexusBreadcrumb.content.length-1);
+        let newOptions = NexusBreadcrumb.content.slice(0, -1);
         NexusBreadcrumb.set(newOptions);
     }
 
@@ -68,4 +86,4 @@ class NexusBreadcrumb extends React.Component {
     }
 }
 
-export default NexusBreadcrumb;
+export default connect(mapStateToProps, null)(NexusBreadcrumb);

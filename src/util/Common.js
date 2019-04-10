@@ -71,4 +71,30 @@ function mergeDeep(target, source) {
     return output;
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, prepareSortMatrixParamTitles};
+function getDeepValue(source, location){
+    const dotPos = location.indexOf('.');
+    if(dotPos > 0) {
+        const firstKey = location.split('.')[0];
+        const restKey = location.substring(dotPos+1);
+        if(source[firstKey]){
+            if(Array.isArray(source[firstKey])) {
+                if(source[firstKey].length > 0) {
+                    if(isObject(source[firstKey][0])){
+                        return source[firstKey].map(obj => obj[restKey]);
+                    }else{
+                        getDeepValue(source[firstKey], restKey);
+                    }
+                }else{
+                    return [];
+                }
+            }else{
+                return getDeepValue(source[firstKey], restKey);
+            }
+        }
+        return null;
+    }else{
+        return source[location];
+    }
+}
+
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles};

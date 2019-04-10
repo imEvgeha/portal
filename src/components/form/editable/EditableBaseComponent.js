@@ -1,36 +1,37 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import moment from 'moment';
 import t from 'prop-types';
-import NexusDatePicker from './NexusDatePicker';
-import {INVALID_DATE} from '../../constants/messages';
 
-class EditableDatePicker extends Component {
+class EditableBaseComponent extends Component {
 
     static propTypes = {
+        helperComponent: t.object,
         validate: t.func,
-        value: t.string,
+        value: t.oneOfType([t.string, t.array, t.number]),
         displayName: t.string,
         disabled: t.bool,
         onChange: t.func,
-        priorityDisplay: t.any,
-        showTime: t.bool
+        priorityDisplay: t.any
     };
 
+    static defaultProps = {
+        value: null
+    }
+
     constructor(props) {
-        const vodDate = props.value;
         super(props);
+
         this.state = {
-            date: vodDate ? moment(vodDate) : moment(),
-            showStateDate: false,
-            datePickerStatus: false,
+            value:props.value,
+            showStateValue: false,
+            helperComponentStatus: false,
             errorMessage: '',
             submitStatus: false
         };
 
-        this.handleShowDatePicker = this.handleShowDatePicker.bind(this);
+        this.handleShowHelperComponent = this.handleShowHelperComponent.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleCancelDatePicker = this.handleCancelDatePicker.bind(this);
+        this.handleCancelHelperComponent = this.handleCancelHelperComponent.bind(this);
         this.handleInvalid = this.handleInvalid.bind(this);
         this.submit = this.submit.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -39,68 +40,68 @@ class EditableDatePicker extends Component {
     componentDidUpdate(prevProps) {
         if(prevProps.value != this.props.value){
             this.setState({
-                showStateDate: false,
-                date: this.props.value ? moment(this.props.value) : moment(),
+                showStateValue: false,
+                value: this.props.value ? this.props.value : null,
             });
         }
 
     }
 
-    handleShowDatePicker(e) {
+    handleShowHelperComponent(e) {
         e.preventDefault();
         if (!this.props.disabled) {
             this.setState({
-                datePickerStatus: true,
-                date: moment(this.state.date).isValid() ? moment(this.state.date) : moment(),
+                helperComponentStatus: true,
+                value: this.state.value ? this.state.value : null,
             });
         }
     }
-    handleCancelDatePicker(e) {
+    handleCancelHelperComponent(e) {
         e.preventDefault();
         this.cancel();
     }
 
     cancel() {
         this.setState({
-            date: moment(this.props.value),
-            showStateDate: false,
-            datePickerStatus: false,
+            value: this.props.value,
+            showStateValue: false,
+            helperComponentStatus: false,
             errorMessage: ''
         });
     }
 
-    handleChange(date) {
-        this.setState({ date: date, submitStatus: false, errorMessage: '' });
+    handleChange(val) {
+        this.setState({ value: val, submitStatus: false, errorMessage: '' });
     }
 
     handleInvalid(invalid) {
         if (invalid) {
-            this.setState({ errorMessage: INVALID_DATE, submitStatus: true });
+            this.setState({ errorMessage: 'Invalid', submitStatus: true });
         }
     }
 
-    submit(date) {
-        const validationError = this.props.validate(date);
+    submit(val) {
+        const validationError = this.props.validate(val);
         if (validationError !== undefined) {
             this.setState({
                 errorMessage: validationError
             });
         } else {
             this.setState({
-                datePickerStatus: false,
-                showStateDate: true
+                helperComponentStatus: false,
+                showStateValue: true
             });
-            this.props.onChange(date, this.cancel);
+            this.props.onChange(val, this.cancel);
         }
     }
 
     render() {
         const displayFunc = (value)=>{
             return (<span
-                       onClick={this.handleShowDatePicker}
-                       style={{width:'100%'}}
-                       className={'displayDate' + (this.props.disabled ? ' disabled' : '')}>
-                       {value}
+                onClick={this.handleShowHelperComponent}
+                style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                className={this.props.disabled ? 'disabled' : ''}>
+                       {Array.isArray(value) ? value.length > 0 ? value.join(',') : '' : value}
                    </span>);
         };
 
@@ -108,19 +109,19 @@ class EditableDatePicker extends Component {
             if(this.props.priorityDisplay) {
                 return displayFunc(this.props.priorityDisplay);
             } else {
-                if(this.state.showStateDate){
-                    return displayFunc(this.state.date ? moment(this.state.date).format('L') + (this.props.showTime ? ' ' + moment(this.state.date).format('HH:mm') : '' ) : '');
+                if(this.state.showStateValue){
+                    return displayFunc(this.state.value);
                 } else {
-                    if(this.props.value){
-                        return displayFunc(this.props.value ? moment(this.props.value).format('L') + (this.props.showTime ? ' ' + moment(this.state.date).format('HH:mm') : '' ) : '');
+                    if(this.props.value && (!Array.isArray(this.props.value) || (Array.isArray(this.props.value) && this.props.value.length > 0))){
+                        return displayFunc(this.props.value);
                     }else {
                         return (
                             <span
                                 className="displayDate"
                                 style={{color: '#808080', cursor: 'pointer', width:'100%'}}
-                                onClick={this.handleShowDatePicker}>
-                            {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
-                        </span>
+                                onClick={this.handleShowHelperComponent}>
+                                {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
+                            </span>
                         );
                     }
                 }
@@ -130,26 +131,21 @@ class EditableDatePicker extends Component {
         return (
             <div className="editable-container">
                 {
-                    this.state.datePickerStatus ?
-                        <div>
-                            <div className="dPicker" style={{ marginBottom: '5px' }}>
-                                <NexusDatePicker
-                                    id="dashboard-avails-search-start-date-text"
-                                    date={this.state.date}
-                                    onChange={this.handleChange}
-                                    onInvalid={this.handleInvalid}
-                                />
+                    this.state.helperComponentStatus ?
+                        <div style={{width:'100%'}}>
+                            <div className="dPicker" style={{ marginBottom: '5px', minWidth:'500px', width:'90%'}}>
+                                {this.props.helperComponent}
                             </div>
-                            <div style={{ float: 'left' }}>
+                            <div style={{ float: 'left', paddingLeft: '10px'}}>
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
-                                    onClick={() => this.submit(this.state.date)}
+                                    onClick={() => this.submit(this.state.value)}
                                     color="success"><i className="fa fa-check"></i>
                                 </Button>
                                 <Button
                                     className="dPButton"
-                                    onClick={this.handleCancelDatePicker}
+                                    onClick={this.handleCancelHelperComponent}
                                     color="danger"><i className="fa fa-times"></i>
                                 </Button>
                             </div>
@@ -168,4 +164,4 @@ class EditableDatePicker extends Component {
     }
 }
 
-export default EditableDatePicker;
+export default EditableBaseComponent;

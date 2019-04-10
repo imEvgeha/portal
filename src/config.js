@@ -1,7 +1,7 @@
 export const defaultConfiguration = {
     gateway: {
         url: 'https://availsapi.dev.vubiquity.com',
-        titleUrl: 'http://localhost:8090',
+        titleUrl: 'http://localhost:8082',
         configuration: 'https://configapi.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
@@ -42,12 +42,5 @@ export const defaultConfiguration = {
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0
-    },
-    extraValidation: {
-        resolution: {
-            type: 'oneOf',
-            fields: ['sd', 'hd', 'f3d', 'f4k'],
-            values: [['X'], ['X'], ['X'], ['X']]
-        }
     }
 };

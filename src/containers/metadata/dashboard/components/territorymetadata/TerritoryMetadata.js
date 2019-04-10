@@ -24,7 +24,7 @@ class TerritoryMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addTerritoryMetadata(this.props.CREATE_TAB)} key={this.props.CREATE_TAB} size="lg" />
+                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addTerritoryMetadata(this.props.createTerritoryTab)} key={this.props.createTerritoryTab} size="lg" />
                             : null
                     }
                     {
@@ -58,7 +58,7 @@ class TerritoryMetadata extends Component {
                     {
                         this.props.isEditMode ?
                             <Fragment>
-                                <TabPane tabId={this.props.CREATE_TAB}>
+                                <TabPane tabId={this.props.createTerritoryTab}>
                                     <Row>
                                         <Col>
                                             <TerritoryMetadataCreateTab validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
@@ -94,7 +94,7 @@ TerritoryMetadata.propTypes = {
     isLocalRequired: PropTypes.bool,
     toggle: PropTypes.func,
     addTerritoryMetadata: PropTypes.func,
-    CREATE_TAB: PropTypes.string,
+    createTerritoryTab: PropTypes.string,
     validSubmit: PropTypes.func.isRequired,
     handleEditChange: PropTypes.func
 };

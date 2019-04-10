@@ -6,7 +6,7 @@ import {
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
-import {availSearchHelper} from '../AvailSearchHelper';
+import {rightSearchHelper} from '../RightSearchHelper';
 import {configurationService} from '../../service/ConfigurationService';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
@@ -22,6 +22,7 @@ const mapStateToProps = state => {
         reportName: state.dashboard.session.reportName,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
+        columns: state.dashboard.session.columns,
     };
 };
 
@@ -41,6 +42,7 @@ class AdvancedSearchPanel extends React.Component {
         hide: t.bool,
         reportName: t.string,
         availsMapping: t.object,
+        columns: t.array,
     };
 
     constructor(props) {
@@ -154,7 +156,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     bulkExport() {
-        exportService.bulkExportAvails(availSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria))
+        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), this.props.columns)
         .then(function (response) {
             downloadFile(response.data);
         })
@@ -175,7 +177,7 @@ class AdvancedSearchPanel extends React.Component {
 
     handleClear() {
         this.handleSelect(null);
-        availSearchHelper.clearAdvancedSearchForm();
+        rightSearchHelper.clearAdvancedSearchForm();
     }
 
     handleSave() {
@@ -201,7 +203,7 @@ class AdvancedSearchPanel extends React.Component {
 
     isAnyValueSpecified = () => {
         const value = this.state.value;
-        return value && (value.from || value.to || (value.value  && value.value.trim()));
+        return value && (value.from || value.to || (value.value  && value.value.trim()) || (value.options && value.options.length > 0));
     };
 
     getFieldsToShow() {
@@ -225,9 +227,9 @@ class AdvancedSearchPanel extends React.Component {
             this.availsMap = {};
             this.searchOptions = [];
             this.props.availsMapping.mappings.forEach( (mapping) => {
-                this.availsMap[mapping.javaVariableName] = mapping;
-                if (mapping.fullTextSearch === 'true') {
-                    this.searchOptions.push({value: mapping.javaVariableName, label: mapping.displayName});
+                this.availsMap[mapping.queryParamName] = mapping;
+                if (mapping.enableSearch) {
+                    this.searchOptions.push({value: mapping.queryParamName, label: mapping.displayName});
                 }
             });
         }
@@ -251,7 +253,22 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableDateBtn = (name, displayName) => {
+        const renderCloseableSelectBtn = (name, displayName) => {
+            return (
+                <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        value={ ' = ' + (this.props.searchCriteria[name].options ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ') : '')}
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+            );
+        };
+
+        const renderCloseableLocalDateBtn = (name, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
             }
@@ -267,16 +284,57 @@ class AdvancedSearchPanel extends React.Component {
             </div>);
         };
 
+        const renderCloseableDateBtn = (name, displayName) => {
+            function prepareDate(prefix, date) {
+                return date ? prefix + ' ' + moment.utc(date).format('L') : '';
+            }
+            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    onClick={() => this.selectField(name)}
+                    onClose={() => this.removeField(name)}
+                    highlighted={this.state.blink === name}
+                    value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
+            </div>);
+        };
+
+        const renderCloseableDurationBtn = (name, displayName) => {
+            function prepareDuration(prefix, value) {
+                return value ? prefix + ' ' + value : '';
+            }
+            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <CloseableBtn
+                    title={displayName}
+                    onClick={() => this.selectField(name)}
+                    onClose={() => this.removeField(name)}
+                    highlighted={this.state.blink === name}
+                    value={prepareDuration(' from', this.props.searchCriteria[name].from) + ' ' + prepareDuration('to', this.props.searchCriteria[name].to)}
+                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                />
+            </div>);
+        };
+
         const renderCloseable = () => {
             if (this.availsMap != null) {
                 return Array.from(fieldsToShow).map((key) => {
                     const schema = this.availsMap[key];
                     if (ignoreForCloseable.indexOf(key) === -1) {
                         if (schema) {
-                            if (schema.dataType === 'date') {
-                                return renderCloseableDateBtn(key, schema.displayName);
-                            } else {
-                                return renderCloseableBtn(key, schema.displayName);
+                            switch (schema.searchDataType) {
+                                case 'string' : return renderCloseableBtn(key, schema.displayName);
+                                case 'integer' : return renderCloseableBtn(key, schema.displayName);
+                                case 'double' : return renderCloseableBtn(key, schema.displayName);
+                                case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
+                                case 'time' : return renderCloseableBtn(key, schema.displayName);
+                                case 'date' : return renderCloseableDateBtn(key, schema.displayName);
+                                case 'localdate' : return renderCloseableLocalDateBtn(key, schema.displayName);
+                                case 'boolean' : return renderCloseableBtn(key, schema.displayName);
+                                default:
+                                    console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
                             }
                         } else {
                             console.warn('Cannot determine schema for field: ' + key);
@@ -310,9 +368,10 @@ class AdvancedSearchPanel extends React.Component {
                 </button>
                 <SelectableInput
                     options={options}
+                    currentCriteria={this.props.searchCriteria}
                     selected={this.state.selected}
                     value={this.state.value}
-                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].dataType : null}
+                    dataType={this.state.selected ? this.availsMap[this.state.selected.value].searchDataType : null}
                     displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
                     id={'dashboard-avails-advanced-search-selectable'}
 

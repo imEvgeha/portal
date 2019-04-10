@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import {getLanguageByCode} from '../../../../../constants/language';
+import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 
 class EditorialMetadata extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class EditorialMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.CREATE_TAB)} key={this.props.CREATE_TAB} size="lg" />
+                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
                             : null
                     }
                     {
@@ -39,7 +40,9 @@ class EditorialMetadata extends Component {
                                     <TabPane key={i} tabId={i}>
                                         <Row>
                                             <Col>
-                                                <EditorialMetadataTab key={i} data={item} titleContentType={this.props.titleContentType}/>
+                                                <EditorialMetadataTab
+                                                    titleContentType={this.props.titleContentType}
+                                                    key={i} data={item} />
                                             </Col>
                                         </Row>
                                     </TabPane>);
@@ -56,7 +59,7 @@ class EditorialMetadata extends Component {
                     {
                         this.props.isEditMode ?
                             <Fragment>
-                                <TabPane tabId={this.props.CREATE_TAB}>
+                                <TabPane tabId={this.props.createEditorialTab}>
                                     <Row>
                                         <Col>
                                             <EditorialMetadataCreateTab
@@ -64,12 +67,28 @@ class EditorialMetadata extends Component {
                                                 areFieldsRequired={this.props.areFieldsRequired}
                                                 handleChange={this.props.handleChange}
                                                 handleTitleChange={this.props.handleTitleChange}
-                                                editorialMetadataLength={this.props.editorialMetadataLength}
+                                                editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 titleContentType={this.props.titleContentType}/>
                                         </Col>
                                     </Row>
                                 </TabPane>
+                                {
+                                    this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
+                                        return (
+                                            <TabPane key={i} tabId={i}>
+                                                <Row>
+                                                    <Col>
+                                                        <EditorialMetadataEditMode
+                                                            titleContentType={this.props.titleContentType}
+                                                            validSubmit={this.props.validSubmit}
+                                                            handleChange={this.props.handleEditChange}
+                                                            key={i} data={item} />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>);
+                                    })
+                                }
                             </Fragment>
                             : null
                     }
@@ -89,11 +108,11 @@ EditorialMetadata.propTypes = {
     areFieldsRequired: PropTypes.bool,
     toggle: PropTypes.func,
     addEditorialMetadata: PropTypes.func,
-    CREATE_TAB: PropTypes.string,
+    createEditorialTab: PropTypes.string,
     validSubmit: PropTypes.func.isRequired,
     handleEditChange: PropTypes.func,
     titleContentType: PropTypes.string,
-    editorialMetadataLength: PropTypes.object
+    editorialMetadataForCreate: PropTypes.object
 };
 
 
