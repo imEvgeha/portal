@@ -20,7 +20,7 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {getDeepValue} from '../../../util/Common';
+import {getDeepValue, safeTrim} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
@@ -105,7 +105,8 @@ class RightDetails extends React.Component {
 
     handleSubmit(editable) {
         const name = editable.props.title;
-        const value = editable.value ? editable.value.trim() : editable.value;
+        const value = safeTrim(editable.value);
+
         this.update(name, value, () => {
             editable.setState({rightLastEditSucceed: false});
             editable.value = this.state.right[name];
@@ -131,7 +132,7 @@ class RightDetails extends React.Component {
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
-            if(val) {
+            if(val || val === false || val === null) {
                 if(Array.isArray(val) && map.dataType === 'string') {
                     rightCopy[map.javaVariableName] = val.join(',');
                 }else {
@@ -319,22 +320,53 @@ class RightDetails extends React.Component {
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
-            const options=[{ key:'t', value: 'true', text: 'Yes' }, { key:'f', value: 'false', text: 'No' }];
-            const val = value ? options[0] : options[1];
+            let priorityError = null;
+            if(error){
+                priorityError = <div title = {error}
+                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+                    {error}
+                </div>;
+            }
 
-            return renderFieldTemplate(name, displayName, val, error, readOnly, required, (
-                <Editable
-                    title={name}
+            let ref;
+            if(this.fields[name]){
+                ref = this.fields[name];
+
+            }else{
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [ {server: null, value: 1, label: 'Select...', display: null},
+                            {server: false, value: 2, label: 'No', display: 'No'},
+                            {server: true, value: 3, label: 'Yes', display: 'Yes'}];
+            const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
+
+            let handleOptionsChange = (option) => {
+                ref.current.handleChange(option.display);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
+            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, (
+                <EditableBaseComponent
+                    ref={ref}
+                    value={options.find((opt) => opt.server === value).display}
+                    priorityDisplay={priorityError}
                     name={name}
-                    dataType="select"
                     disabled={readOnly}
-                    handleSubmit={this.handleSubmit}
-                    value={val.value}
-                    options={options}
+                    displayName={displayName}
+                    validate={() => {}}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({display}) => display == value).server, cancel) }
+                    helperComponent={<Select
+                        name={name}
+                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                        options={options}
+                        value={val}
+                        onChange={handleOptionsChange}
+                    />}
                 />
-
             ));
-
         };
 
         const renderSelectField = (name, displayName, value, error, readOnly, required) => {

@@ -14,6 +14,9 @@ const isNotEmpty = function(obj){
 };
 
 const parse = function(value){
+    if(typeof value === 'number' || typeof  value === 'boolean')
+        return value;
+
     if(typeof value === 'string')
         return safeTrim(value);
 
@@ -23,9 +26,6 @@ const parse = function(value){
 
     if(Array.isArray(value))
         return value.map(val => parse(val));
-
-    if(typeof value === 'number')
-        return value;
 
     if (value && 'value' in value)
         return parse(value.value);
