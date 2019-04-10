@@ -1,18 +1,26 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import t from 'prop-types';
-import { BREADCRUMB_METADATA_DASHBOARD_PATH, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
+import {
+    BREADCRUMB_METADATA_DASHBOARD_PATH,
+    BREADCRUMB_METADATA_SEARCH_RESULTS_PATH,
+    BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH
+} from '../../../../constants/metadata/metadata-breadcrumb-paths';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
-import { titleService } from '../../service/TitleService';
-import { Button, Row, Col } from 'reactstrap';
-import { AvForm } from 'availity-reactstrap-validation';
+import {titleService} from '../../service/TitleService';
+import {Button, Col, Row} from 'reactstrap';
+import {AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
-import {EDITORIAL_METADATA_PREFIX, EDITORIAL_METADATA_SYNOPSIS, EDITORIAL_METADATA_TITLE} from '../../../../constants/metadata/metadataComponent';
+import {
+    EDITORIAL_METADATA_PREFIX,
+    EDITORIAL_METADATA_SYNOPSIS,
+    EDITORIAL_METADATA_TITLE
+} from '../../../../constants/metadata/metadataComponent';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -158,8 +166,7 @@ class TitleEdit extends Component {
             ...this.state.editedForm,
             duration: duration
         });
-    }
-
+    };
 
     handleChangeSeries = (e) => {
         const newEpisodic = {
@@ -198,12 +205,10 @@ class TitleEdit extends Component {
                 externalIds: newExternalIds
             }
         });
-    }
+    };
 
     addAdvisoryCodes = (advisory) => {
-        if(advisory === '') {
-            return;
-        } else {
+        if(advisory !== '') {
             let advisoriesCode = [this.state.advisoryCode];
             if(!this.state.editedForm.advisories) {
                 advisoriesCode = [this.state.advisoryCode];
@@ -223,7 +228,8 @@ class TitleEdit extends Component {
                 editedForm: updateEditForm
             });
         }
-    }
+    };
+
     removeAdvisoryCodes = (removeAdvisory) => {
             let advisoriesCode = this.state.editedForm.advisories.advisoriesCode.filter(rating => rating !== removeAdvisory);
 
@@ -238,16 +244,15 @@ class TitleEdit extends Component {
             this.setState({
                 editedForm: updateEditForm
             });
-    }
+    };
+
     handleOnAdvisoriesCodeUpdate = (value) => {
-        if (value === '') {
-            return;
-        } else {
+        if (value !== '') {
             this.setState({
                 advisoryCode: value
             });
         }
-    }
+    };
 
     handleOnAdvisories = (e) => {
         const newAdvisory = {
@@ -260,8 +265,7 @@ class TitleEdit extends Component {
                 advisories: newAdvisory
             }
         });
-
-    }
+    };
 
     readOnly = () => {
         return <TitleReadOnlyMode data={this.state.titleForm} />;
@@ -307,14 +311,14 @@ class TitleEdit extends Component {
                 newAdditionalFields[fieldName] = false;
             }
         }
-    }
+    };
 
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm) {
             this.setState({
                 isLoading: true
             });
-            let newAdditionalFields = this.getAdditionalFieldsaWithoutEmptyField();
+            let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
@@ -326,11 +330,9 @@ class TitleEdit extends Component {
                     territoryMetadataActiveTab: CURRENT_TAB,
                     editorialMetadataActiveTab: CURRENT_TAB
                 });
-
             }).catch(() => {
                 console.error('Unable to load Title Data');
             });
-
         } else {
             this.setState({
                 isEditMode: !this.state.isEditMode,
@@ -434,7 +436,6 @@ class TitleEdit extends Component {
                 this.setState({
                     territory: [response.data, ...this.state.territory],
                     territoryMetadataActiveTab: CURRENT_TAB,
-                    areTerritoryMetadataFieldsRequired: false
                 });
             }).catch(() => {
                 console.error('Unable to add Territory Metadata');
@@ -443,7 +444,6 @@ class TitleEdit extends Component {
             this.cleanTerritoryMetadata();
         }
     };
-
 
     /**
      * Editorial Metadata document
@@ -619,7 +619,7 @@ class TitleEdit extends Component {
         return doAddSubObject ? subObject : null;
     }
 
-    getAdditionalFieldsaWithoutEmptyField() {
+    getAdditionalFieldsWithoutEmptyField() {
         let additionalFields = {};
         for (let fields in this.state.editedForm) {
             if (fields === 'externalIds') {
@@ -634,6 +634,7 @@ class TitleEdit extends Component {
                 additionalFields[fields] = null;
             }
         }
+
         return additionalFields;
     }
 
@@ -648,6 +649,7 @@ class TitleEdit extends Component {
                 subField[field] = null;
             }
         }
+
         return doAddSubObject ? subObject : null;
     }
 
@@ -670,7 +672,9 @@ class TitleEdit extends Component {
         }
     }
 
-    /* Title core additional fields */
+    /**
+     * Title core additional fields
+     */
     renderModal = modalName => {
         this.cleanCastInput();
         if (modalName === CAST) {
@@ -690,44 +694,36 @@ class TitleEdit extends Component {
     };
 
     addRating = rating => {
-        if (rating === '') {
-            return;
-        } else {
-            let newRatingObject = {
+        if (rating !== '') {
+            let ratingArray = [{
                 rating: this.state.ratingValue,
                 ratingSystem: this.state.ratingSystem
-            };
-            let ratingArray = [newRatingObject];
-            if(!this.state.editedForm.ratings) {
-                ratingArray = [newRatingObject];
-            } else {
-                ratingArray = [newRatingObject, ...this.state.editedForm.ratings];
+            }];
+
+            if(this.state.editedForm.ratings) {
+                ratingArray = [...ratingArray, ...this.state.editedForm.ratings];
             }
 
             let updateEditForm = {
                 ...this.state.editedForm,
                 ratings: ratingArray
             };
-
             this.setState({
                 editedForm: updateEditForm
             });
-
-
         }
-
     };
 
     updateValue = value => {
-        if (value === '') return;
-        this.setState({
-            ratingValue: value
-        });
+        if (value !== '') {
+            this.setState({
+                ratingValue: value
+            });
+        }
     };
 
     removeRating = removeRating => {
         let rating = this.state.editedForm.ratings.filter(rating => rating !== removeRating);
-
         let updateEditForm = {
             ...this.state.editedForm,
             ratings: rating
@@ -735,20 +731,16 @@ class TitleEdit extends Component {
         this.setState({
             editedForm: updateEditForm
         });
-
     };
 
     addCastCrew = (personType) => {
         if (this.state.castCrewInputValue) {
-            let newCastObject = {
+            let castCrewArray = [{
                 displayName: this.state.castCrewInputValue,
                 personType: personType
-            };
-            let castCrewArray = [newCastObject];
-            if (!this.state.editedForm.castCrew) {
-                castCrewArray = [newCastObject];
-            } else {
-                castCrewArray = [newCastObject, ...this.state.editedForm.castCrew];
+            }];
+            if (this.state.editedForm.castCrew) {
+                castCrewArray = [...castCrewArray, ...this.state.editedForm.castCrew];
             }
 
             let updateEditForm = {
@@ -760,19 +752,19 @@ class TitleEdit extends Component {
                 editedForm: updateEditForm
             });
             this.cleanCastInput();
-        } else return;
+        }
     };
 
     updateCastCrewValue = value => {
-        if (value === '') return;
-        this.setState({
-            castCrewInputValue: value
-        });
+        if (value !== '') {
+            this.setState({
+                castCrewInputValue: value
+            });
+        }
     };
 
     removeCastCrew = removeCastCrew => {
         let cast = this.state.editedForm.castCrew.filter(cast => cast !== removeCastCrew);
-
         let updateEditForm = {
             ...this.state.editedForm,
             castCrew: cast
@@ -786,7 +778,7 @@ class TitleEdit extends Component {
         this.setState({
             castCrewInputValue: ''
         });
-    }
+    };
 
     _handleKeyPress = e => {
         if (e.keyCode === 13) {
@@ -805,7 +797,7 @@ class TitleEdit extends Component {
                 advisoryCode: ''
             });
         }
-    }
+    };
 
     render() {
         return (

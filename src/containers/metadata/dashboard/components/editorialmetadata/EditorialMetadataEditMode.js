@@ -72,7 +72,7 @@ class EditorialMetadataEditMode extends Component {
                             </AvField>
                         </Col>
                         <Col>
-                            <b>Language<span style={{ color: 'red' }}>*</span></b>
+                            <b>Language</b>
                         </Col>
                         <Col md={2}>
                             <AvField type="select"

@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
-import CloseableBtn from '../../../../../../components/form/CloseableBtn';
+import CloseableBtn from '../../../../../components/form/CloseableBtn';
 import PropTypes from 'prop-types';
 import { AvField } from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
@@ -23,7 +23,7 @@ import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 const CAST = 'CAST';
 const CREW = 'CREW';
 
-class CoreMetadataEditMode extends Component { 
+class CoreMetadataEditMode extends Component {
 
   render() {
     // const {
@@ -175,7 +175,7 @@ class CoreMetadataEditMode extends Component {
                 name='advisoriesFreeText'
                 id='advisories'
                 value={this.props.advisoryCodeList ? this.props.advisoryCodeList.advisoriesFreeText : ''}
-                placeholder='Advisories'                
+                placeholder='Advisories'
                 validate={{
                   maxLength: { value: 500 }
                 }}
@@ -255,7 +255,7 @@ class CoreMetadataEditMode extends Component {
             <AvField
               type='text'
               name='tmsId'
-              id='tmsId'              
+              id='tmsId'
               value={this.props.data.externalIds ? this.props.data.externalIds.tmsId: ''}
               onChange={e => this.props.handleOnExternalIds(e)}
               placeholder='TMS ID'
@@ -274,7 +274,7 @@ class CoreMetadataEditMode extends Component {
               type='text'
               onChange={e => this.props.handleOnExternalIds(e)}
               name='eidrLevel2'
-              id='eidrLevel2'              
+              id='eidrLevel2'
               value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2: ''}
               placeholder='EIDR Level 2'
               validate={{
@@ -290,7 +290,7 @@ class CoreMetadataEditMode extends Component {
               type='text'
               onChange={e => this.props.handleOnExternalIds(e)}
               name='xfinityMovieId'
-              id='xfinityMovieId'              
+              id='xfinityMovieId'
               value={this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId: ''}
               placeholder='Xfiniy Movie ID'
               validate={{

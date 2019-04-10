@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import CoreMetadataEditMode from './territorymetadata/coremetadata/CoreMetadataEditMode';
+import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
 
 class TitleEditMode extends Component {
   constructor(props) {
