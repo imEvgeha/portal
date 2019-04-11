@@ -102,9 +102,7 @@ export default Navbar;
 
 import store from '../stores/index';
 export const gotoAvailsDashboard = () => {
-    if(!URL.hasParams()) {
-        store.dispatch(searchFormShowSearchResults(false));
-        NexusBreadcrumb.set(AVAILS_DASHBOARD);
-    }
+    store.dispatch(searchFormShowSearchResults(false));
+    NexusBreadcrumb.set(AVAILS_DASHBOARD);
 };
 

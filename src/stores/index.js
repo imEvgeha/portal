@@ -34,16 +34,16 @@ export const saveHistoryState = () => {
 
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
-    setTimeout(() => {
-        const dashboard = store.getState().dashboard;
-        if(dashboard.session.showSearchResults && !URL.hasParams()) {
-            if (dashboard.session.showAdvancedSearch) {
-                rightSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
-            }else{
-                rightSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
-            }
-        }
-    }, 1);
+    // setTimeout(() => {
+    //     const dashboard = store.getState().dashboard;
+    //     if(dashboard.session.showSearchResults && !URL.hasParams()) {
+    //         if (dashboard.session.showAdvancedSearch) {
+    //             rightSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
+    //         }else{
+    //             rightSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
+    //         }
+    //     }
+    // }, 1);
 };
 
 export const saveDashboardState = () => {

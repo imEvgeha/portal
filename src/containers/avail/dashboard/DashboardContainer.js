@@ -25,9 +25,9 @@ import moment from 'moment';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {gotoAvailsDashboard} from '../../Navbar';
-import {rightServiceManager} from '../service/RightServiceManager';
-
-const PASS_THROUGH = ['availHistoryIds', 'invalid'];
+import {isObjectEmpty} from '../../../util/Common';
+import RightsURL from '../util/RightsUtils';
+import store from '../../../stores';
 
 const mapStateToProps = state => {
     return {
@@ -68,6 +68,7 @@ class DashboardContainer extends React.Component {
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         location: t.object,
+        match: t.object,
         resultPageShowSelected: t.func
     };
 
@@ -84,48 +85,45 @@ class DashboardContainer extends React.Component {
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
 
-        if(URL.hasParams()){
-            this.getSearchCriteriaFromURL()
-            return;
-        }
+        this.getSearchCriteriaFromURL();
 
-        if (this.props.location && this.props.location.state) {
-            const state = this.props.location.state;
-            if (state.availHistory) {
-                let subTitle = state.availHistory.ingestType + ', ';
-                if(state.availHistory.ingestType === 'Email'){
-                    subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '');
-                }else{
-                    if(state.availHistory.attachments && state.availHistory.attachments[0]){
-                        const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
-                        subTitle += (filename ? filename + ', ' : '');
-                    }
-                }
-                subTitle += moment(state.availHistory.received).format('llll');
-                const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
-                if (state.invalid !== undefined) {
-                    criteria.invalid = {value: state.invalid};
-                }
-
-                if(this.props.showSearchResults) {
-                    NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-                }
-
-                this.props.searchFormShowAdvancedSearch(true);
-                this.props.searchFormSetAdvancedSearchCriteria(criteria);
-                this.handleAvailsAdvancedSearch(criteria);
-            } else if (state.back) {
-                gotoAvailsDashboard();
-            }
-        } else if (this.props.searchCriteria.availHistoryIds) {
-            if (this.props.showSearchResults) {
-                NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-            }
-        } else {
-            if(this.props.showSearchResults) {
-                NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
-            }
-        }
+        // if (this.props.location && this.props.location.state) {
+        //     const state = this.props.location.state;
+        //     if (state.availHistory) {
+        //         let subTitle = state.availHistory.ingestType + ', ';
+        //         if(state.availHistory.ingestType === 'Email'){
+        //             subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '');
+        //         }else{
+        //             if(state.availHistory.attachments && state.availHistory.attachments[0]){
+        //                 const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
+        //                 subTitle += (filename ? filename + ', ' : '');
+        //             }
+        //         }
+        //         subTitle += moment(state.availHistory.received).format('llll');
+        //         const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
+        //         if (state.invalid !== undefined) {
+        //             criteria.invalid = {value: state.invalid};
+        //         }
+        //
+        //         if(this.props.showSearchResults) {
+        //             NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
+        //         }
+        //
+        //         this.props.searchFormShowAdvancedSearch(true);
+        //         this.props.searchFormSetAdvancedSearchCriteria(criteria);
+        //         this.handleAvailsAdvancedSearch(criteria);
+        //     } else if (state.back) {
+        //         gotoAvailsDashboard();
+        //     }
+        // } else if (this.props.searchCriteria.availHistoryIds) {
+        //     if (this.props.showSearchResults) {
+        //         NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
+        //     }
+        // } else {
+        //     if(this.props.showSearchResults) {
+        //         NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
+        //     }
+        // }
     }
 
     componentDidUpdate(prevProps) {
@@ -133,69 +131,31 @@ class DashboardContainer extends React.Component {
             this.getSearchCriteriaFromURL();
         }
 
-        if(!URL.hasParams() && prevProps.searchCriteria !== this.props.searchCriteria) {
-            NexusBreadcrumb.set(AVAILS_DASHBOARD);
-
-            if (this.props.showSearchResults) {
-                if(this.props.currentSearchCriteria.availHistoryIds && this.props.showAdvancedSearch){
-                    NexusBreadcrumb.push(AVAILS_HISTORY);
-                }
-                NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
-            }
-        }
+        // if(prevProps.searchCriteria !== this.props.searchCriteria) {
+        //     NexusBreadcrumb.set(AVAILS_DASHBOARD);
+        //
+        //     if (this.props.showSearchResults) {
+        //         if(this.props.currentSearchCriteria.availHistoryIds && this.props.showAdvancedSearch){
+        //             NexusBreadcrumb.push(AVAILS_HISTORY);
+        //         }
+        //         NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
+        //     }
+        // }
     }
 
     getSearchCriteriaFromURL(){
         if(!this.props.availsMapping) {
             return false;
         }
-        let params=null;
-        if(URL.hasParams()){
-            params = this.props.location.search.substr(1).split('&');
-        }else return false;
 
-        const criteria = {};
-        let found = false;
-        this.props.location.state={};
-
-        params.forEach(param => {
-            const vals = param.split('=');
-            if(vals.length === 2){
-                let name = vals[0];
-                const val = vals[1];
-                let map;
-
-                if(!PASS_THROUGH.includes(name)) {
-                    let subkey = null;
-                    map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
-                    if (!map && name.endsWith('From')) {
-                        subkey = 'from';
-                        name = name.substring(0, name.length - 4);
-                    }
-                    if (!map && name.endsWith('To')) {
-                        subkey = 'to';
-                        name = name.substring(0, name.length - 2);
-                    }
-                    if (subkey) {
-                        map = this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === name);
-                        if (map && ['date', 'localdate', 'duration'].indexOf(map.dataType) === -1) map = null;
-                    }
-                }
-                if(PASS_THROUGH.includes(name) || map){
-                    criteria[name]=val;
-                    found=true;
-                }
-            }
-        });
-
-        if(found || URL.hasParams()) {
-            this.props.resultPageShowSelected(false);
-            this.props.searchFormShowSearchResults(true);
-            rightServiceManager.search(criteria);
-            NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
+        if(this.props.match.path === RightsURL.availsDashboardUrl){
+            this.props.searchFormShowSearchResults(false);
+        }else{
+            let params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
+            const criteria = RightsURL.ArraytoFilter(params);
+            this.props.searchFormSetAdvancedSearchCriteria(criteria);
+            this.handleAvailsAdvancedSearch(criteria);
         }
-
-        return found;
     }
 
     toggleAdvancedSearch() {
@@ -218,12 +178,14 @@ class DashboardContainer extends React.Component {
 
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
+
         rightSearchHelper.advancedSearch(searchCriteria);
     }
 
     render() {
         return (
             <div>
+                <RightsURL/>
                 <IfEmbedded value={false}>
                     <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
                         <div>

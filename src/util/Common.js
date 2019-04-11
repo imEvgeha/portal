@@ -38,6 +38,14 @@ function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
+function isObjectEmpty(obj) {
+    for(let key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 function prepareSortMatrixParam(sortedParams) {
     let matrix = '';
     if(sortedParams){
@@ -150,4 +158,4 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, URL, IfEmbedded};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, URL, IfEmbedded};

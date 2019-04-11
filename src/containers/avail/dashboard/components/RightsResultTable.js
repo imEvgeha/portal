@@ -9,7 +9,7 @@ import config from 'react-global-configuration';
 // image import
 import LoadingGif from '../../../../img/loading.gif';
 
-import {URL} from '../../../../util/Common';
+import RightsURL from '../../util/RightsUtils';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -463,7 +463,7 @@ class RightsResultTable extends React.Component {
         if (val !== undefined) {
             if (content) {
                 return(
-                    <Link to={{ pathname: '/avails/' + params.data.id + URL.search() }}>
+                    <Link to={{ pathname: RightsURL.getRightUrl(params.data.id)}}>
                         <div
                         title= {error}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>

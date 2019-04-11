@@ -16,6 +16,7 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim} from '../../../util/Common';
+import RightsURL from '../util/RightsUtils';
 
 const mapStateToProps = state => {
     return {
@@ -209,7 +210,7 @@ class RightCreate extends React.Component {
             this.setState({});
             store.dispatch(saveCreateRightForm({}));
             if(response && response.data && response.data.id){
-                this.context.router.history.push('/avails/' + response.data.id);
+                this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
             }
         })
             .catch(() => this.setState({errorMessage: 'Right creation Failed'}));
