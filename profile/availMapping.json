@@ -199,12 +199,31 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": false
+}, , {
+  "javaVariableName": "region.value",
+  "displayName": "Region",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "region",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "regionExcluded.value",
+  "displayName": "Region Excluded",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "regionExcluded",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
 }, {
   "javaVariableName": "genres",
   "displayName": "Genres",
-  "dataType": "multiselect",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/genres",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "genres",
   "readOnly": false,
   "enableSearch": true,
@@ -314,6 +333,17 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": true
+}, {
+  "javaVariableName": "entryType",
+  "displayName": "Entry Type",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Full Extract", "Full Delete"],
+  "queryParamName": "entryType",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
 }, {
   "javaVariableName": "displayTitle",
   "displayName": "Display Title",
