@@ -18,10 +18,23 @@ import PropTypes from 'prop-types';
 import { AvField } from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
-
+import {connect} from 'react-redux';
+import {configFields} from '../../../service/ConfigService';
 
 const CAST = 'CAST';
 const CREW = 'CREW';
+
+const mapStateToProps = state => {
+  return {
+    configCastAndCrew: state.titleReducer.configData.find(e => e.key === configFields.CAST_AND_CREW),
+    configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+    configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+    configProductionStudio: state.titleReducer.configData.find(e => e.key === configFields.PRODUCTION_STUDIO),
+    configRatingSystem: state.titleReducer.configData.find(e => e.key === configFields.RATING_SYSTEM),
+    configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
+    configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
+  };
+};
 
 class CoreMetadataEditMode extends Component {
 
@@ -479,6 +492,7 @@ class CoreMetadataEditMode extends Component {
           updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
+          configCastAndCrew={this.props.configCastAndCrew}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
@@ -487,6 +501,7 @@ class CoreMetadataEditMode extends Component {
           updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
+          configCastAndCrew={this.props.configCastAndCrew}
         />
       </Fragment>
     );
@@ -518,7 +533,10 @@ CoreMetadataEditMode.propTypes = {
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   advisoryCodeList: PropTypes.object,
-  removeAdvisoryCodes: PropTypes.func
+  removeAdvisoryCodes: PropTypes.func,
+
+  configCastAndCrew: PropTypes.object,
 };
 
-export default CoreMetadataEditMode;
+
+export default connect(mapStateToProps)(CoreMetadataEditMode);

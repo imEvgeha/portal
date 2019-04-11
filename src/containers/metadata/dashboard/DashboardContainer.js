@@ -25,7 +25,7 @@ import {
     BREADCRUMB_METADATA_SEARCH_RESULTS_PATH} from '../../../constants/metadata/metadata-breadcrumb-paths';
 import moment from 'moment';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {configFields, configService} from '../service/ConfigService';
+import {configService} from '../service/ConfigService';
 
 const mapStateToProps = state => {
     return {

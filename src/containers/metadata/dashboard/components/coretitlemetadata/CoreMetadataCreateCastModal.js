@@ -21,11 +21,11 @@ class CoreMetadataCreateCastModal extends Component {
           <ModalBody>
             <AvField type="select" name="castInputValue" id="exampleSelect" onChange={e => this.props.updateCastCrewValue(e.target.value)}>
               <option value={''}>Select a Cast</option>
-              <option>Firsname Lastname1</option>
-              <option>Firsname Lastname2</option>
-              <option>Firsname Lastname3</option>
-              <option>Firsname Lastname4</option>
-              <option>Firsname Lastname5</option>
+              {
+                this.props.configCastAndCrew && this.props.configCastAndCrew.value.map((e, index) => {
+                  return <option key={index} value={e.displayName}>{e.displayName}</option>;
+                })
+              }
             </AvField>
           </ModalBody>
           <ModalFooter>
@@ -48,7 +48,9 @@ CoreMetadataCreateCastModal.propTypes = {
   isCastModalOpen: PropTypes.bool,
   updateCastCrewValue: PropTypes.func,
   addCastCrew: PropTypes.func,
-  castInputValue: PropTypes.string
+  castInputValue: PropTypes.string,
+
+  configCastAndCrew: PropTypes.object
 };
 
 export default CoreMetadataCreateCastModal;

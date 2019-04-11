@@ -21,6 +21,7 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
+import {configService} from '../../service/ConfigService';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -84,6 +85,7 @@ class TitleEdit extends Component {
     }
 
     componentDidMount() {
+        configService.initConfigMapping();
         if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
         NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
 

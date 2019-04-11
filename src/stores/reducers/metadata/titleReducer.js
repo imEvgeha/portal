@@ -46,8 +46,10 @@ const initialState = {
 
 const updateConfigData = (state, action) => {
     let index = state.configData.findIndex(x => x.key ===action.configKey);
-    if(index > 0) {
-        return [...state.configData][index].value = action.payload;
+    if(index > -1) {
+        let newConfigData = state.configData.slice(0);
+        newConfigData[index].value = action.payload;
+        return newConfigData;
     }
     return [...state.configData, {key: action.configKey, value: action.payload}];
 };

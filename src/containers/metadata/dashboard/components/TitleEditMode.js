@@ -274,7 +274,7 @@ class TitleEditMode extends Component {
                         onChange={(e) => this.props.handleOnChangeEdit(e)}
                         placeholder="hh:mm:ss"
                         validate={{
-                          pattern :{value: '^(2[0-3]|1[0-9]|[0-9]):[0-5]?[0-9]:[0-5]?[0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
+                          pattern :{value: '^(2[0-3]|0[0-9]|[0-9]):[0-5]?[0-9]:[0-5]?[0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
                           maxLength: { value: 8 },
                           minLength: { value: 8 }
                         }}
