@@ -6,8 +6,13 @@ class TitleReadOnlyMode extends Component {
     constructor(props) {
         super(props);
     }
+    shouldComponentUpdate(nextProps) {
+        let differentData = this.props.data !== nextProps.data;
+        return differentData;
+    }
     renderFields = (contentType) => {
-        const { title, productionStudioId, releaseYear, boxOffice } = this.props.data;
+        console.log(this.props.data)
+        const { title, productionStudioId, releaseYear, boxOffice, animated, totalNumberOfSeasons, awards, castCrew, countryOfOrigin, duration, eventType, externalIds, ratings, originalLanguage } = this.props.data;
         return (
             <Fragment>
                 <Container fluid id="titleContainer">
@@ -30,7 +35,7 @@ class TitleReadOnlyMode extends Component {
                                 </Col>
                             </Row>
                             {
-                                this.props.data.episodic !== null  ?
+                                this.props.data.episodic !== null ?
                                     contentType !== 'MOVIE' && contentType !== 'SERIES' ?
                                         <Fragment>
                                             <Row>
@@ -65,6 +70,48 @@ class TitleReadOnlyMode extends Component {
                                         null
                                     : null
                             }
+                            <Row>
+                                {
+                                    animated ?
+                                        <Col>
+                                            <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{animated === true ? 'Y' : 'N'}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                                {
+                                    countryOfOrigin ?
+                                        <Col>
+                                            <Alert color="light" id="titleCountryOfOrigin"><span><b>Country of Origin: </b>{countryOfOrigin}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                                        <Col>
+                                            <Alert color="light" id="titleOriginalLanguage"><span><b>Original Language: </b>English</span></Alert>
+                                        </Col>
+                                {
+                                    duration ?
+                                        <Col>
+                                            <Alert color="light" id="titleDuration"><span><b>Duration: </b>{duration}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                            </Row>
+                            <Row>
+                                {
+                                    eventType ?
+                                        <Col>
+                                            <Alert color="light" id="titleEventType"><span><b>Event Type: </b>{eventType}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                                {
+                                    totalNumberOfSeasons ?
+                                        <Col>
+                                            <Alert color="light" id="titleEventType"><span><b>Seasons: </b>{totalNumberOfSeasons}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                            </Row>
                             <Row>
                                 <Col>
                                     <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>

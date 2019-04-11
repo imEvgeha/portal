@@ -35,11 +35,11 @@ class TitleEditMode extends Component {
       eventType,
       // seasonFinale,
       // seasonPremiere,
-      // totalNumberOfSeasons,
+      totalNumberOfSeasons,
       // licensors,
       // originalLanguage,
       countryOfOrigin,
-      // totalNumberOfEpisodes
+      totalNumberOfEpisodes
     } = this.props.data;
     return (
       <Fragment>
@@ -209,6 +209,8 @@ class TitleEditMode extends Component {
                                     type='number'
                                     name='totalNumberOfEpisodes'
                                     id='totalNumberOfEpisodes'
+                                    onChange={e => this.props.handleOnChangeEdit(e)}
+                                    value={totalNumberOfEpisodes}
                                     placeholder='Episodes'
                                     errorMessage="Please enter a valid episode number!"
                                     validate={{
@@ -252,6 +254,8 @@ class TitleEditMode extends Component {
                           name='totalNumberOfSeasons'
                           id='totalNumberOfSeasons'
                           placeholder='Seasons'
+                          value={totalNumberOfSeasons}
+                          onChange={e => this.props.handleOnChangeEdit(e)}
                           errorMessage="Please enter a valid season number!"
                           validate={{
                             maxLength: { value: 3 }
@@ -338,8 +342,8 @@ class TitleEditMode extends Component {
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
                     <option value=''>Select Original Language</option>
-                    <option value='English'>English</option>
-                    <option value='German'>German</option>
+                    <option value='US'>English</option>
+                    <option value='DE'>German</option>
                   </Input>
                 </Col>
                 {
