@@ -5,6 +5,8 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
+
+import {IfEmbedded} from './../util/Common';
 import Navbar from './Navbar';
 import AvailDashboardContainer  from './avail/dashboard/DashboardContainer';
 import AvailDetails  from './avail/details/RightDetails';
@@ -22,7 +24,9 @@ export default class App extends React.Component {
         return (
             <Router>
                 <div>
-                    <Navbar/>
+                    <IfEmbedded value={false}>
+                        <Navbar/>
+                    </IfEmbedded>
                     <NexusBreadcrumb/>
                     <div>
                         <Route exact path="/" component={Welcome}/>
