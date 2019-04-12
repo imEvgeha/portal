@@ -42,6 +42,7 @@ export const rightSearchHelper = {
     },
 
     clearAdvancedSearchForm: () => {
+        RightsURL.saveRightsSimpleFilterUrl({});
         store.dispatch(searchFormSetAdvancedSearchCriteria({}));
         store.dispatch(searchFormSetSearchCriteria({}));
     },

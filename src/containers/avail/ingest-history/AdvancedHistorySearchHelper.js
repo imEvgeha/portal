@@ -4,6 +4,7 @@ import {
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO, safeTrim} from '../../../util/Common';
+import HistoryURL from '../util/HistoryUtils';
 
 export const advancedHistorySearchHelper = {
 
@@ -30,6 +31,7 @@ export const advancedHistorySearchHelper = {
     },
 
     clearAdvancedHistorySearchForm: () => {
+        HistoryURL.saveHistoryAdvancedFilterUrl({});
         store.dispatch(searchFormSetAdvancedHistorySearchCriteria({
            received: null,
            provider: '',
@@ -38,6 +40,7 @@ export const advancedHistorySearchHelper = {
     },
 
     advancedSearch(searchCriteria) {
+        HistoryURL.saveHistoryAdvancedFilterUrl(searchCriteria);
         historyServiceManager.search(this.prepareAdvancedHistorySearchCall(searchCriteria));
     }
 };

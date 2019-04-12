@@ -46,10 +46,6 @@ class RightsURL extends React.Component {
         return toReturn;
     }
 
-    static ArraytoURL(params) {
-        return '?' + params.concat('&');
-    }
-
     static ArraytoFilter(params){
         const filter = {};
         let found = -1;

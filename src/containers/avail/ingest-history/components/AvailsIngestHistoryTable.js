@@ -8,6 +8,8 @@ import { AgGridReact } from 'ag-grid-react';
 import AvailHistoryRecordRenderer from './AvailHistoryRecordRenderer';
 import './AvailsIngestHistoryTable.scss';
 
+import HistoryURL from '../../util/HistoryUtils';
+
 // image import
 import LoadingGif from '../../../../../src/img/loading.gif';
 
@@ -159,7 +161,8 @@ class AvailsIngestHistoryTable extends React.Component {
     }
 
     setIngestType(type){
-        if(type != this.props.searchCriteria.ingestType){
+        if(type !== this.props.searchCriteria.ingestType){
+            HistoryURL.saveHistoryAdvancedFilterUrl({...this.props.advancedSearchCriteria, ingestType: type});
             this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
             this.props.searchFormSetHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
             this.table.api.setDatasource(this.state.dataSource);
