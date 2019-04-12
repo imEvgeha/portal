@@ -126,6 +126,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         let options = [
             { value: '', label: 'ALL' },
             { value: 'PENDING', label: 'PENDING' },
+            { value: 'MANUAL', label: 'MANUAL' },
             { value: 'COMPLETED', label: 'COMPLETED' },
             { value: 'FAILED', label: 'FAILED' },
         ];
