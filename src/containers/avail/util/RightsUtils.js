@@ -35,7 +35,6 @@ class RightsURL extends React.Component {
                 }
             });
         }
-
         if(url){
             const searchParams = url.substr(1).split('&');
             if(searchParams.length > 0){
@@ -188,22 +187,23 @@ class RightsURL extends React.Component {
     }
 
     static getRightsSearchUrl(availHistoryIds, invalid = null){
-        let toReturn = '/avails';
+        let search = '';
+        let pathname = '/avails';
         if(availHistoryIds){
-            toReturn+='/history/' + availHistoryIds;
+            pathname+='/history/' + availHistoryIds;
             if(invalid === true){
-                toReturn += '/errors';
+                pathname += '/errors';
             }
             if(invalid === false){
-                toReturn += '?invalid=false';
+                search += '?invalid=false';
             }
         }else{
-            toReturn += '/rights';
+            pathname += '/rights';
             if(invalid !== null){
-                toReturn += '?invalid=' + invalid;
+                search += '?invalid=' + invalid;
             }
         }
-        return toReturn;
+        return {pathname:pathname, search:search};
     }
 
     static getRightUrl(id){
