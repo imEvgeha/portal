@@ -12,6 +12,15 @@ import {
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
+import {connect} from 'react-redux';
+import {configFields} from '../../service/ConfigService';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+    };
+};
 
 class TitleEditMode extends Component {
   constructor(props) {
@@ -37,7 +46,7 @@ class TitleEditMode extends Component {
       // seasonPremiere,
       // totalNumberOfSeasons,
       // licensors,
-      // originalLanguage,
+      originalLanguage,
       countryOfOrigin,
       // totalNumberOfEpisodes
     } = this.props.data;
@@ -289,11 +298,14 @@ class TitleEditMode extends Component {
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={countryOfOrigin ? countryOfOrigin : ''}
+                    value={countryOfOrigin}
                   >
                     <option value=''>Select Country of Origin</option>
-                    <option value='PL'>PL</option>
-                    <option value='GB'>UK</option>
+                      {
+                          this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                              return <option key={index} value={e.countryCode}>{e.countryName}</option>;
+                          })
+                      }
                   </Input>
                 </Col>
                 <Col>
@@ -336,10 +348,14 @@ class TitleEditMode extends Component {
                     name='originalLanguage'
                     id='originalLanguage'
                     onChange={e => this.props.handleOnChangeEdit(e)}
+                    value={originalLanguage}
                   >
                     <option value=''>Select Original Language</option>
-                    <option value='English'>English</option>
-                    <option value='German'>German</option>
+                      {
+                          this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                              return <option key={index} value={e.languageCode}>{e.languageName}</option>;
+                          })
+                      }
                   </Input>
                 </Col>
                 {
@@ -482,8 +498,10 @@ TitleEditMode.propTypes = {
   advisoryCodeList: PropTypes.object,
   removeAdvisoryCodes: PropTypes.func,
   handleOnChangeTitleDuration: PropTypes.func,
-  advisoryCode: PropTypes.string
+  advisoryCode: PropTypes.string,
+  configLanguage: PropTypes.object,
+  configLocale: PropTypes.object
 
 };
 
-export default TitleEditMode;
+export default connect(mapStateToProps)(TitleEditMode);
