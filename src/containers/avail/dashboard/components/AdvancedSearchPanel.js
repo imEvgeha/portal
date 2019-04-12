@@ -351,7 +351,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={'Avail History'}
-                        value={' = ' + this.props.searchCriteria.availHistoryIds.subTitle}
+                        value={' = ' + this.props.searchCriteria.availHistoryIds.value}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
                         }}
