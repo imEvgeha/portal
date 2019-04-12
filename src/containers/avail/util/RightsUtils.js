@@ -109,8 +109,32 @@ class RightsURL extends React.Component {
         return filter;
     }
 
+    static isAdvancedFilter(url) {
+        if(!url) return false;
+        let params = url.substring(1).split('&');
+        let isAdvanced = false;
+        params.forEach(param => {
+            const field = param.split('=')[0];
+            if (field !== 'embedded' && field !== 'text') {
+                isAdvanced = true;
+                return true;
+            }
+        });
+        return isAdvanced;
+    }
+
+
     static FilterToObj(filter){
         return rightSearchHelper.prepareAdvancedSearchCall(filter);
+    }
+
+    static saveRightsSimpleFilterUrl(filter){
+        const params = [];
+        if(filter.text){
+            params.push('text=' + filter.text);
+        }
+        const search = params.join('&');
+        this.saveURL('/avails/rights' + (search ? '?' + search : ''));
     }
 
     static saveRightsAdvancedFilterUrl(filter){
@@ -150,9 +174,13 @@ class RightsURL extends React.Component {
         });
 
         const search = params.join('&');
+        this.saveURL(toReturn + '?' + search);
 
+    }
+
+    static saveURL(url){
         if(RightsURL.instance) {
-            RightsURL.instance.context.router.history.push(toReturn + '?' + search);
+            RightsURL.instance.context.router.history.push(url);
         }
     }
 

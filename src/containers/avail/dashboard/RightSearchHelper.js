@@ -47,6 +47,7 @@ export const rightSearchHelper = {
     },
 
     freeTextSearch(searchCriteria) {
+        RightsURL.saveRightsSimpleFilterUrl(searchCriteria);
         rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 

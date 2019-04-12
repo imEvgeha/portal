@@ -13,7 +13,8 @@ import {
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
     searchFormUpdateAdvancedSearchCriteria,
-    resultPageShowSelected
+    resultPageShowSelected,
+    searchFormUpdateTextSearch
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
@@ -49,7 +50,8 @@ const mapDispatchToProps = {
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
     resultPageShowSelected,
-    searchFormUpdateAdvancedSearchCriteria
+    searchFormUpdateAdvancedSearchCriteria,
+    searchFormUpdateTextSearch
 };
 
 class DashboardContainer extends React.Component {
@@ -60,6 +62,7 @@ class DashboardContainer extends React.Component {
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
+        searchFormUpdateTextSearch: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
@@ -152,9 +155,21 @@ class DashboardContainer extends React.Component {
             this.props.searchFormShowSearchResults(false);
         }else{
             let params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
-            const criteria = RightsURL.ArraytoFilter(params);
-            this.props.searchFormSetAdvancedSearchCriteria(criteria);
-            this.handleAvailsAdvancedSearch(criteria);
+            let criteria = {text: ''};
+            if(RightsURL.isAdvancedFilter(this.props.location.search)){
+                criteria = RightsURL.ArraytoFilter(params);
+                this.props.searchFormShowAdvancedSearch(true);
+                this.props.searchFormSetAdvancedSearchCriteria(criteria);
+                this.handleAvailsAdvancedSearch(criteria);
+            }else{
+                const simpleFilter = params.find(param => param.split('=')[0] === 'text');
+                if(simpleFilter && simpleFilter.split('=').length === 2) {
+                    criteria = {text: simpleFilter.split('=')[1]};
+                }
+                this.props.searchFormShowAdvancedSearch(false);
+                this.props.searchFormUpdateTextSearch(criteria);
+                this.handleAvailsFreeTextSearch(criteria);
+            }
         }
     }
 
