@@ -443,7 +443,7 @@ class TitleEditMode extends Component {
             data={this.props.data}
             handleOnAdvisories={this.props.handleOnAdvisories}
             onChange={this.props.handleOnChangeEdit}
-            _handleAddAdvisoryCode={this.props._handleAddAdvisoryCode}
+            _handleAdvisoryCodeKeyPress={this.props._handleAdvisoryCodeKeyPress}
             handleOnExternalIds={this.props.handleOnExternalIds}
             isCastModalOpen={this.props.isCastModalOpen}
             isCrewModalOpen={this.props.isCrewModalOpen}
@@ -460,7 +460,7 @@ class TitleEditMode extends Component {
             ratingValue={this.props.ratingValue}
             ratingSystem={this.props.ratingSystem}
             removeRating={this.props.removeRating}
-            _handleKeyPress={this.props._handleKeyPress}
+            _handleRatingKeyPress={this.props._handleRatingKeyPress}
             editedTitle={this.props.editedTitle}
             updateValue={this.props.updateValue}
           />
@@ -480,7 +480,7 @@ TitleEditMode.propTypes = {
   handleOnAdvisories: PropTypes.func,
   updateValue: PropTypes.func,
   editedTitle: PropTypes.object,
-  _handleKeyPress: PropTypes.func,
+  _handleRatingKeyPress: PropTypes.func,
   removeRating: PropTypes.func,
   ratings: PropTypes.array,
   ratingValue: PropTypes.string,
@@ -492,7 +492,7 @@ TitleEditMode.propTypes = {
   isCrewModalOpen: PropTypes.bool,
   isCastModalOpen: PropTypes.bool,
   ratingSystem: PropTypes.string,
-  _handleAddAdvisoryCode: PropTypes.func,
+  _handleAdvisoryCodeKeyPress: PropTypes.func,
   advisoriesCode: PropTypes.string,
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
   advisoryCodeList: PropTypes.object,

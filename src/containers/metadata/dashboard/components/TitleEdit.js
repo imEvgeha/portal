@@ -294,8 +294,8 @@ class TitleEdit extends Component {
             handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
-            _handleKeyPress={this._handleKeyPress}
-            _handleAddAdvisoryCode={this._handleAddAdvisoryCode}
+            _handleRatingKeyPress={this._handleRatingKeyPress}
+            _handleAdvisoryCodeKeyPress={this._handleAdvisoryCodeKeyPress}
             handleOnAdvisoriesCodeUpdate={this.handleOnAdvisoriesCodeUpdate}
             advisoryCode={this.state.advisoryCode}
             data={this.state.titleForm}
@@ -782,7 +782,7 @@ class TitleEdit extends Component {
         });
     };
 
-    _handleKeyPress = e => {
+    _handleRatingKeyPress = e => {
         if (e.keyCode === 13) {
             //Key code for Enter
             this.addRating(this.state.ratingValue);
@@ -792,7 +792,7 @@ class TitleEdit extends Component {
         }
     };
 
-    _handleAddAdvisoryCode = e => {
+    _handleAdvisoryCodeKeyPress = e => {
         if(e.keyCode === 13) {
             this.addAdvisoryCodes(this.state.advisoryCode);
             this.setState({

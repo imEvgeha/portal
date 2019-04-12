@@ -9,7 +9,7 @@ import {
   ListGroupItem,
   Card,
   CardHeader,
-  CardBody
+  CardBody,
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
@@ -28,10 +28,77 @@ const mapStateToProps = state => {
   return {
     configCastAndCrew: state.titleReducer.configData.find(e => e.key === configFields.CAST_AND_CREW),
     configRatingSystem: state.titleReducer.configData.find(e => e.key === configFields.RATING_SYSTEM),
+    configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
+    configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
   };
 };
 
 class CoreMetadataEditMode extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isRatingValid: false,
+            isAdvisoryCodeValid: false
+        };
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props !== nextProps;
+    }
+
+    onRatingKeyDown = e => {
+        if(this.state.isRatingValid) {
+            this.props._handleRatingKeyPress(e);
+        }
+    };
+
+    onAdvisoryCodeDown = e => {
+        if(this.state.isAdvisoryCodeValid) {
+            this.props._handleAdvisoryCodeKeyPress(e);
+        }
+    };
+
+    validateRating = (value, ctx, input, cb) => {
+        let isValid = false;
+        if(value === '') {
+            isValid = true;
+        } else if(this.props.configRatings) {
+            let rating = this.props.configRatings.value.find(e => {
+                if(this.props.ratingSystem) {
+                    return e.value === value && e.ratingSystem === this.props.ratingSystem;
+                }
+                return e.value === value;
+            });
+            isValid = !!rating;
+        } else {
+            isValid = false;
+        }
+        this.setState({
+            isRatingValid: isValid
+        });
+
+        cb(isValid);
+    };
+
+    validateAdvisoryCode = (value, ctx, input, cb) => {
+        let isValid = false;
+        if(value === '') {
+            isValid = true;
+        } else if(this.props.configAdvisoryCode) {
+            let advisoryCode = this.props.configAdvisoryCode.value.find(e => {
+                return e.code === value;
+            });
+            isValid = !!advisoryCode;
+        } else {
+            isValid = false;
+        }
+        this.setState({
+            isAdvisoryCodeValid: isValid
+        });
+
+        cb(isValid);
+    };
 
   render() {
     // const {
@@ -149,14 +216,16 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <FormGroup>
               <Label for='ratings'>Ratings</Label>
-              <Input
+              <AvField
                 type='text'
                 onChange={e => this.props.updateValue(e.target.value)}
                 name='ratings'
                 id='ratings'
                 value={this.props.ratingValue}
-                onKeyDown={this.props._handleKeyPress}
+                onKeyDown={this.onRatingKeyDown}
                 placeholder='Ratings'
+                validate={{async: this.validateRating}}
+                errorMessage="Invalid Rating due to selected Rating System"
               />
               {this.props.ratings &&
                 this.props.ratings.map((rating, i) => (
@@ -197,14 +266,16 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <FormGroup>
               <Label for='advisoryCode'>Advisory Code</Label>
-              <Input
+              <AvField
                 type='text'
                 onChange={e => this.props.handleOnAdvisoriesCodeUpdate(e.target.value)}
                 value={this.props.advisoryCode}
                 placeholder="Advisory Codes"
-                onKeyDown={this.props._handleAddAdvisoryCode}
+                onKeyDown={this.onAdvisoryCodeDown}
                 name='advisoryCode'
                 id='advisoryCode'
+                validate={{async: this.validateAdvisoryCode}}
+                errorMessage="Invalid Advisory Code"
               />
               {this.props.advisoryCodeList &&
                 this.props.advisoryCodeList.advisoriesCode.map((advisory, i) => (
@@ -524,11 +595,11 @@ CoreMetadataEditMode.propTypes = {
   removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
   editedTitle: PropTypes.object,
-  _handleKeyPress: PropTypes.func,
+  _handleRatingKeyPress: PropTypes.func,
   cleanCastInput: PropTypes.func,
   addCastCrew: PropTypes.func,
   ratingSystem: PropTypes.string,
-  _handleAddAdvisoryCode: PropTypes.func,
+  _handleAdvisoryCodeKeyPress: PropTypes.func,
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   advisoryCodeList: PropTypes.object,
@@ -536,6 +607,8 @@ CoreMetadataEditMode.propTypes = {
 
   configCastAndCrew: PropTypes.object,
   configRatingSystem: PropTypes.object,
+  configRatings: PropTypes.object,
+  configAdvisoryCode: PropTypes.object,
 };
 
 
