@@ -4,11 +4,9 @@ import titleReducer from './reducers/metadata/titleReducer';
 import dashboard from './reducers/avail/dashboard';
 import createright from './reducers/avail/createright';
 import history from './reducers/history';
-import {URL} from '../util/Common';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
-import {rightSearchHelper} from '../containers/avail/dashboard/RightSearchHelper.js';
 
 const DASHBOARD_SESSION_VERSION = '0.5';
 const CREATERIGHT_SESSION_VERSION = '0.2';
@@ -34,16 +32,6 @@ export const saveHistoryState = () => {
 
 export const loadDashboardState = () => {
     loadFromWebLocalStorage('dashboard', loadDashboardSession, DASHBOARD_SESSION_VERSION);
-    // setTimeout(() => {
-    //     const dashboard = store.getState().dashboard;
-    //     if(dashboard.session.showSearchResults && !URL.hasParams()) {
-    //         if (dashboard.session.showAdvancedSearch) {
-    //             rightSearchHelper.advancedSearch(store.getState().dashboard.session.advancedSearchCriteria);
-    //         }else{
-    //             rightSearchHelper.freeTextSearch(dashboard.session.freeTextSearch);
-    //         }
-    //     }
-    // }, 1);
 };
 
 export const saveDashboardState = () => {

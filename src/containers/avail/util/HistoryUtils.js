@@ -31,7 +31,8 @@ class HistoryURL extends React.Component {
         const options={
             status: ['PENDING', 'COMPLETED', 'FAILED'],
             ingestType: ['Email', 'Upload']
-        }
+        };
+
         const filter = {ingestType : ''};
 
         params.forEach(param => {

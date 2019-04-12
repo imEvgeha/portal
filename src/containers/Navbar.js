@@ -12,7 +12,6 @@ import {
 import {Can} from '../ability';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
-import {URL} from '../util/Common';
 
 const mapStateToProps = state => {
     return {profileInfo: state.root.profileInfo};
