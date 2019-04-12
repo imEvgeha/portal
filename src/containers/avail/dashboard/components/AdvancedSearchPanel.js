@@ -337,7 +337,9 @@ class AdvancedSearchPanel extends React.Component {
                                     console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
                             }
                         } else {
-                            console.warn('Cannot determine schema for field: ' + key);
+                            if(key !== 'availHistoryIds') {
+                                console.warn('Cannot determine schema for field: ' + key);
+                            }
                         }
                     }
                 });
