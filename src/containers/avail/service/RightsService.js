@@ -6,6 +6,8 @@ import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Commo
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
+const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region.value', 'regionExcluded.value', 'genres', 'contractId']
+
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
         return obj.length > 0;
@@ -56,12 +58,15 @@ const populate = function(key, value, location){
         }else {
             if (!location[firstKey])
                 location[firstKey] = {};
-            if(key === 'retailer.retailerId1'){
+            if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
                 value = value.split(',');
             }
             populate(restKey, value, location[firstKey]);
         }
     }else{
+        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+            value = value.split(',');
+        }
         location[key] = parse(value);
     }
 };
