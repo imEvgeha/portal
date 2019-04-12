@@ -459,6 +459,9 @@ class RightsResultTable extends React.Component {
         if(val && val === Object(val) && !Array.isArray(val)){
             val = JSON.stringify(val);
         }
+        if(Array.isArray(val) && val.length > 1){
+            val = val.join(', ');
+        }
         const content = error || params.valueFormatted || val;
         if (val !== undefined) {
             if (content) {

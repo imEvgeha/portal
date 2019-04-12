@@ -26,7 +26,13 @@ export const profileService = {
                         }else {
                             if(rec.configEndpoint) {
                                 getSelectValues(rec.configEndpoint).then((response) => {
-                                    store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
+                                    if(rec.configEndpoint === '/production-studios'){
+                                        let options = response.data.data;
+                                        options.forEach((option) => option.value = option.name);
+                                        store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                    }else {
+                                        store.dispatch(loadSelectLists(rec.javaVariableName, response.data.data));
+                                    }
                                 });
                             }else{
                                 console.warn('MISSING options or endpoint: for ', rec.javaVariableName);
