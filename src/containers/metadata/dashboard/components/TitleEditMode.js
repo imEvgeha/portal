@@ -33,11 +33,10 @@ class TitleEditMode extends Component {
       animated,
       duration,
       eventType,
-      // seasonFinale,
-      // seasonPremiere,
+      seasonFinale,
+      seasonPremiere,
       totalNumberOfSeasons,
-      // licensors,
-      // originalLanguage,
+      originalLanguage,
       countryOfOrigin,
       totalNumberOfEpisodes
     } = this.props.data;
@@ -109,7 +108,7 @@ class TitleEditMode extends Component {
                         </Col>
                       </Row>
                       <Row>
-                        <Col md={6}>
+                        <Col>
                           <FormGroup>
                             <Label for='titleSeasonNumber'>Season</Label>
                             <AvField
@@ -133,7 +132,7 @@ class TitleEditMode extends Component {
                         </Col>
                         <Fragment>
                           {contentType !== 'SEASON' ? (
-                            <Col md={6}>
+                            <Col>
                               <FormGroup>
                                 <Label for='titleEpisodeNumber'>Episode</Label>
                                 <AvField
@@ -157,28 +156,7 @@ class TitleEditMode extends Component {
                                 />
                               </FormGroup>
                             </Col>
-                          ) : (
-                              <Col md={6}>
-                                <Label for='titleEpisodeCount'>
-                                  Episode Count
-                                </Label>
-                                <AvField
-                                  type='text'
-                                  name='episodeCount'
-                                  value={
-                                    this.props.data.episodic !== null &&
-                                      this.props.data.episodic.episodeCount
-                                      ? this.props.data.episodic.episodeCount
-                                      : ''
-                                  }
-                                  id='titleEpisodeCount'
-                                  placeholder={'Enter Episode Count'}
-                                  onChange={e =>
-                                    this.props.handleChangeEpisodic(e)
-                                  }
-                                />
-                              </Col>
-                            )}
+                          ) : null}
                         </Fragment>
                       </Row>
                       <Row>
@@ -243,28 +221,32 @@ class TitleEditMode extends Component {
                     </Fragment>
                   ) : null}
                 </Fragment>
-              ) : (
-                  <Fragment>
-                    <Row>
-                      <Col>
-                        <Label for='totalNumberOfSeasons'>Seasons</Label>
-
-                        <AvField
-                          type='number'
-                          name='totalNumberOfSeasons'
-                          id='totalNumberOfSeasons'
-                          placeholder='Seasons'
-                          value={totalNumberOfSeasons}
-                          onChange={e => this.props.handleOnChangeEdit(e)}
-                          errorMessage="Please enter a valid season number!"
-                          validate={{
-                            maxLength: { value: 3 }
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  </Fragment>
-                )}
+              ) : 
+                  contentType === 'SEASON' ? 
+                  (
+                    <Fragment>
+                      <Row>
+                        <Col>
+                          <Label for='totalNumberOfSeasons'>Seasons</Label>
+  
+                          <AvField
+                            type='number'
+                            name='totalNumberOfSeasons'
+                            id='totalNumberOfSeasons'
+                            placeholder='Seasons'
+                            value={totalNumberOfSeasons}
+                            onChange={e => this.props.handleOnChangeEdit(e)}
+                            errorMessage="Please enter a valid season number!"
+                            validate={{
+                              maxLength: { value: 3 }
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </Fragment>
+                  )
+                  : null
+              }
               <Row>
                 <Col>
                   <Label for='duration'>Duration</Label>
@@ -332,29 +314,51 @@ class TitleEditMode extends Component {
                   </Input>
                 </Col>
               </Row>
-              <Row>
+              <Row style={{marginTop: '15px'}}>
                 <Col>
                   <Label for='originalLanguage'>Original Language</Label>
                   <Input
                     type='select'
                     name='originalLanguage'
                     id='originalLanguage'
+                    defaultValue={originalLanguage}
                     onChange={e => this.props.handleOnChangeEdit(e)}
                   >
                     <option value=''>Select Original Language</option>
-                    <option value='US'>English</option>
-                    <option value='DE'>German</option>
+                    <option value='English'>English</option>
+                    <option value='German'>German</option>
                   </Input>
                 </Col>
                 {
                   contentType === 'EPISODE' ? (
                     <Fragment>
                       <Col>
+                          <Label for='titleEpisodeCount'>
+                            Episode Count
+                          </Label>
+                            <AvField
+                              type='text'
+                              name='episodeCount'
+                              value={
+                                this.props.data.episodic !== null &&
+                                  this.props.data.episodic.episodeCount
+                                  ? this.props.data.episodic.episodeCount
+                                  : ''
+                              }
+                              id='titleEpisodeCount'
+                              placeholder={'Enter Episode Count'}
+                              onChange={e =>
+                              this.props.handleChangeEpisodic(e)
+                              }
+                            />
+                      </Col>
+                      <Col>
                         <Label for='seasonPremiere'>Season Premiere</Label>
                         <Input
                           type='select'
                           name='seasonPremiere'
                           id='seasonPremiere'
+                          defaultValue={seasonPremiere}
                           onChange={e => this.props.handleOnChangeEdit(e)}
                         >
                           <option value={''}>Select Season Premiere</option>
@@ -368,6 +372,7 @@ class TitleEditMode extends Component {
                           type='select'
                           name='seasonFinale'
                           id='seasonFinale`'
+                          defaultValue={seasonFinale}
                           onChange={e => this.props.handleOnChangeEdit(e)}
                         >
                           <option value={''}>Select Season Finale</option>

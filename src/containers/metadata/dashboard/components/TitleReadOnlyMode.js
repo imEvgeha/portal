@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Row, Col, Container, Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
+import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
@@ -11,8 +12,20 @@ class TitleReadOnlyMode extends Component {
         return differentData;
     }
     renderFields = (contentType) => {
-        console.log(this.props.data)
-        const { title, productionStudioId, releaseYear, boxOffice, animated, totalNumberOfSeasons, awards, castCrew, countryOfOrigin, duration, eventType, externalIds, ratings, originalLanguage } = this.props.data;
+        const { title, 
+            productionStudioId, 
+            releaseYear, 
+            boxOffice, 
+            animated, 
+            totalNumberOfSeasons, 
+            totalNumberOfEpisodes,
+            countryOfOrigin, 
+            duration, 
+            eventType, 
+            seasonPremiere,
+            seasonFinale,
+            originalLanguage 
+        } = this.props.data;
         return (
             <Fragment>
                 <Container fluid id="titleContainer">
@@ -39,18 +52,15 @@ class TitleReadOnlyMode extends Component {
                                     contentType !== 'MOVIE' && contentType !== 'SERIES' ?
                                         <Fragment>
                                             <Row>
-                                                <Col md={6}>
+                                                <Col>
                                                     <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                                 </Col>
                                                 {
-                                                    contentType === 'EPISODE' ?
+                                                    contentType === 'EPISODE' || contentType === 'SEASON' ?
                                                         <Col md={6}>
                                                             <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                                         </Col>
-                                                        :
-                                                        <Col md={6}>
-                                                            <Alert color="light" id="titleEpisodeCount"><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                        </Col>
+                                                        : null
                                                 }
                                             </Row>
                                             <Row>
@@ -72,6 +82,15 @@ class TitleReadOnlyMode extends Component {
                             }
                             <Row>
                                 {
+                                    totalNumberOfSeasons ? 
+                                    <Col>
+                                            <Alert color="light" id="titleSeasons"><span><b>Seasons: </b>{totalNumberOfSeasons}</span></Alert>
+                                    </Col>
+                                    : null
+                                }
+                            </Row>
+                            <Row>
+                                {
                                     animated ?
                                         <Col>
                                             <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{animated === true ? 'Y' : 'N'}</span></Alert>
@@ -85,9 +104,13 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                         : null
                                 }
+                                {
+                                    originalLanguage ? 
                                         <Col>
-                                            <Alert color="light" id="titleOriginalLanguage"><span><b>Original Language: </b>English</span></Alert>
-                                        </Col>
+                                           <Alert color="light" id="titleOriginalLanguage"><span><b>Original Language: </b>{originalLanguage}</span></Alert>
+                                       </Col>
+                                       : null
+                                }
                                 {
                                     duration ?
                                         <Col>
@@ -105,11 +128,34 @@ class TitleReadOnlyMode extends Component {
                                         : null
                                 }
                                 {
-                                    totalNumberOfSeasons ?
+                                    totalNumberOfEpisodes ?
                                         <Col>
-                                            <Alert color="light" id="titleEventType"><span><b>Seasons: </b>{totalNumberOfSeasons}</span></Alert>
+                                            <Alert color="light" id="titleEpisodes"><span><b>Episodes: </b>{totalNumberOfEpisodes}</span></Alert>
                                         </Col>
                                         : null
+                                }
+                                {
+                                    this.props.data.episodic ?
+                                        <Col>
+                                            <Alert color="light" id="titleEpisodeCount"><span><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                            </Row>
+                            <Row>
+                                {
+                                    seasonPremiere ? 
+                                    <Col>
+                                        <Alert color="light" id="titleSeasonPremiere"><span><b>Season Premiere: </b>{seasonPremiere === true ? 'Y' : 'N'}</span></Alert>
+                                    </Col>
+                                    : null
+                                }
+                                {
+                                    seasonFinale ?
+                                    <Col>
+                                        <Alert color="light" id="titleSeasonPremiere"><span><b>Season Finale: </b>{seasonFinale === true ? 'Y' : 'N'}</span></Alert>
+                                    </Col>
+                                    : null
                                 }
                             </Row>
                             <Row>
@@ -122,6 +168,9 @@ class TitleReadOnlyMode extends Component {
                             </Row>
                         </Col>
                     </Row>
+                    <CoreMetadataReadOnlyMode
+                        data={this.props.data}
+                    />
                 </Container>
             </Fragment>
         );
