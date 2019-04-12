@@ -145,6 +145,10 @@ class RightDetails extends React.Component {
     }
 
     update(name, value, onError) {
+        if(this.state.flatRight[name] === value){
+            onError();
+            return;
+        }
         let updatedRight = {[name]: value};
         if(name.indexOf('.') > 0 && name.split('.')[0] === 'languages'){
             if(name.split('.')[1] === 'language'){
