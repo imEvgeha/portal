@@ -44,7 +44,7 @@ class DashboardTab extends React.Component {
     }
 
     createRight = () => {
-        this.context.router.history.push('avails/create');
+        this.context.router.history.push('/avails/rights/create');
     };
 
     render() {

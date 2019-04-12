@@ -108,23 +108,9 @@ class DashboardContainer extends React.Component {
         //             criteria.invalid = {value: state.invalid};
         //         }
         //
-        //         if(this.props.showSearchResults) {
-        //             NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-        //         }
-        //
         //         this.props.searchFormShowAdvancedSearch(true);
         //         this.props.searchFormSetAdvancedSearchCriteria(criteria);
         //         this.handleAvailsAdvancedSearch(criteria);
-        //     } else if (state.back) {
-        //         gotoAvailsDashboard();
-        //     }
-        // } else if (this.props.searchCriteria.availHistoryIds) {
-        //     if (this.props.showSearchResults) {
-        //         NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-        //     }
-        // } else {
-        //     if(this.props.showSearchResults) {
-        //         NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
         //     }
         // }
     }
@@ -133,17 +119,6 @@ class DashboardContainer extends React.Component {
         if(prevProps.availsMapping !== this.props.availsMapping) {
             this.getSearchCriteriaFromURL();
         }
-
-        // if(prevProps.searchCriteria !== this.props.searchCriteria) {
-        //     NexusBreadcrumb.set(AVAILS_DASHBOARD);
-        //
-        //     if (this.props.showSearchResults) {
-        //         if(this.props.currentSearchCriteria.availHistoryIds && this.props.showAdvancedSearch){
-        //             NexusBreadcrumb.push(AVAILS_HISTORY);
-        //         }
-        //         NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
-        //     }
-        // }
     }
 
     getSearchCriteriaFromURL(){
@@ -156,7 +131,7 @@ class DashboardContainer extends React.Component {
         }else{
             const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
             let criteria = {text: ''};
-            if(RightsURL.isAdvancedFilter(this.props.location.search)){
+            if(!isObjectEmpty(this.props.match.params) || RightsURL.isAdvancedFilter(this.props.location.search)){
                 criteria = RightsURL.ArraytoFilter(params);
                 this.props.searchFormShowAdvancedSearch(true);
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);

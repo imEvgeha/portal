@@ -180,6 +180,13 @@ class RightsURL extends React.Component {
         }
     }
 
+    static get matchParam(){
+        if(!RightsURL.instance) {
+            return '';
+        }
+        return RightsURL.instance.context.router.route.match.params;
+    }
+
     static getRightsSearchUrl(availHistoryIds, invalid = null){
         let toReturn = '/avails';
         if(availHistoryIds){
@@ -200,7 +207,34 @@ class RightsURL extends React.Component {
     }
 
     static getRightUrl(id){
-        return '/avails/rights/' + id + URL.search();
+        const availHistoryIds = this.matchParam.availHistoryIds;
+        const valid = this.matchParam.valid;
+        const initialSearch = URL.search();
+        let search;
+
+        if(availHistoryIds){
+            search = 'availHistoryIds=' + availHistoryIds;
+            if(valid && valid === 'errors'){
+                search += '&invalid=true';
+            }
+        }
+
+        if(search){
+            if(initialSearch){
+                search = initialSearch + '&' + search;
+            }else{
+                search = '?' + search;
+            }
+        }else{
+            search = initialSearch;
+        }
+
+        return '/avails/rights/' + id + search;
+    }
+
+    static getSearchURLFromRightUrl(path, search){
+        const beforeID = path.substr(0, path.lastIndexOf('/'));
+        return beforeID + search;
     }
 
     static get availsDashboardUrl(){
