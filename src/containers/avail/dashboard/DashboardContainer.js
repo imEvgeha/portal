@@ -2,7 +2,7 @@ import './DashboardContainer.scss';
 
 import React from 'react';
 import {connect} from 'react-redux';
-import {IfEmbedded, URL} from '../../../util/Common';
+import {IfEmbedded} from '../../../util/Common';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
@@ -22,13 +22,10 @@ import t from 'prop-types';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
-import moment from 'moment';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {gotoAvailsDashboard} from '../../Navbar';
 import {isObjectEmpty} from '../../../util/Common';
 import RightsURL from '../util/RightsUtils';
-import store from '../../../stores';
 
 const mapStateToProps = state => {
     return {
