@@ -59,8 +59,8 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     handleDateChange(name, field, value) {
+        value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
         this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: {...this.props.searchCriteria[name], [field] : value}});
-
     }
 
     handleDateInvalid(name, value) {

@@ -3,7 +3,8 @@ import {
     searchFormSetAdvancedHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
-import {momentToISO, safeTrim} from '../../../util/Common';
+import {safeTrim} from '../../../util/Common';
+import moment from 'moment';
 
 export const advancedHistorySearchHelper = {
 
@@ -18,10 +19,12 @@ export const advancedHistorySearchHelper = {
                     response[key] = safeTrim(criteria.value);
                 } else {
                     if (criteria.from) {
-                        response[key + 'From'] = momentToISO(criteria.from);
+                        response[key + 'From'] = moment(criteria.from).toISOString();
                     }
                     if (criteria.to) {
-                        response[key + 'To'] = momentToISO(criteria.to);
+                        const val = moment(criteria.to);
+                        if(criteria.to.indexOf('Z')>-1) val.utc();
+                        response[key + 'To'] = val.endOf('day').toISOString();
                     }
                 }
             }
