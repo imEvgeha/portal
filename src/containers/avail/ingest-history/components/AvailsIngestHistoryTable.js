@@ -91,7 +91,7 @@ class AvailsIngestHistoryTable extends React.Component {
 
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
-                        if(response.data.total > 0){
+                        if(response && response.data.total > 0){
                             //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
