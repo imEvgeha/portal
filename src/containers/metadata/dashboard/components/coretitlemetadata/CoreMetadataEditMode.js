@@ -314,6 +314,7 @@ class CoreMetadataEditMode extends Component {
           </Col>
         </Row>
         <hr />
+        <h4>External IDS</h4>
         <Row style={{ marginTop: '10px' }}>
           <Col md={1}>
             <Label for='eidrLevel1'>EIDR Level 1 </Label>
@@ -527,7 +528,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={this.props.handleOnExternalIds}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='isrc'
               id='isrc'
               value={this.props.data.externalIds ? this.props.data.externalIds.isrc: ''}
