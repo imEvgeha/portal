@@ -707,8 +707,6 @@ class TitleEdit extends Component {
 
     addRating = rating => {
         if (rating !== '') {
-            console.log(this.state.ratingSystem);
-
             let ratingArray = [{
                 rating: this.state.ratingValue,
                 ratingSystem: this.state.ratingSystem

@@ -78,18 +78,16 @@ class CoreMetadataReadOnlyMode extends Component {
         }
         <Row style={{marginTop: '10px'}}>
             {
-                this.props.data.ratings ? 
-                    this.props.data.ratings.ratingSystem ? 
+                this.props.data.ratings && this.props.data.ratings.ratingSystem ?
                     <Col>
                         <FormGroup>
                             <Alert color='light'><b>Select Rating System: </b> {this.props.data.ratings.ratingSystem}</Alert>
                         </FormGroup>
                     </Col>
-                    : null
                 : null
             }
           {
-              this.props.data.ratings ? 
+              this.props.data.ratings && this.props.data.ratings.length > 0 ?
               <Col>
                 <FormGroup>
                 <Alert color='light'><b>Ratings</b></Alert>
@@ -102,7 +100,7 @@ class CoreMetadataReadOnlyMode extends Component {
             : null
           }
           {
-              this.props.data.advisories ? 
+              this.props.data.advisories && this.props.data.advisories.freeTextSearch ?
               <Col>
                 <FormGroup>
                 <Alert color='light'><b>Advisories: </b>{this.props.data.advisories ? this.props.data.advisories.advisoriesFreeText : null}</Alert>
@@ -111,8 +109,7 @@ class CoreMetadataReadOnlyMode extends Component {
             : null
           }
           {
-              this.props.data.advisories ? 
-                this.props.data.advisories.advisoriesCode ? 
+              this.props.data.advisories && this.props.data.advisories.advisoriesCode && this.props.data.advisories.advisoriesCode.length > 0 ?
                 <Col>
                     <FormGroup>
                     <Alert color='light'><b>Advisory Code</b></Alert>
@@ -122,11 +119,10 @@ class CoreMetadataReadOnlyMode extends Component {
                         ))}
                     </FormGroup>
                 </Col>
-                : null
             : null
           }
           {
-              this.props.data.awards ? 
+              this.props.data.awards && this.props.data.awards.length > 0 ?
               <Col>
                 <FormGroup>
                 <Alert color='light'><b>Awards: </b> {this.props.data.awards}</Alert>
