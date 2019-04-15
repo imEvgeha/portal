@@ -199,7 +199,7 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": false
-}, , {
+}, {
   "javaVariableName": "region.value",
   "displayName": "Region",
   "dataType": "string",

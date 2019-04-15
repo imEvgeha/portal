@@ -8,7 +8,6 @@ pipeline {
         }
       }
          stage('build') {
-           when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
              steps {
                script {
                  tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
@@ -19,7 +18,6 @@ pipeline {
              }
          }
          stage('docker image') {
-            when { expression { GIT_COMMIT != GIT_PREVIOUS_SUCCESSFUL_COMMIT } }
              steps {
                sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
                sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
