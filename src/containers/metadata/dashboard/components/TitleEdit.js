@@ -21,6 +21,7 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
+import {configService} from '../../service/ConfigService';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -78,12 +79,13 @@ class TitleEdit extends Component {
             crew: [],
             castCrewInputValue: '',
             crewInputValue: '',
-            advisoriesFreeText: '',
+
             advisoryCode: ''
         };
     }
 
     componentDidMount() {
+        configService.initConfigMapping();
         if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
         NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
 
@@ -140,6 +142,13 @@ class TitleEdit extends Component {
         }
     };
 
+    handleStateUpdate = (e) => {
+        this.setState({
+           ...this.state,
+           [e.target.name]: e.target.value
+        });
+    };
+
     /**
      * Title document
      */
@@ -153,11 +162,13 @@ class TitleEdit extends Component {
     };
 
     handleOnChangeEdit = (e) => {
+        const editedForm = {
+            ...this.state.editedForm,
+            [e.target.name]: e.target.value
+        };
+
         this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                [e.target.name]: e.target.value
-            }
+            editedForm: editedForm
         });
     };
 
@@ -292,15 +303,17 @@ class TitleEdit extends Component {
             handleOnExternalIds={this.handleOnExternalIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
-            _handleKeyPress={this._handleKeyPress}
-            _handleAddAdvisoryCode={this._handleAddAdvisoryCode}
+            _handleRatingKeyPress={this._handleRatingKeyPress}
+            _handleAdvisoryCodeKeyPress={this._handleAdvisoryCodeKeyPress}
             handleOnAdvisoriesCodeUpdate={this.handleOnAdvisoriesCodeUpdate}
             advisoryCode={this.state.advisoryCode}
             data={this.state.titleForm}
             editedTitle={this.state.editedForm}
             episodic={this.state.titleForm.episodic}
             handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
-            handleOnChangeEdit={this.handleOnChangeEdit} />;
+            handleOnChangeEdit={this.handleOnChangeEdit}
+            handleRatingSystemUpdate={this.handleStateUpdate}
+        />;
     };
 
     removeBooleanQuotes = (newAdditionalFields, fieldName) => {
@@ -634,7 +647,6 @@ class TitleEdit extends Component {
                 additionalFields[fields] = null;
             }
         }
-
         return additionalFields;
     }
 
@@ -646,7 +658,7 @@ class TitleEdit extends Component {
                 subObject[field] = this.state.editedForm[subField][field];
                 doAddSubObject = true;
             } else {
-                subField[field] = null;
+                subObject[field] = null;
             }
         }
 
@@ -710,6 +722,7 @@ class TitleEdit extends Component {
             };
             this.setState({
                 editedForm: updateEditForm
+
             });
         }
     };
@@ -780,7 +793,7 @@ class TitleEdit extends Component {
         });
     };
 
-    _handleKeyPress = e => {
+    _handleRatingKeyPress = e => {
         if (e.keyCode === 13) {
             //Key code for Enter
             this.addRating(this.state.ratingValue);
@@ -790,7 +803,7 @@ class TitleEdit extends Component {
         }
     };
 
-    _handleAddAdvisoryCode = e => {
+    _handleAdvisoryCodeKeyPress = e => {
         if(e.keyCode === 13) {
             this.addAdvisoryCodes(this.state.advisoryCode);
             this.setState({
