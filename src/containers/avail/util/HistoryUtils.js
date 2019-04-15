@@ -1,6 +1,7 @@
 import React from 'react';
 import t from 'prop-types';
 import {advancedHistorySearchHelper} from '../ingest-history/AdvancedHistorySearchHelper';
+import {URL} from '../../../util/Common';
 
 class HistoryURL extends React.Component {
     static instance = null;
@@ -84,7 +85,7 @@ class HistoryURL extends React.Component {
         });
 
         const search = params.join('&');
-        this.saveURL(toReturn + '?' + search);
+        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + search : '')));
     }
 
     static saveURL(url){

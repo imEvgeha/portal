@@ -135,12 +135,35 @@ const URL = {
         return this.getBooleanParam('embedded');
     },
 
-    hasParams: function(){
-        if(this.search()){
-            const params = this.search().substr(1).split('&');
-            if(params.length > 0) return true;
+    keepEmbedded: function(url) {
+        let parts;
+        if(this.isEmbedded()){
+            if(url.indexOf('embedded=true') > 0){
+                return url;
+            }else{
+                parts = url.split('?');
+                if(parts.length === 2){
+                    return parts[0] + '?embedded=true&' + parts[1];
+                }else{
+                    return parts[0] + '?embedded=true';
+                }
+            }
+        }else{
+            if(url.indexOf('embedded') === -1){
+                return url;
+            }else{
+                if(url.indexOf('embedded=true') > -1){
+                    parts = url.split('embedded=true');
+                }else{
+                    parts = url.split('embedded=false');
+                }
+                if(parts.length === 2){
+                    return parts[0] + '?' + parts[1];
+                }else{
+                    return parts[0];
+                }
+            }
         }
-        return false;
     },
 
     search: function() {

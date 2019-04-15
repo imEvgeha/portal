@@ -136,7 +136,7 @@ class RightsURL extends React.Component {
             params.push('text=' + filter.text);
         }
         const search = params.join('&');
-        this.saveURL('/avails/rights' + (search ? '?' + search : ''));
+        this.saveURL(URL.keepEmbedded('/avails/rights' + (search ? '?' + search : '')));
     }
 
     static saveRightsAdvancedFilterUrl(filter){
@@ -176,8 +176,7 @@ class RightsURL extends React.Component {
         });
 
         const search = params.join('&');
-        this.saveURL(toReturn + '?' + search);
-
+        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + search : '')));
     }
 
     static saveURL(url){
@@ -194,23 +193,22 @@ class RightsURL extends React.Component {
     }
 
     static getRightsSearchUrl(availHistoryIds, invalid = null){
-        let search = '';
-        let pathname = '/avails';
+        let toReturn = '/avails';
         if(availHistoryIds){
-            pathname+='/history/' + availHistoryIds;
+            toReturn+='/history/' + availHistoryIds;
             if(invalid === true){
-                pathname += '/errors';
+                toReturn += '/errors';
             }
             if(invalid === false){
-                search += '?invalid=false';
+                toReturn += '?invalid=false';
             }
         }else{
-            pathname += '/rights';
+            toReturn += '/rights';
             if(invalid !== null){
-                search += '?invalid=' + invalid;
+                toReturn += '?invalid=' + invalid;
             }
         }
-        return {pathname:pathname, search:search};
+        return URL.keepEmbedded(toReturn);
     }
 
     static getRightUrl(id){
@@ -236,7 +234,7 @@ class RightsURL extends React.Component {
             search = initialSearch;
         }
 
-        return '/avails/rights/' + id + search;
+        return URL.keepEmbedded('/avails/rights/' + id + search);
     }
 
     static getSearchURLFromRightUrl(path, search){
@@ -245,7 +243,35 @@ class RightsURL extends React.Component {
     }
 
     static get availsDashboardUrl(){
-        return '/avails';
+        return URL.keepEmbedded('/avails');
+    }
+
+    static get search(){
+        let url = window.location.pathname;
+        let searchP = window.location.search;
+        let params=[];
+        if(!url.startsWith('/avails')) return  URL.keepEmbedded(searchP);
+        url = url.replace('/avails', '');
+        if(url.startsWith('/history')){
+            url = url.replace('/history', '');
+            if(url.startsWith('/')){
+                let val= url.split('/')[1];
+                params.push('availHistoryIds=' + val);
+                url = url.replace('/' + val, '');
+
+                if(url.startsWith('/')){
+                    let val= url.split('/')[1];
+                    if(val === 'errors'){
+                        params.push('invalid=true');
+                    }
+                }
+            }
+        }
+        if(params.length > 0) {
+            return URL.keepEmbedded(searchP + '&' + params.join('&'));
+        }else{
+            return URL.keepEmbedded(searchP);
+        }
     }
 }
 

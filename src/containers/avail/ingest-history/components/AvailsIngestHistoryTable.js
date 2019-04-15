@@ -14,7 +14,7 @@ import HistoryURL from '../../util/HistoryUtils';
 import LoadingGif from '../../../../../src/img/loading.gif';
 
 import connect from 'react-redux/es/connect/connect';
-import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormSetAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
+import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
 import {historyServiceManager} from '../HistoryServiceManager';
 
 
@@ -33,7 +33,7 @@ let mapStateToProps = state => {
 let mapDispatchToProps = {
     resultPageHistoryUpdate,
     searchFormSetHistorySearchCriteria,
-    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormUpdateAdvancedHistorySearchCriteria,
 };
 
 class AvailsIngestHistoryTable extends React.Component {
@@ -44,7 +44,7 @@ class AvailsIngestHistoryTable extends React.Component {
         availHistoryLoading: t.bool,
         resultPageHistoryUpdate: t.func,
         searchFormSetHistorySearchCriteria: t.func,
-        searchFormSetAdvancedHistorySearchCriteria: t.func
+        searchFormUpdateAdvancedHistorySearchCriteria: t.func
     };
 
     constructor(props) {
@@ -163,7 +163,7 @@ class AvailsIngestHistoryTable extends React.Component {
     setIngestType(type){
         if(type !== this.props.searchCriteria.ingestType){
             HistoryURL.saveHistoryAdvancedFilterUrl({...this.props.advancedSearchCriteria, ingestType: type});
-            this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
+            this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
             this.props.searchFormSetHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
             this.table.api.setDatasource(this.state.dataSource);
         }

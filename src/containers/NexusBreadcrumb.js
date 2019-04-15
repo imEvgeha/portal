@@ -1,7 +1,6 @@
 import React from 'react';
 import {BreadcrumbItem, Breadcrumb} from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {URL} from '../util/Common';
 
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
@@ -35,7 +34,7 @@ class NexusBreadcrumb extends React.Component {
     render() {
         const renderLink = (entry, last) => {
             if (!last) {
-                return <Link to={{pathname: entry.path, search: URL.search(), state: entry.state}} onClick={entry.onClick}>{entry.name}</Link>;
+                return <Link to={{pathname: entry.path, search: entry.search, state: entry.state}} onClick={entry.onClick}>{entry.name}</Link>;
             } else {
                 return entry.name;
             }

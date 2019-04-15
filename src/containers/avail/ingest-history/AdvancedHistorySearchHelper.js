@@ -1,6 +1,6 @@
 import store from '../../../stores/index';
 import {
-    searchFormSetAdvancedHistorySearchCriteria
+    searchFormUpdateAdvancedHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO, safeTrim} from '../../../util/Common';
@@ -32,7 +32,7 @@ export const advancedHistorySearchHelper = {
 
     clearAdvancedHistorySearchForm: () => {
         HistoryURL.saveHistoryAdvancedFilterUrl({});
-        store.dispatch(searchFormSetAdvancedHistorySearchCriteria({
+        store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
            received: null,
            provider: '',
            status: '',
