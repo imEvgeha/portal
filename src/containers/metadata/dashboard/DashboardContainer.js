@@ -25,6 +25,7 @@ import {
     BREADCRUMB_METADATA_SEARCH_RESULTS_PATH} from '../../../constants/metadata/metadata-breadcrumb-paths';
 import moment from 'moment';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {configService} from '../service/ConfigService';
 
 const mapStateToProps = state => {
     return {
@@ -78,7 +79,9 @@ class DashboardContainer extends React.Component {
         this.cleanSelection = this.cleanSelection.bind(this);
     }
 
-    componentDidMount() {   
+    componentDidMount() {
+        configService.initConfigMapping();
+        
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.titleHistory) {

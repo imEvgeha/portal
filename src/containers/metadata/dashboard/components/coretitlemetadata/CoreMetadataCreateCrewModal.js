@@ -6,6 +6,7 @@ import { AvField } from 'availity-reactstrap-validation';
 const CREW = 'CREW';
 
 class CoreMetadataCreateCrewModal extends Component {
+
   render() {
     return (
       <Fragment>
@@ -21,11 +22,11 @@ class CoreMetadataCreateCrewModal extends Component {
           <ModalBody>
             <AvField type="select" name="castInputValue" id="exampleSelect" onChange={e => this.props.updateCastCrewValue(e.target.value)}>
               <option value={''}>Select a Crew</option>
-              <option>Firsname Lastname1</option>
-              <option>Firsname Lastname2</option>
-              <option>Firsname Lastname3</option>
-              <option>Firsname Lastname4</option>
-              <option>Firsname Lastname5</option>
+              {
+                this.props.configCastAndCrew && this.props.configCastAndCrew.value.map((e, index) => {
+                 return <option key={index} value={e.displayName}>{e.displayName}</option>;
+                })
+              }
             </AvField>
           </ModalBody>
           <ModalFooter>
@@ -47,7 +48,9 @@ CoreMetadataCreateCrewModal.propTypes = {
   renderCrewModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
   addCastCrew: PropTypes.func,
-  updateCastCrewValue: PropTypes.func
+  updateCastCrewValue: PropTypes.func,
+
+  configCastAndCrew: PropTypes.object
 };
 
 export default CoreMetadataCreateCrewModal;
