@@ -101,11 +101,6 @@ class CoreMetadataEditMode extends Component {
     };
 
   render() {
-    // const {
-    //   advisoriesCode,
-    //   awards,
-    //   ratings
-    // } = this.props.data;
     return (
       <Fragment>
         <Row>
@@ -255,7 +250,7 @@ class CoreMetadataEditMode extends Component {
                 onChange={e => this.props.handleOnAdvisories(e)}
                 name='advisoriesFreeText'
                 id='advisories'
-                value={this.props.advisoryCodeList ? this.props.advisoryCodeList.advisoriesFreeText : ''}
+                value={this.props.advisoryCodeList && this.props.advisoryCodeList.advisoriesFreeText ? this.props.advisoryCodeList.advisoriesFreeText : ''}
                 placeholder='Advisories'
                 validate={{
                   maxLength: { value: 500 }
@@ -277,7 +272,7 @@ class CoreMetadataEditMode extends Component {
                 validate={{async: this.validateAdvisoryCode}}
                 errorMessage="Invalid Advisory Code"
               />
-              {this.props.advisoryCodeList &&
+              {this.props.advisoryCodeList && this.props.advisoryCodeList.advisoriesCode &&
                 this.props.advisoryCodeList.advisoriesCode.map((advisory, i) => (
                   <CloseableBtn
                     style={{
