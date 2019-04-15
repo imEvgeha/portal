@@ -10,7 +10,7 @@
   "enableEdit": true,
   "required": true
 }, {
-  "javaVariableName": "studio",
+  "javaVariableName": "productionStudio",
   "displayName": "Production Studio",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -405,11 +405,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "episodic.eposodeTitle",
-  "displayName": "Eposode Title",
+  "javaVariableName": "episodic.episodeTitle",
+  "displayName": "Episode Title",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "eposodeTitleMatch",
+  "queryParamName": "episodeTitleMatch",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
