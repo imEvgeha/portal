@@ -1,18 +1,20 @@
 import {
-    METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH,
-    METADATA_TITLE_RESULT_PAGE__UPDATE,
-    METADATA_TITLE_RESULT_PAGE__LOADING,
+    METADATA_TITLE_CONFIG__LOAD,
     METADATA_TITLE_LOAD_SESSION,
-    TERRITORY_METADATA_ADD,
-    TERRITORY_METADATA_LOAD_BY_ID,
+    METADATA_TITLE_RESULT_PAGE__LOADING,
+    METADATA_TITLE_RESULT_PAGE__SELECT_ROW,
+    METADATA_TITLE_RESULT_PAGE__SORT,
+    METADATA_TITLE_RESULT_PAGE__UPDATE,
+    METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
     METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
     METADATA_TITLE_SEARCH_FORM__SHOW_SEARCH_RESULTS,
-    METADATA_TITLE_RESULT_PAGE__SORT,
-    METADATA_TITLE_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
-    METADATA_TITLE_RESULT_PAGE__SELECT_ROW
+    METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH,
+    TERRITORY_METADATA_ADD,
+    TERRITORY_METADATA_LOAD_BY_ID
 } from '../../../constants/action-types';
 
 const initialState = {
+    configData: [],
     titleTabPage: {
         pages: 0,
         titles: [],
@@ -42,10 +44,20 @@ const initialState = {
     editedTerritories: []
 };
 
-
+const updateConfigData = (state, action) => {
+    let index = state.configData.findIndex(x => x.key ===action.configKey);
+    if(index > -1) {
+        let newConfigData = state.configData.slice(0);
+        newConfigData[index].value = action.payload;
+        return newConfigData;
+    }
+    return [...state.configData, {key: action.configKey, value: action.payload}];
+};
 
 const metadata = (state = initialState, action) => {
     switch (action.type) {
+        case METADATA_TITLE_CONFIG__LOAD:
+            return {...state, configData: updateConfigData(state, action)};
         case METADATA_TITLE_LOAD_SESSION:
             return { ...state, session: { ...state.session, ...action.payload } };
         case METADATA_TITLE_RESULT_PAGE__UPDATE:
@@ -61,7 +73,7 @@ const metadata = (state = initialState, action) => {
         case TERRITORY_METADATA_ADD:
             return { ...state, territories: [...state.territories, action.payload] };
 
-            case METADATA_TITLE_SEARCH_FORM__SHOW_SEARCH_RESULTS:
+        case METADATA_TITLE_SEARCH_FORM__SHOW_SEARCH_RESULTS:
             return { ...state, session: {...state.session, showSearchResults: action.payload}};
         case METADATA_TITLE_RESULT_PAGE__SORT:
             return { ...state, session: {...state.session, titleTabPageSort: action.payload}};
