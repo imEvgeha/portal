@@ -298,7 +298,7 @@ class TitleEditMode extends Component {
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    value={countryOfOrigin}
+                    defaultValue={countryOfOrigin}
                   >
                     <option value=''>Select Country of Origin</option>
                       {
@@ -348,7 +348,7 @@ class TitleEditMode extends Component {
                     name='originalLanguage'
                     id='originalLanguage'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    value={originalLanguage}
+                    defaultValue={originalLanguage}
                   >
                     <option value=''>Select Original Language</option>
                       {
@@ -463,6 +463,7 @@ class TitleEditMode extends Component {
             _handleRatingKeyPress={this.props._handleRatingKeyPress}
             editedTitle={this.props.editedTitle}
             updateValue={this.props.updateValue}
+            handleRatingSystemUpdate={this.props.handleRatingSystemUpdate}
           />
         </Container>
       </Fragment>
@@ -498,6 +499,7 @@ TitleEditMode.propTypes = {
   advisoryCodeList: PropTypes.object,
   removeAdvisoryCodes: PropTypes.func,
   handleOnChangeTitleDuration: PropTypes.func,
+  handleRatingSystemUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object

@@ -199,10 +199,10 @@ class CoreMetadataEditMode extends Component {
               <Label for='ratingSystem'>Rating System</Label>
               <Input
                 type='select'
-                onChange={e => this.props.onChange(e)}
+                onChange={e => this.props.handleRatingSystemUpdate(e)}
                 name='ratingSystem'
                 id='ratingSystem'
-                defaultValue={this.props.editedTitle.ratingSystem}
+                defaultValue={this.props.ratingSystem}
               >
                 <option value={''}>Select Rating System</option>
                 {
@@ -601,6 +601,7 @@ CoreMetadataEditMode.propTypes = {
   ratingSystem: PropTypes.string,
   _handleAdvisoryCodeKeyPress: PropTypes.func,
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
+  handleRatingSystemUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   advisoryCodeList: PropTypes.object,
   removeAdvisoryCodes: PropTypes.func,

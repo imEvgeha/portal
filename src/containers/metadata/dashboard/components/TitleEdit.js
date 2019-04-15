@@ -79,7 +79,7 @@ class TitleEdit extends Component {
             crew: [],
             castCrewInputValue: '',
             crewInputValue: '',
-            advisoriesFreeText: '',
+
             advisoryCode: ''
         };
     }
@@ -142,6 +142,13 @@ class TitleEdit extends Component {
         }
     };
 
+    handleStateUpdate = (e) => {
+        this.setState({
+           ...this.state,
+           [e.target.name]: e.target.value
+        });
+    };
+
     /**
      * Title document
      */
@@ -155,11 +162,13 @@ class TitleEdit extends Component {
     };
 
     handleOnChangeEdit = (e) => {
+        const editedForm = {
+            ...this.state.editedForm,
+            [e.target.name]: e.target.value
+        };
+
         this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                [e.target.name]: e.target.value
-            }
+            editedForm: editedForm
         });
     };
 
@@ -302,7 +311,9 @@ class TitleEdit extends Component {
             editedTitle={this.state.editedForm}
             episodic={this.state.titleForm.episodic}
             handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
-            handleOnChangeEdit={this.handleOnChangeEdit} />;
+            handleOnChangeEdit={this.handleOnChangeEdit}
+            handleRatingSystemUpdate={this.handleStateUpdate}
+        />;
     };
 
     removeBooleanQuotes = (newAdditionalFields, fieldName) => {
@@ -636,7 +647,6 @@ class TitleEdit extends Component {
                 additionalFields[fields] = null;
             }
         }
-
         return additionalFields;
     }
 
@@ -648,7 +658,7 @@ class TitleEdit extends Component {
                 subObject[field] = this.state.editedForm[subField][field];
                 doAddSubObject = true;
             } else {
-                subField[field] = null;
+                subObject[field] = null;
             }
         }
 
@@ -697,6 +707,8 @@ class TitleEdit extends Component {
 
     addRating = rating => {
         if (rating !== '') {
+            console.log(this.state.ratingSystem);
+
             let ratingArray = [{
                 rating: this.state.ratingValue,
                 ratingSystem: this.state.ratingSystem
@@ -712,6 +724,7 @@ class TitleEdit extends Component {
             };
             this.setState({
                 editedForm: updateEditForm
+
             });
         }
     };
