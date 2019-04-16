@@ -44,15 +44,17 @@ const populate = function(key, value, location){
             if (!location[firstKey])
                 location[firstKey] = [];
             const container = location[firstKey];
-            value=parse(value);
-            if(typeof  value === 'string') {
-                value = parse(value.split(','));
-            }
-            for(let i = 0; i < value.length; i++){
-                if(container.length <= i){
-                    container.push({[restKey]: value[i]});
-                }else{
-                    container[i][restKey] = value[i];
+            if(value){
+                value = parse(value);
+                if(typeof  value === 'string') {
+                    value = parse(value.split(','));
+                }
+                for(let i = 0; i < value.length; i++){
+                    if(container.length <= i){
+                        container.push({[restKey]: value[i]});
+                    }else{
+                        container[i][restKey] = value[i];
+                    }
                 }
             }
         }else {
