@@ -25,7 +25,7 @@ import {configurationService} from '../service/ConfigurationService';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {isObjectEmpty} from '../../../util/Common';
-import RightsURL from '../util/RightsUtils';
+import RightsURL from '../util/RightsURL';
 
 const mapStateToProps = state => {
     return {

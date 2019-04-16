@@ -148,22 +148,8 @@ const URL = {
                     return parts[0] + '?embedded=true';
                 }
             }
-        }else{
-            if(url.indexOf('embedded') === -1){
-                return url;
-            }else{
-                if(url.indexOf('embedded=true') > -1){
-                    parts = url.split('embedded=true');
-                }else{
-                    parts = url.split('embedded=false');
-                }
-                if(parts.length === 2){
-                    return parts[0] + '?' + parts[1];
-                }else{
-                    return parts[0];
-                }
-            }
         }
+        return url;
     },
 
     search: function() {

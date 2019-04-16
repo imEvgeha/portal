@@ -5,7 +5,7 @@ import AdvancedHistorySearchPanel from './components/AdvancedHistorySearchPanel'
 import {advancedHistorySearchHelper} from './AdvancedHistorySearchHelper';
 import {AVAILS_DASHBOARD, AVAILS_HISTORY_SEARCH_RESULTS} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import HistoryURL from '../util/HistoryUtils';
+import HistoryURL from '../util/HistoryURL';
 import t from 'prop-types';
 import {
     searchFormSetAdvancedHistorySearchCriteria,

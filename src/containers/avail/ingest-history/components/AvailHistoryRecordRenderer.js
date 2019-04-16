@@ -6,7 +6,7 @@ import LoadingElipsis from '../../../../../src/img/ajax-loader.gif';
 import {Link} from 'react-router-dom';
 
 import {historyService} from '../../service/HistoryService';
-import RightsURL from '../../util/RightsUtils';
+import RightsURL from '../../util/RightsURL';
 
 class AvailHistoryRecordRenderer extends React.Component {
 

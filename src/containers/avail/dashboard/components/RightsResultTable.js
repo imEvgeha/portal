@@ -9,7 +9,7 @@ import config from 'react-global-configuration';
 // image import
 import LoadingGif from '../../../../img/loading.gif';
 
-import RightsURL from '../../util/RightsUtils';
+import RightsURL from '../../util/RightsURL';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';

@@ -4,7 +4,7 @@ import {
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO, safeTrim} from '../../../util/Common';
-import HistoryURL from '../util/HistoryUtils';
+import HistoryURL from '../util/HistoryURL';
 
 export const advancedHistorySearchHelper = {
 

@@ -24,7 +24,7 @@ import {getDeepValue, safeTrim} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
-import RightsURL from '../util/RightsUtils';
+import RightsURL from '../util/RightsURL';
 
 const mapStateToProps = state => {
    return {

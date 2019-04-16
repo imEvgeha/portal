@@ -8,7 +8,7 @@ import { AgGridReact } from 'ag-grid-react';
 import AvailHistoryRecordRenderer from './AvailHistoryRecordRenderer';
 import './AvailsIngestHistoryTable.scss';
 
-import HistoryURL from '../../util/HistoryUtils';
+import HistoryURL from '../../util/HistoryURL';
 
 // image import
 import LoadingGif from '../../../../../src/img/loading.gif';
