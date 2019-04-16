@@ -104,13 +104,11 @@ class RightCreate extends React.Component {
                 const map = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
                 const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
                 const oneOfValidationError = oneOfValidation(name, map.displayName, value, pairFieldName, mappingPair.displayName, this.right);
-                console.log('checkRight', [name, value, setNewValue], oneOfValidationError, mappingPair);
                 if(!this.mappingErrorMessage[name].range) {
                     this.mappingErrorMessage[name].range = oneOfValidationError;
                 }
-                this.mappingErrorMessage[pairFieldName] = this.mappingErrorMessage[pairFieldName] || {range: '', date: '', text: ''}
+                this.mappingErrorMessage[pairFieldName] = this.mappingErrorMessage[pairFieldName] || {range: '', date: '', text: ''};
                 this.mappingErrorMessage[pairFieldName].range = oneOfValidationError;
-                console.log(pairFieldName, this.mappingErrorMessage[pairFieldName]);
             }
         }
 
