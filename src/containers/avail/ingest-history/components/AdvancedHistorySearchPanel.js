@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {
-    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormUpdateAdvancedHistorySearchCriteria,
     searchFormSetHistorySearchCriteria
 } from '../../../../stores/actions/avail/history';
 import connect from 'react-redux/es/connect/connect';
@@ -18,7 +18,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormUpdateAdvancedHistorySearchCriteria,
     searchFormSetHistorySearchCriteria
 };
 
@@ -26,7 +26,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
         onSearch: t.func,
-        searchFormSetAdvancedHistorySearchCriteria: t.func,
+        searchFormUpdateAdvancedHistorySearchCriteria: t.func,
         searchFormSetHistorySearchCriteria : t.func
     };
 
@@ -54,13 +54,15 @@ class AdvancedHistorySearchPanel extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
+        this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
         this.setState({invalidForm: !this.validateState(this.state.invalid)});
     }
 
     handleDateChange(name, field, value) {
-        value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
-        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: {...this.props.searchCriteria[name], [field] : value}});
+        if(value) {
+            value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+        }
+        this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: {...this.props.searchCriteria[name], [field] : value}});
     }
 
     handleDateInvalid(name, value) {
@@ -70,7 +72,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     handleStateSelect(option){
-        this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.searchCriteria, status: option.value});
+        this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, status: option.value});
     }
 
     validateState(invalidState) {
@@ -87,7 +89,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     handleSearch() {
         const criteria = {...this.props.searchCriteria};
         criteria.provider = safeTrim(criteria.provider);
-        this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
+        this.props.searchFormUpdateAdvancedHistorySearchCriteria(criteria);
         this.props.searchFormSetHistorySearchCriteria(criteria);
         this.props.onSearch(criteria);
     }
@@ -100,7 +102,7 @@ class AdvancedHistorySearchPanel extends React.Component {
                        id={'avail-ingest-history-search-' + name + '-text'}
                        placeholder={'Enter ' + displayName}
                        name={name}
-                       value={this.props.searchCriteria[name]}
+                       value={this.props.searchCriteria[name] ? this.props.searchCriteria[name]: ''}
                        onChange={this.handleInputChange}
                        onKeyPress={this._handleKeyPress}/>
             </div>);

@@ -2,6 +2,7 @@ import './DashboardContainer.scss';
 
 import React from 'react';
 import {connect} from 'react-redux';
+import {IfEmbedded} from '../../../util/Common';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
@@ -11,7 +12,9 @@ import {
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
-    resultPageShowSelected
+    searchFormUpdateAdvancedSearchCriteria,
+    resultPageShowSelected,
+    searchFormUpdateTextSearch
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
@@ -19,10 +22,10 @@ import t from 'prop-types';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
-import moment from 'moment';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {gotoAvailsDashboard} from '../../Navbar';
+import {isObjectEmpty} from '../../../util/Common';
+import RightsURL from '../util/RightsURL';
 
 const mapStateToProps = state => {
     return {
@@ -43,7 +46,9 @@ const mapDispatchToProps = {
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
-    resultPageShowSelected
+    resultPageShowSelected,
+    searchFormUpdateAdvancedSearchCriteria,
+    searchFormUpdateTextSearch
 };
 
 class DashboardContainer extends React.Component {
@@ -54,13 +59,16 @@ class DashboardContainer extends React.Component {
         resultPageLoading: t.func,
         resultPageSort: t.func,
         resultPageUpdate: t.func,
+        searchFormUpdateTextSearch: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
+        searchFormUpdateAdvancedSearchCriteria: t.func,
         selected: t.array,
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         location: t.object,
+        match: t.object,
         resultPageShowSelected: t.func
     };
 
@@ -76,54 +84,63 @@ class DashboardContainer extends React.Component {
         NexusBreadcrumb.set(AVAILS_DASHBOARD);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
-        if (this.props.location && this.props.location.state) {
-            const state = this.props.location.state;
-            if (state.availHistory) {
-                let subTitle = state.availHistory.ingestType + ', ';
-                if(state.availHistory.ingestType === 'Email'){
-                    subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '');
-                }else{
-                    if(state.availHistory.attachments && state.availHistory.attachments[0]){
-                        const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
-                        subTitle += (filename ? filename + ', ' : '');
-                    }
-                }
-                subTitle += moment(state.availHistory.received).format('llll');
-                const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
-                if (state.rowInvalid !== undefined) {
-                    criteria.rowInvalid = {value: state.rowInvalid};
-                }
 
-                if(this.props.showSearchResults) {
-                    NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-                }
+        this.getSearchCriteriaFromURL();
 
-                this.props.searchFormShowAdvancedSearch(true);
-                this.props.searchFormSetAdvancedSearchCriteria(criteria);
-                this.handleAvailsAdvancedSearch(criteria);
-            } else if (state.back) {
-                gotoAvailsDashboard();
-            }
-        } else if (this.props.searchCriteria.availHistoryIds) {
-            if (this.props.showSearchResults) {
-                NexusBreadcrumb.push([AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-            }
-        } else {
-            if(this.props.showSearchResults) {
-                NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
-            }
-        }
+        // if (this.props.location && this.props.location.state) {
+        //     const state = this.props.location.state;
+        //     if (state.availHistory) {
+        //         let subTitle = state.availHistory.ingestType + ', ';
+        //         if(state.availHistory.ingestType === 'Email'){
+        //             subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '');
+        //         }else{
+        //             if(state.availHistory.attachments && state.availHistory.attachments[0]){
+        //                 const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
+        //                 subTitle += (filename ? filename + ', ' : '');
+        //             }
+        //         }
+        //         subTitle += moment(state.availHistory.received).format('llll');
+        //         const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
+        //         if (state.invalid !== undefined) {
+        //             criteria.invalid = {value: state.invalid};
+        //         }
+        //
+        //         this.props.searchFormShowAdvancedSearch(true);
+        //         this.props.searchFormSetAdvancedSearchCriteria(criteria);
+        //         this.handleAvailsAdvancedSearch(criteria);
+        //     }
+        // }
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.searchCriteria !== this.props.searchCriteria) {
-            NexusBreadcrumb.set(AVAILS_DASHBOARD);
+        if(prevProps.availsMapping !== this.props.availsMapping) {
+            this.getSearchCriteriaFromURL();
+        }
+    }
 
-            if (this.props.showSearchResults) {
-                if(this.props.currentSearchCriteria.availHistoryIds && this.props.showAdvancedSearch){
-                    NexusBreadcrumb.push(AVAILS_HISTORY);
+    getSearchCriteriaFromURL(){
+        if(!this.props.availsMapping) {
+            return false;
+        }
+
+        if(this.props.match.path === RightsURL.availsDashboardUrl){
+            this.props.searchFormShowSearchResults(false);
+        }else{
+            const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
+            let criteria = {text: ''};
+            if(!isObjectEmpty(this.props.match.params) || RightsURL.isAdvancedFilter(this.props.location.search)){
+                criteria = RightsURL.ArraytoFilter(params);
+                this.props.searchFormShowAdvancedSearch(true);
+                this.props.searchFormSetAdvancedSearchCriteria(criteria);
+                this.handleAvailsAdvancedSearch(criteria);
+            }else{
+                const simpleFilter = params.find(param => param.split('=')[0] === 'text');
+                if(simpleFilter && simpleFilter.split('=').length === 2) {
+                    criteria = {text: simpleFilter.split('=')[1]};
                 }
-                NexusBreadcrumb.push(AVAILS_SEARCH_RESULTS);
+                this.props.searchFormShowAdvancedSearch(false);
+                this.props.searchFormUpdateTextSearch(criteria);
+                this.handleAvailsFreeTextSearch(criteria);
             }
         }
     }
@@ -148,34 +165,38 @@ class DashboardContainer extends React.Component {
 
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
+
         rightSearchHelper.advancedSearch(searchCriteria);
     }
 
     render() {
         return (
             <div>
-                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
-                    <div>
-                        <table style={{width: '100%'}}>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
-                                            onSearch={this.handleAvailsFreeTextSearch}/>
-                                    </td>
-                                    <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
-                                        <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
-                                            id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
-                                            <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <RightsURL/>
+                <IfEmbedded value={false}>
+                    <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
+                        <div>
+                            <table style={{width: '100%'}}>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
+                                                onSearch={this.handleAvailsFreeTextSearch}/>
+                                        </td>
+                                        <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
+                                            <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
+                                                id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
+                                                <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
-                {!this.props.showSearchResults && <DashboardTab/>}
+                    {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                    {!this.props.showSearchResults && <DashboardTab/>}
+                </IfEmbedded>
                 {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
             </div>
         );
