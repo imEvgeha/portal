@@ -218,6 +218,27 @@ class TitleEdit extends Component {
         });
     };
 
+    /**
+     * Handle LegacyIds objects, where keys are movida, vz {movida: {}, vz:{}}
+     * @param legacyId
+     */
+    handleOnLegacyIds = (legacyId) => {
+        let newLegacyIds = {...this.state.editedForm.legacyIds};
+        for(let field in legacyId) {
+            let inner = {...newLegacyIds[field]};
+            for(let innerField in legacyId[field]) {
+                inner[innerField] = legacyId[field][innerField];
+            }
+            newLegacyIds[field] = inner;
+        }
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                legacyIds: newLegacyIds
+            }
+        });
+    };
+
     addAdvisoryCodes = (advisory) => {
         if(advisory !== '') {
             let advisoriesCode = [this.state.advisoryCode];
@@ -301,6 +322,7 @@ class TitleEdit extends Component {
             handleOnAdvisories={this.handleOnAdvisories}
             handleChangeEpisodic={this.handleChangeEpisodic}
             handleOnExternalIds={this.handleOnExternalIds}
+            handleOnLegacyIds={this.handleOnLegacyIds}
             handleChangeSeries={this.handleChangeSeries}
             keyPressed={this.handleKeyDown}
             _handleRatingKeyPress={this._handleRatingKeyPress}

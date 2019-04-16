@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import {
-  FormGroup,
-  Label,
-  Input,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Card,
-  CardHeader,
-  CardBody,
+    FormGroup,
+    Label,
+    Input,
+    Row,
+    Col,
+    ListGroup,
+    ListGroupItem,
+    Card,
+    CardHeader,
+    CardBody, Alert,
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
@@ -99,6 +99,16 @@ class CoreMetadataEditMode extends Component {
 
         cb(isValid);
     };
+
+    handleMovidaLegacyIds(e) {
+        let movidaLegacyId = {movida: {[e.target.name]: e.target.value}};
+        this.props.handleOnLegacyIds(movidaLegacyId);
+    }
+
+    handleVzLegacyIds(e) {
+        let vzLegacyId = {vz: {[e.target.name]: e.target.value}};
+        this.props.handleOnLegacyIds(vzLegacyId);
+    }
 
   render() {
     return (
@@ -466,15 +476,15 @@ class CoreMetadataEditMode extends Component {
             />
           </Col>
           <Col md={1}>
-            <Label for='vzId'>VZ ID</Label>
+            <Label for='vzId'>VZ Title ID</Label>
           </Col>
           <Col>
             <AvField
               type='text'
-              onChange={e => this.props.handleOnExternalIds(e)}
-              name='vzId'
-              id='vzId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.vzId: ''}
+              onChange={e => this.handleVzLegacyIds(e)}
+              name='vzTitleId'
+              id='vzTitleId'
+              value={this.props.data.legacyIds && this.props.data.legacyIds.vz  ? this.props.data.legacyIds.vz.vzTitleId: ''}
               placeholder='VZ ID'
               validate={{
                 maxLength: { value: 200 }
@@ -505,10 +515,10 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={e => this.props.handleOnExternalIds(e)}
+              onChange={e => this.handleMovidaLegacyIds(e)}
               name='movidaId'
               id='movidaId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.movidaId: ''}
+              value={this.props.data.legacyIds && this.props.data.legacyIds.movida  ? this.props.data.legacyIds.movida.movidaId: ''}
               placeholder='Movie ID'
               validate={{
                 maxLength: { value: 200 }
@@ -539,15 +549,12 @@ class CoreMetadataEditMode extends Component {
           </Col>
           <Col>
             <AvField
+              readOnly
               type='text'
-              onChange={e => this.props.handleOnExternalIds(e)}
               name='movidaTitleId'
               id='movidaTitleId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.movidaTitleId: ''}
+              value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaTitleId: ''}
               placeholder='Movida Title ID'
-              validate={{
-                maxLength: { value: 200 }
-              }}
             />
           </Col>
         </Row>
@@ -578,6 +585,7 @@ CoreMetadataEditMode.propTypes = {
   data: PropTypes.object,
   onChange: PropTypes.func,
   handleOnExternalIds: PropTypes.func,
+  handleOnLegacyIds: PropTypes.func,
   handleOnAdvisories: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
   isCastModalOpen: PropTypes.bool,

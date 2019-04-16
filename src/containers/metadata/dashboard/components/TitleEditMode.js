@@ -453,6 +453,7 @@ class TitleEditMode extends Component {
             onChange={this.props.handleOnChangeEdit}
             _handleAdvisoryCodeKeyPress={this.props._handleAdvisoryCodeKeyPress}
             handleOnExternalIds={this.props.handleOnExternalIds}
+            handleOnLegacyIds={this.props.handleOnLegacyIds}
             isCastModalOpen={this.props.isCastModalOpen}
             isCrewModalOpen={this.props.isCrewModalOpen}
             renderModal={this.props.renderModal}
@@ -486,6 +487,7 @@ TitleEditMode.propTypes = {
   handleChangeSeries: PropTypes.func.isRequired,
   handleChangeEpisodic: PropTypes.func.isRequired,
   handleOnExternalIds: PropTypes.func,
+  handleOnLegacyIds: PropTypes.func,
   handleOnAdvisories: PropTypes.func,
   updateValue: PropTypes.func,
   editedTitle: PropTypes.object,
