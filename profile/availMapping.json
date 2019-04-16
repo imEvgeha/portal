@@ -708,7 +708,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "end",
   "displayName": "End",
@@ -718,7 +718,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "startLag",
   "displayName": "Start Lag",
