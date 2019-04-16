@@ -752,9 +752,11 @@
 }, {
   "javaVariableName": "pricing.priceType",
   "displayName": "Price Type",
-  "dataType": "string",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Tier", "Category", "WSP"],
   "searchDataType": "string",
-  "queryParamName": "priceTypeMatch",
+  "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
