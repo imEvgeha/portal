@@ -200,9 +200,9 @@ class CoreMetadataReadOnlyMode extends Component {
                     </Col> : null
                 }
                 {
-                    this.props.data.externalIds.vzId ? 
+                  this.props.data.legacyIds && this.props.data.legacyIds.vz ?
                     <Col>
-                        <Alert color='light'><b>VZ ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.vzId: null}</Alert>
+                        <Alert color='light'><b>VZ ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId: null}</Alert>
                     </Col> : null
                 }
                 </Row>
@@ -214,9 +214,9 @@ class CoreMetadataReadOnlyMode extends Component {
                     </Col> : null
                 }
                 {
-                    this.props.data.externalIds.movidaId ? 
-                    <Col>
-                        <Alert color='light'><b>Movida ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.movidaId: null}</Alert>
+                  this.props.data.legacyIds && this.props.data.legacyIds.movida ?
+                      <Col>
+                        <Alert color='light'><b>Movida ID: </b> {this.props.data.legacyIds.movida.movidaId ? this.props.data.legacyIds.movida.movidaId: null}</Alert>
                     </Col> : null
                 }
                 </Row>
@@ -228,9 +228,9 @@ class CoreMetadataReadOnlyMode extends Component {
                     </Col> : null
                 }
                 {
-                    this.props.data.externalIds.movidaTitleId ? 
+                  this.props.data.legacyIds && this.props.data.legacyIds.movida ?
                     <Col>
-                        <Alert color='light'><b>Movida Title ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.movidaTitleId: null}</Alert>
+                        <Alert color='light'><b>Movida Title ID: </b> {this.props.data.legacyIds.movida.movidaTitleId ? this.props.data.legacyIds.movida.movidaTitleId: null}</Alert>
                     </Col> : null
                 }
                 </Row>
