@@ -26,8 +26,6 @@ function oneOfValidation(name, displayName, date, pair, displayNamePair, avail) 
     if(!date && !avail[pair]){
         return displayName + ' or ' + displayNamePair  + ' needs to have a value';
     }
-
-    return '';
 }
 
 export {validateDate, rangeValidation, oneOfValidation};

@@ -11,7 +11,7 @@ import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
-import {rangeValidation} from '../../../util/Validation';
+import {oneOfValidation, rangeValidation} from '../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../ability';
 import './RightDetails.scss';
@@ -189,6 +189,24 @@ class RightDetails extends React.Component {
             }
         }
         return '';
+    }
+
+    getPairFieldName(name) {
+        switch (name) {
+            case 'start': return 'availStart';
+            case 'availStart': return 'start';
+            case 'end': return 'availEnd';
+            case 'availEnd': return 'end';
+            default: return '';
+        }
+    }
+
+    extraValidation(name, displayName, date, right){
+        const pairFieldName = this.getPairFieldName(name);
+        if(pairFieldName) {
+            const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
+            return oneOfValidation(name, displayName, date, pairFieldName, mappingPair.displayName, right);
+        }
     }
 
     cancel(){
@@ -552,7 +570,11 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={(date) => rangeValidation(name, displayName, date, this.state.flatRight)}
+                    validate={(date) => {
+                        const rangeError = rangeValidation(name, displayName, date, this.state.flatRight);
+                        if(rangeError) return rangeError;
+                        return this.extraValidation(name, displayName, date, this.state.flatRight);
+                    }}
                     onChange={(date, cancel) => this.handleEditableSubmit(name, date, cancel)}
                 />
             ));
