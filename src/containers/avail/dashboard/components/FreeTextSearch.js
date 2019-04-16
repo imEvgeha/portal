@@ -33,6 +33,12 @@ class FreeTextSearch extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps.freeTextSearch !== this.props.freeTextSearch){
+            this.setState({text:this.props.freeTextSearch.text});
+        }
+    }
+
     _handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.handleSearch();

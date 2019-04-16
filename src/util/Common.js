@@ -38,6 +38,14 @@ function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
+function isObjectEmpty(obj) {
+    for(let key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 function prepareSortMatrixParam(sortedParams) {
     let matrix = '';
     if(sortedParams){
@@ -104,8 +112,8 @@ function getDeepValue(source, location){
 const URL = {
     getParamIfExists: function (name, defaultValue = ''){
         let toReturn = defaultValue;
-        if (window && window.location && window.location.search){
-            let query = window.location.search.substring(1);
+        if (this.search()){
+            let query = this.search().substring(1);
             let params = query.split('&');
             let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
             if(param){
@@ -125,6 +133,29 @@ const URL = {
 
     isEmbedded: function(){
         return this.getBooleanParam('embedded');
+    },
+
+    keepEmbedded: function(url) {
+        let parts;
+        if(this.isEmbedded()){
+            if(url.indexOf('embedded=true') > 0){
+                return url;
+            }else{
+                parts = url.split('?');
+                if(parts.length === 2){
+                    return parts[0] + '?embedded=true&' + parts[1];
+                }else{
+                    return parts[0] + '?embedded=true';
+                }
+            }
+        }
+        return url;
+    },
+
+    search: function() {
+        if(window && window.location){
+            return window.location.search;
+        } return null;
     }
 };
 
@@ -151,4 +182,4 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, URL, IfEmbedded};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, URL, IfEmbedded};

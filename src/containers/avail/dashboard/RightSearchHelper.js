@@ -7,6 +7,7 @@ import {
 import {rightServiceManager} from '../service/RightServiceManager';
 import {safeTrim} from '../../../util/Common';
 import moment from 'moment';
+import RightsURL from '../util/RightsURL';
 
 export const rightSearchHelper = {
 
@@ -41,15 +42,18 @@ export const rightSearchHelper = {
     },
 
     clearAdvancedSearchForm: () => {
+        RightsURL.saveRightsSimpleFilterUrl({});
         store.dispatch(searchFormSetAdvancedSearchCriteria({}));
         store.dispatch(searchFormSetSearchCriteria({}));
     },
 
     freeTextSearch(searchCriteria) {
+        RightsURL.saveRightsSimpleFilterUrl(searchCriteria);
         rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 
     advancedSearch(searchCriteria) {
+        RightsURL.saveRightsAdvancedFilterUrl(searchCriteria);
         rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     }
 

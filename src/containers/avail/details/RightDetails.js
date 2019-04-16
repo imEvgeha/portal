@@ -24,6 +24,7 @@ import {getDeepValue, safeTrim} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
+import RightsURL from '../util/RightsURL';
 
 const mapStateToProps = state => {
    return {
@@ -192,7 +193,7 @@ class RightDetails extends React.Component {
     }
 
     cancel(){
-        this.context.router.history.push('/avails');
+        this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
     }
 
     onFieldClicked(e){

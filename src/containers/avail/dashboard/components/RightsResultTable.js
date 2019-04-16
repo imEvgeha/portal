@@ -9,6 +9,8 @@ import config from 'react-global-configuration';
 // image import
 import LoadingGif from '../../../../img/loading.gif';
 
+import RightsURL from '../../util/RightsURL';
+
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -115,18 +117,26 @@ class RightsResultTable extends React.Component {
 
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
         let elem = document.querySelector('.vu-advanced-search-panel');
-        elem.addEventListener('transitionend', this.updateWindowDimensions);
+        if(elem) {
+            elem.addEventListener('transitionend', this.updateWindowDimensions);
+        }
         elem = document.querySelector('.vu-free-text-search');
-        elem.addEventListener('transitionend', this.updateWindowDimensions);
+        if(elem) {
+            elem.addEventListener('transitionend', this.updateWindowDimensions);
+        }
         this.refreshColumns();
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
         let elem = document.querySelector('.vu-advanced-search-panel');
-        elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        if(elem) {
+            elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        }
         elem = document.querySelector('.vu-free-text-search');
-        elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        if(elem) {
+            elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        }
     }
 
     updateWindowDimensions() {
@@ -456,7 +466,7 @@ class RightsResultTable extends React.Component {
         if (val !== undefined) {
             if (content) {
                 return(
-                    <Link to={{ pathname: '/avails/' + params.data.id }}>
+                    <Link to={{ pathname: RightsURL.getRightUrl(params.data.id)}}>
                         <div
                         title= {error}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>

@@ -1,9 +1,10 @@
 import store from '../../../stores/index';
 import {
-    searchFormSetAdvancedHistorySearchCriteria
+    searchFormUpdateAdvancedHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
 import {momentToISO, safeTrim} from '../../../util/Common';
+import HistoryURL from '../util/HistoryURL';
 
 export const advancedHistorySearchHelper = {
 
@@ -30,7 +31,8 @@ export const advancedHistorySearchHelper = {
     },
 
     clearAdvancedHistorySearchForm: () => {
-        store.dispatch(searchFormSetAdvancedHistorySearchCriteria({
+        HistoryURL.saveHistoryAdvancedFilterUrl({});
+        store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
            received: null,
            provider: '',
            status: '',
@@ -38,6 +40,7 @@ export const advancedHistorySearchHelper = {
     },
 
     advancedSearch(searchCriteria) {
+        HistoryURL.saveHistoryAdvancedFilterUrl(searchCriteria);
         historyServiceManager.search(this.prepareAdvancedHistorySearchCall(searchCriteria));
     }
 };
