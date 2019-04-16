@@ -269,7 +269,7 @@ class TitleEditMode extends Component {
                         onChange={(e) => this.props.handleOnChangeEdit(e)}
                         placeholder="hh:mm:ss"
                         validate={{
-                          pattern :{value: '^(2[0-3]|0[0-9]|[0-9]):[0-5]?[0-9]:[0-5]?[0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
+                          pattern :{value: '^$|^(([01][0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
                           maxLength: { value: 8 },
                           minLength: { value: 8 }
                         }}
@@ -402,7 +402,7 @@ class TitleEditMode extends Component {
               <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='titleReleaseYear'>
-                    Release Year<span style={{ color: 'red' }}>*</span>
+                    Release Year{contentType === 'SERIES' ? null : <span style={{ color: 'red' }}>*</span>}
                   </Label>
                   <AvField
                     name='releaseYear'
@@ -410,7 +410,7 @@ class TitleEditMode extends Component {
                     id='titleReleaseYear'
                     validate={{
                       required: {
-                        value: true,
+                        value: contentType === 'SERIES' ? false : true,
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },

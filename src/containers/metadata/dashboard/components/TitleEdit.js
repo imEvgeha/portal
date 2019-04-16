@@ -218,16 +218,6 @@ class TitleEdit extends Component {
         });
     };
 
-    addBooleanQuotes = (fieldName) => {
-        if (fieldName === true) {
-            fieldName = 'true';
-        } else if (fieldName === false) {
-            fieldName = 'false';
-        }
-        console.log(fieldName)
-        return fieldName;
-    };
-
     addAdvisoryCodes = (advisory) => {
         if(advisory !== '') {
             let advisoriesCode = [this.state.advisoryCode];
@@ -289,7 +279,7 @@ class TitleEdit extends Component {
     };
 
     readOnly = () => {
-        return <TitleReadOnlyMode addBooleanQuotes={this.addBooleanQuotes} data={this.state.titleForm} />;
+        return <TitleReadOnlyMode data={this.state.titleForm} />;
     };
 
     editMode = () => {

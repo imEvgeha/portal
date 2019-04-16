@@ -11,6 +11,10 @@ class TitleReadOnlyMode extends Component {
         let differentData = this.props.data !== nextProps.data;
         return differentData;
     }
+    addBooleanQuotes = (fieldName) => {
+        let stringBoolean = fieldName.toString();
+        return stringBoolean;
+    }
     renderFields = () => {
         const { 
             title,
@@ -96,7 +100,7 @@ class TitleReadOnlyMode extends Component {
                                 {
                                     animated ?
                                         <Col>
-                                            <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{animated === true ? 'Y' : 'N'}</span></Alert>
+                                            <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}</span></Alert>
                                         </Col>
                                         : null
                                 }
@@ -149,25 +153,33 @@ class TitleReadOnlyMode extends Component {
                                 {
                                     seasonPremiere ?
                                         <Col>
-                                            <Alert color="light" id="titleSeasonPremiere"><span><b>Season Premiere: </b>{() => this.props.addBooleanQuotes(seasonPremiere) === 'true' ? 'Y' : 'N'}</span></Alert>
+                                            <Alert color="light" id="titleSeasonPremiere"><span><b>Season Premiere: </b>{this.addBooleanQuotes(seasonPremiere) === 'true' ? 'Y' : 'N'}</span></Alert>
                                         </Col>
                                         : null
                                 }
                                 {
                                     seasonFinale ?
                                         <Col>
-                                            <Alert color="light" id="titleSeasonFinale"><span><b>Season Finale: </b>{() => this.props.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}</span></Alert>
+                                            <Alert color="light" id="titleSeasonFinale"><span><b>Season Finale: </b>{this.props.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}</span></Alert>
                                         </Col>
                                         : null
                                 }
                             </Row>
                             <Row>
-                                <Col>
-                                    <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
-                                <Col>
-                                    <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
+                                {
+                                    releaseYear ? 
+                                    <Col>
+                                        <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                    </Col>
+                                    : null
+                                }
+                                {
+                                    boxOffice ?
+                                    <Col>
+                                        <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                    </Col>
+                                    : null
+                                }
                             </Row>
                         </Col>
                     </Row>

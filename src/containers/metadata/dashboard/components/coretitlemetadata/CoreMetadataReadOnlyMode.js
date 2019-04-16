@@ -135,7 +135,7 @@ class CoreMetadataReadOnlyMode extends Component {
             this.props.data.externalIds ? 
             <Fragment>
                 <hr />
-                <h4>External IDS</h4>
+                <h4>External IDs</h4>
                 <Row style={{ marginTop: '10px' }}>
                 {
                     this.props.data.externalIds.eidrLevel1 ? 
