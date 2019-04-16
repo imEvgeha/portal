@@ -9,7 +9,7 @@ import {
     ListGroupItem,
     Card,
     CardHeader,
-    CardBody, Alert,
+    CardBody
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
