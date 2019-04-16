@@ -9,7 +9,7 @@ import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
-import {rangeValidation} from '../../../util/Validation';
+import {rangeValidation, oneOfValidation} from '../../../util/Validation';
 import {rightsService} from '../service/RightsService';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
@@ -94,10 +94,24 @@ class RightCreate extends React.Component {
     }
 
     checkRight(name, value, setNewValue) {
-        const validationError = this.validateField(name, value);
+        let validationError = this.validateField(name, value, this.right);
 
         let errorMessage = {range: '', date: '', text: validationError};
         this.mappingErrorMessage[name] = errorMessage;
+
+        if(!validationError) {
+            const pairFieldName = this.getPairFieldName(name);
+            if (pairFieldName) {
+                const map = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
+                const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
+                const oneOfValidationError = oneOfValidation(name, map.displayName, value, pairFieldName, mappingPair.displayName, this.right);
+                if(!this.mappingErrorMessage[name].range) {
+                    this.mappingErrorMessage[name].range = oneOfValidationError;
+                }
+                this.mappingErrorMessage[pairFieldName] = this.mappingErrorMessage[pairFieldName] || {range: '', date: '', text: ''};
+                this.mappingErrorMessage[pairFieldName].range = oneOfValidationError;
+            }
+        }
 
         if(setNewValue){
             let newRight = {...this.right, [name]: value};
@@ -111,7 +125,7 @@ class RightCreate extends React.Component {
         if(date && mapping.dataType === 'date') {
             val = momentToISO(date);
         }
-        this.checkRight(name, val, true, true);
+        this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
 
@@ -120,6 +134,23 @@ class RightCreate extends React.Component {
                 this.mappingErrorMessage[name].range = errorMessage;
                 if (this.mappingErrorMessage[groupedMappingName]) {
                     this.mappingErrorMessage[groupedMappingName].range = errorMessage;
+                    if(!errorMessage){
+                        this.checkRight(groupedMappingName, this.right[groupedMappingName],false);
+                    }
+                }
+            }
+        }
+
+        const pairFieldName = this.getPairFieldName(name);
+        if(pairFieldName) {
+            const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
+            if (this.mappingErrorMessage[pairFieldName]) {
+                const errorMessage = oneOfValidation(name, displayName, date, pairFieldName, mappingPair.displayName, this.right);
+                if(!this.mappingErrorMessage[name].range) {
+                    this.mappingErrorMessage[name].range = errorMessage;
+                }
+                if(!this.mappingErrorMessage[pairFieldName].range){
+                    this.mappingErrorMessage[pairFieldName].range = errorMessage;
                 }
             }
         }
@@ -129,6 +160,16 @@ class RightCreate extends React.Component {
 
     getGroupedMappingName(name) {
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
+    }
+
+    getPairFieldName(name) {
+        switch (name) {
+            case 'start': return 'availStart';
+            case 'availStart': return 'start';
+            case 'end': return 'availEnd';
+            case 'availEnd': return 'end';
+            default: return '';
+        }
     }
 
     anyInvalidField() {
@@ -353,7 +394,7 @@ class RightCreate extends React.Component {
             ];
 
             let handleOptionsChange = (selectedOptions) => {
-                this.checkRight(name, selectedOptions, true, true);
+                this.checkRight(name, selectedOptions, true);
             };
 
             return renderFieldTemplate(name, displayName, required, (
@@ -415,7 +456,7 @@ class RightCreate extends React.Component {
             }
 
             let handleOptionsChange = (option) => {
-                this.checkRight(name, option.value ? option : null, true, true);
+                this.checkRight(name, option.value ? option : null, true);
             };
 
             return renderFieldTemplate(name, displayName, required, (
