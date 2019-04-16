@@ -464,13 +464,13 @@ class RightsResultTable extends React.Component {
         }
         const content = error || params.valueFormatted || val;
         if (val !== undefined) {
-            if (content) {
+            if (content || content === false) {
                 return(
                     <Link to={{ pathname: RightsURL.getRightUrl(params.data.id)}}>
                         <div
                         title= {error}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                            {content}
+                            {String(content)}
                         </div>
                     </Link>
                 );
