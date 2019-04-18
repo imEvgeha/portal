@@ -650,8 +650,8 @@ class RightDetails extends React.Component {
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
                         this.state.errorMessage &&
-                        <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute' style={{top:'-20px', zIndex:'10000'}}>
-                            <Label id='right-edit-error-message' className='text-danger'>
+                        <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                            <Label id='right-edit-error-message'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>

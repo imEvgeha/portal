@@ -567,8 +567,9 @@ class RightCreate extends React.Component {
         return(
             <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
-                    <div className="d-inline-flex justify-content-center w-100 position-absolute" style={{top:'-20px', zIndex:'10000'}}>
-                        <Label id="right-create-error-message" className="text-danger">
+                    <div className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
+                         style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                        <Label id="right-create-error-message">
                             {this.state && this.state.errorMessage}
                         </Label>
                     </div>
