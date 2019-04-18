@@ -16,7 +16,7 @@ class TerritoryMetadataCreateTab extends Component {
 
     render() {
         return (
-            <div id="territoryContainer2">
+            <div id="territoryMetadataCreate">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
