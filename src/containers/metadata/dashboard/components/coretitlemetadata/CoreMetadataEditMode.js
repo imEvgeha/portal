@@ -24,6 +24,10 @@ import {configFields} from '../../../service/ConfigService';
 const CAST = 'CAST';
 const CREW = 'CREW';
 
+const DIRECTOR = 'director';
+const WRITTER = 'writer';
+const PRODUCER = 'produced';
+
 const mapStateToProps = state => {
   return {
     configCastAndCrew: state.titleReducer.configData.find(e => e.key === configFields.CAST_AND_CREW),
@@ -39,9 +43,49 @@ class CoreMetadataEditMode extends Component {
         super(props);
         this.state = {
             isRatingValid: false,
-            isAdvisoryCodeValid: false
+            isAdvisoryCodeValid: false,
+            castList: [],
+            crewList: []
         };
+        // this.updateCastCrewList();
     }
+
+    componentDidUpdate() {
+        this.updateCastCrewList();
+    }
+
+    updateCastCrewList = () => {
+        let castCrewFullList = [];
+        this.props.editedTitle.castCrew.forEach((e) => {
+            if(e.personTypes) {
+                e.personTypes.forEach((p) => {
+                    let newCastCrew = e;
+                    newCastCrew.personTypes = [p];
+                    castCrewFullList.push(newCastCrew);
+                });
+            }
+        });
+        console.log('castCrewFullList', castCrewFullList);
+
+        let crewList = this.props.editedTitle.castCrew.filter(e => {
+            if(e.personTypes) {
+                return e.personTypes.includes(DIRECTOR, WRITTER, PRODUCER);
+            }
+            return false;
+        });
+        let castList = this.props.editedTitle.castCrew.filter(e => {
+            if(e.personTypes) {
+                return !e.personTypes.includes(DIRECTOR, WRITTER, PRODUCER);
+            }
+            return true;
+        });
+        console.log('crewList',crewList)
+        console.log('castList',castList)
+        this.setState({
+            castList: castList,
+            crewList: crewList
+        });
+    };
 
     shouldComponentUpdate(nextProps) {
         return this.props !== nextProps;
@@ -137,7 +181,8 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   {this.props.editedTitle.castCrew &&
-                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
+                    // this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
+                  this.state.castList.map((cast, i) => (
                       <ListGroupItem key={i}>
                         {cast.displayName}
                         <FontAwesome
@@ -177,7 +222,8 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                     {this.props.editedTitle.castCrew &&
-                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
+                    // this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
+                    this.state.crewList.map((crew, i) => (
                       <ListGroupItem key={i}>
                         <span style={{ fontSize: '14px', color: '#666' }}>
                         Directed by:
