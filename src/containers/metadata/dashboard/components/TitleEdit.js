@@ -75,10 +75,6 @@ class TitleEdit extends Component {
             isCrewModalOpen: false,
             ratingSystem: '',
             ratingValue: '',
-            cast: [],
-            crew: [],
-            castCrewInputValue: '',
-            crewInputValue: '',
 
             advisoryCode: ''
         };
@@ -308,8 +304,6 @@ class TitleEdit extends Component {
             isCastModalOpen={this.state.isCastModalOpen}
             isCrewModalOpen={this.state.isCrewModalOpen}
             renderModal={this.renderModal}
-            castCrewInputValue={this.state.castCrewInputValue}
-            updateCastCrewValue={this.updateCastCrewValue}
             ratingValue={this.state.ratingValue}
             removeRating={this.removeRating}
             removeCastCrew={this.removeCastCrew}
@@ -710,7 +704,6 @@ class TitleEdit extends Component {
      * Title core additional fields
      */
     renderModal = modalName => {
-        this.cleanCastInput();
         if (modalName === CAST) {
             this.setState({
                 isCastModalOpen: !this.state.isCastModalOpen
@@ -768,34 +761,19 @@ class TitleEdit extends Component {
         });
     };
 
-    addCastCrew = (personType) => {
-        if (this.state.castCrewInputValue) {
-            let castCrewArray = [{
-                displayName: this.state.castCrewInputValue,
-                personType: personType
-            }];
-            if (this.state.editedForm.castCrew) {
-                castCrewArray = [...castCrewArray, ...this.state.editedForm.castCrew];
-            }
-
-            let updateEditForm = {
-                ...this.state.editedForm,
-                castCrew: castCrewArray
-            };
-
-            this.setState({
-                editedForm: updateEditForm
-            });
-            this.cleanCastInput();
+    addCastCrew = (person) => {
+        let castCrewArray = [person];
+        if (this.state.editedForm.castCrew) {
+            castCrewArray = [...castCrewArray, ...this.state.editedForm.castCrew];
         }
-    };
 
-    updateCastCrewValue = value => {
-        if (value !== '') {
-            this.setState({
-                castCrewInputValue: value
-            });
-        }
+        let updateEditForm = {
+            ...this.state.editedForm,
+            castCrew: castCrewArray
+        };
+        this.setState({
+            editedForm: updateEditForm
+        });
     };
 
     removeCastCrew = removeCastCrew => {
@@ -806,12 +784,6 @@ class TitleEdit extends Component {
         };
         this.setState({
            editedForm: updateEditForm
-        });
-    };
-
-    cleanCastInput = () => {
-        this.setState({
-            castCrewInputValue: ''
         });
     };
 

@@ -562,19 +562,19 @@ class CoreMetadataEditMode extends Component {
           isCastModalOpen={this.props.isCastModalOpen}
           renderCastModal={this.props.renderModal}
           addCastCrew={this.props.addCastCrew}
-          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
+          castCrewList={this.props.editedTitle.castCrew}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
           renderCrewModal={this.props.renderModal}
           addCastCrew={this.props.addCastCrew}
-          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
+          castCrewList={this.props.editedTitle.castCrew}
         />
       </Fragment>
     );
@@ -591,7 +591,6 @@ CoreMetadataEditMode.propTypes = {
   isCastModalOpen: PropTypes.bool,
   renderModal: PropTypes.func,
   castInputValue: PropTypes.string,
-  updateCastCrewValue: PropTypes.func,
   ratingValue: PropTypes.string,
   ratings: PropTypes.array,
   updateValue: PropTypes.func,
