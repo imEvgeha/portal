@@ -82,7 +82,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                 <div style={{display: 'flex', flex:0.5, minWidth:'30px'}}/>
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'182px'}}>
                     <div style={{display: 'flex'}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
-                    <div style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
+                    <div title={'ID: ' + this.props.data.id} style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
                         { (() => {
                             switch (this.props.data.status) {
                                  case 'COMPLETED':
@@ -90,7 +90,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                  case 'FAILED':
                                     return <span title={this.props.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"> </i></span>;
                                  case 'MANUAL':
-                                    return <span style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
+                                    return <span title={this.props.data.errorDetails} style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
                                  case 'PENDING':
                                     return <img src={LoadingElipsis}/>;
                                  default:
