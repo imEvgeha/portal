@@ -52,7 +52,7 @@ class EditorialMetadataEditMode extends Component {
         this.prepareFieldsForUpdate();
         const { synopsis, title, copyright, awards, seriesName } = this.props.data;
         return (
-            <div id="editorialContainer">
+            <div id="editorialMetadataEdit">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
                         <Col>
