@@ -160,7 +160,7 @@ class TitleReadOnlyMode extends Component {
                                 {
                                     seasonFinale ?
                                         <Col>
-                                            <Alert color="light" id="titleSeasonFinale"><span><b>Season Finale: </b>{this.props.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}</span></Alert>
+                                            <Alert color="light" id="titleSeasonFinale"><span><b>Season Finale: </b>{this.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}</span></Alert>
                                         </Col>
                                         : null
                                 }
