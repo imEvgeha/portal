@@ -755,7 +755,6 @@
   "dataType": "select",
   "searchDataType": "multiselect",
   "options": ["Tier", "Category", "WSP"],
-  "searchDataType": "string",
   "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": true,
