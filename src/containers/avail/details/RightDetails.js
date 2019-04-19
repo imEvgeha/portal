@@ -295,14 +295,29 @@ class RightDetails extends React.Component {
             }
 
             let handleValueChange = (newVal) => {
-                if(validation && validation.number === true){
-                    ref.current.handleChange(Number(newVal));
-                }else {
+                const error = validate(newVal);
+                if(error){
+                    ref.current.handleInvalid(newVal, error);
+                }else{
                     ref.current.handleChange(newVal);
                 }
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
+            };
+
+            const validate = (val) => {
+                if(validation.number) {
+                    const isNumber = !isNaN(val);
+                    if(!isNumber) return 'Please enter a valid number!';
+                }
+            };
+
+            const innerValidate = (val, ctx, input, cb) => {
+                if(validation.number) {
+                    const isNumber = !isNaN(val);
+                    cb(isNumber);
+                }
             };
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
@@ -313,8 +328,9 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={validate}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    showError={false}
                     helperComponent={<AvForm>
                         <AvField
                             value={value}
@@ -322,7 +338,7 @@ class RightDetails extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={(e) => {handleValueChange(e.target.value);}}
                             type="text"
-                            validate={validation}
+                            validate={{...validation, async: innerValidate}}
                             errorMessage="Please enter a valid number!"
                         />
                     </AvForm>}
