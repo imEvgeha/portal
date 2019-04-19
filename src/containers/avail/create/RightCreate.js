@@ -94,8 +94,7 @@ class RightCreate extends React.Component {
 
     checkRight(name, value, setNewValue) {
         let validationError = this.validateField(name, value, this.right);
-
-        let errorMessage = {range: '', date: '', text: validationError};
+        let errorMessage = {pair:'', range: '', date: '', text: validationError};
         this.mappingErrorMessage[name] = errorMessage;
 
         if(!validationError) {
@@ -105,10 +104,11 @@ class RightCreate extends React.Component {
                 const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
                 const oneOfValidationError = oneOfValidation(name, map.displayName, value, pairFieldName, mappingPair.displayName, this.right);
                 if(!this.mappingErrorMessage[name].range) {
-                    this.mappingErrorMessage[name].range = oneOfValidationError;
+                    this.mappingErrorMessage[name].pair = oneOfValidationError;
                 }
-                this.mappingErrorMessage[pairFieldName] = this.mappingErrorMessage[pairFieldName] || {range: '', date: '', text: ''};
-                this.mappingErrorMessage[pairFieldName].range = oneOfValidationError;
+                if(!this.mappingErrorMessage[pairFieldName].range) {
+                    this.mappingErrorMessage[pairFieldName].pair = oneOfValidationError;
+                }
             }
         }
 
@@ -127,7 +127,6 @@ class RightCreate extends React.Component {
         this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
-
             if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
                 const errorMessage = rangeValidation(name, displayName, date, this.right);
                 this.mappingErrorMessage[name].range = errorMessage;
@@ -140,24 +139,12 @@ class RightCreate extends React.Component {
             }
         }
 
-        const pairFieldName = this.getPairFieldName(name);
-        if(pairFieldName) {
-            const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
-            if (this.mappingErrorMessage[pairFieldName]) {
-                const errorMessage = oneOfValidation(name, displayName, date, pairFieldName, mappingPair.displayName, this.right);
-                if(!this.mappingErrorMessage[name].range) {
-                    this.mappingErrorMessage[name].range = errorMessage;
-                }
-                if(!this.mappingErrorMessage[pairFieldName].range){
-                    this.mappingErrorMessage[pairFieldName].range = errorMessage;
-                }
-            }
-        }
-
         this.setState({});
     }
 
     getGroupedMappingName(name) {
+        if(name === 'start') return 'end';
+        if(name === 'end') return 'start';
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
     }
 
@@ -185,6 +172,9 @@ class RightCreate extends React.Component {
                 return true;
             }
             if(value.range) {
+                return true;
+            }
+            if(value.pair) {
                 return true;
             }
             if(value.text) {
@@ -255,6 +245,7 @@ class RightCreate extends React.Component {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 date: '',
                 range: '',
+                pair: '',
                 text:''
             };
         });
@@ -518,6 +509,11 @@ class RightCreate extends React.Component {
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].range &&
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name].range}
+                    </small>
+                    }
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].pair &&
+                    <small className="text-danger m-2">
+                        {this.mappingErrorMessage[name].pair}
                     </small>
                     }
                 </div>
