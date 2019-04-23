@@ -15,17 +15,20 @@ export const configFields = {
 
 const http = Http.create({noDefaultErrorHandling: true});
 
-const getConfigValues = (field, page, size) => {
-    return http.get(config.get('gateway.configuration') + '/configuration-api/v1/' + field + '?page=' + page + '&size='+ size);
+const getConfigValues = (field, page, size, sortBy) => {
+    let sortPath = sortBy ? ';'+ sortBy +'=ASC' : '';
+    let path = '/configuration-api/v1/' + field + sortPath + '?page=' + page + '&size='+ size;
+    console.log(path)
+    return http.get(config.get('gateway.configuration') + path);
 };
 
-const getAllConfigValuesByField = (field) => {
+const getAllConfigValuesByField = (field, sortBy) => {
     let startPage = 0;
     let size = 10000;
     let total = 0;
     let result = [];
 
-    getConfigValues(field, startPage, size)
+    getConfigValues(field, startPage, size, sortBy)
         .then((res) => {
             total = res.data.total;
             result = res.data.data;
@@ -34,7 +37,7 @@ const getAllConfigValuesByField = (field) => {
         .then(() => {
             startPage++;
             for (startPage; total > size * (startPage); startPage++) {
-                getConfigValues(field, startPage, size)
+                getConfigValues(field, startPage, size, sortBy)
                     .then((res) => {
                         result = [...result, ...res.data.data];
                         store.dispatch(loadConfigData(field, result));
@@ -52,7 +55,13 @@ const getAllConfigValuesByField = (field) => {
 export const configService = {
     initConfigMapping: () => {
         Object.values(configFields).forEach(configField => {
-            getAllConfigValuesByField(configField);
+            if(configField === configFields.LANGUAGE) {
+                getAllConfigValuesByField(configField, 'languageName');
+            } else if(configField === configFields.LOCALE) {
+                getAllConfigValuesByField(configField, 'countryName');
+            } else {
+                getAllConfigValuesByField(configField);
+            }
         });
     },
 };

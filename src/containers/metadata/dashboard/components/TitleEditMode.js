@@ -89,7 +89,7 @@ class TitleEditMode extends Component {
                 </Col>
                 <Col>
                   <Label for='titleProductionStudio'>Production Studio</Label>
-                  <AvField
+                  <Input
                       type='select'
                       name='productionStudioId'
                       id='titleProductionStudio'
@@ -102,7 +102,7 @@ class TitleEditMode extends Component {
                         return <option key={index} value={e.name}>{e.name}</option>;
                       })
                     }
-                  </AvField>
+                  </Input>
                 </Col>
               </Row>
               {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
