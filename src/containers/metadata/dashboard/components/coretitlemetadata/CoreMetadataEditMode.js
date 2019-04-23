@@ -20,13 +20,7 @@ import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
-
-const CAST = 'CAST';
-const CREW = 'CREW';
-
-const DIRECTOR = 'director';
-const WRITTER = 'writer';
-const PRODUCER = 'produced';
+import {CREW, CAST, ACTOR, DIRECTOR, PRODUCER, WRITER} from '../../../../../constants/metadata/configAPI';
 
 const mapStateToProps = state => {
   return {
@@ -47,44 +41,44 @@ class CoreMetadataEditMode extends Component {
             castList: [],
             crewList: []
         };
-        // this.updateCastCrewList();
     }
 
-    componentDidUpdate() {
-        this.updateCastCrewList();
-    }
+    getFilteredCastList = (originalConfigCastList) => {
+        let configCastList = [];
+        originalConfigCastList
+            .filter((f) => {
+                return f.personTypes && f.personTypes.filter(t => t.toLowerCase() === ACTOR.toLowerCase()).length > 0;
+            })
+            .forEach((e) => {
+                let newCastCrew = Object.assign({}, e);
+                newCastCrew.personTypes = [ACTOR];
+                configCastList.push(newCastCrew);
+            });
+        return configCastList;
+    };
 
-    updateCastCrewList = () => {
-        let castCrewFullList = [];
-        this.props.editedTitle.castCrew.forEach((e) => {
-            if(e.personTypes) {
+    getFilteredCrewList = (originalConfigCrewList) => {
+        let configCrewList = [];
+        originalConfigCrewList
+            .filter((f) => {
+                return f.personTypes && f.personTypes.filter(t => {
+                    return ((t.toLowerCase() === DIRECTOR.toLowerCase()
+                        || t.toLowerCase() === WRITER.toLowerCase()
+                        || t.toLowerCase() === PRODUCER.toLowerCase()));
+                }).length > 0;
+            })
+            .forEach((e) => {
                 e.personTypes.forEach((p) => {
-                    let newCastCrew = e;
-                    newCastCrew.personTypes = [p];
-                    castCrewFullList.push(newCastCrew);
+                    if(p.toLowerCase() !== ACTOR.toLowerCase() ) {
+                        let newCastCrew = Object.assign({}, e);
+                        newCastCrew.personTypes = [p];
+                        configCrewList.push(newCastCrew);
+                    }
                 });
-            }
-        });
-        console.log('castCrewFullList', castCrewFullList);
-
-        let crewList = this.props.editedTitle.castCrew.filter(e => {
-            if(e.personTypes) {
-                return e.personTypes.includes(DIRECTOR, WRITTER, PRODUCER);
-            }
-            return false;
-        });
-        let castList = this.props.editedTitle.castCrew.filter(e => {
-            if(e.personTypes) {
-                return !e.personTypes.includes(DIRECTOR, WRITTER, PRODUCER);
-            }
-            return true;
-        });
-        console.log('crewList',crewList)
-        console.log('castList',castList)
-        this.setState({
-            castList: castList,
-            crewList: crewList
-        });
+            });
+        console.log('originalConfigCastList.value', originalConfigCrewList.value)
+        console.log('configCrewList',configCrewList);
+        return configCrewList;
     };
 
     shouldComponentUpdate(nextProps) {
@@ -612,6 +606,7 @@ class CoreMetadataEditMode extends Component {
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
           castCrewList={this.props.editedTitle.castCrew}
+          getFilteredCastList={this.getFilteredCastList}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
@@ -621,6 +616,7 @@ class CoreMetadataEditMode extends Component {
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
           castCrewList={this.props.editedTitle.castCrew}
+          getFilteredCrewList={this.getFilteredCrewList}
         />
       </Fragment>
     );

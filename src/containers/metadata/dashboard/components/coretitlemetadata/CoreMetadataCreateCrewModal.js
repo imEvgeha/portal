@@ -2,8 +2,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import {AvField} from 'availity-reactstrap-validation';
-
-const CREW = 'CREW';
+import {CREW} from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataCreateCrewModal extends Component {
 
@@ -13,6 +12,10 @@ class CoreMetadataCreateCrewModal extends Component {
             isValidPersonSelected: true,
             selectedPerson: {}
         };
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props !== nextProps;
     }
 
     addValidCastCrew = () => {
@@ -54,8 +57,8 @@ class CoreMetadataCreateCrewModal extends Component {
                                  onChange={e => this.updateSelectedPerson(e.target.value)}>
                             <option value={''}>Select a Crew</option>
                             {
-                                this.props.configCastAndCrew && this.props.configCastAndCrew.value.map((e, index) => {
-                                    return <option key={index} value={JSON.stringify(e)}>{e.displayName}</option>;
+                                this.props.configCastAndCrew && this.props.getFilteredCrewList(this.props.configCastAndCrew.value).map((e, index) => {
+                                    return <option key={index} value={JSON.stringify(e)}>{e.displayName + (e.personTypes.length > 0 ? ' ' + e.personTypes[0] : '')}</option>;
                                 })
                             }
                         </AvField>
@@ -82,7 +85,8 @@ CoreMetadataCreateCrewModal.propTypes = {
     addCastCrew: PropTypes.func,
 
     configCastAndCrew: PropTypes.object,
-    castCrewList: PropTypes.array
+    castCrewList: PropTypes.array,
+    getFilteredCrewList: PropTypes.func
 };
 
 export default CoreMetadataCreateCrewModal;
