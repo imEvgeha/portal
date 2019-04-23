@@ -141,7 +141,6 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   {this.props.editedTitle.castCrew &&
-                    // this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
                   getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => (
                       <ListGroupItem key={i}>
                         {cast.displayName}
@@ -182,7 +181,6 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                     {this.props.editedTitle.castCrew &&
-                    // this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
                     getFilteredCrewList(this.props.editedTitle.castCrew, false).map((crew, i) => (
                       <ListGroupItem key={i}>
                         <span style={{ fontSize: '14px', color: '#666' }}>

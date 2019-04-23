@@ -19,6 +19,7 @@ const mapStateToProps = state => {
     return {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configProductionStudio: state.titleReducer.configData.find(e => e.key === configFields.PRODUCTION_STUDIO),
     };
 };
 
@@ -89,13 +90,19 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='titleProductionStudio'>Production Studio</Label>
                   <AvField
-                    name='productionStudioId'
-                    errorMessage='Please enter a valid production studio!'
-                    id='titleProductionStudio'
-                    value={productionStudioId ? productionStudioId : ''}
-                    placeholder='Enter Studio'
-                    onChange={this.props.handleOnChangeEdit}
-                  />
+                      type='select'
+                      name='productionStudioId'
+                      id='titleProductionStudio'
+                      onChange={e => this.props.handleOnChangeEdit(e)}
+                      defaultValue={productionStudioId}
+                  >
+                    <option value=''>Select Country of Origin</option>
+                    {
+                      this.props.configProductionStudio && this.props.configProductionStudio.value.map((e, index) => {
+                        return <option key={index} value={e.name}>{e.name}</option>;
+                      })
+                    }
+                  </AvField>
                 </Col>
               </Row>
               {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
@@ -512,8 +519,8 @@ TitleEditMode.propTypes = {
   handleRatingSystemUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   configLanguage: PropTypes.object,
-  configLocale: PropTypes.object
-
+  configLocale: PropTypes.object,
+  configProductionStudio: PropTypes.object
 };
 
 export default connect(mapStateToProps)(TitleEditMode);
