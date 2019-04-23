@@ -18,7 +18,6 @@ const http = Http.create({noDefaultErrorHandling: true});
 const getConfigValues = (field, page, size, sortBy) => {
     let sortPath = sortBy ? ';'+ sortBy +'=ASC' : '';
     let path = '/configuration-api/v1/' + field + sortPath + '?page=' + page + '&size='+ size;
-    console.log(path)
     return http.get(config.get('gateway.configuration') + path);
 };
 
@@ -59,6 +58,8 @@ export const configService = {
                 getAllConfigValuesByField(configField, 'languageName');
             } else if(configField === configFields.LOCALE) {
                 getAllConfigValuesByField(configField, 'countryName');
+            } else if(configField === configFields.PRODUCTION_STUDIO) {
+                    getAllConfigValuesByField(configField, 'name');
             } else {
                 getAllConfigValuesByField(configField);
             }
