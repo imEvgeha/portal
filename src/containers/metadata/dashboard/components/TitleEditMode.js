@@ -33,7 +33,7 @@ class TitleEditMode extends Component {
     };
   }
 
-  render() {
+    render() {
     const {
       title,
       contentType,
@@ -94,7 +94,7 @@ class TitleEditMode extends Component {
                       name='productionStudioId'
                       id='titleProductionStudio'
                       onChange={e => this.props.handleOnChangeEdit(e)}
-                      defaultValue={productionStudioId}
+                      value={productionStudioId}
                   >
                     <option value=''>Select Country of Origin</option>
                     {
@@ -291,7 +291,7 @@ class TitleEditMode extends Component {
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={countryOfOrigin}
+                    value={countryOfOrigin}
                   >
                     <option value=''>Select Country of Origin</option>
                       {
@@ -341,7 +341,7 @@ class TitleEditMode extends Component {
                     name='originalLanguage'
                     id='originalLanguage'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={originalLanguage}
+                    value={originalLanguage}
                   >
                     <option value=''>Select Original Language</option>
                       {
