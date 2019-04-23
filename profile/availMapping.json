@@ -607,7 +607,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "caption.captionExemption",
+  "javaVariableName": "captions.captionExemption",
   "displayName": "Caption Exemption",
   "dataType": "integer",
   "searchDataType": "integer",
