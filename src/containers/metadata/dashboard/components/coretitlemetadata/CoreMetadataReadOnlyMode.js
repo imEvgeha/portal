@@ -13,6 +13,10 @@ import {
 } from 'reactstrap';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
+import {
+  getFilteredCastList,
+  getFilteredCrewList, getFormatTypeName,
+} from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataReadOnlyMode extends Component {
 
@@ -37,7 +41,7 @@ class CoreMetadataReadOnlyMode extends Component {
                         id='listContainer'
                         >
                         {this.props.data.castCrew &&
-                            this.props.data.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
+                            getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => (
                             <ListGroupItem key={i}>
                                 {cast.displayName}
                             </ListGroupItem>
@@ -61,10 +65,10 @@ class CoreMetadataReadOnlyMode extends Component {
                         id='listContainer'
                         >
                             {this.props.data.castCrew &&
-                            this.props.data.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
+                            getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
                             <ListGroupItem key={i}>
                                 <span style={{ fontSize: '14px', color: '#666' }}>
-                                Directed by:
+                                  {getFormatTypeName(crew.personType)}
                                 </span>{' '}
                                 {crew.displayName}
                             </ListGroupItem>

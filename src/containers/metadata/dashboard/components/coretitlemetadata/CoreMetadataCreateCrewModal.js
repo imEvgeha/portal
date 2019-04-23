@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import {AvField} from 'availity-reactstrap-validation';
-import {CREW} from '../../../../../constants/metadata/configAPI';
+import {CREW, getFilteredCrewList} from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataCreateCrewModal extends Component {
 
@@ -10,34 +10,42 @@ class CoreMetadataCreateCrewModal extends Component {
         super(props);
         this.state = {
             isValidPersonSelected: true,
-            selectedPerson: {}
+            selectedPerson: null
         };
     }
 
-    shouldComponentUpdate(nextProps) {
-        return this.props !== nextProps;
-    }
-
     addValidCastCrew = () => {
-        if (this.props.castCrewList.findIndex( person => {
-            return person.id === this.state.selectedPerson.id && person.personTypes === this.state.selectedPerson.personTypes;
-        }) < 0) {
-            this.props.addCastCrew(this.state.selectedPerson);
+        if (this.state.selectedPerson) {
+            if (this.props.castCrewList.findIndex(person => {
+                return person.id === this.state.selectedPerson.id && person.personType === this.state.selectedPerson.personType;
+            }) < 0) {
+                this.props.addCastCrew(this.state.selectedPerson);
+                this.setState({
+                    isValidPersonSelected: true
+                });
+            } else {
+                this.setState({
+                    isValidPersonSelected: false
+                });
+            }
+        } else {
             this.setState({
                 isValidPersonSelected: true
             });
-        } else {
-            this.setState({
-                isValidPersonSelected: false
-            });
         }
+
     };
 
     updateSelectedPerson = (personJSON) => {
-        let person = JSON.parse(personJSON);
+        let person = null;
+        if(personJSON) {
+            person = JSON.parse(personJSON);
+
+        }
         this.setState({
             selectedPerson: person
         });
+
     };
 
     render() {
@@ -57,12 +65,14 @@ class CoreMetadataCreateCrewModal extends Component {
                                  onChange={e => this.updateSelectedPerson(e.target.value)}>
                             <option value={''}>Select a Crew</option>
                             {
-                                this.props.configCastAndCrew && this.props.getFilteredCrewList(this.props.configCastAndCrew.value).map((e, index) => {
-                                    return <option key={index} value={JSON.stringify(e)}>{e.displayName + (e.personTypes.length > 0 ? ' ' + e.personTypes[0] : '')}</option>;
+                                this.props.configCastAndCrew && getFilteredCrewList(this.props.configCastAndCrew.value, true).map((e, index) => {
+                                    return <option key={index}
+                                                   value={JSON.stringify(e)}>{e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : '')}</option>;
                                 })
                             }
                         </AvField>
-                        {!this.state.isValidPersonSelected ? <span style={{color: 'red'}}>Person already exist</span> : null}
+                        {!this.state.isValidPersonSelected ?
+                            <span style={{color: 'red'}}>Person already exist</span> : null}
                     </ModalBody>
                     <ModalFooter>
                         <Button color='primary' onClick={() => this.addValidCastCrew()}>
@@ -86,7 +96,6 @@ CoreMetadataCreateCrewModal.propTypes = {
 
     configCastAndCrew: PropTypes.object,
     castCrewList: PropTypes.array,
-    getFilteredCrewList: PropTypes.func
 };
 
 export default CoreMetadataCreateCrewModal;

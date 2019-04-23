@@ -351,6 +351,7 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
+
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -777,7 +778,9 @@ class TitleEdit extends Component {
     };
 
     removeCastCrew = removeCastCrew => {
-        let cast = this.state.editedForm.castCrew.filter(cast => cast !== removeCastCrew);
+        let cast = this.state.editedForm.castCrew.filter(cast => {
+            return JSON.stringify(cast) !== JSON.stringify(removeCastCrew);
+        });
         let updateEditForm = {
             ...this.state.editedForm,
             castCrew: cast

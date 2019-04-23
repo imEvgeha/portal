@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
-import {CAST} from '../../../../../constants/metadata/configAPI';
+import {CAST, getFilteredCastList} from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataCreateCastModal extends Component {
 
@@ -10,29 +10,36 @@ class CoreMetadataCreateCastModal extends Component {
     super(props);
     this.state = {
       isValidPersonSelected: true,
-      selectedPerson: {}
+      selectedPerson: null
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props !== nextProps;
-  }
-
   addValidCastCrew = () => {
-    if (this.props.castCrewList.findIndex( person => person.id === this.state.selectedPerson.id) < 0) {
-      this.props.addCastCrew(this.state.selectedPerson);
-      this.setState({
-        isValidPersonSelected: true
-      });
+    if(this.state.selectedPerson) {
+      if (this.props.castCrewList.findIndex(person =>
+          person.id === this.state.selectedPerson.id && person.personType === this.state.selectedPerson.personType) < 0) {
+        this.props.addCastCrew(this.state.selectedPerson);
+        this.setState({
+          isValidPersonSelected: true
+        });
+      } else {
+        this.setState({
+          isValidPersonSelected: false
+        });
+      }
     } else {
       this.setState({
-        isValidPersonSelected: false
+        isValidPersonSelected: true
       });
     }
   };
 
   updateSelectedPerson = (personJSON) => {
-    let person = JSON.parse(personJSON);
+    let person = null;
+    if(personJSON) {
+      person = JSON.parse(personJSON);
+    }
+
     this.setState({
       selectedPerson: person
     });
@@ -54,7 +61,7 @@ class CoreMetadataCreateCastModal extends Component {
             <AvField type="select" name="castInputValue" id="createCasSelect" onChange={e => this.updateSelectedPerson(e.target.value)}>
               <option value={''}>Select a Cast</option>
               {
-                this.props.configCastAndCrew && this.props.getFilteredCastList(this.props.configCastAndCrew.value).map((e, index) => {
+                this.props.configCastAndCrew && getFilteredCastList(this.props.configCastAndCrew.value, true).map((e, index) => {
                   return <option key={index} value={JSON.stringify(e)}>{e.displayName}</option>;
                 })
               }
@@ -84,7 +91,6 @@ CoreMetadataCreateCastModal.propTypes = {
 
   configCastAndCrew: PropTypes.object,
   castCrewList: PropTypes.array,
-  getFilteredCastList: PropTypes.func,
 };
 
 export default CoreMetadataCreateCastModal;

@@ -20,7 +20,11 @@ import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
-import {CREW, CAST, ACTOR, DIRECTOR, PRODUCER, WRITER} from '../../../../../constants/metadata/configAPI';
+import {
+    CREW,
+    CAST,
+    getFilteredCrewList, getFilteredCastList, getFormatTypeName
+} from '../../../../../constants/metadata/configAPI';
 
 const mapStateToProps = state => {
   return {
@@ -42,44 +46,6 @@ class CoreMetadataEditMode extends Component {
             crewList: []
         };
     }
-
-    getFilteredCastList = (originalConfigCastList) => {
-        let configCastList = [];
-        originalConfigCastList
-            .filter((f) => {
-                return f.personTypes && f.personTypes.filter(t => t.toLowerCase() === ACTOR.toLowerCase()).length > 0;
-            })
-            .forEach((e) => {
-                let newCastCrew = Object.assign({}, e);
-                newCastCrew.personTypes = [ACTOR];
-                configCastList.push(newCastCrew);
-            });
-        return configCastList;
-    };
-
-    getFilteredCrewList = (originalConfigCrewList) => {
-        let configCrewList = [];
-        originalConfigCrewList
-            .filter((f) => {
-                return f.personTypes && f.personTypes.filter(t => {
-                    return ((t.toLowerCase() === DIRECTOR.toLowerCase()
-                        || t.toLowerCase() === WRITER.toLowerCase()
-                        || t.toLowerCase() === PRODUCER.toLowerCase()));
-                }).length > 0;
-            })
-            .forEach((e) => {
-                e.personTypes.forEach((p) => {
-                    if(p.toLowerCase() !== ACTOR.toLowerCase() ) {
-                        let newCastCrew = Object.assign({}, e);
-                        newCastCrew.personTypes = [p];
-                        configCrewList.push(newCastCrew);
-                    }
-                });
-            });
-        console.log('originalConfigCastList.value', originalConfigCrewList.value)
-        console.log('configCrewList',configCrewList);
-        return configCrewList;
-    };
 
     shouldComponentUpdate(nextProps) {
         return this.props !== nextProps;
@@ -176,7 +142,7 @@ class CoreMetadataEditMode extends Component {
                 >
                   {this.props.editedTitle.castCrew &&
                     // this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
-                  this.state.castList.map((cast, i) => (
+                  getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => (
                       <ListGroupItem key={i}>
                         {cast.displayName}
                         <FontAwesome
@@ -217,10 +183,10 @@ class CoreMetadataEditMode extends Component {
                 >
                     {this.props.editedTitle.castCrew &&
                     // this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
-                    this.state.crewList.map((crew, i) => (
+                    getFilteredCrewList(this.props.editedTitle.castCrew, false).map((crew, i) => (
                       <ListGroupItem key={i}>
                         <span style={{ fontSize: '14px', color: '#666' }}>
-                        Directed by:
+                         {getFormatTypeName(crew.personType)}
                         </span>{' '}
                         {crew.displayName}
                         <FontAwesome
@@ -606,7 +572,6 @@ class CoreMetadataEditMode extends Component {
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
           castCrewList={this.props.editedTitle.castCrew}
-          getFilteredCastList={this.getFilteredCastList}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
@@ -616,7 +581,6 @@ class CoreMetadataEditMode extends Component {
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
           castCrewList={this.props.editedTitle.castCrew}
-          getFilteredCrewList={this.getFilteredCrewList}
         />
       </Fragment>
     );
