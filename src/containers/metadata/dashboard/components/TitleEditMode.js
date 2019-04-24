@@ -89,7 +89,7 @@ class TitleEditMode extends Component {
                 </Col>
                 <Col>
                   <Label for='titleProductionStudio'>Production Studio</Label>
-                  <Input
+                  <AvField
                       type='select'
                       name='productionStudioId'
                       id='titleProductionStudio'
@@ -102,7 +102,7 @@ class TitleEditMode extends Component {
                         return <option key={index} value={e.name}>{e.name}</option>;
                       })
                     }
-                  </Input>
+                  </AvField>
                 </Col>
               </Row>
               {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
@@ -286,7 +286,7 @@ class TitleEditMode extends Component {
                 </Col>
                 <Col>
                   <Label for='countryOfOrigin'>Country of Origin</Label>
-                  <Input
+                  <AvField
                     type='select'
                     name='countryOfOrigin'
                     id='countryOfOrigin'
@@ -299,7 +299,7 @@ class TitleEditMode extends Component {
                               return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                           })
                       }
-                  </Input>
+                  </AvField>
                 </Col>
                 <Col>
                   <Label for='animated'>Animated</Label>
@@ -336,7 +336,7 @@ class TitleEditMode extends Component {
               <Row style={{marginTop: '15px'}}>
                 <Col>
                   <Label for='originalLanguage'>Original Language</Label>
-                  <Input
+                  <AvField
                     type='select'
                     name='originalLanguage'
                     id='originalLanguage'
@@ -349,7 +349,7 @@ class TitleEditMode extends Component {
                               return <option key={index} value={e.languageCode}>{e.languageName}</option>;
                           })
                       }
-                  </Input>
+                  </AvField>
                 </Col>
                 {
                   contentType === 'EPISODE' ? (
