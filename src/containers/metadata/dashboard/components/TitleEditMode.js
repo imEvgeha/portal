@@ -19,6 +19,7 @@ const mapStateToProps = state => {
     return {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configProductionStudio: state.titleReducer.configData.find(e => e.key === configFields.PRODUCTION_STUDIO),
     };
 };
 
@@ -32,7 +33,7 @@ class TitleEditMode extends Component {
     };
   }
 
-  render() {
+    render() {
     const {
       title,
       contentType,
@@ -89,13 +90,19 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='titleProductionStudio'>Production Studio</Label>
                   <AvField
-                    name='productionStudioId'
-                    errorMessage='Please enter a valid production studio!'
-                    id='titleProductionStudio'
-                    value={productionStudioId ? productionStudioId : ''}
-                    placeholder='Enter Studio'
-                    onChange={this.props.handleOnChangeEdit}
-                  />
+                      type='select'
+                      name='productionStudioId'
+                      id='titleProductionStudio'
+                      onChange={e => this.props.handleOnChangeEdit(e)}
+                      value={productionStudioId}
+                  >
+                    <option value=''>Select Production Studio</option>
+                    {
+                      this.props.configProductionStudio && this.props.configProductionStudio.value.map((e, index) => {
+                        return <option key={index} value={e.name}>{e.name}</option>;
+                      })
+                    }
+                  </AvField>
                 </Col>
               </Row>
               {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
@@ -279,12 +286,12 @@ class TitleEditMode extends Component {
                 </Col>
                 <Col>
                   <Label for='countryOfOrigin'>Country of Origin</Label>
-                  <Input
+                  <AvField
                     type='select'
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={countryOfOrigin}
+                    value={countryOfOrigin}
                   >
                     <option value=''>Select Country of Origin</option>
                       {
@@ -292,7 +299,7 @@ class TitleEditMode extends Component {
                               return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                           })
                       }
-                  </Input>
+                  </AvField>
                 </Col>
                 <Col>
                   <Label for='animated'>Animated</Label>
@@ -329,12 +336,12 @@ class TitleEditMode extends Component {
               <Row style={{marginTop: '15px'}}>
                 <Col>
                   <Label for='originalLanguage'>Original Language</Label>
-                  <Input
+                  <AvField
                     type='select'
                     name='originalLanguage'
                     id='originalLanguage'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={originalLanguage}
+                    value={originalLanguage}
                   >
                     <option value=''>Select Original Language</option>
                       {
@@ -342,7 +349,7 @@ class TitleEditMode extends Component {
                               return <option key={index} value={e.languageCode}>{e.languageName}</option>;
                           })
                       }
-                  </Input>
+                  </AvField>
                 </Col>
                 {
                   contentType === 'EPISODE' ? (
@@ -512,8 +519,8 @@ TitleEditMode.propTypes = {
   handleRatingSystemUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   configLanguage: PropTypes.object,
-  configLocale: PropTypes.object
-
+  configLocale: PropTypes.object,
+  configProductionStudio: PropTypes.object
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

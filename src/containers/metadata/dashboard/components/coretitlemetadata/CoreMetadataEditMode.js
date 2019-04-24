@@ -20,9 +20,11 @@ import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
-
-const CAST = 'CAST';
-const CREW = 'CREW';
+import {
+    CREW,
+    CAST,
+    getFilteredCrewList, getFilteredCastList, getFormatTypeName
+} from '../../../../../constants/metadata/configAPI';
 
 const mapStateToProps = state => {
   return {
@@ -39,7 +41,9 @@ class CoreMetadataEditMode extends Component {
         super(props);
         this.state = {
             isRatingValid: false,
-            isAdvisoryCodeValid: false
+            isAdvisoryCodeValid: false,
+            castList: [],
+            crewList: []
         };
     }
 
@@ -137,7 +141,7 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   {this.props.editedTitle.castCrew &&
-                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
+                  getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => (
                       <ListGroupItem key={i}>
                         {cast.displayName}
                         <FontAwesome
@@ -177,10 +181,10 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                     {this.props.editedTitle.castCrew &&
-                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
+                    getFilteredCrewList(this.props.editedTitle.castCrew, false).map((crew, i) => (
                       <ListGroupItem key={i}>
                         <span style={{ fontSize: '14px', color: '#666' }}>
-                        Directed by:
+                         {getFormatTypeName(crew.personType)}
                         </span>{' '}
                         {crew.displayName}
                         <FontAwesome
@@ -562,19 +566,19 @@ class CoreMetadataEditMode extends Component {
           isCastModalOpen={this.props.isCastModalOpen}
           renderCastModal={this.props.renderModal}
           addCastCrew={this.props.addCastCrew}
-          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
+          castCrewList={this.props.editedTitle.castCrew}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
           renderCrewModal={this.props.renderModal}
           addCastCrew={this.props.addCastCrew}
-          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
           configCastAndCrew={this.props.configCastAndCrew}
+          castCrewList={this.props.editedTitle.castCrew}
         />
       </Fragment>
     );
@@ -591,7 +595,6 @@ CoreMetadataEditMode.propTypes = {
   isCastModalOpen: PropTypes.bool,
   renderModal: PropTypes.func,
   castInputValue: PropTypes.string,
-  updateCastCrewValue: PropTypes.func,
   ratingValue: PropTypes.string,
   ratings: PropTypes.array,
   updateValue: PropTypes.func,
