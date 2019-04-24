@@ -25,6 +25,7 @@ import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
 
 const mapStateToProps = state => {
    return {
@@ -228,8 +229,25 @@ class RightDetails extends React.Component {
         }
     }
 
+    onEditableClick(ref){
+        if(ref && ref.current){
+            const component = ref.current;
+            if(component instanceof Editable || component instanceof EditableBaseComponent){
+                if(component.state && !component.state.editable) {
+                    confirmModal.open('Confirm edit',
+                        () => {
+                        },
+                        () => {
+                            component.setEditable(false);
+                        },
+                        {description: 'Are you sure you want to edit this field?'});
+                }
+            }
+        }
+    }
+
     render() {
-        const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, content) => {
+        const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, ref, content) => {
             const hasValidationError = error;
             return (
                 <div key={name}
@@ -244,7 +262,9 @@ class RightDetails extends React.Component {
                             onClick = {this.onFieldClicked}
                             className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
                             id={'right-detail-' + name + '-field'}>
-                            <div className="editable-field-content">
+                            <div className="editable-field-content"
+                                 onClick={highlighted ? () => this.onEditableClick(ref) : null}
+                            >
                                 {content}
                             </div>
                             <span className="edit-icon" style={{color: 'gray'}}><i className="fas fa-pen"></i></span>
@@ -267,7 +287,7 @@ class RightDetails extends React.Component {
                 }
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <Editable
                     ref={ref}
                     title={name}
@@ -305,7 +325,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
@@ -371,7 +391,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, highlighted, (
+            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={options.find((opt) => opt.server === value).display}
@@ -432,7 +452,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
@@ -518,7 +538,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
@@ -560,6 +580,7 @@ class RightDetails extends React.Component {
         };
 
         const renderDatepickerField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            let ref;
             let priorityError = null;
             if(error){
                 priorityError = <div title = {error}
@@ -567,8 +588,9 @@ class RightDetails extends React.Component {
                                     {error}
                                 </div>;
             }
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableDatePicker
+                    ref={ref}
                     showTime={readOnly}
                     value={value}
                     priorityDisplay={priorityError}
