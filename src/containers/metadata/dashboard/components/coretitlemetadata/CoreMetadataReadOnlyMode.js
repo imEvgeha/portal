@@ -206,7 +206,7 @@ class CoreMetadataReadOnlyMode extends Component {
                 {
                   this.props.data.legacyIds && this.props.data.legacyIds.vz ?
                     <Col>
-                        <Alert color='light'><b>VZ ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId: null}</Alert>
+                        <Alert color='light'><b>VZ Title ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId: null}</Alert>
                     </Col> : null
                 }
                 </Row>

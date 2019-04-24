@@ -96,7 +96,7 @@ class TitleEditMode extends Component {
                       onChange={e => this.props.handleOnChangeEdit(e)}
                       value={productionStudioId}
                   >
-                    <option value=''>Select Country of Origin</option>
+                    <option value=''>Select Production Studio</option>
                     {
                       this.props.configProductionStudio && this.props.configProductionStudio.value.map((e, index) => {
                         return <option key={index} value={e.name}>{e.name}</option>;
