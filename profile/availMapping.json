@@ -755,7 +755,6 @@
   "dataType": "select",
   "searchDataType": "multiselect",
   "options": ["Tier", "Category", "WSP"],
-  "searchDataType": "string",
   "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": true,
@@ -1432,11 +1431,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "modifiedBy",
-  "displayName": "Modified By",
+  "javaVariableName": "updatedBy",
+  "displayName": "Updated By",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "modifiedBy",
+  "queryParamName": "updatedBy",
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
