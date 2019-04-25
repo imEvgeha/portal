@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import {AvField} from 'availity-reactstrap-validation';
-import {CREW, getFilteredCrewList} from '../../../../../constants/metadata/configAPI';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { AvField } from 'availity-reactstrap-validation';
+import { CREW, getFilteredCrewList } from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataCreateCrewModal extends Component {
 
@@ -16,36 +16,45 @@ class CoreMetadataCreateCrewModal extends Component {
 
     addValidCastCrew = () => {
         if (this.state.selectedPerson) {
-            if (this.props.castCrewList === null || this.props.castCrewList.findIndex(person => {
-                return person.id === this.state.selectedPerson.id && person.personType === this.state.selectedPerson.personType;
-            }) < 0) {
+            let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
+            if (isValid) {
                 this.props.addCastCrew(this.state.selectedPerson);
-                this.setState({
-                    isValidPersonSelected: true
-                });
-            } else {
-                this.setState({
-                    isValidPersonSelected: false
-                });
             }
+            this.setState({
+                isValidPersonSelected: isValid
+            });
         } else {
             this.setState({
                 isValidPersonSelected: true
             });
         }
-
     };
+
+    isSelectedPersonValid = (selectedPerson) => {
+        if (this.props.castCrewList.findIndex(person =>
+            person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     updateSelectedPerson = (personJSON) => {
         let person = null;
-        if(personJSON) {
+        if (personJSON) {
             person = JSON.parse(personJSON);
-
+            let isValid = this.isSelectedPersonValid(person);
+            this.setState({
+                isValidPersonSelected: isValid
+            });
+        } else {
+            this.setState({
+                isValidPersonSelected: true
+            });
         }
         this.setState({
             selectedPerson: person
         });
-
     };
 
     render() {
@@ -62,17 +71,17 @@ class CoreMetadataCreateCrewModal extends Component {
                     </ModalHeader>
                     <ModalBody>
                         <AvField type="select" name="castInputValue" id="exampleSelect"
-                                 onChange={e => this.updateSelectedPerson(e.target.value)}>
+                            onChange={e => this.updateSelectedPerson(e.target.value)}>
                             <option value={''}>Select a Crew</option>
                             {
                                 this.props.configCastAndCrew && getFilteredCrewList(this.props.configCastAndCrew.value, true).map((e, index) => {
                                     return <option key={index}
-                                                   value={JSON.stringify(e)}>{e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : '')}</option>;
+                                        value={JSON.stringify(e)}>{e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : '')}</option>;
                                 })
                             }
                         </AvField>
                         {!this.state.isValidPersonSelected ?
-                            <span style={{color: 'red'}}>Person already exist</span> : null}
+                            <span style={{ color: 'red' }}>Person already exist</span> : null}
                     </ModalBody>
                     <ModalFooter>
                         <Button color='primary' onClick={() => this.addValidCastCrew()}>

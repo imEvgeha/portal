@@ -99,25 +99,8 @@ class TitleEdit extends Component {
         titleService.getTitleById(titleId).then((response) => {
             const titleForm = response.data;
             this.setState({ titleForm, editedForm: titleForm });
-            if(titleForm.parentIds) {
-                let parent = titleForm.parentIds.find((e) => e.contentType === 'SERIES');
-                if(parent) {
-                    this.loadParentTitle(parent.id);
-                }
-            }
         }).catch(() => {
             console.error('Unable to load Title Data');
-        });
-    }
-
-    loadParentTitle(parentId) {
-        titleService.getTitleById(parentId).then((response) => {
-            const parentTitleForm = response.data;
-            let newEpisodic = Object.assign(this.state.titleForm.episodic, {seriesTitleName: parentTitleForm.title});
-            let newTitleForm = Object.assign(this.state.titleForm, {episodic: newEpisodic});
-            this.setState({...this.state.titleForm, ...this.state.editedForm, newTitleForm});
-        }).catch(() => {
-            console.error('Unable to load Parent Title Data');
         });
     }
 

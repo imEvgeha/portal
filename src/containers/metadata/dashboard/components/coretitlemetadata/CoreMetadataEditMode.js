@@ -206,12 +206,12 @@ class CoreMetadataEditMode extends Component {
           <Col>
           <FormGroup>
               <Label for='ratingSystem'>Rating System</Label>
-              <Input
+              <AvField
                 type='select'
                 onChange={e => this.props.handleRatingSystemUpdate(e)}
                 name='ratingSystem'
                 id='ratingSystem'
-                defaultValue={this.props.ratingSystem}
+                value={this.props.ratingSystem}
               >
                 <option value={''}>Select Rating System</option>
                 {
@@ -219,7 +219,7 @@ class CoreMetadataEditMode extends Component {
                     return <option key={index} value={e.value}>{e.value}</option>;
                   })
                 }
-              </Input>
+              </AvField>
             </FormGroup>
           </Col>
           <Col>
