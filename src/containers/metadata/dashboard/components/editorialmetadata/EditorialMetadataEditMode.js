@@ -17,11 +17,11 @@ class EditorialMetadataEditMode extends Component {
         super(props);
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
-    //     let differentData = this.props.data !== nextProps.data;
-    //     return differentData || differentTitleContentType;
-    // }
+    shouldComponentUpdate(nextProps) {
+        let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
+        let differentData = this.props.data !== nextProps.data;
+        return differentData || differentTitleContentType;
+    }
 
     handleFieldLength = (name) => {
         return name ? name.length : 0;
