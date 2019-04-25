@@ -178,6 +178,7 @@ class AdvancedSearchPanel extends React.Component {
     handleClear() {
         this.handleSelect(null);
         rightSearchHelper.clearAdvancedSearchForm();
+        setTimeout(this.handleSearch, 1);
     }
 
     handleSave() {
