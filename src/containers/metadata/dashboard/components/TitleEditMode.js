@@ -48,7 +48,8 @@ class TitleEditMode extends Component {
       totalNumberOfSeasons,
       originalLanguage,
       countryOfOrigin,
-      totalNumberOfEpisodes
+      totalNumberOfEpisodes,
+      episodic
     } = this.props.data;
     return (
       <Fragment>
@@ -113,6 +114,7 @@ class TitleEditMode extends Component {
                         <Col>
                           <Label for='titleSeriesName'>Series</Label>
                           <AvField
+                            readOnly
                             type='text'
                             name='seriesTitleName'
                             id='titleSeriesName'
@@ -120,6 +122,7 @@ class TitleEditMode extends Component {
                             errorMessage='Field cannot be empty!'
                             onChange={this.props.handleChangeSeries}
                             required={this.state.isSeriesCompleted}
+                            value={episodic.seriesTitleName}
                           />
                         </Col>
                       </Row>

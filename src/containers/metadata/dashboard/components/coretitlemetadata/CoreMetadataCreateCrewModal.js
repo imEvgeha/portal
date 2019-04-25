@@ -16,7 +16,7 @@ class CoreMetadataCreateCrewModal extends Component {
 
     addValidCastCrew = () => {
         if (this.state.selectedPerson) {
-            if (this.props.castCrewList.findIndex(person => {
+            if (this.props.castCrewList === null || this.props.castCrewList.findIndex(person => {
                 return person.id === this.state.selectedPerson.id && person.personType === this.state.selectedPerson.personType;
             }) < 0) {
                 this.props.addCastCrew(this.state.selectedPerson);
