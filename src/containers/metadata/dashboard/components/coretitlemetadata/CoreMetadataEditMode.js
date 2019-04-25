@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import {
     FormGroup,
     Label,
-    Input,
     Row,
     Col,
     ListGroup,
