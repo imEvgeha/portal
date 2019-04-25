@@ -55,10 +55,10 @@ html {
     }
 }
 
-#territoryContainer, #editorialContainer{
-    border: 2px solid #999;
-    width: 98%;
-    padding: 30px;
-    margin: auto;
-    background: #FFF;
+#territoryMetadataCreate, #territoryMetadataEdit, #editorialMetadataCreate, #editorialMetadataEdit, #editorialMetadataTabs, #territoryMetadataTabs{
+  border: 2px solid #999;
+  width: 98%;
+  padding: 30px;
+  margin: auto;
+  background: #FFF;
 }

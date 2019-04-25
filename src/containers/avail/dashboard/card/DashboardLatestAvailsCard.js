@@ -60,6 +60,8 @@ export default class DashboardLatestAvailsCard extends React.Component {
                         return <span style={{ color: 'green'}}><i className="fas fa-check-circle"></i></span>;
                      case 'FAILED':
                         return <span title={params.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
+                    case 'MANUAL':
+                        return <span style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
                      case 'PENDING':
                         return <img style={{width:'22px'}} src={LoadingElipsis}/>;
                      default:

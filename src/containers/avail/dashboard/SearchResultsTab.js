@@ -7,7 +7,7 @@ import t from 'prop-types';
 import RightsResultTable from './components/RightsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
-import {downloadFile} from '../../../util/Common';
+import {downloadFile, IfEmbedded} from '../../../util/Common';
 
 import {
     resultPageUpdateColumnsOrder,
@@ -253,11 +253,13 @@ class SearchResultsTab extends React.Component {
                             }
                         </div>
                         <div  style={{marginRight: '15px'}}>
-                            <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
-                                <span className="align-self-center" >Selected report:</span>
-                                {renderReportSelect()}
-                            </div>
-                            <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
+                            <IfEmbedded value={false}>
+                                <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
+                                    <span className="align-self-center" >Selected report:</span>
+                                    {renderReportSelect()}
+                                </div>
+                                <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
+                            </IfEmbedded>
                             <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
                         </div>
                     </div>

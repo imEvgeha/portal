@@ -13,6 +13,10 @@ import {
 } from 'reactstrap';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
+import {
+  getFilteredCastList,
+  getFilteredCrewList, getFormatTypeName,
+} from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataReadOnlyMode extends Component {
 
@@ -37,7 +41,7 @@ class CoreMetadataReadOnlyMode extends Component {
                         id='listContainer'
                         >
                         {this.props.data.castCrew &&
-                            this.props.data.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
+                            getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => (
                             <ListGroupItem key={i}>
                                 {cast.displayName}
                             </ListGroupItem>
@@ -61,10 +65,10 @@ class CoreMetadataReadOnlyMode extends Component {
                         id='listContainer'
                         >
                             {this.props.data.castCrew &&
-                            this.props.data.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
+                            getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
                             <ListGroupItem key={i}>
                                 <span style={{ fontSize: '14px', color: '#666' }}>
-                                Directed by:
+                                  {getFormatTypeName(crew.personType)}
                                 </span>{' '}
                                 {crew.displayName}
                             </ListGroupItem>
@@ -135,7 +139,7 @@ class CoreMetadataReadOnlyMode extends Component {
             this.props.data.externalIds ? 
             <Fragment>
                 <hr />
-                <h4>External IDS</h4>
+                <h4>External IDs</h4>
                 <Row style={{ marginTop: '10px' }}>
                 {
                     this.props.data.externalIds.eidrLevel1 ? 
@@ -200,9 +204,9 @@ class CoreMetadataReadOnlyMode extends Component {
                     </Col> : null
                 }
                 {
-                    this.props.data.externalIds.vzId ? 
+                  this.props.data.legacyIds && this.props.data.legacyIds.vz ?
                     <Col>
-                        <Alert color='light'><b>VZ ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.vzId: null}</Alert>
+                        <Alert color='light'><b>VZ Title ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId: null}</Alert>
                     </Col> : null
                 }
                 </Row>
@@ -214,9 +218,9 @@ class CoreMetadataReadOnlyMode extends Component {
                     </Col> : null
                 }
                 {
-                    this.props.data.externalIds.movidaId ? 
-                    <Col>
-                        <Alert color='light'><b>Movida ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.movidaId: null}</Alert>
+                  this.props.data.legacyIds && this.props.data.legacyIds.movida ?
+                      <Col>
+                        <Alert color='light'><b>Movida ID: </b> {this.props.data.legacyIds.movida.movidaId ? this.props.data.legacyIds.movida.movidaId: null}</Alert>
                     </Col> : null
                 }
                 </Row>
@@ -228,9 +232,9 @@ class CoreMetadataReadOnlyMode extends Component {
                     </Col> : null
                 }
                 {
-                    this.props.data.externalIds.movidaTitleId ? 
+                  this.props.data.legacyIds && this.props.data.legacyIds.movida ?
                     <Col>
-                        <Alert color='light'><b>Movida Title ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.movidaTitleId: null}</Alert>
+                        <Alert color='light'><b>Movida Title ID: </b> {this.props.data.legacyIds.movida.movidaTitleId ? this.props.data.legacyIds.movida.movidaTitleId: null}</Alert>
                     </Col> : null
                 }
                 </Row>

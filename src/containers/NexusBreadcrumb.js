@@ -34,7 +34,7 @@ class NexusBreadcrumb extends React.Component {
     render() {
         const renderLink = (entry, last) => {
             if (!last) {
-                return <Link to={{pathname: entry.path, state: entry.state}} onClick={entry.onClick}>{entry.name}</Link>;
+                return <Link to={{pathname: entry.path, search: entry.search, state: entry.state}} onClick={entry.onClick}>{entry.name}</Link>;
             } else {
                 return entry.name;
             }
@@ -78,7 +78,9 @@ class NexusBreadcrumb extends React.Component {
             NexusBreadcrumb.content = [options];
         }
 
-        NexusBreadcrumb.instance.setState({});
+        if(NexusBreadcrumb.instance) {
+            NexusBreadcrumb.instance.setState({});
+        }
     }
 
     static empty() {

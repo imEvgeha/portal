@@ -12,7 +12,7 @@ export const defaultConfiguration = {
     avails: {
         upload: {
             http: {
-                timeout: 30000
+                timeout: 120000
             },
             extensions: '.xls, .xlsx'
         },

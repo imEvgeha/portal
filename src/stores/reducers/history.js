@@ -1,5 +1,6 @@
 import {
     LOAD_HISTORY_SESSION,
+    HISTORY_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA,
     HISTORY_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
     HISTORY_SEARCH_FORM__SET_SEARCH_CRITERIA,
     HISTORY_RESULT_PAGE__LOADING,
@@ -32,9 +33,12 @@ const history = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_HISTORY_SESSION:
             return { ...state, session: {...state.session, ...action.payload, advancedSearchCriteria:{...state.session.advancedSearchCriteria, ...action.payload.advancedSearchCriteria}}};
-        case HISTORY_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA:
+        case HISTORY_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA:
             saveHistoryState();
             return { ...state, session: {...state.session, advancedSearchCriteria: {...state.session.advancedSearchCriteria, ...action.payload}}};
+        case HISTORY_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA:
+            saveHistoryState();
+            return { ...state, session: {...state.session, advancedSearchCriteria: action.payload}};
         case HISTORY_SEARCH_FORM__SET_SEARCH_CRITERIA:
             saveHistoryState();
             return { ...state, session: {...state.session, searchCriteria: action.payload}};
