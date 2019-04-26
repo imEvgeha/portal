@@ -218,8 +218,8 @@ class SelectableInput extends Component {
 
         const renderSelect = (name, displayName, type) => {
             let options = [];
-            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.value]){
-                options  = this.props.selectValues[this.props.selected.value];
+            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.field]){
+                options  = this.props.selectValues[this.props.selected.field];
             }
 
             if(type === 'multilanguage'){
