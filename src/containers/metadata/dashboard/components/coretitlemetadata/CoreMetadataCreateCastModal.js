@@ -14,6 +14,14 @@ class CoreMetadataCreateCastModal extends Component {
     };
   }
 
+  UNSAFE_componentWillReceiveProps(){
+    if(!this.props.isCastModalOpen) {
+      this.setState({
+        isValidPersonSelected: true
+      });
+    }
+  }
+
   addValidCastCrew = () => {
     if (this.state.selectedPerson) {
       let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
