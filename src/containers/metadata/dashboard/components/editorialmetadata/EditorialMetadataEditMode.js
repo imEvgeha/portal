@@ -20,7 +20,8 @@ class EditorialMetadataEditMode extends Component {
     shouldComponentUpdate(nextProps) {
         let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
         let differentData = this.props.data !== nextProps.data;
-        return differentData || differentTitleContentType;
+        let differentUpdatedData = this.props.updatedEditorialMetadata.filter(e => e.id === this.props.data.id) !== nextProps.updatedEditorialMetadata.filter(e => e.id === nextProps.data.id);
+        return differentData || differentTitleContentType || differentUpdatedData;
     }
 
     handleFieldLength = (name) => {
@@ -322,6 +323,7 @@ EditorialMetadataEditMode.propTypes = {
     data: PropTypes.object,
     validSubmit: PropTypes.func.isRequired,
     titleContentType: PropTypes.string,
+    updatedEditorialMetadata: PropTypes.array
 };
 
 
