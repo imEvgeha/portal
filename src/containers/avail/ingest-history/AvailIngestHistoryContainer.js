@@ -12,6 +12,7 @@ import {
     searchFormSetHistorySearchCriteria
 } from '../../../stores/actions/avail/history';
 import {connect} from 'react-redux';
+import moment from 'moment';
 
 const mapStateToProps = state => {
     return {
@@ -46,6 +47,14 @@ class AvailIngestHistoryContainer extends React.Component {
     getSearchCriteriaFromURL(){
         const params = HistoryURL.URLtoArray(this.props.location.search);
         const criteria = HistoryURL.ArraytoFilter(params);
+        if(criteria.received){
+            if(criteria.received.from && criteria.received.from.indexOf('Z') > -1) {
+                criteria.received.from = moment.utc(criteria.received.from).local().format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            }
+            if(criteria.received.to && criteria.received.to.indexOf('Z') > -1) {
+                criteria.received.to = moment.utc(criteria.received.to).local().startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            }
+        }
         this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
         this.handleHistoryAdvancedSearch(criteria);
     }

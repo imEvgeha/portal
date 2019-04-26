@@ -10,6 +10,7 @@ import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 import Select from 'react-select';
 import {safeTrim} from '../../../../util/Common';
+import moment from 'moment';
 
 const mapStateToProps = state => {
     return {
@@ -60,7 +61,7 @@ class AdvancedHistorySearchPanel extends React.Component {
 
     handleDateChange(name, field, value) {
         if(value) {
-            value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            value = value ? moment(value).startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS') : value;
         }
         this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: {...this.props.searchCriteria[name], [field] : value}});
     }

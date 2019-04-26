@@ -24,7 +24,7 @@ class TerritoryMetadataEditMode extends Component {
     render() {
         return (
 
-            <div id="territoryContainer">
+            <div id="territoryMetadataEdit">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>

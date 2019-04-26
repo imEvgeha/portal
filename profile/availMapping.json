@@ -608,7 +608,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "caption.captionExemption",
+  "javaVariableName": "captions.captionExemption",
   "displayName": "Caption Exemption",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -752,9 +752,10 @@
 }, {
   "javaVariableName": "pricing.priceType",
   "displayName": "Price Type",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "priceTypeMatch",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Tier", "Category", "WSP"],
+  "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -1430,11 +1431,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "modifiedBy",
-  "displayName": "Modified By",
+  "javaVariableName": "updatedBy",
+  "displayName": "Updated By",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "modifiedBy",
+  "queryParamName": "updatedBy",
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,

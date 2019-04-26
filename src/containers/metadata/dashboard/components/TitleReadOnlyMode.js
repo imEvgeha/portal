@@ -7,25 +7,31 @@ class TitleReadOnlyMode extends Component {
     constructor(props) {
         super(props);
     }
-    shouldComponentUpdate(nextProps) {
-        let differentData = this.props.data !== nextProps.data;
-        return differentData;
-    }
-    renderFields = (contentType) => {
-        const { title, 
-            productionStudioId, 
-            releaseYear, 
-            boxOffice, 
-            animated, 
-            totalNumberOfSeasons, 
+
+    addBooleanQuotes = (fieldName) => {
+        let stringBoolean = fieldName.toString();
+        return stringBoolean;
+    };
+
+    renderFields = () => {
+        const { 
+            title,
+            productionStudioId,
+            releaseYear,
+            boxOffice,
+            animated,
+            totalNumberOfSeasons,
             totalNumberOfEpisodes,
-            countryOfOrigin, 
-            duration, 
-            eventType, 
+            countryOfOrigin,
+            duration,
+            eventType,
             seasonPremiere,
             seasonFinale,
-            originalLanguage 
+            contentType,
+            originalLanguage,
+            episodic
         } = this.props.data;
+
         return (
             <Fragment>
                 <Container fluid id="titleContainer">
@@ -47,53 +53,61 @@ class TitleReadOnlyMode extends Component {
                                     <Alert color="light" id="titleProductionStudioId"><b>Production Studio: </b>{productionStudioId ? productionStudioId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                             </Row>
-                            {
-                                this.props.data.episodic !== null ?
-                                    contentType !== 'MOVIE' && contentType !== 'SERIES' ?
-                                        <Fragment>
-                                            <Row>
-                                                <Col>
-                                                    <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                </Col>
-                                                {
-                                                    contentType === 'EPISODE' || contentType === 'SEASON' ?
-                                                        <Col md={6}>
-                                                            <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                        </Col>
-                                                        : null
-                                                }
-                                            </Row>
-                                            <Row>
-                                                {
-                                                    contentType === 'SEASON' ?
-                                                        <Col>
-                                                            <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                        </Col>
-                                                        :
-                                                        <Col>
-                                                            <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                                        </Col>
-                                                }
-                                            </Row>
-                                        </Fragment>
-                                        :
-                                        null
-                                    : null
-                            }
+                            <Fragment>
+                                <Row>
+                                    {
+                                        episodic && episodic.seriesTitleName ?
+                                            <Col>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Series: </b>{episodic.seriesTitleName ? episodic.seriesTitleName : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                            </Col>
+                                            : null
+                                    }
+                                    {
+                                       episodic &&episodic.seasonNumber ?
+                                            <Col>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{episodic.seasonNumber ? episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                            </Col>
+                                            : null
+                                    }
+                                    {
+                                        episodic && episodic.episodeNumber ?
+                                            <Col md={6}>
+                                                <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{episodic.episodeNumber ? episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                            </Col>
+                                            : null
+                                    }
+                                </Row>
+                                <Row>
+                                    {
+                                        episodic && episodic.seasonId ?
+                                            <Col>
+                                                <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{episodic.seasonId ? episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                            </Col>
+                                            : null
+                                    }
+                                    {
+                                        episodic && episodic.episodeId ?
+                                            <Col>
+                                                <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{episodic.episodeId ? episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                            </Col>
+                                            : null
+                                    }
+                                </Row>
+                            </Fragment>
                             <Row>
                                 {
-                                    totalNumberOfSeasons ? 
-                                    <Col>
+                                    totalNumberOfSeasons ?
+                                        <Col>
                                             <Alert color="light" id="titleSeasons"><span><b>Seasons: </b>{totalNumberOfSeasons}</span></Alert>
-                                    </Col>
-                                    : null
+                                        </Col>
+                                        : null
                                 }
                             </Row>
                             <Row>
                                 {
                                     animated ?
                                         <Col>
-                                            <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{animated === true ? 'Y' : 'N'}</span></Alert>
+                                            <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}</span></Alert>
                                         </Col>
                                         : null
                                 }
@@ -105,11 +119,11 @@ class TitleReadOnlyMode extends Component {
                                         : null
                                 }
                                 {
-                                    originalLanguage ? 
+                                    originalLanguage ?
                                         <Col>
-                                           <Alert color="light" id="titleOriginalLanguage"><span><b>Original Language: </b>{originalLanguage}</span></Alert>
-                                       </Col>
-                                       : null
+                                            <Alert color="light" id="titleOriginalLanguage"><span><b>Original Language: </b>{originalLanguage}</span></Alert>
+                                        </Col>
+                                        : null
                                 }
                                 {
                                     duration ?
@@ -135,7 +149,7 @@ class TitleReadOnlyMode extends Component {
                                         : null
                                 }
                                 {
-                                    this.props.data.episodic ?
+                                    this.props.data.episodic && this.props.data.episodic.episodeCount ?
                                         <Col>
                                             <Alert color="light" id="titleEpisodeCount"><span><b>Episode Count: </b>{this.props.data.episodic.episodeCount ? this.props.data.episodic.episodeCount : ''}</span></Alert>
                                         </Col>
@@ -144,27 +158,35 @@ class TitleReadOnlyMode extends Component {
                             </Row>
                             <Row>
                                 {
-                                    seasonPremiere ? 
+                                    seasonPremiere ?
+                                        <Col>
+                                            <Alert color="light" id="titleSeasonPremiere"><span><b>Season Premiere: </b>{this.addBooleanQuotes(seasonPremiere) === 'true' ? 'Y' : 'N'}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                                {
+                                    seasonFinale ?
+                                        <Col>
+                                            <Alert color="light" id="titleSeasonFinale"><span><b>Season Finale: </b>{this.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}</span></Alert>
+                                        </Col>
+                                        : null
+                                }
+                            </Row>
+                            <Row>
+                                {
+                                    releaseYear ? 
                                     <Col>
-                                        <Alert color="light" id="titleSeasonPremiere"><span><b>Season Premiere: </b>{seasonPremiere === true ? 'Y' : 'N'}</span></Alert>
+                                        <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                     </Col>
                                     : null
                                 }
                                 {
-                                    seasonFinale ?
+                                    boxOffice ?
                                     <Col>
-                                        <Alert color="light" id="titleSeasonPremiere"><span><b>Season Finale: </b>{seasonFinale === true ? 'Y' : 'N'}</span></Alert>
+                                        <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                     </Col>
                                     : null
                                 }
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Alert color="light" id="titleReleaseYear"><b>Release Year: </b>{releaseYear ? releaseYear : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
-                                <Col>
-                                    <Alert color="light" id="titleBoxOffice"><b>Box Office: </b> {boxOffice ? '$' + boxOffice : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
                             </Row>
                         </Col>
                     </Row>
@@ -177,12 +199,7 @@ class TitleReadOnlyMode extends Component {
     }
     render() {
         if (this.props.data) {
-            const { contentType } = this.props.data;
-            if (!contentType) {
-                return null;
-            } else {
-                return this.renderFields(contentType);
-            }
+            return this.renderFields();
         } else {
             return null;
         }
@@ -191,7 +208,8 @@ class TitleReadOnlyMode extends Component {
 
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
-    episodic: PropTypes.object
+    episodic: PropTypes.object,
+    addBooleanQuotes: PropTypes.func
 };
 
 export default TitleReadOnlyMode;

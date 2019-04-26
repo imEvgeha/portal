@@ -3,6 +3,7 @@ import React from 'react';
 import NexusDatePicker from './NexusDatePicker';
 import {INVALID_DATE} from '../../constants/messages';
 import moment from 'moment';
+import {momentToISO} from '../../util/Common';
 
 export default class RangeDatapicker extends React.Component {
     static propTypes = {
@@ -45,14 +46,14 @@ export default class RangeDatapicker extends React.Component {
     }
 
     handleChangeStartDate(date) {
-        this.props.onFromDateChange(date);
+        this.props.onFromDateChange(date ? momentToISO(date) : null);
         const invalidRange = this.wrongDateRange(date && this.props.value.to && moment(this.props.value.to) < date);
         this.setState({invalidStartDate: ''});
         this.props.onInvalid(this.state.invalidEndDate || invalidRange);
     }
 
     handleChangeEndDate(date) {
-        this.props.onToDateChange(date);
+        this.props.onToDateChange(date ? momentToISO(date) : null);
         const invalidRange = this.wrongDateRange(date && this.props.value.from && moment(this.props.value.from) > date);
         this.setState({invalidEndDate: ''});
         this.props.onInvalid(this.state.invalidStartDate || invalidRange);

@@ -12,7 +12,7 @@ class EditorialMetadataTab extends Component {
 
     render() {
         return (
-            <div id="editorialContainer">
+            <div id="editorialMetadataTabs">
                 <Fragment>
                     <Row style={{padding: '15px'}}>
                         <Col md={3}><b>Locale: </b> {this.props.data.locale ? this.props.data.locale : this.emptySpan()}</Col>
