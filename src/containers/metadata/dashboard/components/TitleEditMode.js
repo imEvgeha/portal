@@ -412,7 +412,7 @@ class TitleEditMode extends Component {
               <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='titleReleaseYear'>
-                    Release Year{contentType === 'SERIES' ? null : <span style={{ color: 'red' }}>*</span>}
+                    Release Year{contentType === 'SERIES' || contentType === 'SEASON' ? null : <span style={{ color: 'red' }}>*</span>}
                   </Label>
                   <AvField
                     name='releaseYear'
@@ -420,7 +420,7 @@ class TitleEditMode extends Component {
                     id='titleReleaseYear'
                     validate={{
                       required: {
-                        value: contentType === 'SERIES' ? false : true,
+                        value: contentType === 'SERIES' || contentType === 'SEASON' ? false : true,
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },

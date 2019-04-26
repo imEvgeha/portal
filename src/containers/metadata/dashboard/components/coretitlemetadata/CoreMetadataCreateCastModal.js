@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
-import {CAST, getFilteredCastList} from '../../../../../constants/metadata/configAPI';
+import { CAST, getFilteredCastList } from '../../../../../constants/metadata/configAPI';
 
 class CoreMetadataCreateCastModal extends Component {
 
@@ -15,18 +15,14 @@ class CoreMetadataCreateCastModal extends Component {
   }
 
   addValidCastCrew = () => {
-    if(this.state.selectedPerson) {
-      if (this.props.castCrewList === null || this.props.castCrewList.findIndex(person =>
-          person.id === this.state.selectedPerson.id && person.personType === this.state.selectedPerson.personType) < 0) {
+    if (this.state.selectedPerson) {
+      let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
+      if(isValid) {
         this.props.addCastCrew(this.state.selectedPerson);
-        this.setState({
-          isValidPersonSelected: true
-        });
-      } else {
-        this.setState({
-          isValidPersonSelected: false
-        });
       }
+      this.setState({
+            isValidPersonSelected: isValid
+          });
     } else {
       this.setState({
         isValidPersonSelected: true
@@ -34,10 +30,23 @@ class CoreMetadataCreateCastModal extends Component {
     }
   };
 
+  isSelectedPersonValid = (selectedPerson) => {
+    return this.props.castCrewList === null || this.props.castCrewList.findIndex(person =>
+        person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
+  };
+
   updateSelectedPerson = (personJSON) => {
     let person = null;
-    if(personJSON) {
+    if (personJSON) {
       person = JSON.parse(personJSON);
+      let isValid = this.isSelectedPersonValid(person);
+      this.setState({
+        isValidPersonSelected: isValid
+      });
+    } else {
+      this.setState({
+        isValidPersonSelected: true
+      });
     }
 
     this.setState({
@@ -66,7 +75,7 @@ class CoreMetadataCreateCastModal extends Component {
                 })
               }
             </AvField>
-            {!this.state.isValidPersonSelected ? <span style={{color: 'red'}}>Person already exist</span> : null}
+            {!this.state.isValidPersonSelected ? <span style={{ color: 'red' }}>Person already exist</span> : null}
           </ModalBody>
           <ModalFooter>
             <Button color='primary' onClick={() => this.addValidCastCrew()}>
