@@ -319,14 +319,29 @@ class RightDetails extends React.Component {
             }
 
             let handleValueChange = (newVal) => {
-                if(validation && validation.number === true){
-                    ref.current.handleChange(Number(newVal));
-                }else {
+                const error = validate(newVal);
+                if(error){
+                    ref.current.handleInvalid(newVal, error);
+                }else{
                     ref.current.handleChange(newVal);
                 }
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
+            };
+
+            const validate = (val) => {
+                if(validation.number) {
+                    const isNumber = !isNaN(val);
+                    if(!isNumber) return 'Please enter a valid number!';
+                }
+            };
+
+            const innerValidate = (val, ctx, input, cb) => {
+                if(validation.number) {
+                    const isNumber = !isNaN(val);
+                    cb(isNumber);
+                }
             };
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
@@ -337,8 +352,9 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={validate}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    showError={false}
                     helperComponent={<AvForm>
                         <AvField
                             value={value}
@@ -346,7 +362,7 @@ class RightDetails extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={(e) => {handleValueChange(e.target.value);}}
                             type="text"
-                            validate={validation}
+                            validate={{...validation, async: innerValidate}}
                             errorMessage="Please enter a valid number!"
                         />
                     </AvForm>}
@@ -676,24 +692,24 @@ class RightDetails extends React.Component {
         }
 
         return(
-            <div>
+            <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
+                    {
+                        this.state.errorMessage &&
+                        <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                            <Label id='right-edit-error-message'>
+                                {this.state.errorMessage}
+                            </Label>
+                        </div>
+                    }
                     <div className="nx-stylish row mt-3 mx-5">
                         <div className={'nx-stylish list-group col-12'} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
                             {renderFields}
                         </div>
                     </div>
-                    {
-                        this.state.errorMessage &&
-                            <div id='right-edit-error' className='text-danger w-100 float-left position-absolute'>
-                                <Label id='right-edit-error-message' className='text-danger w-100 pl-3'>
-                                    {this.state.errorMessage}
-                                </Label>
-                            </div>
-                    }
                     {this.props.availsMapping &&
                         <div style={{display:'flex', justifyContent: 'flex-end'}} >
-                            <div className="mt-5 mx-5 px-5">
+                            <div className="mt-4 mx-5 px-5">
                                 <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>

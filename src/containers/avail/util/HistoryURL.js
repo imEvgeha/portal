@@ -30,7 +30,7 @@ class HistoryURL extends React.Component {
 
     static ArraytoFilter(params){
         const options={
-            status: ['PENDING', 'COMPLETED', 'FAILED'],
+            status: ['PENDING', 'COMPLETED', 'FAILED', 'MANUAL'],
             ingestType: ['Email', 'Upload']
         };
 

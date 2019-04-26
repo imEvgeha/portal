@@ -11,11 +11,13 @@ class EditableBaseComponent extends Component {
         displayName: t.string,
         disabled: t.bool,
         onChange: t.func,
-        priorityDisplay: t.any
+        priorityDisplay: t.any,
+        showError: t.bool
     };
 
     static defaultProps = {
-        value: null
+        value: null,
+        showError:true
     }
 
     constructor(props) {
@@ -74,9 +76,9 @@ class EditableBaseComponent extends Component {
         this.setState({ value: val, submitStatus: false, errorMessage: '' });
     }
 
-    handleInvalid(invalid) {
-        if (invalid) {
-            this.setState({ errorMessage: 'Invalid', submitStatus: true });
+    handleInvalid(val, error) {
+        if (error) {
+            this.setState({ value: val, errorMessage: error, submitStatus: true });
         }
     }
 
@@ -156,7 +158,7 @@ class EditableBaseComponent extends Component {
                                 </Button>
                             </div>
                             {
-                                this.state.errorMessage &&
+                                this.props.showError && this.state.errorMessage &&
                                 <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>

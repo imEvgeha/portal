@@ -7,14 +7,12 @@ class TitleReadOnlyMode extends Component {
     constructor(props) {
         super(props);
     }
-    shouldComponentUpdate(nextProps) {
-        let differentData = this.props.data !== nextProps.data;
-        return differentData;
-    }
+
     addBooleanQuotes = (fieldName) => {
         let stringBoolean = fieldName.toString();
         return stringBoolean;
-    }
+    };
+
     renderFields = () => {
         const { 
             title,
@@ -30,8 +28,10 @@ class TitleReadOnlyMode extends Component {
             seasonPremiere,
             seasonFinale,
             contentType,
-            originalLanguage
+            originalLanguage,
+            episodic
         } = this.props.data;
+
         return (
             <Fragment>
                 <Container fluid id="titleContainer">
@@ -56,32 +56,39 @@ class TitleReadOnlyMode extends Component {
                             <Fragment>
                                 <Row>
                                     {
-                                        this.props.data.episodic && this.props.data.episodic.seasonNumber ?
+                                        episodic && episodic.seriesTitleName ?
                                             <Col>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{this.props.data.episodic.seasonNumber ? this.props.data.episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Series: </b>{episodic.seriesTitleName ? episodic.seriesTitleName : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
                                     {
-                                        this.props.data.episodic && this.props.data.episodic.episodeNumber ?
+                                       episodic &&episodic.seasonNumber ?
+                                            <Col>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{episodic.seasonNumber ? episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                            </Col>
+                                            : null
+                                    }
+                                    {
+                                        episodic && episodic.episodeNumber ?
                                             <Col md={6}>
-                                                <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{this.props.data.episodic.episodeNumber ? this.props.data.episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleEpisodeNumber"><b>Episode Number: </b>{episodic.episodeNumber ? episodic.episodeNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
                                 </Row>
                                 <Row>
                                     {
-                                        this.props.data.episodic && this.props.data.episodic.seasonId ?
+                                        episodic && episodic.seasonId ?
                                             <Col>
-                                                <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{this.props.data.episodic.seasonId ? this.props.data.episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonId"><b>Season ID: </b>{episodic.seasonId ? episodic.seasonId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
                                     {
-                                        this.props.data.episodic && this.props.data.episodic.episodeId ?
+                                        episodic && episodic.episodeId ?
                                             <Col>
-                                                <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{this.props.data.episodic.episodeId ? this.props.data.episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleEpisodeId"><b>Episode ID: </b>{episodic.episodeId ? episodic.episodeId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
