@@ -233,10 +233,11 @@ class RightDetails extends React.Component {
             const hasValidationError = error;
             return (
                 <div key={name}
-                    className={'list-group-item' + (readOnly ? ' disabled' : '')}
-                    style={{backgroundColor: hasValidationError ? '#f2dede' : null,
+                    className={(readOnly ? ' disabled' : '')}
+                    style={{backgroundColor: hasValidationError ? '#f2dede' : '#fff',
                             color: hasValidationError ? '#a94442' : null,
-                            border:'none'
+                            border:'none',
+                            position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px',
                         }}>
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
