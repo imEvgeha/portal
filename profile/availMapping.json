@@ -763,8 +763,8 @@
 }, {
   "javaVariableName": "pricing.priceValue",
   "displayName": "Price Value",
-  "dataType": "double",
-  "searchDataType": "double",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "priceValue",
   "readOnly": false,
   "enableSearch": true,
