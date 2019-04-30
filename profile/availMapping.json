@@ -141,7 +141,7 @@
   "displayName": "ALID",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "ALIDMatch",
+  "queryParamName": "ALID",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
