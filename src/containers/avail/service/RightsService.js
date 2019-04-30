@@ -6,7 +6,7 @@ import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Commo
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region.value', 'regionExcluded.value', 'genres', 'contractId']
+const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId']
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){

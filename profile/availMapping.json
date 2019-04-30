@@ -200,7 +200,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "region.value",
+  "javaVariableName": "region",
   "displayName": "Region",
   "dataType": "string",
   "searchDataType": "string",
@@ -210,7 +210,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "regionExcluded.value",
+  "javaVariableName": "regionExcluded",
   "displayName": "Region Excluded",
   "dataType": "string",
   "searchDataType": "string",
