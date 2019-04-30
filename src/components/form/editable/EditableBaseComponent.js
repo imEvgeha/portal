@@ -11,11 +11,13 @@ class EditableBaseComponent extends Component {
         displayName: t.string,
         disabled: t.bool,
         onChange: t.func,
-        priorityDisplay: t.any
+        priorityDisplay: t.any,
+        showError: t.bool
     };
 
     static defaultProps = {
-        value: null
+        value: null,
+        showError:true
     }
 
     constructor(props) {
@@ -24,7 +26,7 @@ class EditableBaseComponent extends Component {
         this.state = {
             value:props.value,
             showStateValue: false,
-            helperComponentStatus: false,
+            editable: false,
             errorMessage: '',
             submitStatus: false
         };
@@ -51,7 +53,7 @@ class EditableBaseComponent extends Component {
         e.preventDefault();
         if (!this.props.disabled) {
             this.setState({
-                helperComponentStatus: true,
+                editable: true,
                 value: this.state.value ? this.state.value : null,
             });
         }
@@ -65,7 +67,7 @@ class EditableBaseComponent extends Component {
         this.setState({
             value: this.props.value,
             showStateValue: false,
-            helperComponentStatus: false,
+            editable: false,
             errorMessage: ''
         });
     }
@@ -74,9 +76,9 @@ class EditableBaseComponent extends Component {
         this.setState({ value: val, submitStatus: false, errorMessage: '' });
     }
 
-    handleInvalid(invalid) {
-        if (invalid) {
-            this.setState({ errorMessage: 'Invalid', submitStatus: true });
+    handleInvalid(val, error) {
+        if (error) {
+            this.setState({ value: val, errorMessage: error, submitStatus: true });
         }
     }
 
@@ -88,11 +90,17 @@ class EditableBaseComponent extends Component {
             });
         } else {
             this.setState({
-                helperComponentStatus: false,
+                editable: false,
                 showStateValue: true
             });
             this.props.onChange(val, this.cancel);
         }
+    }
+
+    setEditable(val) {
+        this.setState({
+            editable: val,
+        });
     }
 
     render() {
@@ -131,7 +139,7 @@ class EditableBaseComponent extends Component {
         return (
             <div className="editable-container">
                 {
-                    this.state.helperComponentStatus ?
+                    this.state.editable ?
                         <div style={{width:'100%'}}>
                             <div className="dPicker" style={{ marginBottom: '5px', minWidth:'500px', width:'90%'}}>
                                 {this.props.helperComponent}
@@ -150,7 +158,7 @@ class EditableBaseComponent extends Component {
                                 </Button>
                             </div>
                             {
-                                this.state.errorMessage &&
+                                this.props.showError && this.state.errorMessage &&
                                 <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>

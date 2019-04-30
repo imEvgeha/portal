@@ -30,7 +30,7 @@ const mapDispatchToProps = {
     searchFormUpdateAdvancedSearchCriteria
 };
 
-const ignoreForCloseable = ['rowInvalid'];
+const ignoreForCloseable = ['invalid'];
 
 class AdvancedSearchPanel extends React.Component {
     static propTypes = {
@@ -121,7 +121,7 @@ class AdvancedSearchPanel extends React.Component {
 
     handleInvalidChange(event) {
         const value = event.target.value;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, rowInvalid: {value: value}});
+        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, invalid: {value: value}});
     }
 
     addSearchField() {
@@ -178,6 +178,7 @@ class AdvancedSearchPanel extends React.Component {
     handleClear() {
         this.handleSelect(null);
         rightSearchHelper.clearAdvancedSearchForm();
+        setTimeout(this.handleSearch, 1);
     }
 
     handleSave() {
@@ -229,7 +230,7 @@ class AdvancedSearchPanel extends React.Component {
             this.props.availsMapping.mappings.forEach( (mapping) => {
                 this.availsMap[mapping.queryParamName] = mapping;
                 if (mapping.enableSearch) {
-                    this.searchOptions.push({value: mapping.queryParamName, label: mapping.displayName});
+                    this.searchOptions.push({value: mapping.queryParamName, label: mapping.displayName, field: mapping.javaVariableName});
                 }
             });
         }
@@ -337,7 +338,9 @@ class AdvancedSearchPanel extends React.Component {
                                     console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
                             }
                         } else {
-                            console.warn('Cannot determine schema for field: ' + key);
+                            if(key !== 'availHistoryIds') {
+                                console.warn('Cannot determine schema for field: ' + key);
+                            }
                         }
                     }
                 });
@@ -351,7 +354,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={'Avail History'}
-                        value={' = ' + this.props.searchCriteria.availHistoryIds.subTitle}
+                        value={' = ' + this.props.searchCriteria.availHistoryIds.value}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
                         }}
@@ -389,7 +392,7 @@ class AdvancedSearchPanel extends React.Component {
                         <select className="form-control border-1 d-inline"
                                 id={'dashboard-avails-report-select'}
                                 onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.rowInvalid ? this.props.searchCriteria.rowInvalid.value : ''}
+                                value={this.props.searchCriteria.invalid ? this.props.searchCriteria.invalid.value : ''}
                                 style={{width: '100px', background: 'initial', margin: '0 5px'}}
                         >
                             <option value="">All</option>

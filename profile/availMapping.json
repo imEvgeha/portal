@@ -10,7 +10,7 @@
   "enableEdit": true,
   "required": true
 }, {
-  "javaVariableName": "studio",
+  "javaVariableName": "productionStudio",
   "displayName": "Production Studio",
   "dataType": "select",
   "searchDataType": "multiselect",
@@ -118,9 +118,10 @@
 }, {
   "javaVariableName": "licensee",
   "displayName": "Licensee",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "licenseeMatch",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/licensees",
+  "queryParamName": "licensee",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -405,11 +406,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "episodic.eposodeTitle",
-  "displayName": "Eposode Title",
+  "javaVariableName": "episodic.episodeTitle",
+  "displayName": "Episode Title",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "eposodeTitleMatch",
+  "queryParamName": "episodeTitleMatch",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -607,7 +608,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "caption.captionExemption",
+  "javaVariableName": "captions.captionExemption",
   "displayName": "Caption Exemption",
   "dataType": "integer",
   "searchDataType": "integer",
@@ -707,7 +708,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "end",
   "displayName": "End",
@@ -717,7 +718,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "startLag",
   "displayName": "Start Lag",
@@ -751,9 +752,10 @@
 }, {
   "javaVariableName": "pricing.priceType",
   "displayName": "Price Type",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "priceTypeMatch",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "options": ["Tier", "Category", "WSP"],
+  "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -761,8 +763,8 @@
 }, {
   "javaVariableName": "pricing.priceValue",
   "displayName": "Price Value",
-  "dataType": "double",
-  "searchDataType": "double",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "priceValue",
   "readOnly": false,
   "enableSearch": true,
@@ -1429,11 +1431,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "modifiedBy",
-  "displayName": "Modified By",
+  "javaVariableName": "updatedBy",
+  "displayName": "Updated By",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "modifiedBy",
+  "queryParamName": "updatedBy",
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,

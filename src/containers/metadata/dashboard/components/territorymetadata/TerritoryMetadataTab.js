@@ -8,7 +8,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 class TerritoryMetadataTab extends Component {
     render() {
         return (
-            <div id="territoryContainer">
+            <div id="territoryMetadataTabs">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
                         <Col md={4}>

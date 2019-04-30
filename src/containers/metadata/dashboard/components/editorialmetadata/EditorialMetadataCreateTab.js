@@ -31,7 +31,7 @@ class EditorialMetadataCreateTab extends Component {
     render() {
         const { synopsis, title, copyright, awards, seriesName } = this.props.editorialMetadataForCreate;
         return (
-            <div id="editorialContainer">
+            <div id="editorialMetadataCreate">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
                         <Col>

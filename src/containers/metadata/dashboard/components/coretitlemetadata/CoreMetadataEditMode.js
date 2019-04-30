@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import {
-  FormGroup,
-  Label,
-  Input,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Card,
-  CardHeader,
-  CardBody
+    FormGroup,
+    Label,
+    Row,
+    Col,
+    ListGroup,
+    ListGroupItem,
+    Card,
+    CardHeader,
+    CardBody
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
@@ -18,19 +17,103 @@ import PropTypes from 'prop-types';
 import { AvField } from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
+import {connect} from 'react-redux';
+import {configFields} from '../../../service/ConfigService';
+import {
+    CREW,
+    CAST,
+    getFilteredCrewList, getFilteredCastList, getFormatTypeName
+} from '../../../../../constants/metadata/configAPI';
 
-
-const CAST = 'CAST';
-const CREW = 'CREW';
+const mapStateToProps = state => {
+  return {
+    configCastAndCrew: state.titleReducer.configData.find(e => e.key === configFields.CAST_AND_CREW),
+    configRatingSystem: state.titleReducer.configData.find(e => e.key === configFields.RATING_SYSTEM),
+    configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
+    configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
+  };
+};
 
 class CoreMetadataEditMode extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            isRatingValid: false,
+            isAdvisoryCodeValid: false,
+            castList: [],
+            crewList: []
+        };
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props !== nextProps;
+    }
+
+    onRatingKeyDown = e => {
+        if(this.state.isRatingValid) {
+            this.props._handleRatingKeyPress(e);
+        }
+    };
+
+    onAdvisoryCodeDown = e => {
+        if(this.state.isAdvisoryCodeValid) {
+            this.props._handleAdvisoryCodeKeyPress(e);
+        }
+    };
+
+    validateRating = (value, ctx, input, cb) => {
+        let isValid = false;
+        if(value === '') {
+            isValid = true;
+        } else if(this.props.configRatings) {
+            let rating = this.props.configRatings.value.find(e => {
+                if(this.props.ratingSystem) {
+                    return e.value === value && e.ratingSystem === this.props.ratingSystem;
+                }
+                return e.value === value;
+            });
+            isValid = !!rating;
+        } else {
+            isValid = false;
+        }
+        this.setState({
+            isRatingValid: isValid
+        });
+
+        cb(isValid);
+    };
+
+    validateAdvisoryCode = (value, ctx, input, cb) => {
+        let isValid = false;
+        if(value === '') {
+            isValid = true;
+        } else if(this.props.configAdvisoryCode) {
+            let advisoryCode = this.props.configAdvisoryCode.value.find(e => {
+                return e.code === value;
+            });
+            isValid = !!advisoryCode;
+        } else {
+            isValid = false;
+        }
+        this.setState({
+            isAdvisoryCodeValid: isValid
+        });
+
+        cb(isValid);
+    };
+
+    handleMovidaLegacyIds(e) {
+        let movidaLegacyId = {movida: {[e.target.name]: e.target.value}};
+        this.props.handleOnLegacyIds(movidaLegacyId);
+    }
+
+    handleVzLegacyIds(e) {
+        let vzLegacyId = {vz: {[e.target.name]: e.target.value}};
+        this.props.handleOnLegacyIds(vzLegacyId);
+    }
+
   render() {
-    // const {
-    //   advisoriesCode,
-    //   awards,
-    //   ratings
-    // } = this.props.data;
     return (
       <Fragment>
         <Row>
@@ -57,7 +140,7 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   {this.props.editedTitle.castCrew &&
-                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='actor';}).map((cast, i) => (
+                  getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => (
                       <ListGroupItem key={i}>
                         {cast.displayName}
                         <FontAwesome
@@ -97,10 +180,10 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                     {this.props.editedTitle.castCrew &&
-                    this.props.editedTitle.castCrew.filter(function (e) {return e.personType==='director';}).map((crew, i) => (
+                    getFilteredCrewList(this.props.editedTitle.castCrew, false).map((crew, i) => (
                       <ListGroupItem key={i}>
                         <span style={{ fontSize: '14px', color: '#666' }}>
-                        Directed by:
+                         {getFormatTypeName(crew.personType)}
                         </span>{' '}
                         {crew.displayName}
                         <FontAwesome
@@ -122,29 +205,35 @@ class CoreMetadataEditMode extends Component {
           <Col>
           <FormGroup>
               <Label for='ratingSystem'>Rating System</Label>
-              <Input
+              <AvField
                 type='select'
-                onChange={e => this.props.onChange(e)}
+                onChange={e => this.props.handleRatingSystemUpdate(e)}
                 name='ratingSystem'
                 id='ratingSystem'
-                defaultValue={this.props.editedTitle.ratingSystem}
+                value={this.props.ratingSystem}
               >
                 <option value={''}>Select Rating System</option>
-                <option value={'MPAA'}>MPAA</option>
-              </Input>
+                {
+                  this.props.configRatingSystem && this.props.configRatingSystem.value.map((e, index) => {
+                    return <option key={index} value={e.value}>{e.value}</option>;
+                  })
+                }
+              </AvField>
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
               <Label for='ratings'>Ratings</Label>
-              <Input
+              <AvField
                 type='text'
                 onChange={e => this.props.updateValue(e.target.value)}
                 name='ratings'
                 id='ratings'
                 value={this.props.ratingValue}
-                onKeyDown={this.props._handleKeyPress}
+                onKeyDown={this.onRatingKeyDown}
                 placeholder='Ratings'
+                validate={{async: this.validateRating}}
+                errorMessage="Invalid Rating due to selected Rating System"
               />
               {this.props.ratings &&
                 this.props.ratings.map((rating, i) => (
@@ -174,7 +263,7 @@ class CoreMetadataEditMode extends Component {
                 onChange={e => this.props.handleOnAdvisories(e)}
                 name='advisoriesFreeText'
                 id='advisories'
-                value={this.props.advisoryCodeList ? this.props.advisoryCodeList.advisoriesFreeText : ''}
+                value={this.props.advisoryCodeList && this.props.advisoryCodeList.advisoriesFreeText ? this.props.advisoryCodeList.advisoriesFreeText : ''}
                 placeholder='Advisories'
                 validate={{
                   maxLength: { value: 500 }
@@ -185,16 +274,18 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <FormGroup>
               <Label for='advisoryCode'>Advisory Code</Label>
-              <Input
+              <AvField
                 type='text'
                 onChange={e => this.props.handleOnAdvisoriesCodeUpdate(e.target.value)}
                 value={this.props.advisoryCode}
                 placeholder="Advisory Codes"
-                onKeyDown={this.props._handleAddAdvisoryCode}
+                onKeyDown={this.onAdvisoryCodeDown}
                 name='advisoryCode'
                 id='advisoryCode'
+                validate={{async: this.validateAdvisoryCode}}
+                errorMessage="Invalid Advisory Code"
               />
-              {this.props.advisoryCodeList &&
+              {this.props.advisoryCodeList && this.props.advisoryCodeList.advisoriesCode &&
                 this.props.advisoryCodeList.advisoriesCode.map((advisory, i) => (
                   <CloseableBtn
                     style={{
@@ -231,6 +322,7 @@ class CoreMetadataEditMode extends Component {
           </Col>
         </Row>
         <hr />
+        <h4>External IDS</h4>
         <Row style={{ marginTop: '10px' }}>
           <Col md={1}>
             <Label for='eidrLevel1'>EIDR Level 1 </Label>
@@ -387,15 +479,15 @@ class CoreMetadataEditMode extends Component {
             />
           </Col>
           <Col md={1}>
-            <Label for='vzId'>VZ ID</Label>
+            <Label for='vzId'>VZ Title ID</Label>
           </Col>
           <Col>
             <AvField
               type='text'
-              onChange={e => this.props.handleOnExternalIds(e)}
-              name='vzId'
-              id='vzId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.vzId: ''}
+              onChange={e => this.handleVzLegacyIds(e)}
+              name='vzTitleId'
+              id='vzTitleId'
+              value={this.props.data.legacyIds && this.props.data.legacyIds.vz  ? this.props.data.legacyIds.vz.vzTitleId: ''}
               placeholder='VZ ID'
               validate={{
                 maxLength: { value: 200 }
@@ -426,10 +518,10 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={e => this.props.handleOnExternalIds(e)}
+              onChange={e => this.handleMovidaLegacyIds(e)}
               name='movidaId'
               id='movidaId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.movidaId: ''}
+              value={this.props.data.legacyIds && this.props.data.legacyIds.movida  ? this.props.data.legacyIds.movida.movidaId: ''}
               placeholder='Movie ID'
               validate={{
                 maxLength: { value: 200 }
@@ -444,7 +536,7 @@ class CoreMetadataEditMode extends Component {
           <Col>
             <AvField
               type='text'
-              onChange={this.props.handleOnExternalIds}
+              onChange={e => this.props.handleOnExternalIds(e)}
               name='isrc'
               id='isrc'
               value={this.props.data.externalIds ? this.props.data.externalIds.isrc: ''}
@@ -460,15 +552,12 @@ class CoreMetadataEditMode extends Component {
           </Col>
           <Col>
             <AvField
+              readOnly
               type='text'
-              onChange={e => this.props.handleOnExternalIds(e)}
               name='movidaTitleId'
               id='movidaTitleId'
-              value={this.props.data.externalIds ? this.props.data.externalIds.movidaTitleId: ''}
+              value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaTitleId: ''}
               placeholder='Movida Title ID'
-              validate={{
-                maxLength: { value: 200 }
-              }}
             />
           </Col>
         </Row>
@@ -476,17 +565,19 @@ class CoreMetadataEditMode extends Component {
           isCastModalOpen={this.props.isCastModalOpen}
           renderCastModal={this.props.renderModal}
           addCastCrew={this.props.addCastCrew}
-          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
+          configCastAndCrew={this.props.configCastAndCrew}
+          castCrewList={this.props.editedTitle.castCrew}
         />
         <CoreMetadataCreateCrewModal
           isCrewModalOpen={this.props.isCrewModalOpen}
           renderCrewModal={this.props.renderModal}
           addCastCrew={this.props.addCastCrew}
-          updateCastCrewValue={this.props.updateCastCrewValue}
           castInputValue={this.props.castInputValue}
           cleanCastInput={this.props.cleanCastInput}
+          configCastAndCrew={this.props.configCastAndCrew}
+          castCrewList={this.props.editedTitle.castCrew}
         />
       </Fragment>
     );
@@ -497,12 +588,12 @@ CoreMetadataEditMode.propTypes = {
   data: PropTypes.object,
   onChange: PropTypes.func,
   handleOnExternalIds: PropTypes.func,
+  handleOnLegacyIds: PropTypes.func,
   handleOnAdvisories: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
   isCastModalOpen: PropTypes.bool,
   renderModal: PropTypes.func,
   castInputValue: PropTypes.string,
-  updateCastCrewValue: PropTypes.func,
   ratingValue: PropTypes.string,
   ratings: PropTypes.array,
   updateValue: PropTypes.func,
@@ -510,15 +601,22 @@ CoreMetadataEditMode.propTypes = {
   removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
   editedTitle: PropTypes.object,
-  _handleKeyPress: PropTypes.func,
+  _handleRatingKeyPress: PropTypes.func,
   cleanCastInput: PropTypes.func,
   addCastCrew: PropTypes.func,
   ratingSystem: PropTypes.string,
-  _handleAddAdvisoryCode: PropTypes.func,
+  _handleAdvisoryCodeKeyPress: PropTypes.func,
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
+  handleRatingSystemUpdate: PropTypes.func,
   advisoryCode: PropTypes.string,
   advisoryCodeList: PropTypes.object,
-  removeAdvisoryCodes: PropTypes.func
+  removeAdvisoryCodes: PropTypes.func,
+
+  configCastAndCrew: PropTypes.object,
+  configRatingSystem: PropTypes.object,
+  configRatings: PropTypes.object,
+  configAdvisoryCode: PropTypes.object,
 };
 
-export default CoreMetadataEditMode;
+
+export default connect(mapStateToProps)(CoreMetadataEditMode);

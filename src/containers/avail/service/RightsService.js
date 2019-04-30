@@ -6,7 +6,7 @@ import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Commo
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId']
+const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId'];
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -44,15 +44,17 @@ const populate = function(key, value, location){
             if (!location[firstKey])
                 location[firstKey] = [];
             const container = location[firstKey];
-            value=parse(value);
-            if(typeof  value === 'string') {
-                value = parse(value.split(','));
-            }
-            for(let i = 0; i < value.length; i++){
-                if(container.length <= i){
-                    container.push({[restKey]: value[i]});
-                }else{
-                    container[i][restKey] = value[i];
+            if(value){
+                value = parse(value);
+                if(typeof  value === 'string') {
+                    value = parse(value.split(','));
+                }
+                for(let i = 0; i < value.length; i++){
+                    if(container.length <= i){
+                        container.push({[restKey]: value[i]});
+                    }else{
+                        container[i][restKey] = value[i];
+                    }
                 }
             }
         }else {

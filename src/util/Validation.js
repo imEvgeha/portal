@@ -8,6 +8,16 @@ function validateDate(date) {
 function rangeValidation(name, displayName, date, avail) {
     let startDate, endDate, rangeError;
 
+    if (name === 'start' && avail['end']) {
+        startDate = date;
+        endDate = avail['end'];
+        rangeError = displayName + ' must be before corresponding end date';
+    } else if (name === 'end' && avail['start']) {
+        startDate = avail['start'];
+        endDate = date;
+        rangeError = displayName + ' must be after corresponding start date';
+    }
+
     if (name.endsWith('Start') && avail[name.replace('Start', 'End')]) {
         startDate = date;
         endDate = avail[name.replace('Start', 'End')];
@@ -15,11 +25,17 @@ function rangeValidation(name, displayName, date, avail) {
     } else if (name.endsWith('End') && avail[name.replace('End', 'Start')]) {
         startDate = avail[name.replace('End', 'Start')];
         endDate = date;
-        rangeError = displayName + ' must be after corresponding end date';
+        rangeError = displayName + ' must be after corresponding start date';
     }
     if (startDate && endDate && moment(endDate) < moment(startDate)) {
         return rangeError;
     }
 }
 
-export {validateDate, rangeValidation};
+function oneOfValidation(name, displayName, date, pair, displayNamePair, avail) {
+    if(!date && !avail[pair]){
+        return displayName + ' or ' + displayNamePair  + ' needs to have a value';
+    }
+}
+
+export {validateDate, rangeValidation, oneOfValidation};

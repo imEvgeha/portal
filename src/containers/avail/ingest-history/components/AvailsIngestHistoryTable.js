@@ -8,11 +8,13 @@ import { AgGridReact } from 'ag-grid-react';
 import AvailHistoryRecordRenderer from './AvailHistoryRecordRenderer';
 import './AvailsIngestHistoryTable.scss';
 
+import HistoryURL from '../../util/HistoryURL';
+
 // image import
 import LoadingGif from '../../../../../src/img/loading.gif';
 
 import connect from 'react-redux/es/connect/connect';
-import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormSetAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
+import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
 import {historyServiceManager} from '../HistoryServiceManager';
 
 
@@ -31,7 +33,7 @@ let mapStateToProps = state => {
 let mapDispatchToProps = {
     resultPageHistoryUpdate,
     searchFormSetHistorySearchCriteria,
-    searchFormSetAdvancedHistorySearchCriteria,
+    searchFormUpdateAdvancedHistorySearchCriteria,
 };
 
 class AvailsIngestHistoryTable extends React.Component {
@@ -42,7 +44,7 @@ class AvailsIngestHistoryTable extends React.Component {
         availHistoryLoading: t.bool,
         resultPageHistoryUpdate: t.func,
         searchFormSetHistorySearchCriteria: t.func,
-        searchFormSetAdvancedHistorySearchCriteria: t.func
+        searchFormUpdateAdvancedHistorySearchCriteria: t.func
     };
 
     constructor(props) {
@@ -91,7 +93,7 @@ class AvailsIngestHistoryTable extends React.Component {
 
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
-                        if(response.data.total > 0){
+                        if(response && response.data.total > 0){
                             //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
@@ -159,8 +161,9 @@ class AvailsIngestHistoryTable extends React.Component {
     }
 
     setIngestType(type){
-        if(type != this.props.searchCriteria.ingestType){
-            this.props.searchFormSetAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
+        if(type !== this.props.searchCriteria.ingestType){
+            HistoryURL.saveHistoryAdvancedFilterUrl({...this.props.advancedSearchCriteria, ingestType: type});
+            this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.advancedSearchCriteria, ingestType: type});
             this.props.searchFormSetHistorySearchCriteria({...this.props.searchCriteria, ingestType: type});
             this.table.api.setDatasource(this.state.dataSource);
         }

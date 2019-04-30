@@ -6,6 +6,7 @@ import LoadingElipsis from '../../../../../src/img/ajax-loader.gif';
 import {Link} from 'react-router-dom';
 
 import {historyService} from '../../service/HistoryService';
+import RightsURL from '../../util/RightsURL';
 
 class AvailHistoryRecordRenderer extends React.Component {
 
@@ -81,13 +82,15 @@ class AvailHistoryRecordRenderer extends React.Component {
                 <div style={{display: 'flex', flex:0.5, minWidth:'30px'}}/>
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'182px'}}>
                     <div style={{display: 'flex'}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
-                    <div style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
+                    <div title={'ID: ' + this.props.data.id} style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
                         { (() => {
                             switch (this.props.data.status) {
                                  case 'COMPLETED':
                                     return <span style={{ color: 'green'}}><i className="fas fa-check-circle"> </i></span>;
                                  case 'FAILED':
                                     return <span title={this.props.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"> </i></span>;
+                                 case 'MANUAL':
+                                    return <span title={this.props.data.errorDetails} style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
                                  case 'PENDING':
                                     return <img src={LoadingElipsis}/>;
                                  default:
@@ -101,7 +104,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'125px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.totalProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data}}}>
+                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id)}>
                                     Total Avails:
                                 </Link>)
                                 :
@@ -112,7 +115,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.totalProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data}}}>
+                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id)}>
                                     {this.props.data.totalProcessed}
                                 </Link>)
                                 :
@@ -125,7 +128,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
+                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id, false)}>
                                     Success:
                                 </Link>)
                                 :
@@ -136,7 +139,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'false'}}}>
+                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id, false)}>
                                     {this.props.data.successfullyProcessed}
                                 </Link>)
                                 :
@@ -149,7 +152,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
+                                (<Link className={'error-link'} to={RightsURL.getRightsSearchUrl(this.props.data.id, true)}>
                                     Errors:
                                 </Link>)
                                 :
@@ -160,7 +163,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{ pathname: '/avails', state: {availHistory: this.props.data, rowInvalid: 'true'}}}>
+                                (<Link className={'error-link'} to={RightsURL.getRightsSearchUrl(this.props.data.id, true)}>
                                     {this.props.data.failedToProcess}
                                 </Link>)
                                 :

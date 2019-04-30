@@ -12,6 +12,16 @@ import {
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
+import {connect} from 'react-redux';
+import {configFields} from '../../service/ConfigService';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configProductionStudio: state.titleReducer.configData.find(e => e.key === configFields.PRODUCTION_STUDIO),
+    };
+};
 
 class TitleEditMode extends Component {
   constructor(props) {
@@ -23,7 +33,7 @@ class TitleEditMode extends Component {
     };
   }
 
-  render() {
+    render() {
     const {
       title,
       contentType,
@@ -33,13 +43,13 @@ class TitleEditMode extends Component {
       animated,
       duration,
       eventType,
-      // seasonFinale,
-      // seasonPremiere,
-      // totalNumberOfSeasons,
-      // licensors,
-      // originalLanguage,
+      seasonFinale,
+      seasonPremiere,
+      totalNumberOfSeasons,
+      originalLanguage,
       countryOfOrigin,
-      // totalNumberOfEpisodes
+      totalNumberOfEpisodes,
+      episodic
     } = this.props.data;
     return (
       <Fragment>
@@ -81,13 +91,19 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='titleProductionStudio'>Production Studio</Label>
                   <AvField
-                    name='productionStudioId'
-                    errorMessage='Please enter a valid production studio!'
-                    id='titleProductionStudio'
-                    value={productionStudioId ? productionStudioId : ''}
-                    placeholder='Enter Studio'
-                    onChange={this.props.handleOnChangeEdit}
-                  />
+                      type='select'
+                      name='productionStudioId'
+                      id='titleProductionStudio'
+                      onChange={e => this.props.handleOnChangeEdit(e)}
+                      value={productionStudioId}
+                  >
+                    <option value=''>Select Production Studio</option>
+                    {
+                      this.props.configProductionStudio && this.props.configProductionStudio.value.map((e, index) => {
+                        return <option key={index} value={e.name}>{e.name}</option>;
+                      })
+                    }
+                  </AvField>
                 </Col>
               </Row>
               {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
@@ -98,6 +114,7 @@ class TitleEditMode extends Component {
                         <Col>
                           <Label for='titleSeriesName'>Series</Label>
                           <AvField
+                            readOnly
                             type='text'
                             name='seriesTitleName'
                             id='titleSeriesName'
@@ -105,11 +122,12 @@ class TitleEditMode extends Component {
                             errorMessage='Field cannot be empty!'
                             onChange={this.props.handleChangeSeries}
                             required={this.state.isSeriesCompleted}
+                            value={episodic.seriesTitleName}
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col md={6}>
+                        <Col>
                           <FormGroup>
                             <Label for='titleSeasonNumber'>Season</Label>
                             <AvField
@@ -133,7 +151,7 @@ class TitleEditMode extends Component {
                         </Col>
                         <Fragment>
                           {contentType !== 'SEASON' ? (
-                            <Col md={6}>
+                            <Col>
                               <FormGroup>
                                 <Label for='titleEpisodeNumber'>Episode</Label>
                                 <AvField
@@ -157,28 +175,7 @@ class TitleEditMode extends Component {
                                 />
                               </FormGroup>
                             </Col>
-                          ) : (
-                              <Col md={6}>
-                                <Label for='titleEpisodeCount'>
-                                  Episode Count
-                                </Label>
-                                <AvField
-                                  type='text'
-                                  name='episodeCount'
-                                  value={
-                                    this.props.data.episodic !== null &&
-                                      this.props.data.episodic.episodeCount
-                                      ? this.props.data.episodic.episodeCount
-                                      : ''
-                                  }
-                                  id='titleEpisodeCount'
-                                  placeholder={'Enter Episode Count'}
-                                  onChange={e =>
-                                    this.props.handleChangeEpisodic(e)
-                                  }
-                                />
-                              </Col>
-                            )}
+                          ) : null}
                         </Fragment>
                       </Row>
                       <Row>
@@ -209,6 +206,8 @@ class TitleEditMode extends Component {
                                     type='number'
                                     name='totalNumberOfEpisodes'
                                     id='totalNumberOfEpisodes'
+                                    onChange={e => this.props.handleOnChangeEdit(e)}
+                                    value={totalNumberOfEpisodes}
                                     placeholder='Episodes'
                                     errorMessage="Please enter a valid episode number!"
                                     validate={{
@@ -241,26 +240,32 @@ class TitleEditMode extends Component {
                     </Fragment>
                   ) : null}
                 </Fragment>
-              ) : (
-                  <Fragment>
-                    <Row>
-                      <Col>
-                        <Label for='totalNumberOfSeasons'>Seasons</Label>
+              ) :
+                  contentType === 'SEASON' ?
+                  (
+                    <Fragment>
+                      <Row>
+                        <Col>
+                          <Label for='totalNumberOfSeasons'>Seasons</Label>
 
-                        <AvField
-                          type='number'
-                          name='totalNumberOfSeasons'
-                          id='totalNumberOfSeasons'
-                          placeholder='Seasons'
-                          errorMessage="Please enter a valid season number!"
-                          validate={{
-                            maxLength: { value: 3 }
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  </Fragment>
-                )}
+                          <AvField
+                            type='number'
+                            name='totalNumberOfSeasons'
+                            id='totalNumberOfSeasons'
+                            placeholder='Seasons'
+                            value={totalNumberOfSeasons}
+                            onChange={e => this.props.handleOnChangeEdit(e)}
+                            errorMessage="Please enter a valid season number!"
+                            validate={{
+                              maxLength: { value: 3 }
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </Fragment>
+                  )
+                  : null
+              }
               <Row>
                 <Col>
                   <Label for='duration'>Duration</Label>
@@ -274,7 +279,7 @@ class TitleEditMode extends Component {
                         onChange={(e) => this.props.handleOnChangeEdit(e)}
                         placeholder="hh:mm:ss"
                         validate={{
-                          pattern :{value: '^(2[0-3]|1[0-9]|[0-9]):[0-5]?[0-9]:[0-5]?[0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
+                          pattern :{value: '^$|^(([01][0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
                           maxLength: { value: 8 },
                           minLength: { value: 8 }
                         }}
@@ -284,17 +289,20 @@ class TitleEditMode extends Component {
                 </Col>
                 <Col>
                   <Label for='countryOfOrigin'>Country of Origin</Label>
-                  <Input
+                  <AvField
                     type='select'
                     name='countryOfOrigin'
                     id='countryOfOrigin'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={countryOfOrigin ? countryOfOrigin : ''}
+                    value={countryOfOrigin}
                   >
                     <option value=''>Select Country of Origin</option>
-                    <option value='PL'>PL</option>
-                    <option value='GB'>UK</option>
-                  </Input>
+                      {
+                          this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                              return <option key={index} value={e.countryCode}>{e.countryName}</option>;
+                          })
+                      }
+                  </AvField>
                 </Col>
                 <Col>
                   <Label for='animated'>Animated</Label>
@@ -328,29 +336,54 @@ class TitleEditMode extends Component {
                   </Input>
                 </Col>
               </Row>
-              <Row>
+              <Row style={{marginTop: '15px'}}>
                 <Col>
                   <Label for='originalLanguage'>Original Language</Label>
-                  <Input
+                  <AvField
                     type='select'
                     name='originalLanguage'
                     id='originalLanguage'
                     onChange={e => this.props.handleOnChangeEdit(e)}
+                    value={originalLanguage}
                   >
                     <option value=''>Select Original Language</option>
-                    <option value='English'>English</option>
-                    <option value='German'>German</option>
-                  </Input>
+                      {
+                          this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                              return <option key={index} value={e.languageCode}>{e.languageName}</option>;
+                          })
+                      }
+                  </AvField>
                 </Col>
                 {
                   contentType === 'EPISODE' ? (
                     <Fragment>
+                      <Col>
+                          <Label for='titleEpisodeCount'>
+                            Episode Count
+                          </Label>
+                            <AvField
+                              type='text'
+                              name='episodeCount'
+                              value={
+                                this.props.data.episodic !== null &&
+                                  this.props.data.episodic.episodeCount
+                                  ? this.props.data.episodic.episodeCount
+                                  : ''
+                              }
+                              id='titleEpisodeCount'
+                              placeholder={'Enter Episode Count'}
+                              onChange={e =>
+                              this.props.handleChangeEpisodic(e)
+                              }
+                            />
+                      </Col>
                       <Col>
                         <Label for='seasonPremiere'>Season Premiere</Label>
                         <Input
                           type='select'
                           name='seasonPremiere'
                           id='seasonPremiere'
+                          defaultValue={seasonPremiere}
                           onChange={e => this.props.handleOnChangeEdit(e)}
                         >
                           <option value={''}>Select Season Premiere</option>
@@ -364,6 +397,7 @@ class TitleEditMode extends Component {
                           type='select'
                           name='seasonFinale'
                           id='seasonFinale`'
+                          defaultValue={seasonFinale}
                           onChange={e => this.props.handleOnChangeEdit(e)}
                         >
                           <option value={''}>Select Season Finale</option>
@@ -378,7 +412,7 @@ class TitleEditMode extends Component {
               <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='titleReleaseYear'>
-                    Release Year<span style={{ color: 'red' }}>*</span>
+                    Release Year{contentType === 'SERIES' || contentType === 'SEASON' ? null : <span style={{ color: 'red' }}>*</span>}
                   </Label>
                   <AvField
                     name='releaseYear'
@@ -386,7 +420,7 @@ class TitleEditMode extends Component {
                     id='titleReleaseYear'
                     validate={{
                       required: {
-                        value: true,
+                        value: contentType === 'SERIES' || contentType === 'SEASON' ? false : true,
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },
@@ -427,8 +461,9 @@ class TitleEditMode extends Component {
             data={this.props.data}
             handleOnAdvisories={this.props.handleOnAdvisories}
             onChange={this.props.handleOnChangeEdit}
-            _handleAddAdvisoryCode={this.props._handleAddAdvisoryCode}
+            _handleAdvisoryCodeKeyPress={this.props._handleAdvisoryCodeKeyPress}
             handleOnExternalIds={this.props.handleOnExternalIds}
+            handleOnLegacyIds={this.props.handleOnLegacyIds}
             isCastModalOpen={this.props.isCastModalOpen}
             isCrewModalOpen={this.props.isCrewModalOpen}
             renderModal={this.props.renderModal}
@@ -444,9 +479,10 @@ class TitleEditMode extends Component {
             ratingValue={this.props.ratingValue}
             ratingSystem={this.props.ratingSystem}
             removeRating={this.props.removeRating}
-            _handleKeyPress={this.props._handleKeyPress}
+            _handleRatingKeyPress={this.props._handleRatingKeyPress}
             editedTitle={this.props.editedTitle}
             updateValue={this.props.updateValue}
+            handleRatingSystemUpdate={this.props.handleRatingSystemUpdate}
           />
         </Container>
       </Fragment>
@@ -461,10 +497,11 @@ TitleEditMode.propTypes = {
   handleChangeSeries: PropTypes.func.isRequired,
   handleChangeEpisodic: PropTypes.func.isRequired,
   handleOnExternalIds: PropTypes.func,
+  handleOnLegacyIds: PropTypes.func,
   handleOnAdvisories: PropTypes.func,
   updateValue: PropTypes.func,
   editedTitle: PropTypes.object,
-  _handleKeyPress: PropTypes.func,
+  _handleRatingKeyPress: PropTypes.func,
   removeRating: PropTypes.func,
   ratings: PropTypes.array,
   ratingValue: PropTypes.string,
@@ -476,14 +513,17 @@ TitleEditMode.propTypes = {
   isCrewModalOpen: PropTypes.bool,
   isCastModalOpen: PropTypes.bool,
   ratingSystem: PropTypes.string,
-  _handleAddAdvisoryCode: PropTypes.func,
+  _handleAdvisoryCodeKeyPress: PropTypes.func,
   advisoriesCode: PropTypes.string,
   handleOnAdvisoriesCodeUpdate: PropTypes.func,
   advisoryCodeList: PropTypes.object,
   removeAdvisoryCodes: PropTypes.func,
   handleOnChangeTitleDuration: PropTypes.func,
-  advisoryCode: PropTypes.string
-
+  handleRatingSystemUpdate: PropTypes.func,
+  advisoryCode: PropTypes.string,
+  configLanguage: PropTypes.object,
+  configLocale: PropTypes.object,
+  configProductionStudio: PropTypes.object
 };
 
-export default TitleEditMode;
+export default connect(mapStateToProps)(TitleEditMode);
