@@ -160,8 +160,8 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
-                        errorMessage="Please enter a valid number!"
+                        validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                        errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
                     />
                 </AvForm>
             </div>);

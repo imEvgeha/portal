@@ -336,12 +336,19 @@ class RightDetails extends React.Component {
                     const isNumber = !isNaN(val);
                     if(!isNumber) return 'Please enter a valid number!';
                 }
+                if(validation.pattern){
+                    const isValid = validation.pattern.value.test(val);
+                    if(!isValid) return validation.pattern.errorMessage;
+                }
             };
 
             const innerValidate = (val, ctx, input, cb) => {
                 if(validation.number) {
                     const isNumber = !isNaN(val);
                     cb(isNumber);
+                }
+                if(validation.pattern){
+                    cb(validation.pattern.value.test(val));
                 }
             };
 
@@ -380,7 +387,7 @@ class RightDetails extends React.Component {
         };
 
         const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, {pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, {pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
