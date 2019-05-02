@@ -327,6 +327,10 @@ class SelectableInput extends Component {
                             style={{width: '80px'}}>{this.props.saveText || 'add' }</Button>
                 </div>
                 }
+                {   this.props.dataType === 'duration' &&
+                    <span title={'* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'}
+                          style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span>
+                }
             </div>
         );
     }
