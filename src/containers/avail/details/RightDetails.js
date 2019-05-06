@@ -350,7 +350,7 @@ class RightDetails extends React.Component {
                     return Number(val);
                 }
                 return val;
-            }
+            };
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
