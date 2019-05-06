@@ -14,23 +14,23 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 // core components
 
-import CustomDropdown from '../../../components/CustomDropdown/CustomDropdown.jsx';
+import CustomDropdown from 'material-dashboard-pro-react/dist/components/CustomDropdown/CustomDropdown.js';
 
-import Card from '../../../components/Card/Card.jsx';
-import CardHeader from '../../../components/Card/CardHeader.jsx';
-import CardBody from '../../../components/Card/CardBody.jsx';
-import CardText from '../../../components/Card/CardText.jsx';
+import Card from 'material-dashboard-pro-react/dist/components/Card/Card.js';
+import CardHeader from 'material-dashboard-pro-react/dist/components/Card/CardHeader.js';
+import CardBody from 'material-dashboard-pro-react/dist/components/Card/CardBody.js';
+import CardText from 'material-dashboard-pro-react/dist/components/Card/CardText.js';
 
 
 // material-ui icons
 
 // core components
-import GridContainer from '../../../components/Grid/GridContainer.jsx';
-import GridItem from '../../../components/Grid/GridItem.jsx';
-import Button from '../../../components/CustomButtons/Button.jsx';
+import GridContainer from 'material-dashboard-pro-react/dist/components/Grid/GridContainer.js';
+import GridItem from 'material-dashboard-pro-react/dist/components/Grid/GridItem.js';
+import Button from 'material-dashboard-pro-react/dist/components/CustomButtons/Button.js';
 
-import dashboardStyle from '../../../assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx';
-import regularFormsStyle from '../../../assets/jss/material-dashboard-pro-react/views/regularFormsStyle.jsx';
+import dashboardStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/dashboardStyle.js';
+import regularFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/regularFormsStyle.js';
 
 import {
     loadFilterResults,
