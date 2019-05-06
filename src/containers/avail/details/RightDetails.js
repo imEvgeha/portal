@@ -345,6 +345,13 @@ class RightDetails extends React.Component {
                 }
             };
 
+            const convert = (val) => {
+                if(val && validation.number) {
+                    return Number(val);
+                }
+                return val;
+            }
+
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
@@ -354,7 +361,7 @@ class RightDetails extends React.Component {
                     disabled={readOnly}
                     displayName={displayName}
                     validate={validate}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, convert(value), cancel)}
                     showError={false}
                     helperComponent={<AvForm>
                         <AvField
