@@ -4,6 +4,7 @@ import titleReducer from './reducers/metadata/titleReducer';
 import dashboard from './reducers/avail/dashboard';
 import createright from './reducers/avail/createright';
 import history from './reducers/history';
+import media from './reducers/media/search';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
@@ -16,6 +17,7 @@ const reducers = combineReducers({
     root,
     titleReducer,
     dashboard,
+    media,
     history,
     createright
 });

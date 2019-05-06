@@ -18,11 +18,16 @@ import Welcome from './Welcome';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import TitleEdit from './metadata/dashboard/components/TitleEdit';
 
+// import ContractProfile from './contracts/profile/ContractProfile.jsx';
+// import Contract from './contracts/search/Contract.jsx';
+
+import Media from './media/search/Media.jsx';
+
 export default class App extends React.Component {
     render() {
         return (
             <Router>
-                <div>
+                <div className="component-container">
                     <IfEmbedded value={false}>
                         <Navbar/>
                     </IfEmbedded>
@@ -43,6 +48,12 @@ export default class App extends React.Component {
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />
                         <Route exact path="/metadata/detail/:id" component={TitleEdit} />
+
+                        {/*<Route exact path="/contractprofile" component={ContractProfile} />*/}
+                        {/*<Route exact path="/contractsearch" component={Contract} />*/}
+
+                        <Route exact path="/Media" component={Media} />
+
                     </div>
                 </div>
             </Router>
