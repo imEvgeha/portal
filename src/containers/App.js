@@ -11,6 +11,7 @@ import Navbar from './Navbar';
 import RightDashboardContainer  from './avail/dashboard/DashboardContainer';
 import RightDetails  from './avail/details/RightDetails';
 import RightCreate  from './avail/create/RightCreate';
+import RightsCreateFromAttachment  from './avail/create/RightsCreateFromAttachment';
 import AvailIngestHistoryContainer from './avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer';
 import {canRender} from '../ability';
@@ -38,7 +39,7 @@ export default class App extends React.Component {
                             <Route exact path="/avails/rights/:id/match" component={canRender(UnderConstruction, 'read', 'Avail')}/>
                             <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
-                            <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(UnderConstruction, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds/:valid" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />
