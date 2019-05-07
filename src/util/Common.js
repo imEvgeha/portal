@@ -46,11 +46,11 @@ function isObjectEmpty(obj) {
     return true;
 }
 
-function prepareSortMatrixParam(sortedParams) {
+function prepareSortMatrixParam(sortedParams, onlyLastPart = false) {
     let matrix = '';
     if(sortedParams){
         sortedParams.forEach((entry) => {
-            matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
+            matrix += ';' + (onlyLastPart ? entry.id.split('.').pop() : entry.id) + '=' + (entry.desc ? 'DESC' : 'ASC');
         });
     }
     return matrix;
