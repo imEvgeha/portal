@@ -332,32 +332,46 @@ class RightDetails extends React.Component {
             };
 
             const validate = (val) => {
-                if(validation.number) {
+                if(validation && validation.number) {
                     const isNumber = !isNaN(val);
                     if(!isNumber) return 'Please enter a valid number!';
                 }
-                if(validation.pattern){
-                    const isValid = validation.pattern.value.test(val);
+                if(validation && validation.pattern){
+                    const isValid = val ? validation.pattern.value.test(val) : !required;
                     if(!isValid) return validation.pattern.errorMessage;
                 }
             };
 
             const innerValidate = (val, ctx, input, cb) => {
-                if(validation.number) {
+                if(validation && validation.number) {
                     const isNumber = !isNaN(val);
                     cb(isNumber);
                 }
-                if(validation.pattern){
-                    cb(validation.pattern.value.test(val));
+                if(validation && validation.pattern){
+                    cb(val ? validation.pattern.value.test(val) : !required);
+                }
+
+                if(!validation){
+                    cb(true);
                 }
             };
 
             const convert = (val) => {
-                if(val && validation.number) {
+                if(val && validation && validation.number) {
                     return Number(val);
                 }
-                return val;
+                return val ? val : null;
             };
+
+            let errorMessage='';
+            if(validation){
+                if(validation.number){
+                    errorMessage = 'Please enter a valid number!';
+                }
+                if(validation.pattern && validation.pattern.errorMessage){
+                    errorMessage = validation.pattern.errorMessage;
+                }
+            }
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
@@ -378,7 +392,7 @@ class RightDetails extends React.Component {
                             onChange={(e) => {handleValueChange(e.target.value);}}
                             type="text"
                             validate={{...validation, async: innerValidate}}
-                            errorMessage="Please enter a valid number!"
+                            errorMessage={errorMessage}
                         />
                     </AvForm>}
                 />
@@ -395,6 +409,10 @@ class RightDetails extends React.Component {
 
         const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
             return renderAvField(name, displayName, value, error, readOnly, required, highlighted, {pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
+        };
+
+        const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted);
         };
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
@@ -689,7 +707,7 @@ class RightDetails extends React.Component {
                             break;
                         case 'multilanguage': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'duration': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
