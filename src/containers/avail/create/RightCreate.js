@@ -258,13 +258,15 @@ class RightCreate extends React.Component {
     };
 
     render() {
-        const renderFieldTemplate = (name, displayName, required, content) => {
+        const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
             return (
                 <div key={name}
                    className="list-group-item-action"
                     style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}>
                     <div className="row">
-                        <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
+                        <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:
+                            {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                        </div>
                         <div className="col-8">
                             {content}
                         </div>
@@ -273,8 +275,8 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderStringField = (name, displayName, required, value) => {
-            return renderFieldTemplate(name, displayName, required, (
+        const renderStringField = (name, displayName, required, value, tooltip) => {
+            return renderFieldTemplate(name, displayName, required, tooltip, (
                 <div>
                     <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
@@ -301,7 +303,7 @@ class RightCreate extends React.Component {
                 }
                 cb(isNumber);
             };
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <div>
                     <AvForm>
                         <AvField
@@ -339,7 +341,7 @@ class RightCreate extends React.Component {
                 }
                 cb(isNumber);
             };
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <div>
                     <AvForm>
                         <AvField
@@ -363,7 +365,7 @@ class RightCreate extends React.Component {
         };
 
         const renderTimeField = (name, displayName, required, value) => {
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <div>
                     <AvForm>
                         <AvField
@@ -419,7 +421,7 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-multiselect'}
                     key={name}
@@ -481,7 +483,7 @@ class RightCreate extends React.Component {
                 this.checkRight(name, option.value ? option : null, true);
             };
 
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-select'}
                     key={name}
@@ -505,7 +507,7 @@ class RightCreate extends React.Component {
         };
 
         const renderBooleanField = (name, displayName, required, value) => {
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <select className="form-control"
                         name={name}
                         id={'right-create-' + name + '-select'}
@@ -520,7 +522,7 @@ class RightCreate extends React.Component {
         };
 
         const renderDatepickerField = (name, displayName, required, value) => {
-            return renderFieldTemplate(name, displayName, required, (
+            return renderFieldTemplate(name, displayName, required, null, (
                 <div>
                     <NexusDatePicker
                         id={'right-create-' + name + '-text'}
@@ -574,7 +576,8 @@ class RightCreate extends React.Component {
                             break;
                         case 'multilanguage' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'duration' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'duration' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value,
+                            'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'));
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
