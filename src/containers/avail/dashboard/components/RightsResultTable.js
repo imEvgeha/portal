@@ -61,6 +61,7 @@ class RightsResultTable extends React.Component {
         resultPageSelect: t.func,
         resultPageLoading: t.func,
         columnsOrder: t.array,
+        columns:t.array,
         columnsSize: t.object,
         resultPageUpdateColumnsOrder: t.func,
         showSelectedAvails: t.bool,
@@ -96,10 +97,7 @@ class RightsResultTable extends React.Component {
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
         this.onEdit = this.onEdit.bind(this);
-
-        if(colDef.length === 0){
-            this.parseColumnsSchema();
-        }
+        this.parseColumnsSchema();
     }
 
     componentDidMount() {
@@ -146,10 +144,14 @@ class RightsResultTable extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(!this.table) return;
-        if(this.props.columnsOrder !== prevProps.columnsOrder) {
+        if(this.props.availsMapping !== prevProps.availsMapping){
+            this.parseColumnsSchema();
+        }
+        if(this.props.columns !== prevProps.columns || this.props.columnsOrder !== prevProps.columnsOrder || this.props.availsMapping !== prevProps.availsMapping){
+            const cols = this.props.columns || this.props.columnsOrder;
             this.refreshColumns();
             setTimeout(()=>{
-                this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
+                this.table.columnApi.moveColumns(cols, 1);
             },1);
         }
 
@@ -184,6 +186,9 @@ class RightsResultTable extends React.Component {
     }
 
     parseColumnsSchema() {
+        if(colDef.length > 0){
+            return;
+        }
         let formatter = (column) => {
             switch (column.dataType) {
                 case 'localdate' : return function(params){
@@ -422,8 +427,9 @@ class RightsResultTable extends React.Component {
             lockPosition: true,
             headerComponentFramework: CheckBoxHeader
         });
-        if (this.props.columnsOrder) {
-            this.props.columnsOrder.map(acc => {
+        const cols = this.props.columns || this.props.columnsOrder;
+        if(cols){
+            cols.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
                     newCols.push(colDef[acc]);
                 }
