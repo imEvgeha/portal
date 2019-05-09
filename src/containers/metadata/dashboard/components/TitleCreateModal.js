@@ -270,7 +270,7 @@ class TitleCreate extends React.Component {
 
     render() {
         return (
-            <Modal isOpen={this.props.display} toggle={this.toggle} id="titleModalBox" className={this.props.className + ' lgModal'} size="lg" fade={false} backdrop={true}>
+            <Modal isOpen={this.props.display} toggle={this.toggle} id="titleModalBox" className={this.props.className} fade={false} backdrop={true}>
                 <AvForm onValidSubmit={this.onSubmit} id="titleCreateForm" ref={c => (this.form = c)}>
                     <ModalHeader toggle={this.props.toggle}>Create Title</ModalHeader>
                     <ModalBody>
