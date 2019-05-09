@@ -465,13 +465,24 @@ class RightsResultTable extends React.Component {
         const content = error || params.valueFormatted || val;
         if (val !== undefined) {
             if (content || content === false) {
+                let highlighted = false;
+                if(params.data && params.data.highlightedFields) {
+                    highlighted = params.data.highlightedFields.indexOf(params.colDef.field) > -1;
+                }
                 return(
                     <Link to={{ pathname: RightsURL.getRightUrl(params.data.id)}}>
                         <div
                         title= {error}
+                        className = {highlighted ? 'font-weight-bold' : ''}
                         style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
                             {String(content)}
                         </div>
+                        {highlighted &&
+                            <div
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
+                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                            </div>
+                        }
                     </Link>
                 );
             }

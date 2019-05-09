@@ -15,7 +15,7 @@
   "dataType": "select",
   "searchDataType": "multiselect",
   "configEndpoint": "/production-studios",
-  "queryParamName": "studio",
+  "queryParamName": "productionStudio",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -141,7 +141,7 @@
   "displayName": "ALID",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "ALIDMatch",
+  "queryParamName": "ALID",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -201,7 +201,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "region.value",
+  "javaVariableName": "region",
   "displayName": "Region",
   "dataType": "string",
   "searchDataType": "string",
@@ -211,7 +211,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "regionExcluded.value",
+  "javaVariableName": "regionExcluded",
   "displayName": "Region Excluded",
   "dataType": "string",
   "searchDataType": "string",
@@ -763,8 +763,8 @@
 }, {
   "javaVariableName": "pricing.priceValue",
   "displayName": "Price Value",
-  "dataType": "double",
-  "searchDataType": "double",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "priceValue",
   "readOnly": false,
   "enableSearch": true,
@@ -893,9 +893,9 @@
 }, {
   "javaVariableName": "exclusive",
   "displayName": "Exclusive",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "exclusiveMatch",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "exclusive",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,

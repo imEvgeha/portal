@@ -850,6 +850,7 @@ class TitleEdit extends Component {
                         isEditMode={this.state.isEditMode}
                         titleContentType={this.state.titleForm.contentType}
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
+                        updatedEditorialMetadata={this.state.updatedEditorialMetadata}
                     />
 
                     <TerritoryMetadata

@@ -14,6 +14,14 @@ class CoreMetadataCreateCastModal extends Component {
     };
   }
 
+  UNSAFE_componentWillReceiveProps(){
+    if(!this.props.isCastModalOpen) {
+      this.setState({
+        isValidPersonSelected: true
+      });
+    }
+  }
+
   addValidCastCrew = () => {
     if (this.state.selectedPerson) {
       let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
@@ -31,13 +39,9 @@ class CoreMetadataCreateCastModal extends Component {
   };
 
   isSelectedPersonValid = (selectedPerson) => {
-    if (this.props.castCrewList.findIndex(person =>
-      person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+    return this.props.castCrewList === null || this.props.castCrewList.findIndex(person =>
+        person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
+  };
 
   updateSelectedPerson = (personJSON) => {
     let person = null;

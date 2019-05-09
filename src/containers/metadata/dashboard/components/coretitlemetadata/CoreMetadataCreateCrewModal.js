@@ -14,6 +14,14 @@ class CoreMetadataCreateCrewModal extends Component {
         };
     }
 
+    UNSAFE_componentWillReceiveProps(){
+        if(!this.props.isCrewModalOpen) {
+          this.setState({
+            isValidPersonSelected: true
+          });
+        }
+      }
+
     addValidCastCrew = () => {
         if (this.state.selectedPerson) {
             let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
@@ -28,6 +36,11 @@ class CoreMetadataCreateCrewModal extends Component {
                 isValidPersonSelected: true
             });
         }
+    };
+
+    isSelectedPersonValid = (selectedPerson) => {
+        return this.props.castCrewList === null || this.props.castCrewList.findIndex(person =>
+            person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
     };
 
     isSelectedPersonValid = (selectedPerson) => {

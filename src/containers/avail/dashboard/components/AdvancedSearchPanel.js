@@ -230,7 +230,7 @@ class AdvancedSearchPanel extends React.Component {
             this.props.availsMapping.mappings.forEach( (mapping) => {
                 this.availsMap[mapping.queryParamName] = mapping;
                 if (mapping.enableSearch) {
-                    this.searchOptions.push({value: mapping.queryParamName, label: mapping.displayName});
+                    this.searchOptions.push({value: mapping.queryParamName, label: mapping.displayName, field: mapping.javaVariableName});
                 }
             });
         }

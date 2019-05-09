@@ -8,6 +8,7 @@ import RangeDuration from './RangeDuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ISO6391 from 'iso-639-1';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
+import moment from 'moment';
 
 
 const mapStateToProps = state => {
@@ -77,13 +78,12 @@ class SelectableInput extends Component {
     handleChange(key, value) {
         if(value) {
             if (this.props.dataType === 'date') {
-                value = value.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+                value = moment(value).startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
             }
             if (this.props.dataType === 'localdate') {
-                value = value.format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+                value = moment(value).startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
             }
         }
-
         this.props.onChange({...this.props.value, [key]: value});
     }
 
@@ -160,8 +160,8 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
-                        errorMessage="Please enter a valid number!"
+                        validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                        errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
                     />
                 </AvForm>
             </div>);
@@ -199,6 +199,8 @@ class SelectableInput extends Component {
         };
 
         const renderRangeDatepicker = (name, displayName) => {
+            const from = this.props.value.from ? (this.props.dataType === 'localdate' ? this.props.value.from.slice(0, -1) : this.props.value.from) : this.props.value.from;
+            const to = this.props.value.to ? (this.props.dataType === 'localdate' ? this.props.value.to.slice(0, -1) : this.props.value.to) : this.props.value.to;
             return (
                 <RangeDatapicker
                     key={name.value}
@@ -206,7 +208,7 @@ class SelectableInput extends Component {
                     ref={this.refDatePicker}
                     hideLabel={true}
                     displayName={displayName}
-                    value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
+                    value={{from: from, to: to}}
                     onFromDateChange={(value) => this.handleChange('from', value)}
                     onToDateChange={(value) => this.handleChange('to', value)}
                     onInvalid={this.handleInvalid}
@@ -216,8 +218,8 @@ class SelectableInput extends Component {
 
         const renderSelect = (name, displayName, type) => {
             let options = [];
-            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.value]){
-                options  = this.props.selectValues[this.props.selected.value];
+            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.field]){
+                options  = this.props.selectValues[this.props.selected.field];
             }
 
             if(type === 'multilanguage'){

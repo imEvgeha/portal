@@ -28,7 +28,7 @@ class EditorialMetadata extends Component {
                     }
                     {
                         this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className={'tablinks'} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
+                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
                         })
                     }
                 </div>
@@ -83,6 +83,7 @@ class EditorialMetadata extends Component {
                                                             titleContentType={this.props.titleContentType}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
+                                                            updatedEditorialMetadata={this.props.updatedEditorialMetadata}
                                                             key={i} data={item} />
                                                     </Col>
                                                 </Row>
@@ -112,7 +113,8 @@ EditorialMetadata.propTypes = {
     validSubmit: PropTypes.func.isRequired,
     handleEditChange: PropTypes.func,
     titleContentType: PropTypes.string,
-    editorialMetadataForCreate: PropTypes.object
+    editorialMetadataForCreate: PropTypes.object,
+    updatedEditorialMetadata: PropTypes.array
 };
 
 

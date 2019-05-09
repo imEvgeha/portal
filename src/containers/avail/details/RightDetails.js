@@ -25,6 +25,7 @@ import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
 
 const mapStateToProps = state => {
    return {
@@ -228,23 +229,47 @@ class RightDetails extends React.Component {
         }
     }
 
+    onEditableClick(ref){
+        if(ref && ref.current){
+            const component = ref.current;
+            if(component instanceof Editable || component instanceof EditableBaseComponent){
+                if(component.state && !component.state.editable) {
+                    confirmModal.open('Confirm edit',
+                        () => {
+                        },
+                        () => {
+                            component.setEditable(false);
+                        },
+                        {description: 'Are you sure you want to edit this field?'});
+                }
+            }
+        }
+    }
+
     render() {
-        const renderFieldTemplate = (name, displayName, value, error, readOnly, required, content) => {
+        const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, ref, content) => {
             const hasValidationError = error;
             return (
                 <div key={name}
-                    className={'list-group-item' + (readOnly ? ' disabled' : '')}
-                    style={{backgroundColor: hasValidationError ? '#f2dede' : null,
+                    className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
+                    style={{backgroundColor: hasValidationError ? '#f2dede' : '#fff',
                             color: hasValidationError ? '#a94442' : null,
-                            border:'none'
+                            border:'none',
+                            position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px',
                         }}>
                     <div className="row">
-                        <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:</div>
+                        <div className="col-4">{displayName}
+                            {required ? <span className="text-danger">*</span>:''}
+                            :
+                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                        </div>
                         <div
                             onClick = {this.onFieldClicked}
                             className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
                             id={'right-detail-' + name + '-field'}>
-                            <div className="editable-field-content">
+                            <div className="editable-field-content"
+                                 onClick={highlighted ? () => this.onEditableClick(ref) : null}
+                            >
                                 {content}
                             </div>
                             <span className="edit-icon" style={{color: 'gray'}}><i className="fas fa-pen"></i></span>
@@ -253,7 +278,7 @@ class RightDetails extends React.Component {
                 </div>
             );
         };
-        const renderTextField = (name, displayName, value, error, readOnly, required) => {
+        const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
             const ref = React.createRef();
             const displayFunc = (val) => {
                 if(error){
@@ -267,7 +292,7 @@ class RightDetails extends React.Component {
                 }
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <Editable
                     ref={ref}
                     title={name}
@@ -284,7 +309,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderAvField = (name, displayName, value, error, readOnly, required, validation) => {
+        const renderAvField = (name, displayName, value, error, readOnly, required, highlighted, validation) => {
             const ref = React.createRef();
             let priorityError = null;
             if(error){
@@ -307,20 +332,48 @@ class RightDetails extends React.Component {
             };
 
             const validate = (val) => {
-                if(validation.number) {
+                if(validation && validation.number) {
                     const isNumber = !isNaN(val);
                     if(!isNumber) return 'Please enter a valid number!';
+                }
+                if(validation && validation.pattern){
+                    const isValid = val ? validation.pattern.value.test(val) : !required;
+                    if(!isValid) return validation.pattern.errorMessage;
                 }
             };
 
             const innerValidate = (val, ctx, input, cb) => {
-                if(validation.number) {
+                if(validation && validation.number) {
                     const isNumber = !isNaN(val);
                     cb(isNumber);
                 }
+                if(validation && validation.pattern){
+                    cb(val ? validation.pattern.value.test(val) : !required);
+                }
+
+                if(!validation){
+                    cb(true);
+                }
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            const convert = (val) => {
+                if(val && validation && validation.number) {
+                    return Number(val);
+                }
+                return val ? val : null;
+            };
+
+            let errorMessage='';
+            if(validation){
+                if(validation.number){
+                    errorMessage = 'Please enter a valid number!';
+                }
+                if(validation.pattern && validation.pattern.errorMessage){
+                    errorMessage = validation.pattern.errorMessage;
+                }
+            }
+
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
@@ -329,7 +382,7 @@ class RightDetails extends React.Component {
                     disabled={readOnly}
                     displayName={displayName}
                     validate={validate}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, convert(value), cancel)}
                     showError={false}
                     helperComponent={<AvForm>
                         <AvField
@@ -339,26 +392,30 @@ class RightDetails extends React.Component {
                             onChange={(e) => {handleValueChange(e.target.value);}}
                             type="text"
                             validate={{...validation, async: innerValidate}}
-                            errorMessage="Please enter a valid number!"
+                            errorMessage={errorMessage}
                         />
                     </AvForm>}
                 />
             ));
         };
 
-        const renderIntegerField = (name, displayName, value, error, readOnly, required) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, {number : true});
+        const renderIntegerField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, {number : true});
         };
 
-        const renderDoubleField = (name, displayName, value, error, readOnly, required) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, {number : true});
+        const renderDoubleField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, {number : true});
         };
 
-        const renderTimeField = (name, displayName, value, error, readOnly, required) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, {pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}});
+        const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, {pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
         };
 
-        const renderBooleanField = (name, displayName, value, error, readOnly, required) => {
+        const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted);
+        };
+
+        const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if(error){
                 priorityError = <div title = {error}
@@ -387,7 +444,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, (
+            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={options.find((opt) => opt.server === value).display}
@@ -408,7 +465,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderSelectField = (name, displayName, value, error, readOnly, required) => {
+        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if(error){
                 priorityError = <div title = {error}
@@ -448,7 +505,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
@@ -470,7 +527,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderMultiSelectField = (name, displayName, value, error, readOnly, required) => {
+        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if(error){
                 priorityError = <div title = {error}
@@ -534,7 +591,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
@@ -575,7 +632,8 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, value, error, readOnly, required) => {
+        const renderDatepickerField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            let ref;
             let priorityError = null;
             if(error){
                 priorityError = <div title = {error}
@@ -583,8 +641,9 @@ class RightDetails extends React.Component {
                                     {error}
                                 </div>;
             }
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, (
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, ref, (
                 <EditableDatePicker
+                    ref={ref}
                     showTime={readOnly}
                     value={value}
                     priorityDisplay={priorityError}
@@ -629,30 +688,34 @@ class RightDetails extends React.Component {
                     const readOnly = cannotUpdate || mapping.readOnly;
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
                     const required = mapping.required;
+                    let highlighted = false;
+                    if(this.state.right && this.state.right.highlightedFields) {
+                        highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
+                    }
                     switch (mapping.dataType) {
-                        case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'double': renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'double': renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'multiselect': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'multiselect': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'language': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'language': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'multilanguage': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'multilanguage': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'duration': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value ? value.substr(0, 10) : value, error, readOnly, required));
+                        case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value ? value.substr(0, 10) : value, error, readOnly, required, highlighted));
                              break;
-                        case 'localdate': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'localdate': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required));
+                        case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
