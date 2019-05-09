@@ -25,7 +25,7 @@ const languagehack  = (cols) => {
     }
 
     return columns;
-}
+};
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
