@@ -5,6 +5,11 @@ import moment from 'moment';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 export default class RangeDuration extends React.Component {
+
+    static defaultProps = {
+        validateRange: true
+    }
+
     static propTypes = {
         id: t.string,
         value: t.object,
@@ -14,7 +19,8 @@ export default class RangeDuration extends React.Component {
         onToDurationChange: t.func,
         onInvalid: t.func,
         handleKeyPress: t.func,
-        hideLabel: t.bool
+        hideLabel: t.bool,
+        validateRange: t.bool
     };
 
     constructor(props) {
@@ -33,13 +39,15 @@ export default class RangeDuration extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.value.from && this.props.value.to && moment(this.props.value.from) > moment(this.props.value.to)) {
-            if (!this.state.invalidRange && !this.state.invalidStartDuration && !this.state.invalidEndDuration) {
-                this.props.onInvalid(this.wrongDurationRange(true));
-            }
-        } else {
-            if (this.state.invalidRange) {
-                this.props.onInvalid(this.wrongDurationRange(false));
+        if(this.props.validateRange) {
+            if (this.props.value.from && this.props.value.to && moment(this.props.value.from) > moment(this.props.value.to)) {
+                if (!this.state.invalidRange && !this.state.invalidStartDuration && !this.state.invalidEndDuration) {
+                    this.props.onInvalid(this.wrongDurationRange(true));
+                }
+            } else {
+                if (this.state.invalidRange) {
+                    this.props.onInvalid(this.wrongDurationRange(false));
+                }
             }
         }
     }
@@ -47,20 +55,27 @@ export default class RangeDuration extends React.Component {
     handleChangeStartDuration({target}) {
         const duration = target.value;
         this.props.onFromDurationChange(duration);
-        const invalidRange = this.wrongDurationRange(duration && this.props.value.to && moment(this.props.value.to) < duration);
-        this.setState({invalidStartDuration: ''});
-        this.props.onInvalid(this.state.invalidEndDuration || invalidRange);
+        if(this.props.validateRange) {
+            const invalidRange = this.wrongDurationRange(duration && this.props.value.to && moment(this.props.value.to) < duration);
+            this.setState({invalidStartDuration: ''});
+            this.props.onInvalid(this.state.invalidEndDuration || invalidRange);
+        }
     }
 
     handleChangeEndDuration({target}) {
         const duration = target.value;
         this.props.onToDurationChange(duration);
-        const invalidRange = this.wrongDurationRange(duration && this.props.value.from && moment(this.props.value.from) > duration);
-        this.setState({invalidStartDuration: ''});
-        this.props.onInvalid(this.state.invalidStartDuration || invalidRange);
+        if(this.props.validateRange) {
+            const invalidRange = this.wrongDurationRange(duration && this.props.value.from && moment(this.props.value.from) > duration);
+            this.setState({invalidStartDuration: ''});
+            this.props.onInvalid(this.state.invalidStartDuration || invalidRange);
+        }
     }
 
     wrongDurationRange(wrong) {
+        if(!this.props.validateRange){
+            return false;
+        }
         const invalid = wrong ? this.props.displayName + ' from should be less than to' : '';
         this.setState({invalidRange: invalid});
         return !!invalid;
