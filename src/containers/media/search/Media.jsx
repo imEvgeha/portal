@@ -44,6 +44,7 @@ const style = {
     ...dashboardStyle,
 };
 
+import 'material-dashboard-pro-react/dist/material-dashboard-pro-react.css';
 
 const mapStateToProps = state => {
     return {
@@ -100,7 +101,7 @@ class Dashboard extends React.Component {
         const { classes } = this.props;
 
         return (
-            <div>
+            <div className={'use-material-dashboard-pro-react'}>
                 <h3>Media Search Results Cards</h3>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
