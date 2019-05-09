@@ -87,8 +87,8 @@ class RightCreate extends React.Component {
         this.setState({});
     }
 
-    handleChange({target}) {
-        const value = target.value ? safeTrim(target.value) : '';
+    handleChange({target}, val) {
+        const value = val || (target.value ? safeTrim(target.value) : '');
         const name = target.name;
         this.checkRight(name, value, true);
     }
@@ -311,7 +311,7 @@ class RightCreate extends React.Component {
                                 name={name}
                                 id={'right-create-' + name + '-text'}
                                 placeholder={'Enter ' + displayName}
-                                onChange={this.handleChange}
+                                onChange={(ev, val) => {this.handleChange(ev, Number(val));}}
                                 type="text"
                                 validate={{number: true, async: validate}}
                                 errorMessage="Please enter a valid number!"
@@ -375,8 +375,8 @@ class RightCreate extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
                             type="text"
-                            validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
-                            errorMessage="Please enter a valid number!"
+                            validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                            errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
