@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import t from 'prop-types';
 import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
@@ -10,9 +10,9 @@ import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
-import {titleService} from '../../service/TitleService';
-import {Button, Col, Row} from 'reactstrap';
-import {AvForm} from 'availity-reactstrap-validation';
+import { titleService } from '../../service/TitleService';
+import { Button, Col, Row } from 'reactstrap';
+import { AvForm } from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
@@ -21,7 +21,7 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
-import {configService} from '../../service/ConfigService';
+import { configService } from '../../service/ConfigService';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -99,9 +99,9 @@ class TitleEdit extends Component {
         titleService.getTitleById(titleId).then((response) => {
             const titleForm = response.data;
             this.setState({ titleForm, editedForm: titleForm });
-            if(titleForm.parentIds) {
+            if (titleForm.parentIds) {
                 let parent = titleForm.parentIds.find((e) => e.contentType === 'SERIES');
-                if(parent) {
+                if (parent) {
                     this.loadParentTitle(parent.id);
                 }
             }
@@ -113,9 +113,9 @@ class TitleEdit extends Component {
     loadParentTitle(parentId) {
         titleService.getTitleById(parentId).then((response) => {
             const parentTitleForm = response.data;
-            let newEpisodic = Object.assign(this.state.titleForm.episodic, {seriesTitleName: parentTitleForm.title});
-            let newTitleForm = Object.assign(this.state.titleForm, {episodic: newEpisodic});
-            this.setState({...this.state.titleForm, ...this.state.editedForm, newTitleForm});
+            let newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
+            let newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
+            this.setState({ ...this.state.titleForm, ...this.state.editedForm, newTitleForm });
         }).catch(() => {
             console.error('Unable to load Parent Title Data');
         });
@@ -157,8 +157,8 @@ class TitleEdit extends Component {
 
     handleStateUpdate = (e) => {
         this.setState({
-           ...this.state,
-           [e.target.name]: e.target.value
+            ...this.state,
+            [e.target.name]: e.target.value
         });
     };
 
@@ -166,7 +166,8 @@ class TitleEdit extends Component {
      * Title document
      */
     handleSwitchMode = () => {
-        this.setState({ isEditMode: !this.state.isEditMode,
+        this.setState({
+            isEditMode: !this.state.isEditMode,
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
             territories: emptyTerritory,
@@ -236,10 +237,10 @@ class TitleEdit extends Component {
      * @param legacyId
      */
     handleOnLegacyIds = (legacyId) => {
-        let newLegacyIds = {...this.state.editedForm.legacyIds};
-        for(let field in legacyId) {
-            let inner = {...newLegacyIds[field]};
-            for(let innerField in legacyId[field]) {
+        let newLegacyIds = { ...this.state.editedForm.legacyIds };
+        for (let field in legacyId) {
+            let inner = { ...newLegacyIds[field] };
+            for (let innerField in legacyId[field]) {
                 inner[innerField] = legacyId[field][innerField];
             }
             newLegacyIds[field] = inner;
@@ -253,11 +254,11 @@ class TitleEdit extends Component {
     };
 
     addAdvisoryCodes = (advisory) => {
-        if(advisory !== '') {
+        if (advisory !== '') {
             let advisoriesCode = [this.state.advisoryCode];
-            if(!this.state.editedForm.advisories) {
+            if (!this.state.editedForm.advisories) {
                 advisoriesCode = [this.state.advisoryCode];
-            }else {
+            } else {
                 advisoriesCode = [this.state.advisoryCode, ...this.state.editedForm.advisories.advisoriesCode];
             }
 
@@ -276,19 +277,19 @@ class TitleEdit extends Component {
     };
 
     removeAdvisoryCodes = (removeAdvisory) => {
-            let advisoriesCode = this.state.editedForm.advisories.advisoriesCode.filter(rating => rating !== removeAdvisory);
+        let advisoriesCode = this.state.editedForm.advisories.advisoriesCode.filter(rating => rating !== removeAdvisory);
 
-            let updatedAdvisory = {
-                ...this.state.editedForm.advisories,
-                advisoriesCode: advisoriesCode
-            };
-            let updateEditForm = {
-                ...this.state.editedForm,
-                advisories: updatedAdvisory
-            };
-            this.setState({
-                editedForm: updateEditForm
-            });
+        let updatedAdvisory = {
+            ...this.state.editedForm.advisories,
+            advisoriesCode: advisoriesCode
+        };
+        let updateEditForm = {
+            ...this.state.editedForm,
+            advisories: updatedAdvisory
+        };
+        this.setState({
+            editedForm: updateEditForm
+        });
     };
 
     handleOnAdvisoriesCodeUpdate = (value) => {
@@ -506,10 +507,10 @@ class TitleEdit extends Component {
             edited = Object.assign({}, data);
         }
 
-        if(isSynopsis) {
+        if (isSynopsis) {
             targetName = targetName.replace(EDITORIAL_METADATA_SYNOPSIS, '');
             this.updateEditorialMetadataInnerObject(edited, 'synopsis', targetName, e.target.value);
-        } else if(isEditorialTitle) {
+        } else if (isEditorialTitle) {
             targetName = targetName.replace(EDITORIAL_METADATA_TITLE, '');
             this.updateEditorialMetadataInnerObject(edited, 'title', targetName, e.target.value);
         } else {
@@ -524,7 +525,7 @@ class TitleEdit extends Component {
     };
 
     updateEditorialMetadataInnerObject = (edited, objectName, objectField, objectFieldValue) => {
-        if(edited[objectName]) {
+        if (edited[objectName]) {
             edited[objectName][objectField] = objectFieldValue;
         } else {
             let newObject = {};
@@ -634,14 +635,14 @@ class TitleEdit extends Component {
 
     getEditorialMetadataWithoutEmptyField() {
         let editorial = {};
-        for(let editorialField in this.state.editorialMetadataForCreate) {
-            if(editorialField === 'title') {
+        for (let editorialField in this.state.editorialMetadataForCreate) {
+            if (editorialField === 'title') {
                 editorial[editorialField] = this.getEpisodicSubObjectWithoutEmptyFields('title');
             }
-            else if(editorialField === 'synopsis') {
+            else if (editorialField === 'synopsis') {
                 editorial[editorialField] = this.getEpisodicSubObjectWithoutEmptyFields('synopsis');
             }
-            else if(this.state.editorialMetadataForCreate[editorialField]) {
+            else if (this.state.editorialMetadataForCreate[editorialField]) {
                 editorial[editorialField] = this.state.editorialMetadataForCreate[editorialField];
             } else {
                 editorial[editorialField] = null;
@@ -654,8 +655,8 @@ class TitleEdit extends Component {
     getEpisodicSubObjectWithoutEmptyFields(subField) {
         let subObject = {};
         let doAddSubObject = false;
-        for(let field in this.state.editorialMetadataForCreate[subField]) {
-            if(this.state.editorialMetadataForCreate[subField][field]) {
+        for (let field in this.state.editorialMetadataForCreate[subField]) {
+            if (this.state.editorialMetadataForCreate[subField][field]) {
                 subObject[field] = this.state.editorialMetadataForCreate[subField][field];
                 doAddSubObject = true;
             } else {
@@ -745,7 +746,7 @@ class TitleEdit extends Component {
                 ratingSystem: this.state.ratingSystem
             }];
 
-            if(this.state.editedForm.ratings) {
+            if (this.state.editedForm.ratings) {
                 ratingArray = [...ratingArray, ...this.state.editedForm.ratings];
             }
 
@@ -803,7 +804,7 @@ class TitleEdit extends Component {
             castCrew: cast
         };
         this.setState({
-           editedForm: updateEditForm
+            editedForm: updateEditForm
         });
     };
 
@@ -818,7 +819,7 @@ class TitleEdit extends Component {
     };
 
     _handleAdvisoryCodeKeyPress = e => {
-        if(e.keyCode === 13) {
+        if (e.keyCode === 13) {
             this.addAdvisoryCodes(this.state.advisoryCode);
             this.setState({
                 advisoryCode: ''
