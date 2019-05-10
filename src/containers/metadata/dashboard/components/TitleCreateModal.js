@@ -305,7 +305,7 @@ class TitleCreate extends React.Component {
                                                 <option value="Episode">Episode</option>
                                                 <option value="Event">Event</option>
                                                 <option value="Sports">Sports</option>
-                                                <option value="Advertisement">Advertisement</option>
+                                                {/*<option value="Advertisement">Advertisement</option>*/}
                                             </AvField>
                                         </Col>
                                     </Row>
