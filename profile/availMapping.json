@@ -873,8 +873,8 @@
 }, {
   "javaVariableName": "rentalDuration",
   "displayName": "Rental Duration",
-  "dataType": "duration",
-  "searchDataType": "duration",
+  "dataType": "integer",
+  "searchDataType": "integer",
   "queryParamName": "rentalDuration",
   "readOnly": false,
   "enableSearch": true,
@@ -883,8 +883,8 @@
 }, {
   "javaVariableName": "watchDuration",
   "displayName": "Watch Duration",
-  "dataType": "duration",
-  "searchDataType": "duration",
+  "dataType": "integer",
+  "searchDataType": "integer",
   "queryParamName": "watchDuration",
   "readOnly": false,
   "enableSearch": true,
