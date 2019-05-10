@@ -23,7 +23,7 @@ class CoreMetadataReadOnlyMode extends Component {
         return (
             <Fragment>
                 {
-                    this.props.data.castCrew ?
+                    this.props.data.castCrew && this.props.data.castCrew.length > 0 ?
                         <Row style={{ marginTop: '15px' }}>
                             <Col>
                                 <Card id='cardContainer'>
