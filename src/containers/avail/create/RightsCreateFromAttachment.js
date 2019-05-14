@@ -3,6 +3,7 @@ import {Button} from 'reactstrap';
 import t from 'prop-types';
 import RightsResultTable from '../dashboard/components/RightsResultTable';
 import {profileService} from '../service/ProfileService';
+import {historyService} from '../service/HistoryService';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {URL} from '../../../util/Common';
 // import connect from 'react-redux/es/connect/connect';
@@ -28,15 +29,29 @@ export default class RightsCreateFromAttachment extends React.Component {
         this.createRight = this.createRight.bind(this);
         this.state={
             availHistoryId: this.props.match.params.availHistoryIds,
-            studio: 'Sony',
-            subject: 'Latest Blah Avails',
-            PDFAttachments: ['some-email-attachment-1', 'some-email-attachment-2']
+            historyData:{},
         };
     }
 
     componentDidMount() {
         profileService.initAvailsMapping();
         rightSearchHelper.advancedSearch({availHistoryIds: this.state.availHistoryId}, false);
+        this.getHistoryData();
+    }
+
+    getHistoryData() {
+        if(this.state.availHistoryId){
+            historyService.getHistory(this.state.availHistoryId)
+                .then(res => {
+                    if(res && res.data) {
+                        this.setState({
+                            historyData: res.data,
+                        });
+                    }
+                })
+                .catch(() => {
+                });
+        }
     }
 
     createRight() {
@@ -47,9 +62,8 @@ export default class RightsCreateFromAttachment extends React.Component {
         return(
             <div className={'mx-2'}>
                 <div><h3>Create Rights from PDF </h3></div>
-                <div> Studio: {this.state.studio} </div>
-                <div> Subject: {this.state.subject} </div>
-                <div> PDF Attachments: {this.state.PDFAttachments} </div>
+                <div> Studio: {this.state.historyData.provider} </div>
+                {/*<div> PDF Attachments: {this.state.historyData.attachments.map(att => att.id)} </div>*/}
                 <Button id="right-create" onClick={this.createRight}>Create Right</Button>
                 <div> Upload a spreadsheet </div>
                 <hr style={{color:'black', backgroundColor:'black'}}/>

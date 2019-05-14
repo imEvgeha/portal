@@ -17,6 +17,10 @@ export const historyService = {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
+    getHistory: (id) => {
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/${id}`);
+    },
+
     getAvailHistoryAttachment: (id) => {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/attachments/${id}`);
     }
