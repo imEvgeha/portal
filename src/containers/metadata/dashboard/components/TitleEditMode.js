@@ -137,7 +137,7 @@ class TitleEditMode extends Component {
                       <Row>
                         <Col>
                           <FormGroup>
-                            <Label for='titleSeasonNumber'>Season{contentType === 'EPISODE' || contentType === 'SEASON' ? <span style={{ color: 'red' }}>*</span> : null}</Label>
+                            <Label for='titleSeasonNumber'>Season{contentType === EPISODE.apiName || contentType === SEASON.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                             <AvField
                               type='number'
                               name='seasonNumber'
@@ -153,7 +153,7 @@ class TitleEditMode extends Component {
                               onChange={e => this.props.handleChangeEpisodic(e)}
                               validate={{
                                 required: {
-                                  value: contentType === 'EPISODE' || contentType === 'SEASON' ? true : false,
+                                  value: contentType === EPISODE.apiName || contentType === SEASON.apiName ? true : false,
                                   errorMessage: 'Field cannot be empty!'
                                 },
                                 maxLength: { value: 3 }
@@ -165,7 +165,7 @@ class TitleEditMode extends Component {
                           {contentType !== SEASON.apiName ? (
                             <Col>
                               <FormGroup>
-                                <Label for='titleEpisodeNumber'>Episode{contentType === 'EPISODE' ? <span style={{ color: 'red' }}>*</span> : null}</Label>
+                                <Label for='titleEpisodeNumber'>Episode{contentType === EPISODE.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                                 <AvField
                                   type='number'
                                   name='episodeNumber'
@@ -183,7 +183,7 @@ class TitleEditMode extends Component {
                                   }
                                   validate={{
                                     required: {
-                                      value: contentType === 'EPISODE' ? true : false,
+                                      value: contentType === EPISODE.apiName ? true : false,
                                       errorMessage: 'Field cannot be empty!'
                                     },
                                     maxLength: { value: 3 }
@@ -436,7 +436,7 @@ class TitleEditMode extends Component {
                     id='titleReleaseYear'
                     validate={{
                       required: {
-                        value: contentType === 'SERIES' || contentType === 'SEASON' ? false : true,
+                        value: contentType === SERIES.apiName || contentType === SEASON.apiName ? false : true,
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },
