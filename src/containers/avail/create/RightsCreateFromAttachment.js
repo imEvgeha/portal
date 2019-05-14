@@ -4,6 +4,7 @@ import t from 'prop-types';
 import RightsResultTable from '../dashboard/components/RightsResultTable';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
+import {URL} from '../../../util/Common';
 // import connect from 'react-redux/es/connect/connect';
 
 // const mapStateToProps = state => {
@@ -13,6 +14,11 @@ import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 // };
 
 export default class RightsCreateFromAttachment extends React.Component {
+
+    static propTypes = {
+        match: t.object
+    };
+
     static contextTypes = {
         router: t.object
     }
@@ -34,7 +40,7 @@ export default class RightsCreateFromAttachment extends React.Component {
     }
 
     createRight() {
-        this.context.router.history.push('/avails/rights/create');
+        this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.state.availHistoryId + '/rights/create'));
     }
 
     render(){

@@ -18,6 +18,7 @@ import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
+import {URL} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -32,7 +33,8 @@ class RightCreate extends React.Component {
     static propTypes = {
         selectValues: t.object,
         availsMapping: t.any,
-        blocking: t.bool
+        blocking: t.bool,
+        match: t.object
     };
 
     static contextTypes = {
@@ -224,6 +226,7 @@ class RightCreate extends React.Component {
             return;
         }
         store.dispatch(blockUI(true));
+        //this.props.match.params.availHistoryId
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
@@ -239,7 +242,11 @@ class RightCreate extends React.Component {
     }
 
     cancel(){
-        this.context.router.history.push('/avails');
+        if(this.props.match.params.availHistoryId){
+            this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/create_from_attachments'));
+        }else {
+            this.context.router.history.push(URL.keepEmbedded('/avails'));
+        }
     }
 
     initMappingErrors = (mappings) => {
