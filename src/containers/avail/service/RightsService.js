@@ -1,6 +1,7 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
+import store from '../../../stores/index';
 import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Common';
 
 const http = Http.create();
@@ -94,10 +95,17 @@ export const rightsService = {
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
+        const rootStore = store.getState().root;
+        const mappings = rootStore.availsMapping.mappings;
         const params = {};
         for (let key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                params[key] = searchCriteria[key];
+                let map = mappings.find(({queryParamName}) => queryParamName === key);
+                const value = searchCriteria[key];
+                if (map.searchDataType === 'string' && value.indexOf('"') > -1) {
+                    key += 'Match';
+                }
+                params[key] = value;
             }
         }
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {params: {...params, page: page, size: pageSize}});
