@@ -14,6 +14,14 @@ import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
 import {connect} from 'react-redux';
 import {configFields} from '../../service/ConfigService';
+import {
+  ADVERTISEMENT,
+  EPISODE,
+  MOVIE,
+  SEASON,
+  SERIES,
+  toPrettyContentTypeIfExist
+} from '../../../../constants/metadata/contentType';
 
 const mapStateToProps = state => {
     return {
@@ -85,7 +93,7 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='titleContentType'>Content Type</Label>
                   <Alert color='light' id='titleContentType'>
-                    <b>{contentType}</b>
+                    <b>{toPrettyContentTypeIfExist(contentType)}</b>
                   </Alert>
                 </Col>
                 <Col>
@@ -106,7 +114,7 @@ class TitleEditMode extends Component {
                   </AvField>
                 </Col>
               </Row>
-              {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
+              {contentType !== MOVIE.apiName && contentType !== SERIES.apiName && contentType !== ADVERTISEMENT.apiName ? (
                 <Fragment>
                   {this.props.data.episodic !== null ? (
                     <Fragment>
@@ -150,7 +158,7 @@ class TitleEditMode extends Component {
                           </FormGroup>
                         </Col>
                         <Fragment>
-                          {contentType !== 'SEASON' ? (
+                          {contentType !== SEASON.apiName ? (
                             <Col>
                               <FormGroup>
                                 <Label for='titleEpisodeNumber'>Episode</Label>
@@ -179,7 +187,7 @@ class TitleEditMode extends Component {
                         </Fragment>
                       </Row>
                       <Row>
-                        {contentType === 'SEASON' ? (
+                        {contentType === SEASON.apiName ? (
                           <Col>
                             <Label for='titleSeasonID'>Season ID</Label>
                             <AvField
@@ -241,7 +249,7 @@ class TitleEditMode extends Component {
                   ) : null}
                 </Fragment>
               ) :
-                  contentType === 'SEASON' ?
+                  contentType === SEASON.apiName ?
                   (
                     <Fragment>
                       <Row>
@@ -355,7 +363,7 @@ class TitleEditMode extends Component {
                   </AvField>
                 </Col>
                 {
-                  contentType === 'EPISODE' ? (
+                  contentType === EPISODE.apiName ? (
                     <Fragment>
                       <Col>
                           <Label for='titleEpisodeCount'>
@@ -412,7 +420,7 @@ class TitleEditMode extends Component {
               <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='titleReleaseYear'>
-                    Release Year{contentType === 'SERIES' || contentType === 'SEASON' ? null : <span style={{ color: 'red' }}>*</span>}
+                    Release Year{contentType === SERIES.apiName || contentType === SEASON.apiName ? null : <span style={{ color: 'red' }}>*</span>}
                   </Label>
                   <AvField
                     name='releaseYear'
