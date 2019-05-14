@@ -21,7 +21,7 @@ export default class RightsCreateFromAttachment extends React.Component {
         super(props);
         this.createRight = this.createRight.bind(this);
         this.state={
-            availHistoryIds: 'aigh_TL5Kc',
+            availHistoryId: this.props.match.params.availHistoryIds,
             studio: 'Sony',
             subject: 'Latest Blah Avails',
             PDFAttachments: ['some-email-attachment-1', 'some-email-attachment-2']
@@ -30,7 +30,7 @@ export default class RightsCreateFromAttachment extends React.Component {
 
     componentDidMount() {
         profileService.initAvailsMapping();
-        rightSearchHelper.advancedSearch({availHistoryIds: this.state.availHistoryIds});
+        rightSearchHelper.advancedSearch({availHistoryIds: this.state.availHistoryId}, false);
     }
 
     createRight() {
@@ -51,6 +51,8 @@ export default class RightsCreateFromAttachment extends React.Component {
                 <RightsResultTable
                     fromServer = {true}
                     columns = {['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
+                    nav = {{back : 'create_from_attachments', params: {availHistoryId: this.state.availHistoryId}}}
+                    autoload = {false}
                 />
             </div>
         );

@@ -35,12 +35,12 @@ export default class App extends React.Component {
                             <Route exact path="/avails/rights" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
                             <Route exact path="/avails/rights/select_available" component={canRender(UnderConstruction, 'create', 'Avail')}/>
-                            <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
                             <Route exact path="/avails/rights/:id/match" component={canRender(UnderConstruction, 'read', 'Avail')}/>
-                            <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
-                            <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryIds/:valid(errors)" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
-                            <Route exact path="/avails/history/:availHistoryIds/:valid" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />
                         <Route exact path="/metadata/detail/:id" component={TitleEdit} />

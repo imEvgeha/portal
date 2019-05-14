@@ -66,8 +66,13 @@ class RightsResultTable extends React.Component {
         resultPageUpdateColumnsOrder: t.func,
         showSelectedAvails: t.bool,
         fromServer: t.bool,
-        hidden: t.bool
+        hidden: t.bool,
+        nav: t.object
     };
+
+    static defaultProps = {
+        autoload: true
+    }
 
     table = null;
 
@@ -476,7 +481,7 @@ class RightsResultTable extends React.Component {
                     highlighted = params.data.highlightedFields.indexOf(params.colDef.field) > -1;
                 }
                 return(
-                    <Link to={{ pathname: RightsURL.getRightUrl(params.data.id)}}>
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
                         title= {error}
                         className = {highlighted ? 'font-weight-bold' : ''}
@@ -534,7 +539,7 @@ class RightsResultTable extends React.Component {
                 infiniteInitialRowCount: '0',
                 cacheOverflowSize: '2',
                 maxConcurrentDatasourceRequests: '1',
-                datasource: this.dataSource,
+                datasource: this.props.autoload ? this.dataSource : null,
                 enableServerSideSorting: true,
                 onSortChanged: this.onSortChanged
             };

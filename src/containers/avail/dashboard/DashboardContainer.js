@@ -72,6 +72,10 @@ class DashboardContainer extends React.Component {
         resultPageShowSelected: t.func
     };
 
+    static contextTypes = {
+        router: t.object
+    }
+
     constructor(props) {
         super(props);
         this.state = {};
@@ -119,8 +123,23 @@ class DashboardContainer extends React.Component {
     }
 
     getSearchCriteriaFromURL(){
+        if(this.props.location && this.props.location.search){
+            const sparams = new URLSearchParams(this.props.location.search);
+            const dest = sparams.get('back');
+            if(dest){
+                if(dest === 'create_from_attachments'){
+                    sparams.delete('back');
+                    const availHistoryId = sparams.get('availHistoryId');
+                    sparams.delete('availHistoryId');
+                    this.props.searchFormShowSearchResults(false);
+                    this.context.router.history.push('/avails/history/' + availHistoryId + '/' + dest + '?' + sparams.toString());
+                }
+                return;
+            }
+        }
+
         if(!this.props.availsMapping) {
-            return false;
+            return;
         }
 
         if(this.props.match.path === RightsURL.availsDashboardUrl){

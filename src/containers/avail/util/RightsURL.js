@@ -211,7 +211,7 @@ class RightsURL extends React.Component {
         return URL.keepEmbedded(toReturn);
     }
 
-    static getRightUrl(id){
+    static getRightUrl(id, nav){
         const availHistoryIds = this.matchParam.availHistoryIds;
         const valid = this.matchParam.valid;
         const initialSearch = URL.search();
@@ -221,6 +221,20 @@ class RightsURL extends React.Component {
             search = 'availHistoryIds=' + availHistoryIds;
             if(valid && valid === 'errors'){
                 search += '&invalid=true';
+            }
+        }
+
+        if(nav && nav.back){
+            if(search){
+                search = search + '&back=' + nav.back;
+            }else{
+                search = 'back=' + nav.back;
+            }
+
+            const searchP = Object.keys(nav.params).map(key => key + '=' + nav.params[key]).join('&');
+
+            if(searchP){
+                search  = search + '&' + searchP;
             }
         }
 

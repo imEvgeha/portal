@@ -47,13 +47,17 @@ export const rightSearchHelper = {
         store.dispatch(searchFormSetSearchCriteria({}));
     },
 
-    freeTextSearch(searchCriteria) {
-        RightsURL.saveRightsSimpleFilterUrl(searchCriteria);
+    freeTextSearch(searchCriteria, toURL = true) {
+        if(toURL) {
+            RightsURL.saveRightsSimpleFilterUrl(searchCriteria);
+        }
         rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     },
 
-    advancedSearch(searchCriteria) {
-        RightsURL.saveRightsAdvancedFilterUrl(searchCriteria);
+    advancedSearch(searchCriteria, toURL = true) {
+        if(toURL) {
+            RightsURL.saveRightsAdvancedFilterUrl(searchCriteria);
+        }
         rightServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
     }
 
