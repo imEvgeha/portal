@@ -29,9 +29,7 @@ function safeTrim(value){
 }
 
 function momentToISO(date) {
-    const offset = new Date().getTimezoneOffset()*60*1000;
-    const dateWithOffset = new Date(date.valueOf() + offset);
-    return moment(dateWithOffset).toISOString();
+    return moment(date).toISOString();
 }
 
 function isObject(item) {
