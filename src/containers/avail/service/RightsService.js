@@ -103,8 +103,8 @@ export const rightsService = {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {params: {...params, page: page, size: pageSize}});
     },
 
-    create: (right, availHistoryId) => {
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + (availHistoryId ? '?availHistoryId=' + availHistoryId : ''), prepareRight(right));
+    create: (right) => {
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights', prepareRight(right));
     },
 
     get: (id) => {

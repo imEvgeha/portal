@@ -226,7 +226,10 @@ class RightCreate extends React.Component {
             return;
         }
         store.dispatch(blockUI(true));
-        rightsService.create(this.right, this.props.match.params.availHistoryId).then((response) => {
+        if(this.props.match.params.availHistoryId){
+            this.right.availHistoryIds=[this.props.match.params.availHistoryId];
+        }
+        rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
             if(response && response.data && response.data.id){
