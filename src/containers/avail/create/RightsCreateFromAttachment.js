@@ -6,6 +6,9 @@ import {profileService} from '../service/ProfileService';
 import {historyService} from '../service/HistoryService';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {URL} from '../../../util/Common';
+import {Can} from '../../../ability';
+import DashboardDropableCard from '../dashboard/card/DashboardDropableCard';
+
 // import connect from 'react-redux/es/connect/connect';
 
 // const mapStateToProps = state => {
@@ -65,7 +68,13 @@ export default class RightsCreateFromAttachment extends React.Component {
                 <div> Studio: {this.state.historyData.provider} </div>
                 {/*<div> PDF Attachments: {this.state.historyData.attachments.map(att => att.id)} </div>*/}
                 <Button id="right-create" onClick={this.createRight}>Create Right</Button>
-                <div> Upload a spreadsheet </div>
+                <div style={{float:'right'}}>
+                <Can I="create" a="Avail">
+                    <DashboardDropableCard
+                        externalId = {this.state.historyData ? this.state.historyData.externalId : null}
+                    />
+                </Can>
+                </div>
                 <hr style={{color:'black', backgroundColor:'black'}}/>
                 <div> Rights Created </div>
                 <RightsResultTable
