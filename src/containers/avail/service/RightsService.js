@@ -101,9 +101,10 @@ export const rightsService = {
         for (let key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 let map = mappings.find(({queryParamName}) => queryParamName === key);
-                const value = searchCriteria[key];
+                let value = searchCriteria[key];
                 if (map.searchDataType === 'string' && value[0] === '"' && value[value.length - 1] === '"') {
                     key += 'Match';
+                    value = value.substr(1, value.length - 2);
                 }
                 params[key] = value;
             }
