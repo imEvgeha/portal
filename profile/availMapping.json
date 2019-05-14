@@ -15,7 +15,7 @@
   "dataType": "select",
   "searchDataType": "multiselect",
   "configEndpoint": "/production-studios",
-  "queryParamName": "studio",
+  "queryParamName": "productionStudio",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -201,7 +201,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "region.value",
+  "javaVariableName": "region",
   "displayName": "Region",
   "dataType": "string",
   "searchDataType": "string",
@@ -211,7 +211,7 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "regionExcluded.value",
+  "javaVariableName": "regionExcluded",
   "displayName": "Region Excluded",
   "dataType": "string",
   "searchDataType": "string",
@@ -873,8 +873,8 @@
 }, {
   "javaVariableName": "rentalDuration",
   "displayName": "Rental Duration",
-  "dataType": "duration",
-  "searchDataType": "duration",
+  "dataType": "integer",
+  "searchDataType": "integer",
   "queryParamName": "rentalDuration",
   "readOnly": false,
   "enableSearch": true,
@@ -883,8 +883,8 @@
 }, {
   "javaVariableName": "watchDuration",
   "displayName": "Watch Duration",
-  "dataType": "duration",
-  "searchDataType": "duration",
+  "dataType": "integer",
+  "searchDataType": "integer",
   "queryParamName": "watchDuration",
   "readOnly": false,
   "enableSearch": true,
@@ -893,9 +893,9 @@
 }, {
   "javaVariableName": "exclusive",
   "displayName": "Exclusive",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "exclusiveMatch",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
+  "queryParamName": "exclusive",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,

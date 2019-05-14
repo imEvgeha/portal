@@ -6,7 +6,7 @@ import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Commo
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region.value', 'regionExcluded.value', 'genres', 'contractId'];
+const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId'];
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -90,7 +90,7 @@ export const rightsService = {
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -100,7 +100,7 @@ export const rightsService = {
                 params[key] = searchCriteria[key];
             }
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {params: {...params, page: page, size: pageSize}});
     },
 
     create: (right, availHistoryId) => {
