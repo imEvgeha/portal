@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Col, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { locale } from '../../../../../constants/locale';
-import { language } from '../../../../../constants/language';
+import { locale as constantLocale}  from '../../../../../constants/locale';
+import { language as constantLanguage} from '../../../../../constants/language';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {
@@ -51,7 +51,8 @@ class EditorialMetadataEditMode extends Component {
 
     render() {
         this.prepareFieldsForUpdate();
-        const { synopsis, title, copyright, awards, seriesName } = this.props.data;
+        const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
+        const { locale, language, format, service, seriesName, seasonNumber, episodeNumber, synopsis, title, copyright, awards} = updateData ? updateData : this.props.data;
         return (
             <div id="editorialMetadataEdit">
                 <Fragment>
@@ -64,9 +65,9 @@ class EditorialMetadataEditMode extends Component {
                                 name={this.getNameWithPrefix('locale')}
                                 id="editorialLocal"
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                value={this.props.data.locale}>
+                                value={locale}>
                                 {
-                                    locale && locale.map((item, i) => {
+                                    constantLocale && constantLocale.map((item, i) => {
                                         return <option key={i} value={item.localeCode}>{item.countryName}</option>;
                                     })
                                 }
@@ -80,9 +81,9 @@ class EditorialMetadataEditMode extends Component {
                                 name={this.getNameWithPrefix('language')}
                                 id="editorialLanguage"
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                value={this.props.data.language}>
+                                value={language}>
                                 {
-                                    language && language.map((item, i) => {
+                                    constantLanguage && constantLanguage.map((item, i) => {
                                         return <option key={i} value={item.code}>{item.language}</option>;
                                     })
                                 }
@@ -96,7 +97,7 @@ class EditorialMetadataEditMode extends Component {
                                 name={this.getNameWithPrefix('format')}
                                 id="editorialFormat"
                                onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                value={this.props.data.format}>
+                                value={format}>
                                 <option value={''}>Select Format</option>
                                 {
                                     resolutionFormat && resolutionFormat.map((item, i) => {
@@ -112,8 +113,8 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('service')}
                                 id="editorialService"
-                               onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                value={this.props.data.service}>
+                                onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                value={service}>
                                 <option value={''}>Select Service</option>
                                 {
                                     editorialMetadataService && editorialMetadataService.map((item, i) => {
@@ -135,7 +136,7 @@ class EditorialMetadataEditMode extends Component {
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }}
-                                    value={this.props.data.seriesName}/>
+                                    value={seriesName}/>
                                 <span style={{float:'right', fontSize: '13px', color: seriesName ? this.handleFieldLength(seriesName) === 200 ? 'red' : '#111' : '#111'}}>{seriesName ? this.handleFieldLength(seriesName)  : 0}/200 char</span>
                             </Col>
                             <Col md={2}>
@@ -148,7 +149,7 @@ class EditorialMetadataEditMode extends Component {
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                         maxLength: { value: 3, errorMessage: 'Max 3 digits' }
                                     }}
-                                    value={this.props.data.seasonNumber}/>
+                                    value={seasonNumber}/>
                             </Col>
                             {this.props.titleContentType === 'EPISODE' &&
                                 <Col md={2}>
@@ -162,7 +163,7 @@ class EditorialMetadataEditMode extends Component {
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                             maxLength: { value: 3, errorMessage: 'Max 3 digits' }
                                         }}
-                                        value={this.props.data.episodeNumber}/>
+                                        value={episodeNumber}/>
                                 </Col>
                             }
                         </Row>}
@@ -177,7 +178,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.' }
                                 }}
-                                value={this.props.data.title.title}/>
+                                value={title.title}/>
                                 <span style={{float:'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === 200 ? 'red' : '#111' : '#111'}}>{title ? this.handleFieldLength(title.title)  : 0}/200 char</span>
                         </Col>
                     </Row>
@@ -191,7 +192,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.' }
                                 }}
-                                value={this.props.data.title.shortTitle}/>
+                                value={title.shortTitle}/>
                                 <span style={{float:'right', color: title ? this.handleFieldLength(title.shortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.shortTitle)  : 0}/200 char</span>
                         </Col>
                     </Row>
@@ -205,7 +206,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.' }
                                 }}
-                                value={this.props.data.title.mediumTitle}/>
+                                value={title.mediumTitle}/>
                                 <span style={{float:'right', color: title ? this.handleFieldLength(title.mediumTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.mediumTitle)  : 0}/200 char</span>
                         </Col>
                     </Row>
@@ -219,7 +220,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.' }
                                 }}
-                                value={this.props.data.title.longTitle}/>
+                                value={title.longTitle}/>
                                 <span style={{float:'right', color: title ? this.handleFieldLength(title.longTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.longTitle)  : 0}/200 char</span>
                         </Col>
                     </Row>
@@ -233,7 +234,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.' }
                                 }}
-                                value={this.props.data.title.sortTitle}/>
+                                value={title.sortTitle}/>
                                 <span style={{float:'right', color: title ? this.handleFieldLength(title.sortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.sortTitle)  : 0}/200 char</span>
                         </Col>
                     </Row>
@@ -248,7 +249,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Short Synopsis. Max 500 symbols.' }
                                 }}
-                                value={this.props.data.synopsis.description}/>
+                                value={synopsis.description}/>
                                 <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.description) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.description)  : 0}/500 char</span>
                         </Col>
                     </Row>
@@ -257,14 +258,14 @@ class EditorialMetadataEditMode extends Component {
                             <b>Medium Synopsis</b>
                         </Col>
                         <Col>
-                            <AvField type="textarea" id="editorialMediumSynopsis" name={this.getSynopsisPrefix('shortDescription')}
+                            <AvField type="text" id="editorialMediumSynopsis" name={this.getSynopsisPrefix('shortDescription')}
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.' }
                                 }}
-                                value={this.props.data.synopsis.shortDescription}/>
+                                value={synopsis.shortDescription}/>
                                 <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.shortDescription)  : 0}/500 char</span>
                         </Col>
                     </Row>
@@ -272,14 +273,14 @@ class EditorialMetadataEditMode extends Component {
                         <Col md={2}>
                             <b>Long Synopsis</b>
                         </Col>                        <Col>
-                            <AvField type="textarea" id="editorialLongSynopsis" name={this.getSynopsisPrefix('longDescription')}
+                            <AvField type="text" id="editorialLongSynopsis" name={this.getSynopsisPrefix('longDescription')}
                                onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Long Synopsis. Max 500 symbols.' }
                                 }}
-                                value={this.props.data.synopsis['longDescription']}/>
+                                value={synopsis.longDescription}/>
                             <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/500 char</span>
                         </Col>
                     </Row>
@@ -294,7 +295,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.' }
                                 }}
-                                value={this.props.data.copyright}/>
+                                value={copyright}/>
                                 <span style={{float:'right', color: copyright ? this.handleFieldLength(copyright) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{copyright ? this.handleFieldLength(copyright)  : 0}/200 char</span>
                         </Col>
                     </Row>
@@ -308,7 +309,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Awards. Max 500 symbols.' }
                                 }}
-                                value={this.props.data.awards}/>
+                                value={awards}/>
                                  <span style={{float:'right', color: awards ? this.handleFieldLength(awards) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{awards ? this.handleFieldLength(awards)  : 0}/500 char</span>
                         </Col>
                     </Row>

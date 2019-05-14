@@ -2,8 +2,6 @@ import moment from 'moment';
 import React, {Fragment} from 'react';
 import t from 'prop-types';
 
-const formatISO = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
-
 function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
@@ -31,7 +29,9 @@ function safeTrim(value){
 }
 
 function momentToISO(date) {
-    return moment(date).format(formatISO);
+    const offset = new Date().getTimezoneOffset()*60*1000;
+    const dateWithOffset = new Date(date.valueOf() + offset);
+    return moment(dateWithOffset).toISOString();
 }
 
 function isObject(item) {

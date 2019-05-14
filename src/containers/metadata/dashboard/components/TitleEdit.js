@@ -171,7 +171,8 @@ class TitleEdit extends Component {
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
             territories: emptyTerritory,
-            editorialMetadataForCreate: emptyEditorial
+            editorialMetadataForCreate: emptyEditorial,
+            updatedEditorialMetadata: []
         });
     };
 
@@ -497,14 +498,13 @@ class TitleEdit extends Component {
      * Editorial Metadata document
      */
     handleEditorialMetadataEditChange = (e, data) => {
-
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
         let isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
 
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (!edited) {
-            edited = Object.assign({}, data);
+            edited = JSON.parse(JSON.stringify(data));
         }
 
         if (isSynopsis) {
