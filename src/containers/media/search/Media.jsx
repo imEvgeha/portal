@@ -90,8 +90,8 @@ class Dashboard extends React.Component {
         e.preventDefault();
         let data = await axios.post('https://asset-management-api.dev.vubiquity.com/api/asset-management/v1/asset/search/', {
             MediaSearchRequest: {
-                queryTerms: this.state.keywordFilters,
-                filters: []
+                queryTerms: this.props.keywordFilters,
+                filters: [],
             }
         });
         this.props.loadSearchResults(data.data.searchHits);
@@ -121,11 +121,10 @@ class Dashboard extends React.Component {
                                             />
                                         </GridItem>
                                         {this.props.loadedFilters ? (
-                                            this.props.loadedFilters.map( (key, index) => (
-                                                <GridItem xs={12} sm={6} md={2} lg={2} key={index}>
+                                            this.props.loadedFilters.map( (key, index) => (<GridItem xs={12} sm={6} md={2} lg={2} key={index}>
                                                     <CustomDropdown
                                                         hoverColor="info"
-                                                        buttonText={key.filterDisplayName}
+                                                        buttonText={this.props.selectedFilters[key.filterSearchParameter] ? this.props.selectedFilters[key.filterSearchParameter] : key.filterDisplayName}
                                                         buttonProps={{
                                                             round: true,
                                                             fullWidth: true,
@@ -138,7 +137,6 @@ class Dashboard extends React.Component {
                                                     />
                                                 </GridItem>
                                             ))
-
                                         ) : ''}
                                         <GridItem xs={12}>
                                             <Button color="info" round type="submit">Submit</Button>
@@ -151,7 +149,7 @@ class Dashboard extends React.Component {
                         {this.props.searchResults.length > 0 ? (
                             this.props.searchResults.map( (essence, key) =>
                                 <GridContainer key={key}>
-                                    <GridItem xs={12} sm={12} md={8} lg={8}>
+                                    <GridItem xs={12} sm={12} md={12} lg={12}>
                                         <Card>
                                             <CardHeader color="info" text>
                                                 <CardText color="info">
@@ -176,11 +174,6 @@ class Dashboard extends React.Component {
                                                 </CardBody>
                                             </Card>))}
                                     </GridItem>
-                                    <GridItem xs={12} sm={12} md={4} lg={4}>
-                                        <Card>
-                                            <iframe src="https://www.youtube.com/embed/6ZfuNTqbHE8" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                                        </Card>
-                                    </GridItem>
 
                                 </GridContainer>
 
@@ -201,6 +194,7 @@ Dashboard.propTypes = {
     loadSearchResults: PropTypes.func.isRequired,
     keywordFilters: PropTypes.arrayOf(PropTypes.string),
     selectFilterResults: PropTypes.func.isRequired,
+    selectedFilters: PropTypes.object,
     addKeywordFilter: PropTypes.func.isRequired,
     loadedFilters: PropTypes.array,
     searchResults: PropTypes.arrayOf(PropTypes.object.isRequired),
