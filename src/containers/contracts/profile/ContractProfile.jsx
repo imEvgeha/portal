@@ -15,14 +15,14 @@ import CloudDownload from '@material-ui/icons/CloudDownload';
 import ZoomIn from '@material-ui/icons/ZoomIn';
 
 // core components
-import GridContainer from '../../../components/Grid/GridContainer.jsx';
-import GridItem from '../../../components/Grid/GridItem.jsx';
-import Button from '../../../components/CustomButtons/Button.jsx';
-import CustomInput from '../../../components/CustomInput/CustomInput.jsx';
-import Clearfix from '../../../components/Clearfix/Clearfix.jsx';
-import Card from '../../../components/Card/Card.jsx';
-import CardBody from '../../../components/Card/CardBody.jsx';
-import CardHeader from '../../../components/Card/CardHeader.jsx';
+import GridContainer from 'material-dashboard-pro-react/dist/components/Grid/GridContainer.js';
+import GridItem from 'material-dashboard-pro-react/dist/components/Grid/GridItem.js';
+import Button from 'material-dashboard-pro-react/dist/components/CustomButtons/Button.js';
+import CustomInput from 'material-dashboard-pro-react/dist/components/CustomInput/CustomInput.js';
+import Clearfix from 'material-dashboard-pro-react/dist/components/Clearfix/Clearfix.js';
+import Card from 'material-dashboard-pro-react/dist/components/Card/Card.js';
+import CardBody from 'material-dashboard-pro-react/dist/components/Card/CardBody.js';
+import CardHeader from 'material-dashboard-pro-react/dist/components/Card/CardHeader.js';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
@@ -30,12 +30,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
-import userProfileStyles from '../../../assets/jss/material-dashboard-pro-react/views/userProfileStyles.jsx';
-import extendedFormsStyle from '../../../assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.jsx';
-import regularFormsStyle from '../../../assets/jss/material-dashboard-pro-react/views/regularFormsStyle.jsx';
-import dashboardStyle from '../../../assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx';
+import userProfileStyles from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/userProfileStyles.js';
+import extendedFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.js';
+import regularFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/regularFormsStyle.js';
+import dashboardStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/dashboardStyle.js';
 
-import avatar from '../../../assets/img/contract.png';
+import avatar from '../../../img/contract.png';
 
 const style = {
     ...userProfileStyles,
@@ -87,7 +87,7 @@ class UserProfile extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div>
+            <div className={'use-material-dashboard-pro-react'}>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                         <Card product className={classes.cardHover}>

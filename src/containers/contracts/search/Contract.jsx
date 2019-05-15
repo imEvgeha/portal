@@ -6,12 +6,10 @@ import ReactTable from 'react-table';
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
 
-// @material-ui/icons
-
 // core components
-import Card from '../../../components/Card/Card.jsx';
-import CardHeader from '../../../components/Card/CardHeader.jsx';
-import CardBody from '../../../components/Card/CardBody.jsx';
+import Card from 'material-dashboard-pro-react/dist/components/Card/Card.js';
+import CardHeader from 'material-dashboard-pro-react/dist/components/Card/CardHeader.js';
+import CardBody from 'material-dashboard-pro-react/dist/components/Card/CardBody.js';
 
 // material-ui icons
 import Check from '@material-ui/icons/Check';
@@ -20,19 +18,17 @@ import Add from '@material-ui/icons/Add';
 import Description from '@material-ui/icons/Description';
 
 // core components
-import GridContainer from '../../../components/Grid/GridContainer.jsx';
-import GridItem from '../../../components/Grid/GridItem.jsx';
-import Button from '../../../components/CustomButtons/Button.jsx';
+import GridContainer from 'material-dashboard-pro-react/dist/components/Grid/GridContainer.js';
+import GridItem from 'material-dashboard-pro-react/dist/components/Grid/GridItem.js';
+import Button from 'material-dashboard-pro-react/dist/components/CustomButtons/Button.js';
 
-import dashboardStyle from '../../../assets/jss/material-dashboard-pro-react/views/dashboardStyle.jsx';
-import regularFormsStyle from '../../../assets/jss/material-dashboard-pro-react/views/regularFormsStyle.jsx';
+import dashboardStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/dashboardStyle.js';
+import regularFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/regularFormsStyle.js';
 
 const style = {
     ...regularFormsStyle,
     ...dashboardStyle,
 };
-
-
 
 class Dashboard extends React.Component {
     state = {
@@ -105,7 +101,7 @@ class Dashboard extends React.Component {
         };
 
         return (
-            <div>
+            <div className={'use-material-dashboard-pro-react'}>
                 <h3>Contract Search Results Cards</h3>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>

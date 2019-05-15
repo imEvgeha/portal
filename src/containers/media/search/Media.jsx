@@ -10,19 +10,12 @@ import TagsInput from 'react-tagsinput';
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
 
-// @material-ui/icons
-
-// core components
-
 import CustomDropdown from 'material-dashboard-pro-react/dist/components/CustomDropdown/CustomDropdown.js';
 
 import Card from 'material-dashboard-pro-react/dist/components/Card/Card.js';
 import CardHeader from 'material-dashboard-pro-react/dist/components/Card/CardHeader.js';
 import CardBody from 'material-dashboard-pro-react/dist/components/Card/CardBody.js';
 import CardText from 'material-dashboard-pro-react/dist/components/Card/CardText.js';
-
-
-// material-ui icons
 
 // core components
 import GridContainer from 'material-dashboard-pro-react/dist/components/Grid/GridContainer.js';
