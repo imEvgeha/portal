@@ -98,11 +98,16 @@ export const rightsService = {
         const rootStore = store.getState().root;
         const mappings = rootStore.availsMapping.mappings;
         const params = {};
+
+        function isQuoted(value) {
+            return value[0] === '"' && value[value.length - 1] === '"';
+        }
+
         for (let key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 let map = mappings.find(({queryParamName}) => queryParamName === key);
                 let value = searchCriteria[key];
-                if (map.searchDataType === 'string' && value[0] === '"' && value[value.length - 1] === '"') {
+                if (map.searchDataType === 'string' && !isQuoted(value)) {
                     key += 'Match';
                     value = value.substr(1, value.length - 2);
                 }
