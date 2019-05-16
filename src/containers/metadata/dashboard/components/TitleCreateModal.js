@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import '../Title.scss';
 import { titleService } from '../../service/TitleService';
 import connect from 'react-redux/es/connect/connect';
+import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 
 class TitleCreate extends React.Component {
 
@@ -299,13 +300,13 @@ class TitleCreate extends React.Component {
                                                 onChange={this.handleSelect}
                                                 errorMessage="Field cannot be empty!">
                                                 <option value={''}>Select Content Type</option>
-                                                <option value="Movie">Movie</option>
-                                                <option value="Series">Series</option>
-                                                <option value="Season">Season</option>
-                                                <option value="Episode">Episode</option>
-                                                <option value="Event">Event</option>
-                                                <option value="Sports">Sports</option>
-                                                {/*<option value="Advertisement">Advertisement</option>*/}
+                                                <option value={MOVIE.apiName}>{MOVIE.name}</option>
+                                                <option value={SERIES.apiName}>{SERIES.name}</option>
+                                                <option value={SEASON.apiName}>{SEASON.name}</option>
+                                                <option value={EPISODE.apiName}>{EPISODE.name}</option>
+                                                <option value={EVENT.apiName}>{EVENT.name}</option>
+                                                <option value={SPORTS.apiName}>{SPORTS.name}</option>
+                                                <option value={ADVERTISEMENT.apiName}>{ADVERTISEMENT.name}</option>
                                             </AvField>
                                         </Col>
                                     </Row>
@@ -354,7 +355,7 @@ class TitleCreate extends React.Component {
                                             </Row>
                                             : null
                                     }
-                                    { this.state.titleForm.contentType !== 'Season' ? <Row style={{marginTop: '15px'}}>
+                                    { this.state.titleForm.contentType !== SEASON.apiName ? <Row style={{marginTop: '15px'}}>
                                         <Col>
                                             <Label for="titleReleaseYear">Release
                                                 Year{!this.state.isReleaseYearRequired ? null :
