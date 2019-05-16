@@ -16,7 +16,6 @@ class TitleReadOnlyMode extends Component {
     renderFields = () => {
         const { 
             title,
-            productionStudioId,
             releaseYear,
             boxOffice,
             animated,
@@ -48,9 +47,6 @@ class TitleReadOnlyMode extends Component {
                             <Row>
                                 <Col>
                                     <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? contentType : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
-                                <Col>
-                                    <Alert color="light" id="titleProductionStudioId"><b>Production Studio: </b>{productionStudioId ? productionStudioId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                             </Row>
                             <Fragment>
