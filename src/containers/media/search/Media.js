@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import t from 'prop-types';
 
 import { connect } from 'react-redux';
-
-import axios from 'axios';
 
 import TagsInput from 'react-tagsinput';
 
@@ -39,6 +37,8 @@ const style = {
 
 import 'material-dashboard-pro-react/dist/material-dashboard-pro-react.css';
 
+import {mediaSearchService} from '../service/MediaSearchService';
+
 const mapStateToProps = state => {
     return {
         loadedFilters: state.media.filters.loadedFilters,
@@ -56,15 +56,20 @@ const mapDispatchToProps = {
 };
 
 
+
 class Dashboard extends React.Component {
     state = {
     };
 
 
-    // REFACTOR TO REMOVE ROOT OF URL
-    componentDidMount = async () => {
-        let data = await axios.get('https://asset-management-api.dev.vubiquity.com/api/asset-management/v1/asset/search/filter');
-        this.props.loadFilterResults(data.data.filters);
+    componentDidMount = () => {
+        mediaSearchService.getFilters()
+            .then(res => {
+                // console.log(res);
+                if(res && res.data){
+                    this.props.loadFilterResults(res.data.filters);
+                }
+            });
     }
 
     onSelectFilter = (searchParameter, menuItem) => {
@@ -81,13 +86,19 @@ class Dashboard extends React.Component {
 
     onSubmitSearch = async (e) => {
         e.preventDefault();
-        let data = await axios.post('https://asset-management-api.dev.vubiquity.com/api/asset-management/v1/asset/search/', {
+        let filter = {
             MediaSearchRequest: {
                 queryTerms: this.props.keywordFilters,
-                filters: [],
+                filters: []
             }
-        });
-        this.props.loadSearchResults(data.data.searchHits);
+        };
+        mediaSearchService.getAssets(filter)
+            .then(res => {
+                // console.log(res);
+                if(res && res.data){
+                    this.props.loadSearchResults(res.data.searchHits);
+                }
+            });
     }
 
     render() {
@@ -182,15 +193,15 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-    classes: PropTypes.object.isRequired,
-    loadFilterResults: PropTypes.func.isRequired,
-    loadSearchResults: PropTypes.func.isRequired,
-    keywordFilters: PropTypes.arrayOf(PropTypes.string),
-    selectFilterResults: PropTypes.func.isRequired,
-    selectedFilters: PropTypes.object,
-    addKeywordFilter: PropTypes.func.isRequired,
-    loadedFilters: PropTypes.array,
-    searchResults: PropTypes.arrayOf(PropTypes.object.isRequired),
+    classes: t.object.isRequired,
+    loadFilterResults: t.func.isRequired,
+    loadSearchResults: t.func.isRequired,
+    keywordFilters: t.arrayOf(t.string),
+    selectFilterResults: t.func.isRequired,
+    selectedFilters: t.object,
+    addKeywordFilter: t.func.isRequired,
+    loadedFilters: t.array,
+    searchResults: t.arrayOf(t.object.isRequired),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Dashboard));

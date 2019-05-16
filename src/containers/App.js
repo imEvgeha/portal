@@ -21,7 +21,7 @@ import TitleEdit from './metadata/dashboard/components/TitleEdit';
 import ContractProfile from './contracts/profile/ContractProfile.jsx';
 import Contract from './contracts/search/Contract.jsx';
 
-import Media from './media/search/Media.jsx';
+import Media from './media/search/Media.js';
 
 export default class App extends React.Component {
     render() {
