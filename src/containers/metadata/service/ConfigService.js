@@ -6,7 +6,6 @@ import config from 'react-global-configuration';
 export const configFields = {
     LOCALE: 'countries',
     LANGUAGE: 'languages',
-    PRODUCTION_STUDIO: 'production-studios',
     CAST_AND_CREW: 'persons',
     RATING_SYSTEM: 'rating-systems',
     RATINGS: 'ratings',
@@ -58,8 +57,6 @@ export const configService = {
                 getAllConfigValuesByField(configField, 'languageName');
             } else if(configField === configFields.LOCALE) {
                 getAllConfigValuesByField(configField, 'countryName');
-            } else if(configField === configFields.PRODUCTION_STUDIO) {
-                    getAllConfigValuesByField(configField, 'name');
             } else {
                 getAllConfigValuesByField(configField);
             }
