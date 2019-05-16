@@ -217,9 +217,12 @@ class TitleEditMode extends Component {
                                     onChange={e => this.props.handleOnChangeEdit(e)}
                                     value={totalNumberOfEpisodes}
                                     placeholder='Episodes'
-                                    errorMessage="Please enter a valid episode number!"
                                     validate={{
-                                      maxLength: { value: 3 }
+                                      max: { value: 999, errorMessage: 'Please enter a valid episode number!' },
+                                      pattern: {
+                                        value: '^[0-9]+$',
+                                        errorMessage: 'Please enter a number!'
+                                      }
                                     }}
                                   />
                                 </Col>
