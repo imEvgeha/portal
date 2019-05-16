@@ -188,7 +188,7 @@ class TitleCreate extends React.Component {
     };
 
     handleSelect = (e) => {
-        if (e.target.value === 'Season') {
+        if (e.target.value === SEASON.apiName) {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: true,
@@ -205,7 +205,7 @@ class TitleCreate extends React.Component {
                     }
                 }
             });
-        } else if (e.target.value === 'Episode') {
+        } else if (e.target.value === EPISODE.apiName) {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
@@ -219,7 +219,7 @@ class TitleCreate extends React.Component {
                     contentType: e.target.value
                 }
             });
-        } else if (e.target.value === 'Series') {
+        } else if (e.target.value === SERIES.apiName) {
             this.setState({
                 seasonChecked: true,
                 episodeChecked: true,
@@ -236,7 +236,7 @@ class TitleCreate extends React.Component {
                 }
 
             });
-        } else if (e.target.value === 'Event' || e.target.value === 'Sports') {
+        } else if (e.target.value === EVENT.apiName || e.target.value === SPORTS.apiName) {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
