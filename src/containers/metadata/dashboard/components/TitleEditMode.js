@@ -27,7 +27,6 @@ const mapStateToProps = state => {
   return {
     configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
     configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
-    configProductionStudio: state.titleReducer.configData.find(e => e.key === configFields.PRODUCTION_STUDIO),
   };
 };
 
@@ -45,7 +44,6 @@ class TitleEditMode extends Component {
     const {
       title,
       contentType,
-      productionStudioId,
       releaseYear,
       boxOffice,
       animated,
@@ -95,23 +93,6 @@ class TitleEditMode extends Component {
                   <Alert color='light' id='titleContentType'>
                     <b>{toPrettyContentTypeIfExist(contentType)}</b>
                   </Alert>
-                </Col>
-                <Col>
-                  <Label for='titleProductionStudio'>Production Studio</Label>
-                  <AvField
-                    type='select'
-                    name='productionStudioId'
-                    id='titleProductionStudio'
-                    onChange={e => this.props.handleOnChangeEdit(e)}
-                    value={productionStudioId}
-                  >
-                    <option value=''>Select Production Studio</option>
-                    {
-                      this.props.configProductionStudio && this.props.configProductionStudio.value.map((e, index) => {
-                        return <option key={index} value={e.name}>{e.name}</option>;
-                      })
-                    }
-                  </AvField>
                 </Col>
               </Row>
               {contentType !== MOVIE.apiName && contentType !== SERIES.apiName && contentType !== ADVERTISEMENT.apiName ? (
@@ -542,7 +523,6 @@ TitleEditMode.propTypes = {
   advisoryCode: PropTypes.string,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
-  configProductionStudio: PropTypes.object
 };
 
 export default connect(mapStateToProps)(TitleEditMode);
