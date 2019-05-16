@@ -87,10 +87,8 @@ class Dashboard extends React.Component {
     onSubmitSearch = async (e) => {
         e.preventDefault();
         let filter = {
-            MediaSearchRequest: {
-                queryTerms: this.props.keywordFilters,
-                filters: []
-            }
+            queryTerms: this.props.keywordFilters,
+            filters: Object.keys(this.props.selectedFilters).map((key) => {return {'filterName' : key, 'filterValues' : [this.props.selectedFilters[key]]};})
         };
         mediaSearchService.getAssets(filter)
             .then(res => {
