@@ -11,9 +11,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import Input from '@material-ui/core/Input';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
+import FormControl from '@material-ui/core/FormControl';
 
 import Card from 'material-dashboard-pro-react/dist/components/Card/Card.js';
 import CardHeader from 'material-dashboard-pro-react/dist/components/Card/CardHeader.js';
@@ -27,6 +25,7 @@ import Button from 'material-dashboard-pro-react/dist/components/CustomButtons/B
 
 import dashboardStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/dashboardStyle.js';
 import regularFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/regularFormsStyle.js';
+import extendedFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.js';
 
 import {
     loadFilterResults,
@@ -38,6 +37,7 @@ import {
 const style = {
     ...regularFormsStyle,
     ...dashboardStyle,
+    ...extendedFormsStyle
 };
 
 import 'material-dashboard-pro-react/dist/material-dashboard-pro-react.css';
@@ -62,16 +62,7 @@ const mapDispatchToProps = {
     loadSearchResults
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: '250px',
-        },
-    },
-};
+
 
 class Dashboard extends React.Component {
     state = {
@@ -127,7 +118,6 @@ class Dashboard extends React.Component {
                                 <h4 className={classes.cardIconTitle}>Filters</h4>
                             </CardHeader>
                             <CardBody>
-                                <form onSubmit={this.onSubmitSearch} className={classes.formControl}>
                                     <GridContainer xs={12} item={true}>
                                         <GridItem xs={12} item={true}>
                                             <TagsInput
@@ -140,32 +130,48 @@ class Dashboard extends React.Component {
                                         {this.props.loadedFilters ? (
                                             this.props.loadedFilters.map( (val, index) => (
                                                 <GridItem xs={12} sm={6} md={2} lg={2} key={index}>
+                                                    <FormControl
+                                                        fullWidth
+                                                        className={classes.selectFormControl}
+                                                    >
                                                     <InputLabel
-                                                        htmlFor="select-multiple-checkbox">
+                                                        htmlFor={val.multiSelect ? 'multiple-select' : 'simple-select'}
+                                                        className={classes.selectLabel}>
                                                         {val.filterDisplayName}
                                                     </InputLabel>
                                                     <Select
-                                                        multiple
+                                                        multiple={val.multiSelect}
                                                         value={this.props.selectedFilters[val.filterSearchParameter] ? this.props.selectedFilters[val.filterSearchParameter] : []}
                                                         onChange={(e) => this.handleMultiple(val.filterSearchParameter, e)}
-                                                        input={<Input id="select-multiple-checkbox" />}
-                                                        renderValue={selected => selected.join(', ')}
-                                                        MenuProps={MenuProps}>
+                                                        MenuProps={{
+                                                            className: classes.selectMenu
+                                                        }}
+                                                        classes={{
+                                                            select: classes.select
+                                                        }}
+                                                        inputProps={{
+                                                            name: val.multiSelect ? 'multipleSelect' : 'simpleSelect',
+                                                            id: val.multiSelect ? 'multiple-select' : 'simple-select'
+                                                        }}
+                                                    >
                                                         {val.values.map((flt)=>(
-                                                            <MenuItem key={flt} value={flt}>
-                                                                <Checkbox checked={this.props.selectedFilters[val.filterSearchParameter] ? this.props.selectedFilters[val.filterSearchParameter].indexOf(flt) > -1 : false} />
-                                                                <ListItemText primary={flt} />
+                                                            <MenuItem key={flt} value={flt}
+                                                                      classes={{
+                                                                          root: classes.selectMenuItem,
+                                                                          selected: val.multiSelect ? classes.selectMenuItemSelectedMultiple : classes.selectMenuItemSelected
+                                                                      }}>
+                                                                {flt}
                                                             </MenuItem>
                                                         ))}
                                                     </Select>
+                                                    </FormControl>
                                                 </GridItem>
                                             ))
                                         ) : ''}
                                         <GridItem xs={12}>
-                                            <Button color="info" round type="submit">Submit</Button>
+                                            <Button color="info" round onClick={this.onSubmitSearch}>Submit</Button>
                                         </GridItem>
                                     </GridContainer>
-                                </form>
                             </CardBody>
                         </Card>
 
