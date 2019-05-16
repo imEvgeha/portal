@@ -8,7 +8,12 @@ import TagsInput from 'react-tagsinput';
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import CustomDropdown from 'material-dashboard-pro-react/dist/components/CustomDropdown/CustomDropdown.js';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
+import Checkbox from '@material-ui/core/Checkbox';
+import ListItemText from '@material-ui/core/ListItemText';
 
 import Card from 'material-dashboard-pro-react/dist/components/Card/Card.js';
 import CardHeader from 'material-dashboard-pro-react/dist/components/Card/CardHeader.js';
@@ -39,6 +44,8 @@ import 'material-dashboard-pro-react/dist/material-dashboard-pro-react.css';
 
 import {mediaSearchService} from '../service/MediaSearchService';
 
+
+
 const mapStateToProps = state => {
     return {
         loadedFilters: state.media.filters.loadedFilters,
@@ -55,7 +62,16 @@ const mapDispatchToProps = {
     loadSearchResults
 };
 
-
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: '250px',
+        },
+    },
+};
 
 class Dashboard extends React.Component {
     state = {
@@ -72,10 +88,10 @@ class Dashboard extends React.Component {
             });
     }
 
-    onSelectFilter = (searchParameter, menuItem) => {
+    handleMultiple = (searchParameter, e) => {
         const filter = {
             filterName: searchParameter,
-            filterValues: menuItem
+            filterValues: e.target.value.length > 0 ? e.target.value : null
         };
         this.props.selectFilterResults(filter);
     }
@@ -88,7 +104,7 @@ class Dashboard extends React.Component {
         e.preventDefault();
         let filter = {
             queryTerms: this.props.keywordFilters,
-            filters: Object.keys(this.props.selectedFilters).map((key) => {return {'filterName' : key, 'filterValues' : [this.props.selectedFilters[key]]};})
+            filters: Object.keys(this.props.selectedFilters).map((key) => {return {'filterName' : key, 'filterValues' : this.props.selectedFilters[key]};}).filter(filt => filt.filterValues)
         };
         mediaSearchService.getAssets(filter)
             .then(res => {
@@ -101,20 +117,19 @@ class Dashboard extends React.Component {
 
     render() {
         const { classes } = this.props;
-
         return (
             <div className={'use-material-dashboard-pro-react'}>
                 <h3>Media Search Results Cards</h3>
                 <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
+                    <GridItem xs={12} sm={12} md={12} item={true}>
                         <Card>
                             <CardHeader color="rose" icon>
                                 <h4 className={classes.cardIconTitle}>Filters</h4>
                             </CardHeader>
                             <CardBody>
-                                <form onSubmit={this.onSubmitSearch}>
-                                    <GridContainer xs={12}>
-                                        <GridItem xs={12}>
+                                <form onSubmit={this.onSubmitSearch} className={classes.formControl}>
+                                    <GridContainer xs={12} item={true}>
+                                        <GridItem xs={12} item={true}>
                                             <TagsInput
                                                 value={this.props.keywordFilters}
                                                 onChange={this.onAddKeywordFilter}
@@ -123,20 +138,26 @@ class Dashboard extends React.Component {
                                             />
                                         </GridItem>
                                         {this.props.loadedFilters ? (
-                                            this.props.loadedFilters.map( (key, index) => (<GridItem xs={12} sm={6} md={2} lg={2} key={index}>
-                                                    <CustomDropdown
-                                                        hoverColor="info"
-                                                        buttonText={this.props.selectedFilters[key.filterSearchParameter] ? this.props.selectedFilters[key.filterSearchParameter] : key.filterDisplayName}
-                                                        buttonProps={{
-                                                            round: true,
-                                                            fullWidth: true,
-                                                            style: { marginBottom: '0' },
-                                                            color: 'info'
-                                                        }}
-                                                        dropdownHeader={key.filterDisplayName}
-                                                        dropdownList={key.values}
-                                                        onClick={(menuItem) => this.onSelectFilter(key.filterSearchParameter, menuItem)}
-                                                    />
+                                            this.props.loadedFilters.map( (val, index) => (
+                                                <GridItem xs={12} sm={6} md={2} lg={2} key={index}>
+                                                    <InputLabel
+                                                        htmlFor="select-multiple-checkbox">
+                                                        {val.filterDisplayName}
+                                                    </InputLabel>
+                                                    <Select
+                                                        multiple
+                                                        value={this.props.selectedFilters[val.filterSearchParameter] ? this.props.selectedFilters[val.filterSearchParameter] : []}
+                                                        onChange={(e) => this.handleMultiple(val.filterSearchParameter, e)}
+                                                        input={<Input id="select-multiple-checkbox" />}
+                                                        renderValue={selected => selected.join(', ')}
+                                                        MenuProps={MenuProps}>
+                                                        {val.values.map((flt)=>(
+                                                            <MenuItem key={flt} value={flt}>
+                                                                <Checkbox checked={this.props.selectedFilters[val.filterSearchParameter] ? this.props.selectedFilters[val.filterSearchParameter].indexOf(flt) > -1 : false} />
+                                                                <ListItemText primary={flt} />
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
                                                 </GridItem>
                                             ))
                                         ) : ''}
