@@ -107,7 +107,7 @@ export const rightsService = {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 let map = mappings.find(({queryParamName}) => queryParamName === key);
                 let value = searchCriteria[key];
-                if (map.searchDataType === 'string') {
+                if (map && map.searchDataType === 'string') {
                     if (isQuoted(value)) {
                         value = value.substr(1, value.length - 2);
                     } else {
