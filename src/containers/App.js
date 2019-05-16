@@ -52,7 +52,7 @@ export default class App extends React.Component {
                         <Route exact path="/contractprofile" component={ContractProfile} />
                         <Route exact path="/contractsearch" component={Contract} />
 
-                        <Route exact path="/Media" component={Media} />
+                        <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
 
                     </div>
                 </div>

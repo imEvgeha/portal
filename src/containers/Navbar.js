@@ -73,11 +73,13 @@ class NavbarConnect extends React.Component {
                                 <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
                             </span>
                         </li>
-                        <li className="">
-                            <span className="nav-link" href="#" >
-                                <NavLink activeClassName="navActive" to="/media" id="metadata-tab">Media Search</NavLink>
-                            </span>
-                        </li>
+                        <Can I="read" a="AssetManagement">
+                            <li className="nav-item">
+                                <span className="nav-link" href="#" >
+                                    <NavLink activeClassName="navActive" to="/media" id="metadata-tab">Media Search</NavLink>
+                                </span>
+                            </li>
+                        </Can>
                     </ul>
                     <ul className="nav navbar-nav ml-auto">
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
