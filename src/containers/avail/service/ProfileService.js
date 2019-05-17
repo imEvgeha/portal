@@ -19,7 +19,17 @@ export const profileService = {
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then( (response) => {
+                let collection = {};
                 response.data.mappings.map((rec) => {
+
+                    //sanity check
+                    let field = rec.javaVariableName.split('.').pop();
+                    if(collection[field]){
+                        console.error('COLLISION BETWEEN FIELD\'s LAST PART DETECTED : ' + field + ' in ' + collection[field] + ' and ' + rec.javaVariableName);
+                    }
+                    collection[field] = rec.javaVariableName;
+                    //end sanity check
+
                     if(rec.dataType === 'select' || rec.dataType === 'multiselect'){
                         if(rec.options){
                             store.dispatch(loadSelectLists(rec.javaVariableName, rec.options.map((option) => {return {id:option, type:rec.javaVariableName, value:option};})));

@@ -43,6 +43,15 @@ class CoreMetadataCreateCrewModal extends Component {
             person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
     };
 
+    isSelectedPersonValid = (selectedPerson) => {
+        if (this.props.castCrewList.findIndex(person =>
+            person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     updateSelectedPerson = (personJSON) => {
         let person = null;
         if (personJSON) {

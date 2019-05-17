@@ -19,6 +19,7 @@ import { titleServiceManager } from '../../service/TitleServiceManager';
 import { Link } from 'react-router-dom';
 import { titleMapping } from '../../service/Profile';
 import { titleSearchHelper } from '../TitleSearchHelper';
+import {toPrettyContentTypeIfExist} from "../../../../constants/metadata/contentType";
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -280,7 +281,8 @@ class TitleResultTable extends React.Component {
     }
 
     addLoadedItems(data) {
-        let items = data.data;
+        let items = data.data.map(e => e.contentType = toPrettyContentTypeIfExist(e.contentType));
+
         if (items.length > 0) {
             this.props.resultPageUpdate({
                 pages: this.props.titleTabPage.pages + 1,

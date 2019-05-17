@@ -160,8 +160,8 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern: {value: /^\d{2,3}:[0-5]\d:[0-5]\d$/}}}
-                        errorMessage="Please enter a valid number!"
+                        validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                        errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
                     />
                 </AvForm>
             </div>);
@@ -326,6 +326,10 @@ class SelectableInput extends Component {
                             disabled={this.state.invalid || !this.isAnyValueSpecified()}
                             style={{width: '80px'}}>{this.props.saveText || 'add' }</Button>
                 </div>
+                }
+                {   this.props.dataType === 'duration' &&
+                    <span title={'* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'}
+                          style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span>
                 }
             </div>
         );

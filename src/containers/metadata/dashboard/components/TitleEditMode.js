@@ -14,13 +14,20 @@ import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
 import {connect} from 'react-redux';
 import {configFields} from '../../service/ConfigService';
+import {
+  ADVERTISEMENT,
+  EPISODE,
+  MOVIE,
+  SEASON,
+  SERIES,
+  toPrettyContentTypeIfExist
+} from '../../../../constants/metadata/contentType';
 
 const mapStateToProps = state => {
-    return {
-        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
-        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
-        configProductionStudio: state.titleReducer.configData.find(e => e.key === configFields.PRODUCTION_STUDIO),
-    };
+  return {
+    configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+    configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+  };
 };
 
 class TitleEditMode extends Component {
@@ -33,11 +40,10 @@ class TitleEditMode extends Component {
     };
   }
 
-    render() {
+  render() {
     const {
       title,
       contentType,
-      productionStudioId,
       releaseYear,
       boxOffice,
       animated,
@@ -85,28 +91,11 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='titleContentType'>Content Type</Label>
                   <Alert color='light' id='titleContentType'>
-                    <b>{contentType}</b>
+                    <b>{toPrettyContentTypeIfExist(contentType)}</b>
                   </Alert>
                 </Col>
-                <Col>
-                  <Label for='titleProductionStudio'>Production Studio</Label>
-                  <AvField
-                      type='select'
-                      name='productionStudioId'
-                      id='titleProductionStudio'
-                      onChange={e => this.props.handleOnChangeEdit(e)}
-                      value={productionStudioId}
-                  >
-                    <option value=''>Select Production Studio</option>
-                    {
-                      this.props.configProductionStudio && this.props.configProductionStudio.value.map((e, index) => {
-                        return <option key={index} value={e.name}>{e.name}</option>;
-                      })
-                    }
-                  </AvField>
-                </Col>
               </Row>
-              {contentType !== 'MOVIE' && contentType !== 'SERIES' ? (
+              {contentType !== MOVIE.apiName && contentType !== SERIES.apiName && contentType !== ADVERTISEMENT.apiName ? (
                 <Fragment>
                   {this.props.data.episodic !== null ? (
                     <Fragment>
@@ -129,14 +118,14 @@ class TitleEditMode extends Component {
                       <Row>
                         <Col>
                           <FormGroup>
-                            <Label for='titleSeasonNumber'>Season</Label>
+                            <Label for='titleSeasonNumber'>Season{contentType === EPISODE.apiName || contentType === SEASON.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                             <AvField
                               type='number'
                               name='seasonNumber'
                               errorMessage='Please enter a valid season number!'
                               value={
                                 this.props.data.episodic !== null &&
-                                this.props.data.episodic.seasonNumber
+                                  this.props.data.episodic.seasonNumber
                                   ? this.props.data.episodic.seasonNumber
                                   : ''
                               }
@@ -144,23 +133,27 @@ class TitleEditMode extends Component {
                               placeholder={'Enter Season Number'}
                               onChange={e => this.props.handleChangeEpisodic(e)}
                               validate={{
+                                required: {
+                                  value: contentType === EPISODE.apiName || contentType === SEASON.apiName ? true : false,
+                                  errorMessage: 'Field cannot be empty!'
+                                },
                                 maxLength: { value: 3 }
                               }}
                             />
                           </FormGroup>
                         </Col>
                         <Fragment>
-                          {contentType !== 'SEASON' ? (
+                          {contentType !== SEASON.apiName ? (
                             <Col>
                               <FormGroup>
-                                <Label for='titleEpisodeNumber'>Episode</Label>
+                                <Label for='titleEpisodeNumber'>Episode{contentType === EPISODE.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                                 <AvField
                                   type='number'
                                   name='episodeNumber'
                                   errorMessage='Please enter a valid episode number!'
                                   value={
                                     this.props.data.episodic !== null &&
-                                    this.props.data.episodic.episodeNumber
+                                      this.props.data.episodic.episodeNumber
                                       ? this.props.data.episodic.episodeNumber
                                       : ''
                                   }
@@ -170,6 +163,10 @@ class TitleEditMode extends Component {
                                     this.props.handleChangeEpisodic(e)
                                   }
                                   validate={{
+                                    required: {
+                                      value: contentType === EPISODE.apiName ? true : false,
+                                      errorMessage: 'Field cannot be empty!'
+                                    },
                                     maxLength: { value: 3 }
                                   }}
                                 />
@@ -179,7 +176,7 @@ class TitleEditMode extends Component {
                         </Fragment>
                       </Row>
                       <Row>
-                        {contentType === 'SEASON' ? (
+                        {contentType === SEASON.apiName ? (
                           <Col>
                             <Label for='titleSeasonID'>Season ID</Label>
                             <AvField
@@ -209,9 +206,12 @@ class TitleEditMode extends Component {
                                     onChange={e => this.props.handleOnChangeEdit(e)}
                                     value={totalNumberOfEpisodes}
                                     placeholder='Episodes'
-                                    errorMessage="Please enter a valid episode number!"
                                     validate={{
-                                      maxLength: { value: 3 }
+                                      max: { value: 999, errorMessage: 'Please enter a valid episode number!' },
+                                      pattern: {
+                                        value: '^[0-9]+$',
+                                        errorMessage: 'Please enter a number!'
+                                      }
                                     }}
                                   />
                                 </Col>
@@ -241,7 +241,7 @@ class TitleEditMode extends Component {
                   ) : null}
                 </Fragment>
               ) :
-                  contentType === 'SEASON' ?
+                  contentType === SEASON.apiName ?
                   (
                     <Fragment>
                       <Row>
@@ -279,7 +279,7 @@ class TitleEditMode extends Component {
                         onChange={(e) => this.props.handleOnChangeEdit(e)}
                         placeholder="hh:mm:ss"
                         validate={{
-                          pattern :{value: '^$|^(([01][0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!'},
+                          pattern: { value: '^$|^(([01][0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!' },
                           maxLength: { value: 8 },
                           minLength: { value: 8 }
                         }}
@@ -297,11 +297,11 @@ class TitleEditMode extends Component {
                     value={countryOfOrigin}
                   >
                     <option value=''>Select Country of Origin</option>
-                      {
-                          this.props.configLocale && this.props.configLocale.value.map((e, index) => {
-                              return <option key={index} value={e.countryCode}>{e.countryName}</option>;
-                          })
-                      }
+                    {
+                      this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
+                      })
+                    }
                   </AvField>
                 </Col>
                 <Col>
@@ -336,7 +336,7 @@ class TitleEditMode extends Component {
                   </Input>
                 </Col>
               </Row>
-              <Row style={{marginTop: '15px'}}>
+              <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='originalLanguage'>Original Language</Label>
                   <AvField
@@ -347,35 +347,35 @@ class TitleEditMode extends Component {
                     value={originalLanguage}
                   >
                     <option value=''>Select Original Language</option>
-                      {
-                          this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
-                              return <option key={index} value={e.languageCode}>{e.languageName}</option>;
-                          })
-                      }
+                    {
+                      this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                        return <option key={index} value={e.languageCode}>{e.languageName}</option>;
+                      })
+                    }
                   </AvField>
                 </Col>
                 {
-                  contentType === 'EPISODE' ? (
+                  contentType === EPISODE.apiName ? (
                     <Fragment>
                       <Col>
-                          <Label for='titleEpisodeCount'>
-                            Episode Count
+                        <Label for='titleEpisodeCount'>
+                          Episode Count
                           </Label>
-                            <AvField
-                              type='text'
-                              name='episodeCount'
-                              value={
-                                this.props.data.episodic !== null &&
-                                  this.props.data.episodic.episodeCount
-                                  ? this.props.data.episodic.episodeCount
-                                  : ''
-                              }
-                              id='titleEpisodeCount'
-                              placeholder={'Enter Episode Count'}
-                              onChange={e =>
-                              this.props.handleChangeEpisodic(e)
-                              }
-                            />
+                        <AvField
+                          type='text'
+                          name='episodeCount'
+                          value={
+                            this.props.data.episodic !== null &&
+                              this.props.data.episodic.episodeCount
+                              ? this.props.data.episodic.episodeCount
+                              : ''
+                          }
+                          id='titleEpisodeCount'
+                          placeholder={'Enter Episode Count'}
+                          onChange={e =>
+                            this.props.handleChangeEpisodic(e)
+                          }
+                        />
                       </Col>
                       <Col>
                         <Label for='seasonPremiere'>Season Premiere</Label>
@@ -412,7 +412,7 @@ class TitleEditMode extends Component {
               <Row style={{ marginTop: '15px' }}>
                 <Col>
                   <Label for='titleReleaseYear'>
-                    Release Year{contentType === 'SERIES' || contentType === 'SEASON' ? null : <span style={{ color: 'red' }}>*</span>}
+                    Release Year{contentType === SERIES.apiName || contentType === SEASON.apiName ? null : <span style={{ color: 'red' }}>*</span>}
                   </Label>
                   <AvField
                     name='releaseYear'
@@ -420,7 +420,7 @@ class TitleEditMode extends Component {
                     id='titleReleaseYear'
                     validate={{
                       required: {
-                        value: contentType === 'SERIES' || contentType === 'SEASON' ? false : true,
+                        value: contentType === SERIES.apiName || contentType === SEASON.apiName ? false : true,
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },
@@ -523,7 +523,6 @@ TitleEditMode.propTypes = {
   advisoryCode: PropTypes.string,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
-  configProductionStudio: PropTypes.object
 };
 
 export default connect(mapStateToProps)(TitleEditMode);
