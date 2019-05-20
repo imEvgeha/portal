@@ -30,8 +30,9 @@ export const profileService = {
                     collection[field] = rec.javaVariableName;
                     //end sanity check
 
-                    if(rec.dataType === 'select' || rec.dataType === 'multiselect'){
+                    if(rec.searchDataType === 'select' || rec.searchDataType === 'multiselect'){
                         if(rec.options){
+                            console.log(rec.javaVariableName, rec.options);
                             store.dispatch(loadSelectLists(rec.javaVariableName, rec.options.map((option) => {return {id:option, type:rec.javaVariableName, value:option};})));
                         }else {
                             if(rec.configEndpoint) {
@@ -49,7 +50,7 @@ export const profileService = {
                             }
                         }
                     }
-                    if(rec.dataType === 'language' || rec.dataType === 'multilanguage'){
+                    if(rec.searchDataType === 'language' || rec.searchDataType === 'multilanguage'){
                         store.dispatch(loadSelectLists(rec.javaVariableName, ISO6391.getAllCodes().map(code => {return {value:code, label:ISO6391.getName(code)};})));
                     }
                 });
