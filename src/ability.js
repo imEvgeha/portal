@@ -13,7 +13,7 @@ const ability = new Ability([]);
 const updateAbility = (keycloak) => {
     const { can, rules } = AbilityBuilder.extract();
 
-    // ******** Ability *************
+    // ******** Avail *************
     if (keycloak.hasRealmRole('avails_viewer')) {
         can('read', 'Avail');
     }
@@ -22,6 +22,17 @@ const updateAbility = (keycloak) => {
     }
     if (keycloak.hasRealmRole('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
+    }
+
+    // ******** Asset Management *************
+    if (keycloak.hasRealmRole('asset_management_viewer')) {
+        can('read', 'AssetManagement');
+    }
+    if (keycloak.hasRealmRole('asset_management_user')) {
+        can(['create', 'read', 'update', 'delete'], 'AssetManagement');
+    }
+    if (keycloak.hasRealmRole('asset_management_admin')) {
+        can(['create', 'read', 'update', 'delete'], 'AssetManagement');
     }
 
     // ******** Metadata *************

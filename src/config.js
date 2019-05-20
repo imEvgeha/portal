@@ -3,10 +3,12 @@ export const defaultConfiguration = {
         url: 'https://availsapi.dev.vubiquity.com',
         titleUrl: 'http://localhost:8082',
         configuration: 'https://configapi.dev.vubiquity.com',
+        assetManagementURL: 'https://asset-management-api.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
             title: '/titles-api/v1',
             configuration: '/configuration-api/v1',
+            assetManagement: '/api/asset-management/v1'
         },
     },
     avails: {

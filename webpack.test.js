@@ -5,12 +5,12 @@ module.exports = {
         chunkFilename: 'app/[name].[chunkhash].chunk.js'
     },
     entry: {
-        main: './src/index.js'
+        main: ["@babel/polyfill", './src/index.js']
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 loaders: ['babel-loader', 'eslint-loader']
             }, {
