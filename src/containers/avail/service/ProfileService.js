@@ -32,7 +32,6 @@ export const profileService = {
 
                     if(rec.searchDataType === 'select' || rec.searchDataType === 'multiselect'){
                         if(rec.options){
-                            console.log(rec.javaVariableName, rec.options);
                             store.dispatch(loadSelectLists(rec.javaVariableName, rec.options.map((option) => {return {id:option, type:rec.javaVariableName, value:option};})));
                         }else {
                             if(rec.configEndpoint) {
