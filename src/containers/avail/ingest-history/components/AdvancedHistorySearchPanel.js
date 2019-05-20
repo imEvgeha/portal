@@ -49,6 +49,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDateInvalid = this.handleDateInvalid.bind(this);
         this.handleStateSelect = this.handleStateSelect.bind(this);
+        this.handleClear = this.handleClear.bind(this);
     }
 
     handleInputChange(event) {
@@ -85,10 +86,11 @@ class AdvancedHistorySearchPanel extends React.Component {
 
     handleClear() {
         advancedHistorySearchHelper.clearAdvancedHistorySearchForm();
+        this.handleSearch(null,{...this.props.searchCriteria, received: null, provider: '', status: ''});
     }
 
-    handleSearch() {
-        const criteria = {...this.props.searchCriteria};
+    handleSearch(e, advCriteria = null) {
+        const criteria = advCriteria || {...this.props.searchCriteria};
         criteria.provider = safeTrim(criteria.provider);
         this.props.searchFormUpdateAdvancedHistorySearchCriteria(criteria);
         this.props.searchFormSetHistorySearchCriteria(criteria);

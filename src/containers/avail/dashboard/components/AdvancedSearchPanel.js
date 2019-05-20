@@ -178,7 +178,7 @@ class AdvancedSearchPanel extends React.Component {
     handleClear() {
         this.handleSelect(null);
         rightSearchHelper.clearAdvancedSearchForm();
-        setTimeout(this.handleSearch, 1);
+        this.handleSearch(null, {});
     }
 
     handleSave() {
@@ -194,12 +194,13 @@ class AdvancedSearchPanel extends React.Component {
         }, {reportName: this.props.reportName});
     }
 
-    handleSearch() {
+    handleSearch(e, criteria = null) {
+        criteria = criteria || this.props.searchCriteria;
         if ( !this.isAnyValueSpecified() ) {
             this.setState({selected: null, value: null});
         }
         this.setState({blink: null});
-        this.props.onSearch(this.props.searchCriteria);
+        this.props.onSearch(criteria);
     }
 
     isAnyValueSpecified = () => {
