@@ -70,7 +70,7 @@ class RightsURL extends React.Component {
                     }
                     if (subkey) {
                         map = mappings.find(({queryParamName}) => queryParamName === name);
-                        if (map && ['date', 'localdate', 'duration'].includes(map.dataType)) map = null;
+                        if (map && !['date', 'localdate', 'duration'].includes(map.dataType)) map = null;
                     }
                     if (map) {
                         if (!filter[name]) found++;
