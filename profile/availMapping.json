@@ -10,27 +10,6 @@
   "enableEdit": true,
   "required": true
 }, {
-  "javaVariableName": "productionStudio",
-  "displayName": "Production Studio",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/production-studios",
-  "queryParamName": "productionStudio",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "platform",
-  "displayName": "Platform",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "platform",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
   "javaVariableName": "licensor",
   "displayName": "Licensor",
   "dataType": "select",
@@ -75,6 +54,132 @@
   "enableEdit": true,
   "required": true
 }, {
+  "javaVariableName": "licensee",
+  "displayName": "Licensee",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/licensees",
+  "queryParamName": "licensee",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "licenseType",
+  "displayName": "License Type",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/licence-types",
+  "queryParamName": "licenseType",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "territory",
+  "displayName": "Territory",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/territories",
+  "queryParamName": "territory",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "contentType",
+  "displayName": "Content Type",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/content-types",
+  "queryParamName": "contentType",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "format",
+  "displayName": "Format",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/formats",
+  "queryParamName": "format",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "availStart",
+  "displayName": "Avail Start",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "availStart",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "availEnd",
+  "displayName": "Avail End",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "availEnd",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "start",
+  "displayName": "Start",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "start",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "end",
+  "displayName": "End",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "end",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "startLag",
+  "displayName": "Start Lag",
+  "dataType": "duration",
+  "searchDataType": "duration",
+  "queryParamName": "startLag",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "productionStudio",
+  "displayName": "Production Studio",
+  "dataType": "select",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/production-studios",
+  "queryParamName": "productionStudio",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "platform",
+  "displayName": "Platform",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "platform",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
   "javaVariableName": "contractId",
   "displayName": "Contract Id",
   "dataType": "string",
@@ -116,17 +221,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "licensee",
-  "displayName": "Licensee",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/licensees",
-  "queryParamName": "licensee",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
-}, {
   "javaVariableName": "storeLanguage",
   "displayName": "Store Language",
   "dataType": "language",
@@ -157,17 +251,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "licenseType",
-  "displayName": "License Type",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/licence-types",
-  "queryParamName": "licenseType",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
-}, {
   "javaVariableName": "licenseRightsDescription",
   "displayName": "License Rights Description",
   "dataType": "select",
@@ -178,17 +261,6 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": false
-}, {
-  "javaVariableName": "territory",
-  "displayName": "Territory",
-  "dataType": "multiselect",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/territories",
-  "queryParamName": "territory",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
 }, {
   "javaVariableName": "territoryExcluded",
   "displayName": "Territory Excluded",
@@ -323,17 +395,6 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": false
-}, {
-  "javaVariableName": "contentType",
-  "displayName": "Content Type",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/content-types",
-  "queryParamName": "contentType",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
 }, {
   "javaVariableName": "entryType",
   "displayName": "Entry Type",
@@ -587,17 +648,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "format",
-  "displayName": "Format",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "configEndpoint": "/formats",
-  "queryParamName": "format",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
-}, {
   "javaVariableName": "captions.captionIncluded",
   "displayName": "Caption Included",
   "dataType": "boolean",
@@ -675,66 +725,6 @@
   "searchDataType": "multiselect",
   "options": ["Atmos", "DTSX", "Auro3D"],
   "queryParamName": "ngAudio",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "availStart",
-  "displayName": "Avail Start",
-  "dataType": "date",
-  "searchDataType": "date",
-  "queryParamName": "availStart",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "availEnd",
-  "displayName": "Avail End",
-  "dataType": "date",
-  "searchDataType": "date",
-  "queryParamName": "availEnd",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "start",
-  "displayName": "Start",
-  "dataType": "date",
-  "searchDataType": "date",
-  "queryParamName": "start",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "end",
-  "displayName": "End",
-  "dataType": "date",
-  "searchDataType": "date",
-  "queryParamName": "end",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "startLag",
-  "displayName": "Start Lag",
-  "dataType": "duration",
-  "searchDataType": "duration",
-  "queryParamName": "startLag",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "endLag",
-  "displayName": "End Lag",
-  "dataType": "duration",
-  "searchDataType": "duration",
-  "queryParamName": "endLag",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
