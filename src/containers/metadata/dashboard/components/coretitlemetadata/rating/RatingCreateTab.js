@@ -26,10 +26,8 @@ class RatingCreateTab extends Component {
             <div id="ratingCreate">
                 <Fragment>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
+                        <Col md={3}>
                             <b>Rating System<span style={{ color: 'red' }}>*</span></b>
-                        </Col>
-                        <Col md={2}>
                             <AvField type="select"
                                      name="ratingSystem"
                                      id="titleRatingSystem"
@@ -43,10 +41,8 @@ class RatingCreateTab extends Component {
                                 }
                             </AvField>
                         </Col>
-                        <Col md={2}>
+                        <Col md={3}>
                             <b>Ratings</b>
-                        </Col>
-                        <Col md={2}>
                             <AvField type="select"
                                      name="ratings"
                                      id="titleRatings"
@@ -60,13 +56,10 @@ class RatingCreateTab extends Component {
                                 }
                             </AvField>
                         </Col>
-                        <Col md={2}>
+                        <Col md={6}>
                             <b>Advisory Codes</b>
-                        </Col>
-                        <Col md={2}>
                             <Select
                                 onChange={this.handleAdvisoryCodeChange}
-                                options={this.props.configAdvisoryCode}
                                 isMulti
                                 placeholder='Select Advisory Code'
                             />
@@ -74,10 +67,8 @@ class RatingCreateTab extends Component {
                     </Row>
 
                     <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
+                        <Col>
                             <b>Advisories</b>
-                        </Col>
-                        <Col md={2}>
                             <AvField type="text" id="tittleAdvisories" name="advisories"  onChange={this.props.handleChange} errorMessage="Please enter a valid advisories!" />
                         </Col>
                     </Row>
@@ -89,9 +80,9 @@ class RatingCreateTab extends Component {
 
 RatingCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
-    configRatingSystem: PropTypes.array,
-    configRatings: PropTypes.array,
-    configAdvisoryCode: PropTypes.array
+    configRatingSystem: PropTypes.object,
+    configRatings: PropTypes.object,
+    configAdvisoryCode: PropTypes.object
 };
 
 export default connect(mapStateToProps)(RatingCreateTab);

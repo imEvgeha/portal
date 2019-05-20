@@ -6,7 +6,6 @@ import RatingReadTab from './RatingReadTab';
 import RatingCreateTab from './RatingCreateTab';
 import RatingEditTab from './RatingEditTab';
 
-
 class Rating extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +21,7 @@ class Rating extends Component {
                     }
                     {
                         this.props.ratings && this.props.ratings.map((item, i) => {
-                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.ratingSystem + item.rating}</b></span>;
+                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.ratingSystem + ' ' + item.rating}</b></span>;
                         })
                     }
                 </div>
@@ -75,13 +74,11 @@ Rating.propTypes = {
     isEditMode: PropTypes.bool,
     ratings: PropTypes.array,
     activeTab: PropTypes.any,
-    toggle: PropTypes.func,
+    toggle: PropTypes.func.isRequired,
     addRating: PropTypes.func,
     createRatingTab: PropTypes.string,
     handleChange: PropTypes.func,
     handleEditChange: PropTypes.func
 };
-
-
 
 export default Rating;

@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Col, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
-import '../territorymetadata/MetadataTerritoryTab.scss';
 
 class RatingReadTab extends Component {
 
@@ -18,8 +17,9 @@ class RatingReadTab extends Component {
         } = this.props.data;
 
         return (
-            <div id="editorialMetadataTabs">
+            <div id="titleRatingTabs">
                 <Fragment>
+                    <h2>HELLO RATING </h2>
                     <Row style={{padding: '15px'}}>
                         <Col md={3}><b>Rating System: </b> {ratingSystem ? ratingSystem : this.emptySpan()}</Col>
                         <Col md={3}><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
