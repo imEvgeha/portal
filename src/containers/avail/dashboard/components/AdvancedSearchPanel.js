@@ -4,10 +4,12 @@ import {
     searchFormUpdateAdvancedSearchCriteria
 } from '../../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
+
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
 import {rightSearchHelper} from '../RightSearchHelper';
 import {configurationService} from '../../service/ConfigurationService';
+import {historyService} from '../../service/HistoryService';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
 import {downloadFile} from '../../../../util/Common';
@@ -52,7 +54,10 @@ class AdvancedSearchPanel extends React.Component {
             selected: null,
             value: null,
             blink: null,
+            historyData:{}
         };
+        this.loadingHistoryData = {};
+
         this.handleBulkExport = this.handleBulkExport.bind(this);
         this.bulkExport = this.bulkExport.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -223,6 +228,22 @@ class AdvancedSearchPanel extends React.Component {
         return this.getFieldsToShow().sort( (a, b) => (a.order ? a.order : -1)  - (b.order ? b.order : -1) );
     }
 
+    getHistoryData(availHistoryId) {
+        historyService.getHistory(availHistoryId)
+            .then(res => {
+                if(res && res.data && this.loadingHistoryData[availHistoryId]) {
+                    delete this.loadingHistoryData[availHistoryId];
+                    this.setState({historyData:{...this.state.historyData, [availHistoryId] : res.data}});
+                }
+            })
+            .catch(() => {
+            });
+    }
+
+    componentWillUnmount() {
+        this.loadingHistoryData = {};
+    }
+
     render() {
         if (this.props.availsMapping && this.availsMap === null) {
             this.availsMap = {};
@@ -349,12 +370,35 @@ class AdvancedSearchPanel extends React.Component {
         };
 
         const renderSpecialCloseable = () => {
+            let val = '';
+            if(this.props.searchCriteria.availHistoryIds) {
+                val = this.props.searchCriteria.availHistoryIds.value;
+                let data = this.state.historyData[val];
+                if (data) {
+                    let subTitle = data.ingestType + ', ';
+                    val = subTitle;
+                    if (data.ingestType === 'Email') {
+                        val += (data.provider ? data.provider + ', ' : '');
+                    } else {
+                        if (data.attachments && data.attachments[0]) {
+                            const filename = data.attachments[0].link.split(/(\\|\/)/g).pop();
+                            val += (filename ? filename + ', ' : '');
+                        }
+                    }
+                    val += moment(data.received).format('llll');
+                } else {
+                    if(!this.loadingHistoryData[val]) {
+                        this.loadingHistoryData[val] = {loading: true};
+                        this.getHistoryData(val);
+                    }
+                }
+            }
             return (
                 this.props.searchCriteria.availHistoryIds &&
                 <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={'Avail History'}
-                        value={' = ' + this.props.searchCriteria.availHistoryIds.value}
+                        value={' = ' + val}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
                         }}

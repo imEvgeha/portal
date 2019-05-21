@@ -86,30 +86,6 @@ class DashboardContainer extends React.Component {
         configurationService.initConfiguration();
 
         this.getSearchCriteriaFromURL();
-
-        // if (this.props.location && this.props.location.state) {
-        //     const state = this.props.location.state;
-        //     if (state.availHistory) {
-        //         let subTitle = state.availHistory.ingestType + ', ';
-        //         if(state.availHistory.ingestType === 'Email'){
-        //             subTitle += (state.availHistory.provider ? state.availHistory.provider + ', ' : '');
-        //         }else{
-        //             if(state.availHistory.attachments && state.availHistory.attachments[0]){
-        //                 const filename = state.availHistory.attachments[0].link.split(/(\\|\/)/g).pop();
-        //                 subTitle += (filename ? filename + ', ' : '');
-        //             }
-        //         }
-        //         subTitle += moment(state.availHistory.received).format('llll');
-        //         const criteria = {availHistoryIds: {value: state.availHistory.id, subTitle}};
-        //         if (state.invalid !== undefined) {
-        //             criteria.invalid = {value: state.invalid};
-        //         }
-        //
-        //         this.props.searchFormShowAdvancedSearch(true);
-        //         this.props.searchFormSetAdvancedSearchCriteria(criteria);
-        //         this.handleAvailsAdvancedSearch(criteria);
-        //     }
-        // }
     }
 
     componentDidUpdate(prevProps) {
