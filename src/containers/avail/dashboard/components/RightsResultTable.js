@@ -67,11 +67,13 @@ class RightsResultTable extends React.Component {
         showSelectedAvails: t.bool,
         fromServer: t.bool,
         hidden: t.bool,
-        nav: t.object
+        nav: t.object,
+        autoRefresh: t.number
     };
 
     static defaultProps = {
-        autoload: true
+        autoload: true,
+        autoRefresh: 0
     }
 
     table = null;
@@ -87,9 +89,12 @@ class RightsResultTable extends React.Component {
             }
         };
 
+        this.refresh = null;
+
         this.loadingRenderer = this.loadingRenderer.bind(this);
         this.refreshColumns = this.refreshColumns.bind(this);
         this.getRows = this.getRows.bind(this);
+        this.reload = this.reload.bind(this);
         this.addLoadedItems = this.addLoadedItems.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
@@ -128,9 +133,17 @@ class RightsResultTable extends React.Component {
             elem.addEventListener('transitionend', this.updateWindowDimensions);
         }
         this.refreshColumns();
+
+        if(this.props.autoRefresh && this.refresh === null){
+            this.refresh = setInterval(this.reload, this.props.autoRefresh);
+        }
     }
 
     componentWillUnmount() {
+        if(this.refresh !== null){
+            clearInterval(this.refresh);
+            this.refresh = null;
+        }
         window.removeEventListener('resize', this.updateWindowDimensions);
         let elem = document.querySelector('.vu-advanced-search-panel');
         if(elem) {
@@ -338,12 +351,18 @@ class RightsResultTable extends React.Component {
         });
     }
 
+    reload(){
+        if(this.props.fromServer && this.table != null && this.props.autoRefresh) {
+            this.table.api.setDatasource(this.dataSource);
+        }
+    }
+
     doSearch(page, pageSize, sortedParams) {
         return rightServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){
-        if(this.table && this.table.api.getDisplayedRowCount() === 0){
+        if(this.table && this.table.api.getDisplayedRowCount() === 0 && !this.props.autoRefresh){
             this.table.api.showLoadingOverlay();
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
