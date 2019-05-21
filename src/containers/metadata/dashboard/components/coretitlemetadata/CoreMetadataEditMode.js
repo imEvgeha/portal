@@ -163,12 +163,15 @@ class CoreMetadataEditMode extends Component {
           <Rating
               isEditMode={true}
               ratings={this.props.ratings}
+              filteredRatings={this.state.ratings}
               activeTab={this.props.titleRankingActiveTab}
               toggle={this.props.toggleTitleRating}
               addRating={this.props.addTitleRatingTab}
               createRatingTab={this.props.createRatingTab}
               handleChange={this.props.handleRatingChange}
               handleEditChange={this.props.handleRatingEditChange}
+              handleRatingSystemValue={this.props.handleRatingSystemValue}
+              filteredRatings={this.props.filteredRatings}
           />
         </Row>
 

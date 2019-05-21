@@ -5,11 +5,34 @@ import PropTypes from 'prop-types';
 import RatingReadTab from './RatingReadTab';
 import RatingCreateTab from './RatingCreateTab';
 import RatingEditTab from './RatingEditTab';
+import { connect } from 'react-redux';
+import { configFields } from '../../../../service/ConfigService';
+
+const mapStateToProps = state => {
+    return {
+        configRatingSystem: state.titleReducer.configData.find(e => e.key === configFields.RATING_SYSTEM),
+        configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
+        configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
+    };
+};
 
 class Rating extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            filteredRatings: [],
+            advisoryCodeList: []
+        };
     }
+    
+    handleRatingSystemValue = (e) => {
+        const rating = e.target.value;
+        let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
+        this.setState({
+            filteredRatings: newRatings
+        });
+
+    };
     render() {
         return (
             <Container fluid id="ratingContainer" style={{ marginTop: '30px' }}>
@@ -21,7 +44,7 @@ class Rating extends Component {
                     }
                     {
                         this.props.ratings && this.props.ratings.map((item, i) => {
-                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.ratingSystem + ' ' + item.rating}</b></span>;
+                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.ratingSystem + ' ' + item.rating}</b></span>;
                         })
                     }
                 </div>
@@ -45,7 +68,14 @@ class Rating extends Component {
                                 <TabPane tabId={this.props.createRatingTab}>
                                     <Row>
                                         <Col>
-                                            <RatingCreateTab handleChange={this.props.handleChange} />
+                                            <RatingCreateTab
+                                                handleChange={this.props.handleChange}
+                                                handleRatingSystemValue={this.handleRatingSystemValue}
+                                                filteredRatings={this.state.filteredRatings}
+                                                configRatingSystem={this.props.configRatingSystem}
+                                                configAdvisoryCode={this.props.configAdvisoryCode}
+                                                advisoryCodeList={this.state.advisoryCodeList}
+                                            />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -78,7 +108,10 @@ Rating.propTypes = {
     addRating: PropTypes.func,
     createRatingTab: PropTypes.string,
     handleChange: PropTypes.func,
-    handleEditChange: PropTypes.func
+    handleEditChange: PropTypes.func,
+    configRatings: PropTypes.object,
+    configRatingSystem: PropTypes.object,
+    configAdvisoryCode: PropTypes.object
 };
 
-export default Rating;
+export default connect(mapStateToProps)(Rating);

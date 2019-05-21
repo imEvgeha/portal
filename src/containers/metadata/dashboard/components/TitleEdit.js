@@ -74,6 +74,7 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {},
             isCastModalOpen: false,
             isCrewModalOpen: false,
+            ratingForCreate: {}
         };
     }
 
@@ -276,13 +277,52 @@ class TitleEdit extends Component {
     };
 
     //TODO finished in TEM-832
-    removeAdvisoryCodes = () => {};
+    removeAdvisoryCodes = () => { };
 
     //TODO finished in TEM-832
-    handleRatingChange = () => {};
+    handleRatingChange = (e) => {
+        // console.log(e.target.name, e.target.value)
+        // let updateRatings = {
+        //     ...this.state.editedForm.ratings,
+        //     [e.target.name]: e.target.value
+        // };
+        // let updateEditForm = {
+        //     ...this.state.editedForm,
+        //     ratings: updateRatings
+        // };
+
+        // // this.setState({
+        // //     editedForm: updateEditForm
+        // // });
+        // let newRatingObject = {
+        //     [e.target.name]: e.target.value
+        // };
+        // let ratingArray = [newRatingObject];
+        // if (this.state.editedForm.ratings) {
+        //     ratingArray = [...ratingArray, ...this.state.editedForm.ratings];
+        // }
+
+        // let updateEditForm = {
+        //     ...this.state.editedForm,
+        //     ratings: ratingArray
+        // };
+
+        let newRatingToCreate = {
+            ...this.state.ratingForCreate,
+            [e.target.name]: e.target.value
+        };
+        
+        this.setState({
+            ratingForCreate: newRatingToCreate
+        });
+
+        console.log(this.state.editedForm);
+        
+
+    };
 
     //TODO finished in TEM-832
-    handleRatingEditChange = () => {};
+    handleRatingEditChange = () => { };
 
     toggleTitleRating = (tab) => {
         this.setState({
@@ -297,7 +337,7 @@ class TitleEdit extends Component {
     };
 
     readOnly = () => {
-        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating}/>;
+        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} />;
     };
 
     editMode = () => {
@@ -326,6 +366,7 @@ class TitleEdit extends Component {
             data={this.state.titleForm}
             episodic={this.state.titleForm.episodic}
             editedTitle={this.state.editedForm}
+
             ratings={this.state.editedForm.ratings}
 
             handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
@@ -343,8 +384,9 @@ class TitleEdit extends Component {
         }
     };
 
+
     handleTitleOnSave = () => {
-        if (this.state.titleForm !== this.state.editedForm) {
+        if (this.state.titleForm !== this.state.editedForm || this.state.ratingForCreate !== null) {
             this.setState({
                 isLoading: true
             });
@@ -352,7 +394,11 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
-
+            if(newAdditionalFields.ratings === null) {
+                newAdditionalFields.ratings = [this.state.ratingForCreate];
+            } else {                
+                newAdditionalFields.ratings.push(this.state.ratingForCreate);
+            }
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -732,6 +778,10 @@ class TitleEdit extends Component {
             editedForm: updateEditForm
         });
     };
+
+    handleChangeRating = (e) => {
+        console.log(e.target.name, e.target.value);
+    }
 
     addCastCrew = (person) => {
         let castCrewArray = [person];
