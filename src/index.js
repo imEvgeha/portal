@@ -43,7 +43,7 @@ function init() {
     keycloak.instance.init({onLoad: 'check-sso'}).success(authenticated => {
         if (authenticated) {
             setInterval(() => {
-                keycloak.instance.updateToken(10).error(() => keycloak.logout());
+                keycloak.instance.updateToken(10).error(() => keycloak.instance.logout());
             }, 10000);
 
             keycloak.instance.loadUserInfo().success(profileInfo => {
