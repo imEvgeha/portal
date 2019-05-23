@@ -24,7 +24,7 @@ class Rating extends Component {
             advisoryCodeList: []
         };
     }
-    
+
     handleRatingSystemValue = (e) => {
         const rating = e.target.value;
         let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
@@ -69,6 +69,8 @@ class Rating extends Component {
                                     <Row>
                                         <Col>
                                             <RatingCreateTab
+                                                handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
+                                                ratingObjectForCreate={this.props.ratingObjectForCreate}
                                                 handleChange={this.props.handleChange}
                                                 handleRatingSystemValue={this.handleRatingSystemValue}
                                                 filteredRatings={this.state.filteredRatings}
@@ -85,7 +87,14 @@ class Rating extends Component {
                                             <TabPane key={i} tabId={i}>
                                                 <Row>
                                                     <Col>
-                                                        <RatingEditTab handleChange={this.props.handleEditChange} key={i} data={item} />
+                                                        <RatingEditTab
+                                                            handleChange={this.props.handleEditChange}
+                                                            configRatingSystem={this.props.configRatingSystem}
+                                                            configRatings={this.props.configRatings}
+                                                            configAdvisoryCode={this.props.configAdvisoryCode}
+                                                            advisoryCodeList={this.state.advisoryCodeList}
+                                                            key={i}
+                                                            data={item} />
                                                     </Col>
                                                 </Row>
                                             </TabPane>);
@@ -111,7 +120,9 @@ Rating.propTypes = {
     handleEditChange: PropTypes.func,
     configRatings: PropTypes.object,
     configRatingSystem: PropTypes.object,
-    configAdvisoryCode: PropTypes.object
+    configAdvisoryCode: PropTypes.object,
+    handleAdvisoryCodeChange: PropTypes.func,
+    ratingObjectForCreate: PropTypes.object
 };
 
 export default connect(mapStateToProps)(Rating);

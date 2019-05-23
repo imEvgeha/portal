@@ -465,19 +465,21 @@ class TitleEditMode extends Component {
               handleRatingChange={this.props.handleRatingChange}
               handleRatingEditChange={this.props.handleRatingEditChange}
 
-            data={this.props.data}
-            onChange={this.props.handleOnChangeEdit}
-            handleOnExternalIds={this.props.handleOnExternalIds}
-            handleOnLegacyIds={this.props.handleOnLegacyIds}
-            isCastModalOpen={this.props.isCastModalOpen}
-            isCrewModalOpen={this.props.isCrewModalOpen}
-            renderModal={this.props.renderModal}
-            castInputValue={this.props.castInputValue}
-            removeCastCrew={this.props.removeCastCrew}
-            ratings={this.props.ratings}
-            addCastCrew={this.props.addCastCrew}
-            updateCastCrewValue={this.props.updateCastCrewValue}
-            editedTitle={this.props.editedTitle}
+              data={this.props.data}
+              onChange={this.props.handleOnChangeEdit}
+              handleOnExternalIds={this.props.handleOnExternalIds}
+              handleOnLegacyIds={this.props.handleOnLegacyIds}
+              isCastModalOpen={this.props.isCastModalOpen}
+              isCrewModalOpen={this.props.isCrewModalOpen}
+              renderModal={this.props.renderModal}
+              castInputValue={this.props.castInputValue}
+              removeCastCrew={this.props.removeCastCrew}
+              ratings={this.props.ratings}
+              handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
+              ratingObjectForCreate={this.props.ratingObjectForCreate}
+              addCastCrew={this.props.addCastCrew}
+              updateCastCrewValue={this.props.updateCastCrewValue}
+              editedTitle={this.props.editedTitle}
           />
         </Container>
       </Fragment>
@@ -512,6 +514,8 @@ TitleEditMode.propTypes = {
   handleOnChangeTitleDuration: PropTypes.func,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
+  handleAdvisoryCodeChange: PropTypes.func,
+  ratingObjectForCreate: PropTypes.object
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

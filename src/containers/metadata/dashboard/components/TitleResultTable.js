@@ -19,7 +19,7 @@ import { titleServiceManager } from '../../service/TitleServiceManager';
 import { Link } from 'react-router-dom';
 import { titleMapping } from '../../service/Profile';
 import { titleSearchHelper } from '../TitleSearchHelper';
-import {toPrettyContentTypeIfExist} from "../../../../constants/metadata/contentType";
+import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 
 const colDef = [];
 let registeredOnSelect = false;

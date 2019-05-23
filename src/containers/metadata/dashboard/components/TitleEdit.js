@@ -74,7 +74,8 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {},
             isCastModalOpen: false,
             isCrewModalOpen: false,
-            ratingForCreate: {}
+            ratingForCreate: {},
+            selectedAdvisoryCode: null
         };
     }
 
@@ -281,44 +282,25 @@ class TitleEdit extends Component {
 
     //TODO finished in TEM-832
     handleRatingChange = (e) => {
-        // console.log(e.target.name, e.target.value)
-        // let updateRatings = {
-        //     ...this.state.editedForm.ratings,
-        //     [e.target.name]: e.target.value
-        // };
-        // let updateEditForm = {
-        //     ...this.state.editedForm,
-        //     ratings: updateRatings
-        // };
-
-        // // this.setState({
-        // //     editedForm: updateEditForm
-        // // });
-        // let newRatingObject = {
-        //     [e.target.name]: e.target.value
-        // };
-        // let ratingArray = [newRatingObject];
-        // if (this.state.editedForm.ratings) {
-        //     ratingArray = [...ratingArray, ...this.state.editedForm.ratings];
-        // }
-
-        // let updateEditForm = {
-        //     ...this.state.editedForm,
-        //     ratings: ratingArray
-        // };
 
         let newRatingToCreate = {
             ...this.state.ratingForCreate,
             [e.target.name]: e.target.value
         };
-        
         this.setState({
             ratingForCreate: newRatingToCreate
-        });
+        });       
 
-        console.log(this.state.editedForm);
-        
+    };
 
+    handleAdvisoryCodeChange = (selectedAdvisoryCode) => {
+        let newRatingForCreate = {
+            ...this.state.ratingForCreate,
+            selectedAdvisoryCode: selectedAdvisoryCode
+        };
+        this.setState({ 
+            ratingForCreate: newRatingForCreate
+         });
     };
 
     //TODO finished in TEM-832
@@ -337,7 +319,7 @@ class TitleEdit extends Component {
     };
 
     readOnly = () => {
-        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} />;
+        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} activeTab={this.state.titleRankingActiveTab} />;
     };
 
     editMode = () => {
@@ -347,6 +329,8 @@ class TitleEdit extends Component {
             addTitleRatingTab={this.addTitleRatingTab}
             createRatingTab={CREATE_TAB}
             handleRatingChange={this.handleRatingChange}
+            handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
+            ratingObjectForCreate={this.state.ratingForCreate}
             handleRatingEditChange={this.handleRatingEditChange}
 
             isCastModalOpen={this.state.isCastModalOpen}
@@ -399,6 +383,7 @@ class TitleEdit extends Component {
             } else {                
                 newAdditionalFields.ratings.push(this.state.ratingForCreate);
             }
+            
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -779,9 +764,9 @@ class TitleEdit extends Component {
         });
     };
 
-    handleChangeRating = (e) => {
-        console.log(e.target.name, e.target.value);
-    }
+    // handleChangeRating = (e) => {
+    //     console.log(e.target.name, e.target.value);
+    // }
 
     addCastCrew = (person) => {
         let castCrewArray = [person];

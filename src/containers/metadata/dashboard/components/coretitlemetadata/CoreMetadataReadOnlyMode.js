@@ -81,6 +81,7 @@ class CoreMetadataReadOnlyMode extends Component {
                 }
                 <Row style={{ marginTop: '10px' }}>
                     <Rating
+                        activeTab={this.props.activeTab ? this.props.activeTab : 0}
                         isEditMode={false}
                         ratings={this.props.data.ratings}
                         toggle={this.props.toggleTitleRating}
@@ -210,7 +211,8 @@ class CoreMetadataReadOnlyMode extends Component {
 
 CoreMetadataReadOnlyMode.propTypes = {
     data: PropTypes.object,
-    toggleTitleRating: PropTypes.func
+    toggleTitleRating: PropTypes.func,
+    activeTab: PropTypes.any
 };
 
 export default CoreMetadataReadOnlyMode;

@@ -9,8 +9,22 @@ class RatingCreateTab extends Component {
         super(props);
         this.state = {
             selectedAdvisoryCode: null,
-            advisoryCodeList: null
+            filteredAdvisoryCodes: []
         };
+    }
+
+    filteredAdvisoryCodes = (e) => {
+        // this.props.configAdvisoryCode.value
+        const ratingSystem = e.target.value;
+        let newAdvisoryCodes = this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem);
+        for(let i = 0; i< newAdvisoryCodes.length; i++) {
+            newAdvisoryCodes[i].label = newAdvisoryCodes[i]['name'];
+            newAdvisoryCodes[i].value = newAdvisoryCodes[i]['name'];
+            delete newAdvisoryCodes[i].name;
+        }
+        this.setState({
+            filteredAdvisoryCodes: newAdvisoryCodes
+        });
     }
 
     handleAdvisoryCodeChange = (selectedAdvisoryCode) => {
@@ -20,6 +34,7 @@ class RatingCreateTab extends Component {
     handleChangeRatingSystem = (e) => {
         this.props.handleRatingSystemValue(e);
         this.props.handleChange(e);
+        this.filteredAdvisoryCodes(e);
     }
 
     render() {
@@ -60,11 +75,12 @@ class RatingCreateTab extends Component {
                         <Col md={6}>
                             <b>Advisory Codes</b>
                             <Select
-                                value={this.state.selectedAdvisoryCode}
-                                onChange={this.handleAdvisoryCodeChange}
+                                name="advisoriesCode"
+                                value={this.props.ratingObjectForCreate.selectedAdvisoryCode ? this.props.ratingObjectForCreate.selectedAdvisoryCode : []}
+                                onChange={this.props.handleAdvisoryCodeChange}
                                 isMulti
                                 placeholder='Select Advisory Code'
-                                options={this.props.advisoryCodeList}
+                                options={this.state.filteredAdvisoryCodes}
                             />
                         </Col>
                     </Row>
@@ -72,7 +88,7 @@ class RatingCreateTab extends Component {
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             <b>Advisories</b>
-                            <AvField type="text" id="tittleAdvisories" name="advisoriesFreeText" onChange={this.props.handleChange} errorMessage="Please enter a valid advisories!" />
+                            <AvField type="text" placeholder="Enter Advisories" id="tittleAdvisories" name="advisoriesFreeText" onChange={this.props.handleChange} errorMessage="Please enter a valid advisories!" />
                         </Col>
                     </Row>
                 </Fragment>
@@ -87,7 +103,9 @@ RatingCreateTab.propTypes = {
     configRatings: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
     filteredRatings: PropTypes.array,
-    handleRatingSystemValue: PropTypes.func
+    handleRatingSystemValue: PropTypes.func,
+    ratingObjectForCreate: PropTypes.object,
+    handleAdvisoryCodeChange: PropTypes.func
 };
 
 export default RatingCreateTab;
