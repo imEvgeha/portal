@@ -12,7 +12,8 @@ import {
     DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
-    AVAIL__RESULTS_PAGE__SHOW_SELECTED
+    AVAIL__RESULTS_PAGE__SHOW_SELECTED,
+    AVAIL__SET_HISTORY_CACHE
 } from '../../../constants/action-types';
 import {saveDashboardState} from '../../index';
 
@@ -26,6 +27,7 @@ const initialState = {
     showSelectedAvails: false,
     availTabPageLoading: false,
     session: {
+        historyCache:{},
         freeTextSearch: {
             text: ''
         },
@@ -60,6 +62,9 @@ const dashboard = (state = initialState, action) => {
         case AVAIL__RESULTS_PAGE__SHOW_SELECTED:
             return { ...state, showSelectedAvails: action.payload};
 //  ------------   SESSION Actions   ----------------------------
+        case AVAIL__SET_HISTORY_CACHE:
+            saveDashboardState();
+            return {...state, session: {...state.session, historyCache: action.payload}};
         case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
             saveDashboardState();
             return { ...state, session: {...state.session, freeTextSearch: action.payload}};
