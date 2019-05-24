@@ -8,7 +8,6 @@ import {
     ListGroupItem,
     Card,
     CardHeader,
-    Button,
     CardBody,
 } from 'reactstrap';
 import './CoreMetadata.scss';
@@ -17,13 +16,14 @@ import {
     getFilteredCastList,
     getFilteredCrewList, getFormatTypeName,
 } from '../../../../../constants/metadata/configAPI';
+import Rating from './rating/Rating';
 
 class CoreMetadataReadOnlyMode extends Component {
     render() {
         return (
             <Fragment>
                 {
-                    this.props.data.castCrew ?
+                    this.props.data.castCrew && this.props.data.castCrew.length > 0 ?
                         <Row style={{ marginTop: '15px' }}>
                             <Col>
                                 <Card id='cardContainer'>
@@ -80,50 +80,14 @@ class CoreMetadataReadOnlyMode extends Component {
                         : null
                 }
                 <Row style={{ marginTop: '10px' }}>
-                    {/* {
-                        this.props.data.ratings && this.props.data.ratings.ratingSystem ?
-                            <Col>
-                                <FormGroup>
-                                    <Alert color='light'><b>Rating System: </b> {this.props.data.ratings.ratingSystem}</Alert>
-                                </FormGroup>
-                            </Col>
-                            : null
-                    } */}
-                    {
-                        this.props.data.ratings && this.props.data.ratings.length > 0 ?
-                            <Col>
-                                <FormGroup>
-                                    <Alert color='light'><b>Ratings</b></Alert>
-                                    {this.props.data.ratings &&
-                                        this.props.data.ratings.map((rating, i) => (
-                                            <Button disabled key={i} style={{ marginRight: '5px', marginTop: '5px' }}> Rating System: {rating.ratingSystem ? rating.ratingSystem: 'Empty'} - Rating: {rating.rating}</Button>
-                                        ))}
-                                </FormGroup>
-                            </Col>
-                            : null
-                    }
-                    {
-                        this.props.data.advisories && this.props.data.advisories.advisoriesFreeText ?
-                            <Col>
-                                <FormGroup>
-                                    <Alert color='light'><b>Advisories: </b>{this.props.data.advisories ? this.props.data.advisories.advisoriesFreeText : null}</Alert>
-                                </FormGroup>
-                            </Col>
-                            : null
-                    }
-                    {
-                        this.props.data.advisories && this.props.data.advisories.advisoriesCode && this.props.data.advisories.advisoriesCode.length > 0 ?
-                            <Col>
-                                <FormGroup>
-                                    <Alert color='light'><b>Advisory Code</b></Alert>
-                                    {this.props.data.advisories &&
-                                        this.props.data.advisories.advisoriesCode.map((advisory, i) => (
-                                            <Button disabled key={i} style={{ marginRight: '5px', marginTop: '5px' }}>{advisory}</Button>
-                                        ))}
-                                </FormGroup>
-                            </Col>
-                            : null
-                    }
+                    <Rating
+                        activeTab={this.props.activeTab ? this.props.activeTab : 0}
+                        isEditMode={false}
+                        ratings={this.props.data.ratings}
+                        toggle={this.props.toggleTitleRating}
+                    />
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
                     {
                         this.props.data.awards && this.props.data.awards.length > 0 ?
                             <Col>
@@ -246,7 +210,9 @@ class CoreMetadataReadOnlyMode extends Component {
 }
 
 CoreMetadataReadOnlyMode.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    toggleTitleRating: PropTypes.func,
+    activeTab: PropTypes.any
 };
 
 export default CoreMetadataReadOnlyMode;

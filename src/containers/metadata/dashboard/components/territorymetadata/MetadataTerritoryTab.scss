@@ -12,9 +12,6 @@ html {
   border:1px solid #999;
   margin-right:1px;
 }
-.tablinks:active {
-  background:#FFF !important;
-}
 
 /* Style the buttons that are used to open the tab content */
 .tab span {
@@ -55,7 +52,7 @@ html {
     }
 }
 
-#territoryMetadataCreate, #territoryMetadataEdit, #editorialMetadataCreate, #editorialMetadataEdit, #editorialMetadataTabs, #territoryMetadataTabs{
+#territoryMetadataCreate, #territoryMetadataEdit, #editorialMetadataCreate, #editorialMetadataEdit, #editorialMetadataTabs, #territoryMetadataTabs, #titleRatingTabs, #ratingCreate{
   border: 2px solid #999;
   width: 98%;
   padding: 30px;

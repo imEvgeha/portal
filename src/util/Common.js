@@ -2,8 +2,6 @@ import moment from 'moment';
 import React, {Fragment} from 'react';
 import t from 'prop-types';
 
-const formatISO = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
-
 function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
@@ -31,7 +29,7 @@ function safeTrim(value){
 }
 
 function momentToISO(date) {
-    return moment(date).format(formatISO);
+    return moment(date).toISOString();
 }
 
 function isObject(item) {
@@ -46,11 +44,11 @@ function isObjectEmpty(obj) {
     return true;
 }
 
-function prepareSortMatrixParam(sortedParams) {
+function prepareSortMatrixParam(sortedParams, onlyLastPart = false) {
     let matrix = '';
     if(sortedParams){
         sortedParams.forEach((entry) => {
-            matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
+            matrix += ';' + (onlyLastPart ? entry.id.split('.').pop() : entry.id) + '=' + (entry.desc ? 'DESC' : 'ASC');
         });
     }
     return matrix;
