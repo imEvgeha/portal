@@ -13,8 +13,7 @@ class RatingReadTab extends Component {
             ratingSystem,
             rating,
             advisoriesFreeText,
-            selectedAdvisoryCode
-            // advisoriesCode
+            advisoriesCode
         } = this.props.data;
         return (
             <div id="titleRatingTabs">
@@ -22,9 +21,9 @@ class RatingReadTab extends Component {
                     <Row style={{padding: '15px'}}>
                         <Col md={3}><b>Rating System: </b> {ratingSystem ? ratingSystem : this.emptySpan()}</Col>
                         <Col md={3}><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
-                        <Col md={3}><b>Advisory Codes: </b> {selectedAdvisoryCode ? 
-                            selectedAdvisoryCode.map((code, i) => (
-                                <span key={i}>{code.label},</span>
+                        <Col md={3}><b>Advisory Codes: </b> {advisoriesCode ? 
+                            advisoriesCode.map((code, i) => (
+                                <span key={i}>{code},</span>
                             )) : 
                             this.emptySpan()}</Col>
                     </Row>

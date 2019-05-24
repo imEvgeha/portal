@@ -75,7 +75,7 @@ class TitleEdit extends Component {
             isCastModalOpen: false,
             isCrewModalOpen: false,
             ratingForCreate: {},
-            selectedAdvisoryCode: null
+            advisoriesCode: null
         };
     }
 
@@ -293,10 +293,10 @@ class TitleEdit extends Component {
 
     };
 
-    handleAdvisoryCodeChange = (selectedAdvisoryCode) => {
+    handleAdvisoryCodeChange = (advisoriesCode) => {
         let newRatingForCreate = {
             ...this.state.ratingForCreate,
-            selectedAdvisoryCode: selectedAdvisoryCode
+            advisoriesCode: advisoriesCode
         };
         this.setState({ 
             ratingForCreate: newRatingForCreate
@@ -378,6 +378,16 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
+            let newAdvisoryCodes = this.state.ratingForCreate && this.state.ratingForCreate.advisoriesCode;
+            for(let i = 0; i< newAdvisoryCodes.length; i++) {
+                newAdvisoryCodes[i] = newAdvisoryCodes[i]['name'];
+                delete newAdvisoryCodes[i].name;
+            }
+            this.setState({
+                ...this.state.ratingForCreate,
+                advisoriesCode: newAdvisoryCodes
+            });
+            
             if(newAdditionalFields.ratings === null) {
                 newAdditionalFields.ratings = [this.state.ratingForCreate];
             } else {                
@@ -763,10 +773,6 @@ class TitleEdit extends Component {
             editedForm: updateEditForm
         });
     };
-
-    // handleChangeRating = (e) => {
-    //     console.log(e.target.name, e.target.value);
-    // }
 
     addCastCrew = (person) => {
         let castCrewArray = [person];
