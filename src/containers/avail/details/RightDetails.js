@@ -498,7 +498,9 @@ class RightDetails extends React.Component {
 
             if(options.length > 0 && selectedVal){
                 val = options.find((opt) => opt.value === selectedVal);
-                options.unshift({value: '', label: value ? 'Select...' : ''});
+                if(!required) {
+                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                }
             }
 
             let handleOptionsChange = (option) => {

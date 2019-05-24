@@ -476,7 +476,9 @@ class RightCreate extends React.Component {
             
             if(options.length > 0 && value){
                 val = value;
-                options.unshift({value: '', label: value ? 'Select...' : ''});
+                if(!required) {
+                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                }
             }
 
             let handleOptionsChange = (option) => {
