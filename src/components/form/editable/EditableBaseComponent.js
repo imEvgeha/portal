@@ -107,7 +107,7 @@ class EditableBaseComponent extends Component {
         const displayFunc = (value)=>{
             return (<span
                 onClick={this.handleShowHelperComponent}
-                style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
                 className={this.props.disabled ? 'disabled' : ''}>
                        {Array.isArray(value) ? value.length > 0 ? value.join(',') : '' : value}
                    </span>);
