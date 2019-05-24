@@ -1,7 +1,8 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {
-    searchFormUpdateAdvancedSearchCriteria
+    searchFormUpdateAdvancedSearchCriteria,
+    setHistoryCache
 } from '../../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
 
@@ -25,11 +26,13 @@ const mapStateToProps = state => {
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
         columns: state.dashboard.session.columns,
+        historyCache: state.dashboard.session.historyCache
     };
 };
 
 const mapDispatchToProps = {
-    searchFormUpdateAdvancedSearchCriteria
+    searchFormUpdateAdvancedSearchCriteria,
+    setHistoryCache
 };
 
 const ignoreForCloseable = ['invalid'];
@@ -45,6 +48,9 @@ class AdvancedSearchPanel extends React.Component {
         reportName: t.string,
         availsMapping: t.object,
         columns: t.array,
+        historyCache: t.object,
+        setHistoryCache: t.func,
+        location: t.object
     };
 
     constructor(props) {
@@ -53,8 +59,7 @@ class AdvancedSearchPanel extends React.Component {
             reportName: '',
             selected: null,
             value: null,
-            blink: null,
-            historyData:{}
+            blink: null
         };
         this.loadingHistoryData = {};
 
@@ -233,7 +238,7 @@ class AdvancedSearchPanel extends React.Component {
             .then(res => {
                 if(res && res.data && this.loadingHistoryData[availHistoryId]) {
                     delete this.loadingHistoryData[availHistoryId];
-                    this.setState({historyData:{...this.state.historyData, [availHistoryId] : res.data}});
+                    this.props.setHistoryCache({[availHistoryId] : res.data});
                 }
             })
             .catch(() => {
@@ -242,6 +247,12 @@ class AdvancedSearchPanel extends React.Component {
 
     componentWillUnmount() {
         this.loadingHistoryData = {};
+    }
+
+    componentDidMount() {
+        if(this.props.location && this .props.location.state){
+            this.props.setHistoryCache({[this.props.location.state.id] : this.props.location.state});
+        }
     }
 
     render() {
@@ -373,7 +384,7 @@ class AdvancedSearchPanel extends React.Component {
             let val = '';
             if(this.props.searchCriteria.availHistoryIds) {
                 val = this.props.searchCriteria.availHistoryIds.value;
-                let data = this.state.historyData[val];
+                let data = this.props.historyCache[val];
                 if (data) {
                     let subTitle = data.ingestType + ', ';
                     val = subTitle;
