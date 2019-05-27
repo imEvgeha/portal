@@ -69,9 +69,9 @@ class SelectableInput extends Component {
         }
     };
 
-    handleInputChange(event) {
+    handleInputChange(event, val) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = val ? val : target.type === 'checkbox' ? target.checked : target.value;
         this.props.onChange({...this.props.value, value: value});
     }
 
@@ -131,6 +131,14 @@ class SelectableInput extends Component {
             </div>);
         };
 
+        const innerValidate = (val, ctx, input, cb) => {
+            const isValid = input.props.validate.pattern.value.test(val);
+            if(this.state.invalid === isValid) {
+                this.setState({invalid: !isValid});
+            }
+            cb(isValid);
+        };
+
         const renderIntegerField = (name, displayName) => {
             return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
                 <AvForm>
@@ -142,7 +150,7 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}}}
+                        validate={{async: innerValidate, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}}}
                     />
                 </AvForm>
             </div>);
@@ -159,7 +167,7 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}}}
+                        validate={{async: innerValidate, pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}}}
                     />
                 </AvForm>
             </div>);
@@ -173,10 +181,10 @@ class SelectableInput extends Component {
                         placeholder={'Enter ' + displayName}
                         name={name.value}
                         value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                        onChange={this.handleInputChange}
+                        onChange={(e, val) => this.handleInputChange(e, val.replace(',','.'))}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}}
+                        validate={{async: innerValidate, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}}
                     />
                 </AvForm>
             </div>);
@@ -193,7 +201,7 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                        validate={{async: innerValidate, pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
                         errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
                     />
                 </AvForm>
