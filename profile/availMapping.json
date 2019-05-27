@@ -589,8 +589,8 @@
 }, {
   "javaVariableName": "releaseYear",
   "displayName": "Release Year",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "year",
+  "searchDataType": "year",
   "queryParamName": "releaseYear",
   "readOnly": false,
   "enableSearch": true,
@@ -1313,8 +1313,8 @@
 }, {
   "javaVariableName": "termYear",
   "displayName": "Term Year",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "year",
+  "searchDataType": "year",
   "queryParamName": "termYear",
   "readOnly": false,
   "enableSearch": true,

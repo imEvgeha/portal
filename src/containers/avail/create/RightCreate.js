@@ -289,19 +289,27 @@ class RightCreate extends React.Component {
         };
 
         const renderIntegerField = (name, displayName, required, value) => {
+            const validation = {number : true, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}};
             const validate = (val, ctx, input, cb) => {
-                const isNumber = !isNaN(val);
+                let isValid = true;
+
+                if(validation && validation.pattern){
+                    isValid = val ? validation.pattern.value.test(val) : !required;
+                }else if(validation && validation.number) {
+                    isValid = !isNaN(val.replace(',','.'));
+                }
+
                 if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if(this.mappingErrorMessage[name].inner && isNumber){
+                    if(this.mappingErrorMessage[name].inner && isValid){
                         this.mappingErrorMessage[name].inner = '';
                         this.setState({});
                     }
-                    if(!this.mappingErrorMessage[name].inner && !isNumber){
-                        this.mappingErrorMessage[name].inner = 'Please enter a valid number!';
+                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                        this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
                         this.setState({});
                     }
                 }
-                cb(isNumber);
+                cb(isValid);
             };
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
@@ -314,7 +322,53 @@ class RightCreate extends React.Component {
                                 onChange={(ev, val) => {this.handleChange(ev, Number(val));}}
                                 type="text"
                                 validate={{number: true, async: validate}}
-                                errorMessage="Please enter a valid number!"
+                                errorMessage={validation.pattern.errorMessage}
+                        />
+                    </AvForm>
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    <small className="text-danger m-2">
+                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
+                    </small>
+                    }
+                </div>
+            ));
+        };
+
+        const renderYearField = (name, displayName, required, value) => {
+            const validation = {pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}};
+            const validate = (val, ctx, input, cb) => {
+                let isValid = true;
+
+                if(validation && validation.pattern){
+                    isValid = val ? validation.pattern.value.test(val) : !required;
+                }else if(validation && validation.number) {
+                    isValid = !isNaN(val.replace(',','.'));
+                }
+
+                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if(this.mappingErrorMessage[name].inner && isValid){
+                        this.mappingErrorMessage[name].inner = '';
+                        this.setState({});
+                    }
+                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                        this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
+                        this.setState({});
+                    }
+                }
+                cb(isValid);
+            };
+            return renderFieldTemplate(name, displayName, required, null, (
+                <div>
+                    <AvForm>
+                        <AvField
+                            value={value}
+                            name={name}
+                            id={'right-create-' + name + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            onChange={this.handleChange}
+                            type="text"
+                            validate={{async: validate}}
+                            errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
@@ -327,19 +381,27 @@ class RightCreate extends React.Component {
         };
 
         const renderDoubleField = (name, displayName, required, value) => {
+            const validation = {number : true, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}
             const validate = (val, ctx, input, cb) => {
-                const isNumber = !isNaN(val);
+                let isValid = true;
+
+                if(validation && validation.pattern){
+                    isValid = val ? validation.pattern.value.test(val) : !required;
+                }else if(validation && validation.number) {
+                    isValid = !isNaN(val.replace(',','.'));
+                }
+
                 if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if(this.mappingErrorMessage[name].inner && isNumber){
+                    if(this.mappingErrorMessage[name].inner && isValid){
                         this.mappingErrorMessage[name].inner = '';
                         this.setState({});
                     }
-                    if(!this.mappingErrorMessage[name].inner && !isNumber){
-                        this.mappingErrorMessage[name].inner = 'Please enter a valid number!';
+                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                        this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
                         this.setState({});
                     }
                 }
-                cb(isNumber);
+                cb(isValid);
             };
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
@@ -349,10 +411,10 @@ class RightCreate extends React.Component {
                             name={name}
                             id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
-                            onChange={this.handleChange}
+                            onChange={(ev, val) => {this.handleChange(ev, Number(val.replace(',','.')));}}
                             type="text"
-                            validate={{number: true, async: validate}}
-                            errorMessage="Please enter a valid number!"
+                            validate={{async: validate}}
+                            errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
@@ -567,6 +629,8 @@ class RightCreate extends React.Component {
                         case 'string' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'integer' : renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
+                        case 'year' : renderFields.push(renderYearField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'double' : renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;

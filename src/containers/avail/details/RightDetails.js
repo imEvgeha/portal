@@ -333,23 +333,25 @@ class RightDetails extends React.Component {
             };
 
             const validate = (val) => {
-                if(validation && validation.number) {
-                    const isNumber = !isNaN(val);
-                    if(!isNumber) return 'Please enter a valid number!';
-                }
                 if(validation && validation.pattern){
                     const isValid = val ? validation.pattern.value.test(val) : !required;
-                    if(!isValid) return validation.pattern.errorMessage;
+                    if(!isValid) {
+                        return validation.pattern.errorMessage;
+                    }
+                }else if(validation && validation.number) {
+                    const isNumber = !isNaN(val.replace(',','.'));
+                    if(!isNumber) {
+                        return 'Please enter a valid number!';
+                    }
                 }
             };
 
             const innerValidate = (val, ctx, input, cb) => {
-                if(validation && validation.number) {
-                    const isNumber = !isNaN(val);
-                    cb(isNumber);
-                }
                 if(validation && validation.pattern){
                     cb(val ? validation.pattern.value.test(val) : !required);
+                }else if(validation && validation.number) {
+                    const isNumber = !isNaN(val.replace(',','.'));
+                    cb(isNumber);
                 }
 
                 if(!validation){
@@ -359,20 +361,22 @@ class RightDetails extends React.Component {
 
             const convert = (val) => {
                 if(val && validation && validation.number) {
-                    return Number(val);
+                    return Number(val.replace(',','.'));
                 }
                 return val ? val : null;
             };
 
             let errorMessage='';
             if(validation){
-                if(validation.number){
-                    errorMessage = 'Please enter a valid number!';
-                }
                 if(validation.pattern && validation.pattern.errorMessage){
                     errorMessage = validation.pattern.errorMessage;
+                }else if(validation.number){
+                    errorMessage = 'Please enter a valid number!';
                 }
             }
+
+            const modifiedValidation = {...validation};
+            delete modifiedValidation.number;
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, (
                 <EditableBaseComponent
@@ -392,7 +396,7 @@ class RightDetails extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={(e) => {handleValueChange(e.target.value);}}
                             type="text"
-                            validate={{...validation, async: innerValidate}}
+                            validate={{...modifiedValidation, async: innerValidate}}
                             errorMessage={errorMessage}
                         />
                     </AvForm>}
@@ -401,11 +405,15 @@ class RightDetails extends React.Component {
         };
 
         const renderIntegerField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {number : true});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {number : true, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}});
+        };
+
+        const renderYearField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}});
         };
 
         const renderDoubleField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {number : true});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {number : true, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}});
         };
 
         const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
@@ -701,6 +709,8 @@ class RightDetails extends React.Component {
                         case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                            break;
+                        case 'year': renderFields.push(renderYearField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'double': renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
