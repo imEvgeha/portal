@@ -131,7 +131,7 @@ class SelectableInput extends Component {
             </div>);
         };
 
-        const renderNumberField = (name, displayName) => {
+        const renderIntegerField = (name, displayName) => {
             return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
                 <AvForm>
                     <AvField
@@ -142,8 +142,41 @@ class SelectableInput extends Component {
                         onChange={this.handleInputChange}
                         onKeyPress={this._handleKeyPress}
                         type="text"
-                        validate={{number: true}}
-                        errorMessage="Please enter a valid number!"
+                        validate={{pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}}}
+                    />
+                </AvForm>
+            </div>);
+        };
+
+        const renderYearField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <AvForm>
+                    <AvField
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                        type="text"
+                        validate={{pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}}}
+                    />
+                </AvForm>
+            </div>);
+        };
+
+        const renderDoubleField = (name, displayName) => {
+            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <AvForm>
+                    <AvField
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                        type="text"
+                        validate={{pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}}
                     />
                 </AvForm>
             </div>);
@@ -287,8 +320,9 @@ class SelectableInput extends Component {
 
             switch (this.props.dataType) {
                 case 'string' : return renderTextField(selected, displayName);
-                case 'integer' : return renderNumberField(selected, displayName);
-                case 'double' : return renderNumberField(selected, displayName);
+                case 'integer' : return renderIntegerField(selected, displayName);
+                case 'year' : return renderYearField(selected, displayName);
+                case 'double' : return renderDoubleField(selected, displayName);
                 case 'multiselect' : return renderSelect(selected, displayName, this.props.dataType);
                 case 'multilanguage' : return renderSelect(selected, displayName, this.props.dataType);
                 case 'duration' : return renderRangeDurationField(selected, displayName);
