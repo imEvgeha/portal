@@ -381,7 +381,7 @@ class RightCreate extends React.Component {
         };
 
         const renderDoubleField = (name, displayName, required, value) => {
-            const validation = {number : true, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}
+            const validation = {number : true, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}};
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
 
