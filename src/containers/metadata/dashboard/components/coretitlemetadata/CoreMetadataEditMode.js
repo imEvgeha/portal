@@ -12,9 +12,8 @@ import {
 } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
-import CloseableBtn from '../../../../../components/form/CloseableBtn';
 import PropTypes from 'prop-types';
-import { AvField } from 'availity-reactstrap-validation';
+import {AvField} from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 import { connect } from 'react-redux';
@@ -24,6 +23,7 @@ import {
   CAST,
   getFilteredCrewList, getFilteredCastList, getFormatTypeName
 } from '../../../../../constants/metadata/configAPI';
+import Rating from './rating/Rating';
 
 const mapStateToProps = state => {
   return {
@@ -48,71 +48,17 @@ class CoreMetadataEditMode extends Component {
   }
 
   handleRatingSystemValue = (e) => {
-    this.props.handleRatingSystemUpdate(e);
     const rating = e.target.value;
     let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
     this.setState({
       ratings: newRatings
     });
 
-  }
+  };
 
   shouldComponentUpdate(nextProps) {
     return this.props !== nextProps;
   }
-
-  onRatingKeyDown = e => {
-    if (this.state.isRatingValid) {
-      this.props._handleRatingKeyPress(e);
-    }
-  };
-
-  onAdvisoryCodeDown = e => {
-    if (this.state.isAdvisoryCodeValid) {
-      this.props._handleAdvisoryCodeKeyPress(e);
-    }
-  };
-
-  validateRating = (value, ctx, input, cb) => {
-    let isValid = false;
-    if (value === '') {
-      isValid = true;
-    } else if (this.props.configRatings) {
-      let rating = this.props.configRatings.value.find(e => {
-        if (this.props.ratingSystem) {
-          return e.value === value && e.ratingSystem === this.props.ratingSystem;
-        }
-        return e.value === value;
-      });
-      isValid = !!rating;
-    } else {
-      isValid = false;
-    }
-    this.setState({
-      isRatingValid: isValid
-    });
-
-    cb(isValid);
-  };
-
-  validateAdvisoryCode = (value, ctx, input, cb) => {
-    let isValid = false;
-    if (value === '') {
-      isValid = true;
-    } else if (this.props.configAdvisoryCode) {
-      let advisoryCode = this.props.configAdvisoryCode.value.find(e => {
-        return e.code === value;
-      });
-      isValid = !!advisoryCode;
-    } else {
-      isValid = false;
-    }
-    this.setState({
-      isAdvisoryCodeValid: isValid
-    });
-
-    cb(isValid);
-  };
 
   handleMovidaLegacyIds(e) {
     let movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
@@ -212,110 +158,26 @@ class CoreMetadataEditMode extends Component {
             </Card>
           </Col>
         </Row>
+        <hr />
+        <Row>
+          <Rating
+              isEditMode={true}
+              ratings={this.props.ratings}
+              activeTab={this.props.titleRankingActiveTab}
+              toggle={this.props.toggleTitleRating}
+              addRating={this.props.addTitleRatingTab}
+              createRatingTab={this.props.createRatingTab}
+              handleChange={this.props.handleRatingChange}
+              handleEditChange={this.props.handleRatingEditChange}
+          />
+        </Row>
+
+        <hr />
         <Row>
           <Col>
-            <FormGroup>
-              <Label for='ratingSystem'>Rating System</Label>
-              <AvField
-                type='select'
-                onChange={e => this.handleRatingSystemValue(e)}
-                name='ratingSystem'
-                id='ratingSystem'
-                value={this.props.ratingSystem}
-              >
-                <option value={''}>Select Rating System</option>
-                {
-                  this.props.configRatingSystem && this.props.configRatingSystem.value.map((e, index) => {
-                    return <option key={index} value={e.value}>{e.value}</option>;
-                  })
-                }
-              </AvField>
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for='ratings'>Ratings</Label>
-              {/* <AvField
-                type='text'
-                onChange={e => this.props.updateValue(e.target.value)}
-                name='ratings'
-                id='ratings'
-                value={this.props.ratingValue}
-                onKeyDown={this.onRatingKeyDown}
-                placeholder='Ratings'
-                validate={{ async: this.validateRating }}
-                errorMessage="Invalid Rating due to selected Rating System"
-              /> */}
-              <AvField
-                type='select'
-                onChange={e => this.props.updateValue(e.target.value)}
-                name='ratings'
-                id='ratings'
-                value={this.props.ratingValue}
-              >
-                <option value={''}>Select Rating</option>
-                {
-                  this.state.ratings && this.state.ratings.map((e, index) => {
-                    return <option key={index} value={e.value}>{e.value}</option>;
-                  })
-                }
-              </AvField>
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for='advisoriesFreeText'>Advisories</Label>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnAdvisories(e)}
-                name='advisoriesFreeText'
-                id='advisories'
-                value={this.props.advisoryCodeList && this.props.advisoryCodeList.advisoriesFreeText ? this.props.advisoryCodeList.advisoriesFreeText : ''}
-                placeholder='Advisories'
-                validate={{
-                  maxLength: { value: 500 }
-                }}
-              />
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for='advisoryCode'>Advisory Code</Label>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnAdvisoriesCodeUpdate(e.target.value)}
-                value={this.props.advisoryCode}
-                placeholder="Advisory Codes"
-                onKeyDown={this.onAdvisoryCodeDown}
-                name='advisoryCode'
-                id='advisoryCode'
-                validate={{ async: this.validateAdvisoryCode }}
-                errorMessage="Invalid Advisory Code"
-              />
-              {this.props.advisoryCodeList && this.props.advisoryCodeList.advisoriesCode &&
-                this.props.advisoryCodeList.advisoriesCode.map((advisory, i) => (
-                  <CloseableBtn
-                    style={{
-                      marginTop: '5px',
-                      width: 'auto',
-                      marginRight: '5px'
-                    }}
-                    title={advisory}
-                    key={i}
-                    onClick={() => {
-                      return;
-                    }}
-                    highlighted={false}
-                    id={'core-metadata-tags-' + i}
-                    onClose={() => this.props.removeAdvisoryCodes(advisory)}
-                  />
-                ))}
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for='awards'>Awards</Label>
-              <AvField
+          <FormGroup>
+            <Label for='awards'>Awards</Label>
+            <AvField
                 type='text'
                 name='awards'
                 onChange={e => this.props.onChange(e)}
@@ -324,10 +186,11 @@ class CoreMetadataEditMode extends Component {
                 validate={{
                   maxLength: { value: 500 }
                 }}
-              />
-            </FormGroup>
+            />
+          </FormGroup>
           </Col>
         </Row>
+
         <hr />
         <h4>External IDS</h4>
         <Row style={{ marginTop: '10px' }}>
@@ -592,32 +455,30 @@ class CoreMetadataEditMode extends Component {
 }
 
 CoreMetadataEditMode.propTypes = {
+  titleRankingActiveTab: PropTypes.any,
+  toggleTitleRating: PropTypes.func,
+  addTitleRatingTab: PropTypes.func,
+  createRatingTab: PropTypes.string,
+  handleRatingChange: PropTypes.func,
+  handleRatingEditChange: PropTypes.func,
+
   data: PropTypes.object,
+  editedTitle: PropTypes.object,
+
   onChange: PropTypes.func,
   handleOnExternalIds: PropTypes.func,
   handleOnLegacyIds: PropTypes.func,
-  handleOnAdvisories: PropTypes.func,
+
+  renderModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
   isCastModalOpen: PropTypes.bool,
-  renderModal: PropTypes.func,
   castInputValue: PropTypes.string,
-  ratingValue: PropTypes.string,
-  ratings: PropTypes.array,
-  updateValue: PropTypes.func,
-  removeRating: PropTypes.func,
   removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
-  editedTitle: PropTypes.object,
-  _handleRatingKeyPress: PropTypes.func,
   cleanCastInput: PropTypes.func,
   addCastCrew: PropTypes.func,
-  ratingSystem: PropTypes.string,
-  _handleAdvisoryCodeKeyPress: PropTypes.func,
-  handleOnAdvisoriesCodeUpdate: PropTypes.func,
-  handleRatingSystemUpdate: PropTypes.func,
-  advisoryCode: PropTypes.string,
-  advisoryCodeList: PropTypes.object,
-  removeAdvisoryCodes: PropTypes.func,
+
+  ratings: PropTypes.array,
 
   configCastAndCrew: PropTypes.object,
   configRatingSystem: PropTypes.object,
