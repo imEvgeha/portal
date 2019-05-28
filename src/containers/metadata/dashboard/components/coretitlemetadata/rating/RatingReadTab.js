@@ -14,7 +14,6 @@ class RatingReadTab extends Component {
             rating,
             advisoriesFreeText,
             advisoriesCode
-            // advisoriesCode
         } = this.props.data;
         return (
             <div id="titleRatingTabs">

@@ -8,7 +8,7 @@ class RatingCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedAdvisoryCode: null,
+            advisoriesCode: null,
             filteredAdvisoryCodes: []
         };
     }
@@ -25,10 +25,6 @@ class RatingCreateTab extends Component {
             filteredAdvisoryCodes: newAdvisoryCodes
         });
     }
-
-    handleAdvisoryCodeChange = (selectedAdvisoryCode) => {
-        this.setState({ selectedAdvisoryCode });
-    };
 
     handleChangeRatingSystem = (e) => {
         this.props.handleRatingSystemValue(e);

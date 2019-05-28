@@ -75,7 +75,7 @@ class TitleEdit extends Component {
             isCastModalOpen: false,
             isCrewModalOpen: false,
             ratingForCreate: {},
-            selectedAdvisoryCode: null
+            advisoriesCode: null
         };
     }
 
@@ -293,10 +293,10 @@ class TitleEdit extends Component {
 
     };
 
-    handleAdvisoryCodeChange = (selectedAdvisoryCode) => {
+    handleAdvisoryCodeChange = (advisoriesCode) => {
         let newRatingForCreate = {
             ...this.state.ratingForCreate,
-            advisoriesCode: selectedAdvisoryCode
+            advisoriesCode: advisoriesCode
         };
         this.setState({ 
             ratingForCreate: newRatingForCreate
@@ -779,10 +779,6 @@ class TitleEdit extends Component {
             editedForm: updateEditForm
         });
     };
-
-    // handleChangeRating = (e) => {
-    //     console.log(e.target.name, e.target.value);
-    // }
 
     addCastCrew = (person) => {
         let castCrewArray = [person];
