@@ -74,6 +74,8 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {},
             isCastModalOpen: false,
             isCrewModalOpen: false,
+            ratingForCreate: {},
+            advisoriesCode: null
         };
     }
 
@@ -275,14 +277,27 @@ class TitleEdit extends Component {
         }
     };
 
-    //TODO finished in TEM-832
-    removeAdvisoryCodes = () => {};
+    handleRatingChange = (e) => {
 
-    //TODO finished in TEM-832
-    handleRatingChange = () => {};
+        let newRatingToCreate = {
+            ...this.state.ratingForCreate,
+            [e.target.name]: e.target.value
+        };
+        this.setState({
+            ratingForCreate: newRatingToCreate
+        });       
 
-    //TODO finished in TEM-832
-    handleRatingEditChange = () => {};
+    };
+
+    handleAdvisoryCodeChange = (advisoriesCode) => {
+        let newRatingForCreate = {
+            ...this.state.ratingForCreate,
+            advisoriesCode: advisoriesCode
+        };
+        this.setState({ 
+            ratingForCreate: newRatingForCreate
+         });
+    };
 
     toggleTitleRating = (tab) => {
         this.setState({
@@ -297,7 +312,7 @@ class TitleEdit extends Component {
     };
 
     readOnly = () => {
-        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating}/>;
+        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} activeTab={this.state.titleRankingActiveTab} />;
     };
 
     editMode = () => {
@@ -307,6 +322,8 @@ class TitleEdit extends Component {
             addTitleRatingTab={this.addTitleRatingTab}
             createRatingTab={CREATE_TAB}
             handleRatingChange={this.handleRatingChange}
+            handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
+            ratingObjectForCreate={this.state.ratingForCreate}
             handleRatingEditChange={this.handleRatingEditChange}
 
             isCastModalOpen={this.state.isCastModalOpen}
@@ -326,6 +343,7 @@ class TitleEdit extends Component {
             data={this.state.titleForm}
             episodic={this.state.titleForm.episodic}
             editedTitle={this.state.editedForm}
+
             ratings={this.state.editedForm.ratings}
 
             handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
@@ -343,16 +361,38 @@ class TitleEdit extends Component {
         }
     };
 
+    formatRating = (newAdditionalFields) => {
+        if(Object.keys(this.state.ratingForCreate).length !== 0) {
+            let newAdvisoryCodes = [];
+            if(this.state.ratingForCreate.advisoriesCode) {
+                for(let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
+                    newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]['name']);
+                }
+            }
+        
+            let newRating = JSON.parse(JSON.stringify(this.state.ratingForCreate));
+            newRating.advisoriesCode = newAdvisoryCodes;
+
+            if(newAdditionalFields.ratings === null) {
+                newAdditionalFields.ratings = [newRating];
+            } else {                
+                newAdditionalFields.ratings.push(newRating);
+            }
+        }
+    }
+
     handleTitleOnSave = () => {
-        if (this.state.titleForm !== this.state.editedForm) {
+        if (this.state.titleForm !== this.state.editedForm || Object.keys(this.state.ratingForCreate).length !== 0) {
             this.setState({
                 isLoading: true
             });
             let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
-            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');   
 
+            this.formatRating(newAdditionalFields);
+            
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,

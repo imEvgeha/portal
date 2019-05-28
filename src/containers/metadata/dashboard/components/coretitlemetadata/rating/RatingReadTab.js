@@ -13,16 +13,19 @@ class RatingReadTab extends Component {
             ratingSystem,
             rating,
             advisoriesFreeText,
-            // advisoriesCode
+            advisoriesCode
         } = this.props.data;
-
         return (
             <div id="titleRatingTabs">
                 <Fragment>
-                    <h2>HELLO RATING </h2>
                     <Row style={{padding: '15px'}}>
                         <Col md={3}><b>Rating System: </b> {ratingSystem ? ratingSystem : this.emptySpan()}</Col>
                         <Col md={3}><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
+                        <Col md={3}><b>Advisory Codes: </b> {advisoriesCode ? 
+                            advisoriesCode.map((code, i) => (
+                                <span key={i}>{code},</span>
+                            )) : 
+                            this.emptySpan()}</Col>
                     </Row>
 
                     <Row style={{padding: '15px'}}>

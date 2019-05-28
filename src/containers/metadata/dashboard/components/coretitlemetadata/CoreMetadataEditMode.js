@@ -163,12 +163,16 @@ class CoreMetadataEditMode extends Component {
           <Rating
               isEditMode={true}
               ratings={this.props.ratings}
+              handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
+              ratingObjectForCreate={this.props.ratingObjectForCreate}
+              filteredRatings={this.state.ratings}
               activeTab={this.props.titleRankingActiveTab}
               toggle={this.props.toggleTitleRating}
               addRating={this.props.addTitleRatingTab}
               createRatingTab={this.props.createRatingTab}
               handleChange={this.props.handleRatingChange}
               handleEditChange={this.props.handleRatingEditChange}
+              handleRatingSystemValue={this.props.handleRatingSystemValue}
           />
         </Row>
 
@@ -484,6 +488,10 @@ CoreMetadataEditMode.propTypes = {
   configRatingSystem: PropTypes.object,
   configRatings: PropTypes.object,
   configAdvisoryCode: PropTypes.object,
+
+  handleRatingSystemValue: PropTypes.func,
+  ratingObjectForCreate: PropTypes.object,
+  handleAdvisoryCodeChange: PropTypes.func
 };
 
 
