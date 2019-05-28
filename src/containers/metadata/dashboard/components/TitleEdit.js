@@ -277,10 +277,6 @@ class TitleEdit extends Component {
         }
     };
 
-    //TODO finished in TEM-832
-    removeAdvisoryCodes = () => { };
-
-    //TODO finished in TEM-832
     handleRatingChange = (e) => {
 
         let newRatingToCreate = {
@@ -302,9 +298,6 @@ class TitleEdit extends Component {
             ratingForCreate: newRatingForCreate
          });
     };
-
-    //TODO finished in TEM-832
-    handleRatingEditChange = () => { };
 
     toggleTitleRating = (tab) => {
         this.setState({
