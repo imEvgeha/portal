@@ -20,7 +20,6 @@ class RatingCreateTab extends Component {
         for(let i = 0; i< newAdvisoryCodes.length; i++) {
             newAdvisoryCodes[i].label = newAdvisoryCodes[i]['name'];
             newAdvisoryCodes[i].value = newAdvisoryCodes[i]['name'];
-            delete newAdvisoryCodes[i].name;
         }
         this.setState({
             filteredAdvisoryCodes: newAdvisoryCodes
@@ -76,7 +75,7 @@ class RatingCreateTab extends Component {
                             <b>Advisory Codes</b>
                             <Select
                                 name="advisoriesCode"
-                                value={this.props.ratingObjectForCreate.selectedAdvisoryCode ? this.props.ratingObjectForCreate.selectedAdvisoryCode : []}
+                                value={this.props.ratingObjectForCreate.advisoriesCode ? this.props.ratingObjectForCreate.advisoriesCode : []}
                                 onChange={this.props.handleAdvisoryCodeChange}
                                 isMulti
                                 placeholder='Select Advisory Code'

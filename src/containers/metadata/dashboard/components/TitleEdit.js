@@ -296,7 +296,7 @@ class TitleEdit extends Component {
     handleAdvisoryCodeChange = (selectedAdvisoryCode) => {
         let newRatingForCreate = {
             ...this.state.ratingForCreate,
-            selectedAdvisoryCode: selectedAdvisoryCode
+            advisoriesCode: selectedAdvisoryCode
         };
         this.setState({ 
             ratingForCreate: newRatingForCreate
@@ -368,21 +368,37 @@ class TitleEdit extends Component {
         }
     };
 
+    formatRating = (newAdditionalFields) => {
+        if(Object.keys(this.state.ratingForCreate).length !== 0) {
+            let newAdvisoryCodes = [];
+            if(this.state.ratingForCreate.advisoriesCode) {
+                for(let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
+                    newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]['name']);
+                }
+            }
+        
+            let newRating = JSON.parse(JSON.stringify(this.state.ratingForCreate));
+            newRating.advisoriesCode = newAdvisoryCodes;
+
+            if(newAdditionalFields.ratings === null) {
+                newAdditionalFields.ratings = [newRating];
+            } else {                
+                newAdditionalFields.ratings.push(newRating);
+            }
+        }
+    }
 
     handleTitleOnSave = () => {
-        if (this.state.titleForm !== this.state.editedForm || this.state.ratingForCreate !== null) {
+        if (this.state.titleForm !== this.state.editedForm || Object.keys(this.state.ratingForCreate).length !== 0) {
             this.setState({
                 isLoading: true
             });
             let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
-            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
-            if(newAdditionalFields.ratings === null) {
-                newAdditionalFields.ratings = [this.state.ratingForCreate];
-            } else {                
-                newAdditionalFields.ratings.push(this.state.ratingForCreate);
-            }
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');   
+
+            this.formatRating(newAdditionalFields);
             
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
