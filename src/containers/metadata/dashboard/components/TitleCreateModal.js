@@ -70,6 +70,17 @@ class TitleCreate extends React.Component {
                 episodic: newEpisodic
             }
         });
+        if (e.target.value.length !== 0) {
+            this.setState({
+                isSeriesCompleted: true,
+                isSeasonNumberRequired: true,
+            });
+        } else {
+            this.setState({
+                isSeriesCompleted: false,
+                isSeasonNumberRequired: false,
+            });
+        }
     };
 
     handleChangeSeasonNumber = (e) => {
@@ -85,11 +96,13 @@ class TitleCreate extends React.Component {
         });
         if (e.target.value.length !== 0) {
             this.setState({
-                isSeriesCompleted: true
+                isSeriesCompleted: true,
+                isEpisodeNumberRequired: true,
             });
         } else {
             this.setState({
-                isSeriesCompleted: false
+                isSeriesCompleted: false,
+                isEpisodeNumberRequired: false
             });
         }
     };
@@ -179,10 +192,12 @@ class TitleCreate extends React.Component {
         if (e.target.value.length !== 0) {
             this.setState({
                 isSeasonNumberRequired: true,
+                isEpisodeNumberRequired: true
             });
         } else {
             this.setState({
-                isSeasonNumberRequired: false
+                isSeasonNumberRequired: false,
+                isEpisodeNumberRequired: false
             });
         }
     };
@@ -240,6 +255,7 @@ class TitleCreate extends React.Component {
             this.setState({
                 seasonChecked: false,
                 episodeChecked: false,
+                isSeriesCompleted: false,
                 seriesChecked: false,
                 isReleaseYearRequired: true,
                 isEpisodeNumberRequired: false,
@@ -314,7 +330,7 @@ class TitleCreate extends React.Component {
                                         !this.state.seriesChecked ?
                                             <Row>
                                                 <Col>
-                                                    <Label for="titleSeriesName">Series {this.state.isSeriesCompleted ? <span style={{ color: 'red' }}>*</span> : null}</Label>
+                                                    <Label for="titleSeriesName">Series{this.state.isSeriesCompleted ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                                                     <AvField type="text" name="seriesTitleName" disabled={this.state.seriesChecked} value={this.state.titleForm.episodic.seriesTitleName} id="titleSeriesName" placeholder={'Enter Series Name'} errorMessage="Field cannot be empty!"
                                                         onChange={this.handleChangeSeries} required={this.state.isSeriesCompleted}
                                                     />
