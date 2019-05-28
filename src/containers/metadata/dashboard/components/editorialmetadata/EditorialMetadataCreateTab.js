@@ -2,11 +2,18 @@ import React, { Component, Fragment } from 'react';
 import { Col, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { locale } from '../../../../../constants/locale';
-import { language } from '../../../../../constants/language';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
+import {configFields} from '../../../service/ConfigService';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+    };
+};
 
 class EditorialMetadataCreateTab extends Component {
     constructor(props) {
@@ -44,10 +51,10 @@ class EditorialMetadataCreateTab extends Component {
                                 required={this.props.areFieldsRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Locale</option>
+                                <option value=''>Select Locale</option>
                                 {
-                                    locale && locale.map((item, i) => {
-                                        return <option key={i} value={item.localeCode}>{item.countryName}</option>;
+                                    this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                                     })
                                 }
                             </AvField>
@@ -62,10 +69,10 @@ class EditorialMetadataCreateTab extends Component {
                                 required={this.props.areFieldsRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Language</option>
+                                <option value=''>Select Language</option>
                                 {
-                                    language && language.map((item, i) => {
-                                        return <option key={i} value={item.code}>{item.language}</option>;
+                                    this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                                        return <option key={index} value={e.languageCode}>{e.languageName}</option>;
                                     })
                                 }
                             </AvField>
@@ -292,8 +299,10 @@ EditorialMetadataCreateTab.propTypes = {
     handleSynopsisChange: PropTypes.func.isRequired,
     areFieldsRequired: PropTypes.bool.isRequired,
     titleContentType: PropTypes.string,
-    editorialMetadataForCreate: PropTypes.object
+    editorialMetadataForCreate: PropTypes.object,
+    configLanguage: PropTypes.object,
+    configLocale: PropTypes.object,
 };
 
 
-export default EditorialMetadataCreateTab;
+export default connect(mapStateToProps)(EditorialMetadataCreateTab);

@@ -2,8 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { Col, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { locale as constantLocale}  from '../../../../../constants/locale';
-import { language as constantLanguage} from '../../../../../constants/language';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {
@@ -11,6 +9,15 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../../constants/metadata/metadataComponent';
+import {configFields} from '../../../service/ConfigService';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+    };
+};
 
 class EditorialMetadataEditMode extends Component {
     constructor(props) {
@@ -67,8 +74,8 @@ class EditorialMetadataEditMode extends Component {
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={locale}>
                                 {
-                                    constantLocale && constantLocale.map((item, i) => {
-                                        return <option key={i} value={item.localeCode}>{item.countryName}</option>;
+                                    this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                                     })
                                 }
                             </AvField>
@@ -83,8 +90,8 @@ class EditorialMetadataEditMode extends Component {
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={language}>
                                 {
-                                    constantLanguage && constantLanguage.map((item, i) => {
-                                        return <option key={i} value={item.code}>{item.language}</option>;
+                                    this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                                        return <option key={index} value={e.languageCode}>{e.languageName}</option>;
                                     })
                                 }
                             </AvField>
@@ -324,8 +331,10 @@ EditorialMetadataEditMode.propTypes = {
     data: PropTypes.object,
     validSubmit: PropTypes.func.isRequired,
     titleContentType: PropTypes.string,
-    updatedEditorialMetadata: PropTypes.array
+    updatedEditorialMetadata: PropTypes.array,
+    configLanguage: PropTypes.object,
+    configLocale: PropTypes.object,
 };
 
 
-export default EditorialMetadataEditMode;
+export default connect(mapStateToProps)(EditorialMetadataEditMode);

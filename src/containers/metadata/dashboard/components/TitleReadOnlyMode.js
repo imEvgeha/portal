@@ -190,6 +190,7 @@ class TitleReadOnlyMode extends Component {
                     <CoreMetadataReadOnlyMode
                         data={this.props.data}
                         toggleTitleRating={this.props.toggleTitleRating}
+                        activeTab={this.props.activeTab}
                     />
                 </Container>
             </Fragment>
@@ -210,6 +211,7 @@ TitleReadOnlyMode.propTypes = {
     episodic: PropTypes.object,
     addBooleanQuotes: PropTypes.func,
     toggleTitleRating: PropTypes.func,
+    activeTab: PropTypes.any
 };
 
 export default TitleReadOnlyMode;

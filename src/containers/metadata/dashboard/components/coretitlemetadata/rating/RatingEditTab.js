@@ -17,9 +17,20 @@ const mapStateToProps = state => {
 class RatingEditTab extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            filteredRatings: []
+        };
     }
 
     handleAdvisoryCodeChange = () => {};
+
+    componentDidMount() {
+        const ratingSystem = this.props.data && this.props.data.ratingSystem;
+        let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem);
+        this.setState({
+            filteredRatings: newRatings
+        });
+    }
 
     render() {
         const {
@@ -28,7 +39,6 @@ class RatingEditTab extends Component {
             advisoriesFreeText,
             // advisoriesCode
         } = this.props.data;
-
         return (
             <div id="ratingCreate">
                 <Fragment>
@@ -52,15 +62,15 @@ class RatingEditTab extends Component {
                         <Col md={3}>
                             <b>Ratings</b>
                             <AvField type="select"
-                                     name="ratings"
+                                     name="rating"
                                      id="titleRatings"
                                      onChange={(e) => this.props.handleChange(e, this.props.data)}
                                      value={rating}
                                      errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating</option>
                                 {
-                                    this.props.configRatings && this.props.configRatings.value.map((item, i) => {
-                                        return <option key={i} value={item.value}>{item.value}</option>;
+                                    this.state.filteredRatings && this.state.filteredRatings.map((item, i) => {
+                                        return <option key={i} value={item.name}>{item.name}</option>;
                                     })
                                 }
                             </AvField>
@@ -81,6 +91,7 @@ class RatingEditTab extends Component {
                             <b>Advisories</b>
                             <AvField type="text"
                                      id="titleAdvisories"
+                                     placeholder="Enter Advisories"
                                      name="advisories"
                                      onChange={(e) => this.props.handleChange(e, this.props.data)}
                                      value={advisoriesFreeText}
