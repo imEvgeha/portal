@@ -189,11 +189,14 @@ class TitleReadOnlyMode extends Component {
                     </Row>
                     <CoreMetadataReadOnlyMode
                         data={this.props.data}
+                        toggleTitleRating={this.props.toggleTitleRating}
+                        activeTab={this.props.activeTab}
                     />
                 </Container>
             </Fragment>
         );
-    }
+    };
+
     render() {
         if (this.props.data) {
             return this.renderFields();
@@ -206,7 +209,9 @@ class TitleReadOnlyMode extends Component {
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
     episodic: PropTypes.object,
-    addBooleanQuotes: PropTypes.func
+    addBooleanQuotes: PropTypes.func,
+    toggleTitleRating: PropTypes.func,
+    activeTab: PropTypes.any
 };
 
 export default TitleReadOnlyMode;

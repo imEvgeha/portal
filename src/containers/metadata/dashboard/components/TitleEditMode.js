@@ -458,31 +458,28 @@ class TitleEditMode extends Component {
             </Col>
           </Row>
           <CoreMetadataEditMode
-            data={this.props.data}
-            handleOnAdvisories={this.props.handleOnAdvisories}
-            onChange={this.props.handleOnChangeEdit}
-            _handleAdvisoryCodeKeyPress={this.props._handleAdvisoryCodeKeyPress}
-            handleOnExternalIds={this.props.handleOnExternalIds}
-            handleOnLegacyIds={this.props.handleOnLegacyIds}
-            isCastModalOpen={this.props.isCastModalOpen}
-            isCrewModalOpen={this.props.isCrewModalOpen}
-            renderModal={this.props.renderModal}
-            castInputValue={this.props.castInputValue}
-            removeCastCrew={this.props.removeCastCrew}
-            ratings={this.props.ratings}
-            advisoryCodeList={this.props.advisoryCodeList}
-            removeAdvisoryCodes={this.props.removeAdvisoryCodes}
-            addCastCrew={this.props.addCastCrew}
-            updateCastCrewValue={this.props.updateCastCrewValue}
-            advisoryCode={this.props.advisoryCode}
-            handleOnAdvisoriesCodeUpdate={this.props.handleOnAdvisoriesCodeUpdate}
-            ratingValue={this.props.ratingValue}
-            ratingSystem={this.props.ratingSystem}
-            removeRating={this.props.removeRating}
-            _handleRatingKeyPress={this.props._handleRatingKeyPress}
-            editedTitle={this.props.editedTitle}
-            updateValue={this.props.updateValue}
-            handleRatingSystemUpdate={this.props.handleRatingSystemUpdate}
+              titleRankingActiveTab={this.props.titleRankingActiveTab}
+              toggleTitleRating={this.props.toggleTitleRating}
+              addTitleRatingTab={this.props.addTitleRatingTab}
+              createRatingTab={this.props.createRatingTab}
+              handleRatingChange={this.props.handleRatingChange}
+              handleRatingEditChange={this.props.handleRatingEditChange}
+
+              data={this.props.data}
+              onChange={this.props.handleOnChangeEdit}
+              handleOnExternalIds={this.props.handleOnExternalIds}
+              handleOnLegacyIds={this.props.handleOnLegacyIds}
+              isCastModalOpen={this.props.isCastModalOpen}
+              isCrewModalOpen={this.props.isCrewModalOpen}
+              renderModal={this.props.renderModal}
+              castInputValue={this.props.castInputValue}
+              removeCastCrew={this.props.removeCastCrew}
+              ratings={this.props.ratings}
+              handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
+              ratingObjectForCreate={this.props.ratingObjectForCreate}
+              addCastCrew={this.props.addCastCrew}
+              updateCastCrewValue={this.props.updateCastCrewValue}
+              editedTitle={this.props.editedTitle}
           />
         </Container>
       </Fragment>
@@ -491,6 +488,13 @@ class TitleEditMode extends Component {
 }
 
 TitleEditMode.propTypes = {
+  titleRankingActiveTab: PropTypes.any,
+  toggleTitleRating: PropTypes.func,
+  addTitleRatingTab: PropTypes.func,
+  createRatingTab: PropTypes.string,
+  handleRatingChange: PropTypes.func,
+  handleRatingEditChange: PropTypes.func,
+
   keyPressed: PropTypes.func,
   data: PropTypes.object,
   handleOnChangeEdit: PropTypes.func.isRequired,
@@ -498,13 +502,8 @@ TitleEditMode.propTypes = {
   handleChangeEpisodic: PropTypes.func.isRequired,
   handleOnExternalIds: PropTypes.func,
   handleOnLegacyIds: PropTypes.func,
-  handleOnAdvisories: PropTypes.func,
-  updateValue: PropTypes.func,
   editedTitle: PropTypes.object,
-  _handleRatingKeyPress: PropTypes.func,
-  removeRating: PropTypes.func,
   ratings: PropTypes.array,
-  ratingValue: PropTypes.string,
   updateCastCrewValue: PropTypes.func,
   addCastCrew: PropTypes.func,
   removeCastCrew: PropTypes.func,
@@ -512,17 +511,11 @@ TitleEditMode.propTypes = {
   renderModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
   isCastModalOpen: PropTypes.bool,
-  ratingSystem: PropTypes.string,
-  _handleAdvisoryCodeKeyPress: PropTypes.func,
-  advisoriesCode: PropTypes.string,
-  handleOnAdvisoriesCodeUpdate: PropTypes.func,
-  advisoryCodeList: PropTypes.object,
-  removeAdvisoryCodes: PropTypes.func,
   handleOnChangeTitleDuration: PropTypes.func,
-  handleRatingSystemUpdate: PropTypes.func,
-  advisoryCode: PropTypes.string,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
+  handleAdvisoryCodeChange: PropTypes.func,
+  ratingObjectForCreate: PropTypes.object
 };
 
 export default connect(mapStateToProps)(TitleEditMode);
