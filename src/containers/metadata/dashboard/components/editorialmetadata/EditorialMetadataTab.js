@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Col, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
-import {getLanguageByCode} from '../../../../../constants/language';
 import '../territorymetadata/MetadataTerritoryTab.scss';
 
 class EditorialMetadataTab extends Component {
@@ -16,7 +15,7 @@ class EditorialMetadataTab extends Component {
                 <Fragment>
                     <Row style={{padding: '15px'}}>
                         <Col md={3}><b>Locale: </b> {this.props.data.locale ? this.props.data.locale : this.emptySpan()}</Col>
-                        <Col md={3}><b>Language: </b> {this.props.data.language ? getLanguageByCode(this.props.data.language) : this.emptySpan()}</Col>
+                        <Col md={3}><b>Language: </b> {this.props.data.language ? this.props.getLanguageByCode(this.props.data.language) : this.emptySpan()}</Col>
                         <Col md={3}><b>Format: </b> {this.props.data.format ? this.props.data.format : this.emptySpan()}</Col>
                         <Col md={3}><b>Service: </b> {this.props.data.service ? this.props.data.service : this.emptySpan()}</Col>
                     </Row>
@@ -29,7 +28,16 @@ class EditorialMetadataTab extends Component {
                         <Col md={3}><b>Episode Number: </b> {this.props.data.episodeNumber ? this.props.data.episodeNumber : this.emptySpan()}</Col>
                         }
                     </Row>}
-
+                    <Row style={{padding: '15px'}}>
+                        <Col>
+                            <b>Advisory Codes: </b> {this.props.data.genres ?
+                            this.props.data.genres.map((code, i) => (
+                                this.props.data.genres.length === i + 1 ?
+                                <span key={i}>{code.genre}</span> : <span key={i}>{code.genre},</span>
+                            )) :
+                            this.emptySpan()}
+                        </Col>
+                    </Row>
                     <Row style={{padding: '15px'}}>
                         <Col style={{wordWrap: 'break-word'}}>
                             <b>Display Title:</b> {this.props.data.title ? (this.props.data.title.title ? this.props.data.title.title : this.emptySpan()) : this.emptySpan()}
@@ -88,7 +96,8 @@ class EditorialMetadataTab extends Component {
 
 EditorialMetadataTab.propTypes = {
     data: PropTypes.object,
-    titleContentType: PropTypes.string
+    titleContentType: PropTypes.string,
+    getLanguageByCode: PropTypes.func
 };
 
 

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Col, Row } from 'reactstrap';
+import {Col, Label, Row} from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
@@ -11,18 +11,37 @@ import {
 } from '../../../../../constants/metadata/metadataComponent';
 import {configFields} from '../../../service/ConfigService';
 import {connect} from 'react-redux';
+import Select from 'react-select';
 
 const mapStateToProps = state => {
     return {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
     };
 };
 
 class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showGenreError: false
+        };
     }
+
+    handleGenreChange = (data, e) => {
+        if(e.length > 3) {
+            this.setState({
+                showGenreError: true
+            });
+        } else if(this.state.showGenreError) {
+            this.setState({
+                showGenreError: false
+            });
+        }
+        console.log(e);
+        this.props.handleGenreEditChange(data, e);
+    };
 
     shouldComponentUpdate(nextProps) {
         let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
@@ -120,7 +139,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('service')}
                                 id="editorialService"
-                                onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                onChange={(e) => this.handleGenreChange(e, this.props.data)}
                                 value={service}>
                                 <option value={''}>Select Service</option>
                                 {
@@ -174,6 +193,28 @@ class EditorialMetadataEditMode extends Component {
                                 </Col>
                             }
                         </Row>}
+
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Genres:</b>
+                        </Col>
+                        <Col>
+                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label>}
+                            <Select
+                                name={this.getNameWithPrefix('genres')}
+                                value={this.props.data.genres ? this.props.data.genres.map(e => {
+                                    return {value: e.genre, label: e.genre};
+                                }) : []}
+                                onChange={e => this.handleGenreEditChange(this.props.data, e)}
+                                isMulti
+                                placeholder='Select Genre'
+                                options={this.props.configGenre ? this.props.configGenre.value
+                                        .filter(e => e.name !== null)
+                                        .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
+                                    : []}
+                            />
+                        </Col>
+                    </Row>
 
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
@@ -328,12 +369,14 @@ class EditorialMetadataEditMode extends Component {
 
 EditorialMetadataEditMode.propTypes = {
     handleChange: PropTypes.func.isRequired,
+    handleGenreEditChange: PropTypes.func.isRequired,
     data: PropTypes.object,
     validSubmit: PropTypes.func.isRequired,
     titleContentType: PropTypes.string,
     updatedEditorialMetadata: PropTypes.array,
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
+    configGenre: PropTypes.object
 };
 
 

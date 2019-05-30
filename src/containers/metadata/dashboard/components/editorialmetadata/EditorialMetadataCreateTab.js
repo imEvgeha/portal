@@ -1,23 +1,28 @@
-import React, { Component, Fragment } from 'react';
-import { Col, Row } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
+import React, {Component, Fragment} from 'react';
+import {Col, Label, Row} from 'reactstrap';
+import {AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
-import { resolutionFormat } from '../../../../../constants/resolutionFormat';
+import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
+import {resolutionFormat} from '../../../../../constants/resolutionFormat';
 import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
 import {configFields} from '../../../service/ConfigService';
 import {connect} from 'react-redux';
+import Select from 'react-select';
 
 const mapStateToProps = state => {
     return {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
     };
 };
 
 class EditorialMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showGenreError: false
+        };
     }
 
     shouldComponentUpdate(nextProps) {
@@ -34,6 +39,20 @@ class EditorialMetadataCreateTab extends Component {
     getNameWithPrefix(name) {
         return EDITORIAL_METADATA_PREFIX + name;
     }
+
+    handleGenreChange = (e) => {
+        if(e.length > 3) {
+            this.setState({
+                showGenreError: true
+            });
+        } else if(this.state.showGenreError) {
+            this.setState({
+                showGenreError: false
+            });
+        }
+        console.log(e);
+        this.props.handleGenreChange(e);
+    };
 
     render() {
         const { synopsis, title, copyright, awards, seriesName } = this.props.editorialMetadataForCreate;
@@ -150,6 +169,28 @@ class EditorialMetadataCreateTab extends Component {
                                 </Col>
                             }
                         </Row>}
+                        
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Genres:</b>
+                        </Col>
+                        <Col>
+                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label>}
+                            <Select
+                                name={this.getNameWithPrefix('genres')}
+                                value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {
+                                    return {value: e.genre, label: e.genre};
+                                }) : []}
+                                onChange={this.handleGenreChange}
+                                isMulti
+                                placeholder='Select Genre'
+                                options={this.props.configGenre ? this.props.configGenre.value
+                                    .filter(e => e.name !== null)
+                                    .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
+                                    : []}
+                            />
+                        </Col>
+                    </Row>
 
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
@@ -297,11 +338,13 @@ EditorialMetadataCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
+    handleGenreChange: PropTypes.func.isRequired,
     areFieldsRequired: PropTypes.bool.isRequired,
     titleContentType: PropTypes.string,
     editorialMetadataForCreate: PropTypes.object,
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
+    configGenre: PropTypes.object
 };
 
 
