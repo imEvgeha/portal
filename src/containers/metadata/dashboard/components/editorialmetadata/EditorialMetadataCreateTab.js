@@ -1,23 +1,26 @@
-import React, { Component, Fragment } from 'react';
-import { Col, Row } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
+import React, {Component, Fragment} from 'react';
+import {Col, Label, Row} from 'reactstrap';
+import {AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
-import { resolutionFormat } from '../../../../../constants/resolutionFormat';
+import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
+import {resolutionFormat} from '../../../../../constants/resolutionFormat';
 import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
 import {configFields} from '../../../service/ConfigService';
 import {connect} from 'react-redux';
+import Select from 'react-select';
 
 const mapStateToProps = state => {
     return {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
     };
 };
 
 class EditorialMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
+
     }
 
     shouldComponentUpdate(nextProps) {
@@ -34,6 +37,11 @@ class EditorialMetadataCreateTab extends Component {
     getNameWithPrefix(name) {
         return EDITORIAL_METADATA_PREFIX + name;
     }
+
+    handleGenreChange = (e) => {
+        console.log(e);
+        // this.props.handleChange(e);
+    };
 
     render() {
         const { synopsis, title, copyright, awards, seriesName } = this.props.editorialMetadataForCreate;
@@ -150,6 +158,26 @@ class EditorialMetadataCreateTab extends Component {
                                 </Col>
                             }
                         </Row>}
+                        
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Genres:</b>
+                        </Col>
+                        <Col>
+                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label>}
+                            <Select
+                                name={this.getNameWithPrefix('genres')}
+                                value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres : []}
+                                onChange={this.handleGenreChange}
+                                isMulti
+                                placeholder='Select Genre'
+                                options={this.props.configGenre ? this.props.configGenre.value.map(e => {
+                                    return {id: e.id, genre: e.name, value: e.name, label: e.name};
+                                }) : []}
+                                isDisabled={true}
+                            />
+                        </Col>
+                    </Row>
 
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
@@ -302,6 +330,7 @@ EditorialMetadataCreateTab.propTypes = {
     editorialMetadataForCreate: PropTypes.object,
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
+    configGenre: PropTypes.object
 };
 
 
