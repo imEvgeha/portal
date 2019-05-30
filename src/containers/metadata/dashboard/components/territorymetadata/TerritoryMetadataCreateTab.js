@@ -1,8 +1,9 @@
-import React, { Component, Fragment } from 'react';
-import { Row, Col } from 'reactstrap';
+import React, { Component } from 'react';
+import { Row, Col, Container } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import {locale} from '../../../../../constants/locale';
+import { connect } from 'react-redux';
+import { configFields } from '../../../service/ConfigService';
 
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
@@ -17,73 +18,34 @@ class TerritoryMetadataCreateTab extends Component {
     render() {
         return (
             <div id="territoryMetadataCreate">
-                <Fragment>
+                <Container>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
-                            <b>Locale<span style={{ color: 'red' }}>*</span></b>
-                        </Col>
-                        <Col md={2}>
+                        <Col>
                             <AvField type="select"
                                 name="locale"
+                                label={<span>Locale<span style={{ color: 'red' }}>*</span></span>}
                                 id="territoryLocal"
                                 required={this.props.isRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Locale</option>
                                 {
-                                    locale && locale.map((item, i) => {
-                                        return <option key={i} value={item.localeCode}>{item.countryName}</option>;
+                                    this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                                     })
                                 }
                             </AvField>
                         </Col>
-                    </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
-                            <b>Theatrical Release Date</b>
-                        </Col>
-                        <Col md={2}>
-                            <AvField type="date" id="territoryTheatricalReleaseDate"
-                                name="theatricalReleaseDate"
-                                onChange={this.props.handleChange}
-                                errorMessage="Please enter a valid date!" />
-                        </Col>
-                    </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
-                            <b>Home Video Release Date</b>
-                        </Col>
-                        <Col md={2}>
-                            <AvField validate={{
-                                date: { format: 'YYYY-mm-DD' }
-                            }} type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate"  onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
-                        </Col>
-                    </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
-                            <b>Avail Announce Date</b>
-                        </Col>
-                        <Col md={2}>
-                            <AvField type="date" id="territoryAvailAnnounceDate" name="availAnnounceDate"  onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
-                        </Col>
-                    </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
-                            <b>Box Office</b>
-                        </Col>
-                        <Col md={2}>
-                            <AvField type="number" id="territoryBoxOffice" name="boxOffice" placeholder="Enter Box Office" onChange={this.props.handleChange}
+                        <Col>
+                            <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" placeholder="Enter Box Office" onChange={this.props.handleChange}
                                 validate={{
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
                                 }} />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={2}>
-                            <b>Release Year</b>
-                        </Col>
-                        <Col md={2}>
-                            <AvField name="releaseYear" type="number" errorMessage="Please enter a valid year!" placeholder="Enter Release Year" onChange={this.props.handleChange}
+                        <Col>
+                            <AvField label="Release Year" name="releaseYear" type="number" errorMessage="Please enter a valid year!" placeholder="Enter Release Year" onChange={this.props.handleChange}
                                 validate={{
                                     date: { format: 'YYYY', errorMessage: 'Please enter a valid date!' },
                                     pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
@@ -91,8 +53,37 @@ class TerritoryMetadataCreateTab extends Component {
                                 }}
                             />
                         </Col>
+                        <Col>
+                            <AvField label="Original Air Date" validate={{
+                                date: { format: 'YYYY-mm-DD' }
+                            }} type="date" id="territoryOriginalAirDate" name="originalAirDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                        </Col>
                     </Row>
-                </Fragment>
+                    <Row style={{ padding: '15px' }}>
+                        <Col>
+                            <AvField label="Home Video Release Date" validate={{
+                                date: { format: 'YYYY-mm-DD' }
+                            }} type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                        </Col>
+                        <Col>
+                            <AvField label="Avail Announce Date" type="date" id="territoryAvailAnnounceDate" name="availAnnounceDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                        </Col>
+                    </Row>
+                    <Row style={{ padding: '15px' }}>
+                        <Col>
+                            <AvField label="Theatrical Release Date" type="date" id="territoryTheatricalReleaseDate"
+                                name="theatricalReleaseDate"
+                                onChange={this.props.handleChange}
+                                errorMessage="Please enter a valid date!" />
+                        </Col>
+                        <Col>
+                            <AvField label="EST Release Date" type="date" id="territoryESTReleaseDate"
+                                name="estReleaseDate"
+                                onChange={this.props.handleChange}
+                                errorMessage="Please enter a valid date!" />
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         );
     }
@@ -100,8 +91,14 @@ class TerritoryMetadataCreateTab extends Component {
 
 TerritoryMetadataCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
-    isRequired: PropTypes.bool.isRequired
+    isRequired: PropTypes.bool.isRequired,
+    configLocale: PropTypes.object,
 };
 
+const mapStateToProps = state => {
+    return {
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+    };
+};
 
-export default TerritoryMetadataCreateTab;
+export default connect(mapStateToProps)(TerritoryMetadataCreateTab);
