@@ -169,7 +169,7 @@ class EditorialMetadataCreateTab extends Component {
                                 </Col>
                             }
                         </Row>}
-                        
+
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
                             <b>Genres:</b>
