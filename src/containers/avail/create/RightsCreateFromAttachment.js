@@ -39,6 +39,7 @@ export default class RightsCreateFromAttachment extends React.Component {
         if(this.refresh === null){
             this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
         }
+        window.addEventListener('message', this.onDOPMessage);
     }
 
     componentWillUnmount() {
@@ -46,8 +47,17 @@ export default class RightsCreateFromAttachment extends React.Component {
             clearInterval(this.refresh);
             this.refresh = null;
         }
+        window.removeEventListener('message', this.onDOPMessage);
     }
 
+    onDOPMessage(e){
+        if(e.data === 'completeTriggered'){
+            //Save or Complete clicked
+            setTimeout(()=>{
+                parent.postMessage('{"errorCount": 0}', '*');
+            }, 100);
+        }
+    }
 
     getHistoryData() {
         if(this.state.availHistoryId){
@@ -139,7 +149,7 @@ export default class RightsCreateFromAttachment extends React.Component {
                     columns = {['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
                     nav = {{back : 'create_from_attachments', params: {availHistoryId: this.state.availHistoryId}}}
                     autoload = {false}
-                    autoRefresh={REFRESH_INTERVAL}
+                    autoRefresh={REFRESH_INTERVAL*0}
                 />
             </div>
         );
