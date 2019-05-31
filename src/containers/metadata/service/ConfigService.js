@@ -9,7 +9,8 @@ export const configFields = {
     CAST_AND_CREW: 'persons',
     RATING_SYSTEM: 'rating-systems',
     RATINGS: 'ratings',
-    ADVISORY_CODE: 'advisories'
+    ADVISORY_CODE: 'advisories',
+    REGIONS: 'regions'
 };
 
 const http = Http.create({noDefaultErrorHandling: true});

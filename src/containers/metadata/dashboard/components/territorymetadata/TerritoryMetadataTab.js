@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Row, Col } from 'reactstrap';
+import React, { Component } from 'react';
+import { Row, Col, Container } from 'reactstrap';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -9,38 +9,40 @@ class TerritoryMetadataTab extends Component {
     render() {
         return (
             <div id="territoryMetadataTabs">
-                <Fragment>
+                <Container>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
+                        <Col>
                             <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
-                    </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
-                            <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
+                        <Col>
+                            <b>Box Office: </b> {this.props.data.boxOffice ? this.props.data.boxOffice : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
+                    <Row style={{ padding: '15px'}}>
+                        <Col>
+                            <b>Release Year: </b> {this.props.data.releaseYear ? this.props.data.releaseYear : <span style={{ color: '#999' }}>Empty</span>}
+                        </Col>
+                        <Col>
+                            <b>Original Air Date: </b> {this.props.data.originalAirDate ? moment(this.props.data.originalAirDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
+                        </Col>
+                    </Row>
+                    <Row style={{ padding: '15px'}}>
+                        <Col>
                             <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
-                    </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
+                        <Col>
                             <b>Avail Announce Date: </b> {this.props.data.availAnnounceDate ? moment(this.props.data.availAnnounceDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
-                            <b>Box Office: </b> {this.props.data.boxOffice ? this.props.data.boxOffice : <span style={{ color: '#999' }}>Empty</span>}
+                        <Col>
+                            <b>Theatrical Release Date: </b> {this.props.data.theatricalReleaseDate ? moment(this.props.data.theatricalReleaseDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
+                        </Col>
+                        <Col>
+                            <b>EST Release Date: </b> {this.props.data.estReleaseDate ? moment(this.props.data.estReleaseDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={4}>
-                            <b>Release Year: </b> {this.props.data.releaseYear ? this.props.data.releaseYear : <span style={{ color: '#999' }}>Empty</span>}
-                        </Col>
-                    </Row>
-                </Fragment>
+                </Container>
             </div>
         );
     }

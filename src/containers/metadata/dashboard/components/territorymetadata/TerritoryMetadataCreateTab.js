@@ -8,6 +8,17 @@ import { configFields } from '../../../service/ConfigService';
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            territoryType: configFields.LOCALE,
+            locale: []
+        };
+    }
+
+    handleTerritoryType = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+
     }
 
     shouldComponentUpdate(nextProps) {
@@ -16,9 +27,23 @@ class TerritoryMetadataCreateTab extends Component {
     }
 
     render() {
+        const locale = this.props.configLocale && this.props.configLocale.find(e => e.key === this.state.territoryType);
         return (
             <div id="territoryMetadataCreate">
                 <Container>
+                    <Row style={{ padding: '15px'}}>
+                        <Col>
+                            <AvField type="select"
+                                    name="territoryType"
+                                    label='Territory Type'
+                                    id="territoryType"
+                                    value={this.state.territoryType}
+                                    onChange={this.handleTerritoryType}>
+                                    <option value={configFields.LOCALE}>Country</option>
+                                    <option value={configFields.REGIONS}>Region</option>
+                            </AvField>
+                        </Col>
+                    </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             <AvField type="select"
@@ -28,10 +53,10 @@ class TerritoryMetadataCreateTab extends Component {
                                 required={this.props.isRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Locale</option>
+                                <option value={''}>Select {this.state.territoryType === configFields.LOCALE ? 'Locale' : 'Region'}</option>
                                 {
-                                    this.props.configLocale && this.props.configLocale.value.map((e, index) => {
-                                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
+                                    locale && locale.value.map((e, index) => {
+                                        return <option key={index} value={this.state.territoryType === configFields.LOCALE ? e.countryCode : e.regionCode }>{this.state.territoryType === configFields.LOCALE ? e.countryName : e.regionName}</option>;
                                     })
                                 }
                             </AvField>
@@ -92,12 +117,13 @@ class TerritoryMetadataCreateTab extends Component {
 TerritoryMetadataCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
     isRequired: PropTypes.bool.isRequired,
-    configLocale: PropTypes.object,
+    configLocale: PropTypes.array,
 };
+
 
 const mapStateToProps = state => {
     return {
-        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configLocale: state.titleReducer.configData,
     };
 };
 
