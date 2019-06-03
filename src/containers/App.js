@@ -20,11 +20,16 @@ import NexusBreadcrumb from './NexusBreadcrumb';
 import TitleEdit from './metadata/dashboard/components/TitleEdit';
 import DOP from '../util/DOP';
 
+import ContractProfile from './contracts/profile/ContractProfile.jsx';
+import Contract from './contracts/search/Contract.jsx';
+
+import Media from './media/search/Media.js';
+
 export default class App extends React.Component {
     render() {
         return (
             <Router>
-                <div>
+                <div className="component-container">
                     <IfEmbedded>
                         <DOP/>
                     </IfEmbedded>
@@ -50,6 +55,12 @@ export default class App extends React.Component {
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />
                         <Route exact path="/metadata/detail/:id" component={TitleEdit} />
+
+                        <Route exact path="/contractprofile" component={ContractProfile} />
+                        <Route exact path="/contractsearch" component={Contract} />
+
+                        <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
+
                     </div>
                 </div>
             </Router>

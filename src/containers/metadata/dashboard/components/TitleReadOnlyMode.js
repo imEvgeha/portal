@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Row, Col, Container, Alert } from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
+import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
@@ -16,7 +17,6 @@ class TitleReadOnlyMode extends Component {
     renderFields = () => {
         const { 
             title,
-            productionStudioId,
             releaseYear,
             boxOffice,
             animated,
@@ -47,10 +47,7 @@ class TitleReadOnlyMode extends Component {
                             </Row>
                             <Row>
                                 <Col>
-                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? contentType : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
-                                <Col>
-                                    <Alert color="light" id="titleProductionStudioId"><b>Production Studio: </b>{productionStudioId ? productionStudioId : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                             </Row>
                             <Fragment>
@@ -192,11 +189,14 @@ class TitleReadOnlyMode extends Component {
                     </Row>
                     <CoreMetadataReadOnlyMode
                         data={this.props.data}
+                        toggleTitleRating={this.props.toggleTitleRating}
+                        activeTab={this.props.activeTab}
                     />
                 </Container>
             </Fragment>
         );
-    }
+    };
+
     render() {
         if (this.props.data) {
             return this.renderFields();
@@ -209,7 +209,9 @@ class TitleReadOnlyMode extends Component {
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
     episodic: PropTypes.object,
-    addBooleanQuotes: PropTypes.func
+    addBooleanQuotes: PropTypes.func,
+    toggleTitleRating: PropTypes.func,
+    activeTab: PropTypes.any
 };
 
 export default TitleReadOnlyMode;

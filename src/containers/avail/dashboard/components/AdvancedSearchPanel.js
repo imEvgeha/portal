@@ -1,13 +1,16 @@
 import React from 'react';
 import {Button} from 'reactstrap';
 import {
-    searchFormUpdateAdvancedSearchCriteria
+    searchFormUpdateAdvancedSearchCriteria,
+    setHistoryCache
 } from '../../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
+
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
 import {rightSearchHelper} from '../RightSearchHelper';
 import {configurationService} from '../../service/ConfigurationService';
+import {historyService} from '../../service/HistoryService';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
 import {downloadFile} from '../../../../util/Common';
@@ -23,11 +26,13 @@ const mapStateToProps = state => {
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
         columns: state.dashboard.session.columns,
+        historyCache: state.dashboard.session.historyCache
     };
 };
 
 const mapDispatchToProps = {
-    searchFormUpdateAdvancedSearchCriteria
+    searchFormUpdateAdvancedSearchCriteria,
+    setHistoryCache
 };
 
 const ignoreForCloseable = ['invalid'];
@@ -43,6 +48,9 @@ class AdvancedSearchPanel extends React.Component {
         reportName: t.string,
         availsMapping: t.object,
         columns: t.array,
+        historyCache: t.object,
+        setHistoryCache: t.func,
+        location: t.object
     };
 
     constructor(props) {
@@ -51,8 +59,10 @@ class AdvancedSearchPanel extends React.Component {
             reportName: '',
             selected: null,
             value: null,
-            blink: null,
+            blink: null
         };
+        this.loadingHistoryData = {};
+
         this.handleBulkExport = this.handleBulkExport.bind(this);
         this.bulkExport = this.bulkExport.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -178,7 +188,7 @@ class AdvancedSearchPanel extends React.Component {
     handleClear() {
         this.handleSelect(null);
         rightSearchHelper.clearAdvancedSearchForm();
-        setTimeout(this.handleSearch, 1);
+        this.handleSearch(null, {});
     }
 
     handleSave() {
@@ -194,12 +204,13 @@ class AdvancedSearchPanel extends React.Component {
         }, {reportName: this.props.reportName});
     }
 
-    handleSearch() {
+    handleSearch(e, criteria = null) {
+        criteria = criteria || this.props.searchCriteria;
         if ( !this.isAnyValueSpecified() ) {
             this.setState({selected: null, value: null});
         }
         this.setState({blink: null});
-        this.props.onSearch(this.props.searchCriteria);
+        this.props.onSearch(criteria);
     }
 
     isAnyValueSpecified = () => {
@@ -221,6 +232,28 @@ class AdvancedSearchPanel extends React.Component {
 
     getSortedFieldsToShow() {
         return this.getFieldsToShow().sort( (a, b) => (a.order ? a.order : -1)  - (b.order ? b.order : -1) );
+    }
+
+    getHistoryData(availHistoryId) {
+        historyService.getHistory(availHistoryId)
+            .then(res => {
+                if(res && res.data && this.loadingHistoryData[availHistoryId]) {
+                    delete this.loadingHistoryData[availHistoryId];
+                    this.props.setHistoryCache({[availHistoryId] : res.data});
+                }
+            })
+            .catch(() => {
+            });
+    }
+
+    componentWillUnmount() {
+        this.loadingHistoryData = {};
+    }
+
+    componentDidMount() {
+        if(this.props.location && this .props.location.state){
+            this.props.setHistoryCache({[this.props.location.state.id] : this.props.location.state});
+        }
     }
 
     render() {
@@ -326,6 +359,7 @@ class AdvancedSearchPanel extends React.Component {
                             switch (schema.searchDataType) {
                                 case 'string' : return renderCloseableBtn(key, schema.displayName);
                                 case 'integer' : return renderCloseableBtn(key, schema.displayName);
+                                case 'year' : return renderCloseableBtn(key, schema.displayName);
                                 case 'double' : return renderCloseableBtn(key, schema.displayName);
                                 case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
                                 case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
@@ -349,12 +383,35 @@ class AdvancedSearchPanel extends React.Component {
         };
 
         const renderSpecialCloseable = () => {
+            let val = '';
+            if(this.props.searchCriteria.availHistoryIds) {
+                val = this.props.searchCriteria.availHistoryIds.value;
+                let data = this.props.historyCache[val];
+                if (data) {
+                    let subTitle = data.ingestType + ', ';
+                    val = subTitle;
+                    if (data.ingestType === 'Email') {
+                        val += (data.provider ? data.provider + ', ' : '');
+                    } else {
+                        if (data.attachments && data.attachments[0]) {
+                            const filename = data.attachments[0].link.split(/(\\|\/)/g).pop();
+                            val += (filename ? filename + ', ' : '');
+                        }
+                    }
+                    val += moment(data.received).format('llll');
+                } else {
+                    if(!this.loadingHistoryData[val]) {
+                        this.loadingHistoryData[val] = {loading: true};
+                        this.getHistoryData(val);
+                    }
+                }
+            }
             return (
                 this.props.searchCriteria.availHistoryIds &&
                 <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={'Avail History'}
-                        value={' = ' + this.props.searchCriteria.availHistoryIds.value}
+                        value={' = ' + val}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
                         }}

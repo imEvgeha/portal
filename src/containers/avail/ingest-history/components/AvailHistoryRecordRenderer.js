@@ -104,7 +104,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'125px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.totalProcessed > 0 ?
-                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id)}>
+                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[1], state:this.props.data}}>
                                     Total Avails:
                                 </Link>)
                                 :
@@ -115,7 +115,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.totalProcessed > 0 ?
-                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id)}>
+                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[1], state:this.props.data}}>
                                     {this.props.data.totalProcessed}
                                 </Link>)
                                 :
@@ -128,7 +128,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id, false)}>
+                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[1], state:this.props.data}}>
                                     Success:
                                 </Link>)
                                 :
@@ -139,7 +139,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={RightsURL.getRightsSearchUrl(this.props.data.id, false)}>
+                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[1], state:this.props.data}}>
                                     {this.props.data.successfullyProcessed}
                                 </Link>)
                                 :
@@ -152,7 +152,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={RightsURL.getRightsSearchUrl(this.props.data.id, true)}>
+                                (<Link className={'error-link'} to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[1], state:this.props.data}}>
                                     Errors:
                                 </Link>)
                                 :
@@ -163,7 +163,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
                             {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={RightsURL.getRightsSearchUrl(this.props.data.id, true)}>
+                                (<Link className={'error-link'} to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[1], state:this.props.data}}>
                                     {this.props.data.failedToProcess}
                                 </Link>)
                                 :
