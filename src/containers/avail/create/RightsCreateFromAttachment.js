@@ -8,13 +8,16 @@ import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {URL} from '../../../util/Common';
 import {Can} from '../../../ability';
 import DashboardDropableCard from '../dashboard/card/DashboardDropableCard';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
+import {RIGHTS_CREATE_FROM_PDF} from '../../../constants/breadcrumb';
 
 const REFRESH_INTERVAL = 5*1000; //5 seconds
 
 export default class RightsCreateFromAttachment extends React.Component {
 
     static propTypes = {
-        match: t.object
+        match: t.object,
+        location: t.object
     };
 
     static contextTypes = {
@@ -33,6 +36,16 @@ export default class RightsCreateFromAttachment extends React.Component {
     }
 
     componentDidMount() {
+        if(this.props.location && this.props.location.search) {
+            const sparams = new URLSearchParams(this.props.location.search);
+            const availHistoryIds = sparams.get('availHistoryIds');
+            if(availHistoryIds) {
+                sparams.delete('availHistoryIds');
+                this.context.router.history.replace('/avails/history/' + availHistoryIds + '/create_from_attachments?' + sparams.toString());
+                return;
+            }
+        }
+        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(RIGHTS_CREATE_FROM_PDF);
         profileService.initAvailsMapping();
         rightSearchHelper.advancedSearch({availHistoryIds: this.state.availHistoryId}, false);
         this.getHistoryData();

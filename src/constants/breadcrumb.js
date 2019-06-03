@@ -6,3 +6,4 @@ export const AVAILS_SEARCH_RESULTS = {name: 'Avails > Search Results', path: '/a
 export const AVAILS_HISTORY = {name: 'Avails Ingest History', path: '/avails/history', search: RightsURL.search};
 export const AVAILS_HISTORY_SEARCH_RESULTS = {name: 'Avails Ingest History > Search Results', path: '/avails/history', search: RightsURL.search};
 export const RIGHT_CREATE = {name: 'Create Right', path: 'avails/rights/create', search: RightsURL.search};
+export const RIGHTS_CREATE_FROM_PDF = {name: 'Create Rights from PDF', path: '/avails/history/create_from_attachments', search: RightsURL.search};
