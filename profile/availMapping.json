@@ -771,6 +771,16 @@
   "enableEdit": true,
   "required": false
 }, {
+  "javaVariableName": "temporaryPriceReduction",
+  "displayName": "Temporary Price Reduction",
+  "dataType": "integer",
+  "searchDataType": "integer",
+  "queryParamName": "temporaryPriceReduction",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
   "javaVariableName": "srp",
   "displayName": "SRP",
   "dataType": "integer",
