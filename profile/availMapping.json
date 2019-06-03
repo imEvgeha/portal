@@ -773,8 +773,8 @@
 }, {
   "javaVariableName": "temporaryPriceReduction",
   "displayName": "Temporary Price Reduction",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "boolean",
+  "searchDataType": "boolean",
   "queryParamName": "temporaryPriceReduction",
   "readOnly": false,
   "enableSearch": true,
