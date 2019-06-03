@@ -18,12 +18,16 @@ import {canRender} from '../ability';
 import Welcome from './Welcome';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import TitleEdit from './metadata/dashboard/components/TitleEdit';
+import DOP from '../util/DOP';
 
 export default class App extends React.Component {
     render() {
         return (
             <Router>
                 <div>
+                    <IfEmbedded>
+                        <DOP/>
+                    </IfEmbedded>
                     <IfEmbedded value={false}>
                         <Navbar/>
                     </IfEmbedded>
