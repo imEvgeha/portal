@@ -103,7 +103,7 @@ class EditorialMetadata extends Component {
                                                             titleContentType={this.props.titleContentType}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
-                                                            handleGenreChange={this.props.handleGenreEditChange}
+                                                            handleGenreEditChange={this.props.handleGenreEditChange}
                                                             updatedEditorialMetadata={this.props.updatedEditorialMetadata}
                                                             key={i} data={item} />
                                                     </Col>
@@ -136,8 +136,8 @@ EditorialMetadata.propTypes = {
     titleContentType: PropTypes.string,
     editorialMetadataForCreate: PropTypes.object,
     updatedEditorialMetadata: PropTypes.array,
-    handleGenreChange: PropTypes.func,
-    handleGenreEditChange: PropTypes.func,
+    handleGenreChange: PropTypes.func.isRequired,
+    handleGenreEditChange: PropTypes.func.isRequired,
     configLanguage: PropTypes.object
 };
 

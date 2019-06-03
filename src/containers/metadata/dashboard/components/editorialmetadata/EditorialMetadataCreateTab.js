@@ -50,7 +50,6 @@ class EditorialMetadataCreateTab extends Component {
                 showGenreError: false
             });
         }
-        console.log(e);
         this.props.handleGenreChange(e);
     };
 
@@ -175,7 +174,7 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Genres:</b>
                         </Col>
                         <Col>
-                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label>}
+                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label> }
                             <Select
                                 name={this.getNameWithPrefix('genres')}
                                 value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {

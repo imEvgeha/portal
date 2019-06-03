@@ -25,22 +25,21 @@ class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showGenreError: false
+          genres: []
         };
     }
 
-    handleGenreChange = (data, e) => {
-        if(e.length > 3) {
-            this.setState({
-                showGenreError: true
-            });
-        } else if(this.state.showGenreError) {
-            this.setState({
-                showGenreError: false
-            });
-        }
-        console.log(e);
-        this.props.handleGenreEditChange(data, e);
+    componentDidMount() {
+        this.setState({
+            genres: this.props.data.genres
+        });
+    }
+
+    handleGenre = (e) => {
+        this.setState({
+            genres: e
+        });
+        this.props.handleGenreEditChange(this.props.data, e);
     };
 
     shouldComponentUpdate(nextProps) {
@@ -139,7 +138,7 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="select"
                                 name={this.getNameWithPrefix('service')}
                                 id="editorialService"
-                                onChange={(e) => this.handleGenreChange(e, this.props.data)}
+                                onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={service}>
                                 <option value={''}>Select Service</option>
                                 {
@@ -199,13 +198,12 @@ class EditorialMetadataEditMode extends Component {
                             <b>Genres:</b>
                         </Col>
                         <Col>
-                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label>}
                             <Select
                                 name={this.getNameWithPrefix('genres')}
-                                value={this.props.data.genres ? this.props.data.genres.map(e => {
+                                value={this.state.genres.map(e => {
                                     return {value: e.genre, label: e.genre};
-                                }) : []}
-                                onChange={e => this.handleGenreEditChange(this.props.data, e)}
+                                })}
+                                onChange={e => this.handleGenre(e)}
                                 isMulti
                                 placeholder='Select Genre'
                                 options={this.props.configGenre ? this.props.configGenre.value

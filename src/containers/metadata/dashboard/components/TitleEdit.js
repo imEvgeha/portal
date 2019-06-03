@@ -560,9 +560,7 @@ class TitleEdit extends Component {
         this.setState({
             updatedEditorialMetadata: newOne
         });
-    }
-
-
+    };
 
     updateEditorialMetadataInnerObject = (edited, objectName, objectField, objectFieldValue) => {
         if (edited[objectName]) {
@@ -585,7 +583,6 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataGenreChange = (e) => {
-        console.log(e);
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
