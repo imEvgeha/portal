@@ -44,6 +44,10 @@ function isObjectEmpty(obj) {
     return true;
 }
 
+const encodedSerialize = function(params){
+    return Object.entries(params).map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`).join('&');
+};
+
 function prepareSortMatrixParam(sortedParams, onlyLastPart = false) {
     let matrix = '';
     if(sortedParams){
@@ -180,4 +184,4 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, URL, IfEmbedded};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, URL, IfEmbedded};
