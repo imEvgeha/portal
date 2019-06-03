@@ -151,7 +151,6 @@ export default class RightsCreateFromAttachment extends React.Component {
                     columns = {['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
                     nav = {{back : 'create_from_attachments', params: {availHistoryId: this.state.availHistoryId}}}
                     autoload = {false}
-                    autoRefresh={REFRESH_INTERVAL}
                 />
             </div>
         );
