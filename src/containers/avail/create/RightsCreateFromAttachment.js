@@ -10,14 +10,22 @@ import {Can} from '../../../ability';
 import DashboardDropableCard from '../dashboard/card/DashboardDropableCard';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {RIGHTS_CREATE_FROM_PDF} from '../../../constants/breadcrumb';
+import {connect} from 'react-redux';
 
 const REFRESH_INTERVAL = 5*1000; //5 seconds
 
-export default class RightsCreateFromAttachment extends React.Component {
+const mapStateToProps = state => {
+    return {
+        availsMapping: state.root.availsMapping,
+    };
+};
+
+class RightsCreateFromAttachment extends React.Component {
 
     static propTypes = {
         match: t.object,
-        location: t.object
+        location: t.object,
+        availsMapping: t.any,
     };
 
     static contextTypes = {
@@ -46,11 +54,26 @@ export default class RightsCreateFromAttachment extends React.Component {
             }
         }
         if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(RIGHTS_CREATE_FROM_PDF);
-        profileService.initAvailsMapping();
+
+        if(!this.props.availsMapping) {
+            profileService.initAvailsMapping();
+            return;
+        }
+
+        this.getSearchCriteriaFromURL();
+    }
+
+    getSearchCriteriaFromURL(){
         rightSearchHelper.advancedSearch({availHistoryIds: this.state.availHistoryId}, false);
         this.getHistoryData();
         if(this.refresh === null){
             this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.availsMapping !== this.props.availsMapping) {
+            this.getSearchCriteriaFromURL();
         }
     }
 
@@ -146,13 +169,17 @@ export default class RightsCreateFromAttachment extends React.Component {
                 </div>
                 <hr style={{color:'black', backgroundColor:'black'}}/>
                 <div> Rights Created </div>
-                <RightsResultTable
-                    fromServer = {true}
-                    columns = {['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
-                    nav = {{back : 'create_from_attachments', params: {availHistoryId: this.state.availHistoryId}}}
-                    autoload = {false}
-                />
+                {this.props.availsMapping &&
+                    <RightsResultTable
+                        fromServer={true}
+                        columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
+                        nav={{back: 'create_from_attachments', params: {availHistoryId: this.state.availHistoryId}}}
+                        autoload={false}
+                    />
+                }
             </div>
         );
     }
 }
+
+export default connect(mapStateToProps, null)(RightsCreateFromAttachment);
