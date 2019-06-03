@@ -102,9 +102,10 @@ class DashboardContainer extends React.Component {
         if(this.props.match.path === RightsURL.availsDashboardUrl){
             this.props.searchFormShowSearchResults(false);
         }else{
-            const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
+            const searchPart = decodeURIComponent(this.props.location.search);
+            const params = RightsURL.URLtoArray(searchPart, this.props.match.params);
             let criteria = {text: ''};
-            if(!isObjectEmpty(this.props.match.params) || RightsURL.isAdvancedFilter(this.props.location.search)){
+            if(!isObjectEmpty(this.props.match.params) || RightsURL.isAdvancedFilter(searchPart)){
                 criteria = RightsURL.ArraytoFilter(params);
                 this.props.searchFormShowAdvancedSearch(true);
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);

@@ -136,7 +136,7 @@ class RightsURL extends React.Component {
             params.push('text=' + filter.text);
         }
         const search = params.join('&');
-        this.saveURL(URL.keepEmbedded('/avails/rights' + (search ? '?' + search : '')));
+        this.saveURL(URL.keepEmbedded('/avails/rights' + (search ? '?' + encodeURIComponent(search) : '')));
     }
 
     static saveRightsAdvancedFilterUrl(filter){
@@ -176,7 +176,7 @@ class RightsURL extends React.Component {
         });
 
         const search = params.join('&');
-        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + search : '')));
+        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + encodeURIComponent(search) : '')));
     }
 
     static saveURL(url){

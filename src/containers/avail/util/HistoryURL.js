@@ -85,7 +85,7 @@ class HistoryURL extends React.Component {
         });
 
         const search = params.join('&');
-        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + search : '')));
+        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + encodeURIComponent(search) : '')));
     }
 
     static saveURL(url){
