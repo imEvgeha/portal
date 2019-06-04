@@ -29,6 +29,7 @@ class EditorialMetadataCreateTab extends Component {
         let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
         let differentEditorialMetadataForCreate = this.props.editorialMetadataForCreate !== nextProps.editorialMetadataForCreate;
         let differentFieldsRequired = this.props.areFieldsRequired !== nextProps.areFieldsRequired;
+
         return differentEditorialMetadataForCreate || differentTitleContentType || differentFieldsRequired;
     }
 
@@ -45,10 +46,13 @@ class EditorialMetadataCreateTab extends Component {
             this.setState({
                 showGenreError: true
             });
-        } else if(this.state.showGenreError) {
-            this.setState({
-                showGenreError: false
-            });
+            e.pop();
+        } else {
+            if(this.state.showGenreError) {
+                this.setState({
+                    showGenreError: false
+                });
+            }
         }
         this.props.handleGenreChange(e);
     };
@@ -174,7 +178,6 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Genres:</b>
                         </Col>
                         <Col>
-                            { this.state.showGenreError && <Label for='editorialMetadataGenres'>Max 3 genres</Label> }
                             <Select
                                 name={this.getNameWithPrefix('genres')}
                                 value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {
@@ -188,6 +191,7 @@ class EditorialMetadataCreateTab extends Component {
                                     .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
                                     : []}
                             />
+                            { this.state.showGenreError && <Label style={{color: 'red'}}>Max 3 genres</Label> }
                         </Col>
                     </Row>
 

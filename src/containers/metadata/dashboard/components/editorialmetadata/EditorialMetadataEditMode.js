@@ -25,22 +25,37 @@ class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          genres: []
+            genres: [],
+            showGenreError: false
         };
     }
 
     componentDidMount() {
+        let newGenres = this.props.data.genres ? this.props.data.genres : [];
         this.setState({
-            genres: this.props.data.genres
+            genres: newGenres
         });
     }
 
     handleGenre = (e) => {
-        this.setState({
-            genres: e
-        });
+        if (e.length > 3) {
+            this.setState({
+                showGenreError: true
+            });
+            e.pop();
+        } else {
+            if (this.state.showGenreError) {
+                this.setState({
+                    showGenreError: false
+                });
+            }
+            this.setState({
+                genres: e
+            });
+        }
         this.props.handleGenreEditChange(this.props.data, e);
     };
+
 
     shouldComponentUpdate(nextProps) {
         let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
@@ -199,7 +214,7 @@ class EditorialMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <Select
-                                name={this.getNameWithPrefix('genres')}
+                                name={this.getNameWithPrefix('edit-genres')}
                                 value={this.state.genres.map(e => {
                                     return {value: e.genre, label: e.genre};
                                 })}
@@ -211,6 +226,7 @@ class EditorialMetadataEditMode extends Component {
                                         .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
                                     : []}
                             />
+                            { this.state.showGenreError && <Label style={{color: 'red'}}>Max 3 genres</Label> }
                         </Col>
                     </Row>
 
