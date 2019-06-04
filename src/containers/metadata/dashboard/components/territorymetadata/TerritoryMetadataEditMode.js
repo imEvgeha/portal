@@ -25,7 +25,6 @@ class TerritoryMetadataEditMode extends Component {
         return (
             <div id="territoryMetadataEdit">
                 <Container>
-
                     <AvForm onValidSubmit={this.props.validSubmit}>
                         <Row style={{ padding: '15px' }}>
                             <Col>
