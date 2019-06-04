@@ -88,7 +88,7 @@ class Rating extends Component {
                                                 <Row>
                                                     <Col>
                                                         <RatingEditTab
-                                                            handleChange={this.props.handleEditChange}
+                                                            handleEditChange={this.props.handleEditChange}
                                                             configRatingSystem={this.props.configRatingSystem}
                                                             configRatings={this.props.configRatings}
                                                             configAdvisoryCode={this.props.configAdvisoryCode}
