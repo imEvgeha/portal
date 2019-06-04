@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Col, Row } from 'reactstrap';
+import {Col, Label, Row} from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { locale as constantLocale}  from '../../../../../constants/locale';
-import { language as constantLanguage} from '../../../../../constants/language';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {
@@ -11,11 +9,53 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../../constants/metadata/metadataComponent';
+import {configFields} from '../../../service/ConfigService';
+import {connect} from 'react-redux';
+import Select from 'react-select';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
+    };
+};
 
 class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            genres: [],
+            showGenreError: false
+        };
     }
+
+    componentDidMount() {
+        let newGenres = this.props.data.genres ? this.props.data.genres : [];
+        this.setState({
+            genres: newGenres
+        });
+    }
+
+    handleGenre = (e) => {
+        if (e.length > 3) {
+            this.setState({
+                showGenreError: true
+            });
+            e.pop();
+        } else {
+            if (this.state.showGenreError) {
+                this.setState({
+                    showGenreError: false
+                });
+            }
+            this.setState({
+                genres: e
+            });
+        }
+        this.props.handleGenreEditChange(this.props.data, e);
+    };
+
 
     shouldComponentUpdate(nextProps) {
         let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
@@ -67,8 +107,8 @@ class EditorialMetadataEditMode extends Component {
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={locale}>
                                 {
-                                    constantLocale && constantLocale.map((item, i) => {
-                                        return <option key={i} value={item.localeCode}>{item.countryName}</option>;
+                                    this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                                     })
                                 }
                             </AvField>
@@ -83,8 +123,8 @@ class EditorialMetadataEditMode extends Component {
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 value={language}>
                                 {
-                                    constantLanguage && constantLanguage.map((item, i) => {
-                                        return <option key={i} value={item.code}>{item.language}</option>;
+                                    this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                                        return <option key={index} value={e.languageCode}>{e.languageName}</option>;
                                     })
                                 }
                             </AvField>
@@ -167,6 +207,28 @@ class EditorialMetadataEditMode extends Component {
                                 </Col>
                             }
                         </Row>}
+
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Genres:</b>
+                        </Col>
+                        <Col>
+                            <Select
+                                name={this.getNameWithPrefix('edit-genres')}
+                                value={this.state.genres.map(e => {
+                                    return {value: e.genre, label: e.genre};
+                                })}
+                                onChange={e => this.handleGenre(e)}
+                                isMulti
+                                placeholder='Select Genre'
+                                options={this.props.configGenre ? this.props.configGenre.value
+                                        .filter(e => e.name !== null)
+                                        .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
+                                    : []}
+                            />
+                            { this.state.showGenreError && <Label style={{color: 'red'}}>Max 3 genres</Label> }
+                        </Col>
+                    </Row>
 
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
@@ -321,11 +383,15 @@ class EditorialMetadataEditMode extends Component {
 
 EditorialMetadataEditMode.propTypes = {
     handleChange: PropTypes.func.isRequired,
+    handleGenreEditChange: PropTypes.func.isRequired,
     data: PropTypes.object,
     validSubmit: PropTypes.func.isRequired,
     titleContentType: PropTypes.string,
-    updatedEditorialMetadata: PropTypes.array
+    updatedEditorialMetadata: PropTypes.array,
+    configLanguage: PropTypes.object,
+    configLocale: PropTypes.object,
+    configGenre: PropTypes.object
 };
 
 
-export default EditorialMetadataEditMode;
+export default connect(mapStateToProps)(EditorialMetadataEditMode);

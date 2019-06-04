@@ -1,22 +1,35 @@
-import React, { Component, Fragment } from 'react';
-import { Col, Row } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
+import React, {Component, Fragment} from 'react';
+import {Col, Label, Row} from 'reactstrap';
+import {AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { locale } from '../../../../../constants/locale';
-import { language } from '../../../../../constants/language';
-import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
-import { resolutionFormat } from '../../../../../constants/resolutionFormat';
+import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
+import {resolutionFormat} from '../../../../../constants/resolutionFormat';
 import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
+import {configFields} from '../../../service/ConfigService';
+import {connect} from 'react-redux';
+import Select from 'react-select';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
+        configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+        configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
+    };
+};
 
 class EditorialMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showGenreError: false
+        };
     }
 
     shouldComponentUpdate(nextProps) {
         let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
         let differentEditorialMetadataForCreate = this.props.editorialMetadataForCreate !== nextProps.editorialMetadataForCreate;
         let differentFieldsRequired = this.props.areFieldsRequired !== nextProps.areFieldsRequired;
+
         return differentEditorialMetadataForCreate || differentTitleContentType || differentFieldsRequired;
     }
 
@@ -27,6 +40,22 @@ class EditorialMetadataCreateTab extends Component {
     getNameWithPrefix(name) {
         return EDITORIAL_METADATA_PREFIX + name;
     }
+
+    handleGenreChange = (e) => {
+        if(e.length > 3) {
+            this.setState({
+                showGenreError: true
+            });
+            e.pop();
+        } else {
+            if(this.state.showGenreError) {
+                this.setState({
+                    showGenreError: false
+                });
+            }
+        }
+        this.props.handleGenreChange(e);
+    };
 
     render() {
         const { synopsis, title, copyright, awards, seriesName } = this.props.editorialMetadataForCreate;
@@ -44,10 +73,10 @@ class EditorialMetadataCreateTab extends Component {
                                 required={this.props.areFieldsRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Locale</option>
+                                <option value=''>Select Locale</option>
                                 {
-                                    locale && locale.map((item, i) => {
-                                        return <option key={i} value={item.localeCode}>{item.countryName}</option>;
+                                    this.props.configLocale && this.props.configLocale.value.map((e, index) => {
+                                        return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                                     })
                                 }
                             </AvField>
@@ -62,10 +91,10 @@ class EditorialMetadataCreateTab extends Component {
                                 required={this.props.areFieldsRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Language</option>
+                                <option value=''>Select Language</option>
                                 {
-                                    language && language.map((item, i) => {
-                                        return <option key={i} value={item.code}>{item.language}</option>;
+                                    this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
+                                        return <option key={index} value={e.languageCode}>{e.languageName}</option>;
                                     })
                                 }
                             </AvField>
@@ -143,6 +172,28 @@ class EditorialMetadataCreateTab extends Component {
                                 </Col>
                             }
                         </Row>}
+
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Genres:</b>
+                        </Col>
+                        <Col>
+                            <Select
+                                name={this.getNameWithPrefix('genres')}
+                                value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {
+                                    return {value: e.genre, label: e.genre};
+                                }) : []}
+                                onChange={this.handleGenreChange}
+                                isMulti
+                                placeholder='Select Genre'
+                                options={this.props.configGenre ? this.props.configGenre.value
+                                    .filter(e => e.name !== null)
+                                    .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
+                                    : []}
+                            />
+                            { this.state.showGenreError && <Label style={{color: 'red'}}>Max 3 genres</Label> }
+                        </Col>
+                    </Row>
 
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
@@ -290,10 +341,14 @@ EditorialMetadataCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
+    handleGenreChange: PropTypes.func.isRequired,
     areFieldsRequired: PropTypes.bool.isRequired,
     titleContentType: PropTypes.string,
-    editorialMetadataForCreate: PropTypes.object
+    editorialMetadataForCreate: PropTypes.object,
+    configLanguage: PropTypes.object,
+    configLocale: PropTypes.object,
+    configGenre: PropTypes.object
 };
 
 
-export default EditorialMetadataCreateTab;
+export default connect(mapStateToProps)(EditorialMetadataCreateTab);
