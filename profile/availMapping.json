@@ -1416,7 +1416,7 @@
   "dataType": "localdate",
   "searchDataType": "localdate",
   "queryParamName": "updatedAt",
-  "readOnly": true,
+  "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
   "required": false
