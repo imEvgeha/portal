@@ -9,8 +9,7 @@ class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            territoryType: configFields.LOCALE,
-            locale: []
+            territoryType: configFields.LOCALE
         };
     }
 
@@ -18,48 +17,53 @@ class TerritoryMetadataCreateTab extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-
     }
 
-    shouldComponentUpdate(nextProps) {
-        let differentRequired = this.props.isRequired !== nextProps.isRequired;
-        return differentRequired;
+    renderLocale = () => {
+        const locale = this.props.configLocale && this.props.configLocale.find(e => e.key === this.state.territoryType);
+        return (
+            <AvField type="select"
+                name="locale"
+                label={<span>Locale<span style={{ color: 'red' }}>*</span></span>}
+                id="territoryLocal"
+                required={this.props.isRequired}
+                onChange={this.props.handleChange}
+                errorMessage="Field cannot be empty!">
+                <option value={''}>Select {this.state.territoryType === configFields.LOCALE ? 'Locale' : 'Region'}</option>
+                {
+                    locale && locale.value.map((e, index) => {
+                        return <option key={index} value={this.state.territoryType === configFields.LOCALE ? e.countryCode : e.regionCode}>{this.state.territoryType === configFields.LOCALE ? e.countryName : e.regionName}</option>;
+                    })
+                }
+            </AvField>
+        );
     }
+
+
 
     render() {
-        const locale = this.props.configLocale && this.props.configLocale.find(e => e.key === this.state.territoryType);
+
         return (
             <div id="territoryMetadataCreate">
                 <Container>
-                    <Row style={{ padding: '15px'}}>
+                    <Row style={{ padding: '15px' }}>
                         <Col>
                             <AvField type="select"
-                                    name="territoryType"
-                                    label='Territory Type'
-                                    id="territoryType"
-                                    value={this.state.territoryType}
-                                    onChange={this.handleTerritoryType}>
-                                    <option value={configFields.LOCALE}>Country</option>
-                                    <option value={configFields.REGIONS}>Region</option>
+                                name="territoryType"
+                                label='Territory Type'
+                                id="territoryType"
+                                value={this.state.territoryType}
+                                onChange={this.handleTerritoryType}>
+                                <option value={configFields.LOCALE}>Country</option>
+                                <option value={configFields.REGIONS}>Region</option>
                             </AvField>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <AvField type="select"
-                                name="locale"
-                                label={<span>Locale<span style={{ color: 'red' }}>*</span></span>}
-                                id="territoryLocal"
-                                required={this.props.isRequired}
-                                onChange={this.props.handleChange}
-                                errorMessage="Field cannot be empty!">
-                                <option value={''}>Select {this.state.territoryType === configFields.LOCALE ? 'Locale' : 'Region'}</option>
-                                {
-                                    locale && locale.value.map((e, index) => {
-                                        return <option key={index} value={this.state.territoryType === configFields.LOCALE ? e.countryCode : e.regionCode }>{this.state.territoryType === configFields.LOCALE ? e.countryName : e.regionName}</option>;
-                                    })
-                                }
-                            </AvField>
+                            {
+                                this.renderLocale()
+                            }
                         </Col>
                         <Col>
                             <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" placeholder="Enter Box Office" onChange={this.props.handleChange}
