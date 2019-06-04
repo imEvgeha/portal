@@ -10,7 +10,8 @@ export const configFields = {
     RATING_SYSTEM: 'rating-systems',
     RATINGS: 'ratings',
     ADVISORY_CODE: 'advisories',
-    REGIONS: 'regions'
+    REGIONS: 'regions',
+    GENRE: 'genres'
 };
 
 const http = Http.create({noDefaultErrorHandling: true});

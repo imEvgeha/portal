@@ -4,13 +4,31 @@ import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
-import {getLanguageByCode} from '../../../../../constants/language';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
+import {configFields} from '../../../service/ConfigService';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => {
+    return {
+        configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE)
+    };
+};
 
 class EditorialMetadata extends Component {
     constructor(props) {
         super(props);
     }
+    
+    getLanguageByCode = (code) => {
+        if(this.props.configLanguage) {
+            let found = this.props.configLanguage.value.find(e => e.languageCode === code);
+            if(found) {
+                return found.languageName;
+            }
+        }
+        return code;
+    };
+    
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
@@ -28,7 +46,7 @@ class EditorialMetadata extends Component {
                     }
                     {
                         this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
+                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
                         })
                     }
                 </div>
@@ -42,6 +60,7 @@ class EditorialMetadata extends Component {
                                             <Col>
                                                 <EditorialMetadataTab
                                                     titleContentType={this.props.titleContentType}
+                                                    getLanguageByCode={this.getLanguageByCode}
                                                     key={i} data={item} />
                                             </Col>
                                         </Row>
@@ -69,6 +88,7 @@ class EditorialMetadata extends Component {
                                                 handleTitleChange={this.props.handleTitleChange}
                                                 editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
+                                                handleGenreChange={this.props.handleGenreChange}
                                                 titleContentType={this.props.titleContentType}/>
                                         </Col>
                                     </Row>
@@ -83,6 +103,7 @@ class EditorialMetadata extends Component {
                                                             titleContentType={this.props.titleContentType}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
+                                                            handleGenreEditChange={this.props.handleGenreEditChange}
                                                             updatedEditorialMetadata={this.props.updatedEditorialMetadata}
                                                             key={i} data={item} />
                                                     </Col>
@@ -114,9 +135,12 @@ EditorialMetadata.propTypes = {
     handleEditChange: PropTypes.func,
     titleContentType: PropTypes.string,
     editorialMetadataForCreate: PropTypes.object,
-    updatedEditorialMetadata: PropTypes.array
+    updatedEditorialMetadata: PropTypes.array,
+    handleGenreChange: PropTypes.func.isRequired,
+    handleGenreEditChange: PropTypes.func.isRequired,
+    configLanguage: PropTypes.object
 };
 
 
 
-export default EditorialMetadata;
+export default connect(mapStateToProps)(EditorialMetadata);
