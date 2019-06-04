@@ -22,6 +22,7 @@ const updateAbility = (keycloak) => {
     }
     if (keycloak.hasRealmRole('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
+        cannot(['create'], 'Avail', 'createdAt');
     }else{
         const edit_only_admin = ['createdAt'];
         cannot(['create', 'update', 'delete'], 'Avail', edit_only_admin);
