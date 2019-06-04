@@ -676,9 +676,6 @@ class RightDetails extends React.Component {
         const renderFields = [];
 
         if(this.state.flatRight && this.props.availsMapping) {
-
-            const cannotUpdate = cannot('update', 'Avail');
-
             this.props.availsMapping.mappings.map((mapping)=> {
                 if (mapping.enableEdit) {
                     let error = null;
@@ -697,7 +694,7 @@ class RightDetails extends React.Component {
                             }
                         });
                     }
-
+                    const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
                     const required = mapping.required;
