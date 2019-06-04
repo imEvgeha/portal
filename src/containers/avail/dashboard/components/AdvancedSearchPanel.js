@@ -59,7 +59,8 @@ class AdvancedSearchPanel extends React.Component {
             reportName: '',
             selected: null,
             value: null,
-            blink: null
+            blink: null,
+            exportAll: false
         };
         this.loadingHistoryData = {};
 
@@ -157,16 +158,30 @@ class AdvancedSearchPanel extends React.Component {
             alertModal.open('Action required', () => {
             }, {description: 'You have more that 50000 avails, please change filters'});
         } else {
+
+            const onChange = () => { this.setState({exportAll: !this.state.exportAll})};
+            const option = <div key='exportAll'>
+                                <input type='checkbox' name='buck_export_all' style={{marginRight: '8px'}} onChange={onChange} />Export all Fields<br/><br/>
+                            </div>
+            const options = [option, `You have ${this.props.availTabPage.total} avails for download.`];
             confirmModal.open('Confirm download',
-                this.bulkExport,
                 () => {
+                    this.bulkExport(this.state.exportAll);
+                    this.setState({exportAll: false});
                 },
-                {description: `You have ${this.props.availTabPage.total} avails for download.`});
+                () => {
+                    this.setState({exportAll: false});
+                },
+                {description: options});
         }
     }
 
-    bulkExport() {
-        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), this.props.columns)
+    bulkExport(exportAll) {
+        let exportColumns = this.props.columns.slice(0);
+        if(exportAll){
+            exportColumns = exportColumns.concat(this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName).filter(javaVariableName => !exportColumns.includes(javaVariableName)));
+        }
+        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), exportColumns)
         .then(function (response) {
             downloadFile(response.data);
         })
