@@ -22,7 +22,6 @@ class TerritoryMetadataEditMode extends Component {
     }
 
     render() {
-        console.log(this.props.data)
         return (
             <div id="territoryMetadataEdit">
                 <Container>
