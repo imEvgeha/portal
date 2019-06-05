@@ -56,7 +56,7 @@ class RightsURL extends React.Component {
             const vals = param.split('=');
             if(vals.length === 2){
                 let name = vals[0];
-                const val = vals[1];
+                const val = decodeURIComponent(vals[1]);
                 if(!PASS_THROUGH.includes(name)) {
                     let subkey = null;
                     let map = mappings.find(({queryParamName}) => queryParamName === name);
@@ -133,10 +133,10 @@ class RightsURL extends React.Component {
     static saveRightsSimpleFilterUrl(filter){
         const params = [];
         if(filter.text){
-            params.push('text=' + filter.text);
+            params.push('text=' + encodeURIComponent(filter.text));
         }
         const search = params.join('&');
-        this.saveURL(URL.keepEmbedded('/avails/rights' + (search ? '?' + encodeURIComponent(search) : '')));
+        this.saveURL(URL.keepEmbedded('/avails/rights' + (search ? '?' + search : '')));
     }
 
     static saveRightsAdvancedFilterUrl(filter){
@@ -172,11 +172,11 @@ class RightsURL extends React.Component {
 
         const params = [];
         Object.keys(finalParams).forEach(key => {
-            params.push(key + '=' + finalParams[key]);
+            params.push(key + '=' + encodeURIComponent(finalParams[key]));
         });
 
         const search = params.join('&');
-        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + encodeURIComponent(search) : '')));
+        this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + search : '')));
     }
 
     static saveURL(url){

@@ -45,8 +45,7 @@ class AvailIngestHistoryContainer extends React.Component {
     }
 
     getSearchCriteriaFromURL(){
-        const searchPart = decodeURIComponent(this.props.location.search);
-        const params = HistoryURL.URLtoArray(searchPart);
+        const params = HistoryURL.URLtoArray(this.props.location.search);
         const criteria = HistoryURL.ArraytoFilter(params);
         if(criteria.received){
             if(criteria.received.from && criteria.received.from.indexOf('Z') > -1) {

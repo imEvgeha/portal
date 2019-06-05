@@ -44,6 +44,7 @@ function isObjectEmpty(obj) {
     return true;
 }
 
+//used to replace default axios serializer which encodes using JSON encoding
 const encodedSerialize = function(params){
     return Object.entries(params).map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`).join('&');
 };
