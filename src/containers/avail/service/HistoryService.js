@@ -1,6 +1,6 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import {prepareSortMatrixParam} from '../../../util/Common';
+import {prepareSortMatrixParam, encodedSerialize} from '../../../util/Common';
 
 const http = Http.create();
 
@@ -14,7 +14,7 @@ export const historyService = {
             }
         }
 
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
     getHistory: (id) => {

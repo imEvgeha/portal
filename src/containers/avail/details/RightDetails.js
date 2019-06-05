@@ -645,7 +645,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderDatepickerField = (showTime, name, displayName, value, error, readOnly, required, highlighted) => {
             let ref;
             let priorityError = null;
             if(error){
@@ -657,7 +657,7 @@ class RightDetails extends React.Component {
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <EditableDatePicker
                     ref={ref}
-                    showTime={readOnly}
+                    showTime={showTime}
                     value={value}
                     priorityDisplay={priorityError}
                     name={name}
@@ -676,9 +676,6 @@ class RightDetails extends React.Component {
         const renderFields = [];
 
         if(this.state.flatRight && this.props.availsMapping) {
-
-            const cannotUpdate = cannot('update', 'Avail');
-
             this.props.availsMapping.mappings.map((mapping)=> {
                 if (mapping.enableEdit) {
                     let error = null;
@@ -697,7 +694,7 @@ class RightDetails extends React.Component {
                             }
                         });
                     }
-
+                    const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
                     const required = mapping.required;
@@ -726,9 +723,9 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value ? value.substr(0, 10) : value, error, readOnly, required, highlighted));
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, value ? value.substr(0, 10) : value, error, readOnly, required, highlighted));
                              break;
-                        case 'localdate': renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;

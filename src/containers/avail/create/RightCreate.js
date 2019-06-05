@@ -18,7 +18,7 @@ import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
-import {URL} from '../../../util/Common';
+import {cannot} from '../../../ability';
 
 const mapStateToProps = state => {
     return {
@@ -639,6 +639,10 @@ class RightCreate extends React.Component {
                 if(mapping.enableEdit && !mapping.readOnly){
                     let required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';
+                    const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
+                    if(cannotCreate){
+                        return;
+                    }
                     switch (mapping.dataType) {
                         case 'string' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
