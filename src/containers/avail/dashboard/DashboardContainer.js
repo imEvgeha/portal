@@ -113,8 +113,8 @@ class DashboardContainer extends React.Component {
                 const simpleFilter = params.find(param => param.split('=')[0] === 'text');
                 if(simpleFilter && simpleFilter.split('=').length === 2) {
                     criteria = {text: simpleFilter.split('=')[1]};
+                    this.props.searchFormShowAdvancedSearch(false);
                 }
-                this.props.searchFormShowAdvancedSearch(false);
                 this.props.searchFormUpdateTextSearch(criteria);
                 this.handleAvailsFreeTextSearch(criteria);
             }
