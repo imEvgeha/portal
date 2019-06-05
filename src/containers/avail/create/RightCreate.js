@@ -45,6 +45,7 @@ class RightCreate extends React.Component {
         this.confirm = this.confirm.bind(this);
         this.cancel = this.cancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleBooleanChange = this.handleBooleanChange.bind(this);
 
         this.mappingErrorMessage = {};
         this.right = {};
@@ -91,6 +92,17 @@ class RightCreate extends React.Component {
         const value = val || (target.value ? safeTrim(target.value) : '');
         const name = target.name;
         this.checkRight(name, value, true);
+    }
+
+    handleBooleanChange({target}) {
+        const value = target.value;
+        const name = target.name;
+        if(value === ''){
+            delete this.right[name];
+            this.checkRight(name, value, false);
+        }else{
+            this.checkRight(name, value === 'true', true);
+        }
     }
 
     checkRight(name, value, setNewValue) {
@@ -577,7 +589,7 @@ class RightCreate extends React.Component {
                         id={'right-create-' + name + '-select'}
                         placeholder={'Enter ' + displayName}
                         value={value}
-                        onChange={this.handleChange}>
+                        onChange={this.handleBooleanChange}>
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
