@@ -2,7 +2,7 @@ import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
 import store from '../../../stores/index';
-import {momentToISO, prepareSortMatrixParam, safeTrim} from '../../../util/Common';
+import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
 
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
@@ -91,7 +91,8 @@ export const rightsService = {
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {params: {...params, page: page, size: pageSize}});
+
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -117,7 +118,7 @@ export const rightsService = {
                 params[key] = value;
             }
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
     create: (right) => {
