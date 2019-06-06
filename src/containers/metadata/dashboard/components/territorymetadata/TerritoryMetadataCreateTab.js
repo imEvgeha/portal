@@ -12,9 +12,7 @@ const REGION = 'region';
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
-    }
-
-    
+    }    
 
     renderLocale = () => {
         let type = null;
