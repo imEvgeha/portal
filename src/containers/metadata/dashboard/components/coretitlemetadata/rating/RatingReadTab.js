@@ -23,7 +23,7 @@ class RatingReadTab extends Component {
                         <Col md={3}><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
                         <Col md={3}><b>Advisory Codes: </b> {advisoriesCode ? 
                             advisoriesCode.map((code, i) => (
-                                <span key={i}>{code},</span>
+                                advisoriesCode.length === i + 1 ? <span key={i}>{code}</span> : <span key={i}>{code},</span>
                             )) : 
                             this.emptySpan()}</Col>
                     </Row>

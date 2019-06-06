@@ -284,19 +284,20 @@ class TitleEdit extends Component {
     handleRatingEditChange = (e, data) => {
         let newRatings = [e];
         if(this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
-            let index = this.state.editedForm.ratings.findIndex(e => e.id === data.id);
-            if(index > 0) {
+            let index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
+            if(index >= 0) {
                 newRatings = this.state.editedForm.ratings.slice();
                 newRatings[index] = e;
+            } else {
+                newRatings = this.state.editedForm.ratings.concat(newRatings);
             }
         }
 
-        console.log(e)
-        console.log(newRatings)
-
         this.setState({
-            ...this.state.editedForm,
-            ratings: newRatings
+            editedForm: {
+                ...this.state.editedForm,
+                ratings: newRatings
+            }
         });
     };
 

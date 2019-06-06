@@ -24,10 +24,10 @@ class RatingEditTab extends Component {
     }
 
     handleRatingSystemChange = (newValue) => {
-        console.log(newValue.target.value);
         let newRating = {
             ...this.state.updatedRating,
-            ratingSystem: newValue.target.value
+            ratingSystem: newValue.target.value,
+            rating: null
         };
 
         this.setState({
@@ -38,7 +38,6 @@ class RatingEditTab extends Component {
     };
 
     handleRatingsChange = (newValue) => {
-        console.log(newValue.target.value);
         let newRating = {
             ...this.state.updatedRating,
             rating: newValue.target.value
@@ -52,13 +51,19 @@ class RatingEditTab extends Component {
     };
 
     handleAdvisoryCodesChange = (newValue) => {
+        let newRating = {
+            ...this.state.updatedRating,
+            advisoriesCode: newValue.map(e => e.value)
+        };
 
-        this.props.handleEditChange(this.state.updatedRating, this.props.data);
+        this.setState({
+            updatedRating: newRating
+        });
+
+        this.props.handleEditChange(newRating, this.props.data);
     };
 
     handleAdvisoriesChange = (newValue) => {
-
-        console.log(newValue.target.value);
         let newRating = {
             ...this.state.updatedRating,
             advisoriesFreeText: newValue.target.value
@@ -72,10 +77,8 @@ class RatingEditTab extends Component {
     };
 
     componentDidMount() {
-        const ratingSystem = this.props.data && this.props.data.ratingSystem;
-        let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem);
         this.setState({
-            filteredRatings: newRatings
+            updatedRating: this.props.data
         });
     }
 
@@ -84,8 +87,7 @@ class RatingEditTab extends Component {
             ratingSystem,
             rating,
             advisoriesFreeText,
-            // advisoriesCode
-        } = this.props.data;
+        } = this.state.updatedRating;
         return (
             <div id="ratingCreate">
                 <Fragment>
@@ -112,11 +114,11 @@ class RatingEditTab extends Component {
                                      name="rating"
                                      id="titleRatings"
                                      onChange={(e) => this.handleRatingsChange(e)}
-                                     value={rating}
+                                     value={rating ? rating : ''}
                                      errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating</option>
                                 {
-                                    this.state.filteredRatings && this.state.filteredRatings.map((item, i) => {
+                                    this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem).map((item, i) => {
                                         return <option key={i} value={item.name}>{item.name}</option>;
                                     })
                                 }
@@ -126,7 +128,13 @@ class RatingEditTab extends Component {
                             <b>Advisory Codes</b>
                             <Select
                                 onChange={(e) => this.handleAdvisoryCodesChange(e)}
-                                // options={this.props.configAdvisoryCode.value}
+                                value={this.props.data.advisoriesCode && this.props.data.advisoriesCode.map(e => {
+                                    return {value: e, label: e};
+                                })}
+                                options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
+                                    .map(e => {
+                                        return {value: e.name, label: e.name};
+                                    })}
                                 isMulti
                                 placeholder='Select Advisory Code'
                             />
@@ -141,7 +149,7 @@ class RatingEditTab extends Component {
                                      placeholder="Enter Advisories"
                                      name="advisories"
                                      onChange={(e) => this.handleAdvisoriesChange(e)}
-                                     value={advisoriesFreeText}
+                                     value={advisoriesFreeText ? advisoriesFreeText : ''}
                                      errorMessage="Please enter a valid advisories!" />
                         </Col>
                     </Row>
