@@ -35,7 +35,9 @@ const emptyTerritory = {
     theatricalReleaseDate: null,
     homeVideoReleaseDate: null,
     boxOffice: null,
-    releaseYear: null
+    releaseYear: null,
+    estReleaseDate: null,
+    originalAirDate: null
 };
 
 const emptyEditorial = {
@@ -285,7 +287,7 @@ class TitleEdit extends Component {
         };
         this.setState({
             ratingForCreate: newRatingToCreate
-        });       
+        });
 
     };
 
@@ -294,9 +296,9 @@ class TitleEdit extends Component {
             ...this.state.ratingForCreate,
             advisoriesCode: advisoriesCode
         };
-        this.setState({ 
+        this.setState({
             ratingForCreate: newRatingForCreate
-         });
+        });
     };
 
     toggleTitleRating = (tab) => {
@@ -362,20 +364,20 @@ class TitleEdit extends Component {
     };
 
     formatRating = (newAdditionalFields) => {
-        if(Object.keys(this.state.ratingForCreate).length !== 0) {
+        if (Object.keys(this.state.ratingForCreate).length !== 0) {
             let newAdvisoryCodes = [];
-            if(this.state.ratingForCreate.advisoriesCode) {
-                for(let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
+            if (this.state.ratingForCreate.advisoriesCode) {
+                for (let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
                     newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]['name']);
                 }
             }
-        
+
             let newRating = JSON.parse(JSON.stringify(this.state.ratingForCreate));
             newRating.advisoriesCode = newAdvisoryCodes;
 
-            if(newAdditionalFields.ratings === null) {
+            if (newAdditionalFields.ratings === null) {
                 newAdditionalFields.ratings = [newRating];
-            } else {                
+            } else {
                 newAdditionalFields.ratings.push(newRating);
             }
         }
@@ -389,10 +391,10 @@ class TitleEdit extends Component {
             let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
-            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');   
+            this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.formatRating(newAdditionalFields);
-            
+
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({
                     isLoading: false,
@@ -479,6 +481,8 @@ class TitleEdit extends Component {
                 theatricalReleaseDate: t.theatricalReleaseDate ? moment(t.theatricalReleaseDate).format(DATE_FORMAT) : null,
                 homeVideoReleaseDate: t.homeVideoReleaseDate ? moment(t.homeVideoReleaseDate).format(DATE_FORMAT) : null,
                 availAnnounceDate: t.availAnnounceDate ? moment(t.availAnnounceDate).format(DATE_FORMAT) : null,
+                originalAirDate: t.originalAirDate ? moment(t.originalAirDate).format(DATE_FORMAT) : null,
+                estReleaseDate: t.estReleaseDate ? moment(t.estReleaseDate).format(DATE_FORMAT) : null,
             };
             titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
                 let list = [].concat(this.state.territory);
@@ -501,8 +505,11 @@ class TitleEdit extends Component {
                 theatricalReleaseDate: this.state.territories.theatricalReleaseDate ? moment(this.state.territories.theatricalReleaseDate).format(DATE_FORMAT) : null,
                 homeVideoReleaseDate: this.state.territories.homeVideoReleaseDate ? moment(this.state.territories.homeVideoReleaseDate).format(DATE_FORMAT) : null,
                 availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format(DATE_FORMAT) : null,
+                originalAirDate: this.state.territories.originalAirDate ? moment(this.state.territories.originalAirDate).format(DATE_FORMAT) : null,
+                estReleaseDate: this.state.territories.estReleaseDate ? moment(this.state.territories.estReleaseDate).format(DATE_FORMAT) : null,
                 parentId: this.props.match.params.id
             };
+            
             titleService.addTerritoryMetadata(newTerritory).then((response) => {
                 this.cleanTerritoryMetadata();
                 this.setState({
@@ -586,7 +593,7 @@ class TitleEdit extends Component {
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
-                genres: e.map(i => {return {id: i.id, genre: i.genre};})
+                genres: e.map(i => { return { id: i.id, genre: i.genre }; })
             }
         });
     };
@@ -881,6 +888,7 @@ class TitleEdit extends Component {
                         createTerritoryTab={CREATE_TAB}
                         handleSubmit={this.handleTerritoryMetadataSubmit}
                         territory={this.state.territory}
+                        territories={this.state.territories}
                         handleChange={this.handleTerritoryMetadataChange}
                         handleEditChange={this.handleTerritoryMetadataEditChange}
                         isEditMode={this.state.isEditMode} />

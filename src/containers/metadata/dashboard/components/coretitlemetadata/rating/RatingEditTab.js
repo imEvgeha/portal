@@ -106,7 +106,7 @@ class RatingEditTab extends Component {
 
 RatingEditTab.propTypes = {
     data: PropTypes.object.isRequired,
-    handleChange: PropTypes.func.isRequired,
+    handleChange: PropTypes.func,
     configRatingSystem: PropTypes.object,
     configRatings: PropTypes.object,
     configAdvisoryCode: PropTypes.object
