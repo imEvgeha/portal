@@ -58,7 +58,7 @@ class EditorialMetadataCreateTab extends Component {
     };
 
     render() {
-        const { synopsis, title, copyright, awards, seriesName } = this.props.editorialMetadataForCreate;
+        const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId } = this.props.editorialMetadataForCreate;
         return (
             <div id="editorialMetadataCreate">
                 <Fragment>
@@ -336,12 +336,25 @@ class EditorialMetadataCreateTab extends Component {
                             <b>Sasktel Inventory ID</b>
                         </Col>
                         <Col>
-                            <AvField type="text" id="editorialSasktelInventoryID" name={this.getNameWithPrefix('awards')}
+                            <AvField type="text" id="editorialSasktelInventoryID" name={this.getNameWithPrefix('sasktelInventoryId')}
                                 onChange={this.props.handleChange}
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.' }
                                 }} />
-                                 <span style={{float:'right', color: awards ? this.handleFieldLength(awards) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{awards ? this.handleFieldLength(awards)  : 0}/500 char</span>
+                                 <span style={{float:'right', color: sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId)  : 0}/200 char</span>
+                        </Col>
+                    </Row>
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Sasktel sasktelLineupId ID</b>
+                        </Col>
+                        <Col>
+                            <AvField type="text" id="editorialSasktelLineupID" name={this.getNameWithPrefix('sasktelLineupId')}
+                                onChange={this.props.handleChange}
+                                validate={{
+                                    maxLength: { value: 200, errorMessage: 'Too long Sasktel Lineup ID. Max 200 symbols.' }
+                                }} />
+                                 <span style={{float:'right', color: sasktelLineupId ? this.handleFieldLength(sasktelLineupId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{sasktelLineupId ? this.handleFieldLength(sasktelLineupId)  : 0}/200 char</span>
                         </Col>
                     </Row>
                 </Fragment>
