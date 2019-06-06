@@ -6,10 +6,24 @@ import moment from 'moment';
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 class TerritoryMetadataTab extends Component {
+
+    formatTypeFirstLetter (type) {
+        let t = type;
+        if(type) {
+            t = t[0].toUpperCase() + t.slice(1);
+        }
+        return t;
+    }
+
     render() {
         return (
             <div id="territoryMetadataTabs">
                 <Container>
+                    <Row style={{ padding: '15px' }}>
+                        <Col>
+                            <b>Territory Type: </b> {this.props.data.territoryType ? this.formatTypeFirstLetter(this.props.data.territoryType) : <span style={{ color: '#999' }}>Empty</span>}
+                        </Col>
+                    </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{ color: '#999' }}>Empty</span>}
@@ -18,7 +32,7 @@ class TerritoryMetadataTab extends Component {
                             <b>Box Office: </b> {this.props.data.boxOffice ? this.props.data.boxOffice : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px'}}>
+                    <Row style={{ padding: '15px' }}>
                         <Col>
                             <b>Release Year: </b> {this.props.data.releaseYear ? this.props.data.releaseYear : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
@@ -26,7 +40,7 @@ class TerritoryMetadataTab extends Component {
                             <b>Original Air Date: </b> {this.props.data.originalAirDate ? moment(this.props.data.originalAirDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px'}}>
+                    <Row style={{ padding: '15px' }}>
                         <Col>
                             <b>Home Video Release Date: </b> {this.props.data.homeVideoReleaseDate ? moment(this.props.data.homeVideoReleaseDate).format(DATE_FORMAT) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
