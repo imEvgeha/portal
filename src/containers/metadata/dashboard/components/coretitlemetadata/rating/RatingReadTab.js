@@ -19,9 +19,9 @@ class RatingReadTab extends Component {
             <div id="titleRatingTabs">
                 <Fragment>
                     <Row style={{padding: '15px'}}>
-                        <Col md={3}><b>Rating System: </b> {ratingSystem ? ratingSystem : this.emptySpan()}</Col>
-                        <Col md={3}><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
-                        <Col md={3}><b>Advisory Codes: </b> {advisoriesCode ? 
+                        <Col><b>Rating System: </b> {ratingSystem ? ratingSystem : this.emptySpan()}</Col>
+                        <Col><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
+                        <Col><b>Advisory Codes: </b> {advisoriesCode ? 
                             advisoriesCode.map((code, i) => (
                                 advisoriesCode.length === i + 1 ? <span key={i}>{code}</span> : <span key={i}>{code},</span>
                             )) : 
@@ -29,7 +29,7 @@ class RatingReadTab extends Component {
                     </Row>
 
                     <Row style={{padding: '15px'}}>
-                        <Col md={3}><b>Advisories: </b> {advisoriesFreeText ? advisoriesFreeText : this.emptySpan()}
+                        <Col><b>Advisories: </b> {advisoriesFreeText ? advisoriesFreeText : this.emptySpan()}
                         </Col>
                     </Row>
                 </Fragment>
