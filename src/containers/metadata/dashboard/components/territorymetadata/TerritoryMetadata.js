@@ -61,7 +61,7 @@ class TerritoryMetadata extends Component {
                                 <TabPane tabId={this.props.createTerritoryTab}>
                                     <Row>
                                         <Col>
-                                            <TerritoryMetadataCreateTab validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
+                                            <TerritoryMetadataCreateTab territories={this.props.territories} validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -96,7 +96,8 @@ TerritoryMetadata.propTypes = {
     addTerritoryMetadata: PropTypes.func,
     createTerritoryTab: PropTypes.string,
     validSubmit: PropTypes.func.isRequired,
-    handleEditChange: PropTypes.func
+    handleEditChange: PropTypes.func,
+    territories: PropTypes.object
 };
 
 
