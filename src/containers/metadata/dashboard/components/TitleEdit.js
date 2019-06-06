@@ -21,7 +21,7 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
-import { configService, configFields } from '../../service/ConfigService';
+import { configService } from '../../service/ConfigService';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
