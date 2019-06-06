@@ -21,11 +21,31 @@ class TerritoryMetadataEditMode extends Component {
         return differentData;
     }
 
+    formatTypeFirstLetter(type) {
+        let t = type;
+        if (type) {
+            t = t[0].toUpperCase() + t.slice(1);
+        }
+        return t;
+    }
+
     render() {
         return (
             <div id="territoryMetadataEdit">
                 <Container>
                     <AvForm onValidSubmit={this.props.validSubmit}>
+                        <Row style={{ padding: '15px' }}>
+                            <Col>
+                                <span>Territory Type</span><br />
+                                {this.props.data.territoryType ? <b>{this.formatTypeFirstLetter(this.props.data.territoryType)}</b> : <span style={{ color: '#999' }}>Empty</span>}
+                            </Col>
+                            <Col>
+                                <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                    validate={{
+                                        pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
+                                    }} />
+                            </Col>
+                        </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
                                 <span>Locale</span><br />
