@@ -44,7 +44,7 @@ class Rating extends Component {
                     }
                     {
                         this.props.ratings && this.props.ratings.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.ratingSystem + ' ' + item.rating}</b></span>;
+                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{(item.ratingSystem ? item.ratingSystem : 'Empty') + ' ' + (item.rating ? item.rating : 'Empty')}</b></span>;
                         })
                     }
                 </div>
@@ -88,7 +88,7 @@ class Rating extends Component {
                                                 <Row>
                                                     <Col>
                                                         <RatingEditTab
-                                                            handleChange={this.props.handleEditChange}
+                                                            handleEditChange={this.props.handleEditChange}
                                                             configRatingSystem={this.props.configRatingSystem}
                                                             configRatings={this.props.configRatings}
                                                             configAdvisoryCode={this.props.configAdvisoryCode}

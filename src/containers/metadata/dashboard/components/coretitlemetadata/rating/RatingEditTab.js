@@ -18,17 +18,66 @@ class RatingEditTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filteredRatings: []
+            updatedRating: {}
         };
     }
 
-    handleAdvisoryCodeChange = () => {};
+    handleRatingSystemChange = (newValue) => {
+        let newRating = {
+            ...this.state.updatedRating,
+            ratingSystem: newValue.target.value,
+            rating: null
+        };
+
+        this.setState({
+            updatedRating: newRating
+        });
+
+        this.props.handleEditChange(newRating, this.props.data);
+    };
+
+    handleRatingsChange = (newValue) => {
+        let newRating = {
+            ...this.state.updatedRating,
+            rating: newValue.target.value
+        };
+
+        this.setState({
+            updatedRating: newRating
+        });
+
+        this.props.handleEditChange(newRating, this.props.data);
+    };
+
+    handleAdvisoryCodesChange = (newValue) => {
+        let newRating = {
+            ...this.state.updatedRating,
+            advisoriesCode: newValue.map(e => e.value)
+        };
+
+        this.setState({
+            updatedRating: newRating
+        });
+
+        this.props.handleEditChange(newRating, this.props.data);
+    };
+
+    handleAdvisoriesChange = (newValue) => {
+        let newRating = {
+            ...this.state.updatedRating,
+            advisoriesFreeText: newValue.target.value
+        };
+
+        this.setState({
+            updatedRating: newRating
+        });
+
+        this.props.handleEditChange(newRating, this.props.data);
+    };
 
     componentDidMount() {
-        const ratingSystem = this.props.data && this.props.data.ratingSystem;
-        let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem);
         this.setState({
-            filteredRatings: newRatings
+            updatedRating: this.props.data
         });
     }
 
@@ -37,8 +86,7 @@ class RatingEditTab extends Component {
             ratingSystem,
             rating,
             advisoriesFreeText,
-            // advisoriesCode
-        } = this.props.data;
+        } = this.state.updatedRating;
         return (
             <div id="ratingCreate">
                 <Fragment>
@@ -48,7 +96,7 @@ class RatingEditTab extends Component {
                             <AvField type="select"
                                      name="ratingSystem"
                                      id="titleRatingSystem"
-                                     onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                     onChange={(e) => this.handleRatingSystemChange(e)}
                                      value={ratingSystem}
                                      errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating System</option>
@@ -64,12 +112,12 @@ class RatingEditTab extends Component {
                             <AvField type="select"
                                      name="rating"
                                      id="titleRatings"
-                                     onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                     value={rating}
+                                     onChange={(e) => this.handleRatingsChange(e)}
+                                     value={rating ? rating : ''}
                                      errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating</option>
                                 {
-                                    this.state.filteredRatings && this.state.filteredRatings.map((item, i) => {
+                                    this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem).map((item, i) => {
                                         return <option key={i} value={item.name}>{item.name}</option>;
                                     })
                                 }
@@ -78,8 +126,14 @@ class RatingEditTab extends Component {
                         <Col md={6}>
                             <b>Advisory Codes</b>
                             <Select
-                                onChange={this.handleAdvisoryCodeChange}
-                                // options={this.props.configAdvisoryCode.value}
+                                onChange={(e) => this.handleAdvisoryCodesChange(e)}
+                                value={this.props.data.advisoriesCode && this.props.data.advisoriesCode.map(e => {
+                                    return {value: e, label: e};
+                                })}
+                                options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
+                                    .map(e => {
+                                        return {value: e.name, label: e.name};
+                                    })}
                                 isMulti
                                 placeholder='Select Advisory Code'
                             />
@@ -93,8 +147,8 @@ class RatingEditTab extends Component {
                                      id="titleAdvisories"
                                      placeholder="Enter Advisories"
                                      name="advisories"
-                                     onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                     value={advisoriesFreeText}
+                                     onChange={(e) => this.handleAdvisoriesChange(e)}
+                                     value={advisoriesFreeText ? advisoriesFreeText : ''}
                                      errorMessage="Please enter a valid advisories!" />
                         </Col>
                     </Row>
@@ -106,7 +160,7 @@ class RatingEditTab extends Component {
 
 RatingEditTab.propTypes = {
     data: PropTypes.object.isRequired,
-    handleChange: PropTypes.func,
+    handleEditChange: PropTypes.func.isRequired,
     configRatingSystem: PropTypes.object,
     configRatings: PropTypes.object,
     configAdvisoryCode: PropTypes.object

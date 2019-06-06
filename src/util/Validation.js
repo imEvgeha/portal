@@ -8,6 +8,16 @@ function validateDate(date) {
 function rangeValidation(name, displayName, date, avail) {
     let startDate, endDate, rangeError;
 
+    if (name === 'createdAt' && avail['updatedAt']) {
+        startDate = date;
+        endDate = avail['updatedAt'];
+        rangeError = displayName + ' must be before Updated At date';
+    } else if (name === 'updatedAt' && avail['createdAt']) {
+        startDate = avail['createdAt'];
+        endDate = date;
+        rangeError = displayName + ' must be after Created At date';
+    }
+
     if (name === 'start' && avail['end']) {
         startDate = date;
         endDate = avail['end'];

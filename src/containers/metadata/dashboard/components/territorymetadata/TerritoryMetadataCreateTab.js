@@ -4,6 +4,7 @@ import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { configFields } from '../../../service/ConfigService';
+import { formatTypeFirstLetter } from '../../../../../constants/metadata/format';
 
 const COUNTRY = 'country';
 const REGION = 'region';
@@ -11,15 +12,7 @@ const REGION = 'region';
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
-    }
-
-    formatTypeFirstLetter (type) {
-        let t = type;
-        if(type) {
-            t = t[0].toUpperCase() + t.slice(1);
-        }
-        return t;
-    }
+    }    
 
     renderLocale = () => {
         let type = null;
@@ -39,7 +32,7 @@ class TerritoryMetadataCreateTab extends Component {
                 required={this.props.isRequired}
                 onChange={this.props.handleChange}
                 errorMessage="Field cannot be empty!">
-                <option value={''}>Select {this.formatTypeFirstLetter(this.props.territories.territoryType)}</option>
+                <option value={''}>Select {formatTypeFirstLetter(this.props.territories.territoryType)}</option>
                 {
                     locale && locale.value.map((e, index) => {
                         return <option key={index} value={this.props.territories.territoryType === COUNTRY ? e.countryCode : e.regionCode}>{this.props.territories.territoryType === 'country' ? e.countryName : e.regionName}</option>;
