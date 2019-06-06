@@ -551,7 +551,22 @@ class TitleEdit extends Component {
             edited[targetName] = e.target.value;
         }
 
-        let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== data.id);
+        this.updateEditedEditorialMetadata(edited, data.id);
+    };
+
+    handleEditorialMetadataGenreEditChange = (data, genres) => {
+        let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
+        if (!edited) {
+            edited = JSON.parse(JSON.stringify(data));
+        }
+
+        edited.genres = genres;
+
+        this.updateEditedEditorialMetadata(edited, data.id);
+    };
+
+    updateEditedEditorialMetadata = (edited, id) => {
+        let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== id);
         newOne.push(edited);
         this.setState({
             updatedEditorialMetadata: newOne
@@ -574,6 +589,15 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
                 [targetName]: e.target.value
+            }
+        });
+    };
+
+    handleEditorialMetadataGenreChange = (e) => {
+        this.setState({
+            editorialMetadataForCreate: {
+                ...this.state.editorialMetadataForCreate,
+                genres: e.map(i => {return {id: i.id, genre: i.genre};})
             }
         });
     };
@@ -848,9 +872,11 @@ class TitleEdit extends Component {
                         handleSubmit={this.handleEditorialMetadataSubmit}
                         editorialMetadata={this.state.editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
+                        handleGenreChange={this.handleEditorialMetadataGenreChange}
                         handleTitleChange={this.handleTitleEditorialMetadataChange}
                         handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}
                         handleEditChange={this.handleEditorialMetadataEditChange}
+                        handleGenreEditChange={this.handleEditorialMetadataGenreEditChange}
                         isEditMode={this.state.isEditMode}
                         titleContentType={this.state.titleForm.contentType}
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}

@@ -40,7 +40,7 @@ class HistoryURL extends React.Component {
             const vals = param.split('=');
             if(vals.length === 2){
                 let name = vals[0];
-                const val = vals[1];
+                const val = decodeURIComponent(vals[1]);
                 let subkey = name;
 
                 if (name.endsWith('From')) {
@@ -80,7 +80,7 @@ class HistoryURL extends React.Component {
         const params = [];
         Object.keys(searchParams).forEach(key => {
             if(searchParams[key]) {
-                params.push(key + '=' + searchParams[key]);
+                params.push(key + '=' + encodeURIComponent(searchParams[key]));
             }
         });
 
