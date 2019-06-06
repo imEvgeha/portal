@@ -331,6 +331,19 @@ class EditorialMetadataCreateTab extends Component {
                                  <span style={{float:'right', color: awards ? this.handleFieldLength(awards) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{awards ? this.handleFieldLength(awards)  : 0}/500 char</span>
                         </Col>
                     </Row>
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Sasktel Inventory ID</b>
+                        </Col>
+                        <Col>
+                            <AvField type="text" id="editorialSasktelInventoryID" name={this.getNameWithPrefix('awards')}
+                                onChange={this.props.handleChange}
+                                validate={{
+                                    maxLength: { value: 200, errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.' }
+                                }} />
+                                 <span style={{float:'right', color: awards ? this.handleFieldLength(awards) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{awards ? this.handleFieldLength(awards)  : 0}/500 char</span>
+                        </Col>
+                    </Row>
                 </Fragment>
             </div>
         );
