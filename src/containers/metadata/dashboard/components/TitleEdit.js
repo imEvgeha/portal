@@ -77,8 +77,7 @@ class TitleEdit extends Component {
             isCastModalOpen: false,
             isCrewModalOpen: false,
             ratingForCreate: {},
-            advisoriesCode: null,
-            territoryType: configFields.LOCALE
+            advisoriesCode: null
         };
     }
 
@@ -881,7 +880,6 @@ class TitleEdit extends Component {
                     />
 
                     <TerritoryMetadata
-                        territoryType={this.state.territoryType}
                         isLocalRequired={this.state.areTerritoryMetadataFieldsRequired}
                         validSubmit={this.handleOnSave}
                         toggle={this.toggleTerritoryMetadata}
