@@ -2,26 +2,18 @@ import React, { Component } from 'react';
 import { Row, Col, Container } from 'reactstrap';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { formatTypeFirstLetter } from '../../../../../constants/metadata/format';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 class TerritoryMetadataTab extends Component {
-
-    formatTypeFirstLetter (type) {
-        let t = type;
-        if(type) {
-            t = t[0].toUpperCase() + t.slice(1);
-        }
-        return t;
-    }
-
     render() {
         return (
             <div id="territoryMetadataTabs">
                 <Container>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <b>Territory Type: </b> {this.props.data.territoryType ? this.formatTypeFirstLetter(this.props.data.territoryType) : <span style={{ color: '#999' }}>Empty</span>}
+                            <b>Territory Type: </b> {this.props.data.territoryType ? formatTypeFirstLetter(this.props.data.territoryType) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>

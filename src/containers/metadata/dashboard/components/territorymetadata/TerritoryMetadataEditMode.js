@@ -3,6 +3,7 @@ import { Row, Col, Container } from 'reactstrap';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { formatTypeFirstLetter } from '../.././../../../constants/metadata/format';
 
 
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -21,14 +22,6 @@ class TerritoryMetadataEditMode extends Component {
         return differentData;
     }
 
-    formatTypeFirstLetter(type) {
-        let t = type;
-        if (type) {
-            t = t[0].toUpperCase() + t.slice(1);
-        }
-        return t;
-    }
-
     render() {
         return (
             <div id="territoryMetadataEdit">
@@ -37,7 +30,7 @@ class TerritoryMetadataEditMode extends Component {
                         <Row style={{ padding: '15px' }}>
                             <Col>
                                 <span>Territory Type</span><br />
-                                {this.props.data.territoryType ? <b>{this.formatTypeFirstLetter(this.props.data.territoryType)}</b> : <span style={{ color: '#999' }}>Empty</span>}
+                                {this.props.data.territoryType ? <b>{formatTypeFirstLetter(this.props.data.territoryType)}</b> : <span style={{ color: '#999' }}>Empty</span>}
                             </Col>
                             <Col>
                                 <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
