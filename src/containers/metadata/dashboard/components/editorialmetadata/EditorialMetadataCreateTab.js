@@ -346,7 +346,7 @@ class EditorialMetadataCreateTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Sasktel sasktelLineupId ID</b>
+                            <b>Sasktel Lineup ID</b>
                         </Col>
                         <Col>
                             <AvField type="text" id="editorialSasktelLineupID" name={this.getNameWithPrefix('sasktelLineupId')}
