@@ -156,13 +156,6 @@ class TitleEdit extends Component {
         }
     };
 
-    handleStateUpdate = (e) => {
-        this.setState({
-            ...this.state,
-            [e.target.name]: e.target.value
-        });
-    };
-
     /**
      * Title document
      */
@@ -280,7 +273,6 @@ class TitleEdit extends Component {
     };
 
     handleRatingChange = (e) => {
-
         let newRatingToCreate = {
             ...this.state.ratingForCreate,
             [e.target.name]: e.target.value
@@ -289,6 +281,26 @@ class TitleEdit extends Component {
             ratingForCreate: newRatingToCreate
         });
 
+    };
+
+    handleRatingEditChange = (e, data) => {
+        let newRatings = [e];
+        if(this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
+            let index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
+            if(index >= 0) {
+                newRatings = this.state.editedForm.ratings.slice();
+                newRatings[index] = e;
+            } else {
+                newRatings = this.state.editedForm.ratings.concat(newRatings);
+            }
+        }
+
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                ratings: newRatings
+            }
+        });
     };
 
     handleAdvisoryCodeChange = (advisoriesCode) => {
