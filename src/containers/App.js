@@ -11,12 +11,14 @@ import Navbar from './Navbar';
 import RightDashboardContainer  from './avail/dashboard/DashboardContainer';
 import RightDetails  from './avail/details/RightDetails';
 import RightCreate  from './avail/create/RightCreate';
+import RightsCreateFromAttachment  from './avail/create/RightsCreateFromAttachment';
 import AvailIngestHistoryContainer from './avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer';
 import {canRender} from '../ability';
 import Welcome from './Welcome';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import TitleEdit from './metadata/dashboard/components/TitleEdit';
+import DOP from '../util/DOP';
 
 import ContractProfile from './contracts/profile/ContractProfile.jsx';
 import Contract from './contracts/search/Contract.jsx';
@@ -28,6 +30,9 @@ export default class App extends React.Component {
         return (
             <Router>
                 <div className="component-container">
+                    <IfEmbedded>
+                        <DOP/>
+                    </IfEmbedded>
                     <IfEmbedded value={false}>
                         <Navbar/>
                     </IfEmbedded>
@@ -39,12 +44,14 @@ export default class App extends React.Component {
                             <Route exact path="/avails/rights" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
                             <Route exact path="/avails/rights/select_available" component={canRender(UnderConstruction, 'create', 'Avail')}/>
-                            <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
                             <Route exact path="/avails/rights/:id/match" component={canRender(UnderConstruction, 'read', 'Avail')}/>
-                            <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryIds/:valid(errors)" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
-                            <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(UnderConstruction, 'read', 'Avail')}/>
-                            <Route exact path="/avails/history/:availHistoryIds/:valid" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={MetadataDashboardContainer} />
                         <Route exact path="/metadata/detail/:id" component={TitleEdit} />

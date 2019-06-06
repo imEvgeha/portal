@@ -12,6 +12,7 @@ export default class DashboardDropableCard extends React.Component {
         loading: t.bool,
         bsStyle: t.string,
         type: t.string,
+        externalId:t.string
     };
 
     DELAY_AFTER_LOADED = 3000;
@@ -50,7 +51,7 @@ export default class DashboardDropableCard extends React.Component {
     }
 
     sentUploadedFile(currentFile, files) {
-        uploadService.uploadAvail(currentFile).then(() => {
+        uploadService.uploadAvail(currentFile, this.props.externalId).then(() => {
             // console.log(res);
             setTimeout(() => this.uploadFiles(files), 1000);
         }).catch((e) => {

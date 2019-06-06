@@ -61,12 +61,20 @@ class RightsResultTable extends React.Component {
         resultPageSelect: t.func,
         resultPageLoading: t.func,
         columnsOrder: t.array,
+        columns:t.array,
         columnsSize: t.object,
         resultPageUpdateColumnsOrder: t.func,
         showSelectedAvails: t.bool,
         fromServer: t.bool,
-        hidden: t.bool
+        hidden: t.bool,
+        nav: t.object,
+        autoRefresh: t.number
     };
+
+    static defaultProps = {
+        autoload: true,
+        autoRefresh: 0
+    }
 
     table = null;
 
@@ -81,9 +89,12 @@ class RightsResultTable extends React.Component {
             }
         };
 
+        this.refresh = null;
+
         this.loadingRenderer = this.loadingRenderer.bind(this);
         this.refreshColumns = this.refreshColumns.bind(this);
         this.getRows = this.getRows.bind(this);
+        this.reload = this.reload.bind(this);
         this.addLoadedItems = this.addLoadedItems.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.parseColumnsSchema = this.parseColumnsSchema.bind(this);
@@ -96,10 +107,7 @@ class RightsResultTable extends React.Component {
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
         this.onEdit = this.onEdit.bind(this);
-
-        if(colDef.length === 0){
-            this.parseColumnsSchema();
-        }
+        this.parseColumnsSchema();
     }
 
     componentDidMount() {
@@ -125,9 +133,17 @@ class RightsResultTable extends React.Component {
             elem.addEventListener('transitionend', this.updateWindowDimensions);
         }
         this.refreshColumns();
+
+        if(this.props.autoRefresh && this.refresh === null){
+            this.refresh = setInterval(this.reload, this.props.autoRefresh);
+        }
     }
 
     componentWillUnmount() {
+        if(this.refresh !== null){
+            clearInterval(this.refresh);
+            this.refresh = null;
+        }
         window.removeEventListener('resize', this.updateWindowDimensions);
         let elem = document.querySelector('.vu-advanced-search-panel');
         if(elem) {
@@ -146,10 +162,14 @@ class RightsResultTable extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(!this.table) return;
-        if(this.props.columnsOrder !== prevProps.columnsOrder) {
+        if(this.props.availsMapping !== prevProps.availsMapping){
+            this.parseColumnsSchema();
+        }
+        if(this.props.columns !== prevProps.columns || this.props.columnsOrder !== prevProps.columnsOrder || this.props.availsMapping !== prevProps.availsMapping){
+            const cols = this.props.columns || this.props.columnsOrder;
             this.refreshColumns();
             setTimeout(()=>{
-                this.table.columnApi.moveColumns(this.props.columnsOrder, 1);
+                this.table.columnApi.moveColumns(cols, 1);
             },1);
         }
 
@@ -184,6 +204,9 @@ class RightsResultTable extends React.Component {
     }
 
     parseColumnsSchema() {
+        if(colDef.length > 0){
+            return;
+        }
         let formatter = (column) => {
             switch (column.dataType) {
                 case 'localdate' : return function(params){
@@ -328,12 +351,18 @@ class RightsResultTable extends React.Component {
         });
     }
 
+    reload(){
+        if(this.props.fromServer && this.table != null && this.props.autoRefresh) {
+            this.table.api.setDatasource(this.dataSource);
+        }
+    }
+
     doSearch(page, pageSize, sortedParams) {
         return rightServiceManager.doSearch(page, pageSize, sortedParams);
     }
 
     getRows(params){
-        if(this.table && this.table.api.getDisplayedRowCount() === 0){
+        if(this.table && this.table.api.getDisplayedRowCount() === 0 && !this.props.autoRefresh){
             this.table.api.showLoadingOverlay();
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
@@ -422,8 +451,9 @@ class RightsResultTable extends React.Component {
             lockPosition: true,
             headerComponentFramework: CheckBoxHeader
         });
-        if (this.props.columnsOrder) {
-            this.props.columnsOrder.map(acc => {
+        const cols = this.props.columns || this.props.columnsOrder;
+        if(cols){
+            cols.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
                     newCols.push(colDef[acc]);
                 }
@@ -470,7 +500,7 @@ class RightsResultTable extends React.Component {
                     highlighted = params.data.highlightedFields.indexOf(params.colDef.field) > -1;
                 }
                 return(
-                    <Link to={{ pathname: RightsURL.getRightUrl(params.data.id)}}>
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
                         title= {error}
                         className = {highlighted ? 'font-weight-bold' : ''}
@@ -528,7 +558,7 @@ class RightsResultTable extends React.Component {
                 infiniteInitialRowCount: '0',
                 cacheOverflowSize: '2',
                 maxConcurrentDatasourceRequests: '1',
-                datasource: this.dataSource,
+                datasource: this.props.autoload ? this.dataSource : null,
                 enableServerSideSorting: true,
                 onSortChanged: this.onSortChanged
             };

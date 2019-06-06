@@ -33,7 +33,8 @@ class RightCreate extends React.Component {
     static propTypes = {
         selectValues: t.object,
         availsMapping: t.any,
-        blocking: t.bool
+        blocking: t.bool,
+        match: t.object
     };
 
     static contextTypes = {
@@ -237,11 +238,19 @@ class RightCreate extends React.Component {
             return;
         }
         store.dispatch(blockUI(true));
+        if(this.props.match.params.availHistoryId){
+            this.right.availHistoryIds=[this.props.match.params.availHistoryId];
+        }
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
             if(response && response.data && response.data.id){
-                this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
+                if(this.props.match.params.availHistoryId){
+                    this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/create_from_attachments'));
+                }else{
+                    this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
+                }
+
             }
             store.dispatch(blockUI(false));
         })
@@ -252,7 +261,11 @@ class RightCreate extends React.Component {
     }
 
     cancel(){
-        this.context.router.history.push('/avails');
+        if(this.props.match.params.availHistoryId){
+            this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/create_from_attachments'));
+        }else {
+            this.context.router.history.push(URL.keepEmbedded('/avails'));
+        }
     }
 
     initMappingErrors = (mappings) => {
