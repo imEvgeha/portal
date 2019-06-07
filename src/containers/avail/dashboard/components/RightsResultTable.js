@@ -295,14 +295,18 @@ class RightsResultTable extends React.Component {
 
     isOneVisibleSelected(){
         const visibleRange = this.table.api.getVerticalPixelRange();
-        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop + rowHeight < visibleRange.bottom));
+        const topOffset = 0.4;
+        const bottomOffset = 0.7 + (this.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
         return selectedNodes.length > 0;
     }
 
     areAllVisibleSelected(){
         const visibleRange = this.table.api.getVerticalPixelRange();
-        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop + rowHeight < visibleRange.bottom));
+        const topOffset = 0.4;
+        const bottomOffset = 0.7 + (this.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
 
         return visibleNodes.length === selectedNodes.length;
@@ -596,7 +600,9 @@ class CheckBoxHeaderInternal extends Component {
 
     onCheckBoxClick(){
         const visibleRange = this.props.api.getVerticalPixelRange();
-        const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight > visibleRange.top) && (rowTop + rowHeight < visibleRange.bottom));
+        const topOffset = 0.4;
+        const bottomOffset = 0.7 + (this.props.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
 
         if(!this.props.availTabPageSelection.selectAll) {
             const notSelectedNodes = visibleNodes.filter(({selected}) => !selected);
