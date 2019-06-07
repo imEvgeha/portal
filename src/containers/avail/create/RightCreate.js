@@ -19,6 +19,7 @@ import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {cannot} from '../../../ability';
+import {URL} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
