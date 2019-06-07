@@ -654,6 +654,7 @@ class RightDetails extends React.Component {
                                     {error}
                                 </div>;
             }
+
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <EditableDatePicker
                     ref={ref}
@@ -664,6 +665,9 @@ class RightDetails extends React.Component {
                     disabled={readOnly}
                     displayName={displayName}
                     validate={(date) => {
+                        if(!date && required){
+                            return 'Mandatory Field. Date cannot be empty';
+                        }
                         const rangeError = rangeValidation(name, displayName, date, this.state.flatRight);
                         if(rangeError) return rangeError;
                         return this.extraValidation(name, displayName, date, this.state.flatRight);

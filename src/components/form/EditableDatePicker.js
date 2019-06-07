@@ -98,7 +98,7 @@ class EditableDatePicker extends Component {
         const displayFunc = (value)=>{
             return (<span
                        onClick={this.handleShowDatePicker}
-                       style={{width:'100%'}}
+                       style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
                        className={'displayDate' + (this.props.disabled ? ' disabled' : '')}>
                        {value}
                    </span>);

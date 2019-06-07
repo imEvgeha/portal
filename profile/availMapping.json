@@ -1409,7 +1409,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true
 }, {
   "javaVariableName": "updatedAt",
   "displayName": "Updated At",
@@ -1419,7 +1419,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true
 }, {
   "javaVariableName": "createdBy",
   "displayName": "Created By",
