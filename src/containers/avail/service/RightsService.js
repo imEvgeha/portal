@@ -41,7 +41,7 @@ const populate = function(key, value, location){
     if(dotPos > 0) {
         const firstKey = key.split('.')[0];
         const restKey = key.substring(dotPos+1);
-        if(firstKey === 'languages') {
+        if(firstKey === 'languageAudioTypes') {
             if (!location[firstKey])
                 location[firstKey] = [];
             const container = location[firstKey];

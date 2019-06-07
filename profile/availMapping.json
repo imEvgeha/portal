@@ -335,17 +335,17 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "languages.language",
-  "displayName": "Language",
+  "javaVariableName": "languageAudioTypes.language",
+  "displayName": "Language Audio Types",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
-  "queryParamName": "language",
+  "queryParamName": "languageAudioTypes",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "languages.audioType",
+  "javaVariableName": "languageAudioTypes.audioType",
   "displayName": "Audio Type",
   "dataType": "string",
   "searchDataType": "multiselect",

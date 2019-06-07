@@ -6,8 +6,8 @@ const http = Http.create();
 const languagehack  = (cols) => {
     const columns = [...cols];
 
-    const index1 = columns.indexOf('languages.language');
-    const index2 = columns.indexOf('languages.audioType');
+    const index1 = columns.indexOf('languageAudioTypes.language');
+    const index2 = columns.indexOf('languageAudioTypes.audioType');
 
     const indexMin = Math.min(index1, index2);
     const indexMax = Math.max(index1, index2);
@@ -16,11 +16,11 @@ const languagehack  = (cols) => {
         //if at least one found
         if(indexMin > -1){
             //if both found
-            columns.splice(indexMin, 1, 'languages'); //replace first
+            columns.splice(indexMin, 1, 'languageAudioTypes'); //replace first
             columns.splice(indexMax, 1); //and delete second
         }else{
             //if only one found
-            columns.splice(indexMax, 1, 'languages'); //replace it
+            columns.splice(indexMax, 1, 'languageAudioTypes'); //replace it
         }
     }
 
