@@ -152,11 +152,11 @@ class RightDetails extends React.Component {
             return;
         }
         let updatedRight = {[name]: value};
-        if(name.indexOf('.') > 0 && name.split('.')[0] === 'languages'){
+        if(name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes'){
             if(name.split('.')[1] === 'language'){
-                updatedRight['languages.audioType'] = this.state.flatRight['languages.audioType'];
+                updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
             }else{
-                updatedRight['languages.language'] = this.state.flatRight['languages.language'];
+                updatedRight['languageAudioTypes.language'] = this.state.flatRight['languageAudioTypes.language'];
             }
         }
         store.dispatch(blockUI(true));
