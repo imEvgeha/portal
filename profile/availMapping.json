@@ -349,7 +349,7 @@
   "displayName": "Language Audio Types",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
-  "queryParamName": "languageAudioTypes",
+  "queryParamName": "languageAudioType",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
