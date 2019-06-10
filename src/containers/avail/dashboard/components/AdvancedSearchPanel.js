@@ -2,7 +2,8 @@ import React from 'react';
 import {Button} from 'reactstrap';
 import {
     searchFormUpdateAdvancedSearchCriteria,
-    setHistoryCache
+    setHistoryCache,
+    resultPageSetBulkExport
 } from '../../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
 
@@ -26,13 +27,15 @@ const mapStateToProps = state => {
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
         columns: state.dashboard.session.columns,
-        historyCache: state.dashboard.session.historyCache
+        historyCache: state.dashboard.session.historyCache,
+        bulkExportAvailable: state.dashboard.bulkExportAvailable
     };
 };
 
 const mapDispatchToProps = {
     searchFormUpdateAdvancedSearchCriteria,
-    setHistoryCache
+    setHistoryCache,
+    resultPageSetBulkExport
 };
 
 const ignoreForCloseable = ['invalid'];
@@ -50,7 +53,9 @@ class AdvancedSearchPanel extends React.Component {
         columns: t.array,
         historyCache: t.object,
         setHistoryCache: t.func,
-        location: t.object
+        location: t.object,
+        bulkExportAvailable: t.bool,
+        resultPageSetBulkExport: t.func
     };
 
     constructor(props) {
@@ -60,7 +65,7 @@ class AdvancedSearchPanel extends React.Component {
             selected: null,
             value: null,
             blink: null,
-            exportAll: false
+            exportAll: false,
         };
         this.loadingHistoryData = {};
 
@@ -121,6 +126,7 @@ class AdvancedSearchPanel extends React.Component {
 
         });
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, ...searchCriteria});
+        this.props.resultPageSetBulkExport(false);
     }
 
     handleInputChange(event) {
@@ -133,6 +139,7 @@ class AdvancedSearchPanel extends React.Component {
     handleInvalidChange(event) {
         const value = event.target.value;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, invalid: {value: value}});
+        this.props.resultPageSetBulkExport(false);
     }
 
     addSearchField() {
@@ -147,10 +154,14 @@ class AdvancedSearchPanel extends React.Component {
             this.removeField(this.state.selected.value);
         }
         this.setState({selected: null, value: null});
+        this.props.resultPageSetBulkExport(false);
         this.refSearchBtn.current.focus();
     }
 
     handleBulkExport() {
+        if(!this.props.bulkExportAvailable){
+            return;
+        }
         if (!this.props.availTabPage.total) {
             alertModal.open('Action required', () => {
             }, {description: 'There is no result of search, please change filters.'});
@@ -474,6 +485,7 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                 disabled={!this.props.bulkExportAvailable}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
                                  disabled={!this.props.reportName}

@@ -1,5 +1,5 @@
 import store from '../../../stores/index';
-import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/avail/dashboard';
+import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria, resultPageSetBulkExport} from '../../../stores/actions/avail/dashboard';
 import {rightsService} from './RightsService';
 
 export const rightServiceManager = {
@@ -13,10 +13,18 @@ export const rightServiceManager = {
     //called by the table either as result of other systems triggering the table (page 0) or scrolling the table (page > 0)
     //this function is just a wrapper that decides which service function (and API as a result) to call depending on data in search criteria
     doSearch: (page, pageSize, sortedParams) => {
+        if(page === 0){
+            store.dispatch(resultPageSetBulkExport(false));
+        }
         if(store.getState().dashboard.session.searchCriteria.text){
             return rightServiceManager.callService(rightsService.freeTextSearch, page, pageSize, sortedParams);
         }else{
-            return rightServiceManager.callService(rightsService.advancedSearch, page, pageSize, sortedParams);
+            return rightServiceManager.callService(rightsService.advancedSearch, page, pageSize, sortedParams).then(response => {
+                if(response && response.data.total > 0) {
+                    store.dispatch(resultPageSetBulkExport(true));
+                }
+                return response;
+            });
         }
     },
 

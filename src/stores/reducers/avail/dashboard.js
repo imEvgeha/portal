@@ -13,7 +13,8 @@ import {
     DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
     AVAIL__RESULTS_PAGE__SHOW_SELECTED,
-    AVAIL__SET_HISTORY_CACHE
+    AVAIL__SET_HISTORY_CACHE,
+    AVAIL__SET_BULK_EXPORT
 } from '../../../constants/action-types';
 import {saveDashboardState} from '../../index';
 
@@ -24,6 +25,7 @@ const initialState = {
         pageSize: 0,
         total: 0
     },
+    bulkExportAvailable: false,
     showSelectedAvails: false,
     availTabPageLoading: false,
     session: {
@@ -56,11 +58,12 @@ const dashboard = (state = initialState, action) => {
             return { ...state, session: {...state.session, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__UPDATE:
             return {...state, availTabPage: {...state.availTabPage, ...action.payload}};
-
         case DASHBOARD_RESULT_PAGE__LOADING:
             return {...state, availTabPageLoading: action.payload};
         case AVAIL__RESULTS_PAGE__SHOW_SELECTED:
             return { ...state, showSelectedAvails: action.payload};
+        case AVAIL__SET_BULK_EXPORT:
+            return { ...state, bulkExportAvailable: action.payload};
 //  ------------   SESSION Actions   ----------------------------
         case AVAIL__SET_HISTORY_CACHE:
             saveDashboardState();
