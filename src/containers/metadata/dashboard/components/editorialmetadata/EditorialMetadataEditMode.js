@@ -92,7 +92,7 @@ class EditorialMetadataEditMode extends Component {
     render() {
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
-        const { locale, language, format, service, seriesName, seasonNumber, episodeNumber, synopsis, title, copyright, awards} = updateData ? updateData : this.props.data;
+        const { locale, language, format, service, seriesName, seasonNumber, episodeNumber, synopsis, title, copyright, awards, sasktelInventoryId, sasktelLineupId} = updateData ? updateData : this.props.data;
         return (
             <div id="editorialMetadataEdit">
                 <Fragment>
@@ -373,6 +373,34 @@ class EditorialMetadataEditMode extends Component {
                                 }}
                                 value={awards}/>
                                  <span style={{float:'right', color: awards ? this.handleFieldLength(awards) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{awards ? this.handleFieldLength(awards)  : 0}/500 char</span>
+                        </Col>
+                    </Row>
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Sasktel Inventory ID</b>
+                        </Col>
+                        <Col>
+                            <AvField type="text" id="editorialSasktelInventoryID" name={this.getNameWithPrefix('sasktelInventoryId')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                validate={{
+                                    maxLength: { value: 200, errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.' }
+                                }}
+                                value={sasktelInventoryId}/>
+                                 <span style={{float:'right', color: sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId)  : 0}/200 char</span>
+                        </Col>
+                    </Row>
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Sasktel Lineup ID</b>
+                        </Col>
+                        <Col>
+                            <AvField type="text" id="sasktelLineupId" name={this.getNameWithPrefix('sasktelLineupId')}
+                               onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                validate={{
+                                    maxLength: { value: 200, errorMessage: 'Too long Sasktel Lineup ID. Max 200 symbols.' }
+                                }}
+                                value={sasktelLineupId}/>
+                                 <span style={{float:'right', color: sasktelLineupId ? this.handleFieldLength(sasktelLineupId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{sasktelLineupId ? this.handleFieldLength(sasktelLineupId)  : 0}/200 char</span>
                         </Col>
                     </Row>
                 </Fragment>

@@ -88,6 +88,16 @@ class EditorialMetadataTab extends Component {
                             <b>Awards:</b> {this.props.data.awards ? this.props.data.awards : this.emptySpan()}
                         </Col>
                     </Row>
+                    <Row style={{padding: '15px'}}>
+                        <Col style={{wordWrap: 'break-word'}}>
+                            <b>Sasktel Inventory ID:</b> {this.props.data.sasktelInventoryId ? this.props.data.sasktelInventoryId : this.emptySpan()}
+                        </Col>
+                    </Row>
+                    <Row style={{padding: '15px'}}>
+                        <Col style={{wordWrap: 'break-word'}}>
+                            <b>Sasktel Lineup ID:</b> {this.props.data.sasktelLineupId ? this.props.data.sasktelLineupId : this.emptySpan()}
+                        </Col>
+                    </Row>
                 </Fragment>
             </div>
         );
