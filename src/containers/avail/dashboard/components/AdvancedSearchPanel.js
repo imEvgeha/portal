@@ -485,6 +485,7 @@ class AdvancedSearchPanel extends React.Component {
                     </div>
                      <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                                 disabled={!this.props.availTabPage.total}
                                  style={{ margin: '4px 7px 0'}}>bulk export</Button>
                          <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
                                  disabled={!this.props.reportName}
