@@ -91,8 +91,7 @@ export const rightsService = {
         if (searchCriteria.text) {
             params.text = searchCriteria.text;
         }
-
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -118,7 +117,7 @@ export const rightsService = {
                 params[key] = value;
             }
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams, true), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
     create: (right) => {
