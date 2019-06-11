@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Row, Col, Container, Alert } from 'reactstrap';
+import React, {Component, Fragment} from 'react';
+import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
 import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
@@ -10,8 +10,10 @@ class TitleReadOnlyMode extends Component {
     }
 
     addBooleanQuotes = (fieldName) => {
-        let stringBoolean = fieldName.toString();
-        return stringBoolean;
+        if(fieldName !== undefined && fieldName !== null) {
+            return fieldName.toString();
+        }
+        return fieldName;
     };
 
     renderFields = () => {
@@ -102,7 +104,7 @@ class TitleReadOnlyMode extends Component {
                             </Row>
                             <Row>
                                 {
-                                    animated ?
+                                    this.addBooleanQuotes(animated) ?
                                         <Col>
                                             <Alert color="light" id="titleAnimated"><span><b>Animated: </b>{this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}</span></Alert>
                                         </Col>
