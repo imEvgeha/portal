@@ -18,7 +18,7 @@ import Select from 'react-select';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
-import {cannot} from '../../../ability';
+import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
 const mapStateToProps = state => {
@@ -221,12 +221,12 @@ class RightCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty() {
-        if(this.props.availsMapping.mappings.find(x => x.required && !this.right[x.javaVariableName])) return true;
+        if(this.props.availsMapping.mappings.filter(({javaVariableName}) => can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName])) return true;
         return false;
     }
 
     validateFields(){
-        this.props.availsMapping.mappings.map((mapping) => {
+        this.props.availsMapping.mappings.filter(({javaVariableName}) => can('create', 'Avail', javaVariableName)).map((mapping) => {
             this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
         });
         this.setState({});
