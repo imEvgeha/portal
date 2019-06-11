@@ -57,6 +57,7 @@ class TitleEditMode extends Component {
       totalNumberOfEpisodes,
       episodic
     } = this.props.data;
+
     return (
       <Fragment>
         <Container fluid id='titleContainer' onKeyDown={this.props.keyPressed}>
@@ -311,7 +312,7 @@ class TitleEditMode extends Component {
                     name='animated'
                     id='animated'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    defaultValue={animated ? animated : ''}
+                    defaultValue={animated !== null ? animated : ''}
                   >
                     <option value={''}>Select Animated</option>
                     <option value={true}>Y</option>
