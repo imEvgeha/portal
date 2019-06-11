@@ -235,7 +235,7 @@ class RightsResultTable extends React.Component {
         if(!this.table) return;
         let sortModel=[];
         this.props.availTabPageSort.map(sortCriteria=>{
-            sortModel.push({colId:sortCriteria.id, sort:sortCriteria.desc ? 'desc' : 'asc'});
+            sortModel.push({colId:this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === sortCriteria.id).javaVariableName, sort:sortCriteria.desc ? 'desc' : 'asc'});
         });
 
         let currentSortModel=this.table.api.getSortModel();
@@ -258,7 +258,7 @@ class RightsResultTable extends React.Component {
         let newSort = [];
         if(sortParams.length > 0){
             sortParams.map(criteria =>{
-                newSort.push({id : e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort === 'desc'});
+                newSort.push({id : this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === criteria.colId).queryParamName , desc: criteria.sort === 'desc'});
             });
         }
         this.props.resultPageSort(newSort);
