@@ -20,7 +20,7 @@ export const rightServiceManager = {
             return rightServiceManager.callService(rightsService.freeTextSearch, page, pageSize, sortedParams);
         }else{
             return rightServiceManager.callService(rightsService.advancedSearch, page, pageSize, sortedParams).then(response => {
-                if(response && response.data.total > 0) {
+                if(response) {
                     store.dispatch(resultPageSetBulkExport(true));
                 }
                 return response;
