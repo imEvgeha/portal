@@ -49,11 +49,11 @@ const encodedSerialize = function(params){
     return Object.entries(params).map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`).join('&');
 };
 
-function prepareSortMatrixParam(sortedParams, onlyLastPart = false) {
+function prepareSortMatrixParam(sortedParams) {
     let matrix = '';
     if(sortedParams){
         sortedParams.forEach((entry) => {
-            matrix += ';' + (onlyLastPart ? entry.id.split('.').pop() : entry.id) + '=' + (entry.desc ? 'DESC' : 'ASC');
+            matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
         });
     }
     return matrix;
