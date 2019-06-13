@@ -371,6 +371,7 @@
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "localizationType",
+  "options": ["Sub", "Dub", "Subdub", "Any"],
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
