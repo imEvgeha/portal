@@ -217,6 +217,13 @@ class RightsResultTable extends React.Component {
                     if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName].substr(0, 10)).format('L');
                     else return undefined;
                 };
+                case 'string' : if(column.javaVariableName === 'castCrew') return function(params){
+                    if(params.data && params.data[column.javaVariableName]){
+                        let data = params.data[column.javaVariableName];
+                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
+                        return data;
+                    } else return undefined;
+                }; else return null;
                 default: return null;
             }
         };
