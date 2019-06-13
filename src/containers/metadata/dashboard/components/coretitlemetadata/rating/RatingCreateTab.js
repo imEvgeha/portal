@@ -9,17 +9,73 @@ class RatingCreateTab extends Component {
         super(props);
         this.state = {
             advisoriesCode: null,
-            filteredAdvisoryCodes: []
+            filteredAdvisoryCodes: [],
+            ratingsForCreate: {}
         };
     }
+
+    handleRatingSystemChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            ratingSystem: newValue.target.value,
+            rating: null
+        };
+
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+    };
+
+    handleRatingsChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            rating: newValue.target.value
+        };
+
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+    };
+
+    handleAdvisoryCodesChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            advisoriesCode: newValue.map(e => e.value)
+        };
+
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+    };
+
+    handleAdvisoriesChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            advisoriesFreeText: newValue.target.value
+        };
+
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+    };
 
     filteredAdvisoryCodes = (e) => {
         // this.props.configAdvisoryCode.value
         const ratingSystem = e.target.value;
         let newAdvisoryCodes = this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem);
-        for(let i = 0; i< newAdvisoryCodes.length; i++) {
-            newAdvisoryCodes[i].label = newAdvisoryCodes[i]['name'];
-            newAdvisoryCodes[i].value = newAdvisoryCodes[i]['name'];
+        if (newAdvisoryCodes.length > 0) {
+            for (let i = 0; i < newAdvisoryCodes.length; i++) {
+                newAdvisoryCodes[i].label = newAdvisoryCodes[i]['name'];
+                newAdvisoryCodes[i].value = newAdvisoryCodes[i]['name'];
+            }
         }
         this.setState({
             filteredAdvisoryCodes: newAdvisoryCodes
@@ -27,12 +83,24 @@ class RatingCreateTab extends Component {
     }
 
     handleChangeRatingSystem = (e) => {
+        this.setState({
+            filteredAdvisoryCodes: []
+        });
         this.props.handleRatingSystemValue(e);
         this.props.handleChange(e);
         this.filteredAdvisoryCodes(e);
     }
 
+    renderAdvisoryCodes = () => {
+        return this.state.filteredAdvisoryCodes.length > 0 ? this.state.filteredAdvisoryCodes : [];
+    }
+
     render() {
+        const {
+            ratingSystem,
+            rating,
+            advisoriesFreeText,
+        } = this.state.ratingsForCreate;
         return (
             <div id="ratingCreate">
                 <Fragment>
@@ -43,7 +111,7 @@ class RatingCreateTab extends Component {
                                 name="ratingSystem"
                                 id="titleRatingSystem"
                                 required={this.props.areRatingFieldsRequired}
-                                onChange={this.handleChangeRatingSystem}
+                                onChange={(e) => this.handleRatingSystemChange(e)}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating System</option>
                                 {
@@ -57,13 +125,13 @@ class RatingCreateTab extends Component {
                             <b>Ratings<span style={{ color: 'red' }}>*</span></b>
                             <AvField type="select"
                                 name="rating"
-                                id="titleRatings"                                
+                                id="titleRatings"
                                 required={this.props.areRatingFieldsRequired}
-                                onChange={this.props.handleChange}
+                                onChange={(e) => this.handleRatingsChange(e)}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating</option>
                                 {
-                                    this.props.filteredRatings && this.props.filteredRatings.map((item, i) => {
+                                    this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem).map((item, i) => {
                                         return <option key={i} value={item.name}>{item.name}</option>;
                                     })
                                 }
@@ -73,11 +141,16 @@ class RatingCreateTab extends Component {
                             <b>Advisory Codes</b>
                             <Select
                                 name="advisoriesCode"
-                                value={this.props.ratingObjectForCreate.advisoriesCode ? this.props.ratingObjectForCreate.advisoriesCode : []}
-                                onChange={this.props.handleAdvisoryCodeChange}
+                                value={this.props.ratingObjectForCreate.advisoriesCode && this.props.ratingObjectForCreate.advisoriesCode.map(e => {
+                                    return {value: e, label: e};
+                                })}
+                                onChange={(e) => this.handleAdvisoryCodesChange(e)}
                                 isMulti
                                 placeholder='Select Advisory Code'
-                                options={this.state.filteredAdvisoryCodes}
+                                options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
+                                    .map(e => {
+                                        return { value: e.name, label: e.name };
+                                    })}
                             />
                         </Col>
                     </Row>

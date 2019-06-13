@@ -173,6 +173,7 @@ class CoreMetadataEditMode extends Component {
             createRatingTab={this.props.createRatingTab}
             handleChange={this.props.handleRatingChange}
             handleEditChange={this.props.handleRatingEditChange}
+            handleRatingCreateChange={this.props.handleRatingCreateChange}
             handleRatingSystemValue={this.props.handleRatingSystemValue}
           />
         </Row>

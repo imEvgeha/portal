@@ -466,6 +466,7 @@ class TitleEditMode extends Component {
               areRatingFieldsRequired={this.props.areRatingFieldsRequired}
               handleRatingChange={this.props.handleRatingChange}
               handleRatingEditChange={this.props.handleRatingEditChange}
+              handleRatingCreateChange={this.props.handleRatingCreateChange}
 
               data={this.props.data}
               onChange={this.props.handleOnChangeEdit}

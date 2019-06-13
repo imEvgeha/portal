@@ -81,9 +81,11 @@ class Rating extends Component {
                                     <Row>
                                         <Col>
                                             <RatingCreateTab
+                                                handleRatingCreateChange={this.props.handleRatingCreateChange}
                                                 areRatingFieldsRequired={this.props.areRatingFieldsRequired}
                                                 handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
-                                                ratingObjectForCreate={this.props.ratingObjectForCreate}
+                                                ratingObjectForCreate={this.props.ratingObjectForCreate}                                                
+                                                configRatings={this.props.configRatings}
                                                 handleChange={this.props.handleChange}
                                                 handleRatingSystemValue={this.handleRatingSystemValue}
                                                 filteredRatings={this.state.filteredRatings}
