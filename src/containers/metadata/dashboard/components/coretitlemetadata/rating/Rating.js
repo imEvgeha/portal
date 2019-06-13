@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Container, TabContent, TabPane } from 'reactstrap';
+import { Row, Col, Container, TabContent, TabPane, Tooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import RatingReadTab from './RatingReadTab';
@@ -21,8 +21,15 @@ class Rating extends Component {
         super(props);
         this.state = {
             filteredRatings: [],
-            advisoryCodeList: []
+            advisoryCodeList: [],
+            tooltipOpen: false
         };
+    }
+
+    toggle = () => {
+        this.setState({
+            tooltipOpen: !this.state.tooltipOpen
+        });
     }
 
     handleRatingSystemValue = (e) => {
@@ -39,7 +46,12 @@ class Rating extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
+                            <React.Fragment>
+                                <FontAwesome className={'tablinks add-local'} name="plus-circle" id={'createRatings'} onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
+                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createRatings'} toggle={this.toggle}>
+                                    Create Rating
+                                </Tooltip>
+                            </React.Fragment>
                             : null
                     }
                     {
