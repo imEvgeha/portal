@@ -368,7 +368,7 @@
 }, {
   "javaVariableName": "localizationType",
   "displayName": "Localization Type",
-  "dataType": "string",
+  "dataType": "select",
   "searchDataType": "select",
   "queryParamName": "localizationType",
   "options": ["Sub", "Dub", "Subdub", "Any"],
