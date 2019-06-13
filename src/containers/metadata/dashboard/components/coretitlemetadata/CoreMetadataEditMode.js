@@ -171,7 +171,6 @@ class CoreMetadataEditMode extends Component {
             toggle={this.props.toggleTitleRating}
             addRating={this.props.addTitleRatingTab}
             createRatingTab={this.props.createRatingTab}
-            handleChange={this.props.handleRatingChange}
             handleEditChange={this.props.handleRatingEditChange}
             handleRatingCreateChange={this.props.handleRatingCreateChange}
             handleRatingSystemValue={this.props.handleRatingSystemValue}
@@ -467,8 +466,8 @@ CoreMetadataEditMode.propTypes = {
   toggleTitleRating: PropTypes.func,
   addTitleRatingTab: PropTypes.func,
   createRatingTab: PropTypes.string,
-  handleRatingChange: PropTypes.func,
   handleRatingEditChange: PropTypes.func,
+  handleRatingCreateChange: PropTypes.func,
 
   data: PropTypes.object,
   editedTitle: PropTypes.object,

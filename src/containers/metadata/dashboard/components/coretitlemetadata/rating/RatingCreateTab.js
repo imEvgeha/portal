@@ -8,8 +8,6 @@ class RatingCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            advisoriesCode: null,
-            filteredAdvisoryCodes: [],
             ratingsForCreate: {}
         };
     }
@@ -18,7 +16,8 @@ class RatingCreateTab extends Component {
         let newRating = {
             ...this.state.ratingsForCreate,
             ratingSystem: newValue.target.value,
-            rating: null
+            rating: null,
+            advisoriesCode: null
         };
 
         this.setState({
@@ -47,10 +46,11 @@ class RatingCreateTab extends Component {
             advisoriesCode: newValue.map(e => e.value)
         };
 
+        
         this.setState({
             ratingsForCreate: newRating
         });
-
+        
         this.props.handleRatingCreateChange(newRating);
     };
 
@@ -66,34 +66,6 @@ class RatingCreateTab extends Component {
 
         this.props.handleRatingCreateChange(newRating);
     };
-
-    filteredAdvisoryCodes = (e) => {
-        // this.props.configAdvisoryCode.value
-        const ratingSystem = e.target.value;
-        let newAdvisoryCodes = this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem);
-        if (newAdvisoryCodes.length > 0) {
-            for (let i = 0; i < newAdvisoryCodes.length; i++) {
-                newAdvisoryCodes[i].label = newAdvisoryCodes[i]['name'];
-                newAdvisoryCodes[i].value = newAdvisoryCodes[i]['name'];
-            }
-        }
-        this.setState({
-            filteredAdvisoryCodes: newAdvisoryCodes
-        });
-    }
-
-    handleChangeRatingSystem = (e) => {
-        this.setState({
-            filteredAdvisoryCodes: []
-        });
-        this.props.handleRatingSystemValue(e);
-        this.props.handleChange(e);
-        this.filteredAdvisoryCodes(e);
-    }
-
-    renderAdvisoryCodes = () => {
-        return this.state.filteredAdvisoryCodes.length > 0 ? this.state.filteredAdvisoryCodes : [];
-    }
 
     render() {
         const {
@@ -126,6 +98,7 @@ class RatingCreateTab extends Component {
                             <AvField type="select"
                                 name="rating"
                                 id="titleRatings"
+                                value={rating ? rating : ''}
                                 required={this.props.areRatingFieldsRequired}
                                 onChange={(e) => this.handleRatingsChange(e)}
                                 errorMessage="Field cannot be empty!">
@@ -158,7 +131,14 @@ class RatingCreateTab extends Component {
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             <b>Advisories</b>
-                            <AvField type="text" placeholder="Enter Advisories" id="tittleAdvisories" name="advisoriesFreeText" onChange={this.props.handleChange} errorMessage="Please enter a valid advisories!" />
+                            <AvField 
+                                type="text" 
+                                value={advisoriesFreeText ? advisoriesFreeText : ''}
+                                placeholder="Enter Advisories" 
+                                id="tittleAdvisories" 
+                                name="advisoriesFreeText" 
+                                onChange={(e) => this.handleAdvisoriesChange(e)} 
+                                errorMessage="Please enter a valid advisories!" />
                         </Col>
                     </Row>
                 </Fragment>
@@ -168,7 +148,6 @@ class RatingCreateTab extends Component {
 }
 
 RatingCreateTab.propTypes = {
-    handleChange: PropTypes.func.isRequired,
     configRatingSystem: PropTypes.object,
     configRatings: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
@@ -176,7 +155,8 @@ RatingCreateTab.propTypes = {
     handleRatingSystemValue: PropTypes.func,
     ratingObjectForCreate: PropTypes.object,
     handleAdvisoryCodeChange: PropTypes.func,
-    areRatingFieldsRequired: PropTypes.bool
+    areRatingFieldsRequired: PropTypes.bool,
+    handleRatingCreateChange: PropTypes.func
 };
 
 export default RatingCreateTab;

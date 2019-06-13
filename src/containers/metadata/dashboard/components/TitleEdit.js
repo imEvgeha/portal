@@ -250,17 +250,6 @@ class TitleEdit extends Component {
         });
     };
 
-    handleRatingChange = (e) => {
-        let newRatingToCreate = {
-            ...this.state.ratingForCreate,
-            [e.target.name]: e.target.value
-        };
-        this.setState({
-            ratingForCreate: newRatingToCreate
-        });
-
-    };
-
     handleRatingCreateChange = (e) => {
         this.setState({
             ratingForCreate: e
@@ -322,7 +311,6 @@ class TitleEdit extends Component {
             addTitleRatingTab={this.addTitleRatingTab}
             areRatingFieldsRequired={this.state.areRatingFieldsRequired}
             createRatingTab={CREATE_TAB}
-            handleRatingChange={this.handleRatingChange}
             handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
             ratingObjectForCreate={this.state.ratingForCreate}
             handleRatingEditChange={this.handleRatingEditChange}
@@ -368,7 +356,7 @@ class TitleEdit extends Component {
             let newAdvisoryCodes = [];
             if (this.state.ratingForCreate.advisoriesCode) {
                 for (let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
-                    newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]['name']);
+                    newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]);
                 }
             }
 
@@ -394,8 +382,6 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.formatRating(newAdditionalFields);
-
-            console.log(newAdditionalFields)
 
             titleService.updateTitle(newAdditionalFields).then(() => {
                 this.setState({

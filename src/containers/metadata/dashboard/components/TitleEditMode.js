@@ -464,7 +464,6 @@ class TitleEditMode extends Component {
               addTitleRatingTab={this.props.addTitleRatingTab}
               createRatingTab={this.props.createRatingTab}
               areRatingFieldsRequired={this.props.areRatingFieldsRequired}
-              handleRatingChange={this.props.handleRatingChange}
               handleRatingEditChange={this.props.handleRatingEditChange}
               handleRatingCreateChange={this.props.handleRatingCreateChange}
 
@@ -495,8 +494,8 @@ TitleEditMode.propTypes = {
   toggleTitleRating: PropTypes.func,
   addTitleRatingTab: PropTypes.func,
   createRatingTab: PropTypes.string,
-  handleRatingChange: PropTypes.func,
   handleRatingEditChange: PropTypes.func,
+  handleRatingCreateChange: PropTypes.func,
 
   keyPressed: PropTypes.func,
   data: PropTypes.object,
