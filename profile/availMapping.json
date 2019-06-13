@@ -369,7 +369,7 @@
   "javaVariableName": "localizationType",
   "displayName": "Localization Type",
   "dataType": "select",
-  "searchDataType": "select",
+  "searchDataType": "multiselect",
   "queryParamName": "localizationType",
   "options": ["Sub", "Dub", "Subdub", "Any"],
   "readOnly": false,
