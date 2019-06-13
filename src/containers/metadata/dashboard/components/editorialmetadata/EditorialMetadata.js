@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Container, TabContent, TabPane, Alert } from 'reactstrap';
+import { Row, Col, Container, TabContent, TabPane, Alert, Tooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
-import {configFields} from '../../../service/ConfigService';
-import {connect} from 'react-redux';
+import { configFields } from '../../../service/ConfigService';
+import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
     return {
@@ -17,18 +17,27 @@ const mapStateToProps = state => {
 class EditorialMetadata extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            tooltipOpen: false
+        };
     }
-    
+
     getLanguageByCode = (code) => {
-        if(this.props.configLanguage) {
+        if (this.props.configLanguage) {
             let found = this.props.configLanguage.value.find(e => e.languageCode === code);
-            if(found) {
+            if (found) {
                 return found.languageName;
             }
         }
         return code;
     };
-    
+
+    toggle = () => {
+        this.setState({
+            tooltipOpen: !this.state.tooltipOpen
+        });
+    }
+
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
@@ -41,12 +50,17 @@ class EditorialMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
+                            <React.Fragment>
+                                <FontAwesome className={'tablinks add-local'} id={'createEditorialMetadata'} name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
+                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createEditorialMetadata'} toggle={this.toggle}>
+                                    Create Editorial Metadata
+                                </Tooltip>
+                            </React.Fragment>
                             : null
                     }
                     {
                         this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
+                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '')}</b></span>;
                         })
                     }
                 </div>
@@ -89,7 +103,7 @@ class EditorialMetadata extends Component {
                                                 editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 handleGenreChange={this.props.handleGenreChange}
-                                                titleContentType={this.props.titleContentType}/>
+                                                titleContentType={this.props.titleContentType} />
                                         </Col>
                                     </Row>
                                 </TabPane>

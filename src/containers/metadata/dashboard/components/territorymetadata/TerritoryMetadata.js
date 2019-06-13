@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Container, TabContent, TabPane, Alert } from 'reactstrap';
+import { Row, Col, Container, TabContent, TabPane, Alert, Tooltip } from 'reactstrap';
 import './MetadataTerritoryTab.scss';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
@@ -11,6 +11,14 @@ import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 class TerritoryMetadata extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            tooltipOpen: false
+        };
+    }
+    toggle = () => {
+        this.setState({
+            tooltipOpen: !this.state.tooltipOpen
+        });
     }
     render() {
         return (
@@ -24,12 +32,17 @@ class TerritoryMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ?
-                            <FontAwesome className={'tablinks add-local'} name="plus-circle" onClick={() => this.props.addTerritoryMetadata(this.props.createTerritoryTab)} key={this.props.createTerritoryTab} size="lg" />
+                            <React.Fragment>
+                                <FontAwesome className={'tablinks add-local'} name="plus-circle" id={'createTerritoryMetadata'} onClick={() => this.props.addTerritoryMetadata(this.props.createTerritoryTab)} key={this.props.createTerritoryTab} size="lg" />
+                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createTerritoryMetadata'} toggle={this.toggle}>
+                                    Create Territory Metadata
+                                </Tooltip>
+                            </React.Fragment>
                             : null
                     }
                     {
                         this.props.territory && this.props.territory.map((item, i) => {
-                            return <span className={'tablinks'} style={{background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : ''}} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale}</b></span>;
+                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale}</b></span>;
                         })
                     }
                 </div>
@@ -41,7 +54,7 @@ class TerritoryMetadata extends Component {
                                     <TabPane key={i} tabId={i}>
                                         <Row>
                                             <Col>
-                                                <TerritoryMetadataTab  key={i} data={item} />
+                                                <TerritoryMetadataTab key={i} data={item} />
                                             </Col>
                                         </Row>
                                     </TabPane>);
