@@ -66,6 +66,7 @@ class TitleEdit extends Component {
             invalidBoxOffice: false,
             areTerritoryMetadataFieldsRequired: false,
             areEditorialMetadataFieldsRequired: false,
+            areRatingFieldsRequired: false,
             titleForm: {},
             editedForm: {},
             territories: {},
@@ -316,12 +317,14 @@ class TitleEdit extends Component {
     toggleTitleRating = (tab) => {
         this.setState({
             titleRankingActiveTab: tab,
+            areRatingFieldsRequired: false
         });
     };
 
     addTitleRatingTab = (tab) => {
         this.setState({
             titleRankingActiveTab: tab,
+            areRatingFieldsRequired: true
         });
     };
 
@@ -334,6 +337,7 @@ class TitleEdit extends Component {
             titleRankingActiveTab={this.state.titleRankingActiveTab}
             toggleTitleRating={this.toggleTitleRating}
             addTitleRatingTab={this.addTitleRatingTab}
+            areRatingFieldsRequired={this.state.areRatingFieldsRequired}
             createRatingTab={CREATE_TAB}
             handleRatingChange={this.handleRatingChange}
             handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
@@ -776,6 +780,7 @@ class TitleEdit extends Component {
         this.setState({
             areEditorialMetadataFieldsRequired: false,
             areTerritoryMetadataFieldsRequired: false,
+            areRatingFieldsRequired: false
         });
     };
 
@@ -803,17 +808,6 @@ class TitleEdit extends Component {
                 isCastModalOpen: false
             });
         }
-    };
-
-    removeRating = removeRating => {
-        let rating = this.state.editedForm.ratings.filter(rating => rating !== removeRating);
-        let updateEditForm = {
-            ...this.state.editedForm,
-            ratings: rating
-        };
-        this.setState({
-            editedForm: updateEditForm
-        });
     };
 
     addCastCrew = (person) => {

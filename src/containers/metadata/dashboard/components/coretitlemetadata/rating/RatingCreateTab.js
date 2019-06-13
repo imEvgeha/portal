@@ -42,6 +42,7 @@ class RatingCreateTab extends Component {
                             <AvField type="select"
                                 name="ratingSystem"
                                 id="titleRatingSystem"
+                                required={this.props.areRatingFieldsRequired}
                                 onChange={this.handleChangeRatingSystem}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating System</option>
@@ -53,10 +54,11 @@ class RatingCreateTab extends Component {
                             </AvField>
                         </Col>
                         <Col md={3}>
-                            <b>Ratings</b>
+                            <b>Ratings<span style={{ color: 'red' }}>*</span></b>
                             <AvField type="select"
                                 name="rating"
-                                id="titleRatings"
+                                id="titleRatings"                                
+                                required={this.props.areRatingFieldsRequired}
                                 onChange={this.props.handleChange}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating</option>
@@ -100,7 +102,8 @@ RatingCreateTab.propTypes = {
     filteredRatings: PropTypes.array,
     handleRatingSystemValue: PropTypes.func,
     ratingObjectForCreate: PropTypes.object,
-    handleAdvisoryCodeChange: PropTypes.func
+    handleAdvisoryCodeChange: PropTypes.func,
+    areRatingFieldsRequired: PropTypes.bool
 };
 
 export default RatingCreateTab;

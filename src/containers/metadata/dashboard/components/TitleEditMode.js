@@ -463,6 +463,7 @@ class TitleEditMode extends Component {
               toggleTitleRating={this.props.toggleTitleRating}
               addTitleRatingTab={this.props.addTitleRatingTab}
               createRatingTab={this.props.createRatingTab}
+              areRatingFieldsRequired={this.props.areRatingFieldsRequired}
               handleRatingChange={this.props.handleRatingChange}
               handleRatingEditChange={this.props.handleRatingEditChange}
 
@@ -516,7 +517,8 @@ TitleEditMode.propTypes = {
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
-  ratingObjectForCreate: PropTypes.object
+  ratingObjectForCreate: PropTypes.object,
+  areRatingFieldsRequired: PropTypes.bool
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

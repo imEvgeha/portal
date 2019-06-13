@@ -81,6 +81,7 @@ class Rating extends Component {
                                     <Row>
                                         <Col>
                                             <RatingCreateTab
+                                                areRatingFieldsRequired={this.props.areRatingFieldsRequired}
                                                 handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
                                                 ratingObjectForCreate={this.props.ratingObjectForCreate}
                                                 handleChange={this.props.handleChange}
@@ -134,7 +135,8 @@ Rating.propTypes = {
     configRatingSystem: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
     handleAdvisoryCodeChange: PropTypes.func,
-    ratingObjectForCreate: PropTypes.object
+    ratingObjectForCreate: PropTypes.object,
+    areRatingFieldsRequired: PropTypes.bool
 };
 
 export default connect(mapStateToProps)(Rating);

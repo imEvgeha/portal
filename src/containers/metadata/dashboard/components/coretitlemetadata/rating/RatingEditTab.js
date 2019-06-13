@@ -96,6 +96,7 @@ class RatingEditTab extends Component {
                             <AvField type="select"
                                      name="ratingSystem"
                                      id="titleRatingSystem"
+                                     required={true}
                                      onChange={(e) => this.handleRatingSystemChange(e)}
                                      value={ratingSystem}
                                      errorMessage="Field cannot be empty!">
@@ -108,10 +109,11 @@ class RatingEditTab extends Component {
                             </AvField>
                         </Col>
                         <Col md={3}>
-                            <b>Ratings</b>
+                            <b>Ratings<span style={{ color: 'red' }}>*</span></b>
                             <AvField type="select"
                                      name="rating"
-                                     id="titleRatings"
+                                     id="titleRatings"                                     
+                                     required={true}
                                      onChange={(e) => this.handleRatingsChange(e)}
                                      value={rating ? rating : ''}
                                      errorMessage="Field cannot be empty!">

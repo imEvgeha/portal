@@ -163,6 +163,7 @@ class CoreMetadataEditMode extends Component {
           <Rating
             isEditMode={true}
             ratings={this.props.ratings}
+            areRatingFieldsRequired={this.props.areRatingFieldsRequired}
             handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
             ratingObjectForCreate={this.props.ratingObjectForCreate}
             filteredRatings={this.state.ratings}
@@ -493,7 +494,8 @@ CoreMetadataEditMode.propTypes = {
 
   handleRatingSystemValue: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
-  handleAdvisoryCodeChange: PropTypes.func
+  handleAdvisoryCodeChange: PropTypes.func,
+  areRatingFieldsRequired: PropTypes.bool
 };
 
 
