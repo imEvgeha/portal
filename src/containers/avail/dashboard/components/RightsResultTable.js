@@ -24,10 +24,6 @@ import {getDeepValue} from '../../../../util/Common';
 const colDef = [];
 let registeredOnSelect= false;
 
-/**
- * Advance Search -
- * title, studio Vod Start Date, Vod End Date
- */
 let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
@@ -455,7 +451,11 @@ class RightsResultTable extends React.Component {
             lockPosition: true,
             headerComponentFramework: CheckBoxHeader
         });
-        const cols = this.props.columns || this.props.columnsOrder;
+        let cols = this.props.columns || this.props.columnsOrder;
+        if(!cols){
+            cols = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
+            this.props.resultPageUpdateColumnsOrder(cols);
+        }
         if(cols){
             cols.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
