@@ -30,7 +30,7 @@ class EditorialMetadataTab extends Component {
                     </Row>}
                     <Row style={{padding: '15px'}}>
                         <Col>
-                            <b>Advisory Codes: </b> {this.props.data.genres && this.props.data.genres.length > 0 ?
+                            <b>Genres: </b> {this.props.data.genres && this.props.data.genres.length > 0 ?
                             this.props.data.genres.map((code, i) => (
                                 this.props.data.genres.length === i + 1 ?
                                 <span key={i}>{code.genre}</span> : <span key={i}>{code.genre},</span>
