@@ -1,6 +1,7 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
+import moment from 'moment';
 
 import store from '../../../stores/index';
 import {blockUI} from '../../../stores/actions/index';
@@ -149,13 +150,13 @@ class RightCreate extends React.Component {
         const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
         let val = date;
         if(date && mapping.dataType === 'date') {
-            val = momentToISO(date);
+            val = momentToISO(moment(date).utcOffset(0, true));
         }
         this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
             if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
-                const errorMessage = rangeValidation(name, displayName, date, this.right);
+                const errorMessage = rangeValidation(name, displayName, val, this.right);
                 this.mappingErrorMessage[name].range = errorMessage;
                 if (this.mappingErrorMessage[groupedMappingName]) {
                     this.mappingErrorMessage[groupedMappingName].range = errorMessage;
