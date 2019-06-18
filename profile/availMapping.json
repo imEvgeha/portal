@@ -346,7 +346,7 @@
   "required": false
 }, {
   "javaVariableName": "languageAudioTypes.language",
-  "displayName": "Language Audio Type",
+  "displayName": "Audio Language",
   "dataType": "multilanguage",
   "searchDataType": "multilanguage",
   "queryParamName": "audioTypeLanguage",
@@ -602,7 +602,7 @@
   "displayName": "Cast Crew",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "castCrew",
+  "queryParamName": "displayName",
   "readOnly": false,
   "enableSearch": false,
   "enableEdit": false,
