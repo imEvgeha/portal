@@ -84,6 +84,33 @@ const prepareRight = function (right, keepNulls = false) {
     return rightCopy;
 };
 
+const parseAdvancedFilter = function (searchCriteria) {
+    const rootStore = store.getState().root;
+    const mappings = rootStore.availsMapping.mappings;
+    const params = {};
+
+    function isQuoted(value) {
+        return value[0] === '"' && value[value.length - 1] === '"';
+    }
+
+    for (let key in searchCriteria) {
+        if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+            let map = mappings.find(({queryParamName}) => queryParamName === key);
+            let value = searchCriteria[key];
+            if (map && map.searchDataType === 'string') {
+                if (isQuoted(value)) {
+                    value = value.substr(1, value.length - 2);
+                } else {
+                    key += 'Match';
+                }
+            }
+            params[key] = value;
+        }
+    }
+
+    return params;
+};
+
 export const rightsService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -95,28 +122,7 @@ export const rightsService = {
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const rootStore = store.getState().root;
-        const mappings = rootStore.availsMapping.mappings;
-        const params = {};
-
-        function isQuoted(value) {
-            return value[0] === '"' && value[value.length - 1] === '"';
-        }
-
-        for (let key in searchCriteria) {
-            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                let map = mappings.find(({queryParamName}) => queryParamName === key);
-                let value = searchCriteria[key];
-                if (map && map.searchDataType === 'string') {
-                    if (isQuoted(value)) {
-                        value = value.substr(1, value.length - 2);
-                    } else {
-                        key += 'Match';
-                    }
-                }
-                params[key] = value;
-            }
-        }
+        const params = parseAdvancedFilter(searchCriteria);
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
@@ -132,3 +138,5 @@ export const rightsService = {
         return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff, true));
     },
 };
+
+export {parseAdvancedFilter};

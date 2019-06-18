@@ -24,10 +24,6 @@ import {getDeepValue} from '../../../../util/Common';
 const colDef = [];
 let registeredOnSelect= false;
 
-/**
- * Advance Search -
- * title, studio Vod Start Date, Vod End Date
- */
 let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
@@ -217,6 +213,13 @@ class RightsResultTable extends React.Component {
                     if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName].substr(0, 10)).format('L');
                     else return undefined;
                 };
+                case 'string' : if(column.javaVariableName === 'castCrew') return function(params){
+                    if(params.data && params.data[column.javaVariableName]){
+                        let data = params.data[column.javaVariableName];
+                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
+                        return data;
+                    } else return undefined;
+                }; else return null;
                 default: return null;
             }
         };
@@ -455,7 +458,11 @@ class RightsResultTable extends React.Component {
             lockPosition: true,
             headerComponentFramework: CheckBoxHeader
         });
-        const cols = this.props.columns || this.props.columnsOrder;
+        let cols = this.props.columns || this.props.columnsOrder;
+        if(!cols){
+            cols = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
+            this.props.resultPageUpdateColumnsOrder(cols);
+        }
         if(cols){
             cols.map(acc => {
                 if(colDef.hasOwnProperty(acc)){
