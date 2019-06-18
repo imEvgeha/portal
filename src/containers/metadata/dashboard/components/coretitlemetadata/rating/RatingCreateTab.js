@@ -11,14 +11,12 @@ class RatingCreateTab extends Component {
             ratingsForCreate: {},
             rating: [],
             isRatingExist: false,
-            isRatingSystemExist: false,
-            currentRatingSystem: ''
         };
     }
 
     UNSAFE_componentWillReceiveProps() {
         this.setState({
-            rating: this.props.ratings.map(e => e.rating)
+            rating: this.props.ratings && this.props.ratings.map(e => e.rating)
         });
     }
 
@@ -31,8 +29,7 @@ class RatingCreateTab extends Component {
         };
 
         this.setState({
-            ratingsForCreate: newRating,
-            currentRatingSystem: newValue.target.value
+            ratingsForCreate: newRating
         });
 
         this.props.handleRatingCreateChange(newRating);
