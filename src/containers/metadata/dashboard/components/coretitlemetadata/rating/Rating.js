@@ -81,10 +81,11 @@ class Rating extends Component {
                                     <Row>
                                         <Col>
                                             <RatingCreateTab
+                                                handleRatingCreateChange={this.props.handleRatingCreateChange}
                                                 areRatingFieldsRequired={this.props.areRatingFieldsRequired}
                                                 handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
-                                                ratingObjectForCreate={this.props.ratingObjectForCreate}
-                                                handleChange={this.props.handleChange}
+                                                ratingObjectForCreate={this.props.ratingObjectForCreate}                                                
+                                                configRatings={this.props.configRatings}
                                                 handleRatingSystemValue={this.handleRatingSystemValue}
                                                 filteredRatings={this.state.filteredRatings}
                                                 configRatingSystem={this.props.configRatingSystem}
@@ -129,14 +130,14 @@ Rating.propTypes = {
     toggle: PropTypes.func.isRequired,
     addRating: PropTypes.func,
     createRatingTab: PropTypes.string,
-    handleChange: PropTypes.func,
     handleEditChange: PropTypes.func,
     configRatings: PropTypes.object,
     configRatingSystem: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
     handleAdvisoryCodeChange: PropTypes.func,
     ratingObjectForCreate: PropTypes.object,
-    areRatingFieldsRequired: PropTypes.bool
+    areRatingFieldsRequired: PropTypes.bool,
+    handleRatingCreateChange: PropTypes.func
 };
 
 export default connect(mapStateToProps)(Rating);

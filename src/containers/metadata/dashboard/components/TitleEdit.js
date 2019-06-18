@@ -250,45 +250,17 @@ class TitleEdit extends Component {
         });
     };
 
-    addAdvisoryCodes = (advisory) => {
-        if (advisory !== '') {
-            let advisoriesCode = [this.state.advisoryCode];
-            if (!this.state.editedForm.advisories) {
-                advisoriesCode = [this.state.advisoryCode];
-            } else {
-                advisoriesCode = [this.state.advisoryCode, ...this.state.editedForm.advisories.advisoriesCode];
-            }
-
-            let updatedAdvisory = {
-                ...this.state.editedForm.advisories,
-                advisoriesCode: advisoriesCode
-            };
-            let updateEditForm = {
-                ...this.state.editedForm,
-                advisories: updatedAdvisory
-            };
-            this.setState({
-                editedForm: updateEditForm
-            });
-        }
-    };
-
-    handleRatingChange = (e) => {
-        let newRatingToCreate = {
-            ...this.state.ratingForCreate,
-            [e.target.name]: e.target.value
-        };
+    handleRatingCreateChange = (e) => {
         this.setState({
-            ratingForCreate: newRatingToCreate
+            ratingForCreate: e
         });
-
     };
 
     handleRatingEditChange = (e, data) => {
         let newRatings = [e];
-        if(this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
+        if (this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
             let index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
-            if(index >= 0) {
+            if (index >= 0) {
                 newRatings = this.state.editedForm.ratings.slice();
                 newRatings[index] = e;
             } else {
@@ -339,10 +311,10 @@ class TitleEdit extends Component {
             addTitleRatingTab={this.addTitleRatingTab}
             areRatingFieldsRequired={this.state.areRatingFieldsRequired}
             createRatingTab={CREATE_TAB}
-            handleRatingChange={this.handleRatingChange}
             handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
             ratingObjectForCreate={this.state.ratingForCreate}
             handleRatingEditChange={this.handleRatingEditChange}
+            handleRatingCreateChange={this.handleRatingCreateChange}
 
             isCastModalOpen={this.state.isCastModalOpen}
             isCrewModalOpen={this.state.isCrewModalOpen}
@@ -384,7 +356,7 @@ class TitleEdit extends Component {
             let newAdvisoryCodes = [];
             if (this.state.ratingForCreate.advisoriesCode) {
                 for (let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
-                    newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]['name']);
+                    newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]);
                 }
             }
 
@@ -525,7 +497,7 @@ class TitleEdit extends Component {
                 estReleaseDate: this.state.territories.estReleaseDate ? moment(this.state.territories.estReleaseDate).format(DATE_FORMAT) : null,
                 parentId: this.props.match.params.id
             };
-            
+
             titleService.addTerritoryMetadata(newTerritory).then((response) => {
                 this.cleanTerritoryMetadata();
                 this.setState({
@@ -837,7 +809,6 @@ class TitleEdit extends Component {
             editedForm: updateEditForm
         });
     };
-
 
     render() {
         return (
