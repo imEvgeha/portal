@@ -91,6 +91,7 @@ class Rating extends Component {
                                                 configRatingSystem={this.props.configRatingSystem}
                                                 configAdvisoryCode={this.props.configAdvisoryCode}
                                                 advisoryCodeList={this.state.advisoryCodeList}
+                                                ratings={this.props.ratings}
                                             />
                                         </Col>
                                     </Row>
