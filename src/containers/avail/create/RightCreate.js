@@ -143,6 +143,7 @@ class RightCreate extends React.Component {
         if(setNewValue){
             let newRight = {...this.right, [name]: value};
             this.right = newRight;
+            this.setState({});
         }
     }
 
