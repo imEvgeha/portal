@@ -216,7 +216,7 @@ class EditorialMetadataEditMode extends Component {
                             <Select
                                 name={this.getNameWithPrefix('edit-genres')}
                                 value={this.state.genres.map(e => {
-                                    return {value: e.genre, label: e.genre};
+                                    return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
                                 })}
                                 onChange={e => this.handleGenre(e)}
                                 isMulti

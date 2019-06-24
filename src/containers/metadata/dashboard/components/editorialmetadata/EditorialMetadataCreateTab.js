@@ -181,7 +181,7 @@ class EditorialMetadataCreateTab extends Component {
                             <Select
                                 name={this.getNameWithPrefix('genres')}
                                 value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {
-                                    return {value: e.genre, label: e.genre};
+                                    return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
                                 }) : []}
                                 onChange={this.handleGenreChange}
                                 isMulti

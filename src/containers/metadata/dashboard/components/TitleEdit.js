@@ -578,11 +578,13 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataGenreChange = (e) => {
+        let newEditorialMetadataForCreate = {
+            ...this.state.editorialMetadataForCreate,
+            genres: e.map(i => { return { id: i.id, genre: i.genre }; })
+        };
+
         this.setState({
-            editorialMetadataForCreate: {
-                ...this.state.editorialMetadataForCreate,
-                genres: e.map(i => { return { id: i.id, genre: i.genre }; })
-            }
+            editorialMetadataForCreate: newEditorialMetadataForCreate
         });
     };
 
