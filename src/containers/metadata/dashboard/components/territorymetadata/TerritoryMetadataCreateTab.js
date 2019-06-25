@@ -10,20 +10,29 @@ const COUNTRY = 'country';
 const REGION = 'region';
 
 class TerritoryMetadataCreateTab extends Component {
+    static defaultProps = {
+        territories: {
+            territoryType: 'country'
+        }
+    }
     constructor(props) {
         super(props);
     }    
 
-    renderLocale = () => {
+    componentDidMount() {
+        this.renderLocale(COUNTRY);
+    }
+
+    renderLocale = (territoryType) => {
         let type = null;
-        if (this.props.territories.territoryType === COUNTRY) {
+        if (territoryType === COUNTRY) {
             type = configFields.LOCALE;
-        } else if (this.props.territories.territoryType === REGION) {
+        } else if (territoryType === REGION) {
             type = configFields.REGIONS;
         } else {
             type = null;
         }
-        const locale = this.props.configLocale && this.props.configLocale.find(e => e.key === type);
+        let locale = this.props.configLocale && this.props.configLocale.find(e => e.key === type);
         return (
             <AvField type="select"
                 name="locale"
@@ -35,7 +44,9 @@ class TerritoryMetadataCreateTab extends Component {
                 <option value={''}>Select {formatTypeFirstLetter(this.props.territories.territoryType)}</option>
                 {
                     locale && locale.value.map((e, index) => {
-                        return <option key={index} value={this.props.territories.territoryType === COUNTRY ? e.countryCode : e.regionCode}>{this.props.territories.territoryType === 'country' ? e.countryName : e.regionName}</option>;
+                        if(e.countryName !== null) {
+                            return <option key={index} value={this.props.territories.territoryType === COUNTRY ? e.countryCode : e.regionCode}>{this.props.territories.territoryType === 'country' ? e.countryName : e.regionName}</option>;
+                        }
                     })
                 }
             </AvField>
@@ -65,7 +76,7 @@ class TerritoryMetadataCreateTab extends Component {
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             {
-                                this.renderLocale()
+                                this.renderLocale(this.props.territories.territoryType)
                             }
                         </Col>
                         <Col>
