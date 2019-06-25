@@ -10,29 +10,20 @@ const COUNTRY = 'country';
 const REGION = 'region';
 
 class TerritoryMetadataCreateTab extends Component {
-    static defaultProps = {
-        territories: {
-            territoryType: 'country'
-        }
-    }
     constructor(props) {
         super(props);
     }    
 
-    componentDidMount() {
-        this.renderLocale(COUNTRY);
-    }
-
-    renderLocale = (territoryType) => {
+    renderLocale = () => {
         let type = null;
-        if (territoryType === COUNTRY) {
+        if (this.props.territories.territoryType === COUNTRY) {
             type = configFields.LOCALE;
-        } else if (territoryType === REGION) {
+        } else if (this.props.territories.territoryType === REGION) {
             type = configFields.REGIONS;
         } else {
             type = null;
         }
-        let locale = this.props.configLocale && this.props.configLocale.find(e => e.key === type);
+        const locale = this.props.configLocale && this.props.configLocale.find(e => e.key === type);
         return (
             <AvField type="select"
                 name="locale"
@@ -76,7 +67,7 @@ class TerritoryMetadataCreateTab extends Component {
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             {
-                                this.renderLocale(this.props.territories.territoryType)
+                                this.renderLocale()
                             }
                         </Col>
                         <Col>
