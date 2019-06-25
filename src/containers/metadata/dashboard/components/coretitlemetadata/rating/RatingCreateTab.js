@@ -149,7 +149,7 @@ class RatingCreateTab extends Component {
 
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <b>Advisories</b>
+                            <b>Advisories<span style={{ color: 'red' }}>*</span></b>
                             <AvField
                                 type="text"
                                 value={advisoriesFreeText ? advisoriesFreeText : ''}
