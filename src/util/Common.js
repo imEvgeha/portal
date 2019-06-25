@@ -28,6 +28,18 @@ function safeTrim(value){
     }
 }
 
+function equalOrIncluded(term, container){
+    let match = term === container;
+    if(!match && container[0] === '[' && container[container.length-1] === ']') {
+        //if container is array
+        let terms = container.substr(1, container.length -2);
+        terms = terms.split(',').map((val) => val.trim());
+        match = terms.includes(term);
+    }
+
+    return match;
+}
+
 function momentToISO(date) {
     return moment(date).toISOString();
 }
@@ -185,4 +197,4 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, URL, IfEmbedded};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, equalOrIncluded, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, URL, IfEmbedded};
