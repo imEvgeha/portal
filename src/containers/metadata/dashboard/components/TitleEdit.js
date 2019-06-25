@@ -383,10 +383,11 @@ class TitleEdit extends Component {
 
             this.formatRating(newAdditionalFields);
 
-            titleService.updateTitle(newAdditionalFields).then(() => {
+            titleService.updateTitle(newAdditionalFields).then((response) => {
                 this.setState({
                     isLoading: false,
-                    titleForm: this.state.editedForm,
+                    titleForm: response.data,
+                    editedForm: response.data,
                     isEditMode: !this.state.isEditMode,
                     territoryMetadataActiveTab: CURRENT_TAB,
                     editorialMetadataActiveTab: CURRENT_TAB,
