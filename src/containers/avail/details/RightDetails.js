@@ -20,7 +20,7 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {getDeepValue, safeTrim} from '../../../util/Common';
+import {equalOrIncluded, getDeepValue, safeTrim} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
@@ -685,7 +685,7 @@ class RightDetails extends React.Component {
                     let error = null;
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if (e.fieldName === mapping.javaVariableName) {
+                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
