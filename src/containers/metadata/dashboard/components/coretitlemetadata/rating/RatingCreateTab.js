@@ -42,7 +42,7 @@ class RatingCreateTab extends Component {
             rating: newValue.target.value
         };
 
-        if (this.state.rating.includes(newValue.target.value)) {
+        if (this.state.rating && this.state.rating.includes(newValue.target.value)) {
             this.setState({
                 isRatingExist: true
             });
