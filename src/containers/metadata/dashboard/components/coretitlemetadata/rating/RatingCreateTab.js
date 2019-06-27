@@ -127,7 +127,7 @@ class RatingCreateTab extends Component {
                                     })
                                 }
                             </AvField>
-                            {this.state.isRatingExist && (<AvField type="text" name="validation" validate={{ required: { value: this.state.isRatingExist, errorMessage: 'Rating is already exists!' } }} hidden />)}
+                            {this.state.isRatingExist && (<AvField type="text" name="validation" validate={{ required: { value: this.state.isRatingExist, errorMessage: 'Rating already exists!' } }} hidden />)}
                         </Col>
                         <Col md={6}>
                             <b>Advisory Codes</b>

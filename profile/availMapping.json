@@ -1461,5 +1461,15 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": false
+}, {
+  "javaVariableName": "masterSheetCreateDate",
+  "displayName": "Master Sheet Create Date",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "masterSheetCreateDate",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
 }
 ]}

@@ -19,7 +19,7 @@ import './RightsResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
 import {rightServiceManager} from '../../service/RightServiceManager';
-import {getDeepValue} from '../../../../util/Common';
+import {getDeepValue, equalOrIncluded} from '../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -477,7 +477,7 @@ class RightsResultTable extends React.Component {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
-                if(e.fieldName === params.colDef.field){
+                if(equalOrIncluded(params.colDef.field, e.fieldName)){
                     error = e.message;
                     if(e.sourceDetails){
                         if(e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -541,7 +541,7 @@ class RightsResultTable extends React.Component {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
-             if(e.fieldName === params.colDef.field){
+             if(equalOrIncluded(params.colDef.field, e.fieldName)){
                  error = e;
              }
             });
