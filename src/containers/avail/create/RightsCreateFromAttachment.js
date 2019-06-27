@@ -131,30 +131,35 @@ class RightsCreateFromAttachment extends React.Component {
         let counter = 0;
         let attsPDF = [];
         let attsExcel = [];
+        let attsEmail = [];
         let firstName = '';
-        const attToLink = (attachment) => {
+        const attToLink = (attachment, icon) => {
             let filename = 'Unknown';
             if(attachment.link) {
                 filename = attachment.link.split(/(\\|\/)/g).pop();
             }
             if(!firstName) firstName = filename;
 
-            return (
-                <div key={counter++} style={{display:'inline-block'}}><a href="#" className={'text-danger'} onClick = {() => this.getDownloadLink(attachment)}>{filename}</a>&nbsp;&nbsp;&nbsp;</div>
-                // <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
-            );
+            if(icon){
+                return <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={icon}></i></a></div>;
+            }else{
+                return <div key={counter++} style={{display:'inline-block'}}><a href="#" className={'text-danger'} onClick = {() => this.getDownloadLink(attachment)}>{filename}</a>&nbsp;&nbsp;&nbsp;</div>;
+            }
         };
+
         if(this.state.historyData && this.state.historyData.attachments){
             attsPDF = this.state.historyData.attachments.filter(({attachmentType}) => attachmentType === 'PDF').map(attToLink).filter( elem=> {return elem !== '';});
             attsExcel = this.state.historyData.attachments.filter(({attachmentType}) => attachmentType === 'Excel').map(attToLink).filter( elem=> {return elem !== '';});
+            attsEmail = this.state.historyData.attachments.filter(({attachmentType}) => attachmentType === 'Email').map((att) => attToLink(att, 'far fa-envelope')).filter( elem=> {return elem !== '';});
         }
+
 
         return(
             <div className={'mx-2'}>
                 <div className={'d-flex justify-content-between'}>
                     <div>
                         <div><h3>Create Rights from PDF </h3></div>
-                        <div> Studio: {this.state.historyData.provider} </div>
+                        <div> Studio: {this.state.historyData.provider} &nbsp;{attsEmail} </div>
                         <div> PDF Attachments: &nbsp;{attsPDF} </div>
                         <div> Upload Attachments: &nbsp;{attsExcel} </div>
                         <Button className={'align-bottom mt-5'} id="right-create" onClick={this.createRight}>Create Right</Button>
