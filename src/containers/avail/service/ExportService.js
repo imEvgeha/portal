@@ -1,6 +1,7 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import {parseAdvancedFilter} from './RightsService';
+import {prepareSortMatrixParam} from '../../../util/Common';
 
 const http = Http.create();
 
@@ -31,12 +32,12 @@ const languagehack  = (cols) => {
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
         http.defaults.timeout = config.get('avails.export.http.timeout');
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/export', {columnNames: languagehack(columns), rightIds: rightsIDs}, {responseType: 'arraybuffer'});
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export', {columnNames: languagehack(columns), rightIds: rightsIDs}, {responseType: 'arraybuffer'});
     },
 
-    bulkExportAvails: (searchCriteria, columns) => {
+    bulkExportAvails: (searchCriteria, columns, sortedParams) => {
         const params = parseAdvancedFilter(searchCriteria);
         http.defaults.timeout = config.get('avails.export.http.timeout');
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/export/bulk', {columnNames: languagehack(columns)}, {responseType: 'arraybuffer', params: {...params, page: 0, size: 1}});
+        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export/bulk' + prepareSortMatrixParam(sortedParams), {columnNames: languagehack(columns)}, {responseType: 'arraybuffer', params: {...params, page: 0, size: 1}});
     }
 };
