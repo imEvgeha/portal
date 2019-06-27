@@ -14,11 +14,15 @@ const mapStateToProps = state => {
     };
 };
 
+const BBFC_UK = 'BBFC (UK)';
+const MIDDLE_EAST = 'Middle East (Vu standard)';
+
 class RatingEditTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updatedRating: {}
+            updatedRating: {},
+            isAdvisoryRequired: false,
         };
     }
 
@@ -26,12 +30,24 @@ class RatingEditTab extends Component {
         let newRating = {
             ...this.state.updatedRating,
             ratingSystem: newValue.target.value,
-            rating: null
+            rating: null,
+            advisoriesCode: null
         };
 
-        this.setState({
-            updatedRating: newRating
+        this.setState({            
+            updatedRating: newRating,
         });
+
+        if(newValue.target.value !== BBFC_UK && newValue.target.value !== MIDDLE_EAST) {
+            this.setState({
+                isAdvisoryRequired: false
+            });
+        } 
+        else {
+            this.setState({
+                isAdvisoryRequired: true
+            });
+        }
 
         this.props.handleEditChange(newRating, this.props.data);
     };
@@ -144,7 +160,7 @@ class RatingEditTab extends Component {
 
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <b>Advisories</b>
+                            <b>Advisories{this.state.isAdvisoryRequired ? <span style={{ color: 'red' }}>*</span> : null}</b>
                             <AvField type="text"
                                      id="titleAdvisories"
                                      placeholder="Enter Advisories"
