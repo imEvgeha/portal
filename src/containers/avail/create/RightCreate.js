@@ -466,7 +466,7 @@ class RightCreate extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
                             type="text"
-                            validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                            validate={{pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
                             errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
                         />
                     </AvForm>
