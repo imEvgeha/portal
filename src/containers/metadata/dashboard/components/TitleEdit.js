@@ -126,6 +126,7 @@ class TitleEdit extends Component {
     loadTerritoryMetadata(titleId) {
         titleService.getTerritoryMetadataById(titleId).then((response) => {
             const territoryMetadata = response.data;
+            console.log('load territoryMetadata', territoryMetadata)
             this.setState({
                 territory: territoryMetadata
             });
@@ -137,6 +138,7 @@ class TitleEdit extends Component {
     loadEditorialMetadata(titleId) {
         titleService.getEditorialMetadataById(titleId).then((response) => {
             const editorialMetadata = response.data;
+            console.log('load editorialMetadata', editorialMetadata)
             this.setState({
                 editorialMetadata: editorialMetadata
             });
@@ -477,6 +479,7 @@ class TitleEdit extends Component {
                 let list = [].concat(this.state.territory);
                 let foundIndex = list.findIndex(x => x.id === response.data.id);
                 list[foundIndex] = response.data;
+                console.log('list territory', list)
                 this.setState({
                     territory: list
                 });
@@ -501,6 +504,7 @@ class TitleEdit extends Component {
 
             titleService.addTerritoryMetadata(newTerritory).then((response) => {
                 this.cleanTerritoryMetadata();
+                console.log('handleTerritoryMetadataOnSave create', [response.data, ...this.state.territory])
                 this.setState({
                     territory: [response.data, ...this.state.territory],
                     territoryMetadataActiveTab: CURRENT_TAB,
@@ -650,6 +654,7 @@ class TitleEdit extends Component {
                 let list = [].concat(this.state.editorialMetadata);
                 let foundIndex = list.findIndex(x => x.id === response.data.id);
                 list[foundIndex] = response.data;
+                console.log('list editorial', list)
                 this.setState({
                     editorialMetadata: list
                 });
@@ -666,6 +671,7 @@ class TitleEdit extends Component {
             newEditorialMetadata.parentId = this.props.match.params.id;
             titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
                 this.cleanEditorialMetadata();
+                console.log('handleEditorialMetadataOnSave create', [response.data, ...this.state.editorialMetadata])
                 this.setState({
                     editorialMetadata: [response.data, ...this.state.editorialMetadata],
                     editorialMetadataActiveTab: CURRENT_TAB
@@ -814,6 +820,9 @@ class TitleEdit extends Component {
     };
 
     render() {
+        console.log('TitleEdit render editorial', this.state.editorialMetadata)
+        console.log('TitleEdit render territory', this.state.territory)
+
         return (
             <EditPage>
 

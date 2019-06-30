@@ -39,6 +39,7 @@ class EditorialMetadata extends Component {
     }
 
     render() {
+        console.log('EditorialMetadata render', this.props.editorialMetadata)
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
 

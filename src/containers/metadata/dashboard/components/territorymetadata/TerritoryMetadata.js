@@ -21,6 +21,7 @@ class TerritoryMetadata extends Component {
         });
     }
     render() {
+        console.log('TerritoryMetadata render', this.props.territory)
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
 
