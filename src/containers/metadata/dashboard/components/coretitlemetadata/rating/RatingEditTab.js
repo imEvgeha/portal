@@ -103,9 +103,7 @@ class RatingEditTab extends Component {
             ratingSystem,
             rating,
             advisoriesFreeText,
-        } = this.state.updatedRating;
-
-        console.log(this.props.data)
+        } = this.state.updatedRating;  
         return (
             <div id="ratingCreate">
                 <Fragment>
