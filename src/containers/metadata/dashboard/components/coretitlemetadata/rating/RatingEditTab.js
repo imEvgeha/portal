@@ -5,6 +5,7 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import { configFields } from '../../../../service/ConfigService';
 import { connect } from 'react-redux';
+import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
 const mapStateToProps = state => {
     return {
@@ -13,9 +14,6 @@ const mapStateToProps = state => {
         configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
     };
 };
-
-const BBFC_UK = 'BBFC (UK)';
-const MIDDLE_EAST = 'Middle East (Vu standard)';
 
 class RatingEditTab extends Component {
     constructor(props) {

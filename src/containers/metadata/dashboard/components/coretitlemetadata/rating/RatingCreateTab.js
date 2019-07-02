@@ -3,10 +3,7 @@ import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
-
-
-const BBFC_UK = 'BBFC (UK)';
-const MIDDLE_EAST = 'Middle East (Vu standard)';
+import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
 class RatingCreateTab extends Component {
     constructor(props) {
