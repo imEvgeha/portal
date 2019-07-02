@@ -3,6 +3,7 @@ import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
+import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
 class RatingCreateTab extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class RatingCreateTab extends Component {
             ratingsForCreate: {},
             rating: [],
             isRatingExist: false,
+            isAdvisoryRequired: false,
         };
     }
 
@@ -27,11 +29,22 @@ class RatingCreateTab extends Component {
             rating: null,
             advisoriesCode: null
         };
-
-        this.setState({
-            ratingsForCreate: newRating
+        
+        this.setState({            
+            ratingsForCreate: newRating,
         });
-
+        
+        if(newValue.target.value !== BBFC_UK && newValue.target.value !== MIDDLE_EAST) {
+            this.setState({
+                isAdvisoryRequired: false
+            });
+        } 
+        else {
+            this.setState({
+                isAdvisoryRequired: true
+            });
+        }
+    
         this.props.handleRatingCreateChange(newRating);
     };
 
@@ -149,14 +162,14 @@ class RatingCreateTab extends Component {
 
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <b>Advisories<span style={{ color: 'red' }}>*</span></b>
+                            <b>Advisories{this.state.isAdvisoryRequired ? <span style={{ color: 'red' }}>*</span> : null}</b>
                             <AvField
                                 type="text"
                                 value={advisoriesFreeText ? advisoriesFreeText : ''}
                                 placeholder="Enter Advisories"
                                 id="tittleAdvisories"
                                 name="advisoriesFreeText"
-                                required={this.props.areRatingFieldsRequired}
+                                required={this.state.isAdvisoryRequired}
                                 onChange={(e) => this.handleAdvisoriesChange(e)}
                                 errorMessage="Field cannot be empty!" />
                         </Col>
