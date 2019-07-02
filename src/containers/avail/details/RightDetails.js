@@ -417,7 +417,7 @@ class RightDetails extends React.Component {
         };
 
         const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
         };
 
         const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
