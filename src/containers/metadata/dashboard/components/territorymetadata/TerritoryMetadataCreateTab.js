@@ -35,7 +35,9 @@ class TerritoryMetadataCreateTab extends Component {
                 <option value={''}>Select {formatTypeFirstLetter(this.props.territories.territoryType)}</option>
                 {
                     locale && locale.value.map((e, index) => {
-                        return <option key={index} value={this.props.territories.territoryType === COUNTRY ? e.countryCode : e.regionCode}>{this.props.territories.territoryType === 'country' ? e.countryName : e.regionName}</option>;
+                        if(e.countryName !== null) {
+                            return <option key={index} value={this.props.territories.territoryType === COUNTRY ? e.countryCode : e.regionCode}>{this.props.territories.territoryType === 'country' ? e.countryName : e.regionName}</option>;
+                        }
                     })
                 }
             </AvField>
