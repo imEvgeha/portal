@@ -107,7 +107,10 @@ class RightDetails extends React.Component {
 
     handleSubmit(editable) {
         const name = editable.props.title;
-        const value = safeTrim(editable.value);
+        let value = safeTrim(editable.value);
+        if(value === ''){
+            value = null;
+        }
 
         this.update(name, value, () => {
             editable.setState({rightLastEditSucceed: false});
