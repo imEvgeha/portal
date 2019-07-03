@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Col, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import '../territorymetadata/MetadataTerritoryTab.scss';
+import {EPISODE, SEASON} from '../../../../../constants/metadata/contentType';
 
 class EditorialMetadataTab extends Component {
 
@@ -20,11 +21,11 @@ class EditorialMetadataTab extends Component {
                         <Col md={3}><b>Service: </b> {this.props.data.service ? this.props.data.service : this.emptySpan()}</Col>
                     </Row>
 
-                    {(this.props.titleContentType === 'EPISODE' || this.props.titleContentType === 'SEASON') &&
+                    {(this.props.titleContentType === EPISODE.apiName || this.props.titleContentType === SEASON.apiName) &&
                     <Row style={{padding: '15px'}}>
                         <Col md={3}><b>Series Name: </b> {this.props.data.seriesName ? this.props.data.seriesName : this.emptySpan()}</Col>
                         <Col md={3}><b>Season Number: </b> {this.props.data.seasonNumber ? this.props.data.seasonNumber : this.emptySpan()}</Col>
-                        {this.props.titleContentType === 'EPISODE' &&
+                        {this.props.titleContentType === EPISODE.apiName &&
                         <Col md={3}><b>Episode Number: </b> {this.props.data.episodeNumber ? this.props.data.episodeNumber : this.emptySpan()}</Col>
                         }
                     </Row>}

@@ -15,11 +15,13 @@ class TerritoryMetadata extends Component {
             tooltipOpen: false
         };
     }
+    
     toggle = () => {
         this.setState({
             tooltipOpen: !this.state.tooltipOpen
         });
-    }
+    };
+
     render() {
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
