@@ -4,9 +4,7 @@ import { AvField, AvForm } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { formatTypeFirstLetter } from '../.././../../../constants/metadata/format';
-
-
-const DATE_FORMAT = 'YYYY-MM-DD';
+import { DATE_FORMAT } from '../../../../../constants/metadata/constant-variables';
 
 class TerritoryMetadataEditMode extends Component {
 
