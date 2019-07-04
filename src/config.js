@@ -1,7 +1,7 @@
 export const defaultConfiguration = {
     gateway: {
         url: 'https://availsapi.dev.vubiquity.com',
-        titleUrl: 'http://localhost:8082',
+        titleUrl: 'https://titlesapi.dev.vubiquity.com',
         configuration: 'https://configapi.dev.vubiquity.com',
         assetManagementURL: 'https://asset-management-api.dev.vubiquity.com',
         service: {
