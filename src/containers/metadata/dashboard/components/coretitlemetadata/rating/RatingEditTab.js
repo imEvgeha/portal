@@ -96,6 +96,10 @@ class RatingEditTab extends Component {
         });
     }
 
+    handleFieldLength = (name) => {
+        return name ? name.length : 0;
+    }
+
     render() {
         const {
             ratingSystem,
@@ -166,8 +170,12 @@ class RatingEditTab extends Component {
                                 name="advisories"
                                 onChange={(e) => this.handleAdvisoriesChange(e)}
                                 required={this.state.isAdvisoryRequired}
+                                errorMessage="Field cannot be empty!" 
                                 value={advisoriesFreeText ? advisoriesFreeText : ''}
-                                errorMessage="Please enter a valid advisories!" />
+                                validate={{
+                                    maxLength: { value: 500, errorMessage: 'Too long Advisories. Max 500 symbols.' }
+                                }} />
+                                <span style={{float:'right', color: advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText)  : 0}/500 char</span>
                         </Col>
                     </Row>
                 </Fragment>
