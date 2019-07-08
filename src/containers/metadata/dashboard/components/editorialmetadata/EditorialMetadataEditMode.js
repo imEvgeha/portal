@@ -344,7 +344,7 @@ class EditorialMetadataEditMode extends Component {
                                     maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 500 symbols.' }
                                 }}
                                 value={synopsis.longDescription}/>
-                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/1000 char</span>
+                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 100 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/1000 char</span>
                         </Col>
                     </Row>
 
