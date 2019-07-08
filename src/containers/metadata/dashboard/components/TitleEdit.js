@@ -22,7 +22,7 @@ import {
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
 import { configService } from '../../service/ConfigService';
-import {COUNTRY} from '../../../../constants/metadata/territoryMetadataType';
+import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
