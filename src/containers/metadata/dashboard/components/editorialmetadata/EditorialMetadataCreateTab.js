@@ -300,7 +300,7 @@ class EditorialMetadataCreateTab extends Component {
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
-                                    maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 1000 symbols.' }
                                 }} />                                
                             <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/1000 char</span>
                         </Col>
