@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { configFields } from '../../../service/ConfigService';
 import { formatTypeFirstLetter } from '../../../../../constants/metadata/format';
+import { COUNTRY, REGION } from '../../../../../constants/metadata/constant-variables';
 
-const COUNTRY = 'country';
-const REGION = 'region';
 
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
