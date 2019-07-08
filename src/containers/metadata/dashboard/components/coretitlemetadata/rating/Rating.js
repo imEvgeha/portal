@@ -43,9 +43,9 @@ class Rating extends Component {
     render() {
         return (
             <Container fluid id="ratingContainer" style={{ marginTop: '30px' }}>
-                {this.props.ratings && this.props.ratings.length > 0 || this.props.isEditMode ?                   
-                        <h4>Ratings</h4>
-                        : null
+                {this.props.ratings && this.props.ratings.length > 0 || this.props.isEditMode ?
+                    <h4>Ratings</h4>
+                    : null
                 }
                 <div className='tab'>
                     {
@@ -88,7 +88,7 @@ class Rating extends Component {
                                                 handleRatingCreateChange={this.props.handleRatingCreateChange}
                                                 areRatingFieldsRequired={this.props.areRatingFieldsRequired}
                                                 handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
-                                                ratingObjectForCreate={this.props.ratingObjectForCreate}                                                
+                                                ratingObjectForCreate={this.props.ratingObjectForCreate}
                                                 configRatings={this.props.configRatings}
                                                 handleRatingSystemValue={this.handleRatingSystemValue}
                                                 filteredRatings={this.state.filteredRatings}

@@ -8,6 +8,7 @@ import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metad
 import {configFields} from '../../../service/ConfigService';
 import {connect} from 'react-redux';
 import Select from 'react-select';
+import {EVENT, SEASON} from '../../../../../constants/metadata/contentType';
 
 const mapStateToProps = state => {
     return {
@@ -133,7 +134,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>
                     </Row>
 
-                    {(this.props.titleContentType === 'EPISODE' || this.props.titleContentType === 'SEASON') &&
+                    {(this.props.titleContentType === EVENT.apiName || this.props.titleContentType === SEASON.apiName) &&
                         <Row style={{ padding: '15px' }}>
                             <Col md={2}>
                                 <b>Series Name</b>
@@ -157,11 +158,11 @@ class EditorialMetadataCreateTab extends Component {
                                         maxLength: { value: 3, errorMessage: 'Max 3 digits' }
                                     }} />
                             </Col>
-                            {this.props.titleContentType === 'EPISODE' &&
+                            {this.props.titleContentType === EVENT.apiName &&
                                 <Col md={2}>
                                     <b>Episode Number</b>
                                 </Col>}
-                            {this.props.titleContentType === 'EPISODE' &&
+                            {this.props.titleContentType === EVENT.apiName &&
                                 <Col>
                                     <AvField type="number" id="editorialEpisodeNumber" name={this.getNameWithPrefix('episodeNumber')}
                                         onChange={this.props.handleChange}
