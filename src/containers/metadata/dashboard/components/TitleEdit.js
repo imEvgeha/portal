@@ -22,6 +22,7 @@ import {
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
 import { configService } from '../../service/ConfigService';
+import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -454,9 +455,12 @@ class TitleEdit extends Component {
     };
 
     addTerritoryMetadata = (tab) => {
+        //Default value for TerritoryType. COUNTRY
+        let newTerritory = {...this.state.territories, territoryType: COUNTRY};
         this.setState({
             territoryMetadataActiveTab: tab,
-            areTerritoryMetadataFieldsRequired: true
+            areTerritoryMetadataFieldsRequired: true,
+            territories: newTerritory
         });
     };
 
