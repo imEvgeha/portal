@@ -85,7 +85,7 @@ class TerritoryMetadata extends Component {
                                     <TabPane key={i} tabId={i}>
                                         <Row>
                                             <Col>
-                                                <TerritoryMetadataTab key={i} data={item} />
+                                                <TerritoryMetadataTab getLanguageByCode={this.getLanguageByCode} key={i} data={item} />
                                             </Col>
                                         </Row>
                                     </TabPane>);
