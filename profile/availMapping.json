@@ -1422,56 +1422,6 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "createdAt",
-  "displayName": "Created At",
-  "dataType": "localdate",
-  "searchDataType": "localdate",
-  "queryParamName": "createdAt",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
-}, {
-  "javaVariableName": "updatedAt",
-  "displayName": "Updated At",
-  "dataType": "localdate",
-  "searchDataType": "localdate",
-  "queryParamName": "updatedAt",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
-}, {
-  "javaVariableName": "createdBy",
-  "displayName": "Created By",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "createdBy",
-  "readOnly": true,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "updatedBy",
-  "displayName": "Updated By",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "updatedBy",
-  "readOnly": true,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "masterSheetCreateDate",
-  "displayName": "Master Sheet Create Date",
-  "dataType": "date",
-  "searchDataType": "date",
-  "queryParamName": "masterSheetCreateDate",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
   "javaVariableName": "originalRightId",
   "displayName": "Original Right Id",
   "dataType": "string",
@@ -1557,6 +1507,56 @@
   "dataType": "localdate",
   "searchDataType": "localdate",
   "queryParamName": "lastUpdateReceivedAt",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "createdAt",
+  "displayName": "Created At",
+  "dataType": "localdate",
+  "searchDataType": "localdate",
+  "queryParamName": "createdAt",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "updatedAt",
+  "displayName": "Updated At",
+  "dataType": "localdate",
+  "searchDataType": "localdate",
+  "queryParamName": "updatedAt",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": true
+}, {
+  "javaVariableName": "createdBy",
+  "displayName": "Created By",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "createdBy",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "updatedBy",
+  "displayName": "Updated By",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "updatedBy",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
+  "javaVariableName": "masterSheetCreateDate",
+  "displayName": "Master Sheet Create Date",
+  "dataType": "date",
+  "searchDataType": "date",
+  "queryParamName": "masterSheetCreateDate",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
