@@ -213,7 +213,8 @@ class RightCreate extends React.Component {
 
     validateField(name, value) {
         const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
-        if(map && map.required) {
+        const isOriginRightIdRequired = name === 'originalRightId' && this.right.temporaryPriceReduction === true && this.right.status && this.right.status.value === 'Ready';
+        if(map && (map.required || isOriginRightIdRequired)) {
             if(Array.isArray(value)){
                 return value.length === 0 ? 'Field can not be empty' : '';
             }
