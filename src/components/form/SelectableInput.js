@@ -257,14 +257,10 @@ class SelectableInput extends Component {
             />);
         };
 
-        const renderSelect = (name, displayName, type) => {
+        const renderSelect = (name, displayName) => {
             let options = [];
             if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.field]){
                 options  = this.props.selectValues[this.props.selected.field];
-            }
-
-            if(type === 'multilanguage'){
-                options = ISO6391.getAllCodes().map(code => {return {value:code, label:ISO6391.getName(code)};});
             }
 
             let filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
@@ -331,8 +327,7 @@ class SelectableInput extends Component {
                 case 'integer' : return renderIntegerField(selected, displayName);
                 case 'year' : return renderYearField(selected, displayName);
                 case 'double' : return renderDoubleField(selected, displayName);
-                case 'multiselect' : return renderSelect(selected, displayName, this.props.dataType);
-                case 'multilanguage' : return renderSelect(selected, displayName, this.props.dataType);
+                case 'multiselect' : return renderSelect(selected, displayName);
                 case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
                 case 'date' : return renderRangeDatepicker(selected, displayName);
