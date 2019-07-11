@@ -115,7 +115,7 @@ class TerritoryMetadata extends Component {
                                             <TabPane key={i} tabId={i}>
                                                 <Row>
                                                     <Col>
-                                                        <TerritoryMetadataEditMode validSubmit={this.props.validSubmit} handleChange={this.props.handleEditChange} key={i} data={item} />
+                                                        <TerritoryMetadataEditMode getLanguageByCode={this.getLanguageByCode} validSubmit={this.props.validSubmit} handleChange={this.props.handleEditChange} key={i} data={item} />
                                                     </Col>
                                                 </Row>
                                             </TabPane>);
