@@ -68,11 +68,13 @@ class NavbarConnect extends React.Component {
                                 </span>
                             </li>
                         </Can>
-                        <li className="">
-                            <span className="nav-link" href="#" >
-                                <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
-                            </span>
-                        </li>
+                        <Can I="read" a="Metadata">
+                            <li className="">
+                                <span className="nav-link" href="#" >
+                                    <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
+                                </span>
+                            </li>
+                        </Can>
                         <Can I="read" a="AssetManagement">
                             <li className="nav-item">
                                 <span className="nav-link" href="#" >
