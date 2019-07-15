@@ -8,6 +8,8 @@ const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
 const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId'];
+const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes', 'territory'];
+
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -41,7 +43,7 @@ const populate = function(key, value, location){
     if(dotPos > 0) {
         const firstKey = key.split('.')[0];
         const restKey = key.substring(dotPos+1);
-        if(firstKey === 'languageAudioTypes') {
+        if(MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS.includes(firstKey)) {
             if (!location[firstKey])
                 location[firstKey] = [];
             const container = location[firstKey];
