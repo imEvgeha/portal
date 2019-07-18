@@ -194,7 +194,8 @@ class RightDetails extends React.Component {
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === field) {
-                if(mapping.required) return this.validateNotEmpty(value);
+                const isOriginRightIdRequired = field === 'originalRightId' && this.state.right.temporaryPriceReduction === true && this.state.right.status === 'Ready';
+                if(mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
             }
         }
         return '';
