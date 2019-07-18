@@ -32,17 +32,6 @@
   "enableEdit": true,
   "required": true
 }, {
-  "javaVariableName": "rightContractStatus",
-  "displayName": "Right Contract Status",
-  "dataType": "select",
-  "searchDataType": "multiselect",
-  "options": ["Pending", "Matched", "ManualOverride"],
-  "queryParamName": "rightContractStatus",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": true
-}, {
   "javaVariableName": "status",
   "displayName": "Status",
   "dataType": "select",
@@ -76,7 +65,7 @@
   "enableEdit": true,
   "required": true
 }, {
-  "javaVariableName": "territory",
+  "javaVariableName": "territory.country",
   "displayName": "Territory",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
@@ -185,16 +174,6 @@
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "contractId",
-  "readOnly": false,
-  "enableSearch": true,
-  "enableEdit": true,
-  "required": false
-}, {
-  "javaVariableName": "vuContractId",
-  "displayName": "VU Contract Id",
-  "dataType": "string",
-  "searchDataType": "string",
-  "queryParamName": "vuContractId",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
