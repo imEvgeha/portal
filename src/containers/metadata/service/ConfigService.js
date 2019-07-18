@@ -24,8 +24,7 @@ const getConfigValues = (field, page, size, sortBy) => {
 
 export const searchPerson = (inputValue, size) => {
     let sortPath = ';'+ 'displayName' +'=ASC';
-    let path = `/configuration-api/v1/persons${sortPath}?displayName="${inputValue}"&page=0&size=${size}`;
-    console.log(path)
+    let path = `/configuration-api/v1/persons${sortPath}?displayNameMatch=${inputValue}&page=0&size=${size}`;
     return http.get(config.get('gateway.configuration') + path);
 };
 

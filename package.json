@@ -10,6 +10,7 @@
     "build:prod": "webpack --env prod --mode production && docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {
+    "@atlaskit/form": "^6.1.4",
     "@atlaskit/select": "^10.0.0",
     "@atlaskit/theme": "^9.1.1",
     "@babel/polyfill": "^7.4.4",

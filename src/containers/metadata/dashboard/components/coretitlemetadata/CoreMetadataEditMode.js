@@ -97,19 +97,23 @@ class CoreMetadataEditMode extends Component {
                   id='listContainer'
                 >
                   {this.props.editedTitle.castCrew &&
-                    getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => (
-                      <ListGroupItem key={i}>
-                        {cast.displayName}
-                        <FontAwesome
-                          className='float-right'
-                          name='times-circle'
-                          style={{ marginTop: '5px', cursor: 'pointer' }}
-                          color='#111'
-                          size='lg'
-                          onClick={() => this.props.removeCastCrew(cast)}
-                        />
-                      </ListGroupItem>
-                    ))}
+                    getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => {
+                      return (
+                        <React.Fragment key={i}>
+                          <ListGroupItem key={i}>
+                            {cast.displayName}
+                            <FontAwesome
+                              className='float-right'
+                              name='times-circle'
+                              style={{ marginTop: '5px', cursor: 'pointer' }}
+                              color='#111'
+                              size='lg'
+                              onClick={() => this.props.removeCastCrew(cast)}
+                            />
+                          </ListGroupItem>
+                        </React.Fragment>
+                      );
+                    })}
                 </ListGroup>
               </CardBody>
             </Card>

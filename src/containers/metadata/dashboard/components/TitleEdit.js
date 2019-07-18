@@ -808,8 +808,8 @@ class TitleEdit extends Component {
     };
 
     removeCastCrew = removeCastCrew => {
-        let cast = this.state.editedForm.castCrew.filter(cast => {
-            return JSON.stringify(cast) !== JSON.stringify(removeCastCrew);
+        let cast = this.state.editedForm.castCrew.filter(cast => {            
+            return cast.id !== removeCastCrew.id;
         });
         let updateEditForm = {
             ...this.state.editedForm,

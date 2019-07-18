@@ -10,6 +10,21 @@
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
 
+"@atlaskit/form@^6.1.4":
+  version "6.1.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-6.1.4.tgz#85f0ba9d25500015308de177f42480723067a8fe"
+  integrity sha512-uE6LHbgNrn5ZitbIEeSZOKnxacB0ftWOpBdUU7iJkE3suaJfyFZkWG8xWr9xcQ1y9/pzdLQ3Bd/+qsuDNlaWwQ==
+  dependencies:
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    final-form "^4.13.0"
+    final-form-focus "^1.1.0"
+    memoize-one "^3.0.1"
+    react-uid "^2.2.0"
+    shallow-equal "^1.0.0"
+    tiny-invariant "^0.0.3"
+
 "@atlaskit/icon@^19.0.0":
   version "19.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-19.0.1.tgz#7ab35f14a9c0bdbc8e026f5e4e09fbe6aa8e398a"
@@ -1402,6 +1417,13 @@
   version "7.4.4"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@babel/runtime/-/runtime-7.4.4.tgz#dc2e34982eb236803aa27a07fea6857af1b9171d"
   integrity sha512-w0+uT71b6Yi7i5SE0co4NioIpSYS6lLiXvCzWzGSKvpK5vdQtCbICHMj+gbAKAOtxiV6HsVh/MBdaF9EQ6faSg==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
+"@babel/runtime@^7.3.1":
+  version "7.5.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
+  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -8710,6 +8732,18 @@ fill-range@^4.0.0:
     repeat-string "^1.6.1"
     to-regex-range "^2.1.0"
 
+final-form-focus@^1.1.0:
+  version "1.1.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form-focus/-/final-form-focus-1.1.2.tgz#8ea5c4bd802e220cebaa47a587bb0be164eb6806"
+  integrity sha512-Gd+Bd2Ll7ijo3/sd6kJ/bwLkhc2bUJPxTON6fIqee/008EJpACWhT+zoWCm9q6NcfMcWRS+Sp5ikRX8iqdXeGQ==
+
+final-form@^4.13.0:
+  version "4.18.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form/-/final-form-4.18.2.tgz#3e7447ba36049a747d4becc61eb35e65a90f22a1"
+  integrity sha512-VQx/5x9M4CiC8fG678Dm1IS3mXvBl7ZNIUx5tUZCk00lFImJzQix4KO0+eGtl49sha2bYOxuYn8jRJiq6sazXA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+
 finalhandler@1.1.0:
   version "1.1.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/finalhandler/-/finalhandler-1.1.0.tgz#ce0b6855b45853e791b2fcc680046d88253dd7f5"
@@ -11235,11 +11269,6 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
-
-iso-639-1@^2.0.3:
-  version "2.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/iso-639-1/-/iso-639-1-2.0.3.tgz#72dd3448ac5629c271628c5ac566369428d6ccd0"
-  integrity sha512-PZhOTDH05ZLJyCqxAH65EzGaLO801KCvoEahAFoiqlp2HmnGUm8sO19KwWPCiWd3odjmoYd9ytzk2WtVYgWyCg==
 
 isobject@^2.0.0:
   version "2.1.0"
@@ -17309,6 +17338,11 @@ react-transition-group@^2.3.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
+react-uid@^2.2.0:
+  version "2.2.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-uid/-/react-uid-2.2.0.tgz#0f77e1e0594fbf29fc4fe528cc9aa415c5bf9159"
+  integrity sha512-z+g5+hFOQ08hCfrGcJ1PNs+cmvH8Uq2CVzCmPeWBsUi5A4W4NWXR5jouledzy3oSKGMU9HOzf8zFuGi15TXJoQ==
+
 react-x-editable@0.0.10-beta:
   version "0.0.10-beta"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-x-editable/-/react-x-editable-0.0.10-beta.tgz#cc6808e457990033d2ff3b0cca80a7f5d8536407"
@@ -20025,6 +20059,11 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tiny-invariant@^0.0.3:
+  version "0.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/tiny-invariant/-/tiny-invariant-0.0.3.tgz#4c7283c950e290889e9e94f64d3586ec9156cf44"
+  integrity sha512-SA2YwvDrCITM9fTvHTHRpq9W6L2fBsClbqm3maT5PZux4Z73SPPDYwJMtnoWh6WMgmCkJij/LaOlWiqJqFMK8g==
 
 tmatch@^2.0.1:
   version "2.0.1"

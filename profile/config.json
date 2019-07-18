@@ -1,9 +1,9 @@
 {
   "gateway":{
-    "url":"https://availsapi.dev.vubiquity.com",
-    "titleUrl":"https://titlesapi.dev.vubiquity.com",
-    "configuration": "https://configapi.dev.vubiquity.com",
-    "assetManagementURL": "https://asset-management-api.dev.vubiquity.com",
+    "url":"https://availsapi.qa.vubiquity.com",
+    "titleUrl":"https://titlesapi.qa.vubiquity.com",
+    "configuration": "https://configapi.qa.vubiquity.com",
+    "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
     "service": {
       "avails": "/avails-api/v1",
       "title": "/titles-api/v1",
@@ -12,8 +12,8 @@
     }
   },
   "keycloak": {
-    "clientId": "temportalapp-dev",
+    "clientId": "portalapp-public",
     "realm": "Vubiquity",
-    "url": "https://auth.dev.vubiquity.com/auth"
+    "url": "https://auth.qa.vubiquity.com/auth"
   }
 }
