@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import { CAST, getFilteredCastList } from '../../../../../constants/metadata/configAPI';
+import { AsyncSelect } from '@atlaskit/select';
+import { searchPerson } from '../../../service/ConfigService';
 
 class CoreMetadataCreateCastModal extends Component {
 
@@ -10,7 +12,8 @@ class CoreMetadataCreateCastModal extends Component {
     super(props);
     this.state = {
       isValidPersonSelected: true,
-      selectedPerson: null
+      selectedPerson: null,
+      persons: [{value: 'asd', label: 'asd'}]
     };
   }
 
@@ -62,6 +65,26 @@ class CoreMetadataCreateCastModal extends Component {
     });
   };
 
+
+  loadOptions = (inputValue, callback) => {
+    searchPerson(inputValue, 20).then(res => {
+      console.log(res);
+      // const newPersonList = res.data.map(e => { return { label: e.displayName, value: e.displayName}; });
+      // this.setState({
+      //   persons: res
+      // });
+    }).catch(err => console.log(err))
+    setTimeout(() => {
+      // callback(searchPerson(inputValue, 20).then(res => {
+      //   console.log(res);
+      //   this.setState({
+      //     persons: res
+      //   });
+      // }));
+
+    }, 1000);
+  };
+
   render() {
     return (
       <Fragment>
@@ -75,14 +98,22 @@ class CoreMetadataCreateCastModal extends Component {
             Create Cast
           </ModalHeader>
           <ModalBody>
-            <AvField type="select" name="castInputValue" id="createCasSelect" onChange={e => this.updateSelectedPerson(e.target.value)}>
+            {/* <AvField type="select" name="castInputValue" id="createCasSelect" onChange={e => this.updateSelectedPerson(e.target.value)}>
               <option value={''}>Select a Cast</option>
               {
                 this.props.configCastAndCrew && getFilteredCastList(this.props.configCastAndCrew.value, true).map((e, index) => {
                   return <option key={index} value={JSON.stringify(e)}>{e.displayName}</option>;
                 })
               }
-            </AvField>
+            </AvField> */}
+            <AsyncSelect
+              className="async-select-with-callback"
+              classNamePrefix="react-select"
+              defaultOptions
+              placeholder="Choose a City"
+              loadOptions={this.loadOptions}
+              options={this.state.persons}
+            />
             {!this.state.isValidPersonSelected ? <span style={{ color: 'red' }}>Person already exist</span> : null}
           </ModalBody>
           <ModalFooter>

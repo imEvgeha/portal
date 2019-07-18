@@ -6,7 +6,7 @@ import config from 'react-global-configuration';
 export const configFields = {
     LOCALE: 'countries',
     LANGUAGE: 'languages',
-    CAST_AND_CREW: 'persons',
+    // CAST_AND_CREW: 'persons',
     RATING_SYSTEM: 'rating-systems',
     RATINGS: 'ratings',
     ADVISORY_CODE: 'advisories',
@@ -19,6 +19,13 @@ const http = Http.create({noDefaultErrorHandling: true});
 const getConfigValues = (field, page, size, sortBy) => {
     let sortPath = sortBy ? ';'+ sortBy +'=ASC' : '';
     let path = '/configuration-api/v1/' + field + sortPath + '?page=' + page + '&size='+ size;
+    return http.get(config.get('gateway.configuration') + path);
+};
+
+export const searchPerson = (inputValue, size) => {
+    let sortPath = ';'+ 'displayName' +'=ASC';
+    let path = `/configuration-api/v1/persons${sortPath}?displayName="${inputValue}"&page=0&size=${size}`;
+    console.log(path)
     return http.get(config.get('gateway.configuration') + path);
 };
 
