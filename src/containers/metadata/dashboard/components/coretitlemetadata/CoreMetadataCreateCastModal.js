@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
 import { CAST, getFilteredCastList } from '../../../../../constants/metadata/configAPI';
 import { AsyncSelect } from '@atlaskit/select';
 import { searchPerson } from '../../../service/ConfigService';
+import { ErrorMessage } from '@atlaskit/form';
 
 class CoreMetadataCreateCastModal extends Component {
 
@@ -13,12 +13,13 @@ class CoreMetadataCreateCastModal extends Component {
     this.state = {
       isValidPersonSelected: true,
       selectedPerson: null,
-      persons: [{value: 'asd', label: 'asd'}]
+      persons: []
     };
+    this.keyInputTimeout = 0;
   }
 
-  UNSAFE_componentWillReceiveProps(){
-    if(!this.props.isCastModalOpen) {
+  UNSAFE_componentWillReceiveProps() {
+    if (!this.props.isCastModalOpen) {
       this.setState({
         isValidPersonSelected: true
       });
@@ -28,12 +29,12 @@ class CoreMetadataCreateCastModal extends Component {
   addValidCastCrew = () => {
     if (this.state.selectedPerson) {
       let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
-      if(isValid) {
+      if (isValid) {
         this.props.addCastCrew(this.state.selectedPerson);
       }
       this.setState({
-            isValidPersonSelected: isValid
-          });
+        isValidPersonSelected: isValid
+      });
     } else {
       this.setState({
         isValidPersonSelected: true
@@ -43,7 +44,7 @@ class CoreMetadataCreateCastModal extends Component {
 
   isSelectedPersonValid = (selectedPerson) => {
     return this.props.castCrewList === null || this.props.castCrewList.findIndex(person =>
-        person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
+      person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
   };
 
   updateSelectedPerson = (personJSON) => {
@@ -65,24 +66,19 @@ class CoreMetadataCreateCastModal extends Component {
     });
   };
 
+  filterPerson = (inputValue, callback) => {
+    searchPerson(inputValue, 20)
+      .then(res => {
+        this.setState({ persons: getFilteredCastList(res.data.data, true) });
+        callback(this.state.persons.map(e => {return {label: e.displayName, value: e.displayName, original: JSON.stringify(e)}; }));
+      }).catch((err) => { console.error(err); });
+  };
 
   loadOptions = (inputValue, callback) => {
-    searchPerson(inputValue, 20).then(res => {
-      console.log(res);
-      // const newPersonList = res.data.map(e => { return { label: e.displayName, value: e.displayName}; });
-      // this.setState({
-      //   persons: res
-      // });
-    }).catch(err => console.log(err))
-    setTimeout(() => {
-      // callback(searchPerson(inputValue, 20).then(res => {
-      //   console.log(res);
-      //   this.setState({
-      //     persons: res
-      //   });
-      // }));
-
-    }, 1000);
+    if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
+    this.keyInputTimeout = setTimeout(() => {
+      this.filterPerson(inputValue, callback);
+    }, 300);
   };
 
   render() {
@@ -98,23 +94,17 @@ class CoreMetadataCreateCastModal extends Component {
             Create Cast
           </ModalHeader>
           <ModalBody>
-            {/* <AvField type="select" name="castInputValue" id="createCasSelect" onChange={e => this.updateSelectedPerson(e.target.value)}>
-              <option value={''}>Select a Cast</option>
-              {
-                this.props.configCastAndCrew && getFilteredCastList(this.props.configCastAndCrew.value, true).map((e, index) => {
-                  return <option key={index} value={JSON.stringify(e)}>{e.displayName}</option>;
-                })
-              }
-            </AvField> */}
             <AsyncSelect
               className="async-select-with-callback"
               classNamePrefix="react-select"
               defaultOptions
-              placeholder="Choose a City"
+              placeholder="Choose a Cast"
+              validationState={this.state.isValidPersonSelected ? 'default' : 'error'}
               loadOptions={this.loadOptions}
               options={this.state.persons}
+              onChange={(e) => this.updateSelectedPerson(e.original)}
             />
-            {!this.state.isValidPersonSelected ? <span style={{ color: 'red' }}>Person already exist</span> : null}
+            {!this.state.isValidPersonSelected ? <ErrorMessage>Person is already exists</ErrorMessage> : null}
           </ModalBody>
           <ModalFooter>
             <Button color='primary' onClick={() => this.addValidCastCrew()}>
@@ -137,7 +127,6 @@ CoreMetadataCreateCastModal.propTypes = {
   addCastCrew: PropTypes.func,
   castInputValue: PropTypes.string,
 
-  configCastAndCrew: PropTypes.object,
   castCrewList: PropTypes.array,
 };
 
