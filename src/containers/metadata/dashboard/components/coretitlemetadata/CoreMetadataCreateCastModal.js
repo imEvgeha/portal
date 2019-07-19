@@ -67,7 +67,7 @@ class CoreMetadataCreateCastModal extends Component {
   };
 
   filterPerson = (inputValue, callback) => {
-    searchPerson(inputValue, 20)
+    searchPerson(inputValue, 20, CAST)
       .then(res => {
         this.setState({ persons: getFilteredCastList(res.data.data, true) });
         callback(this.state.persons.map(e => {return {label: e.displayName, value: e.displayName, original: JSON.stringify(e)}; }));

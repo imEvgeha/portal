@@ -2,6 +2,7 @@ import store from '../../../stores/index';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
+import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER} from '../../../constants/metadata/configAPI';
 
 export const configFields = {
     LOCALE: 'countries',
@@ -21,13 +22,14 @@ const getConfigValues = (field, page, size, sortBy) => {
     return http.get(config.get('gateway.configuration') + path);
 };
 
-export const searchPerson = (inputValue, size) => {
+export const searchPerson = (inputValue, size, castOrCrew) => {
     let displayNameMatchPath = '?';
     if(inputValue) {
         displayNameMatchPath += `displayNameMatch=${inputValue}&`;
     }
     let sortPath = ';'+ 'displayName' +'=ASC';
-    let path = `/configuration-api/v1/persons${sortPath}${displayNameMatchPath}page=0&size=${size}`;
+    let personTypePath = castOrCrew === CAST ? `personTypes=${ACTOR.toLowerCase()}&` : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
+    let path = `/configuration-api/v1/persons${sortPath}${displayNameMatchPath}${personTypePath}page=0&size=${size}`;
     return http.get(config.get('gateway.configuration') + path);
 };
 

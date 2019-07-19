@@ -47,7 +47,7 @@ class CoreMetadataCreateCrewModal extends Component {
     };
 
     filterPerson = (inputValue, callback) => {
-        searchPerson(inputValue, 20)
+        searchPerson(inputValue, 20, CREW)
             .then(res => {
                 this.setState({ persons: getFilteredCrewList(res.data.data, true) });
                 callback(this.state.persons.map(e => {return {label: e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : ''), value: e.displayName, original: JSON.stringify(e)}; }));
