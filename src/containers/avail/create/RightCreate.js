@@ -455,6 +455,28 @@ class RightCreate extends React.Component {
         };
 
         const renderTimeField = (name, displayName, required, value) => {
+            const validation = {pattern:{value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}};
+            const validate = (val, ctx, input, cb) => {
+                let isValid = true;
+
+                if(validation && validation.pattern){
+                    isValid = val ? validation.pattern.value.test(val) : !required;
+                }else if(validation && validation.number) {
+                    isValid = !isNaN(val.replace(',','.'));
+                }
+
+                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if(this.mappingErrorMessage[name].inner && isValid){
+                        this.mappingErrorMessage[name].inner = '';
+                        this.setState({});
+                    }
+                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                        this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
+                        this.setState({});
+                    }
+                }
+                cb(isValid);
+            };
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
                     <AvForm>
@@ -465,8 +487,8 @@ class RightCreate extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
                             type="text"
-                            validate={{pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
-                            errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
+                            validate={{async: validate}}
+                            errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
