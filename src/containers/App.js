@@ -53,8 +53,8 @@ export default class App extends React.Component {
                             <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                         </Switch>
-                        <Route exact path="/metadata" component={MetadataDashboardContainer} />
-                        <Route exact path="/metadata/detail/:id" component={TitleEdit} />
+                        <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
+                        <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
 
                         <Route exact path="/contractprofile" component={ContractProfile} />
                         <Route exact path="/contractsearch" component={Contract} />
