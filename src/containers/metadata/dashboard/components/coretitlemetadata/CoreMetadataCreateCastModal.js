@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { CAST, getFilteredCastList } from '../../../../../constants/metadata/configAPI';
+import {
+  CAST,
+  getFilteredCastList,
+  PERSONS_PER_REQUEST,
+  PERSON_INPUT_TIMEOUT
+} from '../../../../../constants/metadata/configAPI';
 import { AsyncSelect } from '@atlaskit/select';
 import { searchPerson } from '../../../service/ConfigService';
 import { ErrorMessage } from '@atlaskit/form';
@@ -67,7 +72,7 @@ class CoreMetadataCreateCastModal extends Component {
   };
 
   filterPerson = (inputValue, callback) => {
-    searchPerson(inputValue, 20, CAST)
+    searchPerson(inputValue, PERSONS_PER_REQUEST, CAST)
       .then(res => {
         this.setState({ persons: getFilteredCastList(res.data.data, true) });
         callback(this.state.persons.map(e => {return {label: e.displayName, value: e.displayName, original: JSON.stringify(e)}; }));
@@ -78,7 +83,7 @@ class CoreMetadataCreateCastModal extends Component {
     if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
     this.keyInputTimeout = setTimeout(() => {
       this.filterPerson(inputValue, callback);
-    }, 300);
+    }, PERSON_INPUT_TIMEOUT);
   };
 
   render() {

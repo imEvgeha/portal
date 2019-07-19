@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import {CREW, getFilteredCrewList} from '../../../../../constants/metadata/configAPI';
+import {
+    CREW,
+    getFilteredCrewList,
+    PERSONS_PER_REQUEST,
+    PERSON_INPUT_TIMEOUT
+} from '../../../../../constants/metadata/configAPI';
 import {AsyncSelect} from '@atlaskit/select';
 import {searchPerson} from '../../../service/ConfigService';
 import {ErrorMessage} from '@atlaskit/form';
@@ -47,7 +52,7 @@ class CoreMetadataCreateCrewModal extends Component {
     };
 
     filterPerson = (inputValue, callback) => {
-        searchPerson(inputValue, 20, CREW)
+        searchPerson(inputValue, PERSONS_PER_REQUEST, CREW)
             .then(res => {
                 this.setState({ persons: getFilteredCrewList(res.data.data, true) });
                 callback(this.state.persons.map(e => {return {label: e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : ''), value: e.displayName, original: JSON.stringify(e)}; }));
@@ -59,7 +64,7 @@ class CoreMetadataCreateCrewModal extends Component {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
         this.keyInputTimeout = setTimeout(() => {
             this.filterPerson(inputValue, callback);
-        }, 300);
+        }, PERSON_INPUT_TIMEOUT);
     };
 
     updateSelectedPerson = (personJSON) => {
