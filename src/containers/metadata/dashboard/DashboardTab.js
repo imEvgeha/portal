@@ -2,6 +2,7 @@ import './DashboardContainer.scss';
 
 import React from 'react';
 import DashboardCard from '../../metadata/dashboard/components/DashboardCard';
+import {Can} from '../../../ability';
 
 
 
@@ -21,7 +22,9 @@ class DashboardTab extends React.Component {
             <div className={'dashboard-tab'}>
                 <div className="row">
                     {/*<DashboardCard title="Manage Title Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
-                    <DashboardCard title="Create New Title" action={this.state.modalBox} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-title'}/>
+                    <Can I="create" a="Metadata">
+                        <DashboardCard title="Create New Title" action={this.state.modalBox} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-title'}/>
+                    </Can>
                     {/*<DashboardCard title="Title Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                 </div>
                 <div className="row">

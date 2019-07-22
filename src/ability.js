@@ -45,7 +45,7 @@ const updateAbility = (keycloak) => {
     // } else if (keycloak.hasRealmRole('metadata_user')) {
     //     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // } else if (keycloak.hasRealmRole('metadata_admin')) {
-    //     can(['create', 'read', 'update', 'delete'], 'Metadata');
+    can(['create', 'read', 'update', 'delete'], 'Metadata');
     // }
 
     ability.update(rules);

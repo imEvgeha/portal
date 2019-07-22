@@ -23,6 +23,7 @@ import {
 } from '../../../../constants/metadata/metadataComponent';
 import { configService } from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
+import {Can} from '../../../../ability';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -836,7 +837,9 @@ class TitleEdit extends Component {
                                     :
                                     <Fragment>
                                         <Col>
-                                            <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
+                                            <Can I="update" a="Metadata">
+                                                <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
+                                            </Can>
                                         </Col>
                                     </Fragment>
                             }
