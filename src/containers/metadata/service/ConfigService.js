@@ -2,11 +2,11 @@ import store from '../../../stores/index';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
+import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER} from '../../../constants/metadata/configAPI';
 
 export const configFields = {
     LOCALE: 'countries',
     LANGUAGE: 'languages',
-    CAST_AND_CREW: 'persons',
     RATING_SYSTEM: 'rating-systems',
     RATINGS: 'ratings',
     ADVISORY_CODE: 'advisories',
@@ -18,8 +18,19 @@ const http = Http.create({noDefaultErrorHandling: true});
 
 const getConfigValues = (field, page, size, sortBy) => {
     let sortPath = sortBy ? ';'+ sortBy +'=ASC' : '';
-    let path = '/configuration-api/v1/' + field + sortPath + '?page=' + page + '&size='+ size;
-    return http.get(config.get('gateway.configuration') + path);
+    let path = '/' + field + sortPath + '?page=' + page + '&size='+ size;
+    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
+};
+
+export const searchPerson = (inputValue, size, castOrCrew) => {
+    let displayNameMatchPath = '?';
+    if(inputValue) {
+        displayNameMatchPath += `displayNameMatch=${inputValue}&`;
+    }
+    let sortPath = ';'+ 'displayName' +'=ASC';
+    let personTypePath = castOrCrew === CAST ? `personTypes=${ACTOR.toLowerCase()}&` : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
+    let path = `/persons${sortPath}${displayNameMatchPath}${personTypePath}page=0&size=${size}`;
+    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
 };
 
 const getAllConfigValuesByField = (field, sortBy) => {

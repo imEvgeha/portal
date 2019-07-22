@@ -1,8 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
-import { CREW, getFilteredCrewList } from '../../../../../constants/metadata/configAPI';
+import {
+    CREW,
+    getFilteredCrewList,
+    PERSONS_PER_REQUEST,
+    PERSON_INPUT_TIMEOUT
+} from '../../../../../constants/metadata/configAPI';
+import {AsyncSelect} from '@atlaskit/select';
+import {searchPerson} from '../../../service/ConfigService';
+import {ErrorMessage} from '@atlaskit/form';
 
 class CoreMetadataCreateCrewModal extends Component {
 
@@ -10,7 +17,8 @@ class CoreMetadataCreateCrewModal extends Component {
         super(props);
         this.state = {
             isValidPersonSelected: true,
-            selectedPerson: null
+            selectedPerson: null,
+            persons: [],
         };
     }
 
@@ -43,14 +51,21 @@ class CoreMetadataCreateCrewModal extends Component {
             person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
     };
 
-    isSelectedPersonValid = (selectedPerson) => {
-        if (this.props.castCrewList.findIndex(person =>
-            person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    filterPerson = (inputValue, callback) => {
+        searchPerson(inputValue, PERSONS_PER_REQUEST, CREW)
+            .then(res => {
+                this.setState({ persons: getFilteredCrewList(res.data.data, true) });
+                callback(this.state.persons.map(e => {return {label: e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : ''), value: e.displayName, original: JSON.stringify(e)}; }));
+            }).catch((err) => { console.error(err); });
+    };
+
+
+    loadOptions = (inputValue, callback) => {
+        if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
+        this.keyInputTimeout = setTimeout(() => {
+            this.filterPerson(inputValue, callback);
+        }, PERSON_INPUT_TIMEOUT);
+    };
 
     updateSelectedPerson = (personJSON) => {
         let person = null;
@@ -83,18 +98,17 @@ class CoreMetadataCreateCrewModal extends Component {
                         Create Crew
                     </ModalHeader>
                     <ModalBody>
-                        <AvField type="select" name="castInputValue" id="exampleSelect"
-                            onChange={e => this.updateSelectedPerson(e.target.value)}>
-                            <option value={''}>Select a Crew</option>
-                            {
-                                this.props.configCastAndCrew && getFilteredCrewList(this.props.configCastAndCrew.value, true).map((e, index) => {
-                                    return <option key={index}
-                                        value={JSON.stringify(e)}>{e.displayName + (e.personType.length > 0 ? ' \'' + e.personType + '\'' : '')}</option>;
-                                })
-                            }
-                        </AvField>
-                        {!this.state.isValidPersonSelected ?
-                            <span style={{ color: 'red' }}>Person already exist</span> : null}
+                        <AsyncSelect
+                            className="async-select-with-callback"
+                            classNamePrefix="react-select"
+                            defaultOptions
+                            placeholder="Choose a Crew"
+                            validationState={this.state.isValidPersonSelected ? 'default' : 'error'}
+                            loadOptions={this.loadOptions}
+                            options={this.state.persons}
+                            onChange={(e) => this.updateSelectedPerson(e.original)}
+                        />
+                        {!this.state.isValidPersonSelected ? <ErrorMessage>Person is already exists</ErrorMessage> : null}
                     </ModalBody>
                     <ModalFooter>
                         <Button color='primary' onClick={() => this.addValidCastCrew()}>
