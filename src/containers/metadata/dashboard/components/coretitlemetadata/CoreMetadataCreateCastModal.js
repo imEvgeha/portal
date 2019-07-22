@@ -10,6 +10,7 @@ import {
 import { AsyncSelect } from '@atlaskit/select';
 import { searchPerson } from '../../../service/ConfigService';
 import { ErrorMessage } from '@atlaskit/form';
+import UserPicker from '@atlaskit/user-picker';
 
 class CoreMetadataCreateCastModal extends Component {
 
@@ -18,7 +19,9 @@ class CoreMetadataCreateCastModal extends Component {
     this.state = {
       isValidPersonSelected: true,
       selectedPerson: null,
-      persons: []
+      persons: [],
+      searchText: '',
+      disableInput: false
     };
     this.keyInputTimeout = 0;
   }
@@ -86,6 +89,21 @@ class CoreMetadataCreateCastModal extends Component {
     }, PERSON_INPUT_TIMEOUT);
   };
 
+  onInputChange = (e) => {
+    console.log(e);
+  }
+  handleClear = (b, e) => {
+    console.log(b, e)
+  }
+
+  handleOnBlur = () => {
+    this.setState({
+      disableInput: true
+    });
+  }
+  handleOnChange = e => {
+    console.log(e)
+  }
   render() {
     return (
       <Fragment>
@@ -108,6 +126,14 @@ class CoreMetadataCreateCastModal extends Component {
               loadOptions={this.loadOptions}
               options={this.state.persons}
               onChange={(e) => this.updateSelectedPerson(e.original)}
+            />
+            <UserPicker
+              fieldId="example"
+              onClear={this.handleClear}
+              disableInput={this.state.disableInput}
+              onBlur={this.handleOnBlur}
+              options={this.state.persons.map(e => { return { id: e.displyName, name: e.displayName };})}
+              onInputChange={this.handleOnChange} 
             />
             {!this.state.isValidPersonSelected ? <ErrorMessage>Person is already exists</ErrorMessage> : null}
           </ModalBody>

@@ -17,13 +17,18 @@ import { AvField } from 'availity-reactstrap-validation';
 import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
 import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 import { connect } from 'react-redux';
-import { configFields } from '../../../service/ConfigService';
+import { configFields, searchPerson } from '../../../service/ConfigService';
 import {
   CREW,
   CAST,
-  getFilteredCrewList, getFilteredCastList, getFormatTypeName
+  getFilteredCrewList, 
+  getFilteredCastList, 
+  getFormatTypeName, 
+  PERSONS_PER_REQUEST,
+  PERSON_INPUT_TIMEOUT
 } from '../../../../../constants/metadata/configAPI';
 import Rating from './rating/Rating';
+import UserPicker from '@atlaskit/user-picker';
 
 const mapStateToProps = state => {
   return {
@@ -44,7 +49,13 @@ class CoreMetadataEditMode extends Component {
       castList: [],
       crewList: [],
       ratings: [],
-    };
+      isValidPersonSelected: true,
+      selectedPerson: null,
+      persons: [],
+      searchText: '',
+      disableInput: false
+    };    
+    this.keyInputTimeout = 0;
   }
 
   handleRatingSystemValue = (e) => {
@@ -70,6 +81,77 @@ class CoreMetadataEditMode extends Component {
     this.props.handleOnLegacyIds(vzLegacyId);
   }
 
+  addValidCastCrew = () => {
+    if (this.state.selectedPerson) {
+      let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
+      if (isValid) {
+        this.props.addCastCrew(this.state.selectedPerson);
+      }
+      this.setState({
+        isValidPersonSelected: isValid
+      });
+    } else {
+      this.setState({
+        isValidPersonSelected: true
+      });
+    }
+  };
+
+  isSelectedPersonValid = (selectedPerson) => {
+    return this.props.editedTitle.castCrew === null || this.props.editedTitle.castCrew.findIndex(person =>
+      person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
+  };
+
+  updateSelectedPerson = (personJSON) => {
+    let person = null;
+    if (personJSON) {
+      person = JSON.parse(personJSON);
+      let isValid = this.isSelectedPersonValid(person);
+      this.setState({
+        isValidPersonSelected: isValid
+      });
+    } else {
+      this.setState({
+        isValidPersonSelected: true
+      });
+    }
+
+    this.setState({
+      selectedPerson: person
+    });
+  };
+
+  filterPerson = (inputValue) => {
+    console.log(inputValue);
+    searchPerson(inputValue, PERSONS_PER_REQUEST, CAST)
+      .then(res => {
+        console.log(res.data.data)
+        this.setState({ persons: getFilteredCastList(res.data.data, true) });
+      }).catch((err) => { console.error(err); });
+  };
+
+  loadOptions = (inputValue) => {
+    if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
+    this.keyInputTimeout = setTimeout(() => {
+      this.filterPerson(inputValue);
+    }, PERSON_INPUT_TIMEOUT);
+  };
+
+  onInputChange = (e) => {
+    console.log(e);
+  }
+  handleClear = (b, e) => {
+    console.log(b, e)
+  }
+
+  handleOnBlur = () => {
+    this.setState({
+      disableInput: true
+    });
+  }
+  handleOnChange = e => {
+    console.log(e)
+  }
   render() {
     return (
       <Fragment>
@@ -100,7 +182,7 @@ class CoreMetadataEditMode extends Component {
                     getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => {
                       return (
                         <React.Fragment key={i}>
-                          <ListGroupItem key={i}>
+                          {/* <ListGroupItem key={i}>
                             {cast.displayName}
                             <FontAwesome
                               className='float-right'
@@ -109,11 +191,39 @@ class CoreMetadataEditMode extends Component {
                               color='#111'
                               size='lg'
                               onClick={() => this.props.removeCastCrew(cast)}
-                            />
-                          </ListGroupItem>
+                            />                            
+                          </ListGroupItem> */}
+                          
+                          <UserPicker 
+                            width="100%"
+                            value={cast.displayName} 
+                            disableInput={true} 
+                            search={cast.displayName} 
+                            onClear={() => this.props.removeCastCrew(cast)} 
+                          />
                         </React.Fragment>
                       );
                     })}
+                    {/* <AsyncSelect
+                      className="async-select-with-callback"
+                      classNamePrefix="react-select"
+                      defaultOptions
+                      placeholder="Choose a Cast"
+                      validationState={this.state.isValidPersonSelected ? 'default' : 'error'}
+                      loadOptions={this.loadOptions}
+                      options={this.state.persons}
+                      onChange={(e) => this.updateSelectedPerson(e.original)}
+                    /> */}
+                    <UserPicker
+                      width="100%"
+                      onClear={this.handleClear}
+                      disableInput={this.state.disableInput}
+                      onBlur={this.handleOnBlur}
+                      onInputChange={this.loadOptions}
+                      options={this.state.persons.map(e => {return {id: e.id, name: e.displayName}; })}
+                      onChange={this.handleOnChange}
+
+                    />
                 </ListGroup>
               </CardBody>
             </Card>
