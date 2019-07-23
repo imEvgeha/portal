@@ -127,14 +127,14 @@ class CoreMetadataCreateCastModal extends Component {
               options={this.state.persons}
               onChange={(e) => this.updateSelectedPerson(e.original)}
             />
-            <UserPicker
+            {/* <UserPicker
               fieldId="example"
               onClear={this.handleClear}
               disableInput={this.state.disableInput}
               onBlur={this.handleOnBlur}
               options={this.state.persons.map(e => { return { id: e.displyName, name: e.displayName };})}
               onInputChange={this.handleOnChange} 
-            />
+            /> */}
             {!this.state.isValidPersonSelected ? <ErrorMessage>Person is already exists</ErrorMessage> : null}
           </ModalBody>
           <ModalFooter>

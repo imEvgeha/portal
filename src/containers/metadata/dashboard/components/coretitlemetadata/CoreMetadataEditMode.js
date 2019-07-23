@@ -50,12 +50,12 @@ class CoreMetadataEditMode extends Component {
       crewList: [],
       ratings: [],
       isValidPersonSelected: true,
-      selectedPerson: null,
       persons: [],
       searchText: '',
-      disableInput: false
+      disableInput: false,
     };    
     this.keyInputTimeout = 0;
+    this.userPickerPersonsPromise = [];
   }
 
   handleRatingSystemValue = (e) => {
@@ -81,11 +81,18 @@ class CoreMetadataEditMode extends Component {
     this.props.handleOnLegacyIds(vzLegacyId);
   }
 
-  addValidCastCrew = () => {
-    if (this.state.selectedPerson) {
-      let isValid = this.isSelectedPersonValid(this.state.selectedPerson);
+  isSelectedPersonValid = (selectedPerson) => {
+    return this.props.editedTitle.castCrew === null || this.props.editedTitle.castCrew.findIndex(person =>
+      person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
+  };
+
+  validateAndAddSelectedPerson = (personJSON) => {
+    if (personJSON) {
+      let person = JSON.parse(personJSON);
+      let isValid = this.isSelectedPersonValid(person);
+      console.log('isValid', isValid)
       if (isValid) {
-        this.props.addCastCrew(this.state.selectedPerson);
+        this.props.addCastCrew(person);
       }
       this.setState({
         isValidPersonSelected: isValid
@@ -97,30 +104,6 @@ class CoreMetadataEditMode extends Component {
     }
   };
 
-  isSelectedPersonValid = (selectedPerson) => {
-    return this.props.editedTitle.castCrew === null || this.props.editedTitle.castCrew.findIndex(person =>
-      person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
-  };
-
-  updateSelectedPerson = (personJSON) => {
-    let person = null;
-    if (personJSON) {
-      person = JSON.parse(personJSON);
-      let isValid = this.isSelectedPersonValid(person);
-      this.setState({
-        isValidPersonSelected: isValid
-      });
-    } else {
-      this.setState({
-        isValidPersonSelected: true
-      });
-    }
-
-    this.setState({
-      selectedPerson: person
-    });
-  };
-
   filterPerson = (inputValue) => {
     console.log(inputValue);
     searchPerson(inputValue, PERSONS_PER_REQUEST, CAST)
@@ -130,11 +113,10 @@ class CoreMetadataEditMode extends Component {
       }).catch((err) => { console.error(err); });
   };
 
-  loadOptions = (inputValue) => {
-    if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
-    this.keyInputTimeout = setTimeout(() => {
-      this.filterPerson(inputValue);
-    }, PERSON_INPUT_TIMEOUT);
+  loadOptions = (searchText) => {
+    return searchPerson(searchText, PERSONS_PER_REQUEST, CAST)
+            .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, original: JSON.stringify(e)};})
+          );
   };
 
   onInputChange = (e) => {
@@ -144,14 +126,12 @@ class CoreMetadataEditMode extends Component {
     console.log(b, e)
   }
 
-  handleOnBlur = () => {
-    this.setState({
-      disableInput: true
-    });
+  handleOnSelect = e => {
+    console.log('select', e)
+    this.validateAndAddSelectedPerson(e.original);
   }
-  handleOnChange = e => {
-    console.log(e)
-  }
+
+
   render() {
     return (
       <Fragment>
@@ -181,19 +161,7 @@ class CoreMetadataEditMode extends Component {
                   {this.props.editedTitle.castCrew &&
                     getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => {
                       return (
-                        <React.Fragment key={i}>
-                          {/* <ListGroupItem key={i}>
-                            {cast.displayName}
-                            <FontAwesome
-                              className='float-right'
-                              name='times-circle'
-                              style={{ marginTop: '5px', cursor: 'pointer' }}
-                              color='#111'
-                              size='lg'
-                              onClick={() => this.props.removeCastCrew(cast)}
-                            />                            
-                          </ListGroupItem> */}
-                          
+                        <div key={i} style={{marginTop: '5px'}}>
                           <UserPicker 
                             width="100%"
                             value={cast.displayName} 
@@ -201,29 +169,18 @@ class CoreMetadataEditMode extends Component {
                             search={cast.displayName} 
                             onClear={() => this.props.removeCastCrew(cast)} 
                           />
-                        </React.Fragment>
+                        </div>
                       );
                     })}
-                    {/* <AsyncSelect
-                      className="async-select-with-callback"
-                      classNamePrefix="react-select"
-                      defaultOptions
-                      placeholder="Choose a Cast"
-                      validationState={this.state.isValidPersonSelected ? 'default' : 'error'}
-                      loadOptions={this.loadOptions}
-                      options={this.state.persons}
-                      onChange={(e) => this.updateSelectedPerson(e.original)}
-                    /> */}
-                    <UserPicker
-                      width="100%"
-                      onClear={this.handleClear}
-                      disableInput={this.state.disableInput}
-                      onBlur={this.handleOnBlur}
-                      onInputChange={this.loadOptions}
-                      options={this.state.persons.map(e => {return {id: e.id, name: e.displayName}; })}
-                      onChange={this.handleOnChange}
-
-                    />
+                    <div style={{marginTop: '5px'}}>
+                      <UserPicker
+                        width="100%"
+                        onClear={this.handleClear}
+                        loadOptions={this.loadOptions}
+                        onChange={this.handleOnChange}
+                        onSelection={this.handleOnSelect}
+                      />
+                    </div>
                 </ListGroup>
               </CardBody>
             </Card>
