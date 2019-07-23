@@ -60,6 +60,7 @@ export default class App extends React.Component {
                         <Route exact path="/contractsearch" component={Contract} />
 
                         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
+                        <Route exact path="/config-api-endpoint" component={ApiEndpoints} />
 
                     </div>
                 </div>
@@ -70,6 +71,7 @@ export default class App extends React.Component {
 
 import {Component} from 'react';
 import t from 'prop-types';
+import ApiEndpoints from "./config-api/components/ApiEndpoints";
 class UnderConstruction extends Component {
     static propTypes = {
         match: t.object
