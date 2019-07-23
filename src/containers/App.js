@@ -24,6 +24,7 @@ import ContractProfile from './contracts/profile/ContractProfile.jsx';
 import Contract from './contracts/search/Contract.jsx';
 
 import Media from './media/search/Media.js';
+import ApiEndpoints from './config-api/components/ApiEndpoints';
 
 export default class App extends React.Component {
     render() {
