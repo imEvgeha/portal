@@ -8,6 +8,11 @@ import RightsResultTable from './components/RightsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
 import {downloadFile, IfEmbedded} from '../../../util/Common';
+import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
+import withServerSorting from '../../../components/avails/ServerSortingTable';
+import withSelection from '../../../components/common/SelectionTable';
+import withRights from '../../../components/avails/RightsResultsTable';
+import ResultsTable from '../../../components/common/ResultsTable';
 
 import {
     resultPageUpdateColumnsOrder,
@@ -232,6 +237,8 @@ class SearchResultsTab extends React.Component {
             );
         };
 
+        const RightsResultsTable = withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable))));
+
         return (
             <div id="dashboard-result-table">
                 <div className={'container-fluid'}>
@@ -264,13 +271,13 @@ class SearchResultsTab extends React.Component {
                         </div>
                     </div>
                     <div>
-                        <RightsResultTable
+                        <RightsResultTable availsMapping = {this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
                             fromServer = {true}
                         />
                     </div>
                     <div>
-                        <RightsResultTable
+                        <RightsResultTable availsMapping = {this.props.availsMapping}
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
                             fromServer = {false}
