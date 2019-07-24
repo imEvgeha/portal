@@ -18,7 +18,7 @@
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
 
-"@atlaskit/avatar@^16.0.7":
+"@atlaskit/avatar@^16.0.7", "@atlaskit/avatar@^16.0.8":
   version "16.0.8"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/avatar/-/avatar-16.0.8.tgz#e7d5369ae081071dc6c6d70e8b94337337743eda"
   integrity sha512-9LCMtFpq60baAJQjr9ZY9UFmKsHnlfVt2/+lnoDQy/IjLLc4jvOu+OiVBoaGaOKWYIXn+4MhZcZH65PWyUxnaw==
