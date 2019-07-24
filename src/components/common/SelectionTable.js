@@ -43,6 +43,14 @@ export default function withSelection(WrappedComponent, withReduxIntegration){
             if(prevProps.columns !== this.props.columns){
                 this.setState({columns : ['sel'].concat(this.props.columns)});
             }
+
+            if(prevProps.availTabPageSelection !== this.props.availTabPageSelection){
+                this.setState({
+                    selected: this.props.availTabPageSelection.selected,
+                    selectAll: this.props.availTabPageSelection.selectAll,
+                    selectNone: this.props.availTabPageSelection.selectNone
+                });
+            }
         }
 
         onDataLoaded(){
@@ -67,10 +75,11 @@ export default function withSelection(WrappedComponent, withReduxIntegration){
         onScroll(){
             const allVisibleSelected = this.areAllVisibleSelected();
             const oneVisibleSelected = this.isOneVisibleSelected();
-            if(allVisibleSelected !== this.state.selectAll || oneVisibleSelected === this.state.selectNone) {
+            const selectionSource = this.props.availTabPageSelection ? this.props.availTabPageSelection : this.state;
+            if(allVisibleSelected !== selectionSource.selectAll || oneVisibleSelected === selectionSource.selectNone) {
                 this.setState({selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
-                if(withReduxIntegration){
-                    store.dispatch(resultPageSelect({selected: this.props.availTabPageSelection.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected}));
+                if(this.props.resultPageSelect){
+                    this.props.resultPageSelect({selected: this.state.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
                 }
             }
         }
@@ -140,7 +149,7 @@ export default function withSelection(WrappedComponent, withReduxIntegration){
         refreshColumns(){
             let colDef = {
                 sel : {
-                    headerName: 'AAA',
+                    headerName: '',
                     checkboxSelection: true,
                     width: 40,
                     pinned: 'left',

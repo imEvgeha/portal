@@ -14,10 +14,18 @@ export default function withServerSorting(WrappedComponent){
             };
         }
 
+        componentDidUpdate(prevProps) {
+            if(prevProps.availTabPageSort !== this.props.availTabPageSort){
+                this.setState({sort: this.props.availTabPageSort});
+                setTimeout(this.refreshSort, 1);
+            }
+        }
+
         refreshSort(){
             if(!this.state.table) return;
+            let sortSource = this.props.availTabPageSort ? this.props.availTabPageSort : this.state.sort;
             let sortModel=[];
-            this.state.sort.map(sortCriteria=>{
+            sortSource.map(sortCriteria=>{
                 sortModel.push({colId:this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === sortCriteria.id).javaVariableName, sort:sortCriteria.desc ? 'desc' : 'asc'});
             });
 
@@ -45,6 +53,9 @@ export default function withServerSorting(WrappedComponent){
                 });
             }
             this.setState({sort:newSort});
+            if(this.props.resultPageSort){
+                this.props.resultPageSort(newSort);
+            }
         }
 
         setTable(element){
@@ -53,10 +64,12 @@ export default function withServerSorting(WrappedComponent){
                 if(this.props.setTable){
                     this.props.setTable(element);
                 }
+                setTimeout(this.refreshSort, 1);
             }
         }
 
         render(){
+            this.refreshSort();
             return <WrappedComponent
                 {...this.props}
                 setTable={this.setTable}

@@ -9,6 +9,10 @@ export default class ResultsTable extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            height: 500
+        }
+
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.setTable = this.setTable.bind(this);
     }
@@ -58,7 +62,7 @@ export default class ResultsTable extends React.Component {
             <div
                 className="ag-theme-balham"
                 style={{
-                    height: '500px',
+                    height: this.state.height + 'px',
                     width: '100%' }}
             >
                 <AgGridReact

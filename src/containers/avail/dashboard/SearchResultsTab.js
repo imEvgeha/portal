@@ -12,6 +12,7 @@ import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';
 import withRights from '../../../components/avails/RightsResultsTable';
+import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 
 import {
@@ -237,7 +238,7 @@ class SearchResultsTab extends React.Component {
             );
         };
 
-        const RightsResultsTable = withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable))));
+        const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 
         return (
             <div id="dashboard-result-table">
@@ -271,7 +272,7 @@ class SearchResultsTab extends React.Component {
                         </div>
                     </div>
                     <div>
-                        <RightsResultTable availsMapping = {this.props.availsMapping}
+                        <RightsResultsTable availsMapping = {this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
                             fromServer = {true}
                         />
