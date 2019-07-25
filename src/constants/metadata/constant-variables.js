@@ -1,9 +1,11 @@
 export const COUNTRY = 'country';
 export const REGION = 'region';
 export const DATE_FORMAT = 'YYYY-MM-DD';
-
-export default {
-    COUNTRY,
-    REGION,
-    DATE_FORMAT
-};
+export const CAST_LIST_LABEL = 'Cast List';
+export const CREW_LIST_LABEL = 'Crew List';
+export const CAST_LABEL = 'Add new cast';
+export const CREW_LABEL = 'Add new crew';
+export const CREW_HTML_FOR = 'new-person-crew';
+export const CAST_HTML_FOR = 'new-person-cast';
+export const CAST_HEADER = 'Cast';
+export const CREW_HEADER = 'Crew';

@@ -3,11 +3,7 @@ import {
   FormGroup,
   Label,
   Row,
-  Col,
-  ListGroup,
-  Card,
-  CardHeader,
-  CardBody
+  Col
 } from 'reactstrap';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
@@ -20,12 +16,20 @@ import {
   getFilteredCastList, 
   getFormatTypeName, 
   CREW,
-  PERSONS_PER_REQUEST,
+  PERSONS_PER_REQUEST
 } from '../../../../../constants/metadata/configAPI';
+import {
+  CREW_LIST_LABEL,
+  CAST_LIST_LABEL,
+  CAST_LABEL,
+  CREW_LABEL,
+  CAST_HTML_FOR,
+  CREW_HTML_FOR,
+  CAST_HEADER,
+  CREW_HEADER
+} from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
-import UserPicker from '@atlaskit/user-picker';
-import { Label as LB } from '@atlaskit/field-base';
-import Lozenge from '@atlaskit/lozenge';
+import CreateCastCrew from './CreateCastCrew';
 
 const mapStateToProps = state => {
   return {
@@ -146,138 +150,32 @@ class CoreMetadataEditMode extends Component {
     return (
       <Fragment>
         <Row>
-          <Col>
-            <Card id='cardContainer'>
-              <CardHeader className='clearfix'>
-                <h4 className='float-left'>Cast</h4>
-              </CardHeader>
-              <CardBody>
-                <ListGroup
-                  style={{
-                    overflowY: 'scroll',
-                    overFlowX: 'hidden',
-                    maxHeight: '280px'
-                  }}
-                  id='listContainer'
-                >   
-                  <LB
-                      label="Add new cast"
-                      isFirstChild
-                      htmlFor="new-person-cast"
-                  >            
-                    <div style={{marginTop: '5px', border: !this.state.isValidCastPersonValid ? '2px solid red' : null, borderRadius: '3px', width: '97%'}}>
-                      
-                        <UserPicker
-                          id="new-person-cast"
-                          width="100%"
-                          onClear={this.handleClear}
-                          loadOptions={this.loadOptionsCast}
-                          value={this.state.searchCastText}
-                          onInputChange={this.handleInputChangeCast}
-                          onChange={this.handleOnChange}
-                          onSelection={this.handleOnSelectCast}
-                        />
-                    </div>
-                    {!this.state.isValidCastPersonValid && (<span style={{color: 'red'}}>Person is already exists!</span>)}              
-                  </LB>
-                  <LB
-                      label="Cast List"
-                      isFirstChild
-                      htmlFor="person-list"
-                  >
-                  {this.props.editedTitle.castCrew &&
-                    getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => {
-                      return (
-                        <div 
-                          key={i} 
-                          style={{marginTop: '5px', padding: '5px', border:'1px solid #EEE', backgroundColor: '#FAFBFC', borderRadius: '3px', width: '97%'}}>
-                          <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '15px', width: '30px', height: '30px', verticalAlign: 'middle', marginTop: '10px'}} />
-                          <div style={{display: 'inline-block', width: '90%', marginLeft: '5px'}}>
-                          <UserPicker 
-                            appearance="normal"
-                            subtle
-                            width="100%"
-                            value={cast.displayName} 
-                            disableInput={true} 
-                            search={cast.displayName} 
-                            onClear={() => this.props.removeCastCrew(cast)} 
-                          />
-                          </div>                          
-                          <div style={{clear: 'both'}} />
-                        </div>
-                      );
-                    })}
-                  </LB>
-                </ListGroup>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col>
-            <Card id='cardContainer'>
-              <CardHeader className='clearfix'>
-                <h4 className='float-left'>Crew</h4>
-              </CardHeader>
-              <CardBody>
-                <ListGroup
-                  style={{
-                    overflowY: 'scroll',
-                    overFlowX: 'hidden',
-                    maxHeight: '280px'
-                  }}
-                  id='listContainer'
-                >
-                    <LB
-                      label="Add new crew"
-                      isFirstChild
-                      htmlFor="new-person-crew"
-                  >            
-                    <div style={{marginTop: '5px', border: !this.state.isValidCrewPersonValid ? '2px solid red' : null, borderRadius: '3px', width: '97%'}}>                      
-                        <UserPicker
-                          width="100%"
-                          id="new-person-crew"
-                          onClear={this.handleClear}
-                          loadOptions={this.loadOptionsCrew}
-                          value={this.state.searchCrewText}
-                          onInputChange={this.handleInputChangeCrew}
-                          onChange={this.handleOnChange}
-                          onSelection={this.handleOnSelectCrew}
-                        />
-                    </div>                        
-                    {!this.state.isValidCrewPersonValid && (<span style={{color: 'red'}}>Person is already exists!</span>)}              
-                  </LB>
-                  <LB
-                      label="Crew List"
-                      isFirstChild
-                      htmlFor="person-list"
-                  >
-                  {this.props.editedTitle.castCrew &&
-                    getFilteredCrewList(this.props.editedTitle.castCrew, false).map((crew, i) => {
-                      return (
-                        <div 
-                          key={i} 
-                          style={{marginTop: '5px', padding: '5px', border:'1px solid #EEE', backgroundColor: '#FAFBFC', borderRadius: '3px', width: '97%'}}>
-                          <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Crew" style={{marginLeft: '15px', width: '30px', height: '30px', verticalAlign: 'middle', marginTop: '10px'}} />                          
-                          <span style={{marginLeft: '10px'}}><Lozenge appearance={'default'}>{getFormatTypeName(crew.personType)}</Lozenge></span>
-                          <div style={{display: 'inline-block', width: '82%', marginLeft: '5px'}}>
-                          <UserPicker 
-                            width="100%"
-                            appearance="normal"
-                            subtle
-                            value={crew.displayName} 
-                            disableInput={true} 
-                            search={crew.displayName} 
-                            onClear={() => this.props.removeCastCrew(crew)} 
-                          />
-                          </div>                          
-                          <div style={{clear: 'both'}} />
-                        </div>
-                      );
-                    })}
-                  </LB>
-                </ListGroup>
-              </CardBody>
-            </Card>
-          </Col>
+          <CreateCastCrew
+              castLabel={CAST_LABEL}
+              castHtmlFor={CAST_HTML_FOR}
+              castListLabel={CAST_LIST_LABEL}
+              castHeader={CAST_HEADER}
+              castCrew={this.props.editedTitle.castCrew}
+              getFilteredCastList={getFilteredCastList}
+              removeCastCrew={this.props.removeCastCrew}
+              isValidCastPersonValid={this.state.isValidCastPersonValid}
+              searchCastText={this.state.searchCastText}
+              loadOptionsCast={this.loadOptionsCast}
+              handleInputChangeCast={this.handleInputChangeCast}
+              handleOnSelectCast={this.handleOnSelectCast}
+
+              crewLabel={CREW_LABEL}
+              crewHtmlFor={CREW_HTML_FOR}
+              crewListLabel={CREW_LIST_LABEL}
+              crewHeader={CREW_HEADER}
+              getFilteredCrewList={getFilteredCrewList}
+              isValidCrewPersonValid={this.state.isValidCrewPersonValid}
+              searchCrewText={this.state.searchCrewText}
+              loadOptionsCrew={this.loadOptionsCrew}
+              handleInputChangeCrew={this.handleInputChangeCrew}
+              handleOnSelectCrew={this.handleOnSelectCrew}
+              getFormatTypeName={getFormatTypeName}
+            />
         </Row>
         <hr />
         <Row>

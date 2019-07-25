@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 import store from '../../../stores/index';
 import { loadAvailsMapping, loadSelectLists } from '../../../stores/actions/index';
 import { errorModal } from '../../../components/modal/ErrorModal';
-import { getSortedData } from '../../../constants/getSortedData';
+import { getSortedData } from '../../../util/Common';
 
 const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';

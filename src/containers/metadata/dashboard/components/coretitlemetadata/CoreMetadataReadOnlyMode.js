@@ -18,7 +18,7 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 import Rating from './rating/Rating';
 import Lozenge from '@atlaskit/lozenge';
-import { getSortedData } from '../../../../../constants/getSortedData';
+import { getSortedData } from '../../../../../util/Common';
 
 const SORT_TYPE = 'displayName';
 const IS_ASC = true;
