@@ -54,7 +54,7 @@
     shallow-equal "^1.0.0"
     tiny-invariant "^0.0.3"
 
-"@atlaskit/icon@^19.0.0":
+"@atlaskit/icon@^19.0.0", "@atlaskit/icon@^19.0.1":
   version "19.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-19.0.1.tgz#7ab35f14a9c0bdbc8e026f5e4e09fbe6aa8e398a"
   integrity sha512-iH/6EqQhxmGNhEvUfJuv0cy+sij8ucK0Ezt/p1O5alTrlg1U2uzrR6JsoflXkwRKxdBdNwLvp9Kdup5WI2uhUQ==
@@ -175,7 +175,11 @@
     exenv "^1.2.2"
     prop-types "^15.5.10"
 
+<<<<<<< HEAD
 "@atlaskit/theme@^9.0.3":
+=======
+"@atlaskit/theme@^9.1.0":
+>>>>>>> 8e4e61b63557aab04d71bb20b2614f35fcb16842
   version "9.1.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-9.1.2.tgz#30806ec5d8d369a9fe7e828c3783546240484b91"
   integrity sha512-pwelg9dmKomiSD/rVs8HwLvxRaFos4e45uiBVkiJdi9UsW+17pIcXegyMnSyCo/sVkZ2tr4gEJMrP/IUvR+Pwg==
@@ -184,7 +188,11 @@
     exenv "^1.2.2"
     prop-types "^15.5.10"
 
+<<<<<<< HEAD
 "@atlaskit/tooltip@^15.0.5":
+=======
+"@atlaskit/tooltip@^15.0.5", "@atlaskit/tooltip@^15.0.6":
+>>>>>>> 8e4e61b63557aab04d71bb20b2614f35fcb16842
   version "15.0.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tooltip/-/tooltip-15.0.6.tgz#f90d2fbc7e6610cc24b07658ce8d7bf4515315f7"
   integrity sha512-lvVQJGsjSSY1mKjVIxwqLpy1MUIj1cAlkqXDcGOxJ1Uzy0J8nerStKTtqjeyS5FPN614aMN/ln6OPBgGXFk6IA==
@@ -199,6 +207,7 @@
     react-transition-group "^2.2.1"
     tslib "^1.9.3"
 
+<<<<<<< HEAD
 "@atlaskit/user-picker@^4.0.18":
   version "4.0.18"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/user-picker/-/user-picker-4.0.18.tgz#b3a7eecb0b23bcd346fb43560fec00de33b387b9"
@@ -216,6 +225,12 @@
     lodash.debounce "^4.0.8"
     memoize-one "^3.0.1"
     uuid "^3.1.0"
+=======
+"@atlaskit/type-helpers@^4.1.5":
+  version "4.1.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/type-helpers/-/type-helpers-4.1.5.tgz#3abbe83d427761384ce1c3f3d829316f8eda431f"
+  integrity sha512-a/FF25C76ThwPmHlYt3hTxlEU6avqcbkCNBOaMRMvrF/yZTUnMEBxsvHXy7at/VFvju6dFUqEgd/OyvKmPkbAg==
+>>>>>>> 8e4e61b63557aab04d71bb20b2614f35fcb16842
 
 "@babel/code-frame@7.0.0", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.0.0-beta.35":
   version "7.0.0"
@@ -2910,6 +2925,11 @@ array-find-index@^1.0.1:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/array-find-index/-/array-find-index-1.0.2.tgz#df010aa1287e164bbda6f9723b0a96a1ec4187a1"
   integrity sha1-3wEKoSh+Fku9pvlyOwqWoexBh6E=
 
+array-find@^1.0.0:
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/array-find/-/array-find-1.0.0.tgz#6c8e286d11ed768327f8e62ecee87353ca3e78b8"
+  integrity sha1-bI4obRHtdoMn+OYuzuhzU8o+eLg=
+
 array-flatten@1.1.1:
   version "1.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
@@ -5454,6 +5474,11 @@ chownr@~1.0.1:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
   integrity sha1-4qdQQqlVGQi+vSW4Uj1fl2nXkYE=
 
+chromatism@^2.6.0:
+  version "2.6.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/chromatism/-/chromatism-2.6.0.tgz#c50ba715565bc9febd87b57a351850e1e51376a4"
+  integrity sha1-xQunFVZbyf69h7V6NRhQ4eUTdqQ=
+
 chrome-trace-event@^1.0.0:
   version "1.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/chrome-trace-event/-/chrome-trace-event-1.0.0.tgz#45a91bd2c20c9411f0963b5aaeb9a1b95e09cc48"
@@ -7485,6 +7510,15 @@ emojis-list@^2.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
 
+emotion-theming@^10.0.7:
+  version "10.0.14"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/emotion-theming/-/emotion-theming-10.0.14.tgz#e548d388493d07bedbb0d9d3bbe221766174b1f4"
+  integrity sha512-zMGhPSYz48AAR6DYjQVaZHeO42cYKPq4VyB1XjxzgR62/NmO99679fx8qDDB1QZVYGkRWZtsOe+zJE/e30XdbA==
+  dependencies:
+    "@babel/runtime" "^7.4.3"
+    "@emotion/weak-memoize" "0.2.3"
+    hoist-non-react-statics "^3.3.0"
+
 emotion@^9.1.2:
   version "9.2.12"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/emotion/-/emotion-9.2.12.tgz#53925aaa005614e65c6e43db8243c843574d1ea9"
@@ -7703,6 +7737,11 @@ es6-map@^0.1.3:
     es6-set "~0.1.5"
     es6-symbol "~3.1.1"
     event-emitter "~0.3.5"
+
+es6-object-assign@^1.1.0:
+  version "1.1.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
+  integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
 
 es6-promise@^4.0.3:
   version "4.2.5"
@@ -12980,7 +13019,7 @@ lodash.camelcase@^4.3.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
 
-lodash.clonedeep@^4.3.2, lodash.clonedeep@~4.5.0:
+lodash.clonedeep@^4.3.2, lodash.clonedeep@^4.5.0, lodash.clonedeep@~4.5.0:
   version "4.5.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
@@ -16769,6 +16808,11 @@ querystringify@^2.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/querystringify/-/querystringify-2.0.0.tgz#fa3ed6e68eb15159457c89b37bc6472833195755"
   integrity sha512-eTPo5t/4bgaMNZxyjWx6N2a6AuE0mq51KWvpc7nU/MAqixcI6v6KrGUKES0HaomdnolQBBXU/++X6/QQ9KL4tw==
 
+raf-schd@^2.1.0:
+  version "2.1.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/raf-schd/-/raf-schd-2.1.2.tgz#ec622b5167f2912089f054dc03ebd5bcf33c8f62"
+  integrity sha512-Orl0IEvMtUCgPddgSxtxreK77UiQz4nPYJy9RggVzu4mKsZkQWiAaG1y9HlYWdvm9xtN348xRaT37qkvL/+A+g==
+
 raf@3.4.0:
   version "3.4.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
@@ -16841,6 +16885,11 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-addons-text-content@^0.0.4:
+  version "0.0.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-addons-text-content/-/react-addons-text-content-0.0.4.tgz#d2e259fdc951d1d8906c08902002108dce8792e5"
+  integrity sha1-0uJZ/clR0diQbAiQIAIQjc6HkuU=
 
 react-app-polyfill@^0.2.1:
   version "0.2.2"
@@ -17378,6 +17427,13 @@ react-scripts@2.1.5:
     workbox-webpack-plugin "3.6.3"
   optionalDependencies:
     fsevents "1.2.4"
+
+react-scrolllock@^3.0.2:
+  version "3.0.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-scrolllock/-/react-scrolllock-3.0.2.tgz#b1607cb5f6b8a3bce02c78e7dfb1cbe564c1e992"
+  integrity sha512-ZShCKvt4bxxhqngaegHsZuoTIUDt4QOHd0saJ/cfJAu0LwCOoRaQfRZe9UPT/bpDE944u/GhuTWBmGaW9YER7Q==
+  dependencies:
+    exenv "^1.2.2"
 
 react-select@^2.1.1:
   version "2.4.1"
