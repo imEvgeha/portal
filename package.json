@@ -13,7 +13,6 @@
     "@atlaskit/button": "^13.0.16",
     "@atlaskit/form": "^6.1.4",
     "@atlaskit/icon": "^19.0.1",
-    "@atlaskit/navigation": "^35.1.12",
     "@atlaskit/page": "^11.0.5",
     "@atlaskit/select": "^10.0.0",
     "@atlaskit/theme": "^9.1.1",
