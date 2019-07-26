@@ -16,10 +16,10 @@ export const configFields = {
 
 const http = Http.create({noDefaultErrorHandling: true});
 
-const getConfigValues = (field, page, size, sortBy) => {
+export const getConfigApiValues = (urlBase, field, page, size, sortBy) => {
     let sortPath = sortBy ? ';'+ sortBy +'=ASC' : '';
-    let path = '/' + field + sortPath + '?page=' + page + '&size='+ size;
-    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
+    let path = field + sortPath + '?page=' + page + '&size='+ size;
+    return http.get(config.get('gateway.configuration') + urlBase + path);
 };
 
 export const searchPerson = (inputValue, size, castOrCrew) => {
@@ -39,7 +39,7 @@ const getAllConfigValuesByField = (field, sortBy) => {
     let total = 0;
     let result = [];
 
-    getConfigValues(field, startPage, size, sortBy)
+    getConfigApiValues(config.get('gateway.service.configuration') + '/', field, startPage, size, sortBy)
         .then((res) => {
             total = res.data.total;
             result = res.data.data;
@@ -48,7 +48,7 @@ const getAllConfigValuesByField = (field, sortBy) => {
         .then(() => {
             startPage++;
             for (startPage; total > size * (startPage); startPage++) {
-                getConfigValues(field, startPage, size, sortBy)
+                getConfigApiValues(config.get('gateway.service.configuration') + '/', field, startPage, size, sortBy)
                     .then((res) => {
                         result = [...result, ...res.data.data];
                         store.dispatch(loadConfigData(field, result));

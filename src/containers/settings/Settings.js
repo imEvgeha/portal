@@ -7,19 +7,20 @@ import {
     SideMenu,
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
-import GridContainer from './GridContainer';
+import {EndpointContainer} from '../config-api/EndpointContainer';
 
 export default class Settings extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            actualSchema: {}
+            selectedApi: configApiSchema['endpoints'][0]
         };
     }
 
-    onApiNavClick = (newSchema) => {
-        this.setState({actualSchema: newSchema});
+    onApiNavClick = (selectedApi) => {
+        console.log('onApiNavClick', selectedApi)
+        this.setState({selectedApi: selectedApi});
     };
 
     render() {
@@ -34,18 +35,18 @@ export default class Settings extends Component {
                 </SideMenu>
 
                 <SideMenu>
-                    <TextHeader>{'API\'s'}</TextHeader>
-                    <GroupHeader>Grouping Label</GroupHeader>
+                    <TextHeader>APIs</TextHeader>
+                    {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
                         {configApiSchema['endpoints'].map((e, i) => (
                             <ListElement key={i} onClick={() => {
-                                this.onApiNavClick(e.schema);
+                                this.onApiNavClick(e);
                             }}>{e.layout['display-name']}</ListElement>
                         ))}
                     </ListParent>
                 </SideMenu>
 
-                <GridContainer header={'Data container'} data={this.state.actualSchema.name}/>
+                <EndpointContainer urlBase={configApiSchema['url-base']} selectedApi={this.state.selectedApi}/>
             </div>
         );
     }

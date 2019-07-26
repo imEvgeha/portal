@@ -64,6 +64,18 @@
     "@babel/runtime" "^7.0.0"
     tslib "^1.9.3"
 
+"@atlaskit/pagination@^12.0.9":
+  version "12.0.9"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/pagination/-/pagination-12.0.9.tgz#20ac404430ffaf9d788e5c4b6d4006a3846ae5ef"
+  integrity sha512-ZkYbn0MDFPnISbGC9zxEGIzH3v2qLM2pX0XehbXgrZ+qkpIXOJEJ8Nmtt1VGsEXooVgJv5e6Ae5QbqUpe15oDg==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/button" "^13.0.16"
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    tslib "^1.9.3"
+
 "@atlaskit/popper@^3.0.0":
   version "3.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.0.0.tgz#85d0696a85dc26e506c78c287f536081120109f8"
