@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import { Label as LB } from '@atlaskit/field-base';
 
-class CastCrewCardContainer extends React.Component {
+class PersonListContainer extends React.Component {
     render() {
         return (
             <Card id='cardContainer'>
@@ -39,11 +39,11 @@ class CastCrewCardContainer extends React.Component {
     }
 }
 
-CastCrewCardContainer.propTypes = {
+PersonListContainer.propTypes = {
     children: PropTypes.any,
     title: PropTypes.string,
     label: PropTypes.string,
     htmlFor: PropTypes.string
 };
 
-export default CastCrewCardContainer;
+export default PersonListContainer;

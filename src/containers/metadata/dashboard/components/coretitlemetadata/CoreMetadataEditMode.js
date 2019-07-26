@@ -29,7 +29,7 @@ import {
   CREW_HEADER
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
-import CreateCastCrew from './CreateCastCrew';
+import PersonList from './PersonList';
 
 const mapStateToProps = state => {
   return {
@@ -45,20 +45,12 @@ class CoreMetadataEditMode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRatingValid: false,
-      isAdvisoryCodeValid: false,
-      castList: [],
-      crewList: [],
       ratings: [],
-      isValidCastPersonValid: true,
-      isValidCrewPersonValid: true,
-      persons: [],
-      searchCastText: '',
-      searchCrewText: '',
-      disableInput: false,
-      isHover: false
+      isPersonCastValid: true,
+      isPersonCrewValid: true,
+      searchPersonTextCast: '',
+      searchPersonTextCrew: ''
     };    
-    this.keyInputTimeout = 0;
   }
 
   handleRatingSystemValue = (e) => {
@@ -85,64 +77,57 @@ class CoreMetadataEditMode extends Component {
       person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
   };
 
-  validateAndAddCastPerson = (personJSON) => {
+  validateAndAddPerson = (personJSON, type) => {
       let person = JSON.parse(personJSON);
       let isValid = this.isSelectedPersonValid(person);
-      const length = getFilteredCastList(this.props.editedTitle.castCrew, false).length;
-      if (isValid && length < 5) {
-        this.props.addCastCrew(person);
+      if(type === CAST) {
+        const length = getFilteredCastList(this.props.editedTitle.castCrew).length;
+        if (isValid && length < 5) {
+          this.props.addCastCrew(person);
+          this.setState({
+            searchPersonTextCast: ''
+          });
+        }
         this.setState({
-          searchCrewText: ''
+          isPersonCastValid: isValid
+        });
+      } else {
+        if (isValid) {
+          this.props.addCastCrew(person);
+          this.setState({
+            searchPersonTextCrew: ''
+          });
+        }
+        this.setState({
+          isPersonCrewValid: isValid
         });
       }
-      this.setState({
-        isValidCastPersonValid: isValid
-      });
   };
 
-  validateAndAddCrewPerson = (personJSON) => {
-    let person = JSON.parse(personJSON);
-    let isValid = this.isSelectedPersonValid(person);
-    if (isValid) {
-      this.props.addCastCrew(person);
-      this.setState({
-        searchCrewText: ''
-      });
-    }
-    this.setState({
-      isValidCrewPersonValid: isValid
-    });
-};
-
-  loadOptionsCast = () => {
-    return searchPerson(this.state.searchCastText, PERSONS_PER_REQUEST, CAST)
+  loadOptionsPerson = (type) => {
+    if(type === CAST) {
+      return searchPerson(this.state.searchPersonTextCast, PERSONS_PER_REQUEST, CAST)
             .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
           );
+    } else {
+      return searchPerson(this.state.searchPersonTextCrew, PERSONS_PER_REQUEST, CREW)
+      .then(res => getFilteredCrewList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
+    );
+    }
   };
 
-  loadOptionsCrew = () => {
-    return searchPerson(this.state.searchCrewText, PERSONS_PER_REQUEST, CREW)
-            .then(res => getFilteredCrewList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
-          );
+  handleOnSelectPerson = (e, type) => {
+    this.validateAndAddPerson(e.original, type);
   }
 
-  handleOnSelectCast = e => {
-    this.validateAndAddCastPerson(e.original);
-  }
-
-  handleOnSelectCrew = e => {
-    this.validateAndAddCrewPerson(e.original);
-  }
-
-  handleInputChangeCast = e => {
+  handleInputChangePersonCast = e => {
     this.setState({
-      searchCastText: e
+      searchPersonTextCast: e
     });
   }
-
-  handleInputChangeCrew = e => {
+  handleInputChangePersonCrew = e => {
     this.setState({
-      searchCrewText: e
+      searchPersonTextCrew: e
     });
   }
 
@@ -150,32 +135,43 @@ class CoreMetadataEditMode extends Component {
     return (
       <Fragment>
         <Row>
-          <CreateCastCrew
-              castLabel={CAST_LABEL}
-              castHtmlFor={CAST_HTML_FOR}
-              castListLabel={CAST_LIST_LABEL}
-              castHeader={CAST_HEADER}
-              castCrew={this.props.editedTitle.castCrew}
-              getFilteredCastList={getFilteredCastList}
-              removeCastCrew={this.props.removeCastCrew}
-              isValidCastPersonValid={this.state.isValidCastPersonValid}
-              searchCastText={this.state.searchCastText}
-              loadOptionsCast={this.loadOptionsCast}
-              handleInputChangeCast={this.handleInputChangeCast}
-              handleOnSelectCast={this.handleOnSelectCast}
-
-              crewLabel={CREW_LABEL}
-              crewHtmlFor={CREW_HTML_FOR}
-              crewListLabel={CREW_LIST_LABEL}
-              crewHeader={CREW_HEADER}
-              getFilteredCrewList={getFilteredCrewList}
-              isValidCrewPersonValid={this.state.isValidCrewPersonValid}
-              searchCrewText={this.state.searchCrewText}
-              loadOptionsCrew={this.loadOptionsCrew}
-              handleInputChangeCrew={this.handleInputChangeCrew}
-              handleOnSelectCrew={this.handleOnSelectCrew}
-              getFormatTypeName={getFormatTypeName}
+          <Col>
+          <PersonList
+              personLabel={CAST_LABEL}
+              personHtmlFor={CAST_HTML_FOR}
+              personListLabel={CAST_LIST_LABEL}
+              personHeader={CAST_HEADER}
+              type={CAST}
+              person={this.props.editedTitle.castCrew}
+              filterPersonList={getFilteredCastList}
+              removePerson={this.props.removeCastCrew}
+              isPersonValid={this.state.isPersonCastValid}
+              searchPersonText={this.state.searchPersonTextCast}
+              loadOptionsPerson={this.loadOptionsPerson}
+              handleInputChangePerson={this.handleInputChangePersonCast}
+              handleOnSelectPerson={(e) => this.handleOnSelectPerson(e, CAST)}
+              personsLimit={5}
             />
+          </Col>
+          <Col>
+            <PersonList
+              personLabel={CREW_LABEL}
+              personHtmlFor={CREW_HTML_FOR}
+              personListLabel={CREW_LIST_LABEL}
+              personHeader={CREW_HEADER}
+              type={CREW}
+              person={this.props.editedTitle.castCrew}
+              filterPersonList={getFilteredCrewList}
+              removePerson={this.props.removeCastCrew}
+              isPersonValid={this.state.isPersonCrewValid}
+              searchPersonText={this.state.searchPersonTextCrew}
+              loadOptionsPerson={this.loadOptionsPerson}
+              handleInputChangePerson={this.handleInputChangePersonCrew}
+              handleOnSelectPerson={(e) => this.handleOnSelectPerson(e, CREW)}
+              getFormatTypeName={getFormatTypeName}
+              showPersonType={true}
+            />
+          </Col>
         </Row>
         <hr />
         <Row>
