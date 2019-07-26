@@ -15,6 +15,7 @@
     "@atlaskit/form": "^6.1.4",
     "@atlaskit/lozenge": "^9.0.3",
     "@atlaskit/navigation": "^35.1.12",
+    "@atlaskit/icon": "^19.0.1",
     "@atlaskit/page": "^11.0.5",
     "@atlaskit/select": "^10.0.0",
     "@atlaskit/theme": "^9.1.1",

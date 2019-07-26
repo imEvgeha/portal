@@ -102,6 +102,9 @@ class NavbarConnect extends React.Component {
                           'manage') ? 'user' : ''}
                                 </DropdownItem>
                                 <DropdownItem divider/>
+                                <DropdownItem>
+                                    <NavLink id="settings-link" to="/settings"><FontAwesome name='cog' style={{marginRight: '5px'}}/>settings</NavLink>
+                                </DropdownItem>
                                 <DropdownItem onClick={keycloak.instance.logout}>
                                     <span id="logout-btn"><FontAwesome name='sign-out-alt' style={{marginRight: '5px'}}/>logout</span>
                                 </DropdownItem>
