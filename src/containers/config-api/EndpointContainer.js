@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import Pagination from '@atlaskit/pagination';
-import {getConfigApiValues} from '../metadata/service/ConfigService';
+import {deleteConfigItemById, getConfigApiValues, searchItem} from '../metadata/service/ConfigService';
 import PropTypes from 'prop-types';
-import {ListElement, ListParent, TextHeader} from '../../components/navigation/CustomNavigationElements';
+import {TextHeader} from '../../components/navigation/CustomNavigationElements';
 import styled from 'styled-components';
 import FreeTextSearch from '../metadata/dashboard/components/FreeTextSearch';
-import { Button, Row } from 'reactstrap';
+import {ListGroup, ListGroupItem} from 'reactstrap';
+import FontAwesome from 'react-fontawesome';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -30,13 +31,22 @@ export class EndpointContainer extends Component {
         this.state = {
             pages: [1],
             data: [],
-            total: 0
+            total: 0,
+            lastPage: 0,
+            lastSearchInput: ''
         };
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.selectedApi !== this.props.selectedApi) {
+        if (prevProps.selectedApi !== this.props.selectedApi) {
             this.loadEndpointData(1);
+            this.setState({
+                pages: [1],
+                data: [],
+                total: 0,
+                lastPage: 0,
+                lastSearchInput: ''
+            });
         }
     }
 
@@ -47,19 +57,35 @@ export class EndpointContainer extends Component {
     }
 
     loadEndpointData = (page) => {
-        getConfigApiValues(this.props.urlBase, this.props.selectedApi.url, page - 1, pageSize).then((res) => {
+        let requestFunction;
+        if (this.state.lastSearchInput) {
+            requestFunction = searchItem(this.props.urlBase, this.props.selectedApi.url, 'id', this.state.lastSearchInput, page - 1, pageSize);
+        } else {
+            requestFunction = getConfigApiValues(this.props.urlBase, this.props.selectedApi.url, page - 1, pageSize);
+        }
+        requestFunction.then((res) => {
             this.setState({
                 pages: Array.from({length: (res.data.total / pageSize < 1 ? 1 : res.data.total / pageSize)}, (v, k) => k + 1),
                 data: res.data.data,
-                total: res.data.total
+                total: res.data.total,
+                lastPage: page
             });
-            console.log(res)
         });
     };
 
+
     handleTitleFreeTextSearch = (searchCriteria) => {
-        console.log(searchCriteria);
-    }
+        this.setState({
+            lastSearchInput: searchCriteria.title
+        });
+        this.loadEndpointData(1);
+    };
+
+
+    onRemoveItem = (item) => {
+        deleteConfigItemById(this.props.urlBase, this.props.selectedApi.url, item.id);
+        this.loadEndpointData(this.state.lastPage);
+    };
 
     render() {
         return (
@@ -68,13 +94,33 @@ export class EndpointContainer extends Component {
                 <DataBody>
                     <FreeTextSearch ontainerId={'dashboard-title'}
                                     onSearch={this.handleTitleFreeTextSearch}/>
-                    <ListParent>
-
-
-                        {this.state.data.map((e, i) => (
-                            <Row key={i}><ListElement>{e.displayName}</ListElement><Button className="float-right">X</Button></Row>
-                        ))}
-                    </ListParent>
+                    <ListGroup
+                        style={{
+                            overflowY: 'hidden',
+                            overFlowX: 'hidden',
+                            // maxHeight: '60vh'
+                            margin: '10px'
+                        }}
+                        id='listContainer'
+                    >
+                        {this.state.data.map((item, i) => {
+                            return (
+                                <React.Fragment key={i}>
+                                    <ListGroupItem key={i}>
+                                        {item.id}
+                                        <FontAwesome
+                                            className='float-right'
+                                            name='times-circle'
+                                            style={{marginTop: '5px', cursor: 'pointer'}}
+                                            color='#111'
+                                            size='lg'
+                                            onClick={() => this.onRemoveItem(item)}
+                                        />
+                                    </ListGroupItem>
+                                </React.Fragment>
+                            );
+                        })}
+                    </ListGroup>
                     <Pagination pages={this.state.pages} onChange={(event, newPage) => this.loadEndpointData(newPage)}/>
                 </DataBody>
             </DataContainer>

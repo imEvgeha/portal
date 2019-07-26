@@ -33,6 +33,22 @@ export const searchPerson = (inputValue, size, castOrCrew) => {
     return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
 };
 
+export const deleteConfigItemById = (urlBase, field, id) => {
+    let path = field + '/' + id;
+    return http.delete(config.get('gateway.configuration') + urlBase + path);
+};
+
+export const searchItem = (urlBase, urlApi, field, inputValue, page, size) => {
+    let searchBy = '?';
+    if(inputValue) {
+        searchBy += `${field}=${inputValue}&`;
+    }
+    // let sortPath = `;${field}=ASC`;
+    let sortPath = '';
+    let path = `/${urlApi}${sortPath}${searchBy}page=${page}&size=${size}`;
+    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
+};
+
 const getAllConfigValuesByField = (field, sortBy) => {
     let startPage = 0;
     let size = 10000;
