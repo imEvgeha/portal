@@ -26,6 +26,16 @@ class Rating extends Component {
         };
     }
 
+    getAdvisoryNameByCode = (code) => {
+        if (this.props.configAdvisoryCode) {
+            let found = this.props.configAdvisoryCode.value.find(e => e.code === code);
+            if (found) {
+                return found.name;
+            }
+        }
+        return code;
+    };
+
     toggle = () => {
         this.setState({
             tooltipOpen: !this.state.tooltipOpen
@@ -72,7 +82,7 @@ class Rating extends Component {
                                     <TabPane key={i} tabId={i}>
                                         <Row>
                                             <Col>
-                                                <RatingReadTab key={i} data={item} />
+                                                <RatingReadTab getAdvisoryNameByCode={this.getAdvisoryNameByCode} key={i} data={item} />
                                             </Col>
                                         </Row>
                                     </TabPane>);
@@ -96,6 +106,7 @@ class Rating extends Component {
                                                 configAdvisoryCode={this.props.configAdvisoryCode}
                                                 advisoryCodeList={this.state.advisoryCodeList}
                                                 ratings={this.props.ratings}
+                                                getAdvisoryNameByCode={this.getAdvisoryNameByCode}
                                             />
                                         </Col>
                                     </Row>
@@ -112,6 +123,7 @@ class Rating extends Component {
                                                             configRatings={this.props.configRatings}
                                                             configAdvisoryCode={this.props.configAdvisoryCode}
                                                             advisoryCodeList={this.state.advisoryCodeList}
+                                                            getAdvisoryNameByCode={this.getAdvisoryNameByCode}
                                                             key={i}
                                                             data={item} />
                                                     </Col>

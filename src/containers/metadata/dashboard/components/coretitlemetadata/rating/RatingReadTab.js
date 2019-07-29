@@ -23,7 +23,7 @@ class RatingReadTab extends Component {
                         <Col><b>Rating: </b> {rating ? rating : this.emptySpan()}</Col>
                         <Col><b>Advisory Codes: </b> {advisoriesCode && advisoriesCode.length > 0 ?
                             advisoriesCode.map((code, i) => (
-                                advisoriesCode.length === i + 1 ? <span key={i}>{code}</span> : <span key={i}>{code},</span>
+                                advisoriesCode.length === i + 1 ? <span key={i}>{this.props.getAdvisoryNameByCode(code)}</span> : <span key={i}>{this.props.getAdvisoryNameByCode(code)},</span>
                             )) : 
                             this.emptySpan()}</Col>
                     </Row>
@@ -39,7 +39,8 @@ class RatingReadTab extends Component {
 }
 
 RatingReadTab.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    getAdvisoryNameByCode: PropTypes.func
 };
 
 
