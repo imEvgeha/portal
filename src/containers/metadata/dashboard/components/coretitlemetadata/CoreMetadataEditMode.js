@@ -98,8 +98,6 @@ class CoreMetadataEditMode extends Component {
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
-              handleInputChangePerson={this.handleInputChangePersonCast}
-              handleOnSelectPerson={(e) => this.handleOnSelectPerson(e, CAST)}
               personsLimit={5}
             />
           </Col>
@@ -115,8 +113,6 @@ class CoreMetadataEditMode extends Component {
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
-              handleInputChangePerson={this.handleInputChangePersonCrew}
-              handleOnSelectPerson={(e) => this.handleOnSelectPerson(e, CREW)}
               getFormatTypeName={getFormatTypeName}
               showPersonType={true}
             />

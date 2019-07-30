@@ -124,8 +124,6 @@ PersonList.propTypes = {
     filterPersonList: PropTypes.func,
     person: PropTypes.array,
     removePerson: PropTypes.func,
-    handleOnSelectPerson: PropTypes.func,
-    handleInputChangePerson: PropTypes.func,
     loadOptionsPerson: PropTypes.any,
     personHeader: PropTypes.string,
     personLabel: PropTypes.string,
@@ -133,7 +131,6 @@ PersonList.propTypes = {
     personHtmlFor: PropTypes.string,
     type: PropTypes.string,
     getFormatTypeName: PropTypes.func,
-    personMaxLength: PropTypes.func,
     personsLimit: PropTypes.number,
     showPersonType: PropTypes.bool,
     addPerson: PropTypes.func
