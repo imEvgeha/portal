@@ -1,18 +1,18 @@
 import React from 'react';
-import {Button} from 'reactstrap';
+import { Button } from 'reactstrap';
 import t from 'prop-types';
 import RightsResultTable from '../dashboard/components/RightsResultTable';
-import {profileService} from '../service/ProfileService';
-import {historyService} from '../service/HistoryService';
-import {rightSearchHelper} from '../dashboard/RightSearchHelper';
-import {URL} from '../../../util/Common';
-import {Can} from '../../../ability';
+import { profileService } from '../service/ProfileService';
+import { historyService } from '../service/HistoryService';
+import { rightSearchHelper } from '../dashboard/RightSearchHelper';
+import { URL } from '../../../util/Common';
+import { Can } from '../../../ability';
 import DashboardDropableCard from '../dashboard/card/DashboardDropableCard';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {RIGHTS_CREATE_FROM_PDF} from '../../../constants/breadcrumb';
-import {connect} from 'react-redux';
+import { RIGHTS_CREATE_FROM_PDF } from '../../../constants/breadcrumb';
+import { connect } from 'react-redux';
 
-const REFRESH_INTERVAL = 5*1000; //5 seconds
+const REFRESH_INTERVAL = 5 * 1000; //5 seconds
 
 const mapStateToProps = state => {
     return {
@@ -37,25 +37,25 @@ class RightsCreateFromAttachment extends React.Component {
         this.createRight = this.createRight.bind(this);
         this.getHistoryData = this.getHistoryData.bind(this);
         this.refresh = null;
-        this.state={
+        this.state = {
             availHistoryId: this.props.match.params.availHistoryIds,
-            historyData:{},
+            historyData: {}
         };
     }
 
     componentDidMount() {
-        if(this.props.location && this.props.location.search) {
+        if (this.props.location && this.props.location.search) {
             const sparams = new URLSearchParams(this.props.location.search);
             const availHistoryIds = sparams.get('availHistoryIds');
-            if(availHistoryIds) {
+            if (availHistoryIds) {
                 sparams.delete('availHistoryIds');
                 this.context.router.history.replace('/avails/history/' + availHistoryIds + '/create_from_attachments?' + sparams.toString());
                 return;
             }
         }
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(RIGHTS_CREATE_FROM_PDF);
+        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(RIGHTS_CREATE_FROM_PDF);
 
-        if(!this.props.availsMapping) {
+        if (!this.props.availsMapping) {
             profileService.initAvailsMapping();
             return;
         }
@@ -63,32 +63,32 @@ class RightsCreateFromAttachment extends React.Component {
         this.getSearchCriteriaFromURL();
     }
 
-    getSearchCriteriaFromURL(){
-        rightSearchHelper.advancedSearch({availHistoryIds: this.state.availHistoryId}, false);
+    getSearchCriteriaFromURL() {
+        rightSearchHelper.advancedSearch({ availHistoryIds: this.state.availHistoryId }, false);
         this.getHistoryData();
-        if(this.refresh === null){
+        if (this.refresh === null) {
             this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
         }
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.availsMapping !== this.props.availsMapping) {
+        if (prevProps.availsMapping !== this.props.availsMapping) {
             this.getSearchCriteriaFromURL();
         }
     }
 
     componentWillUnmount() {
-        if(this.refresh !== null){
+        if (this.refresh !== null) {
             clearInterval(this.refresh);
             this.refresh = null;
         }
     }
 
     getHistoryData() {
-        if(this.state.availHistoryId){
+        if (this.state.availHistoryId) {
             historyService.getHistory(this.state.availHistoryId)
                 .then(res => {
-                    if(res && res.data) {
+                    if (res && res.data) {
                         this.setState({
                             historyData: res.data,
                         });
@@ -103,17 +103,17 @@ class RightsCreateFromAttachment extends React.Component {
         this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.state.availHistoryId + '/rights/create'));
     }
 
-    getDownloadLink(attachment){
-        if(!attachment.id) return;
+    getDownloadLink(attachment) {
+        if (!attachment.id) return;
 
         let filename = 'Unknown';
-        if(attachment.link) {
+        if (attachment.link) {
             filename = attachment.link.split(/(\\|\/)/g).pop();
         }
 
         historyService.getAvailHistoryAttachment(attachment.id)
             .then(response => {
-                if(response && response.data && response.data.downloadUrl){
+                if (response && response.data && response.data.downloadUrl) {
                     const link = document.createElement('a');
                     link.href = response.data.downloadUrl;
                     link.setAttribute('download', filename);
@@ -128,57 +128,56 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     formatAttachmentName = (attachment) => {
-        return attachment.link.split(/(\\|\/)/g).pop();
+        return attachment.split(/(\\|\/)/g).pop();
     }
 
     filterAttachmentByType = (type) => {
-        return this.state.historyData.attachments && this.state.historyData.attachments.filter(({attachmentType}) => attachmentType === type);
+        return this.state.historyData.attachments &&
+            this.state.historyData.attachments
+                .filter(({ attachmentType }) => attachmentType === type)
+                .map((e, i, arr) => {
+                    if(type === 'Email') {
+                        return (
+                            <div key={i} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}>
+                                    <a href="#" onClick = {() => this.getDownloadLink(e)} title={this.formatAttachmentName(e.link)} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-envelope'}></i></a>
+                                </div>
+                        );
+                    } else {
+                        return (
+                            <div key={i} style={{ display: 'inline-block' }}>
+                                <a href="#" className={'text-danger'} onClick={() => this.getDownloadLink(e)}>{this.formatAttachmentName(e.link)}</a>{arr.length - 1 === i ? '' : ','}&nbsp;&nbsp;&nbsp;
+                                </div>
+                        );
+                    }
+                });
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className={'mx-2'}>
                 <div className={'d-flex justify-content-between'}>
                     <div>
                         <div><h3>Create Rights from PDF </h3></div>
-                        <div> Studio: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Email').map((e, i) => {
-                            return (
-                                <div key={i} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}>
-                                    <a href="#" onClick = {() => this.getDownloadLink(e)} title={this.formatAttachmentName(e)} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-envelope'}></i></a>
-                                </div>
-                            );
-                        })}</div>
-                        <div> PDF Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('PDF').map((e, i) => {
-                            return (
-                                <div key={i} style={{display:'inline-block'}}>
-                                    <a href="#" className={'text-danger'} onClick = {() => this.getDownloadLink(e)}>{this.formatAttachmentName(e)}</a>&nbsp;&nbsp;&nbsp;
-                                </div>
-                            );
-                        })}</div>
-                        <div> Upload Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Excel').map((e, i) => {
-                            return (
-                                <div key={i} style={{display:'inline-block'}}>
-                                    <a href="#" className={'text-danger'} onClick = {() => this.getDownloadLink(e)}>{this.formatAttachmentName(e)}</a>&nbsp;&nbsp;&nbsp;
-                                </div>
-                            );
-                        })}</div>
+                        <div> Studio: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Email')}</div>
+                        <div> PDF Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('PDF')}</div>
+                        <div> Upload Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Excel')}</div>
                         <Button className={'align-bottom mt-5'} id="right-create" onClick={this.createRight}>Create Right</Button>
                     </div>
                     <div>
                         <Can I="create" a="Avail">
                             <DashboardDropableCard
-                                externalId = {this.state.historyData ? this.state.historyData.externalId : null}
+                                externalId={this.state.historyData ? this.state.historyData.externalId : null}
                             />
                         </Can>
                     </div>
                 </div>
-                <hr style={{color:'black', backgroundColor:'black'}}/>
+                <hr style={{ color: 'black', backgroundColor: 'black' }} />
                 <div> Rights Created </div>
                 {this.props.availsMapping &&
                     <RightsResultTable
                         fromServer={true}
                         columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
-                        nav={{back: 'create_from_attachments', params: {availHistoryId: this.state.availHistoryId}}}
+                        nav={{ back: 'create_from_attachments', params: { availHistoryId: this.state.availHistoryId } }}
                         autoload={false}
                     />
                 }
