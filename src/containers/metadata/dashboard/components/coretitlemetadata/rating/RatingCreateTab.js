@@ -151,14 +151,14 @@ class RatingCreateTab extends Component {
                             <Select
                                 name="advisoriesCode"
                                 value={this.props.ratingObjectForCreate.advisoriesCode && this.props.ratingObjectForCreate.advisoriesCode.map(e => {
-                                    return { value: e, label: e };
+                                    return { value: e, label: this.props.getAdvisoryNameByCode(e) };
                                 })}
                                 onChange={(e) => this.handleAdvisoryCodesChange(e)}
                                 isMulti
                                 placeholder='Select Advisory Code'
                                 options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
                                     .map(e => {
-                                        return { value: e.name, label: e.name };
+                                        return { value: e.code, label: e.name };
                                     })}
                             />
                         </Col>
@@ -198,7 +198,8 @@ RatingCreateTab.propTypes = {
     handleAdvisoryCodeChange: PropTypes.func,
     areRatingFieldsRequired: PropTypes.bool,
     handleRatingCreateChange: PropTypes.func,
-    ratings: PropTypes.array
+    ratings: PropTypes.array,
+    getAdvisoryNameByCode: PropTypes.func,
 };
 
 export default RatingCreateTab;
