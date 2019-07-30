@@ -45,11 +45,7 @@ class CoreMetadataEditMode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ratings: [],
-      isPersonCastValid: true,
-      isPersonCrewValid: true,
-      searchPersonTextCast: '',
-      searchPersonTextCrew: ''
+      ratings: []
     };    
   }
 
@@ -100,8 +96,6 @@ class CoreMetadataEditMode extends Component {
               person={this.props.editedTitle.castCrew}
               filterPersonList={getFilteredCastList}
               removePerson={this.props.removeCastCrew}
-              isPersonValid={this.state.isPersonCastValid}
-              searchPersonText={this.state.searchPersonTextCast}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
               handleInputChangePerson={this.handleInputChangePersonCast}
@@ -119,8 +113,6 @@ class CoreMetadataEditMode extends Component {
               person={this.props.editedTitle.castCrew}
               filterPersonList={getFilteredCrewList}
               removePerson={this.props.removeCastCrew}
-              isPersonValid={this.state.isPersonCrewValid}
-              searchPersonText={this.state.searchPersonTextCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
               handleInputChangePerson={this.handleInputChangePersonCrew}

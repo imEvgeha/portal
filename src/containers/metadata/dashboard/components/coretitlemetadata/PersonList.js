@@ -121,8 +121,6 @@ class PersonList extends React.Component {
 }
 
 PersonList.propTypes = {
-    searchPersonText: PropTypes.string,
-    isPersonValid: PropTypes.bool,
     filterPersonList: PropTypes.func,
     person: PropTypes.array,
     removePerson: PropTypes.func,
