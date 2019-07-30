@@ -72,64 +72,19 @@ class CoreMetadataEditMode extends Component {
     this.props.handleOnLegacyIds(vzLegacyId);
   }
 
-  isSelectedPersonValid = (selectedPerson) => {
-    return this.props.editedTitle.castCrew === null || this.props.editedTitle.castCrew.findIndex(person =>
-      person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
-  };
+  
 
-  validateAndAddPerson = (personJSON, type) => {
-      let person = JSON.parse(personJSON);
-      let isValid = this.isSelectedPersonValid(person);
-      if(type === CAST) {
-        const length = getFilteredCastList(this.props.editedTitle.castCrew).length;
-        if (isValid && length < 5) {
-          this.props.addCastCrew(person);
-          this.setState({
-            searchPersonTextCast: ''
-          });
-        }
-        this.setState({
-          isPersonCastValid: isValid
-        });
-      } else {
-        if (isValid) {
-          this.props.addCastCrew(person);
-          this.setState({
-            searchPersonTextCrew: ''
-          });
-        }
-        this.setState({
-          isPersonCrewValid: isValid
-        });
-      }
-  };
-
-  loadOptionsPerson = (type) => {
+  loadOptionsPerson = (searchPersonText, type) => {
     if(type === CAST) {
-      return searchPerson(this.state.searchPersonTextCast, PERSONS_PER_REQUEST, CAST)
+      return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST)
             .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
           );
     } else {
-      return searchPerson(this.state.searchPersonTextCrew, PERSONS_PER_REQUEST, CREW)
+      return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
       .then(res => getFilteredCrewList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
     );
     }
-  };
-
-  handleOnSelectPerson = (e, type) => {
-    this.validateAndAddPerson(e.original, type);
-  }
-
-  handleInputChangePersonCast = e => {
-    this.setState({
-      searchPersonTextCast: e
-    });
-  }
-  handleInputChangePersonCrew = e => {
-    this.setState({
-      searchPersonTextCrew: e
-    });
-  }
+  };  
 
   render() {
     return (
@@ -148,6 +103,7 @@ class CoreMetadataEditMode extends Component {
               isPersonValid={this.state.isPersonCastValid}
               searchPersonText={this.state.searchPersonTextCast}
               loadOptionsPerson={this.loadOptionsPerson}
+              addPerson={this.props.addCastCrew}
               handleInputChangePerson={this.handleInputChangePersonCast}
               handleOnSelectPerson={(e) => this.handleOnSelectPerson(e, CAST)}
               personsLimit={5}
@@ -166,6 +122,7 @@ class CoreMetadataEditMode extends Component {
               isPersonValid={this.state.isPersonCrewValid}
               searchPersonText={this.state.searchPersonTextCrew}
               loadOptionsPerson={this.loadOptionsPerson}
+              addPerson={this.props.addCastCrew}
               handleInputChangePerson={this.handleInputChangePersonCrew}
               handleOnSelectPerson={(e) => this.handleOnSelectPerson(e, CREW)}
               getFormatTypeName={getFormatTypeName}
