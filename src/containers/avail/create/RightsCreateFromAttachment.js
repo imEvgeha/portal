@@ -131,15 +131,15 @@ class RightsCreateFromAttachment extends React.Component {
         return attachment.split(/(\\|\/)/g).pop();
     }
 
-    filterAttachmentByType = (type) => {
+    filterAttachmentByType = (type, icon) => {
         return this.state.historyData.attachments &&
             this.state.historyData.attachments
                 .filter(({ attachmentType }) => attachmentType === type)
                 .map((e, i, arr) => {
-                    if(type === 'Email') {
+                    if(icon) {
                         return (
                             <div key={i} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}>
-                                    <a href="#" onClick = {() => this.getDownloadLink(e)} title={this.formatAttachmentName(e.link)} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-envelope'}></i></a>
+                                    <a href="#" onClick = {() => this.getDownloadLink(e)} title={this.formatAttachmentName(e.link)} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={icon}></i></a>
                                 </div>
                         );
                     } else {
@@ -158,7 +158,7 @@ class RightsCreateFromAttachment extends React.Component {
                 <div className={'d-flex justify-content-between'}>
                     <div>
                         <div><h3>Create Rights from PDF </h3></div>
-                        <div> Studio: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Email')}</div>
+                        <div> Studio: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Email', 'far fa-envelope')}</div>
                         <div> PDF Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('PDF')}</div>
                         <div> Upload Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Excel')}</div>
                         <Button className={'align-bottom mt-5'} id="right-create" onClick={this.createRight}>Create Right</Button>
