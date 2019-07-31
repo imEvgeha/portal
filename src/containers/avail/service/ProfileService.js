@@ -3,6 +3,7 @@ import config from 'react-global-configuration';
 import store from '../../../stores/index';
 import { loadAvailsMapping, loadSelectLists } from '../../../stores/actions/index';
 import { errorModal } from '../../../components/modal/ErrorModal';
+import { getSortedData } from '../../../util/Common';
 
 const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';
@@ -16,10 +17,6 @@ const getAvailsMapping = () => {
 
 const getSelectValues = (field) => {
     return http.get(config.get('gateway.configuration') + '/configuration-api/v1' + field + '?page=0&size=10000');
-};
-
-const getSortedData = (data, prop, isAsc) => {
-    return data.sort((a, b) => (a[prop] < b[prop] ? -1 : 1) * (isAsc ? 1 : -1));
 };
 
 export const profileService = {

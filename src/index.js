@@ -4,6 +4,7 @@ import './global.scss';
 import axios from 'axios';
 import config from 'react-global-configuration';
 import {defaultConfiguration} from './config';
+import { IntlProvider } from 'react-intl';
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -54,7 +55,9 @@ function init() {
 
                 render(
                     <Provider store={store}>
-                        <App/>
+                        <IntlProvider locale="en">
+                            <App />
+                        </IntlProvider>
                     </Provider>,
                     document.querySelector('#app')
                 );

@@ -3,27 +3,34 @@ import {
   FormGroup,
   Label,
   Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Card,
-  CardHeader,
-  CardBody
+  Col
 } from 'reactstrap';
-import FontAwesome from 'react-fontawesome';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
 import { AvField } from 'availity-reactstrap-validation';
-import CoreMetadataCreateCastModal from './CoreMetadataCreateCastModal';
-import CoreMetadataCreateCrewModal from './CoreMetadataCreateCrewModal';
 import { connect } from 'react-redux';
-import { configFields } from '../../../service/ConfigService';
+import { configFields, searchPerson } from '../../../service/ConfigService';
 import {
-  CREW,
   CAST,
-  getFilteredCrewList, getFilteredCastList, getFormatTypeName
+  getFilteredCrewList, 
+  getFilteredCastList, 
+  getFormatTypeName, 
+  CREW,
+  PERSONS_PER_REQUEST
 } from '../../../../../constants/metadata/configAPI';
+import {
+  CREW_LIST_LABEL,
+  CAST_LIST_LABEL,
+  CAST_LABEL,
+  CREW_LABEL,
+  CAST_HTML_FOR,
+  CREW_HTML_FOR,
+  CAST_HEADER,
+  CREW_HEADER
+} from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
+import PersonList from './PersonList';
+import { CAST_LIMIT } from '../../../../../constants/metadata/constant-variables';
 
 const mapStateToProps = state => {
   return {
@@ -39,12 +46,8 @@ class CoreMetadataEditMode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRatingValid: false,
-      isAdvisoryCodeValid: false,
-      castList: [],
-      crewList: [],
-      ratings: [],
-    };
+      ratings: []
+    };    
   }
 
   handleRatingSystemValue = (e) => {
@@ -56,10 +59,6 @@ class CoreMetadataEditMode extends Component {
 
   };
 
-  shouldComponentUpdate(nextProps) {
-    return this.props !== nextProps;
-  }
-
   handleMovidaLegacyIds(e) {
     let movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
     this.props.handleOnLegacyIds(movidaLegacyId);
@@ -70,96 +69,54 @@ class CoreMetadataEditMode extends Component {
     this.props.handleOnLegacyIds(vzLegacyId);
   }
 
+  
+
+  loadOptionsPerson = (searchPersonText, type) => {
+    if(type === CAST) {
+      return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST)
+            .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
+          );
+    } else {
+      return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
+      .then(res => getFilteredCrewList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
+    );
+    }
+  };  
+
   render() {
     return (
       <Fragment>
         <Row>
           <Col>
-            <Card id='cardContainer'>
-              <CardHeader className='clearfix'>
-                <h4 className='float-left'>Cast</h4>
-                <FontAwesome
-                  onClick={() => this.props.renderModal(CAST)}
-                  className='float-right'
-                  name='plus-circle'
-                  style={{ marginTop: '8px', cursor: 'pointer' }}
-                  color='#111'
-                  size='lg'
-                />
-              </CardHeader>
-              <CardBody>
-                <ListGroup
-                  style={{
-                    overflowY: 'scroll',
-                    overFlowX: 'hidden',
-                    maxHeight: '280px'
-                  }}
-                  id='listContainer'
-                >
-                  {this.props.editedTitle.castCrew &&
-                    getFilteredCastList(this.props.editedTitle.castCrew, false).map((cast, i) => {
-                      return (
-                        <React.Fragment key={i}>
-                          <ListGroupItem key={i}>
-                            {cast.displayName}
-                            <FontAwesome
-                              className='float-right'
-                              name='times-circle'
-                              style={{ marginTop: '5px', cursor: 'pointer' }}
-                              color='#111'
-                              size='lg'
-                              onClick={() => this.props.removeCastCrew(cast)}
-                            />
-                          </ListGroupItem>
-                        </React.Fragment>
-                      );
-                    })}
-                </ListGroup>
-              </CardBody>
-            </Card>
+          <PersonList
+              personLabel={CAST_LABEL}
+              personHtmlFor={CAST_HTML_FOR}
+              personListLabel={CAST_LIST_LABEL}
+              personHeader={CAST_HEADER}
+              type={CAST}
+              persons={this.props.editedTitle.castCrew}
+              filterPersonList={getFilteredCastList}
+              removePerson={this.props.removeCastCrew}
+              loadOptionsPerson={this.loadOptionsPerson}
+              addPerson={this.props.addCastCrew}
+              personsLimit={CAST_LIMIT}
+            />
           </Col>
           <Col>
-            <Card id='cardContainer'>
-              <CardHeader className='clearfix'>
-                <h4 className='float-left'>Crew</h4>
-                <FontAwesome
-                  className='float-right'
-                  onClick={() => this.props.renderModal(CREW)}
-                  name='plus-circle'
-                  style={{ marginTop: '8px', cursor: 'pointer' }}
-                  color='#111'
-                  size='lg'
-                />
-              </CardHeader>
-              <CardBody>
-                <ListGroup
-                  style={{
-                    overflowY: 'scroll',
-                    overFlowX: 'hidden',
-                    maxHeight: '280px'
-                  }}
-                  id='listContainer'
-                >
-                  {this.props.editedTitle.castCrew &&
-                    getFilteredCrewList(this.props.editedTitle.castCrew, false).map((crew, i) => (
-                      <ListGroupItem key={i}>
-                        <span style={{ fontSize: '14px', color: '#666' }}>
-                          {getFormatTypeName(crew.personType)}
-                        </span>{' '}
-                        {crew.displayName}
-                        <FontAwesome
-                          className='float-right'
-                          name='times-circle'
-                          style={{ marginTop: '5px', cursor: 'pointer' }}
-                          color='#111'
-                          size='lg'
-                          onClick={() => this.props.removeCastCrew(crew)}
-                        />
-                      </ListGroupItem>
-                    ))}
-                </ListGroup>
-              </CardBody>
-            </Card>
+            <PersonList
+              personLabel={CREW_LABEL}
+              personHtmlFor={CREW_HTML_FOR}
+              personListLabel={CREW_LIST_LABEL}
+              personHeader={CREW_HEADER}
+              type={CREW}
+              persons={this.props.editedTitle.castCrew}
+              filterPersonList={getFilteredCrewList}
+              removePerson={this.props.removeCastCrew}
+              loadOptionsPerson={this.loadOptionsPerson}
+              addPerson={this.props.addCastCrew}
+              getFormatTypeName={getFormatTypeName}
+              showPersonType={true}
+            />
           </Col>
         </Row>
         <hr />
@@ -442,24 +399,6 @@ class CoreMetadataEditMode extends Component {
             </Col>
           </Row>
         </div>
-        <CoreMetadataCreateCastModal
-          isCastModalOpen={this.props.isCastModalOpen}
-          renderCastModal={this.props.renderModal}
-          addCastCrew={this.props.addCastCrew}
-          castInputValue={this.props.castInputValue}
-          cleanCastInput={this.props.cleanCastInput}
-          configCastAndCrew={this.props.configCastAndCrew}
-          castCrewList={this.props.editedTitle.castCrew}
-        />
-        <CoreMetadataCreateCrewModal
-          isCrewModalOpen={this.props.isCrewModalOpen}
-          renderCrewModal={this.props.renderModal}
-          addCastCrew={this.props.addCastCrew}
-          castInputValue={this.props.castInputValue}
-          cleanCastInput={this.props.cleanCastInput}
-          configCastAndCrew={this.props.configCastAndCrew}
-          castCrewList={this.props.editedTitle.castCrew}
-        />
       </Fragment>
     );
   }
@@ -480,13 +419,9 @@ CoreMetadataEditMode.propTypes = {
   handleOnExternalIds: PropTypes.func,
   handleOnLegacyIds: PropTypes.func,
 
-  renderModal: PropTypes.func,
   isCrewModalOpen: PropTypes.bool,
-  isCastModalOpen: PropTypes.bool,
-  castInputValue: PropTypes.string,
   removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
-  cleanCastInput: PropTypes.func,
   addCastCrew: PropTypes.func,
 
   ratings: PropTypes.array,

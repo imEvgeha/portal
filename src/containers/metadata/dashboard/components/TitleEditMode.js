@@ -471,16 +471,11 @@ class TitleEditMode extends Component {
               onChange={this.props.handleOnChangeEdit}
               handleOnExternalIds={this.props.handleOnExternalIds}
               handleOnLegacyIds={this.props.handleOnLegacyIds}
-              isCastModalOpen={this.props.isCastModalOpen}
-              isCrewModalOpen={this.props.isCrewModalOpen}
-              renderModal={this.props.renderModal}
-              castInputValue={this.props.castInputValue}
               removeCastCrew={this.props.removeCastCrew}
               ratings={this.props.ratings}
               handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
               ratingObjectForCreate={this.props.ratingObjectForCreate}
               addCastCrew={this.props.addCastCrew}
-              updateCastCrewValue={this.props.updateCastCrewValue}
               editedTitle={this.props.editedTitle}
           />
         </Container>
@@ -506,13 +501,8 @@ TitleEditMode.propTypes = {
   handleOnLegacyIds: PropTypes.func,
   editedTitle: PropTypes.object,
   ratings: PropTypes.array,
-  updateCastCrewValue: PropTypes.func,
   addCastCrew: PropTypes.func,
   removeCastCrew: PropTypes.func,
-  castInputValue: PropTypes.string,
-  renderModal: PropTypes.func,
-  isCrewModalOpen: PropTypes.bool,
-  isCastModalOpen: PropTypes.bool,
   handleOnChangeTitleDuration: PropTypes.func,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
