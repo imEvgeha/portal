@@ -12,13 +12,21 @@ export default function withColumnsReorder(WrappedComponent){
 
             this.state = {
                 table: null,
-                columns: [],
+                columns: this.props.columnsOrder ? this.props.columnsOrder : [],
+                cols: [],
                 columnsSize: {}
             };
+
+            this.refreshColumns();
         }
 
-        componentDidMount() {
-            this.refreshColumns();
+        componentDidUpdate(prevProps) {
+            if(prevProps.availsMapping !== this.props.availsMapping){
+                refreshColumns();
+            }
+            if(prevProps.columnsOrder !== this.props.columnsOrder){
+                this.setState({columns: this.props.columnsOrder});
+            }
         }
 
         onColumnReordered(e) {
@@ -26,7 +34,10 @@ export default function withColumnsReorder(WrappedComponent){
             e.columnApi.getAllGridColumns().map(column => {
                 if(column.colDef.headerName !== '') cols.push(column.colDef.field);
             });
-            this.setState({cols: cols});
+            this.setState({columns: cols});
+            if(this.props.updateColumnsOrder){
+                this.props.updateColumnsOrder(cols);
+            }
         }
 
         onColumnResized(e) {
@@ -36,8 +47,10 @@ export default function withColumnsReorder(WrappedComponent){
         }
 
         refreshColumns(){
-            let columns = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
-            this.setState({ columns: columns});
+            if(!this.props.columnsOrder){
+                let columns = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
+                this.setState({ columns: columns});
+            }
         }
 
         setTable(element){

@@ -10,7 +10,7 @@ export default function withServerSorting(WrappedComponent){
 
             this.state = {
                 table: null,
-                sort: []
+                sort: this.props.availTabPageSort ? this.props.availTabPageSort : []
             };
         }
 
@@ -23,14 +23,13 @@ export default function withServerSorting(WrappedComponent){
 
         refreshSort(){
             if(!this.state.table) return;
-            let sortSource = this.props.availTabPageSort ? this.props.availTabPageSort : this.state.sort;
             let sortModel=[];
-            sortSource.map(sortCriteria=>{
+            this.state.sort.map(sortCriteria=>{
                 sortModel.push({colId:this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === sortCriteria.id).javaVariableName, sort:sortCriteria.desc ? 'desc' : 'asc'});
             });
 
-            let currentSortModel=this.state.table.api.getSortModel();
-            let toChangeSortModel=false;
+            let currentSortModel = this.state.table.api.getSortModel();
+            let toChangeSortModel = false;
 
             if(currentSortModel.length !== sortModel.length) toChangeSortModel=true;
 
@@ -69,7 +68,6 @@ export default function withServerSorting(WrappedComponent){
         }
 
         render(){
-            this.refreshSort();
             return <WrappedComponent
                 {...this.props}
                 setTable={this.setTable}
