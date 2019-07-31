@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import { Label as LB } from '@atlaskit/field-base';
+import { Label } from '@atlaskit/field-base';
 
 class PersonListContainer extends React.Component {
     render() {
@@ -25,13 +25,13 @@ class PersonListContainer extends React.Component {
                         }}
                         id='listContainer'
                         >
-                            <LB
+                            <Label
                                 label={this.props.label}
                                 isFirstChild
                                 htmlFor={this.props.htmlFor}
                             >  
                                 {this.props.children}                                
-                            </LB>
+                            </Label>
                         </ListGroup>
                     </CardBody>
                     </Card>
