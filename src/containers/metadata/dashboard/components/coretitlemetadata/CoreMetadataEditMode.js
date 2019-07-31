@@ -30,6 +30,7 @@ import {
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
+import { CAST_LIMIT } from '../../../../../constants/metadata/constant-variables';
 
 const mapStateToProps = state => {
   return {
@@ -93,12 +94,12 @@ class CoreMetadataEditMode extends Component {
               personListLabel={CAST_LIST_LABEL}
               personHeader={CAST_HEADER}
               type={CAST}
-              person={this.props.editedTitle.castCrew}
+              persons={this.props.editedTitle.castCrew}
               filterPersonList={getFilteredCastList}
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
-              personsLimit={5}
+              personsLimit={CAST_LIMIT}
             />
           </Col>
           <Col>
@@ -108,7 +109,7 @@ class CoreMetadataEditMode extends Component {
               personListLabel={CREW_LIST_LABEL}
               personHeader={CREW_HEADER}
               type={CREW}
-              person={this.props.editedTitle.castCrew}
+              persons={this.props.editedTitle.castCrew}
               filterPersonList={getFilteredCrewList}
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}

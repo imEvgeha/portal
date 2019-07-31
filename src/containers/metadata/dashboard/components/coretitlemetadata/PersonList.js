@@ -5,10 +5,9 @@ import {
 } from 'reactstrap';
 
 import UserPicker from '@atlaskit/user-picker';
-import { Label as LB } from '@atlaskit/field-base';
+import { Label } from '@atlaskit/field-base';
 import Lozenge from '@atlaskit/lozenge';
 import PersonListContainer from './PersonListContainer';
-import { PERSON_LIMIT } from '../../../../../constants/metadata/constant-variables';
 
 class PersonList extends React.Component {
     static defaultProps = {
@@ -24,21 +23,19 @@ class PersonList extends React.Component {
     }
 
     isSelectedPersonValid = (selectedPerson) => {
-        return this.props.person === null || this.props.person.findIndex(person =>
+        return this.props.persons === null || this.props.persons.findIndex(person =>
             person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
     };
 
     validateAndAddPerson = (personJSON) => {
         let person = JSON.parse(personJSON);
         let isValid = this.isSelectedPersonValid(person);
-        if (this.props.personsLimit === PERSON_LIMIT) {
-            const length = this.props.filterPersonList(this.props.person).length;
-            if (isValid && length < this.props.personsLimit) {
-                this.props.addPerson(person);
-                this.setState({
-                    searchPersonText: ''
-                });
-            }
+        const length = this.props.filterPersonList(this.props.persons).length;
+         if (isValid && length < this.props.personsLimit) {
+            this.props.addPerson(person);
+            this.setState({
+                searchPersonText: ''
+            });
         } else {
             if (isValid) {
                 this.props.addPerson(person);
@@ -77,18 +74,18 @@ class PersonList extends React.Component {
                                 value={this.state.searchPersonText}
                                 onInputChange={this.handleInputChangePerson}
                                 onSelection={this.handleOnSelectPerson}
-                                disableInput={this.props.filterPersonList(this.props.person).length >= this.props.personsLimit ? true : false}
-                                placeholder={this.props.filterPersonList(this.props.person).length >= this.props.personsLimit ? 'You can add maximum 5 cast members' : this.props.personLabel}
+                                disableInput={this.props.filterPersonList(this.props.persons).length >= this.props.personsLimit}
+                                placeholder={this.props.filterPersonList(this.props.persons).length >= this.props.personsLimit ? 'You can add maximum 5 cast members' : this.props.personLabel}
                             />
                         </div>
                         {!this.state.isPersonValid && (<span style={{ color: '#e74c3c', fontWeight: 'bold' }}>Person is already exists!</span>)}
-                        <LB
+                        <Label
                             label={this.props.personListLabel}
                             isFirstChild
                             htmlFor="person-list"
                         >
-                            {this.props.person &&
-                                this.props.filterPersonList(this.props.person, false).map((person, i) => {
+                            {this.props.persons &&
+                                this.props.filterPersonList(this.props.persons, false).map((person, i) => {
                                     return (
                                         <div key={i} style={{ border: '1px solid #EEE', padding: '5px', backgroundColor: '#FAFBFC', width: '97%' }}>
                                             <div style={{ boxSizing: 'border-box', width: '6%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
@@ -112,7 +109,7 @@ class PersonList extends React.Component {
                                         </div>
                                     );
                                 })}
-                        </LB>
+                        </Label>
                     </PersonListContainer>
                 </Col>
             </React.Fragment>
@@ -122,7 +119,7 @@ class PersonList extends React.Component {
 
 PersonList.propTypes = {
     filterPersonList: PropTypes.func,
-    person: PropTypes.array,
+    persons: PropTypes.array,
     removePerson: PropTypes.func,
     loadOptionsPerson: PropTypes.any,
     personHeader: PropTypes.string,

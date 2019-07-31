@@ -9,4 +9,4 @@ export const CREW_HTML_FOR = 'new-person-crew';
 export const CAST_HTML_FOR = 'new-person-cast';
 export const CAST_HEADER = 'Cast';
 export const CREW_HEADER = 'Crew';
-export const PERSON_LIMIT = 5;
+export const CAST_LIMIT = 5;
