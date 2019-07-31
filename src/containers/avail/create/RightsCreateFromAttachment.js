@@ -127,12 +127,13 @@ class RightsCreateFromAttachment extends React.Component {
             });
     }
 
-    formatAttachmentName = (attachment) => {
-        return attachment.split(/(\\|\/)/g).pop();
+    formatAttachmentName = (link) => {
+        return link.split(/(\\|\/)/g).pop();
     }
 
-    filterAttachmentByType = (type, icon) => {
-        return this.state.historyData.attachments &&
+    renderAttachments = (type, icon) => {
+        return this.state.historyData &&
+            this.state.historyData.attachments &&
             this.state.historyData.attachments
                 .filter(({ attachmentType }) => attachmentType === type)
                 .map((e, i, arr) => {
@@ -158,9 +159,12 @@ class RightsCreateFromAttachment extends React.Component {
                 <div className={'d-flex justify-content-between'}>
                     <div>
                         <div><h3>Create Rights from PDF </h3></div>
-                        <div> Studio: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Email', 'far fa-envelope')}</div>
-                        <div> PDF Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('PDF')}</div>
-                        <div> Upload Attachments: &nbsp; {this.state.historyData.attachments && this.filterAttachmentByType('Excel')}</div>
+                        {this.state.historyData && this.state.historyData.attachments && ( 
+                            <React.Fragment>
+                                <div> Studio: {this.state.historyData.provider} &nbsp; {this.renderAttachments('Email', 'far fa-envelope')}</div>
+                                <div> PDF Attachments: &nbsp; {this.renderAttachments('PDF')}</div>
+                                <div> Upload Attachments: &nbsp; {this.renderAttachments('Excel')}</div>
+                            </React.Fragment>)}
                         <Button className={'align-bottom mt-5'} id="right-create" onClick={this.createRight}>Create Right</Button>
                     </div>
                     <div>
