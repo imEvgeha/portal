@@ -38,7 +38,7 @@ export const deleteConfigItemById = (urlBase, field, id) => {
     return http.delete(config.get('gateway.configuration') + urlBase + path);
 };
 
-export const searchItem = (urlBase, urlApi, field, inputValue, page, size) => {
+export const searchConfigItem = (urlBase, urlApi, field, inputValue, page, size) => {
     let searchBy = '?';
     if(inputValue) {
         searchBy += `${field}=${inputValue}&`;

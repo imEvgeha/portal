@@ -5,7 +5,7 @@ import {
   CAST,
   getFilteredCastList,
   PERSONS_PER_REQUEST,
-  PERSON_INPUT_TIMEOUT
+  INPUT_TIMEOUT
 } from '../../../../../constants/metadata/configAPI';
 import { AsyncSelect } from '@atlaskit/select';
 import { searchPerson } from '../../../service/ConfigService';
@@ -83,7 +83,7 @@ class CoreMetadataCreateCastModal extends Component {
     if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
     this.keyInputTimeout = setTimeout(() => {
       this.filterPerson(inputValue, callback);
-    }, PERSON_INPUT_TIMEOUT);
+    }, INPUT_TIMEOUT);
   };
 
   render() {

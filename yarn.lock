@@ -18,6 +18,24 @@
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
 
+"@atlaskit/analytics@^6.0.0":
+  version "6.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics/-/analytics-6.0.1.tgz#397abcf7c835269ff90ac50463ad12453f0bcc19"
+  integrity sha512-s6eC2hPXP5gjmI3T4yT0RAYjaPPB+M8Ohq45YtSgI6FE2wtLkzVfttLV9msga7qwpc42+HL0NffydUz1tBDbKg==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    prop-types "^15.5.10"
+
+"@atlaskit/avatar@^16.0.6":
+  version "16.0.8"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/avatar/-/avatar-16.0.8.tgz#e7d5369ae081071dc6c6d70e8b94337337743eda"
+  integrity sha512-9LCMtFpq60baAJQjr9ZY9UFmKsHnlfVt2/+lnoDQy/IjLLc4jvOu+OiVBoaGaOKWYIXn+4MhZcZH65PWyUxnaw==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/theme" "^9.1.1"
+    "@atlaskit/tooltip" "^15.0.5"
+    "@babel/runtime" "^7.0.0"
+
 "@atlaskit/button@^13.0.16":
   version "13.0.16"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-13.0.16.tgz#5198b90d142a235ae6d91f97a4cd79ed4778cf67"
@@ -31,6 +49,17 @@
     "@emotion/core" "^10.0.9"
     memoize-one "^3.0.1"
     tslib "^1.9.3"
+
+"@atlaskit/field-base@^13.0.6":
+  version "13.0.7"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-base/-/field-base-13.0.7.tgz#5bbcd2a4b5e28703a56d0159faeec2a621e190c5"
+  integrity sha512-jNGtdk36x4XiQYVv5y3BCxcB3TTCaCT84CHG2ByOwfNiyiVsY6LpD/mQixw8TbCm8rgBdYMTecrnz+ImVOK4Jw==
+  dependencies:
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/inline-dialog" "^12.0.10"
+    "@atlaskit/spinner" "^12.0.1"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
 
 "@atlaskit/form@^6.1.4":
   version "6.1.4"
@@ -54,6 +83,29 @@
   dependencies:
     "@atlaskit/theme" "^9.1.1"
     tslib "^1.9.3"
+    uuid "^3.1.0"
+
+"@atlaskit/inline-dialog@^12.0.10":
+  version "12.0.10"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-12.0.10.tgz#0d5e48e2efefd40d56b090ee32871be6ce04016b"
+  integrity sha512-NU/2sEOiHP2dL3UqVrmvSRfm/HiCeM4IhRRwSI3M3ZFBs7pI1OwoMYr+044hQbZKLEU9DdnY8DJ0wIKnO12IZw==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/popper" "^3.0.1"
+    "@atlaskit/theme" "^9.0.0"
+    "@babel/runtime" "^7.0.0"
+    react-node-resolver "^1.0.1"
+    tslib "^1.9.3"
+
+"@atlaskit/item@^10.0.5":
+  version "10.0.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/item/-/item-10.0.5.tgz#431ef378230aa38dc91ea5e7f82fdb5628994825"
+  integrity sha512-Gt8wrcF1+CSVSItyToBqaykMCskOWol5AGJOB4fxOpAVCl4hHUCdc4sszWL2vI77B7lJmz5Zaj24W6FN3s+T/g==
+  dependencies:
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    prop-types "^15.5.10"
+    react-addons-text-content "^0.0.4"
     uuid "^3.1.0"
 
 "@atlaskit/page@^11.0.5":
@@ -85,6 +137,15 @@
     memoize-one "^3.0.1"
     react-popper "1.0.2"
 
+"@atlaskit/popper@^3.0.1":
+  version "3.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.0.1.tgz#76e972a179ac04417e2cf2f44b8c0c229ce66c04"
+  integrity sha512-Zzogo+HG6EypuEpfRhQFDxZzKyT+6O92pIWqNxTptu5YHJO29IVu7NfV9zqvBHYWKJDeF7o0Ey2GMYLWSz9UVQ==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    memoize-one "^3.0.1"
+    react-popper "1.0.2"
+
 "@atlaskit/portal@^3.0.7":
   version "3.0.9"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/portal/-/portal-3.0.9.tgz#70acc3502051fd30e6c6a0bfadb52dbadba88f01"
@@ -94,6 +155,19 @@
     exenv "^1.2.2"
     tiny-invariant "^0.0.3"
     tslib "^1.9.3"
+
+"@atlaskit/quick-search@^7.6.6":
+  version "7.6.6"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/quick-search/-/quick-search-7.6.6.tgz#bcb78f1b82023f1f37e47e303c3bf6ed2865ff21"
+  integrity sha512-U7UPE/NzvcIWBmsiTkz2CyY01QSq+Yw2FD4XJhLK0qJGxIw1u3oREHKlioNj7PYVd3HAi7jIrPkaWkzuUq4Gdw==
+  dependencies:
+    "@atlaskit/analytics" "^6.0.0"
+    "@atlaskit/avatar" "^16.0.6"
+    "@atlaskit/field-base" "^13.0.6"
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/item" "^10.0.5"
+    "@atlaskit/theme" "^9.0.0"
+    "@babel/runtime" "^7.0.0"
 
 "@atlaskit/select@^10.0.0":
   version "10.0.0"
@@ -142,6 +216,21 @@
     "@babel/runtime" "^7.0.0"
     exenv "^1.2.2"
     prop-types "^15.5.10"
+
+"@atlaskit/tooltip@^15.0.5":
+  version "15.0.8"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tooltip/-/tooltip-15.0.8.tgz#4215a71468b75cf54c70932b389d310c9359a3a6"
+  integrity sha512-mFK65d0quTl6CuS5BZRa3EPP7f8fgdbHHrFKdolSp7fn3Sw3s1haQpZDANp4ufmTQnCD2Pa11rprYpBNkahaQQ==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/popper" "^3.0.1"
+    "@atlaskit/portal" "^3.0.7"
+    "@atlaskit/theme" "^9.0.0"
+    "@babel/runtime" "^7.0.0"
+    flushable "^1.0.0"
+    react-node-resolver "^1.0.1"
+    react-transition-group "^2.2.1"
+    tslib "^1.9.3"
 
 "@atlaskit/tooltip@^15.0.6":
   version "15.0.6"
@@ -16758,6 +16847,11 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.2.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-addons-text-content@^0.0.4:
+  version "0.0.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-addons-text-content/-/react-addons-text-content-0.0.4.tgz#d2e259fdc951d1d8906c08902002108dce8792e5"
+  integrity sha1-0uJZ/clR0diQbAiQIAIQjc6HkuU=
 
 react-app-polyfill@^0.2.1:
   version "0.2.2"
