@@ -24,6 +24,7 @@ import {
 import { configService } from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
+import { CAST, getFilteredCrewList, getFilteredCastList } from '../../../../constants/metadata/configAPI';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
@@ -307,6 +308,7 @@ class TitleEdit extends Component {
 
     editMode = () => {
         return <TitleEditMode
+            castAndCrewReorder={this.reOrderedCastCrewArray}
             titleRankingActiveTab={this.state.titleRankingActiveTab}
             toggleTitleRating={this.toggleTitleRating}
             addTitleRatingTab={this.addTitleRatingTab}
@@ -796,6 +798,29 @@ class TitleEdit extends Component {
             editedForm: updateEditForm
         });
     };
+
+    reOrderedCastCrewArray = (orderedArray, type) => {
+        let castList;
+        let crewList;
+        if(type === CAST) {
+            crewList = getFilteredCrewList(this.state.editedForm.castCrew, false);
+            castList = orderedArray;
+        } else {
+            castList = getFilteredCastList(this.state.editedForm.castCrew, false);
+            crewList = orderedArray;
+        }
+        
+        let castAndCrewList = [...castList, ...crewList];
+        let reOrderedCastCrewList = {
+            ...this.state.editedForm,
+            castCrew: castAndCrewList
+        }
+        this.setState({
+            editedForm: reOrderedCastCrewList
+        });
+        console.log('Oredered Array', castAndCrewList);
+        console.log('Main Cast Crew Array', this.state.editedForm.castCrew);
+    }
 
     render() {
         return (

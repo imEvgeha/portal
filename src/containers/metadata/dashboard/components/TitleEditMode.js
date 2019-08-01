@@ -477,6 +477,7 @@ class TitleEditMode extends Component {
               ratingObjectForCreate={this.props.ratingObjectForCreate}
               addCastCrew={this.props.addCastCrew}
               editedTitle={this.props.editedTitle}
+              castAndCrewReorder={this.props.castAndCrewReorder}
           />
         </Container>
       </Fragment>
