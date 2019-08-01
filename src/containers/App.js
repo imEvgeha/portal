@@ -21,7 +21,7 @@ import TitleEdit from './metadata/dashboard/components/TitleEdit';
 import DOP from '../util/DOP';
 
 import ContractProfile from './contracts/profile/ContractProfile.jsx';
-import Contract from './contracts/search/Contract.jsx';
+// import Contract from './contracts/search/Contract.jsx';
 
 import Media from './media/search/Media.js';
 import Settings from './settings/Settings';
@@ -58,7 +58,7 @@ export default class App extends React.Component {
                         <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
 
                         <Route exact path="/contractprofile" component={ContractProfile} />
-                        <Route exact path="/contractsearch" component={Contract} />
+                        {/* <Route exact path="/contractsearch" component={Contract} /> */}
 
                         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
                         <Route exact path="/settings" component={Settings} />

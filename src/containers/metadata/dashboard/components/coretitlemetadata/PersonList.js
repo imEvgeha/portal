@@ -8,6 +8,7 @@ import UserPicker from '@atlaskit/user-picker';
 import { Label } from '@atlaskit/field-base';
 import Lozenge from '@atlaskit/lozenge';
 import PersonListContainer from './PersonListContainer';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 class PersonList extends React.Component {
     static defaultProps = {
@@ -31,7 +32,7 @@ class PersonList extends React.Component {
         let person = JSON.parse(personJSON);
         let isValid = this.isSelectedPersonValid(person);
         const length = this.props.filterPersonList(this.props.persons).length;
-         if (isValid && length < this.props.personsLimit) {
+        if (isValid && length < this.props.personsLimit) {
             this.props.addPerson(person);
             this.setState({
                 searchPersonText: ''
@@ -57,6 +58,9 @@ class PersonList extends React.Component {
         this.setState({
             searchPersonText: e
         });
+    }
+    onDragEnd = (result) => {
+        console.log(result);
     }
     render() {
         return (
@@ -84,31 +88,56 @@ class PersonList extends React.Component {
                             isFirstChild
                             htmlFor="person-list"
                         >
-                            {this.props.persons &&
-                                this.props.filterPersonList(this.props.persons, false).map((person, i) => {
-                                    return (
-                                        <div key={i} style={{ border: '1px solid #EEE', padding: '5px', backgroundColor: '#FAFBFC', width: '97%' }}>
-                                            <div style={{ boxSizing: 'border-box', width: '6%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
-                                                <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ width: '30px', height: '30px' }} />
-                                            </div>
-                                            {this.props.showPersonType ? (
-                                                <div style={{ boxSizing: 'border-box', width: '14%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
-                                                    <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
-                                                </div>) : null}
-                                            <div style={{ boxSizing: 'border-box', width: !this.props.showPersonType ? '93%' : '79%', display: 'inline-block', verticalAlign: 'middle' }}>
-                                                <UserPicker
-                                                    width="100%"
-                                                    appearance="normal"
-                                                    subtle
-                                                    value={person.displayName}
-                                                    disableInput={true}
-                                                    search={person.displayName}
-                                                    onClear={() => this.props.removePerson(person)}
-                                                />
-                                            </div>
+                            <DragDropContext
+                                onDragEnd={this.onDragEnd}
+                            >
+
+                                <Droppable droppableId="droppable">
+                                    {(provided, snapshot) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                        >
+                                            {this.props.persons &&
+                                                this.props.filterPersonList(this.props.persons, false).map((person, i) => {
+                                                    return (
+                                                        <Draggable key={person.id} draggableId={person.id} index={i}>
+                                                            {(provided, snapshot) => (
+                                                                <div
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    key={i} style={{ border: '1px solid #EEE', padding: '5px', backgroundColor: '#FAFBFC', width: '97%' }}>
+                                                                    <div style={{ boxSizing: 'border-box', width: '6%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
+                                                                        <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ width: '30px', height: '30px' }} />
+                                                                    </div>
+                                                                    {this.props.showPersonType ? (
+                                                                        <div style={{ boxSizing: 'border-box', width: '14%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
+                                                                            <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
+                                                                        </div>) : null}
+                                                                    <div style={{ boxSizing: 'border-box', width: !this.props.showPersonType ? '89%' : '75%', display: 'inline-block', verticalAlign: 'middle' }}>
+                                                                        <UserPicker
+                                                                            width="100%"
+                                                                            appearance="normal"
+                                                                            subtle
+                                                                            value={person.displayName}
+                                                                            disableInput={true}
+                                                                            search={person.displayName}
+                                                                            onClear={() => this.props.removePerson(person)}
+                                                                        />
+                                                                    </div>
+                                                                    <div style={{width: '25px', height: '25px', position: 'relative', top: '7px', left: '5px', background: '#000', borderRadius: '4px', display: 'inline-block'}} {...provided.dragHandleProps} />
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    );
+                                                })}
+                                            {provided.placeholder}
                                         </div>
-                                    );
-                                })}
+
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         </Label>
                     </PersonListContainer>
                 </Col>
