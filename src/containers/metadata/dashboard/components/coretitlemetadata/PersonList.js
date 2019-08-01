@@ -3,12 +3,52 @@ import PropTypes from 'prop-types';
 import {
     Col
 } from 'reactstrap';
+import FontAwesome from 'react-fontawesome';
 
 import UserPicker from '@atlaskit/user-picker';
 import { Label } from '@atlaskit/field-base';
 import Lozenge from '@atlaskit/lozenge';
 import PersonListContainer from './PersonListContainer';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+
+const DraggableContent = styled.div`
+    border:${props => props.isDragging ? '2px dotted #111' : '1px solid #EEE'};
+    padding: 5px;
+    background-color: #FAFBFC;
+    width: 97%;
+    margin: auto;
+    opacity: ${props => props.isDragging ? '1' : '0.8'};
+`; 
+
+const DroppableContent = styled.div`
+    background-color: ${props => props.isDragging ? '#bdc3c7' : ''};
+    width: 97%;
+    border:${props => props.isDragging ? '2px dotted #111' : ''};
+`;
+
+const PersonListAvatar = styled.div`
+    box-sizing: border-box;
+    width: 6%;
+    display: inline-block;
+    padding: 7px;
+    vertical-align: middle;
+`;
+
+const PersonListFlag = styled.div`
+    box-sizing: border-box;
+    width: 14%;
+    display: inline-block;
+    padding: 7px;
+    vertical-align: middle;
+`;
+
+const PersonListName = styled.div`
+     box-sizing: border-box;
+     width: ${props => props.showPersonType ? '75%' : '89%'};
+     display: inline-block;
+     vertical-align: middle;
+`;
 
 class PersonList extends React.Component {
     static defaultProps = {
@@ -110,9 +150,10 @@ class PersonList extends React.Component {
 
                                 <Droppable droppableId="droppable">
                                     {(provided, snapshot) => (
-                                        <div
+                                        <DroppableContent
                                             {...provided.droppableProps}
                                             ref={provided.innerRef}
+                                            isDragging={snapshot.isDraggingOver}
                                         >
                                             {this.props.persons &&
                                                 this.props.persons.map((person, i) => {
@@ -122,15 +163,17 @@ class PersonList extends React.Component {
                                                                 <div
                                                                     ref={provided.innerRef}
                                                                     {...provided.draggableProps}>
-                                                                    <div style={{ border: '1px solid #EEE', padding: '5px', backgroundColor: '#FAFBFC', width: '97%' }}>
-                                                                        <div style={{ boxSizing: 'border-box', width: '6%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
+                                                                    <DraggableContent
+                                                                        isDragging={snapshot.isDragging}
+                                                                    >
+                                                                        <PersonListAvatar>
                                                                             <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ width: '30px', height: '30px' }} />
-                                                                        </div>
+                                                                        </PersonListAvatar>
                                                                         {this.props.showPersonType ? (
-                                                                            <div style={{ boxSizing: 'border-box', width: '14%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
+                                                                            <PersonListFlag>
                                                                                 <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
-                                                                            </div>) : null}
-                                                                        <div style={{ boxSizing: 'border-box', width: !this.props.showPersonType ? '89%' : '75%', display: 'inline-block', verticalAlign: 'middle' }}>
+                                                                            </PersonListFlag>) : null}
+                                                                        <PersonListName showPersonType={this.props.showPersonType}>
                                                                             <UserPicker
                                                                                 width="100%"
                                                                                 appearance="normal"
@@ -140,17 +183,16 @@ class PersonList extends React.Component {
                                                                                 search={person.displayName}
                                                                                 onClear={() => this.props.removePerson(person)}
                                                                             />
-                                                                        </div>
-                                                                        <div style={{ width: '25px', height: '25px', position: 'relative', top: '7px', left: '5px', background: '#000', borderRadius: '4px', display: 'inline-block' }} {...provided.dragHandleProps} />
-                                                                    </div>
+                                                                        </PersonListName>
+                                                                        <FontAwesome name="bars" style={{marginLeft: '5px'}} {...provided.dragHandleProps} />
+                                                                    </DraggableContent>
                                                                 </div>
                                                             )}
                                                         </Draggable>
                                                     );
                                                 })}
                                             {provided.placeholder}
-                                        </div>
-
+                                        </DroppableContent>
                                     )}
                                 </Droppable>
                             </DragDropContext>
@@ -175,7 +217,8 @@ PersonList.propTypes = {
     getFormatTypeName: PropTypes.func,
     personsLimit: PropTypes.number,
     showPersonType: PropTypes.bool,
-    addPerson: PropTypes.func
+    addPerson: PropTypes.func,
+    onReOrder: PropTypes.func
 };
 
 export default PersonList;

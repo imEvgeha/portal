@@ -814,12 +814,10 @@ class TitleEdit extends Component {
         let reOrderedCastCrewList = {
             ...this.state.editedForm,
             castCrew: castAndCrewList
-        }
+        };
         this.setState({
             editedForm: reOrderedCastCrewList
         });
-        console.log('Oredered Array', castAndCrewList);
-        console.log('Main Cast Crew Array', this.state.editedForm.castCrew);
     }
 
     render() {

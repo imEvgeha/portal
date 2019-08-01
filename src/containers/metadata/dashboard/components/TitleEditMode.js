@@ -509,7 +509,8 @@ TitleEditMode.propTypes = {
   configLocale: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
-  areRatingFieldsRequired: PropTypes.bool
+  areRatingFieldsRequired: PropTypes.bool,
+  castAndCrewReorder: PropTypes.func
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

@@ -436,7 +436,8 @@ CoreMetadataEditMode.propTypes = {
   handleRatingSystemValue: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
-  areRatingFieldsRequired: PropTypes.bool
+  areRatingFieldsRequired: PropTypes.bool,
+  castAndCrewReorder: PropTypes.func
 };
 
 
