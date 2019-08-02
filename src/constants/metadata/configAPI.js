@@ -7,7 +7,6 @@ export const WRITER = 'Writer';
 export const PRODUCER = 'Producer';
 
 export const PERSONS_PER_REQUEST = 20;
-export const INPUT_TIMEOUT = 300;
 
 export const getFilteredCastList = (originalConfigCastList, isConfig) => {
     let configCastList = [];

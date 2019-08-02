@@ -7,7 +7,7 @@ import {
     SideMenu,
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
-import {EndpointContainer} from '../config-api/EndpointContainer';
+import {EndpointContainer} from '../config/EndpointContainer';
 import {TabContent, TabPane} from 'reactstrap';
 
 export default class Settings extends Component {
@@ -50,7 +50,7 @@ export default class Settings extends Component {
                     {configApiSchema['endpoints'].map((e, i) => (
                         <TabPane key={i} tabId={e}>
                             <EndpointContainer urlBase={configApiSchema['url-base']}
-                                               selectedApi={this.state.selectedApi}/>
+                                               selectedApi={e}/>
                         </TabPane>
                     ))
                     }

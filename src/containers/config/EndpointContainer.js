@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import Pagination from '@atlaskit/pagination';
 import {QuickSearch} from '@atlaskit/quick-search';
 
-import {deleteConfigItemById, getConfigApiValues, searchConfigItem} from '../metadata/service/ConfigService';
 import PropTypes from 'prop-types';
 import {TextHeader} from '../../components/navigation/CustomNavigationElements';
 import styled, {css} from 'styled-components';
 import {ListGroup, ListGroupItem} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
-import {INPUT_TIMEOUT} from '../../constants/metadata/configAPI';
+import {INPUT_TIMEOUT} from '../../constants/common-ui';
+import {deleteConfigItemById, searchConfigItem} from './service/ConfigService';
+import {getConfigApiValues} from '../../common/CommonConfigService';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -57,18 +58,8 @@ export class EndpointContainer extends Component {
         this.keyInputTimeout = 0;
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.selectedApi !== this.props.selectedApi) {
-            this.loadEndpointData(1);
-            this.setState({
-                pages: [1],
-                data: [],
-                total: 0,
-                lastPage: 1,
-                lastSearchInput: '',
-                lastSearchField: ''
-            });
-        }
+    componentDidMount() {
+        this.loadEndpointData(1);
     }
 
     loadEndpointData = (page, searchField, searchInput) => {
