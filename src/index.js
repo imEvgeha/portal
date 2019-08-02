@@ -8,6 +8,7 @@ import { IntlProvider } from 'react-intl';
 
 config.set(defaultConfiguration, {freeze: false});
 
+// axios.get('/configQA.json').then(response => {
 axios.get('/config.json').then(response => {
     if (isObject(response.data)) {
         config.set(mergeDeep(JSON.parse(config.serialize()), response.data), {freeze: true});
