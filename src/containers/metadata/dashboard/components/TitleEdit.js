@@ -28,8 +28,6 @@ import {Can} from '../../../../ability';
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
-const CAST = 'CAST';
-const CREW = 'CREW';
 
 const emptyTerritory = {
     locale: null,
@@ -77,8 +75,6 @@ class TitleEdit extends Component {
             editorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
-            isCastModalOpen: false,
-            isCrewModalOpen: false,
             ratingForCreate: {},
             advisoriesCode: null
         };
@@ -321,10 +317,6 @@ class TitleEdit extends Component {
             handleRatingEditChange={this.handleRatingEditChange}
             handleRatingCreateChange={this.handleRatingCreateChange}
 
-            isCastModalOpen={this.state.isCastModalOpen}
-            isCrewModalOpen={this.state.isCrewModalOpen}
-
-            renderModal={this.renderModal}
             removeCastCrew={this.removeCastCrew}
             addCastCrew={this.addCastCrew}
 
@@ -776,22 +768,6 @@ class TitleEdit extends Component {
     /**
      * Title core additional fields
      */
-    renderModal = modalName => {
-        if (modalName === CAST) {
-            this.setState({
-                isCastModalOpen: !this.state.isCastModalOpen
-            });
-        } else if (modalName === CREW) {
-            this.setState({
-                isCrewModalOpen: !this.state.isCrewModalOpen
-            });
-        } else {
-            this.setState({
-                isCrewModalOpen: false,
-                isCastModalOpen: false
-            });
-        }
-    };
 
     addCastCrew = (person) => {
         let castCrewArray = [person];

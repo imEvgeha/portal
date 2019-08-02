@@ -17,6 +17,11 @@ import {
     getFilteredCrewList, getFormatTypeName,
 } from '../../../../../constants/metadata/configAPI';
 import Rating from './rating/Rating';
+import Lozenge from '@atlaskit/lozenge';
+import { getSortedData } from '../../../../../util/Common';
+
+const SORT_TYPE = 'displayName';
+const IS_ASC = true;
 
 class CoreMetadataReadOnlyMode extends Component {
     render() {
@@ -39,11 +44,12 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }}
                                             id='listContainer'
                                         >
-                                            {this.props.data.castCrew &&
-                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {                                                    
+                                            {this.props.data.castCrew && 
+                                                getFilteredCastList(getSortedData(this.props.data.castCrew, SORT_TYPE, IS_ASC), false).map((cast, i) => {                                                    
                                                     return (
                                                         <ListGroupItem key={i}>
-                                                            {cast.displayName}
+                                                            <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
+                                                            <span style={{marginLeft: '10px'}}>{cast.displayName}</span>
                                                         </ListGroupItem>
                                                     );
                                                 })}
@@ -66,12 +72,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                             id='listContainer'
                                         >
                                             {this.props.data.castCrew &&
-                                                getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
+                                                getFilteredCrewList(getSortedData(this.props.data.castCrew, SORT_TYPE, IS_ASC), false).map((crew, i) => (
                                                     <ListGroupItem key={i}>
-                                                        <span style={{ fontSize: '14px', color: '#666' }}>
-                                                            {getFormatTypeName(crew.personType)}
-                                                        </span>{' '}
-                                                        {crew.displayName}
+                                                        <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
+                                                        <span style={{ marginLeft: '10px' }}>                                                            
+                                                            <Lozenge appearance={'default'}>{getFormatTypeName(crew.personType)}</Lozenge>
+                                                        </span>
+                                                        <span style={{marginLeft: '10px'}}>{crew.displayName}</span>
                                                     </ListGroupItem>
                                                 ))}
                                         </ListGroup>

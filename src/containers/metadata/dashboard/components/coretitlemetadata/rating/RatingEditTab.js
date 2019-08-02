@@ -149,11 +149,11 @@ class RatingEditTab extends Component {
                             <Select
                                 onChange={(e) => this.handleAdvisoryCodesChange(e)}
                                 value={this.props.data.advisoriesCode && this.props.data.advisoriesCode.map(e => {
-                                    return { value: e, label: e };
+                                    return { value: e, label: this.props.getAdvisoryNameByCode(e) };
                                 })}
                                 options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
                                     .map(e => {
-                                        return { value: e.name, label: e.name };
+                                        return { value: e.code, label: e.name };
                                     })}
                                 isMulti
                                 placeholder='Select Advisory Code'
@@ -189,7 +189,8 @@ RatingEditTab.propTypes = {
     handleEditChange: PropTypes.func.isRequired,
     configRatingSystem: PropTypes.object,
     configRatings: PropTypes.object,
-    configAdvisoryCode: PropTypes.object
+    configAdvisoryCode: PropTypes.object,
+    getAdvisoryNameByCode: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(RatingEditTab);

@@ -11,7 +11,7 @@ export const INPUT_TIMEOUT = 300;
 
 export const getFilteredCastList = (originalConfigCastList, isConfig) => {
     let configCastList = [];
-    originalConfigCastList.filter((f) => isCastPersonType(f, isConfig))
+    originalConfigCastList && originalConfigCastList.filter((f) => isCastPersonType(f, isConfig))
         .forEach((e) => {
             let newCastCrew = Object.assign({}, e);
             newCastCrew.personType = ACTOR;
@@ -56,7 +56,7 @@ const createNewCrew = (item, type, configCrewList) => {
 export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
     let configCrewList = [];
     let param = isConfig ? 'personTypes' : 'personType';
-    originalConfigCrewList
+    originalConfigCrewList && originalConfigCrewList
         .filter((f) => {
             return f[param] && isCrewPersonType(f, param, isConfig);
         })
