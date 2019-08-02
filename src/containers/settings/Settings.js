@@ -8,8 +8,7 @@ import {
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
 import {EndpointContainer} from '../config-api/EndpointContainer';
-import EndpointTabs from "../config-api/EndpointTabs";
-import EndpointTab from "../config-api/EndpointTab";
+import {TabContent, TabPane} from 'reactstrap';
 
 export default class Settings extends Component {
 
@@ -25,7 +24,6 @@ export default class Settings extends Component {
     };
 
     render() {
-        console.log('Settings render')
         return (
             <div>
                 <SideMenu primary>
@@ -47,13 +45,16 @@ export default class Settings extends Component {
                         ))}
                     </ListParent>
                 </SideMenu>
-                
-                <EndpointTabs>
-                    {configApiSchema['endpoints']}
-                </EndpointTabs>
-                {/*{configApiSchema['endpoints'].map((e, i) => (*/}
-                    {/*<EndpointContainer tabId={i} key={i} data={e}/>*/}
-                {/*))}*/}
+
+                <TabContent activeTab={this.state.selectedApi}>
+                    {configApiSchema['endpoints'].map((e, i) => (
+                        <TabPane key={i} tabId={e}>
+                            <EndpointContainer urlBase={configApiSchema['url-base']}
+                                               selectedApi={this.state.selectedApi}/>
+                        </TabPane>
+                    ))
+                    }
+                </TabContent>
             </div>
         );
     }

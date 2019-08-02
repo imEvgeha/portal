@@ -24,8 +24,9 @@ const DataBody = styled.div`
     padding: 10px;
 `;
 
-const PaginationContainer = styled.div`
+const CustomContainer = styled.div`
     margin-top: 10px;
+    margin-bottom: 10px;
     ${props => props.left && css`
         width: 100%;
     `}
@@ -48,7 +49,7 @@ export class EndpointContainer extends Component {
             pages: [1],
             data: [],
             total: 0,
-            lastPage: 0,
+            lastPage: 1,
             lastSearchInput: '',
             isLoading: false
         };
@@ -59,38 +60,22 @@ export class EndpointContainer extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.selectedApi !== this.props.selectedApi) {
             this.loadEndpointData(1);
-            console.log('componentDidUpdate')
             this.setState({
                 pages: [1],
                 data: [],
                 total: 0,
-                lastPage: 0,
-                lastSearchInput: 'componentDidUpdate'
-
+                lastPage: 1,
+                lastSearchInput: '',
+                lastSearchField: ''
             });
         }
     }
 
-    componentDidMount() {
-        console.log('componentDidMount')
-        if (this.props.urlBase && this.props.selectedApi.url) {
-            this.loadEndpointData(1);
-            this.setState({
-                pages: [1],
-                data: [],
-                total: 0,
-                lastPage: 0,
-                lastSearchInput: ''
-            });
-        }
-    }
-
-
-    loadEndpointData = (page, searchInput) => {
+    loadEndpointData = (page, searchField, searchInput) => {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
 
         this.keyInputTimeout = setTimeout(() => {
-            let requestFunction = this.getRequestFunction(page, searchInput);
+            let requestFunction = this.getRequestFunction(page, searchField, searchInput);
             this.setState({isLoading: true});
             requestFunction.then((res) => {
                 this.setState({
@@ -104,19 +89,21 @@ export class EndpointContainer extends Component {
         }, INPUT_TIMEOUT);
     };
 
-    getRequestFunction = (page, searchInput) => {
-        if (searchInput) {
+    getRequestFunction = (page, searchField, searchInput) => {
+        if (searchInput !== '' && searchField !== '') {
             this.setState({
-                lastSearchInput: searchInput
+                lastSearchInput: searchInput,
+                lastSearchField: searchField
             });
-            return searchConfigItem(this.props.urlBase, this.props.selectedApi.url, 'id', searchInput, page - 1, pageSize);
+            return searchConfigItem(this.props.urlBase, this.props.selectedApi.url, searchField, searchInput, page - 1, pageSize);
         } else {
             return getConfigApiValues(this.props.urlBase, this.props.selectedApi.url, page - 1, pageSize);
         }
     };
 
     handleTitleFreeTextSearch = (searchInput) => {
-        this.loadEndpointData(1, searchInput);
+        //TODO change searchField due to schema. Somewhere from this.props.selectedApi
+        this.loadEndpointData(1, 'id', searchInput);
     };
 
     onRemoveItem = (item) => {
@@ -125,20 +112,19 @@ export class EndpointContainer extends Component {
     };
 
     render() {
-        console.log('EndpointContainer render. props ', this.props)
         return (
             <DataContainer>
                 <TextHeader>{this.props.selectedApi.layout['display-name'] + ' {' + this.state.total + '} '}</TextHeader>
                 <DataBody>
-                    {/*<FreeTextSearch containerId={'setting-api'}*/}
-                    {/*onSearch={this.handleTitleFreeTextSearch}/>*/}
-                    <QuickSearch
-                        isLoading={this.state.isLoading}
-                        onSearchInput={({target}) => {
-                            this.handleTitleFreeTextSearch(target.value);
-                        }}
-                        value={this.state.lastSearchInput}
-                    />
+                    <CustomContainer left>
+                        <QuickSearch
+                            isLoading={this.state.isLoading}
+                            onSearchInput={({target}) => {
+                                this.handleTitleFreeTextSearch(target.value);
+                            }}
+                            value={this.state.lastSearchInput}
+                        />
+                    </CustomContainer>
 
                     {!this.state.isLoading &&
                     <ListGroup
@@ -168,8 +154,8 @@ export class EndpointContainer extends Component {
                         })}
                     </ListGroup>
                     }
-                    <PaginationContainer center><Pagination pages={this.state.pages}
-                                                            onChange={(event, newPage) => this.loadEndpointData(newPage)}/></PaginationContainer>
+                    <CustomContainer center><Pagination pages={this.state.pages}
+                                                        onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.lastSearchField, this.state.lastSearchInput)}/></CustomContainer>
                 </DataBody>
             </DataContainer>
         );
