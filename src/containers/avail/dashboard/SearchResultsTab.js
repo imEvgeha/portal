@@ -17,13 +17,14 @@ import ResultsTable from '../../../components/common/ResultsTable';
 import store from '../../../stores/index';
 import {
     resultPageUpdateColumnsOrder,
-    resultPageShowSelected
+    resultPageShowSelected,
+    resultPageLoading,
+    resultPageUpdate
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
 
 const mapStateToProps = state => {
     return {
-        availTabPage: state.dashboard.availTabPage,
         showSelectedAvails: state.dashboard.showSelectedAvails,
         reportName: state.dashboard.session.reportName,
         availsMapping: state.root.availsMapping,
@@ -38,7 +39,6 @@ const mapDispatchToProps = {
 class SearchResultsTab extends React.Component {
 
     static propTypes = {
-        availTabPage: t.object,
         reportName: t.string,
         availsMapping: t.object,
         resultPageUpdateColumnsOrder: t.func,
@@ -173,6 +173,18 @@ class SearchResultsTab extends React.Component {
         this.hideShowColumns={};
     }
 
+    storeData(response){
+        store.dispatch(resultPageLoading(false));
+        if(response.data.page === 0){
+            store.dispatch(resultPageUpdate({
+                pages: 1,
+                avails: response.data.data,
+                pageSize: response.data.data.length,
+                total: response.data.total
+            }));
+        }
+    }
+
     exportAvails = () => {
 
         if (store.getState().dashboard.session.availTabPageSelection.selected.length === 0) {
@@ -192,20 +204,6 @@ class SearchResultsTab extends React.Component {
         .then(function (response) {
             downloadFile(response.data);
         });
-    }
-
-    selectedItemsComponent() {
-        if(store.getState().dashboard.session.availTabPageSelection.selected){
-            return <span
-                className={'nx-container-margin table-top-text'}
-                id={'dashboard-selected-avails-number'}>Selected items: {store.getState().dashboard.session.availTabPageSelection.selected.length}</span>;
-        }else {
-            if (store.getState().dashboard.session.availTabPageSelection.selected.length) {
-                return <a href={'#'} onClick={this.toggleShowSelected}><span
-                    className={'nx-container-margin table-top-text'}
-                    id={'dashboard-selected-avails-number'}>Selected items: {store.getState().dashboard.session.availTabPageSelection.selected.length}</span></a>;
-            }
-        }
     }
 
     toggleShowSelected(){
@@ -241,19 +239,15 @@ class SearchResultsTab extends React.Component {
                     <div className="row justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginLeft: '15px'}}>
                             <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                                Results: {this.props.availTabPage.total}
+                                Results: <Total/>
                             </span>
-                            {this.selectedItemsComponent()}
+                            <Selected toggleShowSelected = {this.toggleShowSelected}/>
                             {this.props.showSelectedAvails &&
                                 <a href={'#'} onClick={this.toggleShowSelected}><span
                                     className={'nx-container-margin table-top-text'}
                                     id={'dashboard-go-to-filter'}>Back to search</span></a>
                             }
-                            {this.props.showSelectedAvails && store.getState().dashboard.session.availTabPageSelection.selected.length > 0&&
-                            <a href={'#'} onClick={() => this.clearAllSelected()}><span
-                                className={'nx-container-margin table-top-text'}
-                                id={'dashboard-clear-all-selected'}>Clear All</span></a>
-                            }
+                            <Clear clearAllSelected={this.clearAllSelected}/>
                         </div>
                         <div  style={{marginRight: '15px'}}>
                             <IfEmbedded value={false}>
@@ -270,6 +264,7 @@ class SearchResultsTab extends React.Component {
                         <RightsResultsTable availsMapping = {this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
                             fromServer = {true}
+                            onDataLoaded = {this.storeData}
                         />
                     </div>
                     <div>
@@ -289,6 +284,67 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
+
+//--------------------------------------
+
+const mapStateToPropsTotal = state => {
+    return {
+        total: state.dashboard.availTabPage.total
+    };
+};
+class TotalInternal extends Component {
+    render(){
+        return this.props.total;
+    }
+}
+let Total = connect(mapStateToPropsTotal, null)(TotalInternal);
+
+//--------------------------------------
+
+const mapStateToPropsSelected = state => {
+    return {
+        availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
+        showSelectedAvails: state.dashboard.showSelectedAvails,
+    };
+};
+class SelectedInternal extends Component {
+    render(){
+        if(this.props.showSelectedAvails){
+            return <span
+                className={'nx-container-margin table-top-text'}
+                id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+        }else {
+            if (this.props.availTabPageSelected.length) {
+                return <a href={'#'} onClick={this.props.toggleShowSelected}><span
+                    className={'nx-container-margin table-top-text'}
+                    id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
+            }
+        }
+        return '';
+    }
+}
+let Selected = connect(mapStateToPropsSelected, null)(SelectedInternal);
+
+//--------------------------------------
+
+const mapStateToPropsClear = state => {
+    return {
+        availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
+        showSelectedAvails: state.dashboard.showSelectedAvails,
+    };
+};
+class ClearInternal extends Component {
+    render(){
+        if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
+        return (<a href={'#'} onClick={() => this.props.clearAllSelected()}><span
+            className={'nx-container-margin table-top-text'}
+            id={'dashboard-clear-all-selected'}>Clear All</span></a>);
+        else return '';
+    }
+}
+let Clear = connect(mapStateToPropsClear, null)(ClearInternal);
+
+//--------------------------------------
 
 class SpecialCheckbox extends Component {
 

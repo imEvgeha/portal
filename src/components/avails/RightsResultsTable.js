@@ -153,7 +153,7 @@ export default function withRights(WrappedComponent){
                     callback.successCallback(response.data.data, lastRow);
                     this.state.table.api.hideOverlay();
                     if(this.props.onDataLoaded){
-                        this.props.onDataLoaded();
+                        this.props.onDataLoaded(response);
                     }
                 }
             }else{

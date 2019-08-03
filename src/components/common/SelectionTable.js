@@ -51,7 +51,7 @@ export default function withSelection(WrappedComponent){
             }
         }
 
-        onDataLoaded(){
+        onDataLoaded(response){
             if(this.state.selected.length > 0){
                 this.state.table.api.forEachNode(rowNode => {
                     if(rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
@@ -61,6 +61,9 @@ export default function withSelection(WrappedComponent){
             }
 
             this.onSelectionChanged();
+            if(this.props.onDataLoaded){
+                this.props.onDataLoaded(response);
+            }
         }
 
         onSelectionChanged(){
