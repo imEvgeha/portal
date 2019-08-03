@@ -14,7 +14,7 @@ import withSelection from '../../../components/common/SelectionTable';
 import withRights from '../../../components/avails/RightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
-
+import store from '../../../stores/index';
 import {
     resultPageUpdateColumnsOrder,
     resultPageShowSelected
@@ -25,11 +25,8 @@ const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
         showSelectedAvails: state.dashboard.showSelectedAvails,
-        columns: state.dashboard.session.columns,
-        availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         reportName: state.dashboard.session.reportName,
         availsMapping: state.root.availsMapping,
-        columnsOrder: state.dashboard.session.columns
     };
 };
 
@@ -42,11 +39,8 @@ class SearchResultsTab extends React.Component {
 
     static propTypes = {
         availTabPage: t.object,
-        availTabPageSelected: t.array,
-        columns: t.array,
         reportName: t.string,
         availsMapping: t.object,
-        columnsOrder: t.array,
         resultPageUpdateColumnsOrder: t.func,
         resultPageShowSelected: t.func,
         showSelectedAvails: t.bool
@@ -72,7 +66,7 @@ class SearchResultsTab extends React.Component {
     selectColumns() {
         this.props.availsMapping.mappings.forEach(column => {
             if (column.javaVariableName === 'title') return '';
-            let checked = this.props.columnsOrder.indexOf(column.javaVariableName) > -1;
+            let checked = store.getState().dashboard.session.columns.indexOf(column.javaVariableName) > -1;
             const data = {
                 source: column,
                 hideShowColumns: this.hideShowColumns,
@@ -151,7 +145,7 @@ class SearchResultsTab extends React.Component {
     }
 
     saveColumns() {
-        let cols = this.props.columnsOrder.slice();
+        let cols = store.getState().dashboard.session.columns.slice();
         //remove all hidden columns
         Object.keys(this.hideShowColumns).map(key => {
             if(this.hideShowColumns[key].checked() === false){
@@ -180,7 +174,8 @@ class SearchResultsTab extends React.Component {
     }
 
     exportAvails = () => {
-        if (this.props.availTabPageSelected.length === 0) {
+
+        if (store.getState().dashboard.session.availTabPageSelection.selected.length === 0) {
             alertModal.open('Action required', () => {
             }, {description: 'Please select at least one right'});
         } else {
@@ -188,27 +183,27 @@ class SearchResultsTab extends React.Component {
                 this.requestFile,
                 () => {
                 },
-                {description: `You have selected ${this.props.availTabPageSelected.length} avails for download.`});
+                {description: `You have selected ${store.getState().dashboard.session.availTabPageSelection.selected.length} avails for download.`});
         }
     };
 
     requestFile() {
-        exportService.exportAvails(this.props.availTabPageSelected.map(({id}) => id), this.props.columns)
+        exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), store.getState().dashboard.session.columns)
         .then(function (response) {
             downloadFile(response.data);
         });
     }
 
     selectedItemsComponent() {
-        if(this.props.showSelectedAvails){
+        if(store.getState().dashboard.session.availTabPageSelection.selected){
             return <span
                 className={'nx-container-margin table-top-text'}
-                id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+                id={'dashboard-selected-avails-number'}>Selected items: {store.getState().dashboard.session.availTabPageSelection.selected.length}</span>;
         }else {
-            if (this.props.availTabPageSelected.length) {
+            if (store.getState().dashboard.session.availTabPageSelection.selected.length) {
                 return <a href={'#'} onClick={this.toggleShowSelected}><span
                     className={'nx-container-margin table-top-text'}
-                    id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
+                    id={'dashboard-selected-avails-number'}>Selected items: {store.getState().dashboard.session.availTabPageSelection.selected.length}</span></a>;
             }
         }
     }
@@ -254,7 +249,7 @@ class SearchResultsTab extends React.Component {
                                     className={'nx-container-margin table-top-text'}
                                     id={'dashboard-go-to-filter'}>Back to search</span></a>
                             }
-                            {this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0 &&
+                            {this.props.showSelectedAvails && store.getState().dashboard.session.availTabPageSelection.selected.length > 0&&
                             <a href={'#'} onClick={() => this.clearAllSelected()}><span
                                 className={'nx-container-margin table-top-text'}
                                 id={'dashboard-clear-all-selected'}>Clear All</span></a>

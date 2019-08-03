@@ -1,8 +1,6 @@
 import React from 'react';
-import store from '../../stores/index';
-import {resultPageSelect} from '../../stores/actions/avail/dashboard';
 
-export default function withSelection(WrappedComponent, withReduxIntegration){
+export default function withSelection(WrappedComponent){
 
     let registeredOnSelect= false;
 
@@ -22,9 +20,9 @@ export default function withSelection(WrappedComponent, withReduxIntegration){
                 rowsProps: this.props.rowsProps,
                 table: null,
                 colDef: [],
-                selected:[],
-                selectAll: false,
-                selectNone: false,
+                selected: this.props.availTabPageSelection && this.props.availTabPageSelection.selected ? this.props.availTabPageSelection.selected : [],
+                selectAll: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectAll : false,
+                selectNone: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectNone : true,
                 columns: this.props.columns ? ['sel'].concat(this.props.columns): ['sel']
             };
         }
@@ -118,8 +116,8 @@ export default function withSelection(WrappedComponent, withReduxIntegration){
                     selected = selected.concat(this.state.selected);
             }
             this.setState({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
-            if(withReduxIntegration){
-                store.dispatch(resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()}));
+            if(this.props.resultPageSelect){
+                this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
             }
         }
 

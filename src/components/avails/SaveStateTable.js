@@ -9,14 +9,16 @@ export default function withRedux(WrappedComponent){
             return <WrappedComponent
                 {...this.props}
 
+                availsMapping = {store.getState().root.availsMapping}
+
                 availTabPageSort = {store.getState().dashboard.session.availTabPageSort}
-                resultPageSort = {resultPageSort}
+                resultPageSort = {(sort) => store.dispatch(resultPageSort(sort))}
 
                 availTabPageSelection = {store.getState().dashboard.session.availTabPageSelection}
-                resultPageSelect = {resultPageSelect}
+                resultPageSelect = {(selection) => store.dispatch(resultPageSelect(selection))}
 
                 columnsOrder = {store.getState().dashboard.session.columns}
-                updateColumnsOrder = {resultPageUpdateColumnsOrder}
+                updateColumnsOrder = {(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
             />;
         }
     }
