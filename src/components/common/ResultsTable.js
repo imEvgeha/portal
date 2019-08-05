@@ -11,7 +11,7 @@ export default class ResultsTable extends React.Component {
 
         this.state = {
             height: 500
-        }
+        };
 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.setTable = this.setTable.bind(this);

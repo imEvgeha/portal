@@ -22,7 +22,7 @@ export default function withColumnsReorder(WrappedComponent){
 
         componentDidUpdate(prevProps) {
             if(prevProps.availsMapping !== this.props.availsMapping){
-                refreshColumns();
+                this.refreshColumns();
             }
             if(prevProps.columnsOrder !== this.props.columnsOrder){
                 this.setState({columns: this.props.columnsOrder});

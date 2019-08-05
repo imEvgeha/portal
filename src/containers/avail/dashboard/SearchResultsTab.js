@@ -23,7 +23,7 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
 
-const mapStateToProps = state => {
+let mapStateToProps = state => {
     return {
         showSelectedAvails: state.dashboard.showSelectedAvails,
         reportName: state.dashboard.session.reportName,
@@ -287,27 +287,39 @@ import {Component} from 'react';
 
 //--------------------------------------
 
-const mapStateToPropsTotal = state => {
+mapStateToProps = state => {
     return {
         total: state.dashboard.availTabPage.total
     };
 };
 class TotalInternal extends Component {
+
+    static propTypes = {
+        total: t.number
+    };
+
     render(){
         return this.props.total;
     }
 }
-let Total = connect(mapStateToPropsTotal, null)(TotalInternal);
+let Total = connect(mapStateToProps, null)(TotalInternal);
 
 //--------------------------------------
 
-const mapStateToPropsSelected = state => {
+mapStateToProps = state => {
     return {
         availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         showSelectedAvails: state.dashboard.showSelectedAvails,
     };
 };
 class SelectedInternal extends Component {
+
+    static propTypes = {
+        showSelectedAvails: t.bool,
+        availTabPageSelected: t.array,
+        toggleShowSelected: t.func
+    };
+
     render(){
         if(this.props.showSelectedAvails){
             return <span
@@ -323,17 +335,24 @@ class SelectedInternal extends Component {
         return '';
     }
 }
-let Selected = connect(mapStateToPropsSelected, null)(SelectedInternal);
+let Selected = connect(mapStateToProps, null)(SelectedInternal);
 
 //--------------------------------------
 
-const mapStateToPropsClear = state => {
+mapStateToProps = state => {
     return {
         availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         showSelectedAvails: state.dashboard.showSelectedAvails,
     };
 };
 class ClearInternal extends Component {
+
+    static propTypes = {
+        showSelectedAvails: t.bool,
+        availTabPageSelected: t.array,
+        clearAllSelected: t.func
+    };
+
     render(){
         if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
         return (<a href={'#'} onClick={() => this.props.clearAllSelected()}><span
@@ -342,7 +361,7 @@ class ClearInternal extends Component {
         else return '';
     }
 }
-let Clear = connect(mapStateToPropsClear, null)(ClearInternal);
+let Clear = connect(mapStateToProps, null)(ClearInternal);
 
 //--------------------------------------
 

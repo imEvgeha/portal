@@ -21,5 +21,5 @@ export default function withRedux(WrappedComponent){
                 updateColumnsOrder = {(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
             />;
         }
-    }
+    };
 }
