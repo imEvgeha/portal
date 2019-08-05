@@ -4,7 +4,7 @@ import React from 'react';
 import {alertModal} from '../../../components/modal/AlertModal';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import t from 'prop-types';
-import RightsResultTable from './components/RightsResultTable';
+// import RightsResultTable from './components/RightsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
 import {downloadFile, IfEmbedded} from '../../../util/Common';
@@ -12,6 +12,7 @@ import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';
 import withRights from '../../../components/avails/RightsResultsTable';
+import withLocalRights from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 import store from '../../../stores/index';
@@ -232,6 +233,7 @@ class SearchResultsTab extends React.Component {
         };
 
         const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
+        const SelectedRightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withLocalRights(ResultsTable)))));
 
         return (
             <div id="dashboard-result-table">
@@ -247,7 +249,7 @@ class SearchResultsTab extends React.Component {
                                     className={'nx-container-margin table-top-text'}
                                     id={'dashboard-go-to-filter'}>Back to search</span></a>
                             }
-                            <Clear clearAllSelected={this.clearAllSelected}/>
+                            <Clear clearAllSelected={() => {this.clearAllSelected && this.clearAllSelected(); }}/>
                         </div>
                         <div  style={{marginRight: '15px'}}>
                             <IfEmbedded value={false}>
@@ -263,15 +265,13 @@ class SearchResultsTab extends React.Component {
                     <div>
                         <RightsResultsTable availsMapping = {this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
-                            fromServer = {true}
                             onDataLoaded = {this.storeData}
                         />
                     </div>
                     <div>
-                        <RightsResultTable availsMapping = {this.props.availsMapping}
+                        <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
-                            fromServer = {false}
                         />
                     </div>
 
@@ -355,7 +355,7 @@ class ClearInternal extends Component {
 
     render(){
         if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
-        return (<a href={'#'} onClick={() => this.props.clearAllSelected()}><span
+        return (<a href={'#'} onClick={this.props.clearAllSelected}><span
             className={'nx-container-margin table-top-text'}
             id={'dashboard-clear-all-selected'}>Clear All</span></a>);
         else return '';

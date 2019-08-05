@@ -60,7 +60,7 @@ export default class ResultsTable extends React.Component {
     render(){
         return(
             <div
-                className="ag-theme-balham"
+                className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
                 style={{
                     height: this.state.height + 'px',
                     width: '100%' }}

@@ -6,20 +6,17 @@ import config from 'react-global-configuration';
 
 import {getDeepValue} from '../../util/Common';
 import RightsURL from '../../containers/avail/util/RightsURL';
-import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
 
 // image import
 import LoadingGif from '../../img/loading.gif';
 
-export default function withRights(WrappedComponent){
+export default function withLocalRights(WrappedComponent) {
     return class extends React.Component {
-
         static propTypes = {
             nav: t.object
         };
 
         static defaultProps = {
-            autoload: true,
             autoRefresh: 0
         }
 
@@ -28,28 +25,22 @@ export default function withRights(WrappedComponent){
 
             this.loadingRenderer = this.loadingRenderer.bind(this);
             this.refreshColumns = this.refreshColumns.bind(this);
-            this.getRows = this.getRows.bind(this);
             this.setTable = this.setTable.bind(this);
-            this.parseServerResponse = this.parseServerResponse.bind(this);
+            this.selectAll = this.selectAll.bind(this);
 
             let originalColDef = this.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
+            let colDef = {...this.props.colDef, ...originalColDef};
 
             let rowsProps = {defaultColDef: {cellStyle: this.cellStyle}};
 
             rowsProps = {
                 ...rowsProps,
-                rowBuffer: '50',
-                rowModelType: 'infinite',
-                paginationPageSize: config.get('avails.page.size'),
-                infiniteInitialRowCount: '0',
-                cacheOverflowSize: '2',
-                maxConcurrentDatasourceRequests: '1',
-                datasource: this.props.autoload ? { rowCount: null, getRows: this.getRows} : null,
+                rowBuffer: '0',
+                onFirstDataRendered: this.props.staticDataLoaded
             };
 
-
-            let colDef = {...this.props.colDef, ...originalColDef};
             this.state = {
+                originalData: this.props.availTabPageSelection.selected.slice(0),
                 originalColDef: originalColDef,
                 colDef: colDef,
                 cols: [],
@@ -69,6 +60,21 @@ export default function withRights(WrappedComponent){
                 let newColDef = {...this.props.colDef, ...this.state.originalColDef};
                 this.refreshColumns(newColDef);
             }
+
+            if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
+                this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
+                setTimeout(() => {this.selectAll();}, 1);
+            }
+        }
+
+        selectAll(){
+            if(!this.state.table) return;
+            this.state.table.api.deselectAll();
+            this.state.table.api.forEachNode(rowNode => {
+                if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
+                    rowNode.setSelected(true);
+                }
+            });
         }
 
         parseColumnsSchema(mappings){
@@ -118,44 +124,6 @@ export default function withRights(WrappedComponent){
             this.setState({colDef: newColDef, cols: newCols});
         }
 
-        doSearch(page, pageSize, sortedParams) {
-            return rightServiceManager.doSearch(page, pageSize, sortedParams);
-        }
-
-        getRows(params){
-            if(this.state.table && this.state.table.api.getDisplayedRowCount() === 0 && !this.props.autoRefresh){
-                this.state.table.api.showLoadingOverlay();
-            }
-            this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.sort)
-               .then(response => {this.parseServerResponse(response, params);})
-               .catch((error) => {
-                   console.error('Unexpected error');
-                   console.error(error);
-                   params.failCallback();
-               });
-            }
-
-        parseServerResponse(response, callback){
-            if(response && response.data.total > 0){
-                // if on or after the last page, work out the last row.
-                let lastRow = -1;
-                if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                    lastRow = response.data.total;
-                }
-                if(this.state.table){
-                    callback.successCallback(response.data.data, lastRow);
-                    this.state.table.api.hideOverlay();
-                    if(this.props.onDataLoaded){
-                        this.props.onDataLoaded(response);
-                    }
-                }
-            }else{
-                if(this.state.table){
-                    this.state.table.api.showNoRowsOverlay();
-                }
-            }
-        }
-
         loadingRenderer(params){
             let error = null;
             if(params.data && params.data.validationErrors){
@@ -166,8 +134,8 @@ export default function withRights(WrappedComponent){
                             if(e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
                             if(e.sourceDetails.fileName){
                                 error += ', in file ' + e.sourceDetails.fileName
-                                       + ', row number ' + e.sourceDetails.rowId
-                                       + ', column ' + e.sourceDetails.originalFieldName;
+                                    + ', row number ' + e.sourceDetails.rowId
+                                    + ', column ' + e.sourceDetails.originalFieldName;
                             }
                         }
 
@@ -196,16 +164,16 @@ export default function withRights(WrappedComponent){
                     return(
                         <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                             <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                                title= {error}
+                                className = {highlighted ? 'font-weight-bold' : ''}
+                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
                                 {String(content)}
                             </div>
                             {highlighted &&
-                                <div
-                                    style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                    <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
-                                </div>
+                            <div
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
+                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                            </div>
                             }
                         </Link>
                     );
@@ -220,13 +188,13 @@ export default function withRights(WrappedComponent){
             }
         }
 
-         cellStyle(params) {
+        cellStyle(params) {
             let error = null;
             if(params.data && params.data.validationErrors){
                 params.data.validationErrors.forEach( e => {
-                 if(e.fieldName === params.colDef.field){
-                     error = e;
-                 }
+                    if(e.fieldName === params.colDef.field){
+                        error = e;
+                    }
                 });
             }
             if (params.colDef.headerName !== '' && error) {
@@ -253,6 +221,7 @@ export default function withRights(WrappedComponent){
                 colDef = {this.state.cols}
                 setTable={this.setTable}
                 getRowNodeId={data => data.id}
+                rowData= {this.state.originalData}
             />;
         }
     };
