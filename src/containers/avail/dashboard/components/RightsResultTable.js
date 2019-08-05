@@ -24,6 +24,11 @@ import {getDeepValue, equalOrIncluded} from '../../../../util/Common';
 const colDef = [];
 let registeredOnSelect= false;
 
+const errorCellColor = '#f2dede';
+const readyNewCellColor = '#D3D3D3';
+const readyCellColor = '#a3a3a3';
+const selectedColor = '#808080';
+
 let mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
@@ -316,6 +321,14 @@ class RightsResultTable extends React.Component {
             if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
                 selected = selected.concat(this.props.availTabPageSelection.selected);
         }
+
+        let nodesToUpdate = selected
+            .filter(x => !this.props.availTabPageSelection.selected.includes(x))
+            .concat(this.props.availTabPageSelection.selected.filter(x => !selected.includes(x)))
+            .map(i => this.table.api.getRowNode(i.id));
+
+        this.table.api.redrawRows({rowNodes: nodesToUpdate});
+
         this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
     }
 
@@ -349,7 +362,7 @@ class RightsResultTable extends React.Component {
 
     onEdit(avail) {
         this.table.api.getRowNode(avail.id).setData(avail);
-        this.table.api.redrawRows([this.table.api.getRowNode(avail.id)]);
+        this.table.api.redrawRows({rowNodes: [this.table.api.getRowNode(avail.id)]});
         this.props.resultPageUpdate({
             pages: this.props.availTabPage.pages,
             avails: this.editAvail(avail),
@@ -547,7 +560,13 @@ class RightsResultTable extends React.Component {
             });
         }
         if (params.colDef.headerName !== '' && error) {
-            return {backgroundColor: '#f2dede'};
+            return {backgroundColor: errorCellColor};
+        } else if(params.node.selected === true) {
+            return {backgroundColor: selectedColor};
+        } else if(params.data && params.data.status === 'ReadyNew') {
+            return {backgroundColor: readyNewCellColor};
+        } else if(params.data && params.data.status === 'Ready') {
+            return {backgroundColor: readyCellColor};
         } else {
             return null;
         }
@@ -606,6 +625,7 @@ class RightsResultTable extends React.Component {
 
                         headerHeight='52'
                         rowHeight='48'
+
                     >
                     </AgGridReact>
                 </div>
