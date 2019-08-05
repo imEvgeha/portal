@@ -1,13 +1,28 @@
 import React from 'react';
+import connect from 'react-redux/es/connect/connect';
+import t from 'prop-types';
 import {resultPageSelect, resultPageSort, resultPageUpdateColumnsOrder} from '../../stores/actions/avail/dashboard';
 import store from '../../stores/index';
 
 export default function withRedux(WrappedComponent){
 
-    return class extends React.Component {
+    let mapStateToProps = state => {
+        return {
+            availTabPageLoading: state.dashboard.availTabPageLoading
+        };
+    };
+
+    return connect(mapStateToProps, null)(class extends React.Component {
+
+        static propTypes = {
+            availTabPageLoading: t.bool,
+        };
+
         render(){
             return <WrappedComponent
                 {...this.props}
+
+                availTabPageLoading = {this.props.availTabPageLoading}
 
                 availsMapping = {store.getState().root.availsMapping}
 
@@ -21,5 +36,5 @@ export default function withRedux(WrappedComponent){
                 updateColumnsOrder = {(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
             />;
         }
-    };
+    });
 }

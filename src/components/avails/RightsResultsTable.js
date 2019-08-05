@@ -69,6 +69,10 @@ export default function withRights(WrappedComponent){
                 let newColDef = {...this.props.colDef, ...this.state.originalColDef};
                 this.refreshColumns(newColDef);
             }
+
+            if(this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.state.table != null) {
+                this.state.table.api.setDatasource({ rowCount: null, getRows: this.getRows});
+            }
         }
 
         parseColumnsSchema(mappings){

@@ -168,6 +168,8 @@ class SearchResultsTab extends React.Component {
 
         this.hideShowColumns={};
         this.props.resultPageUpdateColumnsOrder(cols);
+
+        store.dispatch(resultPageLoading(true)); //force refresh
     }
 
     cancelColumns() {
