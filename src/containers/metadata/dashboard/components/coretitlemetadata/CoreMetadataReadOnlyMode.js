@@ -18,10 +18,6 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 import Rating from './rating/Rating';
 import Lozenge from '@atlaskit/lozenge';
-import { getSortedData } from '../../../../../util/Common';
-
-const SORT_TYPE = 'displayName';
-const IS_ASC = true;
 
 class CoreMetadataReadOnlyMode extends Component {
     render() {
@@ -45,7 +41,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                             id='listContainer'
                                         >
                                             {this.props.data.castCrew && 
-                                                getFilteredCastList(getSortedData(this.props.data.castCrew, SORT_TYPE, IS_ASC), false).map((cast, i) => {                                                    
+                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {                                                    
                                                     return (
                                                         <ListGroupItem key={i}>
                                                             <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
@@ -72,7 +68,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                             id='listContainer'
                                         >
                                             {this.props.data.castCrew &&
-                                                getFilteredCrewList(getSortedData(this.props.data.castCrew, SORT_TYPE, IS_ASC), false).map((crew, i) => (
+                                                getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
                                                     <ListGroupItem key={i}>
                                                         <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
                                                         <span style={{ marginLeft: '10px' }}>                                                            

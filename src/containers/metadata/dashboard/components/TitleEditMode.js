@@ -477,6 +477,7 @@ class TitleEditMode extends Component {
               ratingObjectForCreate={this.props.ratingObjectForCreate}
               addCastCrew={this.props.addCastCrew}
               editedTitle={this.props.editedTitle}
+              castAndCrewReorder={this.props.castAndCrewReorder}
           />
         </Container>
       </Fragment>
@@ -508,7 +509,8 @@ TitleEditMode.propTypes = {
   configLocale: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
-  areRatingFieldsRequired: PropTypes.bool
+  areRatingFieldsRequired: PropTypes.bool,
+  castAndCrewReorder: PropTypes.func
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

@@ -3,11 +3,53 @@ import PropTypes from 'prop-types';
 import {
     Col
 } from 'reactstrap';
+import FontAwesome from 'react-fontawesome';
 
 import UserPicker from '@atlaskit/user-picker';
 import { Label } from '@atlaskit/field-base';
 import Lozenge from '@atlaskit/lozenge';
 import PersonListContainer from './PersonListContainer';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+import DefaultUserIcon from '../../../../../img/default-user.png';
+
+const DraggableContent = styled.div`
+    border:${props => props.isDragging ? '2px dotted #111' : '1px solid #EEE'};
+    padding: 5px;
+    background-color: #FAFBFC;
+    width: 97%;
+    margin: auto;
+    opacity: ${props => props.isDragging ? '1' : '0.8'};
+`; 
+
+const DroppableContent = styled.div`
+    background-color: ${props => props.isDragging ? '#bdc3c7' : ''};
+    width: 97%;
+    border:${props => props.isDragging ? '2px dotted #111' : ''};
+`;
+
+const PersonListAvatar = styled.div`
+    box-sizing: border-box;
+    width: 6%;
+    display: inline-block;
+    padding: 7px;
+    vertical-align: middle;
+`;
+
+const PersonListFlag = styled.div`
+    box-sizing: border-box;
+    width: 14%;
+    display: inline-block;
+    padding: 7px;
+    vertical-align: middle;
+`;
+
+const PersonListName = styled.div`
+     box-sizing: border-box;
+     width: ${props => props.showPersonType ? '75%' : '89%'};
+     display: inline-block;
+     vertical-align: middle;
+`;
 
 class PersonList extends React.Component {
     static defaultProps = {
@@ -30,8 +72,8 @@ class PersonList extends React.Component {
     validateAndAddPerson = (personJSON) => {
         let person = JSON.parse(personJSON);
         let isValid = this.isSelectedPersonValid(person);
-        const length = this.props.filterPersonList(this.props.persons).length;
-         if (isValid && length < this.props.personsLimit) {
+        const length = this.props.persons.length;
+        if (isValid && length < this.props.personsLimit) {
             this.props.addPerson(person);
             this.setState({
                 searchPersonText: ''
@@ -58,6 +100,25 @@ class PersonList extends React.Component {
             searchPersonText: e
         });
     }
+    reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+
+        return result;
+    };
+    onDragEnd = (result) => {
+        if (!result.destination) {
+            return;
+        }
+        const items = this.reorder(
+            this.props.persons,
+            result.source.index,
+            result.destination.index
+        );
+        this.props.onReOrder(items);
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -74,8 +135,8 @@ class PersonList extends React.Component {
                                 value={this.state.searchPersonText}
                                 onInputChange={this.handleInputChangePerson}
                                 onSelection={this.handleOnSelectPerson}
-                                disableInput={this.props.filterPersonList(this.props.persons).length >= this.props.personsLimit}
-                                placeholder={this.props.filterPersonList(this.props.persons).length >= this.props.personsLimit ? 'You can add maximum 5 cast members' : this.props.personLabel}
+                                disableInput={this.props.persons.length >= this.props.personsLimit}
+                                placeholder={this.props.persons.length >= this.props.personsLimit ? `You can add maximum ${this.props.personsLimit} ${this.props.type.toString().toLowerCase()} members` : this.props.personLabel}
                             />
                         </div>
                         {!this.state.isPersonValid && (<span style={{ color: '#e74c3c', fontWeight: 'bold' }}>Person is already exists!</span>)}
@@ -84,31 +145,58 @@ class PersonList extends React.Component {
                             isFirstChild
                             htmlFor="person-list"
                         >
-                            {this.props.persons &&
-                                this.props.filterPersonList(this.props.persons, false).map((person, i) => {
-                                    return (
-                                        <div key={i} style={{ border: '1px solid #EEE', padding: '5px', backgroundColor: '#FAFBFC', width: '97%' }}>
-                                            <div style={{ boxSizing: 'border-box', width: '6%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
-                                                <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ width: '30px', height: '30px' }} />
-                                            </div>
-                                            {this.props.showPersonType ? (
-                                                <div style={{ boxSizing: 'border-box', width: '14%', display: 'inline-block', padding: '7px', verticalAlign: 'middle' }}>
-                                                    <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
-                                                </div>) : null}
-                                            <div style={{ boxSizing: 'border-box', width: !this.props.showPersonType ? '93%' : '79%', display: 'inline-block', verticalAlign: 'middle' }}>
-                                                <UserPicker
-                                                    width="100%"
-                                                    appearance="normal"
-                                                    subtle
-                                                    value={person.displayName}
-                                                    disableInput={true}
-                                                    search={person.displayName}
-                                                    onClear={() => this.props.removePerson(person)}
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                            <DragDropContext
+                                onDragEnd={this.onDragEnd}
+                            >
+
+                                <Droppable droppableId="droppable">
+                                    {(provided, snapshot) => (
+                                        <DroppableContent
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                            isDragging={snapshot.isDraggingOver}
+                                        >
+                                            {this.props.persons &&
+                                                this.props.persons.map((person, i) => {
+                                                    return (
+                                                        <Draggable key={person.id} draggableId={person.id} index={i}>
+                                                            {(provided, snapshot) => (
+                                                                <div
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}>
+                                                                    <DraggableContent
+                                                                        isDragging={snapshot.isDragging}
+                                                                    >
+                                                                        <PersonListAvatar>
+                                                                            <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px' }} />
+                                                                        </PersonListAvatar>
+                                                                        {this.props.showPersonType ? (
+                                                                            <PersonListFlag>
+                                                                                <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
+                                                                            </PersonListFlag>) : null}
+                                                                        <PersonListName showPersonType={this.props.showPersonType}>
+                                                                            <UserPicker
+                                                                                width="100%"
+                                                                                appearance="normal"
+                                                                                subtle
+                                                                                value={person.displayName}
+                                                                                disableInput={true}
+                                                                                search={person.displayName}
+                                                                                onClear={() => this.props.removePerson(person)}
+                                                                            />
+                                                                        </PersonListName>
+                                                                        <FontAwesome name="bars" style={{marginLeft: '5px', cursor: 'move'}} {...provided.dragHandleProps} />
+                                                                    </DraggableContent>
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    );
+                                                })}
+                                            {provided.placeholder}
+                                        </DroppableContent>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         </Label>
                     </PersonListContainer>
                 </Col>
@@ -130,7 +218,8 @@ PersonList.propTypes = {
     getFormatTypeName: PropTypes.func,
     personsLimit: PropTypes.number,
     showPersonType: PropTypes.bool,
-    addPerson: PropTypes.func
+    addPerson: PropTypes.func,
+    onReOrder: PropTypes.func
 };
 
 export default PersonList;

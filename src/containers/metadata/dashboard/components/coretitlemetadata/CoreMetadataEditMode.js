@@ -94,12 +94,13 @@ class CoreMetadataEditMode extends Component {
               personListLabel={CAST_LIST_LABEL}
               personHeader={CAST_HEADER}
               type={CAST}
-              persons={this.props.editedTitle.castCrew}
+              persons={getFilteredCastList(this.props.editedTitle.castCrew, false)}
               filterPersonList={getFilteredCastList}
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
               personsLimit={CAST_LIMIT}
+              onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
             />
           </Col>
           <Col>
@@ -109,13 +110,14 @@ class CoreMetadataEditMode extends Component {
               personListLabel={CREW_LIST_LABEL}
               personHeader={CREW_HEADER}
               type={CREW}
-              persons={this.props.editedTitle.castCrew}
+              persons={getFilteredCrewList(this.props.editedTitle.castCrew, false)}
               filterPersonList={getFilteredCrewList}
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
               getFormatTypeName={getFormatTypeName}
               showPersonType={true}
+              onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CREW)}
             />
           </Col>
         </Row>
@@ -434,7 +436,8 @@ CoreMetadataEditMode.propTypes = {
   handleRatingSystemValue: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
-  areRatingFieldsRequired: PropTypes.bool
+  areRatingFieldsRequired: PropTypes.bool,
+  castAndCrewReorder: PropTypes.func
 };
 
 
