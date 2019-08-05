@@ -11,6 +11,7 @@ import Lozenge from '@atlaskit/lozenge';
 import PersonListContainer from './PersonListContainer';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import DefaultUserIcon from '../../../../../img/default-user.png';
 
 const DraggableContent = styled.div`
     border:${props => props.isDragging ? '2px dotted #111' : '1px solid #EEE'};
@@ -135,7 +136,7 @@ class PersonList extends React.Component {
                                 onInputChange={this.handleInputChangePerson}
                                 onSelection={this.handleOnSelectPerson}
                                 disableInput={this.props.persons.length >= this.props.personsLimit}
-                                placeholder={this.props.persons.length >= this.props.personsLimit ? 'You can add maximum 5 cast members' : this.props.personLabel}
+                                placeholder={this.props.persons.length >= this.props.personsLimit ? `You can add maximum ${this.props.personsLimit} ${this.props.type.toString().toLowerCase()} members` : this.props.personLabel}
                             />
                         </div>
                         {!this.state.isPersonValid && (<span style={{ color: '#e74c3c', fontWeight: 'bold' }}>Person is already exists!</span>)}
@@ -167,7 +168,7 @@ class PersonList extends React.Component {
                                                                         isDragging={snapshot.isDragging}
                                                                     >
                                                                         <PersonListAvatar>
-                                                                            <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ width: '30px', height: '30px' }} />
+                                                                            <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px' }} />
                                                                         </PersonListAvatar>
                                                                         {this.props.showPersonType ? (
                                                                             <PersonListFlag>
@@ -184,7 +185,7 @@ class PersonList extends React.Component {
                                                                                 onClear={() => this.props.removePerson(person)}
                                                                             />
                                                                         </PersonListName>
-                                                                        <FontAwesome name="bars" style={{marginLeft: '5px'}} {...provided.dragHandleProps} />
+                                                                        <FontAwesome name="bars" style={{marginLeft: '5px', cursor: 'move'}} {...provided.dragHandleProps} />
                                                                     </DraggableContent>
                                                                 </div>
                                                             )}
