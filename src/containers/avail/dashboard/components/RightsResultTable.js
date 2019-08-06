@@ -28,6 +28,10 @@ const errorCellColor = '#f2dede';
 const readyNewCellColor = '#D3D3D3';
 const readyCellColor = '#a3a3a3';
 const selectedColor = '#808080';
+const defaultCellColor= '#ededed';
+
+export const defaultMode = 'defaultMode';
+export const selectRightMode = 'selectRightMode';
 
 let mapStateToProps = state => {
     return {
@@ -69,12 +73,14 @@ class RightsResultTable extends React.Component {
         fromServer: t.bool,
         hidden: t.bool,
         nav: t.object,
-        autoRefresh: t.number
+        autoRefresh: t.number,
+        mode: t.string
     };
 
     static defaultProps = {
         autoload: true,
-        autoRefresh: 0
+        autoRefresh: 0,
+        mode: defaultMode
     }
 
     table = null;
@@ -550,7 +556,7 @@ class RightsResultTable extends React.Component {
         }
     }
 
-     cellStyle(params) {
+     cellStyle = (params) => {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
@@ -559,16 +565,19 @@ class RightsResultTable extends React.Component {
              }
             });
         }
+
         if (params.colDef.headerName !== '' && error) {
             return {backgroundColor: errorCellColor};
-        } else if(params.node.selected === true) {
-            return {backgroundColor: selectedColor};
-        } else if(params.data && params.data.status === 'ReadyNew') {
-            return {backgroundColor: readyNewCellColor};
-        } else if(params.data && params.data.status === 'Ready') {
-            return {backgroundColor: readyCellColor};
-        } else {
-            return null;
+        } else if(this.props.mode === selectRightMode) {
+            if(params.node.selected === true) {
+                return {backgroundColor: selectedColor};
+            } else if(params.data && params.data.status === 'ReadyNew') {
+                return {backgroundColor: readyNewCellColor};
+            } else if(params.data && params.data.status === 'Ready') {
+                return {backgroundColor: readyCellColor};
+            } else {
+                return {backgroundColor: defaultCellColor};
+            }
         }
     }
 
