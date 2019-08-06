@@ -6,7 +6,7 @@ import moment from 'moment';
 import store from '../../../stores/index';
 import {blockUI} from '../../../stores/actions/index';
 import BlockUi from 'react-block-ui';
-import {Button, Input, Label} from 'reactstrap';
+import {Button as ReactStrapButton, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
@@ -22,6 +22,12 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
+import Button from '@atlaskit/button';
+import styled from 'styled-components';
+import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
+import Portal from '@atlaskit/portal';
+
+
 const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
@@ -29,6 +35,19 @@ const mapStateToProps = state => {
         blocking: state.root.blocking
     };
 };
+
+const CustomFieldContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const CustomFieldAddText = styled.div`
+    color: #999;
+    font-style: italic;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+`;
 
 class RightCreate extends React.Component {
 
@@ -53,6 +72,10 @@ class RightCreate extends React.Component {
 
         this.mappingErrorMessage = {};
         this.right = {};
+        this.state = {
+            isRightTerritoryFormOpen: false
+        };
+
     }
 
     componentDidMount() {
@@ -284,6 +307,12 @@ class RightCreate extends React.Component {
 
         this.mappingErrorMessage =  mappingErrorMessage;
     };
+
+    toggleRightTerritoryForm = () => {
+        this.setState({
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+        });
+    }
 
     render() {
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
@@ -635,6 +664,16 @@ class RightCreate extends React.Component {
             ));
         };
 
+        const renderCustomField = (name, displayName, required, value) => {
+            return renderFieldTemplate(name, displayName, required, null, (
+                <CustomFieldContainer>
+                    <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add</CustomFieldAddText>
+                    <Button onClick={this.toggleRightTerritoryForm} style={{fontWeight: 'bold', backgroundColor: '#999'}}><span style={{color: '#FFF'}}>+</span></Button>                    
+                    <RightTerritoryForm isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} />                    
+                </CustomFieldContainer>
+            ));
+        };
+
         const renderDatepickerField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
@@ -703,6 +742,8 @@ class RightCreate extends React.Component {
                              break;
                          case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
+                        case 'custom': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, required, value));
+                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
@@ -727,8 +768,8 @@ class RightCreate extends React.Component {
                     {this.props.availsMapping &&
                         <div style={{display:'flex', justifyContent: 'flex-end'}} >
                             <div className="mt-4 mx-5">
-                                <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
-                                <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                                <ReactStrapButton className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</ReactStrapButton>
+                                <ReactStrapButton className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</ReactStrapButton>
                             </div>
                         </div>
                     }

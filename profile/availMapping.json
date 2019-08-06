@@ -65,9 +65,9 @@
   "enableEdit": true,
   "required": true
 }, {
-  "javaVariableName": "territory.country",
+  "javaVariableName": "territory",
   "displayName": "Territory",
-  "dataType": "multiselect",
+  "dataType": "custom",
   "searchDataType": "multiselect",
   "configEndpoint": "/territories",
   "queryParamName": "territory",
