@@ -110,7 +110,9 @@ function getDeepValue(source, location){
     }
 }
 
-
+function nextFrame(f){
+    setTimeout(f, 1);
+}
 
 const URL = {
     getParamIfExists: function (name, defaultValue = ''){
@@ -185,4 +187,4 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, URL, IfEmbedded};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, nextFrame, URL, IfEmbedded};

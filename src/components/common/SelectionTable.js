@@ -1,4 +1,5 @@
 import React from 'react';
+import {nextFrame} from '../../util/Common';
 
 export default function withSelection(WrappedComponent){
 
@@ -69,7 +70,7 @@ export default function withSelection(WrappedComponent){
         onSelectionChanged(){
             if(!registeredOnSelect){
                 registeredOnSelect = true;
-                setTimeout(this.onSelectionChangedProcess, 1);
+                nextFrame(this.onSelectionChangedProcess);
             }
         }
 

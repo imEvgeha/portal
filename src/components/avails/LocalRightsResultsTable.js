@@ -4,7 +4,7 @@ import moment from 'moment';
 import {Link} from 'react-router-dom';
 import config from 'react-global-configuration';
 
-import {getDeepValue} from '../../util/Common';
+import {getDeepValue, nextFrame} from '../../util/Common';
 import RightsURL from '../../containers/avail/util/RightsURL';
 
 // image import
@@ -63,7 +63,7 @@ export default function withLocalRights(WrappedComponent) {
 
             if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
                 this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
-                setTimeout(() => {this.selectAll();}, 1);
+                nextFrame(this.selectAll);
             }
         }
 

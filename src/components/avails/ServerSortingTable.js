@@ -1,4 +1,5 @@
 import React from 'react';
+import {nextFrame} from '../../util/Common';
 
 export default function withServerSorting(WrappedComponent){
     return class extends React.Component {
@@ -17,7 +18,7 @@ export default function withServerSorting(WrappedComponent){
         componentDidUpdate(prevProps) {
             if(prevProps.availTabPageSort !== this.props.availTabPageSort){
                 this.setState({sort: this.props.availTabPageSort});
-                setTimeout(this.refreshSort, 1);
+                nextFrame(this.refreshSort);
             }
         }
 
@@ -63,7 +64,7 @@ export default function withServerSorting(WrappedComponent){
                 if(this.props.setTable){
                     this.props.setTable(element);
                 }
-                setTimeout(this.refreshSort, 1);
+                nextFrame(this.refreshSort);
             }
         }
 
