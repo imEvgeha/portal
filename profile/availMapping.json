@@ -1330,8 +1330,8 @@
 }, {
   "javaVariableName": "termYear",
   "displayName": "Term Year",
-  "dataType": "year",
-  "searchDataType": "year",
+  "dataType": "integer",
+  "searchDataType": "integer",
   "queryParamName": "termYear",
   "readOnly": false,
   "enableSearch": true,
