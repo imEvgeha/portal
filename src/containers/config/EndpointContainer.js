@@ -52,7 +52,7 @@ export class EndpointContainer extends Component {
             total: 0,
             currentPage: 1,
             searchValue: '',
-            isLoading: false
+            isLoading: false,
         };
 
         this.keyInputTimeout = 0;
@@ -66,39 +66,31 @@ export class EndpointContainer extends Component {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
 
         this.keyInputTimeout = setTimeout(() => {
-            let requestFunction = this.getRequestFunction(page, searchField, searchValue);
             this.setState({
                 isLoading: true,
                 searchValue: searchValue,
-                searchField: searchField
+                searchField: searchField,
+                currentPage: page,
             });
-            requestFunction.then((res) => {
-                this.setState({
-                    pages: Array.from({length: (res.data.total / pageSize < 1 ? 1 : res.data.total / pageSize)}, (v, k) => k + 1),
-                    data: res.data.data,
-                    total: res.data.total,
-                    currentPage: page,
-                    isLoading: false,
+            getConfigApiValues(this.props.selectedApi.url, page - 1, pageSize, null, searchField, searchValue)
+                .then((res) => {
+                    this.setState({
+                        pages: Array.from({length: (res.data.total / pageSize < 1 ? 1 : res.data.total / pageSize)}, (v, k) => k + 1),
+                        data: res.data.data,
+                        total: res.data.total,
+                        isLoading: false,
+                    });
                 });
-            });
         }, INPUT_TIMEOUT);
     };
 
-    getRequestFunction = (page, searchField, searchValue) => {
-        if (searchValue !== '' && searchField !== '') {
-            return getConfigApiValues(this.props.selectedApi.url, page - 1, pageSize, null, searchField, searchValue);
-        } else {
-            return getConfigApiValues(this.props.selectedApi.url, page - 1, pageSize);
-        }
-    };
-
-    handleTitleFreeTextSearch = (searchInput) => {
+    handleTitleFreeTextSearch = (searchValue) => {
         //TODO change searchField due to schema. Somewhere from this.props.selectedApi
-        this.loadEndpointData(1, 'id', searchInput);
+        this.loadEndpointData(1, 'id', searchValue);
     };
 
     onRemoveItem = (item) => {
-        deleteConfigItemById(this.props.urlBase, this.props.selectedApi.url, item.id);
+        deleteConfigItemById(this.props.selectedApi.url, item.id);
         this.loadEndpointData(this.state.currentPage);
     };
 
@@ -113,7 +105,7 @@ export class EndpointContainer extends Component {
                             onSearchInput={({target}) => {
                                 this.handleTitleFreeTextSearch(target.value);
                             }}
-                            value={this.state.searchInput}
+                            value={this.state.searchValue}
                         />
                     </CustomContainer>
 
@@ -146,8 +138,9 @@ export class EndpointContainer extends Component {
                         })}
                     </ListGroup>
                     }
-                    <CustomContainer center><Pagination pages={this.state.pages}
-                                                        onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.searchField, this.state.searchInput)}/></CustomContainer>
+                    <CustomContainer center><Pagination selectedIndex={this.state.currentPage - 1}
+                                                        pages={this.state.pages}
+                                                        onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.searchField, this.state.searchValue)}/></CustomContainer>
                 </DataBody>
             </DataContainer>
         );
