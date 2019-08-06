@@ -7,19 +7,20 @@ import {
     SideMenu,
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
-import GridContainer from './GridContainer';
+import {EndpointContainer} from '../config/EndpointContainer';
+import {TabContent, TabPane} from 'reactstrap';
 
 export default class Settings extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            actualSchema: {}
+            selectedApi: configApiSchema['endpoints'][0]
         };
     }
 
-    onApiNavClick = (newSchema) => {
-        this.setState({actualSchema: newSchema});
+    onApiNavClick = (selectedApi) => {
+        this.setState({selectedApi: selectedApi});
     };
 
     render() {
@@ -34,18 +35,25 @@ export default class Settings extends Component {
                 </SideMenu>
 
                 <SideMenu>
-                    <TextHeader>{'API\'s'}</TextHeader>
-                    <GroupHeader>Grouping Label</GroupHeader>
+                    <TextHeader>APIs</TextHeader>
+                    {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
                         {configApiSchema['endpoints'].map((e, i) => (
                             <ListElement key={i} onClick={() => {
-                                this.onApiNavClick(e.schema);
+                                this.onApiNavClick(e);
                             }}>{e.layout['display-name']}</ListElement>
                         ))}
                     </ListParent>
                 </SideMenu>
 
-                <GridContainer header={'Data container'} data={this.state.actualSchema.name}/>
+                <TabContent activeTab={this.state.selectedApi}>
+                    {configApiSchema['endpoints'].map((e, i) => (
+                        <TabPane key={i} tabId={e}>
+                            <EndpointContainer selectedApi={e}/>
+                        </TabPane>
+                    ))
+                    }
+                </TabContent>
             </div>
         );
     }
