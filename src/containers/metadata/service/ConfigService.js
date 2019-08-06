@@ -34,7 +34,7 @@ const getAllConfigValuesByField = (field, sortBy) => {
     let total = 0;
     let result = [];
 
-    getConfigApiValues(config.get('gateway.service.configuration') + '/', field, startPage, size, sortBy)
+    getConfigApiValues(field, startPage, size, sortBy)
         .then((res) => {
             total = res.data.total;
             result = res.data.data;
@@ -43,7 +43,7 @@ const getAllConfigValuesByField = (field, sortBy) => {
         .then(() => {
             startPage++;
             for (startPage; total > size * (startPage); startPage++) {
-                getConfigApiValues(config.get('gateway.service.configuration') + '/', field, startPage, size, sortBy)
+                getConfigApiValues(field, startPage, size, sortBy)
                     .then((res) => {
                         result = [...result, ...res.data.data];
                         store.dispatch(loadConfigData(field, result));

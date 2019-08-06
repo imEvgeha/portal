@@ -8,7 +8,7 @@ import styled, {css} from 'styled-components';
 import {ListGroup, ListGroupItem} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
-import {deleteConfigItemById, searchConfigItem} from './service/ConfigService';
+import {deleteConfigItemById} from './service/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 
 const DataContainer = styled.div`
@@ -50,8 +50,8 @@ export class EndpointContainer extends Component {
             pages: [1],
             data: [],
             total: 0,
-            lastPage: 1,
-            lastSearchInput: '',
+            currentPage: 1,
+            searchValue: '',
             isLoading: false
         };
 
@@ -62,33 +62,33 @@ export class EndpointContainer extends Component {
         this.loadEndpointData(1);
     }
 
-    loadEndpointData = (page, searchField, searchInput) => {
+    loadEndpointData = (page, searchField, searchValue) => {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
 
         this.keyInputTimeout = setTimeout(() => {
-            let requestFunction = this.getRequestFunction(page, searchField, searchInput);
-            this.setState({isLoading: true});
+            let requestFunction = this.getRequestFunction(page, searchField, searchValue);
+            this.setState({
+                isLoading: true,
+                searchValue: searchValue,
+                searchField: searchField
+            });
             requestFunction.then((res) => {
                 this.setState({
                     pages: Array.from({length: (res.data.total / pageSize < 1 ? 1 : res.data.total / pageSize)}, (v, k) => k + 1),
                     data: res.data.data,
                     total: res.data.total,
-                    lastPage: page,
+                    currentPage: page,
                     isLoading: false,
                 });
             });
         }, INPUT_TIMEOUT);
     };
 
-    getRequestFunction = (page, searchField, searchInput) => {
-        if (searchInput !== '' && searchField !== '') {
-            this.setState({
-                lastSearchInput: searchInput,
-                lastSearchField: searchField
-            });
-            return searchConfigItem(this.props.urlBase, this.props.selectedApi.url, searchField, searchInput, page - 1, pageSize);
+    getRequestFunction = (page, searchField, searchValue) => {
+        if (searchValue !== '' && searchField !== '') {
+            return getConfigApiValues(this.props.selectedApi.url, page - 1, pageSize, null, searchField, searchValue);
         } else {
-            return getConfigApiValues(this.props.urlBase, this.props.selectedApi.url, page - 1, pageSize);
+            return getConfigApiValues(this.props.selectedApi.url, page - 1, pageSize);
         }
     };
 
@@ -99,13 +99,13 @@ export class EndpointContainer extends Component {
 
     onRemoveItem = (item) => {
         deleteConfigItemById(this.props.urlBase, this.props.selectedApi.url, item.id);
-        this.loadEndpointData(this.state.lastPage);
+        this.loadEndpointData(this.state.currentPage);
     };
 
     render() {
         return (
             <DataContainer>
-                <TextHeader>{this.props.selectedApi.layout['display-name'] + ' {' + this.state.total + '} '}</TextHeader>
+                <TextHeader>{this.props.selectedApi.layout['display-name'] + ' (' + this.state.total + ') '}</TextHeader>
                 <DataBody>
                     <CustomContainer left>
                         <QuickSearch
@@ -113,7 +113,7 @@ export class EndpointContainer extends Component {
                             onSearchInput={({target}) => {
                                 this.handleTitleFreeTextSearch(target.value);
                             }}
-                            value={this.state.lastSearchInput}
+                            value={this.state.searchInput}
                         />
                     </CustomContainer>
 
@@ -122,7 +122,8 @@ export class EndpointContainer extends Component {
                         style={{
                             overflowY: 'hidden',
                             overFlowX: 'hidden',
-                            margin: '10px'
+                            margin: '10px',
+                            paddingRight: '24px'
                         }}
                         id='listContainer'
                     >
@@ -146,7 +147,7 @@ export class EndpointContainer extends Component {
                     </ListGroup>
                     }
                     <CustomContainer center><Pagination pages={this.state.pages}
-                                                        onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.lastSearchField, this.state.lastSearchInput)}/></CustomContainer>
+                                                        onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.searchField, this.state.searchInput)}/></CustomContainer>
                 </DataBody>
             </DataContainer>
         );

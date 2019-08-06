@@ -49,8 +49,7 @@ export default class Settings extends Component {
                 <TabContent activeTab={this.state.selectedApi}>
                     {configApiSchema['endpoints'].map((e, i) => (
                         <TabPane key={i} tabId={e}>
-                            <EndpointContainer urlBase={configApiSchema['url-base']}
-                                               selectedApi={e}/>
+                            <EndpointContainer selectedApi={e}/>
                         </TabPane>
                     ))
                     }
