@@ -4,7 +4,7 @@ import React from 'react';
 import {alertModal} from '../../../components/modal/AlertModal';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import t from 'prop-types';
-import RightsResultTable, {selectRightMode} from './components/RightsResultTable';
+import RightsResultTable from './components/RightsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
 import {downloadFile, IfEmbedded} from '../../../util/Common';
@@ -267,7 +267,6 @@ class SearchResultsTab extends React.Component {
                         <RightsResultTable
                             hidden={this.props.showSelectedAvails}
                             fromServer = {true}
-                            mode={selectRightMode}
                         />
                     </div>
                     <div>
@@ -275,7 +274,6 @@ class SearchResultsTab extends React.Component {
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
                             fromServer = {false}
-                            mode={selectRightMode}
                         />
                     </div>
 
