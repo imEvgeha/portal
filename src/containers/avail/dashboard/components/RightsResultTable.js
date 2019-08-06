@@ -207,6 +207,7 @@ class RightsResultTable extends React.Component {
         if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
             this.updateWindowDimensions();
             this.refreshSelected();
+            this.table.api.redrawRows();
         }
     }
 
@@ -556,7 +557,7 @@ class RightsResultTable extends React.Component {
         }
     }
 
-     cellStyle = (params) => {
+    cellStyle = (params) => {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
