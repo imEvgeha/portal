@@ -11,7 +11,7 @@ import {downloadFile, IfEmbedded} from '../../../util/Common';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';
-import withRights from '../../../components/avails/RightsResultsTable';
+import withRights from '../../../components/avails/ServerRightsResultsTable';
 import withLocalRights from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
