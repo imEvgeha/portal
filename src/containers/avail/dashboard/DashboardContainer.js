@@ -29,9 +29,7 @@ import RightsURL from '../util/RightsURL';
 
 const mapStateToProps = state => {
     return {
-        profileInfo: state.profileInfo,
         availsMapping: state.root.availsMapping,
-        selected: state.dashboard.session.availTabPageSelection.selected,
         showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,

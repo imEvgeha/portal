@@ -126,6 +126,9 @@ export const getSortedData = (data, prop, isAsc) => {
     return data.sort((a, b) => (a[prop] < b[prop] ? -1 : 1) * (isAsc ? 1 : -1));
 };
 
+function nextFrame(f){
+    setTimeout(f, 1);
+}
 
 
 const URL = {
@@ -201,4 +204,4 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, equalOrIncluded, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, URL, IfEmbedded};
+export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, equalOrIncluded, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, nextFrame, URL, IfEmbedded};
