@@ -3,36 +3,111 @@ import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
+import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
 class RatingCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            advisoriesCode: null,
-            filteredAdvisoryCodes: []
+            ratingsForCreate: {},
+            rating: [],
+            isRatingExist: false,
+            isAdvisoryRequired: false,
         };
     }
 
-    filteredAdvisoryCodes = (e) => {
-        // this.props.configAdvisoryCode.value
-        const ratingSystem = e.target.value;
-        let newAdvisoryCodes = this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem);
-        for(let i = 0; i< newAdvisoryCodes.length; i++) {
-            newAdvisoryCodes[i].label = newAdvisoryCodes[i]['name'];
-            newAdvisoryCodes[i].value = newAdvisoryCodes[i]['name'];
-        }
+    UNSAFE_componentWillReceiveProps() {
         this.setState({
-            filteredAdvisoryCodes: newAdvisoryCodes
+            rating: this.props.ratings && this.props.ratings.map(e => e.rating)
         });
     }
 
-    handleChangeRatingSystem = (e) => {
-        this.props.handleRatingSystemValue(e);
-        this.props.handleChange(e);
-        this.filteredAdvisoryCodes(e);
+    handleRatingSystemChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            ratingSystem: newValue.target.value,
+            rating: null,
+            advisoriesCode: null
+        };
+        
+        this.setState({            
+            ratingsForCreate: newRating,
+        });
+        
+        if(newValue.target.value !== BBFC_UK && newValue.target.value !== MIDDLE_EAST) {
+            this.setState({
+                isAdvisoryRequired: false
+            });
+        } 
+        else {
+            this.setState({
+                isAdvisoryRequired: true
+            });
+        }
+    
+        this.props.handleRatingCreateChange(newRating);
+    };
+
+
+    handleRatingsChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            rating: newValue.target.value
+        };
+
+        if (this.state.rating && this.state.rating.includes(newValue.target.value)) {
+            this.setState({
+                isRatingExist: true
+            });
+        } else {
+            this.setState({
+                isRatingExist: false
+            });
+        }
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+
+    };
+
+    handleAdvisoryCodesChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            advisoriesCode: newValue.map(e => e.value)
+        };
+
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+    };
+
+    handleAdvisoriesChange = (newValue) => {
+        let newRating = {
+            ...this.state.ratingsForCreate,
+            advisoriesFreeText: newValue.target.value
+        };
+
+        this.setState({
+            ratingsForCreate: newRating
+        });
+
+        this.props.handleRatingCreateChange(newRating);
+    };
+
+    handleFieldLength = (name) => {
+        return name ? name.length : 0;
     }
 
     render() {
+        const {
+            ratingSystem,
+            rating,
+            advisoriesFreeText,
+        } = this.state.ratingsForCreate;
         return (
             <div id="ratingCreate">
                 <Fragment>
@@ -43,7 +118,7 @@ class RatingCreateTab extends Component {
                                 name="ratingSystem"
                                 id="titleRatingSystem"
                                 required={this.props.areRatingFieldsRequired}
-                                onChange={this.handleChangeRatingSystem}
+                                onChange={(e) => this.handleRatingSystemChange(e)}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating System</option>
                                 {
@@ -57,35 +132,54 @@ class RatingCreateTab extends Component {
                             <b>Ratings<span style={{ color: 'red' }}>*</span></b>
                             <AvField type="select"
                                 name="rating"
-                                id="titleRatings"                                
+                                id="titleRatings"
+                                value={rating ? rating : ''}
                                 required={this.props.areRatingFieldsRequired}
-                                onChange={this.props.handleChange}
+                                onChange={(e) => this.handleRatingsChange(e)}
                                 errorMessage="Field cannot be empty!">
                                 <option value={''}>Select Rating</option>
                                 {
-                                    this.props.filteredRatings && this.props.filteredRatings.map((item, i) => {
+                                    this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem).map((item, i) => {
                                         return <option key={i} value={item.name}>{item.name}</option>;
                                     })
                                 }
                             </AvField>
+                            {this.state.isRatingExist && (<AvField type="text" name="validation" validate={{ required: { value: this.state.isRatingExist, errorMessage: 'Rating already exists!' } }} hidden />)}
                         </Col>
                         <Col md={6}>
                             <b>Advisory Codes</b>
                             <Select
                                 name="advisoriesCode"
-                                value={this.props.ratingObjectForCreate.advisoriesCode ? this.props.ratingObjectForCreate.advisoriesCode : []}
-                                onChange={this.props.handleAdvisoryCodeChange}
+                                value={this.props.ratingObjectForCreate.advisoriesCode && this.props.ratingObjectForCreate.advisoriesCode.map(e => {
+                                    return { value: e, label: this.props.getAdvisoryNameByCode(e) };
+                                })}
+                                onChange={(e) => this.handleAdvisoryCodesChange(e)}
                                 isMulti
                                 placeholder='Select Advisory Code'
-                                options={this.state.filteredAdvisoryCodes}
+                                options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
+                                    .map(e => {
+                                        return { value: e.code, label: e.name };
+                                    })}
                             />
                         </Col>
                     </Row>
 
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <b>Advisories</b>
-                            <AvField type="text" placeholder="Enter Advisories" id="tittleAdvisories" name="advisoriesFreeText" onChange={this.props.handleChange} errorMessage="Please enter a valid advisories!" />
+                            <b>Advisories{this.state.isAdvisoryRequired ? <span style={{ color: 'red' }}>*</span> : null}</b>
+                            <AvField
+                                type="text"
+                                value={advisoriesFreeText ? advisoriesFreeText : ''}
+                                placeholder="Enter Advisories"
+                                id="tittleAdvisories"
+                                name="advisoriesFreeText"
+                                required={this.state.isAdvisoryRequired}
+                                onChange={(e) => this.handleAdvisoriesChange(e)}
+                                errorMessage="Field cannot be empty!" 
+                                validate={{
+                                    maxLength: { value: 500, errorMessage: 'Too long Advisories. Max 500 symbols.' }
+                                }} />
+                                <span style={{float:'right', color: advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText)  : 0}/500 char</span>
                         </Col>
                     </Row>
                 </Fragment>
@@ -95,7 +189,6 @@ class RatingCreateTab extends Component {
 }
 
 RatingCreateTab.propTypes = {
-    handleChange: PropTypes.func.isRequired,
     configRatingSystem: PropTypes.object,
     configRatings: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
@@ -103,7 +196,10 @@ RatingCreateTab.propTypes = {
     handleRatingSystemValue: PropTypes.func,
     ratingObjectForCreate: PropTypes.object,
     handleAdvisoryCodeChange: PropTypes.func,
-    areRatingFieldsRequired: PropTypes.bool
+    areRatingFieldsRequired: PropTypes.bool,
+    handleRatingCreateChange: PropTypes.func,
+    ratings: PropTypes.array,
+    getAdvisoryNameByCode: PropTypes.func,
 };
 
 export default RatingCreateTab;

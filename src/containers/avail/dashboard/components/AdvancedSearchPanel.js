@@ -23,6 +23,7 @@ import SelectableInput from '../../../../components/form/SelectableInput';
 const mapStateToProps = state => {
     return {
         availTabPage: state.dashboard.availTabPage,
+        availTabPageSort: state.dashboard.session.availTabPageSort,
         reportName: state.dashboard.session.reportName,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
         availsMapping: state.root.availsMapping,
@@ -44,6 +45,7 @@ class AdvancedSearchPanel extends React.Component {
     static propTypes = {
         searchCriteria: t.object,
         availTabPage: t.object,
+        availTabPageSort: t.array,
         onSearch: t.func,
         searchFormUpdateAdvancedSearchCriteria: t.func,
         onToggleAdvancedSearch: t.func,
@@ -192,7 +194,7 @@ class AdvancedSearchPanel extends React.Component {
         if(exportAll){
             exportColumns = exportColumns.concat(this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName).filter(javaVariableName => !exportColumns.includes(javaVariableName)));
         }
-        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), exportColumns)
+        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), exportColumns, this.props.availTabPageSort)
         .then(function (response) {
             downloadFile(response.data);
         })
@@ -388,7 +390,6 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'year' : return renderCloseableBtn(key, schema.displayName);
                                 case 'double' : return renderCloseableBtn(key, schema.displayName);
                                 case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
-                                case 'multilanguage' : return renderCloseableSelectBtn(key, schema.displayName);
                                 case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
                                 case 'date' : return renderCloseableDateBtn(key, schema.displayName);

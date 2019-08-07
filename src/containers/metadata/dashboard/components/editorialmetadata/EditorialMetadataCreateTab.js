@@ -8,6 +8,7 @@ import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metad
 import {configFields} from '../../../service/ConfigService';
 import {connect} from 'react-redux';
 import Select from 'react-select';
+import {EVENT, SEASON} from '../../../../../constants/metadata/contentType';
 
 const mapStateToProps = state => {
     return {
@@ -133,7 +134,7 @@ class EditorialMetadataCreateTab extends Component {
                         </Col>
                     </Row>
 
-                    {(this.props.titleContentType === 'EPISODE' || this.props.titleContentType === 'SEASON') &&
+                    {(this.props.titleContentType === EVENT.apiName || this.props.titleContentType === SEASON.apiName) &&
                         <Row style={{ padding: '15px' }}>
                             <Col md={2}>
                                 <b>Series Name</b>
@@ -157,11 +158,11 @@ class EditorialMetadataCreateTab extends Component {
                                         maxLength: { value: 3, errorMessage: 'Max 3 digits' }
                                     }} />
                             </Col>
-                            {this.props.titleContentType === 'EPISODE' &&
+                            {this.props.titleContentType === EVENT.apiName &&
                                 <Col md={2}>
                                     <b>Episode Number</b>
                                 </Col>}
-                            {this.props.titleContentType === 'EPISODE' &&
+                            {this.props.titleContentType === EVENT.apiName &&
                                 <Col>
                                     <AvField type="number" id="editorialEpisodeNumber" name={this.getNameWithPrefix('episodeNumber')}
                                         onChange={this.props.handleChange}
@@ -181,7 +182,7 @@ class EditorialMetadataCreateTab extends Component {
                             <Select
                                 name={this.getNameWithPrefix('genres')}
                                 value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {
-                                    return {value: e.genre, label: e.genre};
+                                    return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
                                 }) : []}
                                 onChange={this.handleGenreChange}
                                 isMulti
@@ -299,9 +300,9 @@ class EditorialMetadataCreateTab extends Component {
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
-                                    maxLength: { value: 500, errorMessage: 'Too long Long Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 1000 symbols.' }
                                 }} />                                
-                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/500 char</span>
+                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/1000 char</span>
                         </Col>
                     </Row>
 

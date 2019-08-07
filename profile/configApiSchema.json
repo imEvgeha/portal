@@ -1,0 +1,45 @@
+{
+  "url-base": "/configuration-api/v1/",
+  "endpoints": [
+    {
+      "url": "countries",
+      "schema": {
+        "name": "countries schema"
+      },
+      "validation": {},
+      "uniqueness": {},
+      "layout": {
+        "display-name": "Countries API"
+      }
+    },
+    {
+      "url": "persons",
+      "schema": {
+        "name": "persons schema"
+      },
+      "validation": {},
+      "uniqueness": {},
+      "layout": {
+        "display-name": "Persons API"
+      }
+    },
+    {
+      "url": "languages",
+      "schema": {"name": "languages schema"},
+      "validation": {},
+      "uniqueness": {},
+      "layout": {
+        "display-name": "Languages API"
+      }
+    },
+    {
+      "url": "person-types",
+      "schema": {"name": "person-types schema"},
+      "validation": {},
+      "uniqueness": {},
+      "layout": {
+        "display-name": "Person Types API"
+      }
+    }
+  ]
+}

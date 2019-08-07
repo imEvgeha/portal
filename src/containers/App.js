@@ -24,6 +24,7 @@ import ContractProfile from './contracts/profile/ContractProfile.jsx';
 import Contract from './contracts/search/Contract.jsx';
 
 import Media from './media/search/Media.js';
+import Settings from './settings/Settings';
 
 export default class App extends React.Component {
     render() {
@@ -53,13 +54,14 @@ export default class App extends React.Component {
                             <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                         </Switch>
-                        <Route exact path="/metadata" component={MetadataDashboardContainer} />
-                        <Route exact path="/metadata/detail/:id" component={TitleEdit} />
+                        <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
+                        <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
 
                         <Route exact path="/contractprofile" component={ContractProfile} />
                         <Route exact path="/contractsearch" component={Contract} />
 
                         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
+                        <Route exact path="/settings" component={Settings} />
 
                     </div>
                 </div>

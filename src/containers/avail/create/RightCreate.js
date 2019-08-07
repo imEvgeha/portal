@@ -1,6 +1,7 @@
 import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
+import moment from 'moment';
 
 import store from '../../../stores/index';
 import {blockUI} from '../../../stores/actions/index';
@@ -142,6 +143,7 @@ class RightCreate extends React.Component {
         if(setNewValue){
             let newRight = {...this.right, [name]: value};
             this.right = newRight;
+            this.setState({});
         }
     }
 
@@ -149,13 +151,13 @@ class RightCreate extends React.Component {
         const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
         let val = date;
         if(date && mapping.dataType === 'date') {
-            val = momentToISO(date);
+            val = momentToISO(moment(date).utcOffset(0, true));
         }
         this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
             if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
-                const errorMessage = rangeValidation(name, displayName, date, this.right);
+                const errorMessage = rangeValidation(name, displayName, val, this.right);
                 this.mappingErrorMessage[name].range = errorMessage;
                 if (this.mappingErrorMessage[groupedMappingName]) {
                     this.mappingErrorMessage[groupedMappingName].range = errorMessage;
@@ -179,8 +181,6 @@ class RightCreate extends React.Component {
         switch (name) {
             case 'start': return 'availStart';
             case 'availStart': return 'start';
-            case 'end': return 'availEnd';
-            case 'availEnd': return 'end';
             default: return '';
         }
     }
@@ -211,7 +211,8 @@ class RightCreate extends React.Component {
 
     validateField(name, value) {
         const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
-        if(map && map.required) {
+        const isOriginRightIdRequired = name === 'originalRightId' && this.right.temporaryPriceReduction === true && this.right.status && this.right.status.value === 'Ready';
+        if(map && (map.required || isOriginRightIdRequired)) {
             if(Array.isArray(value)){
                 return value.length === 0 ? 'Field can not be empty' : '';
             }
@@ -454,6 +455,28 @@ class RightCreate extends React.Component {
         };
 
         const renderTimeField = (name, displayName, required, value) => {
+            const validation = {pattern:{value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}};
+            const validate = (val, ctx, input, cb) => {
+                let isValid = true;
+
+                if(validation && validation.pattern){
+                    isValid = val ? validation.pattern.value.test(val) : !required;
+                }else if(validation && validation.number) {
+                    isValid = !isNaN(val.replace(',','.'));
+                }
+
+                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if(this.mappingErrorMessage[name].inner && isValid){
+                        this.mappingErrorMessage[name].inner = '';
+                        this.setState({});
+                    }
+                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                        this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
+                        this.setState({});
+                    }
+                }
+                cb(isValid);
+            };
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
                     <AvForm>
@@ -464,8 +487,8 @@ class RightCreate extends React.Component {
                             placeholder={'Enter ' + displayName}
                             onChange={this.handleChange}
                             type="text"
-                            validate={{pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
-                            errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
+                            validate={{async: validate}}
+                            errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
@@ -668,10 +691,6 @@ class RightCreate extends React.Component {
                         case 'select' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'language' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'multilanguage' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'duration' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value,
                             'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'));

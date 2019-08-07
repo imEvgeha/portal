@@ -17,6 +17,7 @@ import {
     getFilteredCrewList, getFormatTypeName,
 } from '../../../../../constants/metadata/configAPI';
 import Rating from './rating/Rating';
+import Lozenge from '@atlaskit/lozenge';
 
 class CoreMetadataReadOnlyMode extends Component {
     render() {
@@ -39,12 +40,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }}
                                             id='listContainer'
                                         >
-                                            {this.props.data.castCrew &&
-                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => (
-                                                    <ListGroupItem key={i}>
-                                                        {cast.displayName}
-                                                    </ListGroupItem>
-                                                ))}
+                                            {this.props.data.castCrew && 
+                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {                                                    
+                                                    return (
+                                                        <ListGroupItem key={i}>
+                                                            <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
+                                                            <span style={{marginLeft: '10px'}}>{cast.displayName}</span>
+                                                        </ListGroupItem>
+                                                    );
+                                                })}
                                         </ListGroup>
                                     </CardBody>
                                 </Card>
@@ -66,10 +70,11 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {this.props.data.castCrew &&
                                                 getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
                                                     <ListGroupItem key={i}>
-                                                        <span style={{ fontSize: '14px', color: '#666' }}>
-                                                            {getFormatTypeName(crew.personType)}
-                                                        </span>{' '}
-                                                        {crew.displayName}
+                                                        <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
+                                                        <span style={{ marginLeft: '10px' }}>                                                            
+                                                            <Lozenge appearance={'default'}>{getFormatTypeName(crew.personType)}</Lozenge>
+                                                        </span>
+                                                        <span style={{marginLeft: '10px'}}>{crew.displayName}</span>
                                                     </ListGroupItem>
                                                 ))}
                                         </ListGroup>
@@ -108,13 +113,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.eidrLevel1 ?
                                             <Col>
-                                                <Alert color='light' ><b style={{color: '#000'}}>EIDR Level 1: </b> {this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : null}</Alert>
+                                                <Alert color='light' ><b style={{ color: '#000' }}>EIDR Level 1: </b> {this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.externalIds.tmsId ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>TMS ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.tmsId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>TMS ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.tmsId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>
@@ -122,13 +127,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.eidrLevel2 ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>EIDR Level 2: </b> {this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>EIDR Level 2: </b> {this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.externalIds.xfinityMovieId ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Xfinity Movie ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>Xfinity Movie ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>
@@ -136,13 +141,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.dmaId ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>DMA ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.dmaId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>DMA ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.dmaId : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.externalIds.licensorTitleId ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Licensor Title ID:</b> {this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>Licensor Title ID:</b> {this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>
@@ -150,13 +155,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.isan ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>ISAN: </b> {this.props.data.externalIds ? this.props.data.externalIds.isan : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>ISAN: </b> {this.props.data.externalIds ? this.props.data.externalIds.isan : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.externalIds.overrideMsvAssociationId ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Override MSV Association ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>Override MSV Association ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>
@@ -164,13 +169,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.alid ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>ALID: </b> {this.props.data.externalIds ? this.props.data.externalIds.alid : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>ALID: </b> {this.props.data.externalIds ? this.props.data.externalIds.alid : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.legacyIds && this.props.data.legacyIds.vz ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>VZ Title ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>VZ Title ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>
@@ -178,13 +183,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.cid ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>C ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.cid : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>C ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.cid : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.legacyIds && this.props.data.legacyIds.movida ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Movida ID: </b> {this.props.data.legacyIds.movida.movidaId ? this.props.data.legacyIds.movida.movidaId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>Movida ID: </b> {this.props.data.legacyIds.movida.movidaId ? this.props.data.legacyIds.movida.movidaId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>
@@ -192,13 +197,13 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         this.props.data.externalIds.isrc ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>ISRC: </b> {this.props.data.externalIds ? this.props.data.externalIds.isrc : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>ISRC: </b> {this.props.data.externalIds ? this.props.data.externalIds.isrc : null}</Alert>
                                             </Col> : null
                                     }
                                     {
                                         this.props.data.legacyIds && this.props.data.legacyIds.movida ?
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Movida Title ID: </b> {this.props.data.legacyIds.movida.movidaTitleId ? this.props.data.legacyIds.movida.movidaTitleId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>Movida Title ID: </b> {this.props.data.legacyIds.movida.movidaTitleId ? this.props.data.legacyIds.movida.movidaTitleId : null}</Alert>
                                             </Col> : null
                                     }
                                 </Row>

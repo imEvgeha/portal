@@ -464,24 +464,20 @@ class TitleEditMode extends Component {
               addTitleRatingTab={this.props.addTitleRatingTab}
               createRatingTab={this.props.createRatingTab}
               areRatingFieldsRequired={this.props.areRatingFieldsRequired}
-              handleRatingChange={this.props.handleRatingChange}
               handleRatingEditChange={this.props.handleRatingEditChange}
+              handleRatingCreateChange={this.props.handleRatingCreateChange}
 
               data={this.props.data}
               onChange={this.props.handleOnChangeEdit}
               handleOnExternalIds={this.props.handleOnExternalIds}
               handleOnLegacyIds={this.props.handleOnLegacyIds}
-              isCastModalOpen={this.props.isCastModalOpen}
-              isCrewModalOpen={this.props.isCrewModalOpen}
-              renderModal={this.props.renderModal}
-              castInputValue={this.props.castInputValue}
               removeCastCrew={this.props.removeCastCrew}
               ratings={this.props.ratings}
               handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
               ratingObjectForCreate={this.props.ratingObjectForCreate}
               addCastCrew={this.props.addCastCrew}
-              updateCastCrewValue={this.props.updateCastCrewValue}
               editedTitle={this.props.editedTitle}
+              castAndCrewReorder={this.props.castAndCrewReorder}
           />
         </Container>
       </Fragment>
@@ -494,8 +490,8 @@ TitleEditMode.propTypes = {
   toggleTitleRating: PropTypes.func,
   addTitleRatingTab: PropTypes.func,
   createRatingTab: PropTypes.string,
-  handleRatingChange: PropTypes.func,
   handleRatingEditChange: PropTypes.func,
+  handleRatingCreateChange: PropTypes.func,
 
   keyPressed: PropTypes.func,
   data: PropTypes.object,
@@ -506,19 +502,15 @@ TitleEditMode.propTypes = {
   handleOnLegacyIds: PropTypes.func,
   editedTitle: PropTypes.object,
   ratings: PropTypes.array,
-  updateCastCrewValue: PropTypes.func,
   addCastCrew: PropTypes.func,
   removeCastCrew: PropTypes.func,
-  castInputValue: PropTypes.string,
-  renderModal: PropTypes.func,
-  isCrewModalOpen: PropTypes.bool,
-  isCastModalOpen: PropTypes.bool,
   handleOnChangeTitleDuration: PropTypes.func,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
-  areRatingFieldsRequired: PropTypes.bool
+  areRatingFieldsRequired: PropTypes.bool,
+  castAndCrewReorder: PropTypes.func
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

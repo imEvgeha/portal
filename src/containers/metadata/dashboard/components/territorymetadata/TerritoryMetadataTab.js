@@ -3,8 +3,7 @@ import { Row, Col, Container } from 'reactstrap';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { formatTypeFirstLetter } from '../../../../../constants/metadata/format';
-
-const DATE_FORMAT = 'YYYY-MM-DD';
+import { DATE_FORMAT } from '../../../../../constants/metadata/constant-variables';
 
 class TerritoryMetadataTab extends Component {
     render() {
@@ -18,7 +17,7 @@ class TerritoryMetadataTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <b>Locale: </b> {this.props.data.locale ? this.props.data.locale : <span style={{ color: '#999' }}>Empty</span>}
+                            <b>Locale: </b> {this.props.data.locale ? this.props.getLanguageByCode(this.props.data.locale, this.props.data.territoryType) : <span style={{ color: '#999' }}>Empty</span>}
                         </Col>
                         <Col>
                             <b>Box Office: </b> {this.props.data.boxOffice ? this.props.data.boxOffice : <span style={{ color: '#999' }}>Empty</span>}
@@ -55,7 +54,8 @@ class TerritoryMetadataTab extends Component {
 }
 
 TerritoryMetadataTab.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    getLanguageByCode: PropTypes.func
 };
 
 

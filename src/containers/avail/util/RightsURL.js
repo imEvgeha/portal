@@ -75,7 +75,7 @@ class RightsURL extends React.Component {
                     if (map) {
                         if (!filter[name]) found++;
                         if (!subkey) {
-                            if (map.searchDataType === 'multiselect' || map.searchDataType === 'multilanguage') {
+                            if (map.searchDataType === 'multiselect') {
                                 let vals = val.split(',');
                                 let allOptions;
                                 if(map.searchDataType === 'multiselect') {

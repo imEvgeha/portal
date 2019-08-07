@@ -2,7 +2,7 @@ import moment from 'moment';
 const datePattern = new RegExp('[0-9]{2}[\\/][0-9]{2}[\\/][0-9]{4}');
 
 function validateDate(date) {
-    return date && ('' + date).length === 10 && datePattern.test('' + date) && moment(date).isValid();
+    return date && ('' + date).length === 10 && datePattern.test('' + date) && moment(date, 'MM/DD/YYYY').isValid();
 }
 
 function rangeValidation(name, displayName, date, avail) {

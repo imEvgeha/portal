@@ -12,6 +12,7 @@ import {
 import {configFields} from '../../../service/ConfigService';
 import {connect} from 'react-redux';
 import Select from 'react-select';
+import {EPISODE, SEASON} from '../../../../../constants/metadata/contentType';
 
 const mapStateToProps = state => {
     return {
@@ -165,7 +166,7 @@ class EditorialMetadataEditMode extends Component {
                         </Col>
                     </Row>
 
-                    {(this.props.titleContentType === 'EPISODE' || this.props.titleContentType === 'SEASON') &&
+                    {(this.props.titleContentType === EPISODE.apiName || this.props.titleContentType === SEASON.apiName) &&
                         <Row style={{ padding: '15px' }}>
                             <Col md={2}>
                                 <b>Series Name</b>
@@ -191,11 +192,11 @@ class EditorialMetadataEditMode extends Component {
                                     }}
                                     value={seasonNumber}/>
                             </Col>
-                            {this.props.titleContentType === 'EPISODE' &&
+                            {this.props.titleContentType === EPISODE.apiName &&
                                 <Col md={2}>
                                     <b>Episode Number</b>
                                 </Col>}
-                            {this.props.titleContentType === 'EPISODE' &&
+                            {this.props.titleContentType === EPISODE.apiName &&
                                 <Col>
                                     <AvField type="number" id="editorialEpisodeNumber" name={this.getNameWithPrefix('episodeNumber')}
                                        onChange={(e) => this.props.handleChange(e, this.props.data)}
@@ -216,7 +217,7 @@ class EditorialMetadataEditMode extends Component {
                             <Select
                                 name={this.getNameWithPrefix('edit-genres')}
                                 value={this.state.genres.map(e => {
-                                    return {value: e.genre, label: e.genre};
+                                    return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
                                 })}
                                 onChange={e => this.handleGenre(e)}
                                 isMulti
@@ -340,10 +341,10 @@ class EditorialMetadataEditMode extends Component {
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
-                                    maxLength: { value: 500, errorMessage: 'Too long Long Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 1000 symbols.' }
                                 }}
                                 value={synopsis.longDescription}/>
-                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/500 char</span>
+                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/1000 char</span>
                         </Col>
                     </Row>
 

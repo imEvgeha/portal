@@ -68,11 +68,13 @@ class NavbarConnect extends React.Component {
                                 </span>
                             </li>
                         </Can>
-                        <li className="">
-                            <span className="nav-link" href="#" >
-                                <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
-                            </span>
-                        </li>
+                        <Can I="read" a="Metadata">
+                            <li className="">
+                                <span className="nav-link" href="#" >
+                                    <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
+                                </span>
+                            </li>
+                        </Can>
                         <Can I="read" a="AssetManagement">
                             <li className="nav-item">
                                 <span className="nav-link" href="#" >
@@ -98,6 +100,9 @@ class NavbarConnect extends React.Component {
                                     {!keycloak.instance.hasResourceRole('user')
                       && keycloak.instance.hasResourceRole(
                           'manage') ? 'user' : ''}
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <NavLink id="settings-link" to="/settings"><FontAwesome name='cog' style={{marginRight: '5px'}}/>settings</NavLink>
                                 </DropdownItem>
                                 <DropdownItem divider/>
                                 <DropdownItem onClick={keycloak.instance.logout}>

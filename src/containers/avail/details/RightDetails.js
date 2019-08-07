@@ -20,7 +20,7 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {getDeepValue, safeTrim} from '../../../util/Common';
+import {equalOrIncluded, getDeepValue, safeTrim} from '../../../util/Common';
 import moment from 'moment';
 import {momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
@@ -107,7 +107,10 @@ class RightDetails extends React.Component {
 
     handleSubmit(editable) {
         const name = editable.props.title;
-        const value = safeTrim(editable.value);
+        let value = safeTrim(editable.value);
+        if(value === ''){
+            value = null;
+        }
 
         this.update(name, value, () => {
             editable.setState({rightLastEditSucceed: false});
@@ -191,7 +194,8 @@ class RightDetails extends React.Component {
         for(let i=0; i < this.props.availsMapping.mappings.length; i++){
             let mapping = this.props.availsMapping.mappings[i];
             if(mapping.javaVariableName === field) {
-                if(mapping.required) return this.validateNotEmpty(value);
+                const isOriginRightIdRequired = field === 'originalRightId' && this.state.right.temporaryPriceReduction === true && this.state.right.status === 'Ready';
+                if(mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
             }
         }
         return '';
@@ -201,8 +205,6 @@ class RightDetails extends React.Component {
         switch (name) {
             case 'start': return 'availStart';
             case 'availStart': return 'start';
-            case 'end': return 'availEnd';
-            case 'availEnd': return 'end';
             default: return '';
         }
     }
@@ -417,7 +419,7 @@ class RightDetails extends React.Component {
         };
 
         const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern: {value: /^([01]?\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
         };
 
         const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
@@ -685,7 +687,7 @@ class RightDetails extends React.Component {
                     let error = null;
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if (e.fieldName === mapping.javaVariableName) {
+                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -718,10 +720,6 @@ class RightDetails extends React.Component {
                         case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'multiselect': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'language': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'multilanguage': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
