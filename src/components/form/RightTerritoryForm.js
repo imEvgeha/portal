@@ -13,7 +13,7 @@ class RightTerritoryForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            territory: {}
+            territory: []
         };
     }
     returnProperValues = (data) => {
@@ -25,7 +25,7 @@ class RightTerritoryForm extends React.Component {
             vuContractID: data.vuContractID
         };
         this.setState({
-            territory: newObject
+            territory: [newObject, ...this.state.territory]
         });
     }
 

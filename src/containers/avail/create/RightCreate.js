@@ -25,7 +25,6 @@ import {URL} from '../../../util/Common';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import Portal from '@atlaskit/portal';
 
 
 const mapStateToProps = state => {
@@ -37,8 +36,6 @@ const mapStateToProps = state => {
 };
 
 const CustomFieldContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
 `;
 
 const CustomFieldAddText = styled.div`
@@ -47,6 +44,34 @@ const CustomFieldAddText = styled.div`
     cursor: pointer;
     user-select: none;
     font-weight: bold;
+`;
+
+const TerritoryTag = styled.div`
+    padding: 10px;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #EEE;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline;
+    cursor: pointer;
+    margin-right: 5px;
+    justify-content: space-between;
+`;
+
+const RemovableButton = styled.span`
+    color: #111;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 14px;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+        color: red;
+    }
 `;
 
 class RightCreate extends React.Component {
@@ -122,9 +147,15 @@ class RightCreate extends React.Component {
         this.checkRight(name, value, true);
     }
 
-    handleChangeRightForm = (e, name) => {  
+    onSubmitTerritory = (e, name) => {  
         console.log(e, name)      
         let newRight = {...this.right, [name]: e};
+        this.right = newRight;
+    }
+
+    handleDeleteTerritory = id => {
+        console.log(this.right.territory);
+        let newRight = this.right.territory && this.right.territory.splice(id, 1);
         this.right = newRight;
     }
 
@@ -322,7 +353,6 @@ class RightCreate extends React.Component {
     }
 
     render() {
-        console.log(this.right)
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
             return (
                 <div key={name}
@@ -691,9 +721,15 @@ class RightCreate extends React.Component {
             }
             return renderFieldTemplate(name, displayName, required, null, (
                 <CustomFieldContainer>
-                    <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
+                    {this.right.territory ?                    
+                        this.right.territory.map((e, i)=> (
+                        <TerritoryTag key={i}>
+                            {e.country} <RemovableButton onClick={() => this.handleDeleteTerritory(i)}>x</RemovableButton>
+                        </TerritoryTag>))
+                    : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
+                    }
                     <Button onClick={this.toggleRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
-                    <RightTerritoryForm handleChange={(e) => this.handleChangeRightForm(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
+                    <RightTerritoryForm handleChange={(e) => this.onSubmitTerritory(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
                 </CustomFieldContainer>
             ));
         };
