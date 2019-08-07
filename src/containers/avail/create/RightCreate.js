@@ -116,9 +116,16 @@ class RightCreate extends React.Component {
     }
 
     handleChange({target}, val) {
+        console.log({target}, val);
         const value = val || (target.value ? safeTrim(target.value) : '');
         const name = target.name;
         this.checkRight(name, value, true);
+    }
+
+    handleChangeRightForm = (e, name) => {  
+        console.log(e, name)      
+        let newRight = {...this.right, [name]: e};
+        this.right = newRight;
     }
 
     handleBooleanChange({target}) {
@@ -315,6 +322,7 @@ class RightCreate extends React.Component {
     }
 
     render() {
+        console.log(this.right)
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
             return (
                 <div key={name}
@@ -665,11 +673,27 @@ class RightCreate extends React.Component {
         };
 
         const renderCustomField = (name, displayName, required, value) => {
+            let options = [];
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+            
+            if(options.length > 0 && value){
+                val = value;
+                if(!required) {
+                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                }
+            }
             return renderFieldTemplate(name, displayName, required, null, (
                 <CustomFieldContainer>
-                    <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add</CustomFieldAddText>
-                    <Button onClick={this.toggleRightTerritoryForm} style={{fontWeight: 'bold', backgroundColor: '#999'}}><span style={{color: '#FFF'}}>+</span></Button>                    
-                    <RightTerritoryForm isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} />                    
+                    <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
+                    <Button onClick={this.toggleRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
+                    <RightTerritoryForm handleChange={(e) => this.handleChangeRightForm(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
                 </CustomFieldContainer>
             ));
         };

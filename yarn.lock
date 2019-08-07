@@ -82,6 +82,20 @@
     memoize-one "^3.0.1"
     tslib "^1.9.3"
 
+"@atlaskit/calendar@^8.0.5":
+  version "8.0.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/calendar/-/calendar-8.0.5.tgz#a021b93f82e69bf8afd1074be8b571ac3b457fe7"
+  integrity sha512-9E2CTZFuMkx1wLhLCvWxon7p0TGMH2k74JhpVZ8AWB1QAkWzGirD9h3c0nhIJA9cKYvUAHPEqmz4pBtRtjbC8g==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/button" "^13.0.16"
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    calendar-base "^0.3.0"
+    lodash.pick "^4.4.0"
+    react-uid "^2.2.0"
+
 "@atlaskit/checkbox@^9.0.4":
   version "9.0.4"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/checkbox/-/checkbox-9.0.4.tgz#e9309f737494ee0e697c35ea89efc058065e4fd8"
@@ -94,6 +108,23 @@
     "@emotion/core" "^10.0.9"
     emotion-theming "^10.0.7"
     tslib "^1.9.3"
+
+"@atlaskit/datetime-picker@^8.0.11":
+  version "8.0.11"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/datetime-picker/-/datetime-picker-8.0.11.tgz#6d801b6e7c13200d79a6312d2dc5d13a63b37168"
+  integrity sha512-Epx9YjKQ3pJvi3wpJkMWidAtZpGHseIoL8MBIiLBLt8pRY5CzfYp/CUWkHITZvut0ZgWmCu1nJmTg/DaaFSw8w==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/calendar" "^8.0.5"
+    "@atlaskit/field-base" "^13.0.6"
+    "@atlaskit/icon" "^19.0.0"
+    "@atlaskit/popper" "^3.0.0"
+    "@atlaskit/select" "^10.0.1"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    date-fns "^1.30.1"
+    lodash.pick "^4.4.0"
+    react-scrolllock "^3.0.2"
 
 "@atlaskit/dropdown-menu@^8.0.11":
   version "8.0.11"
@@ -367,6 +398,16 @@
     create-error "^0.3.1"
     debug "^2.2.0"
     tslib "^1.9.3"
+
+"@atlaskit/textfield@^2.0.4":
+  version "2.0.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/textfield/-/textfield-2.0.4.tgz#28e6e448284c34a90653065161d5f90fa473ac0f"
+  integrity sha512-dpTVRij2xrPJ+eQNHw38XzuJpLuJ60K+omyV8mEUvXiUz51evD+ePCNsaPDCmCibqZHPlCYl6Cwv+RbFzbCpMg==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.1.2"
+    "@atlaskit/theme" "^9.1.1"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/core" "^10.0.9"
 
 "@atlaskit/theme@^9.0.0", "@atlaskit/theme@^9.1.1":
   version "9.1.1"
@@ -5384,6 +5425,11 @@ cached-path-relative@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/cached-path-relative/-/cached-path-relative-1.0.1.tgz#d09c4b52800aa4c078e2dd81a869aac90d2e54e7"
   integrity sha1-0JxLUoAKpMB44t2BqGmqyQ0uVOc=
 
+calendar-base@^0.3.0:
+  version "0.3.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/calendar-base/-/calendar-base-0.3.0.tgz#483d3d07c5befedf9969a9a81a6a845794a6e251"
+  integrity sha1-SD09B8W+/t+ZaamoGmqEV5Sm4lE=
+
 call-limit@~1.1.0:
   version "1.1.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/call-limit/-/call-limit-1.1.0.tgz#6fd61b03f3da42a2cd0ec2b60f02bd0e71991fea"
@@ -6965,6 +7011,11 @@ date-arithmetic@^3.0.0:
   version "3.1.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/date-arithmetic/-/date-arithmetic-3.1.0.tgz#1fcd03dbd504b9dbee2b9078c85a5f1c7d3cc2d3"
   integrity sha1-H80D29UEudvuK5B4yFpfHH08wtM=
+
+date-fns@^1.30.1:
+  version "1.30.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
+  integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
 date-format@^1.2.0:
   version "1.2.0"
@@ -13361,6 +13412,11 @@ lodash.mergewith@^4.6.0:
   version "4.6.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
   integrity sha512-eWw5r+PYICtEBgrBE5hhlT6aAa75f411bgDz/ZL2KZqYV03USvucsxcHUIlGTDTECs1eunpI7HOV7U+WLDvNdQ==
+
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+  integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
 
 lodash.restparam@^3.0.0:
   version "3.6.1"
