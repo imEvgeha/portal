@@ -8,6 +8,7 @@ import media from './reducers/media/search';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
+import dopReducer from './reducers/DOP/dopReducer';
 
 const DASHBOARD_SESSION_VERSION = '0.5';
 const CREATERIGHT_SESSION_VERSION = '0.2';
@@ -19,7 +20,8 @@ const reducers = combineReducers({
     dashboard,
     media,
     history,
-    createright
+    createright,
+    dopReducer
 });
 const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); // REDUX DEVTOOLS allows you to see your action and state changes real-time in the browser.
 
