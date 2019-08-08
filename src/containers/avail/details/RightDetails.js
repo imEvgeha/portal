@@ -30,7 +30,7 @@ import {confirmModal} from '../../../components/modal/ConfirmModal';
 import styled from 'styled-components';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import Button from '@atlaskit/button';
-import Popup from "reactjs-popup";
+import Popup from 'reactjs-popup';
 
 const mapStateToProps = state => {
    return {
@@ -79,13 +79,14 @@ const RemovableButton = styled.span`
     }
 `;
 
+
 const Card = ({ data }) => (
-    <div style={{width: '200px'}}>
-        <div>Territory: {data.country}</div>
-        <div>Selected: {data.selected ? 'Yes' : 'No'}</div>
-        <div>Date Selected: {data.dateSelected}</div>
-        <div>Right Contract Status: {data.rightContractStatus}</div>
-        <div>Vu Contract ID: {data.vuContractId}</div>
+    <div className="card" style={{border: 'none', borderRadius: '3px', background: '#FFF', padding: '10px'}}>
+        <div><b>Territory:</b> {data.country}</div>
+        <div><b>Selected:</b> {data.selected ? 'Yes' : 'No'}</div>
+        <div><b>Date Selected:</b> {data.dateSelected}</div>
+        <div><b>Right Contract Status:</b> {data.rightContractStatus.toString().toUpperCase()}</div>
+        <div><b>Vu Contract ID:</b> {data.vuContractId}</div>
     </div>
   );
 
