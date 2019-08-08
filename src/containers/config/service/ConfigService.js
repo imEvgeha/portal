@@ -7,3 +7,7 @@ export const deleteConfigItemById = (field, id) => {
     let path = field + '/' + id;
     return http.delete(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + path);
 };
+
+export const loadConfigAPIEndPoints = () => {
+    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/endpoints');
+};
