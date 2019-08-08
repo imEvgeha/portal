@@ -22,21 +22,19 @@ class RightTerritoryForm extends React.Component {
     };
     setProperValues = (data) => {
         let newObject = {
-            country: data.country['value'],
-            dataSelected: momentToISO(moment(data.dateSelected).utcOffset(0, true)),
-            selected: data.selected ? data.selected['value'] : false,
-            rightContractStatus: data.rightContractStatus['value'],
-            vuContractId: data.vuContractId.map(e => e.value)
+            country: data.country['value'] ? data.country['value'] : this.props.rightData[this.props.rightIndex]['country'] ?  this.props.rightData[this.props.rightIndex]['country'] : '',
+            dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) : this.props.rightData[this.props.rightIndex]['dateSelected'],
+            selected: data.selected['label'] === 'Yes' ? data.selected['label'] ?  data.selected['value'] : this.props.rightData[this.props.rightIndex]['selected'] : false,
+            rightContractStatus: data.rightContractStatus['value'] ? data.rightContractStatus['value'] : this.props.rightData[this.props.rightIndex]['rightContractStatus'],
+            vuContractId: data.vuContractId ? data.vuContractId.map(e => e.value) : this.props.rightData[this.props.rightIndex]['vuContractId']
         };
         return newObject;
 
     }
 
-
     onSubmit = data => {
         let properValues = this.setProperValues(data);
         this.props.onSubmit(properValues);
-        this.props.onClose();
     }
 
     convertBooleanToString = e => {
@@ -50,7 +48,6 @@ class RightTerritoryForm extends React.Component {
     }
 
     render() {
-        console.log('Territory Data', this.props.rightData, 'Right Index', this.props.rightIndex);
         return (
             <ModalTransition>
                 {this.props.isOpen && (
@@ -69,7 +66,7 @@ class RightTerritoryForm extends React.Component {
                             )
                         }}
                     >
-                        <Field label="COUNTRY" name="country"  defaultValue={this.props.isEdit ? [{label: this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex]['country'], value: this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex]['country']}] : []}>
+                        <Field label="COUNTRY" name="country"  defaultValue={this.props.isEdit ? {label: this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex]['country'], value: this.props.rightData[this.props.rightIndex]['country']} : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -80,7 +77,7 @@ class RightTerritoryForm extends React.Component {
                                 />
                             )}
                         </Field>
-                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? [{label: this.props.rightData[this.props.rightIndex] && this.convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']), value: this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex]['selected']}] : []}>
+                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? {label: this.props.rightData[this.props.rightIndex] &&  this.props.rightData[this.props.rightIndex]['selected'] !== null  ? this.convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']) : 'No', value: this.props.rightData[this.props.rightIndex] &&  this.props.rightData[this.props.rightIndex]['selected'] !== null ? this.props.rightData[this.props.rightIndex]['selected'] : false} : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -94,7 +91,7 @@ class RightTerritoryForm extends React.Component {
                             )}
                         </Field>
 
-                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.props.rightData[this.props.rightIndex] && '2019/06/15' : 'DD/MM/YYYY'}>
+                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.props.rightData[this.props.rightIndex] && '2019/06/15' : ''}>
                             {({ fieldProps }) => (
                                 <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" {...fieldProps} dateFormat={'DD/MM/YYYY'} />
                             )}

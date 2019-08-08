@@ -109,6 +109,7 @@ class RightDetails extends React.Component {
             isRightTerritoryFormOpen: false,
             isRightTerritoryEditFormOpen: false,
             rightIndex: null,
+            isEdit: false
         };
     }
 
@@ -296,8 +297,16 @@ class RightDetails extends React.Component {
 
     toggleRightTerritoryForm = (index) => {
         this.setState({
+            isEdit: true,
             rightIndex: index,
             isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+        });
+    }
+
+    toggleAddRightTerritoryForm = () => {
+        this.setState({
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen,
+            isEdit: false
         });
     }
     toggleRightTerritoryEditForm = () => {
@@ -314,9 +323,12 @@ class RightDetails extends React.Component {
         } else {
             newArray = [e];
         }
-        this.setState({
+        let newTerritory = {
             ...this.state.right,
-            [name]: newArray
+            territory: newArray
+        };
+        this.setState({
+           right: newTerritory
         });
     }
 
@@ -330,6 +342,7 @@ class RightDetails extends React.Component {
     }
 
     render() {
+        console.log('Rendered', this.state.right)
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
             const hasValidationError = error;
             return (
@@ -767,7 +780,7 @@ class RightDetails extends React.Component {
                         )
                     : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
                     }
-                    <Button onClick={this.toggleRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
+                    <Button onClick={this.toggleAddRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
                     <RightTerritoryForm 
                         onSubmit={(e) => this.onSubmitRightTerritory(e, 'territory')} 
                         isOpen={this.state.isRightTerritoryFormOpen} 
@@ -775,7 +788,7 @@ class RightDetails extends React.Component {
                         rightData={this.state.right.territory} 
                         rightIndex={this.state.rightIndex} 
                         data={val} 
-                        isEdit={true}
+                        isEdit={this.state.isEdit}
                         options={options} />                    
                 </CustomFieldContainer>
             ));
