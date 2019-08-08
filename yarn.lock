@@ -18003,6 +18003,11 @@ react@16.8.5:
     prop-types "^15.6.2"
     scheduler "^0.13.5"
 
+reactjs-popup@^1.4.2:
+  version "1.4.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/reactjs-popup/-/reactjs-popup-1.4.2.tgz#7ef29df2d87e31ffb0a9c6aae909cbd65d786be7"
+  integrity sha512-fDwRnR00tEFHjJha1cC1sqfH4qc73jQfvcjiOv6/THTE6QQI2DAcdI03iMKYm0ar47MGDLBWXNpU0J8eT22rkA==
+
 reactstrap@^6.3.1:
   version "6.4.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/reactstrap/-/reactstrap-6.4.0.tgz#891252a284710180cd3d746dd236ee61d28a1c66"

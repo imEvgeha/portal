@@ -30,6 +30,7 @@ import {confirmModal} from '../../../components/modal/ConfirmModal';
 import styled from 'styled-components';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import Button from '@atlaskit/button';
+import Popup from "reactjs-popup";
 
 const mapStateToProps = state => {
    return {
@@ -77,6 +78,16 @@ const RemovableButton = styled.span`
         color: red;
     }
 `;
+
+const Card = ({ data }) => (
+    <div style={{width: '200px'}}>
+        <div>Territory: {data.country}</div>
+        <div>Selected: {data.selected ? 'Yes' : 'No'}</div>
+        <div>Date Selected: {data.dateSelected}</div>
+        <div>Right Contract Status: {data.rightContractStatus}</div>
+        <div>Vu Contract ID: {data.vuContractId}</div>
+    </div>
+  );
 
 class RightDetails extends React.Component {
 
@@ -772,9 +783,16 @@ class RightDetails extends React.Component {
                     {this.state.right.territory && this.state.right.territory.length > 0 ?                    
                         this.state.right.territory.map((e, i)=> (
                         <React.Fragment key={i}>
-                            <TerritoryTag onClick={() => this.toggleRightTerritoryForm(i)}>
+                            
+                            <Popup
+                            trigger={<TerritoryTag onClick={() => this.toggleRightTerritoryForm(i)}>
                             {e.country} <RemovableButton onClick={() => this.handleDeleteRightTerritory(e.country, 'territory')}>x</RemovableButton>
-                            </TerritoryTag>
+                            </TerritoryTag>}
+                            position="top center"
+                            on="hover"
+                            >
+                            <Card title="Right Top" data={e} />
+                            </Popup>
                             {/* <RightTerritoryForm territoryData={e} isOpen={this.state.isRightTerritoryEditFormOpen} onClose={this.toggleRightTerritoryEditForm} /> */}
                         </React.Fragment>)
                         )
