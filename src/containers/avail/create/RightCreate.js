@@ -141,22 +141,25 @@ class RightCreate extends React.Component {
     }
 
     handleChange({target}, val) {
-        console.log({target}, val);
         const value = val || (target.value ? safeTrim(target.value) : '');
         const name = target.name;
         this.checkRight(name, value, true);
     }
 
-    onSubmitTerritory = (e, name) => {  
-        console.log(e, name)      
-        let newRight = {...this.right, [name]: e};
-        this.right = newRight;
+    onSubmitRightTerritory = (e, name) => {         
+        let newArray;
+        if(this.right[name]) {
+            newArray = Array.from(this.right[name]);
+            newArray = [...newArray, e];
+        } else {
+            newArray = [e];
+        }
+        this.checkRight(name, newArray, true);
     }
 
-    handleDeleteTerritory = id => {
-        console.log(this.right.territory);
-        let newRight = this.right.territory && this.right.territory.splice(id, 1);
-        this.right = newRight;
+    handleDeleteRightTerritory = (country, name) => {
+        let newRight = this.right[name] && this.right[name].filter(e => e.country !== country);
+        this.checkRight(name, newRight, true);
     }
 
     handleBooleanChange({target}) {
@@ -353,6 +356,7 @@ class RightCreate extends React.Component {
     }
 
     render() {
+        console.log('Rendered', this.right);
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
             return (
                 <div key={name}
@@ -721,15 +725,15 @@ class RightCreate extends React.Component {
             }
             return renderFieldTemplate(name, displayName, required, null, (
                 <CustomFieldContainer>
-                    {this.right.territory ?                    
+                    {this.right.territory && this.right.territory.length > 0 ?                    
                         this.right.territory.map((e, i)=> (
                         <TerritoryTag key={i}>
-                            {e.country} <RemovableButton onClick={() => this.handleDeleteTerritory(i)}>x</RemovableButton>
+                            {e.country} <RemovableButton onClick={() => this.handleDeleteRightTerritory(e.country, 'territory')}>x</RemovableButton>
                         </TerritoryTag>))
                     : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
                     }
                     <Button onClick={this.toggleRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
-                    <RightTerritoryForm handleChange={(e) => this.onSubmitTerritory(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
+                    <RightTerritoryForm onSubmit={(e) => this.onSubmitRightTerritory(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
                 </CustomFieldContainer>
             ));
         };

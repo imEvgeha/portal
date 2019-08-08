@@ -4,7 +4,7 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
-import {Button, Label} from 'reactstrap';
+import {Button as ReactStrapButton, Label} from 'reactstrap';
 
 import store from '../../../stores/index';
 import {blockUI} from '../../../stores/actions/index';
@@ -27,6 +27,10 @@ import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 
+import styled from 'styled-components';
+import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
+import Button from '@atlaskit/button';
+
 const mapStateToProps = state => {
    return {
        availsMapping: state.root.availsMapping,
@@ -34,6 +38,45 @@ const mapStateToProps = state => {
        blocking: state.root.blocking,
    };
 };
+
+const CustomFieldContainer = styled.div`
+`;
+
+const CustomFieldAddText = styled.div`
+    color: #999;
+    font-style: italic;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+`;
+
+const TerritoryTag = styled.div`
+    padding: 10px;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #EEE;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline;
+    cursor: pointer;
+    margin-right: 5px;
+    justify-content: space-between;
+`;
+
+const RemovableButton = styled.span`
+    color: #111;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 14px;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+        color: red;
+    }
+`;
 
 class RightDetails extends React.Component {
 
@@ -62,7 +105,10 @@ class RightDetails extends React.Component {
         this.fields = {};
 
         this.state = {
-            errorMessage: ''
+            errorMessage: '',
+            isRightTerritoryFormOpen: false,
+            isRightTerritoryEditFormOpen: false,
+            rightIndex: null,
         };
     }
 
@@ -246,6 +292,41 @@ class RightDetails extends React.Component {
                 }
             }
         }
+    }
+
+    toggleRightTerritoryForm = (index) => {
+        this.setState({
+            rightIndex: index,
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+        });
+    }
+    toggleRightTerritoryEditForm = () => {
+        this.setState({
+            isRightTerritoryEditFormOpen: !this.state.isRightTerritoryEditFormOpen
+        });
+    }
+
+    onSubmitRightTerritory = (e, name) => {         
+        let newArray;
+        if(this.state.right[name]) {
+            newArray = Array.from(this.state.right[name]);
+            newArray = [...newArray, e];
+        } else {
+            newArray = [e];
+        }
+        this.setState({
+            ...this.state.right,
+            [name]: newArray
+        });
+    }
+
+    handleDeleteRightTerritory = (country, name) => {
+        let newRight = this.state.right[name] && this.state.right[name].filter(e => e.country !== country);
+        // this.checkRight(name, newRight, true);
+        this.setState({
+            ...this.state.right,
+            [name]: newRight
+        });
     }
 
     render() {
@@ -647,6 +728,59 @@ class RightDetails extends React.Component {
             ));
         };
 
+        const renderCustomField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            let ref;
+            if(this.fields[name]){
+                ref = this.fields[name];
+
+            }else{
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [];
+            let selectedVal = ref.current? ref.current.state.value : value;
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+
+            if(options.length > 0 && selectedVal){
+                val = options.find((opt) => opt.value === selectedVal);
+                if(!required) {
+                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                }
+            }
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
+                <CustomFieldContainer>
+                    {this.state.right.territory && this.state.right.territory.length > 0 ?                    
+                        this.state.right.territory.map((e, i)=> (
+                        <React.Fragment key={i}>
+                            <TerritoryTag onClick={() => this.toggleRightTerritoryForm(i)}>
+                            {e.country} <RemovableButton onClick={() => this.handleDeleteRightTerritory(e.country, 'territory')}>x</RemovableButton>
+                            </TerritoryTag>
+                            {/* <RightTerritoryForm territoryData={e} isOpen={this.state.isRightTerritoryEditFormOpen} onClose={this.toggleRightTerritoryEditForm} /> */}
+                        </React.Fragment>)
+                        )
+                    : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
+                    }
+                    <Button onClick={this.toggleRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
+                    <RightTerritoryForm 
+                        onSubmit={(e) => this.onSubmitRightTerritory(e, 'territory')} 
+                        isOpen={this.state.isRightTerritoryFormOpen} 
+                        onClose={this.toggleRightTerritoryForm} 
+                        rightData={this.state.right.territory} 
+                        rightIndex={this.state.rightIndex} 
+                        data={val} 
+                        isEdit={true}
+                        options={options} />                    
+                </CustomFieldContainer>
+            ));
+        };
+
         const renderDatepickerField = (showTime, name, displayName, value, error, readOnly, required, highlighted) => {
             let ref;
             let priorityError = null;
@@ -731,6 +865,8 @@ class RightDetails extends React.Component {
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
+                        case 'custom': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                            break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
@@ -757,7 +893,7 @@ class RightDetails extends React.Component {
                     {this.props.availsMapping &&
                         <div style={{display:'flex', justifyContent: 'flex-end'}} >
                             <div className="mt-4 mx-5 px-5">
-                                <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                                <ReactStrapButton className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</ReactStrapButton>
                             </div>
                         </div>
                     }
