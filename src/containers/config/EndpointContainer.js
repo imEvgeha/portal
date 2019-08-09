@@ -8,8 +8,11 @@ import styled, {css} from 'styled-components';
 import {ListGroup, ListGroupItem} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
-import {deleteConfigItemById} from './service/ConfigService';
+import {configService} from './service/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
+import CreateEditConfigForm from './CreateEditConfigForm'
+
+import testSchema from './test.json';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -53,9 +56,11 @@ export class EndpointContainer extends Component {
             currentPage: 1,
             searchValue: '',
             isLoading: false,
+            currentRecord: null
         };
 
         this.keyInputTimeout = 0;
+        this.editRecord = this.editRecord.bind(this);
     }
 
     componentDidMount() {
@@ -85,12 +90,27 @@ export class EndpointContainer extends Component {
     };
 
     handleTitleFreeTextSearch = (searchValue) => {
-        //TODO change searchField due to schema. Somewhere from this.props.selectedApi
         this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName, searchValue);
     };
 
+    onEditRecord(rec){
+        this.setState({currentRecord:rec});
+    }
+
+    editRecord(val){
+        const newVal={...this.state.currentRecord, ...val};
+        configService.update(this.props.selectedApi.url, newVal.id, newVal).then(response => {
+                let data = this.state.data.slice(0);
+                let index = data.findIndex(item => item.id === val.id);
+                data[index] = response.data;
+                this.setState({data: data, currentRecord: null});
+            }
+        );
+
+    }
+
     onRemoveItem = (item) => {
-        deleteConfigItemById(this.props.selectedApi.url, item.id);
+        configService.delete(this.props.selectedApi.url, item.id);
         this.loadEndpointData(this.state.currentPage);
     };
 
@@ -98,7 +118,11 @@ export class EndpointContainer extends Component {
         return (
             <DataContainer>
                 <TextHeader>{this.props.selectedApi['url'] + ' (' + this.state.total + ') '}</TextHeader>
-                <DataBody>
+                {this.state.currentRecord && <DataBody>
+                    <CreateEditConfigForm defaultFields={testSchema} value={this.state.currentRecord} onSubmit={this.editRecord}/>
+                </DataBody>
+                }
+                {!this.state.currentRecord && <DataBody>
                     <CustomContainer left>
                         <QuickSearch
                             isLoading={this.state.isLoading}
@@ -108,7 +132,6 @@ export class EndpointContainer extends Component {
                             value={this.state.searchValue}
                         />
                     </CustomContainer>
-
                     {!this.state.isLoading &&
                     <ListGroup
                         style={{
@@ -123,7 +146,8 @@ export class EndpointContainer extends Component {
                             return (
                                 <React.Fragment key={i}>
                                     <ListGroupItem key={i}>
-                                        {item[this.props.selectedApi.displayValueFieldName]}
+                                        <a href="#"
+                                           onClick={() => this.onEditRecord(item)}>{item[this.props.selectedApi.displayValueFieldName]}</a>
                                         <FontAwesome
                                             className='float-right'
                                             name='times-circle'
@@ -142,6 +166,7 @@ export class EndpointContainer extends Component {
                                                         pages={this.state.pages}
                                                         onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.searchField, this.state.searchValue)}/></CustomContainer>
                 </DataBody>
+                }
             </DataContainer>
         );
     }
