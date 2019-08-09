@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@atlaskit/avatar": "^16.0.8",
+    "@atlaskit/button": "^13.1.1",
     "@atlaskit/field-base": "^13.0.6",
     "@atlaskit/form": "^6.1.4",
     "@atlaskit/icon": "^19.0.1",

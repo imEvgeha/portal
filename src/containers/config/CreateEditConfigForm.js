@@ -1,6 +1,7 @@
 import React from 'react';
+import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
-import {renderer as akRenderer, FormButton, FieldDefinitionField} from 'react-forms-processor-atlaskit';
+import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';
 
 import RepeatingFormField from './Repeats';
 
@@ -75,11 +76,12 @@ export default class CreateEditConfigForm extends React.Component {
     render() {
         return (
             <Form renderer = {renderer}
-                  defaultFields={this.props.defaultFields}
+                  defaultFields={this.props.schema}
                   optionsHandler={this.optionsHandler}
                   value = {this.state.value}
                   onChange = {(value) => this.setState({value: value})}
             >
+                <Button onClick={this.props.onCancel}>Cancel</Button>
                 <FormButton onClick={this.props.onSubmit}/>
             </Form>
         )

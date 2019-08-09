@@ -1,14 +1,9 @@
 [
 	{
-		"id": "id",
-		"name": "id",
-		"type": "text",
-		"visible": false
-	},
-	{
 		"id": "type",
 		"name": "type",
 		"type": "text",
+		"defaultValue": "country",
 		"visible": false
 	},
 	{
@@ -34,6 +29,7 @@
 		"name": "frequentlyUsed",
 		"type": "checkbox",
 		"label": "Frequently Used",
+		"defaultValue": false,
 		"visible": true
 	}
 ]

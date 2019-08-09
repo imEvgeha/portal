@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Pagination from '@atlaskit/pagination';
+import Button from '@atlaskit/button';
+import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import {QuickSearch} from '@atlaskit/quick-search';
 
 import PropTypes from 'prop-types';
@@ -10,7 +12,7 @@ import FontAwesome from 'react-fontawesome';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
 import {configService} from './service/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
-import CreateEditConfigForm from './CreateEditConfigForm'
+import CreateEditConfigForm from './CreateEditConfigForm';
 
 import testSchema from './test.json';
 
@@ -61,6 +63,7 @@ export class EndpointContainer extends Component {
 
         this.keyInputTimeout = 0;
         this.editRecord = this.editRecord.bind(this);
+        this.onNewRecord = this.onNewRecord.bind(this);
     }
 
     componentDidMount() {
@@ -99,14 +102,27 @@ export class EndpointContainer extends Component {
 
     editRecord(val){
         const newVal={...this.state.currentRecord, ...val};
-        configService.update(this.props.selectedApi.url, newVal.id, newVal).then(response => {
-                let data = this.state.data.slice(0);
-                let index = data.findIndex(item => item.id === val.id);
-                data[index] = response.data;
-                this.setState({data: data, currentRecord: null});
-            }
-        );
+        if(newVal.id) {
+            configService.update(this.props.selectedApi.url, newVal.id, newVal).then(response => {
+                    let data = this.state.data.slice(0);
+                    let index = data.findIndex(item => item.id === newVal.id);
+                    data[index] = response.data;
+                    this.setState({data: data, currentRecord: null});
+                }
+            );
+        }else{
+            configService.create(this.props.selectedApi.url, newVal).then(response => {
+                    let data = this.state.data.slice(0);
+                    data.unshift(response.data);
+                    this.setState({data: data, currentRecord: null});
+                }
+            );
+        }
 
+    }
+
+    onNewRecord(){
+        this.setState({currentRecord:{}});
     }
 
     onRemoveItem = (item) => {
@@ -117,9 +133,12 @@ export class EndpointContainer extends Component {
     render() {
         return (
             <DataContainer>
-                <TextHeader>{this.props.selectedApi['url'] + ' (' + this.state.total + ') '}</TextHeader>
+                <TextHeader>{this.props.selectedApi['url'] + ' (' + this.state.total + ') '}
+                    <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
+                </TextHeader>
+
                 {this.state.currentRecord && <DataBody>
-                    <CreateEditConfigForm defaultFields={testSchema} value={this.state.currentRecord} onSubmit={this.editRecord}/>
+                    <CreateEditConfigForm schema={testSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({currentRecord:null})}/>
                 </DataBody>
                 }
                 {!this.state.currentRecord && <DataBody>

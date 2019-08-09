@@ -110,6 +110,20 @@
     memoize-one "^3.0.1"
     tslib "^1.9.3"
 
+"@atlaskit/button@^13.1.1":
+  version "13.1.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-13.1.1.tgz#13cd9551f306f979892047a71d905d339f756729"
+  integrity sha512-L5NELehB9c/+75O/ltmTH5hiUEJuKg0691PsYBMoK7YJbJmaNrsqInXCzsJI0GvxB7NJdvIFPtOjcV9jgPyjww==
+  dependencies:
+    "@atlaskit/analytics-next" "^5.2.0"
+    "@atlaskit/spinner" "^12.0.5"
+    "@atlaskit/theme" "^9.1.0"
+    "@atlaskit/type-helpers" "^4.1.5"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/core" "^10.0.9"
+    memoize-one "^3.0.1"
+    tslib "^1.9.3"
+
 "@atlaskit/calendar@^7.0.17":
   version "7.0.22"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/calendar/-/calendar-7.0.22.tgz#b5e61fd0329d0520a61d3fad4dbc7e609da9a9a9"
