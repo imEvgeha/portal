@@ -2,6 +2,24 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
 
+import styled from 'styled-components';
+
+
+const TerritoryTag = styled.div`
+    padding: 10px;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #EEE;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline;
+    cursor: pointer;
+    margin-right: 5px;
+    justify-content: space-between;
+`;
+
 class EditableBaseComponent extends Component {
 
     static propTypes = {
@@ -12,12 +30,14 @@ class EditableBaseComponent extends Component {
         disabled: t.bool,
         onChange: t.func,
         priorityDisplay: t.any,
-        showError: t.bool
+        showError: t.bool,
+        isArrayOfObject: t.bool
     };
 
     static defaultProps = {
         value: null,
-        showError:true
+        showError:true,
+        isArrayOfObject: false
     }
 
     constructor(props) {
@@ -109,7 +129,13 @@ class EditableBaseComponent extends Component {
                 onClick={this.handleShowHelperComponent}
                 style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
                 className={this.props.disabled ? 'disabled' : ''}>
-                       {Array.isArray(value) ? value.length > 0 ? value.join(',') : '' : value}
+                       {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
+                           <React.Fragment key={i}>
+                                {
+                                    <TerritoryTag>{e.country}</TerritoryTag>
+                                }
+                           </React.Fragment>
+                       )) : value.join(',') : '' : value}
                    </span>);
         };
 

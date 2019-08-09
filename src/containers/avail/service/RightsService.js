@@ -18,7 +18,7 @@ const isNotEmpty = function(obj){
     return obj && safeTrim(obj);
 };
 
-const parse = function(value){
+const parse = function(value, key){
     if(typeof value === 'number' || typeof  value === 'boolean')
         return value;
 
@@ -27,6 +27,10 @@ const parse = function(value){
 
     if(value instanceof moment){
         return momentToISO(value);
+    }
+
+    if(key === 'territory') {
+        return value;
     }
 
     if(Array.isArray(value))
@@ -68,11 +72,11 @@ const populate = function(key, value, location){
             }
             populate(restKey, value, location[firstKey]);
         }
-    }else{
-        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+    }else{        
+        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){            
             value = value.split(',');
         }
-        location[key] = parse(value);
+        location[key] = parse(value, key);
     }
 };
 

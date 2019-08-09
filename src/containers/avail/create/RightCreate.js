@@ -356,7 +356,6 @@ class RightCreate extends React.Component {
     }
 
     render() {
-        console.log('Rendered', this.right);
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
             return (
                 <div key={name}
