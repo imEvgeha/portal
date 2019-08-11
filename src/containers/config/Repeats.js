@@ -1,15 +1,12 @@
 // @flow
-import React, { Component, Node } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import uniqueId from "lodash/uniqueId";
-import get from "lodash/get";
-import Button from "@atlaskit/button";
-import { Form, FormContext } from "react-forms-processor";
-import { FieldDef, OnFormChange } from "react-forms-processor";
-import { Expander } from "react-forms-processor-atlaskit";
-import { Field as AkField } from "@atlaskit/form";
-
-let CreateFormChangeHandler = (index) => OnFormChange;
+import React, { Component } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import uniqueId from 'lodash/uniqueId';
+import get from 'lodash/get';
+import Button from '@atlaskit/button';
+import { Form, FormContext } from 'react-forms-processor';
+import { Expander } from 'react-forms-processor-atlaskit';
+import { Field as AkField } from '@atlaskit/form';
 
 const createFormForItem = (
     item,
@@ -53,26 +50,27 @@ const reorder = (list, startIndex, endIndex) => {
 const grid = 8;
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey"
+    background: isDraggingOver ? 'lightblue' : 'lightgrey'
 });
 
 const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
-    userSelect: "none",
+    userSelect: 'none',
     padding: grid * 2,
 
     // change background colour if dragging
-    background: isDragging ? "lightgreen" : "white",
+    background: isDragging ? 'lightgreen' : 'white',
 
     // styles we need to apply on draggables
     ...draggableStyle
 });
 
 export default class Repeats extends Component {
+
     constructor(props) {
         super(props);
 
-        const { fields, defaultValue, onChange } = props;
+        const { defaultValue } = props;
 
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
         const items = defaultValue.map(data => ({ id: uniqueId(), data }));
@@ -98,7 +96,7 @@ export default class Repeats extends Component {
     }
 
     createFormChangeHandler(index) {
-        return (value, isValid) => {
+        return (value) => {
             const { items } = this.state;
             items[index].data = value;
             this.updateItemState(items);
@@ -138,10 +136,8 @@ export default class Repeats extends Component {
         const { items } = this.state;
         const {
             fields,
-            idAttribute = "id",
-            label = "Item",
-            onChange,
-            unidentifiedLabel = "Unidentified item"
+            idAttribute = 'id',
+            unidentifiedLabel = 'Unidentified item'
         } = this.props;
 
         return (
@@ -197,10 +193,10 @@ export default class Repeats extends Component {
 
     render() {
         const {
-            label = "Item",
+            label = 'Item',
             // description,
-            addButtonLabel = "Add item",
-            noItemsMessage = "No items yet"
+            addButtonLabel = 'Add item',
+            noItemsMessage = 'No items yet'
         } = this.props;
         const { items } = this.state;
         const noItems = <span className="no-items">{noItemsMessage}</span>;

@@ -48,7 +48,7 @@ export default class Settings extends Component {
                         {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
                             <ListElement key={i} onClick={() => {
                                 this.onApiNavClick(e);
-                            }}>{e['url']}</ListElement>
+                            }}>{e.displayName}</ListElement>
                         ))}
                     </ListParent>
                 </SideMenu>

@@ -133,7 +133,7 @@ export class EndpointContainer extends Component {
     render() {
         return (
             <DataContainer>
-                <TextHeader>{this.props.selectedApi['url'] + ' (' + this.state.total + ') '}
+                <TextHeader>{this.props.selectedApi.displayName + ' (' + this.state.total + ') '}
                     <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
                 </TextHeader>
 

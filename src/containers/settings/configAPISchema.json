@@ -4,9 +4,7 @@
     {
       "url": "countries",
       "displayValueFieldName" : "countryName",
-      "schema": {
-        "name": "countries schema"
-      },
+      "displayName": "Countries",
       "uiSchema": [
         {
           "id": "type",
@@ -21,7 +19,6 @@
           "type": "text",
           "label": "Country Code",
           "placeholder": "Enter Country Code",
-          "visible": true,
           "required": true
         },
         {
@@ -38,15 +35,13 @@
           "name": "frequentlyUsed",
           "type": "checkbox",
           "label": "Frequently Used",
-          "defaultValue": false,
-          "visible": true
+          "defaultValue": false
         },
         {
           "id": "crmCountries",
           "name": "crmCountries",
           "type": "repeating",
           "label": "crmCountries",
-          "visible": true,
           "misc": {
             "fields": [{
               "id": "crmCountry",
@@ -58,11 +53,61 @@
           }
         }
       ],
+      "schema": {
+        "name": "countries schema"
+      },
       "validation": {},
-      "uniqueness": {},
-      "layout": {
-        "display-name": "Countries API"
-      }
+      "uniqueness": {}
+    },
+    {
+      "url": "persons",
+      "displayValueFieldName" : "displayName",
+      "displayName": "Persons",
+      "uiSchema": [
+        {
+          "id": "type",
+          "name": "type",
+          "type": "text",
+          "defaultValue": "person",
+          "visible": false
+        },
+        {
+          "id": "firstName",
+          "name": "firstName",
+          "type": "text",
+          "label": "First Name",
+          "placeholder": "Enter First Name"
+        },
+        {
+          "id": "middleName",
+          "name": "middleName",
+          "type": "text",
+          "label": "Middle Name",
+          "placeholder": "Enter Middle Name"
+        },
+        {
+          "id": "lastName",
+          "name": "lastName",
+          "type": "text",
+          "label": "Last Name",
+          "placeholder": "Enter Last Name"
+        },
+        {
+          "id": "displayName",
+          "name": "displayName",
+          "type": "text",
+          "label": "Display Name",
+          "placeholder": "Enter Display Name"
+        },
+        {
+          "id": "personTypes",
+          "name": "personTypes",
+          "type": "multiselect",
+          "label": "Person Types",
+          "sourceAPI" : "countries",
+          "sourceField" : "countryName"
+        }
+      ]
     }
   ]
 }

@@ -6,7 +6,9 @@ import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit
 import RepeatingFormField from './Repeats';
 import RepeatingField from './RepeatsPrimitives';
 
-import {isObject} from '../../util/Common'
+import {isObject} from '../../util/Common';
+import {getConfigApiValues} from '../../common/CommonConfigService';
+import t from 'prop-types';
 
 const renderer = (
     field,
@@ -15,16 +17,18 @@ const renderer = (
     onFieldBlur
 ) => {
     const { defaultValue = [], id, label, type, value, misc = {} } = field;
+
+    const fields = misc.fields || [];
+    const singleField = fields.length === 1;
+    const RepeatingComp = singleField ? RepeatingField : RepeatingFormField;
+
+    const addButtonLabel = misc.addButtonLabel;
+    const unidentifiedLabel = misc.unidentifiedLabel;
+    const noItemsMessage = misc.noItemsMessage;
+    const idAttribute = misc.idAttribute;
+
     switch (type) {
         case 'repeating':
-            const fields = misc.fields || [];
-            const singleField = fields.length === 1;
-            const RepeatingComp = singleField ? RepeatingField : RepeatingFormField;
-
-            const addButtonLabel = misc.addButtonLabel;
-            const unidentifiedLabel = misc.unidentifiedLabel;
-            const noItemsMessage = misc.noItemsMessage;
-            const idAttribute = misc.idAttribute;
             return (
                 <RepeatingComp
                     key={id}
@@ -49,39 +53,38 @@ const renderer = (
     }
 };
 
-const getOptions = (path) => {
-    let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    return fetch(proxyUrl + path)
-        .then(response => response.json())
-        .then(json => {
-            const items = json.results.map(character => character.name);
-            const options = [
-                {
-                    items
-                }
-            ];
-            return options;
-        });
-};
-
 export default class CreateEditConfigForm extends React.Component {
+
+    static propTypes = {
+        value: t.any,
+        schema: t.object,
+        onCancel: t.func,
+        onSubmit: t.func
+    };
 
     constructor(props) {
         super(props);
         this.state={
             value: this.props.value
-        }
+        };
         this.optionsHandler = this.optionsHandler.bind(this);
     }
 
-    optionsHandler(fieldId, fields, parentContext) {
-        switch (fieldId) {
-            case "permutations2":
-                return getOptions('https://swapi.co/api/people/');
-            default: {
-                return null;
+    optionsHandler(fieldId, fields) {
+        let field = fields.find(({id}) => id === fieldId);
+        if(field){
+            if((field.type === 'select' || field.type === 'multiselect') && field.sourceAPI){
+                return getConfigApiValues(field.sourceAPI, 0, 1000).then(response => {
+                    const items = response.data.data.map(rec => rec[field.sourceField]);
+                    return [
+                        {
+                            items
+                        }
+                    ];
+                });
             }
         }
+        return null;
     }
 
     render() {
@@ -95,6 +98,6 @@ export default class CreateEditConfigForm extends React.Component {
                 <Button onClick={this.props.onCancel}>Cancel</Button>
                 <FormButton onClick={this.props.onSubmit}/>
             </Form>
-        )
+        );
     }
 }
