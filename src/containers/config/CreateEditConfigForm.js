@@ -4,6 +4,9 @@ import {Form} from 'react-forms-processor';
 import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';
 
 import RepeatingFormField from './Repeats';
+import RepeatingField from './RepeatsPrimitives';
+
+import {isObject} from '../../util/Common'
 
 const renderer = (
     field,
@@ -11,21 +14,29 @@ const renderer = (
     onFieldFocus,
     onFieldBlur
 ) => {
-    const { defaultValue = [], id, label, type, misc = {} } = field;
+    const { defaultValue = [], id, label, type, value, misc = {} } = field;
     switch (type) {
         case 'repeating':
             const fields = misc.fields || [];
+            const singleField = fields.length === 1;
+            const RepeatingComp = singleField ? RepeatingField : RepeatingFormField;
+
             const addButtonLabel = misc.addButtonLabel;
             const unidentifiedLabel = misc.unidentifiedLabel;
             const noItemsMessage = misc.noItemsMessage;
             const idAttribute = misc.idAttribute;
             return (
-                <RepeatingFormField
+                <RepeatingComp
                     key={id}
                     addButtonLabel={addButtonLabel}
-                    defaultValue={defaultValue}
+                    defaultValue={value || defaultValue}
                     label={label}
-                    onChange={value => onChange(id, value)}
+                    onChange={value => {
+                        let val = singleField ?
+                            value.map((v) => isObject(v)?v[idAttribute]:v)
+                            : value;
+                        onChange(id, val);
+                    }}
                     fields={fields}
                     unidentifiedLabel={unidentifiedLabel}
                     noItemsMessage={noItemsMessage}

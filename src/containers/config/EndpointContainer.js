@@ -14,8 +14,6 @@ import {configService} from './service/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 
-import testSchema from './test.json';
-
 const DataContainer = styled.div`
     width: 65%;
     float: left;
@@ -67,7 +65,7 @@ export class EndpointContainer extends Component {
     }
 
     componentDidMount() {
-        this.loadEndpointData(1);
+        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName, this.state.searchValue);
     }
 
     loadEndpointData = (page, searchField, searchValue) => {
@@ -103,7 +101,8 @@ export class EndpointContainer extends Component {
     editRecord(val){
         const newVal={...this.state.currentRecord, ...val};
         if(newVal.id) {
-            configService.update(this.props.selectedApi.url, newVal.id, newVal).then(response => {
+            configService.update(this.props.selectedApi.url, newVal.id, newVal)
+                .then(response => {
                     let data = this.state.data.slice(0);
                     let index = data.findIndex(item => item.id === newVal.id);
                     data[index] = response.data;
@@ -111,7 +110,8 @@ export class EndpointContainer extends Component {
                 }
             );
         }else{
-            configService.create(this.props.selectedApi.url, newVal).then(response => {
+            configService.create(this.props.selectedApi.url, newVal)
+                .then(response => {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
                     this.setState({data: data, currentRecord: null});
@@ -138,7 +138,7 @@ export class EndpointContainer extends Component {
                 </TextHeader>
 
                 {this.state.currentRecord && <DataBody>
-                    <CreateEditConfigForm schema={testSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({currentRecord:null})}/>
+                    <CreateEditConfigForm schema={this.props.selectedApi.uiSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({currentRecord:null})}/>
                 </DataBody>
                 }
                 {!this.state.currentRecord && <DataBody>

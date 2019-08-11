@@ -1,0 +1,68 @@
+{
+  "url-base": "/configuration-api/v1/",
+  "endpoints": [
+    {
+      "url": "countries",
+      "displayValueFieldName" : "countryName",
+      "schema": {
+        "name": "countries schema"
+      },
+      "uiSchema": [
+        {
+          "id": "type",
+          "name": "type",
+          "type": "text",
+          "defaultValue": "country",
+          "visible": false
+        },
+        {
+          "id": "countryCode",
+          "name": "countryCode",
+          "type": "text",
+          "label": "Country Code",
+          "placeholder": "Enter Country Code",
+          "visible": true,
+          "required": true
+        },
+        {
+          "id": "countryName",
+          "name": "countryName",
+          "type": "text",
+          "label": "Country Name",
+          "placeholder": "Enter Country Name",
+          "visible": true,
+          "required": true
+        },
+        {
+          "id": "frequentlyUsed",
+          "name": "frequentlyUsed",
+          "type": "checkbox",
+          "label": "Frequently Used",
+          "defaultValue": false,
+          "visible": true
+        },
+        {
+          "id": "crmCountries",
+          "name": "crmCountries",
+          "type": "repeating",
+          "label": "crmCountries",
+          "visible": true,
+          "misc": {
+            "fields": [{
+              "id": "crmCountry",
+              "name": "crmCountry",
+              "type": "text"
+            }],
+            "idAttribute": "crmCountry",
+            "addButtonLabel": "Add"
+          }
+        }
+      ],
+      "validation": {},
+      "uniqueness": {},
+      "layout": {
+        "display-name": "Countries API"
+      }
+    }
+  ]
+}
