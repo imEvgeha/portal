@@ -35,7 +35,7 @@ const renderer = (
                 <RepeatingComp
                     key={id}
                     addButtonLabel={addButtonLabel}
-                    defaultValue={value || defaultValue}
+                    defaultValue={value || defaultValue || []}
                     label={label}
                     onChange={value => {
                         let val = singleField ?
