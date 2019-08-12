@@ -174,7 +174,7 @@ class SelectIgnoreCell extends React.Component {
     static propTypes = {
         node: t.object,
         promotedRights: t.array,
-        updatePromotedRights: t.fun
+        updatePromotedRights: t.func
     };
 
     constructor(props) {
