@@ -789,8 +789,8 @@
 }, {
   "javaVariableName": "srp",
   "displayName": "SRP",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "double",
+  "searchDataType": "double",
   "queryParamName": "srp",
   "readOnly": false,
   "enableSearch": true,
