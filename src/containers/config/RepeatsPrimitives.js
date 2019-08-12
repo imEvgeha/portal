@@ -153,6 +153,7 @@ export default class RepeatsPrimitives extends Component {
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided, snapshot) => (
                                             <div
+                                                className="columns"
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
@@ -161,7 +162,16 @@ export default class RepeatsPrimitives extends Component {
                                                     provided.draggableProps.style
                                                 )}
                                             >
-                                                {form}
+                                                <div className="container">
+                                                    <div className="row">
+                                                        <div className="col-md-auto" style={{padding:'0'}}>
+                                                            {form}
+                                                        </div>
+                                                        <div className="col-md-auto" style={{padding:'0', marginTop:'8px'}}>
+                                                            <Button onClick={() => {this.removeItem(item.id);}}>X</Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         )}
                                     </Draggable>
@@ -179,7 +189,7 @@ export default class RepeatsPrimitives extends Component {
         const {
             label = 'Item',
             // description,
-            addButtonLabel = 'Add item',
+            addButtonLabel = 'Add',
             noItemsMessage = 'No items yet'
         } = this.props;
         const { items } = this.state;

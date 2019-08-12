@@ -45,6 +45,8 @@ const CustomContainer = styled.div`
 
 const pageSize = 10;
 
+export const cache={};
+
 export class EndpointContainer extends Component {
 
     constructor(props) {
@@ -54,6 +56,7 @@ export class EndpointContainer extends Component {
             data: [],
             total: 0,
             currentPage: 1,
+            // searchValue: '"David Arkin"',
             searchValue: '',
             isLoading: false,
             currentRecord: null
@@ -62,6 +65,10 @@ export class EndpointContainer extends Component {
         this.keyInputTimeout = 0;
         this.editRecord = this.editRecord.bind(this);
         this.onNewRecord = this.onNewRecord.bind(this);
+
+        getConfigApiValues(this.props.selectedApi.url, 0 , 1000).then(response => {
+            cache[this.props.selectedApi.url] = response.data.data;
+        });
     }
 
     componentDidMount() {
@@ -134,10 +141,13 @@ export class EndpointContainer extends Component {
         return (
             <DataContainer>
                 <TextHeader>{this.props.selectedApi.displayName + ' (' + this.state.total + ') '}
-                    <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
+                    {this.state.currentRecord === null  &&
+                        <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
+                    }
                 </TextHeader>
 
-                {this.state.currentRecord && <DataBody>
+                {this.state.currentRecord &&
+                <DataBody>
                     <CreateEditConfigForm schema={this.props.selectedApi.uiSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({currentRecord:null})}/>
                 </DataBody>
                 }

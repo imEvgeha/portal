@@ -48,10 +48,16 @@
               "name": "crmCountry",
               "type": "text"
             }],
-            "idAttribute": "crmCountry",
-            "addButtonLabel": "Add"
+            "idAttribute": "crmCountry"
           }
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "date",
+          "label": "Created At"
         }
+
       ],
       "schema": {
         "name": "countries schema"
@@ -104,8 +110,82 @@
           "name": "personTypes",
           "type": "multiselect",
           "label": "Person Types",
-          "sourceAPI" : "countries",
-          "sourceField" : "countryName"
+          "source": {
+            "url": "countries",
+            "value": "countryName",
+            "label" : "countryName"
+          }
+        },
+        {
+          "id": "localization",
+          "name": "localization",
+          "type": "repeating",
+          "label": "Localization",
+          "misc": {
+            "fields": [
+              {
+                "id": "language",
+                "name": "language",
+                "type": "select",
+                "label": "Language",
+                "source": {
+                  "url": "languages",
+                  "value": "languageCode",
+                  "label" : "languageName"
+                }
+              },
+              {
+                "id": "firstName",
+                "name": "firstName",
+                "type": "text",
+                "label": "First Name"
+              },
+              {
+                "id": "middleName",
+                "name": "middleName",
+                "type": "text",
+                "label": "Middle Name"
+              },
+              {
+                "id": "lastName",
+                "name": "lastName",
+                "type": "text",
+                "label": "Last Name"
+              },
+              {
+                "id": "displayName",
+                "name": "displayName",
+                "type": "text",
+                "label": "Display Name"
+              }
+            ],
+            "idAttribute": "language"
+          }
+        }
+      ]
+    },
+    {
+      "url": "territories",
+      "displayValueFieldName" : "value",
+      "displayName": "Territories",
+      "uiSchema": [
+        {
+          "id": "type",
+          "name": "type",
+          "type": "text",
+          "defaultValue": "territory",
+          "visible": false
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "select",
+          "label": "Value",
+          "source": {
+            "url": "countries",
+            "value": "countryCode",
+            "label" : "countryName"
+          }
         }
       ]
     }

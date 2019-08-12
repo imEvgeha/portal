@@ -8,6 +8,7 @@ import RepeatingField from './RepeatsPrimitives';
 
 import {isObject} from '../../util/Common';
 import {getConfigApiValues} from '../../common/CommonConfigService';
+import {cache} from './EndpointContainer';
 import t from 'prop-types';
 
 const renderer = (
@@ -16,8 +17,9 @@ const renderer = (
     onFieldFocus,
     onFieldBlur
 ) => {
-    const { defaultValue = [], id, label, type, value, misc = {} } = field;
-
+    const { defaultValue, id, label, type, value, misc = {} } = field;
+    field.value = value || defaultValue || null;
+    field.defaultValue =  field.value;
     const fields = misc.fields || [];
     const singleField = fields.length === 1;
     const RepeatingComp = singleField ? RepeatingField : RepeatingFormField;
@@ -47,7 +49,6 @@ const renderer = (
                     idAttribute={idAttribute}
                 />
             );
-
         default:
             return akRenderer(field, onChange, onFieldFocus, onFieldBlur);
     }
@@ -57,7 +58,7 @@ export default class CreateEditConfigForm extends React.Component {
 
     static propTypes = {
         value: t.any,
-        schema: t.object,
+        schema: t.array,
         onCancel: t.func,
         onSubmit: t.func
     };
@@ -73,14 +74,16 @@ export default class CreateEditConfigForm extends React.Component {
     optionsHandler(fieldId, fields) {
         let field = fields.find(({id}) => id === fieldId);
         if(field){
-            if((field.type === 'select' || field.type === 'multiselect') && field.sourceAPI){
-                return getConfigApiValues(field.sourceAPI, 0, 1000).then(response => {
-                    const items = response.data.data.map(rec => rec[field.sourceField]);
-                    return [
-                        {
-                            items
-                        }
-                    ];
+            if((field.type === 'select' || field.type === 'multiselect') && field.source){
+                if(cache[field.source.url]) {
+                    const items = cache[field.source.url].map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
+                    return [{items}];
+                }
+                return getConfigApiValues(field.source.url, 0, 1000).then(response => {
+                    cache[field.source.url] = response.data.data;
+
+                    const items = response.data.data.map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
+                    return [{items}];
                 });
             }
         }

@@ -47,16 +47,14 @@ const reorder = (list, startIndex, endIndex) => {
     return result;
 };
 
-const grid = 8;
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey'
+    background: isDraggingOver ? 'lightblue' : 'white'
 });
 
 const getItemStyle = (isDragging, draggableStyle) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
-    padding: grid * 2,
 
     // change background colour if dragging
     background: isDragging ? 'lightgreen' : 'white',
@@ -195,7 +193,7 @@ export default class Repeats extends Component {
         const {
             label = 'Item',
             // description,
-            addButtonLabel = 'Add item',
+            addButtonLabel = 'Add',
             noItemsMessage = 'No items yet'
         } = this.props;
         const { items } = this.state;
