@@ -216,7 +216,7 @@ class TitleResultTable extends React.Component {
         let allLoadedSelected = true;
 
         e.api.forEachNode(node => {
-            if (!node.isSelected()) allLoadedSelected = false;
+            if (!node.isPromoted()) allLoadedSelected = false;
         });
         this.props.resultPageSelect({ selected: selected, selectAll: allLoadedSelected });
     }

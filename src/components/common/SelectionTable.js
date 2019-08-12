@@ -165,17 +165,7 @@ export class SelectionTable extends React.Component {
 
     refreshColumns() {
         let colDef = {
-            sel: {
-                headerName: '',
-                checkboxSelection: true,
-                width: 40,
-                pinned: 'left',
-                suppressResize: true,
-                suppressSizeToFit: true,
-                suppressMovable: true,
-                lockPosition: true,
-                headerComponentFramework: CheckBoxHeader
-            }
+            sel: defaultSelectionColDef
         };
         this.setState({colDef: colDef});
     }
@@ -266,3 +256,15 @@ class CheckBoxHeaderInternal extends Component {
 }
 
 export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
+
+export const defaultSelectionColDef = {
+    headerName: '',
+    checkboxSelection: true,
+    width: 40,
+    pinned: 'left',
+    suppressResize: true,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    lockPosition: true,
+    headerComponentFramework: CheckBoxHeader
+};

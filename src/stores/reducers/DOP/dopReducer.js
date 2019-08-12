@@ -1,5 +1,5 @@
 import {
-    DOP_PROMOTE_RIGHTS
+    DOP_UPDATE_PROMOTED_RIGHTS
 } from '../../../constants/action-types';
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
 
 const dop = ( state = initialState, action) => {
     switch (action.type) {
-        case DOP_PROMOTE_RIGHTS:
+        case DOP_UPDATE_PROMOTED_RIGHTS:
             return { ...state, promotedRights: action.payload};
         default:
             return state;

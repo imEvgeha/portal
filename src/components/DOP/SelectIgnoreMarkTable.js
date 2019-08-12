@@ -1,5 +1,5 @@
-import React from 'react';
-import {CheckBoxHeader, SelectionTable} from '../common/SelectionTable';
+import React, {Component} from 'react';
+import {defaultSelectionColDef, SelectionTable} from '../common/SelectionTable';
 
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
@@ -30,19 +30,9 @@ class SelectionIgnoreMarkWrappedTable extends SelectionTable {
 
     refreshColumns() {
         let colDef = {
-            checkbox_sel: {
-                headerName: '',
-                checkboxSelection: true,
-                width: 40,
-                pinned: 'left',
-                suppressResize: true,
-                suppressSizeToFit: true,
-                suppressMovable: true,
-                lockPosition: true,
-                headerComponentFramework: CheckBoxHeader
-            },
+            checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
             select_ignore_sel: {
-                headerName: 'Select Ignore',
+                headerName: '',
                 width: 200,
                 pinned: 'left',
                 suppressResize: true,
@@ -79,6 +69,92 @@ class SelectionIgnoreMarkWrappedTable extends SelectionTable {
 }
 
 
+class CheckBoxHeaderInternal extends Component {
+    static propTypes = {
+        api: t.object,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectAll: false,
+            atLeastOneVisibleSelected: false
+        };
+        this.onCheckBoxClick = this.onCheckBoxClick.bind(this);
+
+        this.props.api.addEventListener('viewportChanged', () => {
+            this.updateState();
+        });
+        this.props.api.addEventListener('selectionChanged', () => {
+            this.updateState();
+        });
+    }
+
+    componentDidMount() {
+        this.updateState();
+    }
+
+    onCheckBoxClick() {
+        let visibleNodes = this.getVisibleNodes();
+
+        if (!this.state.selectAll) {
+            const notSelectedNodes = visibleNodes.filter(({selected}) => !selected);
+            notSelectedNodes.forEach(node => {
+                node.setSelected(true);
+            });
+            this.setState({selectAll: false, atLeastOneVisibleSelected: false});
+        } else {
+            const selectedNodes = visibleNodes.filter(({selected}) => selected);
+            selectedNodes.forEach(node => {
+                node.setSelected(false);
+            });
+            this.setState({selectAll: true, atLeastOneVisibleSelected: true});
+        }
+    }
+
+    getVisibleNodes = () => {
+        const visibleRange = this.props.api.getVerticalPixelRange();
+        const topOffset = 0.4;
+        const bottomOffset = 0.7 + (this.props.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        return this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
+    };
+
+    updateState = () => {
+        let visibleNodes = this.getVisibleNodes();
+        let filtered = visibleNodes.filter(e => this.props.api.getSelectedRows().findIndex(s => s.id === e.id) > -1);
+        let atLeastOneVisibleSelected = filtered.length > 0;
+
+        if (this.state.atLeastOneVisibleSelected !== atLeastOneVisibleSelected) {
+            this.setState({
+                atLeastOneVisibleSelected
+            });
+        }
+        let selectAll = filtered.length === visibleNodes.length;
+        if (this.state.selectAll !== selectAll) {
+            this.setState({
+                selectAll
+            });
+        }
+    };
+
+    render() {
+        const allVisibleSelected = this.state.selectAll;
+        const atLeastOneVisibleSelected = this.state.atLeastOneVisibleSelected;
+
+        return (
+            <span className="ag-selection-checkbox" onClick={this.onCheckBoxClick}>
+                <span
+                    className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
+                <span
+                    className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}> </span>
+                <span
+                    className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
+            </span>
+        );
+    }
+}
+
+
 let mapStateToProps = state => {
     return {
         promotedRights: state.dopReducer.promotedRights
@@ -86,7 +162,7 @@ let mapStateToProps = state => {
 };
 
 let mapDispatchToProps = {
-    updatePromotedRights: updatePromotedRights
+    updatePromotedRights
 };
 
 const defaultColor = '#606060';
@@ -98,23 +174,26 @@ class SelectIgnoreCell extends React.Component {
     static propTypes = {
         node: t.object,
         promotedRights: t.array,
-        updatePromotedRights: t.object
+        updatePromotedRights: t.fun
     };
 
     constructor(props) {
         super(props);
 
+        let isIgnored = this.props.node.data && this.props.node.data.status === 'Ready';
+
         this.state = {
-            isIgnored: false
+            isIgnored: isIgnored,
+            isLoading: false
         };
     }
 
-    isSelected = () => {
+    isPromoted = () => {
         return this.props.promotedRights.find(e => e === this.props.node.data.id);
     };
 
-    onSelectClick = () => {
-        if (this.isSelected()) {
+    onPromoteClick = () => {
+        if (this.isPromoted()) {
             this.props.updatePromotedRights(this.props.promotedRights.filter(e => e !== this.props.node.data.id));
         } else {
             this.props.updatePromotedRights([...this.props.promotedRights, this.props.node.data.id]);
@@ -122,15 +201,18 @@ class SelectIgnoreCell extends React.Component {
     };
 
     onIgnoreClick = () => {
+        this.setState({
+            isLoaded: true
+        });
         if (this.props.node.data.status === 'Ready') {
             rightsService.update({status: 'ReadyNew'}, this.props.node.data.id).then(res => {
                 this.props.node.setData(res.data);
-                this.setState({isIgnored: false});
+                this.setState({isIgnored: false, isLoaded: false});
             });
         } else {
             rightsService.update({status: 'Ready'}, this.props.node.data.id).then(res => {
                 this.props.node.setData(res.data);
-                this.setState({isIgnored: true});
+                this.setState({isIgnored: true, isLoaded: false});
             });
         }
     };
@@ -142,12 +224,16 @@ class SelectIgnoreCell extends React.Component {
     render() {
         return (
             <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <button className="btn "
-                        style={{background: this.isSelected() ? selectedColor : defaultColor, margin: '5px'}}
-                        onClick={this.onSelectClick}>{this.isSelected() ? 'Unselect' : 'Select'}</button>
-                {this.isIgnorable() && <button className="btn "
-                                               style={{ background: this.state.isIgnored ? ignoredColor : selectedColor, margin: '5px' }}
-                                               onClick={this.onIgnoreClick}>{this.state.isIgnored ? 'Unignore' : 'Ignore'}</button>}
+                <button className="btn"
+                        style={{background: this.isPromoted() ? selectedColor : defaultColor, margin: '5px'}}
+                        onClick={this.onPromoteClick}>{this.isPromoted() ? 'Unselect' : 'Select'}</button>
+                {this.isIgnorable() && <button className="btn"
+                                               style={{
+                                                   background: this.state.isIgnored ? ignoredColor : selectedColor,
+                                                   margin: '5px'
+                                               }}
+                                               onClick={this.onIgnoreClick}
+                                               disabled={this.state.isLoaded}>{this.state.isIgnored ? 'Unignore' : 'Ignore'}</button>}
             </div>
         );
     }
