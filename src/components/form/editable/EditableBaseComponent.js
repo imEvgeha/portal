@@ -3,6 +3,8 @@ import { Button } from 'reactstrap';
 import t from 'prop-types';
 
 import styled from 'styled-components';
+import Popup from 'reactjs-popup';
+import moment from 'moment';
 
 
 const TerritoryTag = styled.div`
@@ -48,7 +50,8 @@ class EditableBaseComponent extends Component {
             showStateValue: false,
             editable: false,
             errorMessage: '',
-            submitStatus: false
+            submitStatus: false,
+            arrayOfValue: []
         };
 
         this.handleShowHelperComponent = this.handleShowHelperComponent.bind(this);
@@ -123,6 +126,16 @@ class EditableBaseComponent extends Component {
         });
     }
 
+    TerritoryTooltip = (data) => (
+        <div style={{ borderRadius: '3px', background: '#FFF', padding: '10px', fontSize: '12px', textAlign: 'center' }}>
+            <div><b>Territory:</b> <span style={{ fontSize: '10px' }}>{data && data.country && data.country}</span></div>
+            <div><b>Selected:</b> <span style={{ fontSize: '10px' }}>{data && data.selected && data.selected ? 'Yes' : 'No'}</span></div>
+            <div><b>Date Selected:</b> <span style={{ fontSize: '10px' }}>{moment(data.dateSelected).format('L')}</span></div>
+            <div><b>Right Cont. Status:</b> <span style={{ fontSize: '10px' }}>{data && data.rightContractStatus && data.rightContractStatus.toString().toUpperCase()}</span></div>
+            <div style={{ wordWrap: 'break-word' }}><b>Vu Contract ID:</b> <br />{data && data.vuContractId && data.vuContractId.map((e, i) => <span key={i} style={{ marginTop: '2px', marginRight: '2px', display: 'inline-block', background: '#DDD', padding: '5px', borderRadius: '3px', fontWeight: 'bold', fontSize: '10px' }}>{e}</span>)}</div>
+        </div>
+    );
+
     render() {
         const displayFunc = (value)=>{
             return (<span
@@ -132,7 +145,15 @@ class EditableBaseComponent extends Component {
                        {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
                            <React.Fragment key={i}>
                                 {
-                                    <TerritoryTag>{e.country}</TerritoryTag>
+                                    <Popup
+                                    trigger={                                        
+                                        <TerritoryTag>{e.country}</TerritoryTag>
+                                    }
+                                    position="top center"
+                                    on="hover"
+                                >
+                                    {this.TerritoryTooltip(e)}
+                                </Popup>
                                 }
                            </React.Fragment>
                        )) : value.join(',') : '' : value}

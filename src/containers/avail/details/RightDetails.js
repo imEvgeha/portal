@@ -147,7 +147,8 @@ class RightDetails extends React.Component {
                     if (res && res.data) {
                         this.setState({
                             right: res.data,
-                            flatRight: this.flattenRight(res.data)
+                            flatRight: this.flattenRight(res.data),
+                            territory: this.state.right && this.state.right['territory'] && this.state.right['territory']
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -237,7 +238,7 @@ class RightDetails extends React.Component {
                 NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
             })
-            .catch((e) => {
+            .catch(() => {
                 this.setState({
                     errorMessage: 'Editing right failed'
                 });
@@ -334,10 +335,12 @@ class RightDetails extends React.Component {
         let newArray;
         if (this.state.right[name]) {
             newArray = Array.from(this.state.right[name]);
-            let isExist = newArray.filter(b => {
-                return b.country !== e.country;
-            });
-            newArray = [...isExist, e];
+            if(this.state.isEdit) {
+                let updatedTerritoryIndex = newArray.findIndex(a => a.country === this.state.right[name][this.state.rightIndex]['country']);
+                newArray[updatedTerritoryIndex] = e;
+            } else {
+                newArray = [...newArray, e];
+            }
         } else {
             newArray = [e];
         }
@@ -362,12 +365,12 @@ class RightDetails extends React.Component {
     }
 
     TerritoryTooltip = (data) => (
-        <div style={{ border: 'none; !important', borderRadius: '3px', background: '#FFF', padding: '10px', fontSize: '12px', textAlign: 'center' }}>
-            <div><b>Territory:</b> <span style={{ fontSize: '10px' }}>{data.country}</span></div>
-            <div><b>Selected:</b> <span style={{ fontSize: '10px' }}>{data.selected ? 'Yes' : 'No'}</span></div>
+        <div style={{ borderRadius: '3px', background: '#FFF', padding: '10px', fontSize: '12px', textAlign: 'center' }}>
+            <div><b>Territory:</b> <span style={{ fontSize: '10px' }}>{data.country && data.country}</span></div>
+            <div><b>Selected:</b> <span style={{ fontSize: '10px' }}>{data.selected && data.selected ? 'Yes' : 'No'}</span></div>
             <div><b>Date Selected:</b> <span style={{ fontSize: '10px' }}>{moment(data.dateSelected).format('L')}</span></div>
-            <div><b>Right Cont. Status:</b> <span style={{ fontSize: '10px' }}>{data.rightContractStatus.toString().toUpperCase()}</span></div>
-            <div style={{ wordWrap: 'break-word' }}><b>Vu Contract ID:</b> <br />{data.vuContractId.map((e, i) => <span key={i} style={{ marginTop: '2px', marginRight: '2px', display: 'inline-block', background: '#DDD', padding: '5px', borderRadius: '3px', fontWeight: 'bold', fontSize: '10px' }}>{e}</span>)}</div>
+            <div><b>Right Cont. Status:</b> <span style={{ fontSize: '10px' }}>{data && data.rightContractStatus && data.rightContractStatus}</span></div>
+            <div style={{ wordWrap: 'break-word' }}><b>Vu Contract ID:</b> <br />{data.vuContractId && data.vuContractId.map((e, i) => <span key={i} style={{ marginTop: '2px', marginRight: '2px', display: 'inline-block', background: '#DDD', padding: '5px', borderRadius: '3px', fontWeight: 'bold', fontSize: '10px' }}>{e}</span>)}</div>
         </div>
     );
 
@@ -782,6 +785,7 @@ class RightDetails extends React.Component {
 
         const renderCustomField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
+            console.log('Error', error);
             if (error) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
@@ -817,6 +821,31 @@ class RightDetails extends React.Component {
                     options.unshift({ value: '', label: value ? 'Select...' : '' });
                 }
             }
+
+            let addTerritory = (option) => {
+                if(this.state.isEdit) {
+                    let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.rightIndex]['country']);
+                    selectedVal.splice(updatedTerritoryIndex, 1);
+                    selectedVal = [...selectedVal, option];
+                } else {
+                    selectedVal = selectedVal ? [...selectedVal, option] : [option];
+                }
+                
+                ref.current.handleChange(option ? selectedVal: null);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+                
+            };
+
+            let deleteTerritory = (country) => {
+                let newArray = selectedVal && selectedVal.filter(e => e.country !== country);
+                ref.current.handleChange(country ? newArray: null);
+                setTimeout(() => {
+                        this.setState({});
+                }, 1);
+            };
+
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
@@ -831,8 +860,8 @@ class RightDetails extends React.Component {
                     showError={false}
                     helperComponent={
                         <CustomFieldContainer>
-                            {this.state.right.territory && this.state.right.territory.length > 0 ?
-                                this.state.right.territory.map((e, i) => (
+                            {selectedVal && selectedVal.length > 0 ?
+                                selectedVal.map((e, i) => (
                                     <div key={i}>
                                         <Popup
                                             trigger={
@@ -845,21 +874,20 @@ class RightDetails extends React.Component {
                                         >
                                             {this.TerritoryTooltip(e)}
                                         </Popup>
-                                        <RemovableButton onClick={() => this.handleDeleteRightTerritory(e.country, 'territory')}>x</RemovableButton>
+                                        <RemovableButton onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
                                     </div>)
                                 )
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
                             <Button onClick={this.toggleAddRightTerritoryForm}><span style={{ fontWeight: 'bold' }}>+</span></Button>
                             <RightTerritoryForm
-                                onSubmit={(e) => this.onSubmitRightTerritory(e, 'territory')}
+                                onSubmit={(e) => addTerritory(e)}
                                 isOpen={this.state.isRightTerritoryFormOpen}
                                 onClose={this.toggleRightTerritoryForm}
-                                rightData={this.state.right.territory}
+                                rightData={selectedVal}
                                 rightIndex={this.state.rightIndex}
                                 data={val}
                                 isEdit={this.state.isEdit}
-                                existingTerritories={this.state.existingTerritories}
                                 options={options} />
                         </CustomFieldContainer>
                     } />
@@ -923,7 +951,7 @@ class RightDetails extends React.Component {
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
-                    const customValue = this.state.right ? this.state.right[mapping.javaVariableName] : '';
+
                     const required = mapping.required;
                     let highlighted = false;
                     if (this.state.right && this.state.right.highlightedFields) {
@@ -952,7 +980,7 @@ class RightDetails extends React.Component {
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'custom': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, customValue, error, readOnly, required, highlighted));
+                        case 'custom': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);

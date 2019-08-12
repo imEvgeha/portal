@@ -21,7 +21,7 @@ class RightTerritoryForm extends React.Component {
         isEdit: false
     };
     setProperValues = (data) => {
-        if(data.country !== '' && data.dateSelected !== '' && data.rightContractStatus !== '' && data.vuContractId !== '') {
+        if (data.country !== '' && data.dateSelected !== '' && data.rightContractStatus !== '' && data.vuContractId !== '') {
             let newObject = {
                 country: data.country['value'] ? data.country['value'] !== '' && data.country['value'] : this.props.rightData[this.props.rightIndex]['country'] ? this.props.rightData[this.props.rightIndex]['country'] : '',
                 dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) : this.props.rightData[this.props.rightIndex]['dateSelected'],
@@ -35,8 +35,9 @@ class RightTerritoryForm extends React.Component {
 
     onSubmit = data => {
         let properValues = this.setProperValues(data);
-        if(properValues) {            
+        if (properValues) {
             this.props.onSubmit(properValues);
+            this.props.onClose();
         }
     }
 
@@ -50,8 +51,15 @@ class RightTerritoryForm extends React.Component {
         }
     }
 
+    returnValidData = data => {
+        return this.props.rightData && this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex][data] && this.props.rightData[this.props.rightIndex][data] !== null;
+    }
+
+    removeExistingOptions = () => {
+        return this.props.rightData ? this.props.options.filter(x => !this.props.rightData.filter(y => y.country === x.label).length) : this.props.options;
+    }
+
     render() {
-        console.log(this.props.rightData);
         return (
             <ModalTransition>
                 {this.props.isOpen && (
@@ -70,28 +78,19 @@ class RightTerritoryForm extends React.Component {
                             )
                         }}
                     >
-                        <Field label="COUNTRY" name="country" isRequired defaultValue={this.props.isEdit ? { label: this.props.rightData[this.props.rightIndex]['country'] !== null && this.props.rightData[this.props.rightIndex]['country'], value: this.props.rightData[this.props.rightIndex]['country'] !== null && this.props.rightData[this.props.rightIndex]['country'] } : ''}>
+                        <Field label="COUNTRY" name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.rightData[this.props.rightIndex]['country'], value: this.returnValidData('country') && this.props.rightData[this.props.rightIndex]['country'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
                                     {...rest}
-                                    isSearchable={false}
+                                    isSearchable={true}
                                     placeholder="Choose Country"
-                                    options={
-                                        !this.props.isEdit ?
-                                            this.props.options.filter(x => {
-                                                if (this.props.rightData) {
-                                                    return !this.props.rightData.filter(y => y.country === x.label).length;
-                                                } else {
-                                                    return this.props.options;
-                                                }
-                                            }) :
-                                            this.props.options}
+                                    options={this.removeExistingOptions()}
                                 />
                             )}
-                            
+
                         </Field>
-                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.props.rightData[this.props.rightIndex]['selected'] !== null ? this.convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']) : 'No', value: this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex]['selected'] !== null ? this.props.rightData[this.props.rightIndex]['selected'] : false } : ''}>
+                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? this.convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.rightData[this.props.rightIndex]['selected'] : false } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -105,19 +104,21 @@ class RightTerritoryForm extends React.Component {
                             )}
                         </Field>
 
-                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.props.rightData[this.props.rightIndex]['dateSelected'] !== null && this.props.rightData[this.props.rightIndex]['dateSelected']: ''}>
+                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.returnValidData('dateSelected') && this.props.rightData[this.props.rightIndex]['dateSelected'] : ''}>
                             {({ fieldProps }) => (
-                                <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" isSearchable={false} {...fieldProps} dateFormat={'DD/MM/YYYY'} />
+                                <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" {...fieldProps} dateFormat={'DD/MM/YYYY'} />
                             )}
                         </Field>
 
-                        <Field label="RIGHTS CONTRACT STATUS" name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.props.rightData[this.props.rightIndex]['rightContractStatus'] !== null && this.props.rightData[this.props.rightIndex]['rightContractStatus'], value: this.props.rightData[this.props.rightIndex]['rightContractStatus'] !== null && this.props.rightData[this.props.rightIndex]['rightContractStatus'] } : ''}>
+                        <Field label="RIGHTS CONTRACT STATUS" name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.rightData[this.props.rightIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.rightData[this.props.rightIndex]['rightContractStatus'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
-                                    style={{ fontSize: '14px' }}
                                     id={`select-${id}`}
                                     {...rest}
                                     isSearchable={false}
+                                    styles={{
+                                        control: (base) => ({ ...base, fontSize: '15px' })
+                                    }}
                                     placeholder="Choose Status"
                                     options={[
                                         { label: 'Pending', value: 'Pending' }
@@ -125,7 +126,7 @@ class RightTerritoryForm extends React.Component {
                                 />
                             )}
                         </Field>
-                        <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={this.props.isEdit ? this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex]['vuContractId'] && this.props.rightData[this.props.rightIndex]['vuContractId'].length > 0 && this.props.rightData[this.props.rightIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
+                        <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={this.props.isEdit ? this.returnValidData('vuContractId') && this.props.rightData[this.props.rightIndex]['vuContractId'].length > 0 && this.props.rightData[this.props.rightIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <CreatableSelect
                                     id={`creatable-select-${id}`}
