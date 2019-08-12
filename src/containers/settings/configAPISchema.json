@@ -188,6 +188,32 @@
           }
         }
       ]
+    },
+    {
+      "url": "languages",
+      "displayValueFieldName" : "languageName",
+      "displayName": "Languages",
+      "uiSchema": [
+        {
+          "id": "type",
+          "name": "type",
+          "type": "text",
+          "defaultValue": "language-type",
+          "visible": false
+        },
+        {
+          "id": "languageCode",
+          "name": "languageCode",
+          "type": "text",
+          "label": "Language Code"
+        },
+        {
+          "id": "languageName",
+          "name": "languageName",
+          "type": "text",
+          "label": "Language Name"
+        }
+      ]
     }
   ]
 }
