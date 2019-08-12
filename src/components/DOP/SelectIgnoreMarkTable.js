@@ -1,10 +1,10 @@
 import React from 'react';
 import {CheckBoxHeader, SelectionTable} from '../common/SelectionTable';
 
-import styled, {css} from 'styled-components';
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {updatePromotedRights} from '../../stores/actions/DOP';
+import {rightsService} from '../../containers/avail/service/RightsService';
 
 
 export default function withSelectIgnoreMark(SelectionIgnoreMarkWrappedComponent) {
@@ -79,36 +79,6 @@ class SelectionIgnoreMarkWrappedTable extends SelectionTable {
 }
 
 
-const SelectionButton = styled.a`
-    display: inline-block;
-    border-radius: 3px;
-    margin: 10px;
-    
-    ${props => props.isSelected && css`
-        background-color: #D7D7D7;
-        &:hover {background-color: #606060;}
-    `}
-    ${props => !props.isSelected && css`
-        background-color: #606060;
-        &:hover {background-color: #D7D7D7;}
-    `}
-`;
-
-const IgnoreButton = styled.a`
-    display: inline-block;
-    border-radius: 3px;
-    margin: 10px;
-    
-    ${props => props.isIgnored && css`
-        background-color: #FFFFFF;
-        &:hover {background-color: #D7D7D7;}
-    `}
-    ${props => !props.isIgnored && css`
-        background-color: #D7D7D7;
-        &:hover {background-color: #FFFFFF;}
-    `}
-`;
-
 let mapStateToProps = state => {
     return {
         promotedRights: state.dopReducer.promotedRights
@@ -119,51 +89,65 @@ let mapDispatchToProps = {
     updatePromotedRights: updatePromotedRights
 };
 
+const defaultColor = '#606060';
+const selectedColor = '#D7D7D7';
+const ignoredColor = '#FFFFFF';
+
 class SelectIgnoreCell extends React.Component {
 
     static propTypes = {
         node: t.object,
-        data: t.object,
         promotedRights: t.array,
-        // updatePromotedRights: t.fun
+        updatePromotedRights: t.object
     };
 
     constructor(props) {
         super(props);
-        // console.log(props)
+
+        this.state = {
+            isIgnored: false
+        };
     }
 
     isSelected = () => {
-        return this.props.promotedRights.find(e => e === this.props.data.id);
-    };
-
-    isIgnored = () => {
-        return this.props.data.status === 'Ready';
+        return this.props.promotedRights.find(e => e === this.props.node.data.id);
     };
 
     onSelectClick = () => {
         if (this.isSelected()) {
-            this.props.updatePromotedRights(this.props.promotedRights.filter(e => e !== this.props.data.id));
+            this.props.updatePromotedRights(this.props.promotedRights.filter(e => e !== this.props.node.data.id));
         } else {
-            this.props.updatePromotedRights([...this.props.promotedRights, this.props.data.id]);
+            this.props.updatePromotedRights([...this.props.promotedRights, this.props.node.data.id]);
         }
     };
 
     onIgnoreClick = () => {
-        if (this.isIgnored()) {
-            console.log('Unignore', this.props.data.id);
+        if (this.props.node.data.status === 'Ready') {
+            rightsService.update({status: 'ReadyNew'}, this.props.node.data.id).then(res => {
+                this.props.node.setData(res.data);
+                this.setState({isIgnored: false});
+            });
         } else {
-            console.log('Ignore', this.props.data.id);
+            rightsService.update({status: 'Ready'}, this.props.node.data.id).then(res => {
+                this.props.node.setData(res.data);
+                this.setState({isIgnored: true});
+            });
         }
+    };
+
+    isIgnorable = () => {
+        return this.props.node.data && (this.props.node.data.status === 'Ready' || this.props.node.data.status === 'ReadyNew');
     };
 
     render() {
         return (
-            <div>
-                {/*<ButtonGroup appearance="primary">*/}
-                    <SelectionButton isSelected={this.isSelected()} onClick={this.onSelectClick}>{this.isSelected() ? 'Unselect' : 'Select'}</SelectionButton>
-                    <IgnoreButton isIgnored={this.isIgnored()} onClick={this.onIgnoreClick}>{this.isIgnored() ? 'Unignore' : 'Ignore'}</IgnoreButton>
-                {/*</ButtonGroup>*/}
+            <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <button className="btn "
+                        style={{background: this.isSelected() ? selectedColor : defaultColor, margin: '5px'}}
+                        onClick={this.onSelectClick}>{this.isSelected() ? 'Unselect' : 'Select'}</button>
+                {this.isIgnorable() && <button className="btn "
+                                               style={{ background: this.state.isIgnored ? ignoredColor : selectedColor, margin: '5px' }}
+                                               onClick={this.onIgnoreClick}>{this.state.isIgnored ? 'Unignore' : 'Ignore'}</button>}
             </div>
         );
     }
