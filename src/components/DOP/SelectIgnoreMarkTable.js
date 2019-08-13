@@ -39,7 +39,8 @@ class SelectionIgnoreMarkWrappedTable extends SelectionTable {
                 suppressSizeToFit: true,
                 suppressMovable: true,
                 lockPosition: true,
-                cellRenderer: 'selectIgnoreMarkCell'
+                cellRenderer: 'selectIgnoreMarkCell',
+                suppressSorting: true
             }
         };
         this.setState({colDef: colDef});
