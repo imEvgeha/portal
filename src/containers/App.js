@@ -12,6 +12,7 @@ import RightDashboardContainer  from './avail/dashboard/DashboardContainer';
 import RightDetails  from './avail/details/RightDetails';
 import RightCreate  from './avail/create/RightCreate';
 import RightsCreateFromAttachment  from './avail/create/RightsCreateFromAttachment';
+import SelectRightsPlanning  from './avail/DOP/SelectRightsPlanning';
 import AvailIngestHistoryContainer from './avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer';
 import {canRender} from '../ability';
@@ -53,6 +54,7 @@ export default class App extends React.Component {
                             <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
+                            <Route exact path="/avails/select_rights_planning" component={canRender(SelectRightsPlanning, 'update', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
                         <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />

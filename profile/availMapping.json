@@ -159,11 +159,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "platform",
-  "displayName": "Platform",
+  "javaVariableName": "platformCategory",
+  "displayName": "Platform Category",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "platform",
+  "queryParamName": "platformCategory",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
@@ -789,8 +789,8 @@
 }, {
   "javaVariableName": "srp",
   "displayName": "SRP",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "double",
+  "searchDataType": "double",
   "queryParamName": "srp",
   "readOnly": false,
   "enableSearch": true,
