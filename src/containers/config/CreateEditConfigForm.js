@@ -18,8 +18,11 @@ const renderer = (
     onFieldBlur
 ) => {
     const { defaultValue, id, label, type, value, misc = {} } = field;
-    field.value = value || defaultValue || null;
-    field.defaultValue =  field.value;
+
+    if(field.hasOwnProperty('disable')) {
+        field.disabled = field.disable;
+    }
+
     const fields = misc.fields || [];
     const singleField = fields.length === 1;
     const RepeatingComp = singleField ? RepeatingField : RepeatingFormField;

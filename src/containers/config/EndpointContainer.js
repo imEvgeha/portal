@@ -172,11 +172,12 @@ export class EndpointContainer extends Component {
                         id='listContainer'
                     >
                         {this.state.data.map((item, i) => {
+                            let label = item[this.props.selectedApi.displayValueFieldName] || '[id = ' + item.id + ']';
                             return (
                                 <React.Fragment key={i}>
                                     <ListGroupItem key={i}>
                                         <a href="#"
-                                           onClick={() => this.onEditRecord(item)}>{item[this.props.selectedApi.displayValueFieldName]}</a>
+                                           onClick={() => this.onEditRecord(item)}>{label}</a>
                                         <FontAwesome
                                             className='float-right'
                                             name='times-circle'

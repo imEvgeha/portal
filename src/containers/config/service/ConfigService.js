@@ -9,16 +9,14 @@ export const loadConfigAPIEndPoints = () => {
 
 export const configService = {
     create: (endpoint, rec) => {
-        console.log('configService', rec);
-        //return http.post(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + endpoint, rec);
+        return http.post(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + endpoint, rec);
     },
 
     update: (endpoint, id, rec) => {
-        console.log('configService', rec);
-        //return http.put(config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`, rec);
+        return http.put(config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`, rec);
     },
 
     delete: (endpoint, id) => {
-        //return http.delete(config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`);
+        return http.delete(config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`);
     }
 };

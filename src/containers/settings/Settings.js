@@ -10,20 +10,18 @@ import {EndpointContainer} from '../config/EndpointContainer';
 import {loadConfigAPIEndPoints} from '../config/service/ConfigService';
 import {TabContent, TabPane} from 'reactstrap';
 
-import configApiSchema from './configApiSchema';
-
 export default class Settings extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            configApiSchema: configApiSchema,
-            selectedApi: configApiSchema.endpoints[0]
+            configApiSchema: null,
+            selectedApi: null
         };
 
-        // loadConfigAPIEndPoints().then((response) => {
-        //     this.setState({configApiSchema: response.data, selectedApi: response.data['endpoints'] ? response.data['endpoints'][0] : null});
-        // });
+        loadConfigAPIEndPoints().then((response) => {
+            this.setState({configApiSchema: response.data, selectedApi: response.data['endpoints'] ? response.data['endpoints'][0] : null});
+        });
     }
 
     onApiNavClick = (selectedApi) => {
