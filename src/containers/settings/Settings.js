@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import configApiSchema from '../../../profile/configApiSchema';
 import {
-    GroupHeader,
+    // GroupHeader,
     ListElement,
     ListParent,
     SideMenu,
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
 import {EndpointContainer} from '../config/EndpointContainer';
+import {loadConfigAPIEndPoints} from '../config/service/ConfigService';
 import {TabContent, TabPane} from 'reactstrap';
 
 export default class Settings extends Component {
@@ -15,8 +15,13 @@ export default class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedApi: configApiSchema['endpoints'][0]
+            configApiSchema: null,
+            selectedApi: null
         };
+
+        loadConfigAPIEndPoints().then((response) => {
+            this.setState({configApiSchema: response.data, selectedApi: response.data['endpoints'] ? response.data['endpoints'][0] : null});
+        });
     }
 
     onApiNavClick = (selectedApi) => {
@@ -28,7 +33,7 @@ export default class Settings extends Component {
             <div>
                 <SideMenu primary>
                     <TextHeader>Settings</TextHeader>
-                    <GroupHeader>Grouping Label</GroupHeader>
+                    {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
                         <ListElement>API Configuration</ListElement>
                     </ListParent>
@@ -38,16 +43,16 @@ export default class Settings extends Component {
                     <TextHeader>APIs</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                        {configApiSchema['endpoints'].map((e, i) => (
+                        {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
                             <ListElement key={i} onClick={() => {
                                 this.onApiNavClick(e);
-                            }}>{e.layout['display-name']}</ListElement>
+                            }}>{e.displayName}</ListElement>
                         ))}
                     </ListParent>
                 </SideMenu>
 
                 <TabContent activeTab={this.state.selectedApi}>
-                    {configApiSchema['endpoints'].map((e, i) => (
+                    {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
                         <TabPane key={i} tabId={e}>
                             <EndpointContainer selectedApi={e}/>
                         </TabPane>
