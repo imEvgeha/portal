@@ -1,7 +1,6 @@
 import React from 'react';
 import withRedux from '../../../components/avails/SaveStateTable';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
-import withSelection from '../../../components/common/SelectionTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 import withRights from '../../../components/avails/ServerRightsResultsTable';
@@ -9,6 +8,7 @@ import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {profileService} from '../service/ProfileService';
 import {configurationService} from '../service/ConfigurationService';
+import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
 
 let mapStateToProps = state => {
     return {
@@ -32,7 +32,7 @@ class SelectRightsPlanning extends React.Component {
     }
 
     render(){
-        const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
+        const RightsResultsTable = withRedux(withColumnsReorder(withSelectIgnoreMark(withServerSorting(withRights(ResultsTable)))));
         return (
             <div>
             {this.props.availsMapping &&

@@ -32,7 +32,7 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 
 import Keycloak from './vendor/keycloak';
-import store, {loadDashboardState, loadHistoryState, loadCreateRightState} from './stores/index';
+import store, {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './stores/actions';
@@ -53,6 +53,7 @@ function init() {
                 loadDashboardState();
                 loadCreateRightState();
                 loadHistoryState();
+                loadDopState();
 
                 render(
                     <Provider store={store}>

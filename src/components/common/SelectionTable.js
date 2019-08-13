@@ -1,198 +1,202 @@
 import React from 'react';
 import {nextFrame} from '../../util/Common';
 
-export default function withSelection(WrappedComponent){
+export default function withSelection(SelectionWrappedComponent) {
+    return (props) => <SelectionTable SelectionWrappedComponent={SelectionWrappedComponent} {...props} />;
+}
 
-    let registeredOnSelect= false;
+export class SelectionTable extends React.Component {
 
-    return class extends React.Component {
-        constructor(props) {
-            super(props);
+    constructor(props) {
+        super(props);
 
-            this.setTable = this.setTable.bind(this);
-            this.onDataLoaded = this.onDataLoaded.bind(this);
-            this.refreshSelected = this.refreshSelected.bind(this);
-            this.onSelectionChanged = this.onSelectionChanged.bind(this);
-            this.clearAllSelected = this.clearAllSelected.bind(this);
-            this.onScroll = this.onScroll.bind(this);
-            this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
+        this.setTable = this.setTable.bind(this);
+        this.onDataLoaded = this.onDataLoaded.bind(this);
+        this.refreshSelected = this.refreshSelected.bind(this);
+        this.onSelectionChanged = this.onSelectionChanged.bind(this);
+        this.clearAllSelected = this.clearAllSelected.bind(this);
+        this.onScroll = this.onScroll.bind(this);
+        this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
 
-            this.state = {
-                rowsProps: this.props.rowsProps,
-                table: null,
-                colDef: [],
-                selected: this.props.availTabPageSelection && this.props.availTabPageSelection.selected ? this.props.availTabPageSelection.selected : [],
-                selectAll: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectAll : false,
-                selectNone: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectNone : true,
-                columns: this.props.columns ? ['sel'].concat(this.props.columns): ['sel']
-            };
+        this.state = {
+            rowsProps: this.props.rowsProps,
+            table: null,
+            colDef: [],
+            selected: this.props.availTabPageSelection && this.props.availTabPageSelection.selected ? this.props.availTabPageSelection.selected : [],
+            selectAll: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectAll : false,
+            selectNone: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectNone : true,
+            columns: this.props.columns ? ['sel'].concat(this.props.columns) : ['sel']
+        };
+
+        this.registeredOnSelect = false;
+    }
+
+    componentDidMount() {
+        this.refreshColumns();
+        if (this.props.setClearAllSelected) {
+            this.props.setClearAllSelected(this.clearAllSelected);
         }
+    }
 
-        componentDidMount() {
+    componentDidUpdate(prevProps) {
+        if (prevProps.cols !== this.props.cols) {
             this.refreshColumns();
-            if(this.props.setClearAllSelected) {
-                this.props.setClearAllSelected(this.clearAllSelected);
-            }
+        }
+        if (prevProps.columns !== this.props.columns) {
+            this.setState({columns: ['sel'].concat(this.props.columns)});
         }
 
-        componentDidUpdate(prevProps) {
-            if(prevProps.cols !== this.props.cols){
-                this.refreshColumns();
-            }
-            if(prevProps.columns !== this.props.columns){
-                this.setState({columns : ['sel'].concat(this.props.columns)});
-            }
-
-            if(prevProps.availTabPageSelection !== this.props.availTabPageSelection){
-                this.setState({
-                    selected: this.props.availTabPageSelection.selected,
-                    selectAll: this.props.availTabPageSelection.selectAll,
-                    selectNone: this.props.availTabPageSelection.selectNone
-                });
-            }
+        if (prevProps.availTabPageSelection !== this.props.availTabPageSelection) {
+            this.setState({
+                selected: this.props.availTabPageSelection.selected,
+                selectAll: this.props.availTabPageSelection.selectAll,
+                selectNone: this.props.availTabPageSelection.selectNone
+            });
         }
+    }
 
-        onDataLoaded(response){
-            if(this.state.selected.length > 0){
-                this.state.table.api.forEachNode(rowNode => {
-                    if(rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
-                        rowNode.setSelected(true);
-                    }
-                });
-            }
-
-            this.onSelectionChanged();
-            if(this.props.onDataLoaded){
-                this.props.onDataLoaded(response);
-            }
-        }
-
-        onSelectionChanged(){
-            if(!registeredOnSelect){
-                registeredOnSelect = true;
-                nextFrame(this.onSelectionChangedProcess);
-            }
-        }
-
-        onScroll(){
-            const allVisibleSelected = this.areAllVisibleSelected();
-            const oneVisibleSelected = this.isOneVisibleSelected();
-            const selectionSource = this.props.availTabPageSelection ? this.props.availTabPageSelection : this.state;
-            if(allVisibleSelected !== selectionSource.selectAll || oneVisibleSelected === selectionSource.selectNone) {
-                this.setState({selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
-                if(this.props.resultPageSelect){
-                    this.props.resultPageSelect({selected: this.state.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
-                }
-            }
-        }
-
-        refreshSelected(){
-            if(!this.state.table) return;
-            this.state.table.api.deselectAll();
+    onDataLoaded(response) {
+        if (this.state.selected.length > 0) {
             this.state.table.api.forEachNode(rowNode => {
-                if(rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
+                if (rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0) {
                     rowNode.setSelected(true);
                 }
             });
         }
 
-        clearAllSelected(){
-            if(this.state.table){
-                this.state.table.api.deselectAll();
-            }
+        this.onSelectionChanged();
+        if (this.props.onDataLoaded) {
+            this.props.onDataLoaded(response);
         }
+    }
 
-        onSelectionChangedProcess(){
-            registeredOnSelect = false;
-            if(!this.state.table) return;
+    onSelectionChanged() {
+        if (!this.registeredOnSelect) {
+            this.registeredOnSelect = true;
+            nextFrame(this.onSelectionChangedProcess);
+        }
+    }
 
-            if(this.props.hidden) return;
-
-            let selected = this.state.table.api.getSelectedRows().slice(0);
-            if(this.state.table.api.getDisplayedRowCount() > 0){
-                this.state.selected.map(sel => {
-                    if(selected.filter(rec => (sel.id === rec.id)).length === 0 && this.state.table.api.getRowNode(sel.id) === null) {
-                        selected.push(sel);
-                    }
+    onScroll() {
+        const allVisibleSelected = this.areAllVisibleSelected();
+        const oneVisibleSelected = this.isOneVisibleSelected();
+        const selectionSource = this.props.availTabPageSelection ? this.props.availTabPageSelection : this.state;
+        if (allVisibleSelected !== selectionSource.selectAll || oneVisibleSelected === selectionSource.selectNone) {
+            this.setState({selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
+            if (this.props.resultPageSelect) {
+                this.props.resultPageSelect({
+                    selected: this.state.selected,
+                    selectAll: allVisibleSelected,
+                    selectNone: !oneVisibleSelected
                 });
-            } else {
-                if(this.state.selected && this.state.selected.length > 0)
-                    selected = selected.concat(this.state.selected);
-            }
-            this.setState({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
-            if(this.props.resultPageSelect){
-                this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
             }
         }
+    }
 
-        isOneVisibleSelected(){
-            const visibleRange = this.state.table.api.getVerticalPixelRange();
-            const topOffset = 0.4;
-            const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
-            const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
-            const selectedNodes = visibleNodes.filter(({selected}) => selected);
-            return selectedNodes.length > 0;
+    refreshSelected() {
+        if (!this.state.table) return;
+        this.state.table.api.deselectAll();
+        this.state.table.api.forEachNode(rowNode => {
+            if (rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0) {
+                rowNode.setSelected(true);
+            }
+        });
+    }
+
+    clearAllSelected() {
+        if (this.state.table) {
+            this.state.table.api.deselectAll();
         }
+    }
 
-        areAllVisibleSelected(){
-            const visibleRange = this.state.table.api.getVerticalPixelRange();
-            const topOffset = 0.4;
-            const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
-            const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
-            const selectedNodes = visibleNodes.filter(({selected}) => selected);
+    onSelectionChangedProcess() {
+        this.registeredOnSelect = false;
+        if (!this.state.table) return;
 
-            return visibleNodes.length === selectedNodes.length;
-        }
+        if (this.props.hidden) return;
 
-        staticDataLoaded(e){
-            e.api.selectAll();
-        }
-
-        refreshColumns(){
-            let colDef = {
-                sel : {
-                    headerName: '',
-                    checkboxSelection: true,
-                    width: 40,
-                    pinned: 'left',
-                    suppressResize: true,
-                    suppressSizeToFit: true,
-                    suppressMovable: true,
-                    lockPosition: true,
-                    headerComponentFramework: CheckBoxHeader
+        let selected = this.state.table.api.getSelectedRows().slice(0);
+        if (this.state.table.api.getDisplayedRowCount() > 0) {
+            this.state.selected.map(sel => {
+                if (selected.filter(rec => (sel.id === rec.id)).length === 0 && this.state.table.api.getRowNode(sel.id) === null) {
+                    selected.push(sel);
                 }
-            };
-            this.setState({colDef: colDef});
+            });
+        } else {
+            if (this.state.selected && this.state.selected.length > 0)
+                selected = selected.concat(this.state.selected);
         }
+        this.setState({
+            selected: selected,
+            selectNone: !this.isOneVisibleSelected(),
+            selectAll: this.areAllVisibleSelected()
+        });
+        if (this.props.resultPageSelect) {
+            this.props.resultPageSelect({
+                selected: selected,
+                selectNone: !this.isOneVisibleSelected(),
+                selectAll: this.areAllVisibleSelected()
+            });
+        }
+    }
 
+    isOneVisibleSelected() {
+        const visibleRange = this.state.table.api.getVerticalPixelRange();
+        const topOffset = 0.4;
+        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
+        const selectedNodes = visibleNodes.filter(({selected}) => selected);
+        return selectedNodes.length > 0;
+    }
 
-        setTable(element){
-            if(element){
-                this.setState({table:element});
-                if(this.props.setTable){
-                    this.props.setTable(element);
-                }
+    areAllVisibleSelected() {
+        const visibleRange = this.state.table.api.getVerticalPixelRange();
+        const topOffset = 0.4;
+        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
+        const selectedNodes = visibleNodes.filter(({selected}) => selected);
+
+        return visibleNodes.length === selectedNodes.length;
+    }
+
+    staticDataLoaded(e) {
+        e.api.selectAll();
+    }
+
+    refreshColumns() {
+        let colDef = {
+            sel: defaultSelectionColDef
+        };
+        this.setState({colDef: colDef});
+    }
+
+    setTable(element) {
+        if (element) {
+            this.setState({table: element});
+            if (this.props.setTable) {
+                this.props.setTable(element);
             }
         }
+    }
 
-        render(){
-            return <WrappedComponent
-                {...this.props}
-                colDef = {this.state.colDef}
-                columns = {this.state.columns}
-                setTable={this.setTable}
+    render() {
+        const {SelectionWrappedComponent} = this.props;
+        return <SelectionWrappedComponent
+            {...this.props}
+            colDef={this.state.colDef}
+            columns={this.state.columns}
+            setTable={this.setTable}
 
-                onDataLoaded={this.onDataLoaded}
+            onDataLoaded={this.onDataLoaded}
 
-                rowSelection="multiple"
-                onSelectionChanged={this.onSelectionChanged}
-                suppressRowClickSelection={true}
-                onBodyScroll={this.onScroll}
+            rowSelection="multiple"
+            onSelectionChanged={this.onSelectionChanged}
+            suppressRowClickSelection={true}
+            onBodyScroll={this.onScroll}
 
-                staticDataLoaded={this.staticDataLoaded}
-            />;
-        }
-    };
+            staticDataLoaded={this.staticDataLoaded}
+        />;
+    }
 }
 
 import {Component} from 'react';
@@ -251,4 +255,16 @@ class CheckBoxHeaderInternal extends Component {
     }
 }
 
-let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
+export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
+
+export const defaultSelectionColDef = {
+    headerName: '',
+    checkboxSelection: true,
+    width: 40,
+    pinned: 'left',
+    suppressResize: true,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    lockPosition: true,
+    headerComponentFramework: CheckBoxHeader
+};
