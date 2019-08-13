@@ -159,11 +159,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "platform",
-  "displayName": "Platform",
+  "javaVariableName": "platformCategory",
+  "displayName": "Platform Category",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "platform",
+  "queryParamName": "platformCategory",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
