@@ -2,25 +2,9 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
 
-import styled from 'styled-components';
 import Popup from 'reactjs-popup';
-import moment from 'moment';
+import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
 
-
-const TerritoryTag = styled.div`
-    padding: 10px;
-    user-select: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: #EEE;
-    font-weight: bold;
-    font-size: 13px;
-    display: inline;
-    cursor: pointer;
-    margin-right: 5px;
-    justify-content: space-between;
-`;
 
 class EditableBaseComponent extends Component {
 
@@ -38,7 +22,7 @@ class EditableBaseComponent extends Component {
 
     static defaultProps = {
         value: null,
-        showError:true,
+        showError: true,
         isArrayOfObject: false
     }
 
@@ -46,7 +30,7 @@ class EditableBaseComponent extends Component {
         super(props);
 
         this.state = {
-            value:props.value,
+            value: props.value,
             showStateValue: false,
             editable: false,
             errorMessage: '',
@@ -63,7 +47,7 @@ class EditableBaseComponent extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.value != this.props.value){
+        if (prevProps.value != this.props.value) {
             this.setState({
                 showStateValue: false,
                 value: this.props.value ? this.props.value : null,
@@ -126,54 +110,41 @@ class EditableBaseComponent extends Component {
         });
     }
 
-    TerritoryTooltip = (data) => (
-        <div style={{ borderRadius: '3px', background: '#FFF', padding: '10px', fontSize: '12px', textAlign: 'center' }}>
-            <div><b>Territory:</b> <span style={{ fontSize: '10px' }}>{data && data.country && data.country}</span></div>
-            <div><b>Selected:</b> <span style={{ fontSize: '10px' }}>{data && data.selected && data.selected ? 'Yes' : 'No'}</span></div>
-            <div><b>Date Selected:</b> <span style={{ fontSize: '10px' }}>{moment(data.dateSelected).format('L')}</span></div>
-            <div><b>Right Cont. Status:</b> <span style={{ fontSize: '10px' }}>{data && data.rightContractStatus && data.rightContractStatus.toString().toUpperCase()}</span></div>
-            <div style={{ wordWrap: 'break-word' }}><b>Vu Contract ID:</b> <br />{data && data.vuContractId && data.vuContractId.map((e, i) => <span key={i} style={{ marginTop: '2px', marginRight: '2px', display: 'inline-block', background: '#DDD', padding: '5px', borderRadius: '3px', fontWeight: 'bold', fontSize: '10px' }}>{e}</span>)}</div>
-        </div>
-    );
-
     render() {
-        const displayFunc = (value)=>{
+        const displayFunc = (value) => {
             return (<span
                 onClick={this.handleShowHelperComponent}
-                style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
+                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px' }}
                 className={this.props.disabled ? 'disabled' : ''}>
-                       {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
-                           <React.Fragment key={i}>
-                                {
-                                    <Popup
-                                    trigger={                                        
-                                        <TerritoryTag>{e.country}</TerritoryTag>
-                                    }
-                                    position="top center"
-                                    on="hover"
-                                >
-                                    {this.TerritoryTooltip(e)}
-                                </Popup>
-                                }
-                           </React.Fragment>
-                       )) : value.join(',') : '' : value}
-                   </span>);
+                {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
+                    <Popup
+                        key={i}
+                        trigger={
+                            <TerritoryTag isCreate>{e.country}</TerritoryTag>
+                        }
+                        position="top center"
+                        on="hover"
+                    >
+                        {TerritoryTooltip(e)}
+                    </Popup>
+                )) : value.join(',') : '' : value}
+            </span>);
         };
 
-        const unfocusedRender = ()=>{
-            if(this.props.priorityDisplay) {
+        const unfocusedRender = () => {
+            if (this.props.priorityDisplay) {
                 return displayFunc(this.props.priorityDisplay);
             } else {
-                if(this.state.showStateValue){
+                if (this.state.showStateValue) {
                     return displayFunc(this.state.value);
                 } else {
-                    if(this.props.value && (!Array.isArray(this.props.value) || (Array.isArray(this.props.value) && this.props.value.length > 0))){
+                    if (this.props.value && (!Array.isArray(this.props.value) || (Array.isArray(this.props.value) && this.props.value.length > 0))) {
                         return displayFunc(this.props.value);
-                    }else {
+                    } else {
                         return (
                             <span
                                 className="displayDate"
-                                style={{color: '#808080', cursor: 'pointer', width:'100%'}}
+                                style={{ color: '#808080', cursor: 'pointer', width: '100%' }}
                                 onClick={this.handleShowHelperComponent}>
                                 {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
                             </span>
@@ -187,11 +158,11 @@ class EditableBaseComponent extends Component {
             <div className="editable-container">
                 {
                     this.state.editable ?
-                        <div style={{width:'100%'}}>
-                            <div className="dPicker" style={{ marginBottom: '5px', minWidth:'500px', width:'90%'}}>
+                        <div style={{ width: '100%' }}>
+                            <div className="dPicker" style={{ marginBottom: '5px', minWidth: '500px', width: '90%' }}>
                                 {this.props.helperComponent}
                             </div>
-                            <div style={{ float: 'left', paddingLeft: '10px'}}>
+                            <div style={{ float: 'left', paddingLeft: '10px' }}>
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
@@ -206,7 +177,7 @@ class EditableBaseComponent extends Component {
                             </div>
                             {
                                 this.props.showError && this.state.errorMessage &&
-                                <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
+                                <small className={'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>
                             }

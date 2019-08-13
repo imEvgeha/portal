@@ -4,7 +4,7 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
-import { Button as ReactStrapButton, Label } from 'reactstrap';
+import { Button, Label } from 'reactstrap';
 
 import store from '../../../stores/index';
 import { blockUI } from '../../../stores/actions/index';
@@ -27,10 +27,9 @@ import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import { confirmModal } from '../../../components/modal/ConfirmModal';
 
-import styled from 'styled-components';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import Button from '@atlaskit/button';
 import Popup from 'reactjs-popup';
+import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
     return {
@@ -39,53 +38,6 @@ const mapStateToProps = state => {
         blocking: state.root.blocking,
     };
 };
-
-const CustomFieldContainer = styled.div`
-    z-index: 1;
-`;
-
-const CustomFieldAddText = styled.div`
-    color: #999;
-    font-style: italic;
-    cursor: pointer;
-    user-select: none;
-    font-weight: bold;
-`;
-
-const TerritoryTag = styled.div`
-    padding: 10px;
-    user-select: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: #EEE;
-    font-weight: bold;
-    font-size: 13px;
-    display: inline;
-    cursor: pointer;
-    float: left;
-    justify-content: space-between;
-`;
-
-const RemovableButton = styled.div`
-    cursor: pointer;
-    color: #111;
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 14px;
-    display: block;
-    float: left;
-    padding: 10px;
-    background: #EEE;
-    z-index: 999;
-    margin-right: 5px;
-    &:hover {
-        color: red;
-    }
-`;
-
-
 
 class RightDetails extends React.Component {
 
@@ -325,54 +277,6 @@ class RightDetails extends React.Component {
             isEdit: false
         });
     }
-    toggleRightTerritoryEditForm = () => {
-        this.setState({
-            isRightTerritoryEditFormOpen: !this.state.isRightTerritoryEditFormOpen
-        });
-    }
-
-    onSubmitRightTerritory = (e, name) => {
-        let newArray;
-        if (this.state.right[name]) {
-            newArray = Array.from(this.state.right[name]);
-            if(this.state.isEdit) {
-                let updatedTerritoryIndex = newArray.findIndex(a => a.country === this.state.right[name][this.state.rightIndex]['country']);
-                newArray[updatedTerritoryIndex] = e;
-            } else {
-                newArray = [...newArray, e];
-            }
-        } else {
-            newArray = [e];
-        }
-        let newTerritory = {
-            ...this.state.right,
-            territory: newArray
-        };
-        this.setState({
-            right: newTerritory
-        });
-    }
-
-    handleDeleteRightTerritory = (country, name) => {
-        let newArray = this.state.right[name] && this.state.right[name].filter(e => e.country !== country);
-        let newTerritory = {
-            ...this.state.right,
-            territory: newArray
-        };
-        this.setState({
-            right: newTerritory
-        });
-    }
-
-    TerritoryTooltip = (data) => (
-        <div style={{ borderRadius: '3px', background: '#FFF', padding: '10px', fontSize: '12px', textAlign: 'center' }}>
-            <div><b>Territory:</b> <span style={{ fontSize: '10px' }}>{data.country && data.country}</span></div>
-            <div><b>Selected:</b> <span style={{ fontSize: '10px' }}>{data.selected && data.selected ? 'Yes' : 'No'}</span></div>
-            <div><b>Date Selected:</b> <span style={{ fontSize: '10px' }}>{moment(data.dateSelected).format('L')}</span></div>
-            <div><b>Right Cont. Status:</b> <span style={{ fontSize: '10px' }}>{data && data.rightContractStatus && data.rightContractStatus}</span></div>
-            <div style={{ wordWrap: 'break-word' }}><b>Vu Contract ID:</b> <br />{data.vuContractId && data.vuContractId.map((e, i) => <span key={i} style={{ marginTop: '2px', marginRight: '2px', display: 'inline-block', background: '#DDD', padding: '5px', borderRadius: '3px', fontWeight: 'bold', fontSize: '10px' }}>{e}</span>)}</div>
-        </div>
-    );
 
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
@@ -785,7 +689,6 @@ class RightDetails extends React.Component {
 
         const renderCustomField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
-            console.log('Error', error);
             if (error) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
@@ -859,27 +762,27 @@ class RightDetails extends React.Component {
                     onChange={(value, cancel) => this.handleSubmitCustom(name, value, cancel)}
                     showError={false}
                     helperComponent={
-                        <CustomFieldContainer>
+                        <div>
                             {selectedVal && selectedVal.length > 0 ?
                                 selectedVal.map((e, i) => (
                                     <div key={i}>
                                         <Popup
                                             trigger={
-                                                <TerritoryTag onClick={() => this.toggleRightTerritoryForm(i)}>
+                                                <TerritoryTag isEdit onClick={() => this.toggleRightTerritoryForm(i)}>
                                                     {e.country}
                                                 </TerritoryTag>
                                             }
                                             position="top center"
                                             on="hover"
                                         >
-                                            {this.TerritoryTooltip(e)}
+                                            {TerritoryTooltip(e)}
                                         </Popup>
-                                        <RemovableButton onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
+                                        <RemovableButton isEdit onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
                                     </div>)
                                 )
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
-                            <Button onClick={this.toggleAddRightTerritoryForm}><span style={{ fontWeight: 'bold' }}>+</span></Button>
+                            <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
                             <RightTerritoryForm
                                 onSubmit={(e) => addTerritory(e)}
                                 isOpen={this.state.isRightTerritoryFormOpen}
@@ -889,7 +792,7 @@ class RightDetails extends React.Component {
                                 data={val}
                                 isEdit={this.state.isEdit}
                                 options={options} />
-                        </CustomFieldContainer>
+                        </div>
                     } />
 
             ));
@@ -1008,7 +911,7 @@ class RightDetails extends React.Component {
                     {this.props.availsMapping &&
                         <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
                             <div className="mt-4 mx-5 px-5">
-                                <ReactStrapButton className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</ReactStrapButton>
+                                <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
                     }

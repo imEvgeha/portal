@@ -3,6 +3,7 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import store from '../../../stores/index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
+import { TERRITORY } from '../../../constants/constant-variables';
 
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
@@ -29,7 +30,7 @@ const parse = function(value, key){
         return momentToISO(value);
     }
 
-    if(key === 'territory') {
+    if(key === TERRITORY) {
         return value;
     }
 

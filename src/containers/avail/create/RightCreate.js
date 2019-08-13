@@ -6,7 +6,7 @@ import moment from 'moment';
 import store from '../../../stores/index';
 import {blockUI} from '../../../stores/actions/index';
 import BlockUi from 'react-block-ui';
-import {Button as ReactStrapButton, Input, Label} from 'reactstrap';
+import {Button, Input, Label} from 'reactstrap';
 import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
@@ -22,9 +22,8 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
-import Button from '@atlaskit/button';
-import styled from 'styled-components';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
+import { TerritoryTag, CustomFieldAddText, RemovableButton, AddButton } from '../custom-form-components/CustomFormComponents';
 
 
 const mapStateToProps = state => {
@@ -34,45 +33,6 @@ const mapStateToProps = state => {
         blocking: state.root.blocking
     };
 };
-
-const CustomFieldContainer = styled.div`
-`;
-
-const CustomFieldAddText = styled.div`
-    color: #999;
-    font-style: italic;
-    cursor: pointer;
-    user-select: none;
-    font-weight: bold;
-`;
-
-const TerritoryTag = styled.div`
-    padding: 10px;
-    user-select: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: #EEE;
-    font-weight: bold;
-    font-size: 13px;
-    display: inline;
-    cursor: pointer;
-    margin-right: 5px;
-    justify-content: space-between;
-`;
-
-const RemovableButton = styled.span`
-    color: #111;
-    font-weight: bold;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 14px;
-    padding: 5px;
-    cursor: pointer;
-    &:hover {
-        color: red;
-    }
-`;
 
 class RightCreate extends React.Component {
 
@@ -723,17 +683,19 @@ class RightCreate extends React.Component {
                 }
             }
             return renderFieldTemplate(name, displayName, required, null, (
-                <CustomFieldContainer>
+                <div>
                     {this.right.territory && this.right.territory.length > 0 ?                    
                         this.right.territory.map((e, i)=> (
-                        <TerritoryTag key={i}>
+                        <TerritoryTag isCreate key={i}>
                             {e.country} <RemovableButton onClick={() => this.handleDeleteRightTerritory(e.country, 'territory')}>x</RemovableButton>
                         </TerritoryTag>))
                     : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
                     }
-                    <Button onClick={this.toggleRightTerritoryForm}><span style={{fontWeight: 'bold'}}>+</span></Button>                    
+                    <div style={{float: 'right'}}>
+                        <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
+                    </div>                    
                     <RightTerritoryForm onSubmit={(e) => this.onSubmitRightTerritory(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
-                </CustomFieldContainer>
+                </div>
             ));
         };
 
@@ -831,8 +793,8 @@ class RightCreate extends React.Component {
                     {this.props.availsMapping &&
                         <div style={{display:'flex', justifyContent: 'flex-end'}} >
                             <div className="mt-4 mx-5">
-                                <ReactStrapButton className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</ReactStrapButton>
-                                <ReactStrapButton className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</ReactStrapButton>
+                                <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
+                                <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
                     }

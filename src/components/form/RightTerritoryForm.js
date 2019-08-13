@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Modal, { ModalTransition, ModalFooter } from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Form, { Field } from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import Select, { CreatableSelect } from '@atlaskit/select';
 import { DatePicker } from '@atlaskit/datetime-picker';
 import moment from 'moment';
 import { momentToISO } from '../../util/Common';
+import { convertBooleanToString } from '../../constants/format';
+import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
+import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 class RightTerritoryForm extends React.Component {
@@ -41,15 +44,6 @@ class RightTerritoryForm extends React.Component {
         }
     }
 
-    convertBooleanToString = e => {
-        if (e === true) {
-            return 'Yes';
-        } else if (e === false) {
-            return 'No';
-        } else {
-            return '';
-        }
-    }
 
     returnValidData = data => {
         return this.props.rightData && this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex][data] && this.props.rightData[this.props.rightIndex][data] !== null;
@@ -64,20 +58,23 @@ class RightTerritoryForm extends React.Component {
             <ModalTransition>
                 {this.props.isOpen && (
                     <Modal
-                        heading="Territory Data"
+                        width="medium"
                         onClose={this.props.onClose}
                         components={{
                             Container: ({ children, className }) => (
                                 <Form onSubmit={data => this.onSubmit(data)} >
                                     {({ formProps }) => (
-                                        <form {...formProps} className={className}>
-                                            {children}
-                                        </form>
+                                        <ModalBody>
+                                            <form {...formProps} className={className}>
+                                                {children}
+                                            </form>
+                                        </ModalBody>
                                     )}
                                 </Form>
                             )
                         }}
                     >
+                        <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Territory Data</ModalHeader>
                         <Field label="COUNTRY" name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.rightData[this.props.rightIndex]['country'], value: this.returnValidData('country') && this.props.rightData[this.props.rightIndex]['country'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
@@ -90,7 +87,7 @@ class RightTerritoryForm extends React.Component {
                             )}
 
                         </Field>
-                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? this.convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.rightData[this.props.rightIndex]['selected'] : false } : ''}>
+                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.rightData[this.props.rightIndex]['selected'] : false } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -143,7 +140,7 @@ class RightTerritoryForm extends React.Component {
                                 Cancel
                             </Button>
                             <Button appearance="primary" type="submit">
-                                Add
+                                {this.props.isEdit ? 'Update' : 'Create'}
                             </Button>
                         </ModalFooter>
                     </Modal>
@@ -157,7 +154,8 @@ RightTerritoryForm.propTypes = {
     onClose: PropTypes.func,
     isOpen: PropTypes.bool,
     options: PropTypes.array,
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    isEdit: PropTypes.bool
 };
 
 export default RightTerritoryForm;
