@@ -45,6 +45,12 @@ class SelectionIgnoreMarkWrappedTable extends SelectionTable {
         this.setState({colDef: colDef});
     }
 
+    onDataLoaded(response) {
+        if (this.props.onDataLoaded) {
+            this.props.onDataLoaded(response);
+        }
+    }
+
     render() {
         const {SelectionIgnoreMarkWrappedComponent} = this.props;
 
@@ -157,7 +163,7 @@ class CheckBoxHeaderInternal extends Component {
 
 let mapStateToProps = state => {
     return {
-        promotedRights: state.dopReducer.promotedRights
+        promotedRights: state.dopReducer.session.promotedRights
     };
 };
 
