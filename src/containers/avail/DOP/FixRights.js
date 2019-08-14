@@ -63,13 +63,14 @@ class FixRights extends React.Component {
             return;
         }
         const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
+        params.push('invalid=true');
         let criteria = RightsURL.ArraytoFilter(params);
         this.props.searchFormSetAdvancedSearchCriteria(criteria);
         rightSearchHelper.advancedSearch(criteria);
     }
 
     render(){
-        const RightsResultsTable = withRedux(withColumnsReorder(withSelect(withServerSorting(withRights(ResultsTable)))));
+        const RightsResultsTable = withRedux(withColumnsReorder(withServerSorting(withRights(ResultsTable))));
         return (
             <div>
                 {this.props.availsMapping &&
