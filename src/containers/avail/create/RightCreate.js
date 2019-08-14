@@ -694,7 +694,7 @@ class RightCreate extends React.Component {
                     <div style={{float: 'right'}}>
                         <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
                     </div>                    
-                    <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} options={options} />                    
+                    <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
                 </div>
             ));
         };
