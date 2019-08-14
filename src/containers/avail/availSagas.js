@@ -59,14 +59,14 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
 export function* fetchAndStoreSelectItems(payload) {
     const multiSelectMappings = payload.filter(el => el.searchDataType === 'multiselect' );
     const mappingsWithOptions = multiSelectMappings
-    .filter(el => el.options)
-    .reduce((acc, {javaVariableName, options}) => {
-        acc = {
-            ...acc,
-            [javaVariableName]: options
-        };
-        return acc;
-    }, {});
+        .filter(el => el.options)
+        .reduce((acc, {javaVariableName, options}) => {
+            acc = {
+                ...acc,
+                [javaVariableName]: options
+            };
+            return acc;
+        }, {});
     const mappingsWithConfigEndpoint = multiSelectMappings.filter(el => el.configEndpoint);
     // TODO - make this in background via FORK effect
     const fetchedSelectedItems = yield all(

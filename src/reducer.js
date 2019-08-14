@@ -6,6 +6,7 @@ import dashboard from './stores/reducers/avail/dashboard';
 import createright from './stores/reducers/avail/createright';
 import history from './stores/reducers/history';
 import media from './stores/reducers/media/search';
+import dopReducer from './stores/reducers/DOP/dopReducer';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -14,7 +15,8 @@ const createRootReducer = routerHistory => combineReducers({
     dashboard,
     media,
     history,
-    createright
+    createright,
+    dopReducer,
 });
 
 export default createRootReducer;

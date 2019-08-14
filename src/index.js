@@ -36,7 +36,7 @@ import {ConnectedRouter} from 'connected-react-router';
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
 import rootSaga from './saga';
-import {loadDashboardState, loadHistoryState, loadCreateRightState} from './stores/index';
+import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './stores/actions';
@@ -73,6 +73,7 @@ function init() {
                 loadDashboardState();
                 loadCreateRightState();
                 loadHistoryState();
+                loadDopState();
 
                 render(
                     app,
