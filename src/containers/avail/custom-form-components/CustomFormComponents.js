@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import moment from 'moment';
-import { convertBooleanToString } from '../../../constants/format';
+import { convertBooleanToString } from '../../../containers/avail/util/format';
 
 const CustomFieldAddText = styled.div`
     color: #999;

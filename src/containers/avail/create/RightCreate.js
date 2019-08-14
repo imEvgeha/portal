@@ -106,7 +106,7 @@ class RightCreate extends React.Component {
         this.checkRight(name, value, true);
     }
 
-    onSubmitRightTerritory = (e, name) => {         
+    handleArrayPush = (e, name) => {         
         let newArray;
         if(this.right[name]) {
             newArray = Array.from(this.right[name]);
@@ -117,8 +117,8 @@ class RightCreate extends React.Component {
         this.checkRight(name, newArray, true);
     }
 
-    handleDeleteRightTerritory = (country, name) => {
-        let newRight = this.right[name] && this.right[name].filter(e => e.country !== country);
+    handleDeleteObjectFromArray = (value, name, subField) => {
+        let newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
         this.checkRight(name, newRight, true);
     }
 
@@ -687,14 +687,14 @@ class RightCreate extends React.Component {
                     {this.right.territory && this.right.territory.length > 0 ?                    
                         this.right.territory.map((e, i)=> (
                         <TerritoryTag isCreate key={i}>
-                            {e.country} <RemovableButton onClick={() => this.handleDeleteRightTerritory(e.country, 'territory')}>x</RemovableButton>
+                            {e.country} <RemovableButton onClick={() => this.handleDeleteObjectFromArray(e.country, 'territory', 'country')}>x</RemovableButton>
                         </TerritoryTag>))
                     : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
                     }
                     <div style={{float: 'right'}}>
                         <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
                     </div>                    
-                    <RightTerritoryForm onSubmit={(e) => this.onSubmitRightTerritory(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
+                    <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} options={options} />                    
                 </div>
             ));
         };
@@ -767,7 +767,7 @@ class RightCreate extends React.Component {
                              break;
                          case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
-                        case 'custom': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'territoryType': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);

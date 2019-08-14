@@ -8,7 +8,7 @@ import Select, { CreatableSelect } from '@atlaskit/select';
 import { DatePicker } from '@atlaskit/datetime-picker';
 import moment from 'moment';
 import { momentToISO } from '../../util/Common';
-import { convertBooleanToString } from '../../constants/format';
+import { convertBooleanToString } from '../../containers/avail/util/format';
 import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
 import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
@@ -16,21 +16,18 @@ import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 class RightTerritoryForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            territory: {},
-        };
     }
     static propTypes = {
         isEdit: false
     };
     setProperValues = (data) => {
-        if (data.country !== '' && data.dateSelected !== '' && data.rightContractStatus !== '' && data.vuContractId !== '') {
+        if (data.country && data.dateSelected && data.rightContractStatus && data.vuContractId) {
             let newObject = {
-                country: data.country['value'] ? data.country['value'] !== '' && data.country['value'] : this.props.rightData[this.props.rightIndex]['country'] ? this.props.rightData[this.props.rightIndex]['country'] : '',
-                dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) : this.props.rightData[this.props.rightIndex]['dateSelected'],
-                selected: data.selected['label'] === 'Yes' ? data.selected['label'] ? data.selected['value'] : this.props.rightData[this.props.rightIndex]['selected'] : false,
-                rightContractStatus: data.rightContractStatus['value'] ? data.rightContractStatus['value'] : this.props.rightData[this.props.rightIndex]['rightContractStatus'],
-                vuContractId: data.vuContractId ? data.vuContractId.map(e => e.value) : this.props.rightData[this.props.rightIndex]['vuContractId']
+                country: data.country['value'] ? data.country['value'] !== '' && data.country['value'] : this.props.existingTerritoryList[this.props.territoryIndex]['country'] ? this.props.existingTerritoryList[this.props.territoryIndex]['country'] : '',
+                dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) : this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'],
+                selected: data.selected['label'] === 'Yes' ? data.selected['label'] ? data.selected['value'] : this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false,
+                rightContractStatus: data.rightContractStatus['value'] ? data.rightContractStatus['value'] : this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'],
+                vuContractId: data.vuContractId ? data.vuContractId.map(e => e.value) : this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId']
             };
             return newObject;
         }
@@ -46,11 +43,11 @@ class RightTerritoryForm extends React.Component {
 
 
     returnValidData = data => {
-        return this.props.rightData && this.props.rightData[this.props.rightIndex] && this.props.rightData[this.props.rightIndex][data] && this.props.rightData[this.props.rightIndex][data] !== null;
+        return this.props.existingTerritoryList && this.props.existingTerritoryList[this.props.territoryIndex] && this.props.existingTerritoryList[this.props.territoryIndex][data] && this.props.existingTerritoryList[this.props.territoryIndex][data] !== null;
     }
 
     removeExistingOptions = () => {
-        return this.props.rightData ? this.props.options.filter(x => !this.props.rightData.filter(y => y.country === x.label).length) : this.props.options;
+        return this.props.existingTerritoryList ? this.props.options.filter(x => !this.props.existingTerritoryList.find(y => y.country === x.label)) : this.props.options;
     }
 
     render() {
@@ -75,7 +72,7 @@ class RightTerritoryForm extends React.Component {
                         }}
                     >
                         <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Territory Data</ModalHeader>
-                        <Field label="COUNTRY" name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.rightData[this.props.rightIndex]['country'], value: this.returnValidData('country') && this.props.rightData[this.props.rightIndex]['country'] } : ''}>
+                        <Field label="COUNTRY" name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'], value: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -87,7 +84,7 @@ class RightTerritoryForm extends React.Component {
                             )}
 
                         </Field>
-                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.rightData[this.props.rightIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.rightData[this.props.rightIndex]['selected'] : false } : ''}>
+                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.existingTerritoryList[this.props.territoryIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -101,13 +98,13 @@ class RightTerritoryForm extends React.Component {
                             )}
                         </Field>
 
-                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.returnValidData('dateSelected') && this.props.rightData[this.props.rightIndex]['dateSelected'] : ''}>
+                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.returnValidData('dateSelected') && this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'] : ''}>
                             {({ fieldProps }) => (
                                 <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" {...fieldProps} dateFormat={'DD/MM/YYYY'} />
                             )}
                         </Field>
 
-                        <Field label="RIGHTS CONTRACT STATUS" name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.rightData[this.props.rightIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.rightData[this.props.rightIndex]['rightContractStatus'] } : ''}>
+                        <Field label="RIGHTS CONTRACT STATUS" name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -123,7 +120,7 @@ class RightTerritoryForm extends React.Component {
                                 />
                             )}
                         </Field>
-                        <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={this.props.isEdit ? this.returnValidData('vuContractId') && this.props.rightData[this.props.rightIndex]['vuContractId'].length > 0 && this.props.rightData[this.props.rightIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
+                        <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={this.props.isEdit ? this.returnValidData('vuContractId') && this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId'].length > 0 && this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <CreatableSelect
                                     id={`creatable-select-${id}`}
@@ -155,7 +152,8 @@ RightTerritoryForm.propTypes = {
     isOpen: PropTypes.bool,
     options: PropTypes.array,
     onSubmit: PropTypes.func,
-    isEdit: PropTypes.bool
+    isEdit: PropTypes.bool,
+    existingTerritoryList: PropTypes.array
 };
 
 export default RightTerritoryForm;

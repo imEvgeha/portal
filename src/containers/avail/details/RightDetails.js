@@ -69,7 +69,7 @@ class RightDetails extends React.Component {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
             isRightTerritoryEditFormOpen: false,
-            rightIndex: null,
+            territoryIndex: null,
             isEdit: false,
         };
     }
@@ -158,7 +158,7 @@ class RightDetails extends React.Component {
         return rightCopy;
     }
 
-    handleSubmitCustom = (name, value, cancel) => {
+    handleEditableCustomSubmit = (name, value, cancel) => {
         this.update(name, value, () => {
             cancel();
         });
@@ -266,7 +266,7 @@ class RightDetails extends React.Component {
     toggleRightTerritoryForm = (index) => {
         this.setState({
             isEdit: true,
-            rightIndex: index,
+            territoryIndex: index,
             isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
         });
     }
@@ -727,7 +727,7 @@ class RightDetails extends React.Component {
 
             let addTerritory = (option) => {
                 if(this.state.isEdit) {
-                    let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.rightIndex]['country']);
+                    let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.territoryIndex]['country']);
                     selectedVal.splice(updatedTerritoryIndex, 1);
                     selectedVal = [...selectedVal, option];
                 } else {
@@ -759,7 +759,7 @@ class RightDetails extends React.Component {
                     isArrayOfObject={true}
                     validate={() => { }}
                     displayName={displayName}
-                    onChange={(value, cancel) => this.handleSubmitCustom(name, value, cancel)}
+                    onChange={(value, cancel) => this.handleEditableCustomSubmit(name, value, cancel)}
                     showError={false}
                     helperComponent={
                         <div>
@@ -787,8 +787,8 @@ class RightDetails extends React.Component {
                                 onSubmit={(e) => addTerritory(e)}
                                 isOpen={this.state.isRightTerritoryFormOpen}
                                 onClose={this.toggleRightTerritoryForm}
-                                rightData={selectedVal}
-                                rightIndex={this.state.rightIndex}
+                                existingTerritoryList={selectedVal}
+                                territoryIndex={this.state.territoryIndex}
                                 data={val}
                                 isEdit={this.state.isEdit}
                                 options={options} />
@@ -883,7 +883,7 @@ class RightDetails extends React.Component {
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'custom': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'territoryType': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);

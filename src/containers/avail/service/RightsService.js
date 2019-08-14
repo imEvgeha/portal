@@ -3,14 +3,13 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import store from '../../../stores/index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
-import { TERRITORY } from '../../../constants/constant-variables';
 
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
 const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId'];
-const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes', 'territory'];
-
+const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
+const ARRAY_OF_OBJETS = ['territory'];
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -30,7 +29,7 @@ const parse = function(value, key){
         return momentToISO(value);
     }
 
-    if(key === TERRITORY) {
+    if(ARRAY_OF_OBJETS.includes(key)) {
         return value;
     }
 

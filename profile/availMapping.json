@@ -67,7 +67,7 @@
 }, {
   "javaVariableName": "territory",
   "displayName": "Territory",
-  "dataType": "custom",
+  "dataType": "territoryType",
   "searchDataType": "multiselect",
   "configEndpoint": "/territories",
   "queryParamName": "territory",
