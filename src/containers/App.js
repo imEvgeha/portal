@@ -13,6 +13,7 @@ import RightDetails  from './avail/details/RightDetails';
 import RightCreate  from './avail/create/RightCreate';
 import RightsCreateFromAttachment  from './avail/create/RightsCreateFromAttachment';
 import SelectRightsPlanning  from './avail/DOP/SelectRightsPlanning';
+import FixRights from './avail/DOP/FixRights';
 import AvailIngestHistoryContainer from './avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './metadata/dashboard/DashboardContainer';
 import {canRender} from '../ability';
@@ -49,6 +50,7 @@ export default class App extends React.Component {
                             <Route exact path="/avails/rights/:id/match" component={canRender(UnderConstruction, 'read', 'Avail')}/>
                             <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
                             <Route exact path="/avails/history/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
+                            <Route exact path="/avails/history/:availHistoryIds/fix-errors" component={canRender(FixRights, 'read', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds/:valid(errors)" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
                             <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
