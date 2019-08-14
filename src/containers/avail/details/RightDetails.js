@@ -158,12 +158,6 @@ class RightDetails extends React.Component {
         return rightCopy;
     }
 
-    handleEditableCustomSubmit = (name, value, cancel) => {
-        this.update(name, value, () => {
-            cancel();
-        });
-    }
-
     update(name, value, onError) {
         if (this.state.flatRight[name] === value) {
             onError();
@@ -759,7 +753,7 @@ class RightDetails extends React.Component {
                     isArrayOfObject={true}
                     validate={() => { }}
                     displayName={displayName}
-                    onChange={(value, cancel) => this.handleEditableCustomSubmit(name, value, cancel)}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     showError={false}
                     helperComponent={
                         <div>
