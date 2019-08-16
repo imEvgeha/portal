@@ -79,13 +79,13 @@ export function* fetchAndStoreSelectItems(payload) {
         switch (configEndpoint) {
             case PRODUCTION_STUDIOS:
                 options = value.map(el => el.value === el.name);
-            break;
+                break;
             case LANGUAGES:
                 options = value.map(code => {
-                return {value: code.languageCode, label: code.languageName};
-            });
-            options = getSortedData(options, SORT_TYPE, true);
-            break;
+                    return {value: code.languageCode, label: code.languageName};
+                });
+                options = getSortedData(options, SORT_TYPE, true);
+                break;
             default:
                 options = value;
         }
@@ -94,7 +94,8 @@ export function* fetchAndStoreSelectItems(payload) {
             [key]: options 
         };
         return acc;
-    });
+    }, {});
+
     const selectedItemsForStore = {
         ...mappingsWithOptions,
         ...updatedSelectValues,
