@@ -21,15 +21,27 @@ class RightTerritoryForm extends React.Component {
         isEdit: false
     };
     setProperValues = (data) => {
-        if (data.country && data.dateSelected && data.rightContractStatus && data.vuContractId) {
+        if (data.country && data.rightContractStatus) {
             let newObject = {
                 country: data.country['value'] ? data.country['value'] !== '' && data.country['value'] : this.props.existingTerritoryList[this.props.territoryIndex]['country'] ? this.props.existingTerritoryList[this.props.territoryIndex]['country'] : '',
-                dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) : this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'],
+                dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) : this.props.isEdit ? this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'] : '',
                 selected: data.selected['label'] === 'Yes' ? data.selected['label'] ? data.selected['value'] : this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false,
-                rightContractStatus: data.rightContractStatus['value'] ? data.rightContractStatus['value'] : this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'],
-                vuContractId: data.vuContractId ? data.vuContractId.map(e => e.value) : this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId']
+                rightContractStatus: data.rightContractStatus['value'] ? data.rightContractStatus['value'] : this.props.isEdit ? this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] : '',
+                vuContractId: data.vuContractId ? data.vuContractId.map(e => e.value) : this.props.isEdit ? this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId'] : ''
             };
-            return newObject;
+            let updatedObject = {};
+            for (let objectField in newObject) {
+                if (newObject[objectField]) {
+                    updatedObject[objectField] = newObject[objectField];
+                } else {                
+                    if(objectField === 'selected') {
+                        updatedObject[objectField] = false;
+                    } else {
+                        updatedObject[objectField] = null;
+                    }
+                }
+            }
+            return updatedObject;
         }
     }
 
@@ -72,7 +84,7 @@ class RightTerritoryForm extends React.Component {
                         }}
                     >
                         <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Territory Data</ModalHeader>
-                        <Field label="COUNTRY" name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'], value: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'] } : ''}>
+                        <Field label="COUNTRY" isRequired name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'], value: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -84,7 +96,7 @@ class RightTerritoryForm extends React.Component {
                             )}
 
                         </Field>
-                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.existingTerritoryList[this.props.territoryIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false } : ''}>
+                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.existingTerritoryList[this.props.territoryIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false } : {label: 'No', value: false}}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -98,13 +110,13 @@ class RightTerritoryForm extends React.Component {
                             )}
                         </Field>
 
-                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.returnValidData('dateSelected') && this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'] : ''}>
+                        <Field label="DATE SELECTED" name="dateSelected" defaultValue={this.props.isEdit ? this.returnValidData('dateSelected') && this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'] ? this.props.existingTerritoryList[this.props.territoryIndex]['dateSelected'] : '' : ''}>
                             {({ fieldProps }) => (
                                 <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" {...fieldProps} dateFormat={'DD/MM/YYYY'} />
                             )}
                         </Field>
 
-                        <Field label="RIGHTS CONTRACT STATUS" name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] } : ''}>
+                        <Field label="RIGHTS CONTRACT STATUS" isRequired name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] } : ''}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}

@@ -100,11 +100,11 @@ const SmallTag = styled.span`
 
 const TerritoryTooltip = (data) => (
     <TooltipContainer>
-        <TooltipItem>Territory: <b>{data.country && data.country}</b></TooltipItem>
+        <TooltipItem>Territory: <b>{data && data.country ? data.country : '-'}</b></TooltipItem>
         <TooltipItem>Selected: <b>{data && convertBooleanToString(data.selected)}</b></TooltipItem>        
-        <TooltipItem>Date Selected: <b>{data.dateSelected && moment(data.dateSelected).format('L')}</b></TooltipItem>
-        <TooltipItem>Right Cont. Status: <b>{data.rightContractStatus && data.rightContractStatus}</b></TooltipItem>
-        <TooltipItem>Vu Contract ID: <br/> {data.vuContractId && data.vuContractId.map((e, i) => <SmallTag key={i}>{e}</SmallTag>)}</TooltipItem>
+        <TooltipItem>Date Selected: <b>{data && data.dateSelected ? moment(data.dateSelected).format('L') : '-'}</b></TooltipItem>
+        <TooltipItem>Right Cont. Status: <b>{data && data.rightContractStatus ? data.rightContractStatus : '-'}</b></TooltipItem>
+        <TooltipItem>Vu Contract ID: <br/> {data && data.vuContractId ? data.vuContractId.map((e, i) => <SmallTag key={i}>{e}</SmallTag>) : '-'}</TooltipItem>
     </TooltipContainer>
 );
 

@@ -681,7 +681,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderCustomField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderTerritoryField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error) {
                 priorityError = <div title={error}
@@ -720,20 +720,21 @@ class RightDetails extends React.Component {
             }
 
             let addTerritory = (option) => {
-                if(this.state.isEdit) {
-                    let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.territoryIndex]['country']);
-                    selectedVal.splice(updatedTerritoryIndex, 1);
-                    selectedVal = [...selectedVal, option];
-                } else {
-                    selectedVal = selectedVal ? [...selectedVal, option] : [option];
-                }
-                
-                ref.current.handleChange(option ? selectedVal: null);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-                
-            };
+                 if(this.state.isEdit) {
+                     let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.territoryIndex]['country']);
+                    //  selectedVal = selectedVal.splice(updatedTerritoryIndex, 1, option);
+                     selectedVal.splice(updatedTerritoryIndex, 1);
+                     selectedVal = [...selectedVal, option];
+                 } else {
+                     selectedVal = selectedVal ? [...selectedVal, option] : [option];
+                 }
+                 
+                 ref.current.handleChange(option ? selectedVal: null);
+                 setTimeout(() => {
+                     this.setState({});
+                 }, 1);
+                 
+             };
 
             let deleteTerritory = (country) => {
                 let newArray = selectedVal && selectedVal.filter(e => e.country !== country);
@@ -877,7 +878,7 @@ class RightDetails extends React.Component {
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'territoryType': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
