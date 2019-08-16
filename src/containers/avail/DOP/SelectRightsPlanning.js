@@ -6,26 +6,32 @@ import withRedux from '../../../components/avails/SaveStateTable';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import ResultsTable from '../../../components/common/ResultsTable';
-import withFilteredRights from '../../../components/avails/withFilteredRights';
-import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
+import withFilteredRights from '../../../components/DOP/withFilteredRights';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
+import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
     static propTypes =  {
         availsMapping: PropTypes.object,
+        reports: PropTypes.array,
         fetchAvailMapping: PropTypes.func.isRequired,
         fetchAvailConfiguration: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
         availsMapping: null,
+        reports: null,
     };
 
     componentDidMount() {
-        const {fetchAvailMapping, fetchAvailConfiguration} = this.props;
-        fetchAvailMapping();
-        fetchAvailConfiguration();
+        const {availsMapping, reports, fetchAvailMapping, fetchAvailConfiguration} = this.props;
+        if (!availsMapping) {
+            fetchAvailMapping();
+        }
+        if (!reports) {
+            fetchAvailConfiguration();
+        }
     }
 
     render() {
@@ -50,6 +56,7 @@ class SelectRightsPlanning extends Component {
 
 const mapStateToProps = ({root}) => ({
     availsMapping: root.availsMapping,
+    reports: root.reports,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -46,12 +46,11 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
                 type: actionTypes.STORE_AVAIL_MAPPING,
                 payload: {mappings},
             });
+            break;
         }
-        if (fetchMappingResult.error) {
-            // open error modal
-            // TODO refactor modal for error
-            errorModal.open('Error', () => { }, { description: 'System is not configured correctly!', closable: false });
-        }
+        // open error modal
+        // TODO refactor modal for error
+        errorModal.open('Error', () => { }, { description: 'System is not configured correctly!', closable: false });
         break;
     }
 }
@@ -176,12 +175,10 @@ export function* fetchAndStoreAvailConfiguration(requestMethod) {
                 type: actionTypes.STORE_AVAIL_CONFIGURATION_REPORTS,
                 payload: (payload && payload.avails && payload.avails.reports) || [],
             });
+            break;
         }
-        if (fetchConfigurationResult.error) {
-            // TODO - refactor modal
-            errorModal.open('Error', () => {}, {description: 'System is not configured correctly!', closable: false});
-        }
-        break;
+        // TODO - refactor modal
+        errorModal.open('Error', () => {}, {description: 'System is not configured correctly!', closable: false});
     }
 }
 
