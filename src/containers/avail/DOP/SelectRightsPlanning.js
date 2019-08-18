@@ -9,6 +9,7 @@ import connect from 'react-redux/es/connect/connect';
 import {profileService} from '../service/ProfileService';
 import {configurationService} from '../service/ConfigurationService';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
+import withSelectRightHeader from '../../../components/DOP/SelectRightsTableHeader';
 
 let mapStateToProps = state => {
     return {
@@ -32,7 +33,8 @@ class SelectRightsPlanning extends React.Component {
     }
 
     render(){
-        const RightsResultsTable = withRedux(withColumnsReorder(withSelectIgnoreMark(withServerSorting(withRights(ResultsTable)))));
+        const RightsResultsTable = withSelectRightHeader(withRedux(withColumnsReorder(withSelectIgnoreMark(withServerSorting(withRights(ResultsTable))))));
+        
         return (
             <div>
             {this.props.availsMapping &&
