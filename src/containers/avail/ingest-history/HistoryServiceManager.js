@@ -1,4 +1,4 @@
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {resultHistoryPageLoading, resultPageHistoryUpdate, searchFormSetHistorySearchCriteria} from '../../../stores/actions/avail/history';
 import {historyService} from '../service/HistoryService';
 

@@ -64,7 +64,7 @@ const metadata = (state = initialState, action) => {
             return { ...state, titleTabPage: { ...state.titleTabPage, ...action.payload } };
         case METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH:
             return { ...state, freeTextSearch: { ...state.freeTextSearch, ...action.payload } };
-            case METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA:
+        case METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA:
             return { ...state, session: {...state.session, searchCriteria: {...action.payload}}};
         case METADATA_TITLE_RESULT_PAGE__LOADING:
             return { ...state, titleTabPageLoading: action.payload };

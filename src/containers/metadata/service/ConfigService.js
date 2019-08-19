@@ -1,4 +1,4 @@
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';

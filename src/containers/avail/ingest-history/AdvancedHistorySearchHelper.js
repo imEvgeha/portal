@@ -1,4 +1,4 @@
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {
     searchFormUpdateAdvancedHistorySearchCriteria
 } from '../../../stores/actions/avail/history';

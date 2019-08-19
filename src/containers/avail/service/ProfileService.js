@@ -1,6 +1,6 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import { loadAvailsMapping, loadSelectLists } from '../../../stores/actions/index';
 import { errorModal } from '../../../components/modal/ErrorModal';
 import { getSortedData } from '../../../util/Common';
@@ -20,6 +20,8 @@ const getSelectValues = (field) => {
 };
 
 export const profileService = {
+    getAvailsMapping, 
+    getSelectValues,
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then((response) => {

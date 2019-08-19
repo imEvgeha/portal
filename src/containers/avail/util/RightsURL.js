@@ -1,5 +1,5 @@
 import {isObjectEmpty} from '../../../util/Common';
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {URL} from '../../../util/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
