@@ -9,6 +9,7 @@ import ResultsTable from '../../../components/common/ResultsTable';
 import withFilteredRights from '../../../components/DOP/withFilteredRights';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
 import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
+import withSelectRightHeader from '../../../components/DOP/SelectRightsTableHeader';
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
@@ -37,6 +38,7 @@ class SelectRightsPlanning extends Component {
     render() {
         const {availsMapping} = this.props;
         const RightsResultsTable = compose(
+            withSelectRightHeader,
             withRedux,
             withColumnsReorder,
             withSelectIgnoreMark,
