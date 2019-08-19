@@ -5,6 +5,7 @@ import axios from 'axios';
 import config from 'react-global-configuration';
 import {defaultConfiguration} from './config';
 import { IntlProvider } from 'react-intl';
+import {createBrowserHistory} from 'history';
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -30,9 +31,12 @@ axios.get('/config.json').then(response => {
 import React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
+// import {ConnectedRouter} from 'connected-react-router';
 
 import Keycloak from './vendor/keycloak';
-import store, {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
+import configureStore from './store';
+import rootSaga from './saga';
+import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
 
 import App from './containers/App';
 import {loadProfileInfo} from './stores/actions';
@@ -40,15 +44,31 @@ import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
 
 export const keycloak = {instance: {}};
+const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
+const history = createBrowserHistory();
+// temporary export -> we should not export store
+export const store = configureStore({}, history);
+
+const app = (
+    <Provider store={store}>
+        <IntlProvider locale="en">
+            {/*<ConnectedRouter history={history}>*/}
+                <App />
+            {/*</ConnectedRouter>*/}
+        </IntlProvider>
+    </Provider>
+);
+
 function init() {
     keycloak.instance = Keycloak(config.get('keycloak'));
     keycloak.instance.init({onLoad: 'check-sso'}).success(authenticated => {
         if (authenticated) {
             setInterval(() => {
                 keycloak.instance.updateToken(10).error(() => keycloak.instance.logout());
-            }, 10000);
+            }, TEMP_AUTH_UPDATE_TOKEN_INTERVAL);
 
             keycloak.instance.loadUserInfo().success(profileInfo => {
+                store.runSaga(rootSaga);
                 store.dispatch(loadProfileInfo(profileInfo));
                 loadDashboardState();
                 loadCreateRightState();
@@ -56,21 +76,14 @@ function init() {
                 loadDopState();
 
                 render(
-                    <Provider store={store}>
-                        <IntlProvider locale="en">
-                            <App />
-                        </IntlProvider>
-                    </Provider>,
+                    app,
                     document.querySelector('#app')
                 );
             });
-
             updateAbility(keycloak.instance);
 
-
-        } else {
-            keycloak.instance.login();
-        }
-
+            return;
+        } 
+        keycloak.instance.login();
     });
 }

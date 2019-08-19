@@ -6,9 +6,9 @@ import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
 import { Button, Label } from 'reactstrap';
 
-import store from '../../../stores/index';
-import { blockUI } from '../../../stores/actions/index';
-import { rightsService } from '../service/RightsService';
+import {store} from '../../../index';
+import {blockUI} from '../../../stores/actions/index';
+import {rightsService} from '../service/RightsService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
 import { oneOfValidation, rangeValidation } from '../../../util/Validation';

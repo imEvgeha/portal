@@ -37,6 +37,7 @@
     "availity-reactstrap-validation": "^2.5.0",
     "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
+    "connected-react-router": "5.0.1",
     "copy-webpack-plugin": "^4.5.2",
     "eslint": "^5.7.0",
     "eslint-loader": "^2.1.1",
@@ -69,6 +70,10 @@
     "react-tagsinput": "^3.19.0",
     "react-x-editable": "0.0.10-beta",
     "reactjs-popup": "^1.4.2",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.0.5",
+    "reselect": "^4.0.0",
     "sass-loader": "^7.1.0",
     "styled-components": "^4.3.2"
   },

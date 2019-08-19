@@ -1,4 +1,4 @@
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {resultPageLoading, searchFormSetSearchCriteria, resultPageSetBulkExport} from '../../../stores/actions/avail/dashboard';
 import {rightsService} from './RightsService';
 
@@ -39,5 +39,17 @@ export const rightServiceManager = {
                 console.warn('Unexpected error');
                 console.error(error);
             });
+    },
+
+    callPlanningSearch: (criteria, page, pageSize, sortedParams) => {
+        return rightsService.advancedSearch(criteria, page, pageSize, sortedParams)
+            .then(response => {
+                return response;
+            }).catch((error) => {
+                 store.dispatch(resultPageLoading(false));
+                 console.warn('Unexpected error');
+                 console.error(error);
+             });
+
     }
 };
