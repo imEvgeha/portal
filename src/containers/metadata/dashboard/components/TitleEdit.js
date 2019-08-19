@@ -680,6 +680,29 @@ class TitleEdit extends Component {
         }
     };
 
+    handleEditorialCastCrew = (castCrew, originalData) => {
+        let edited = this.state.updatedEditorialMetadata.find(e => e.id === originalData.id);
+        if (!edited) {
+            edited = JSON.parse(JSON.stringify(originalData));
+        }
+        let newEditorial = {
+            ...edited,
+            castCrew
+        };
+
+        this.updateEditedEditorialMetadata(newEditorial, originalData.id);
+    }
+
+    handleEditorialCastCrewCreate = (castCrew, originalData) => {
+        let newEditorial = {
+            ...originalData,
+            castCrew
+        };
+        this.setState({
+            editorialMetadataForCreate: newEditorial
+        });
+    }
+
     getEditorialMetadataWithoutEmptyField() {
         let editorial = {};
         for (let editorialField in this.state.editorialMetadataForCreate) {
@@ -863,6 +886,8 @@ class TitleEdit extends Component {
                         handleEditChange={this.handleEditorialMetadataEditChange}
                         handleGenreEditChange={this.handleEditorialMetadataGenreEditChange}
                         isEditMode={this.state.isEditMode}
+                        handleEditorialCastCrew={this.handleEditorialCastCrew}
+                        handleEditorialCastCrewCreate={this.handleEditorialCastCrewCreate}
                         titleContentType={this.state.titleForm.contentType}
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                         updatedEditorialMetadata={this.state.updatedEditorialMetadata}

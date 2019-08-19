@@ -103,6 +103,7 @@ class EditorialMetadata extends Component {
                                                 editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 handleGenreChange={this.props.handleGenreChange}
+                                                handleEditorialCastCrewCreate={this.props.handleEditorialCastCrewCreate}
                                                 titleContentType={this.props.titleContentType} />
                                         </Col>
                                     </Row>
@@ -117,6 +118,7 @@ class EditorialMetadata extends Component {
                                                             titleContentType={this.props.titleContentType}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
+                                                            handleEditorialCastCrew={this.props.handleEditorialCastCrew}
                                                             handleGenreEditChange={this.props.handleGenreEditChange}
                                                             updatedEditorialMetadata={this.props.updatedEditorialMetadata}
                                                             key={i} data={item} />

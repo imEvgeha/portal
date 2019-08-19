@@ -11,6 +11,7 @@ export const PRODUCER = 'Producer';
 export const PERSONS_PER_REQUEST = 20;
 
 export const getFilteredCastList = (originalConfigCastList, isConfig) => {
+    console.log('Original Config Cast List', originalConfigCastList);
     let configCastList = [];
     originalConfigCastList && originalConfigCastList.filter((f) => isCastPersonType(f, isConfig))
         .forEach((e) => {
