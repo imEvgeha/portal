@@ -3,7 +3,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {updatePromotedRights} from '../../stores/actions/DOP';
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
-import {rightsService} from "../../containers/avail/service/RightsService";
+import {rightsService} from '../../containers/avail/service/RightsService';
 
 export default function withSelectRightHeader(SelectRightHeaderWrappedComponent) {
     return (props) => <SelectRightsTableHeader
@@ -15,20 +15,19 @@ export class SelectRightsTableHeader extends React.Component {
     constructor(props) {
         super(props);
 
-        this.setTable = this.setTable.bind(this);
         this.state = {
             table: null
         };
     }
 
-    setTable(element) {
+    setTable = (element) => {
         if (element) {
             this.setState({table: element});
             if (this.props.setTable) {
                 this.props.setTable(element);
             }
         }
-    }
+    };
 
     render() {
         const {SelectRightHeaderWrappedComponent} = this.props;
@@ -89,8 +88,6 @@ class TableHeader extends React.Component {
         });
 
         this.props.updatePromotedRights([...this.props.promotedRights, ...toPromote]);
-
-        console.log('onBulkPromote');
     };
 
     onBulkUnPromote = () => {
@@ -102,8 +99,6 @@ class TableHeader extends React.Component {
         });
 
         this.props.updatePromotedRights(unPromotedRights);
-
-        console.log('onBulkUnPromote');
     };
 
     onBulkIgnore = () => {
@@ -111,11 +106,10 @@ class TableHeader extends React.Component {
             if (node.data.status === 'ReadyNew') {
                 rightsService.update({status: 'Ready'}, node.data.id).then(res => {
                     node.setData(res.data);
-                    this.setState({isIgnored: true, isLoaded: false});
+                    this.props.table.api.redrawRows({rowNodes: [node]});
                 });
             }
         });
-        console.log('onBulkIgnore')
     };
 
     onBulkUnIgnore = () => {
@@ -123,12 +117,16 @@ class TableHeader extends React.Component {
             if (node.data.status === 'Ready') {
                 rightsService.update({status: 'ReadyNew'}, node.data.id).then(res => {
                     node.setData(res.data);
-                    this.setState({isIgnored: false, isLoaded: false});
+                    this.props.table.api.redrawRows({rowNodes: [node]});
                 });
             }
         });
+    };
 
-        console.log('onBulkUnIgnore')
+    onClearSelection = () => {
+        this.props.table.api.getSelectedNodes().forEach(n => {
+            n.setSelected(false);
+        });
     };
 
     render() {
@@ -144,7 +142,7 @@ class TableHeader extends React.Component {
                         <DropdownItem onClick={this.onBulkIgnore}>Ignore</DropdownItem>
                         <DropdownItem onClick={this.onBulkUnIgnore}>Unignore</DropdownItem>
                         <DropdownItem divider/>
-                        <DropdownItem>Clear Selection</DropdownItem>
+                        <DropdownItem onClick={this.onClearSelection}>Clear Selection</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
