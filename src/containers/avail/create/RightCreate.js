@@ -22,6 +22,10 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
+import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
+import { TerritoryTag, CustomFieldAddText, RemovableButton, AddButton } from '../custom-form-components/CustomFormComponents';
+
+
 const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
@@ -53,6 +57,10 @@ class RightCreate extends React.Component {
 
         this.mappingErrorMessage = {};
         this.right = {};
+        this.state = {
+            isRightTerritoryFormOpen: false
+        };
+
     }
 
     componentDidMount() {
@@ -96,6 +104,22 @@ class RightCreate extends React.Component {
         const value = val || (target.value ? safeTrim(target.value) : '');
         const name = target.name;
         this.checkRight(name, value, true);
+    }
+
+    handleArrayPush = (e, name) => {         
+        let newArray;
+        if(this.right[name]) {
+            newArray = Array.from(this.right[name]);
+            newArray = [...newArray, e];
+        } else {
+            newArray = [e];
+        }
+        this.checkRight(name, newArray, true);
+    }
+
+    handleDeleteObjectFromArray = (value, name, subField) => {
+        let newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
+        this.checkRight(name, newRight, true);
     }
 
     handleBooleanChange({target}) {
@@ -284,6 +308,12 @@ class RightCreate extends React.Component {
 
         this.mappingErrorMessage =  mappingErrorMessage;
     };
+
+    toggleRightTerritoryForm = () => {
+        this.setState({
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+        });
+    }
 
     render() {
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
@@ -635,6 +665,46 @@ class RightCreate extends React.Component {
             ));
         };
 
+        const renderTerritoryField = (name, displayName, required, value) => {
+            let options = [];
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+            
+            if(options.length > 0 && value){
+                val = value;
+                if(!required) {
+                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                }
+            }
+            return renderFieldTemplate(name, displayName, required, null, (
+                <div>
+                    {this.right.territory && this.right.territory.length > 0 ?                    
+                        this.right.territory.map((e, i)=> (
+                        <TerritoryTag isCreate key={i}>
+                            {e.country} <RemovableButton onClick={() => this.handleDeleteObjectFromArray(e.country, 'territory', 'country')}>x</RemovableButton>
+                        </TerritoryTag>))
+                    : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
+                    }
+                    <div style={{float: 'right'}}>
+                        <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
+                    </div>                    
+                    <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
+                    <br />
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
+                        </small>
+                    }
+                </div>
+            ));
+        };
+
         const renderDatepickerField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
@@ -702,6 +772,8 @@ class RightCreate extends React.Component {
                         case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value ? value.substr(0, 10) : value));
                              break;
                          case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                             break;
+                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
