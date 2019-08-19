@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
-import Form, { Field } from '@atlaskit/form';
+import Form, { Field, ErrorMessage } from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import Select, { CreatableSelect } from '@atlaskit/select';
 import { DatePicker } from '@atlaskit/datetime-picker';
@@ -33,8 +33,8 @@ class RightTerritoryForm extends React.Component {
             for (let objectField in newObject) {
                 if (newObject[objectField]) {
                     updatedObject[objectField] = newObject[objectField];
-                } else {                
-                    if(objectField === 'selected') {
+                } else {
+                    if (objectField === 'selected') {
                         updatedObject[objectField] = false;
                     } else {
                         updatedObject[objectField] = null;
@@ -62,6 +62,23 @@ class RightTerritoryForm extends React.Component {
         return this.props.existingTerritoryList ? this.props.options.filter(x => !this.props.existingTerritoryList.find(y => y.country === x.label)) : this.props.options;
     }
 
+    validate = value => {
+        if (!value) {
+            return 'EMPTY';
+        }
+        return undefined;
+    };
+
+    getValidationState = (error, valid) => {
+        if (!error && !valid) {
+            return 'default';
+        }
+        if (valid === true) {
+            return 'success';
+        }
+        return 'error';
+    };
+
     render() {
         return (
             <ModalTransition>
@@ -84,19 +101,23 @@ class RightTerritoryForm extends React.Component {
                         }}
                     >
                         <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Territory Data</ModalHeader>
-                        <Field label="COUNTRY" isRequired name="country" defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'], value: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'] } : ''}>
-                            {({ fieldProps: { id, ...rest } }) => (
-                                <Select
-                                    id={`select-${id}`}
-                                    {...rest}
-                                    isSearchable={true}
-                                    placeholder="Choose Country"
-                                    options={this.removeExistingOptions()}
-                                />
+                        <Field label="COUNTRY" isRequired name="country" validate={this.validate} defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'], value: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'] } : ''}>
+                            {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                                <React.Fragment>
+                                    <Select
+                                        id={`select-${id}`}
+                                        {...rest}
+                                        validationState={this.getValidationState(error, valid)}
+                                        isSearchable={true}
+                                        placeholder="Choose Country"
+                                        options={this.removeExistingOptions()}
+                                    />
+                                    {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
+                                </React.Fragment>
                             )}
 
                         </Field>
-                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.existingTerritoryList[this.props.territoryIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false } : {label: 'No', value: false}}>
+                        <Field label="SELECTED" name="selected" defaultValue={this.props.isEdit ? { label: this.returnValidData('selected') ? convertBooleanToString(this.props.existingTerritoryList[this.props.territoryIndex]['selected']) : 'No', value: this.returnValidData('selected') ? this.props.existingTerritoryList[this.props.territoryIndex]['selected'] : false } : { label: 'No', value: false }}>
                             {({ fieldProps: { id, ...rest } }) => (
                                 <Select
                                     id={`select-${id}`}
@@ -116,22 +137,26 @@ class RightTerritoryForm extends React.Component {
                             )}
                         </Field>
 
-                        <Field label="RIGHTS CONTRACT STATUS" isRequired name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] } : ''}>
-                            {({ fieldProps: { id, ...rest } }) => (
-                                <Select
-                                    id={`select-${id}`}
-                                    {...rest}
-                                    isSearchable={false}
-                                    styles={{
-                                        control: (base) => ({ ...base, fontSize: '15px' })
-                                    }}
-                                    placeholder="Choose Status"
-                                    options={[
-                                        { label: 'Pending', value: 'Pending' },
-                                        { label: 'Pending Manual', value: 'PendingManual' },
-                                        { label: 'Matched Once', value: 'MatchedOnce' }
-                                    ]}
-                                />
+                        <Field label="RIGHTS CONTRACT STATUS" isRequired validate={this.validate} name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] } : ''}>
+                            {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                                <React.Fragment>
+                                    <Select
+                                        id={`select-${id}`}
+                                        {...rest}
+                                        isSearchable={false}
+                                        styles={{
+                                            control: (base) => ({ ...base, fontSize: '15px' })
+                                        }}
+                                        validationState={this.getValidationState(error, valid)}
+                                        placeholder="Choose Status"
+                                        options={[
+                                            { label: 'Pending', value: 'Pending' },
+                                            { label: 'Pending Manual', value: 'PendingManual' },
+                                            { label: 'Matched Once', value: 'MatchedOnce' }
+                                        ]}
+                                    />
+                                    {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
+                                </React.Fragment>
                             )}
                         </Field>
                         <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={this.props.isEdit ? this.returnValidData('vuContractId') && this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId'].length > 0 && this.props.existingTerritoryList[this.props.territoryIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>

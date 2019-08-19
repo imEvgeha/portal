@@ -665,7 +665,7 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderCustomField = (name, displayName, required, value) => {
+        const renderTerritoryField = (name, displayName, required, value) => {
             let options = [];
             let val;
             if(this.props.selectValues && this.props.selectValues[name]){
@@ -695,6 +695,12 @@ class RightCreate extends React.Component {
                         <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
                     </div>                    
                     <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
+                    <br />
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
+                        </small>
+                    }
                 </div>
             ));
         };
@@ -767,7 +773,7 @@ class RightCreate extends React.Component {
                              break;
                          case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
-                        case 'territoryType': renderFields.push(renderCustomField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
