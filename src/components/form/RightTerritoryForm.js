@@ -127,7 +127,9 @@ class RightTerritoryForm extends React.Component {
                                     }}
                                     placeholder="Choose Status"
                                     options={[
-                                        { label: 'Pending', value: 'Pending' }
+                                        { label: 'Pending', value: 'Pending' },
+                                        { label: 'Pending Manual', value: 'PendingManual' },
+                                        { label: 'Matched Once', value: 'MatchedOnce' }
                                     ]}
                                 />
                             )}
