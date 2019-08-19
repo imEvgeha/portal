@@ -9,8 +9,8 @@ import {createBrowserHistory} from 'history';
 
 config.set(defaultConfiguration, {freeze: false});
 
-axios.get('/configQA.json').then(response => {
-// axios.get('/config.json').then(response => {
+// axios.get('/configQA.json').then(response => {
+axios.get('/config.json').then(response => {
     if (isObject(response.data)) {
         config.set(mergeDeep(JSON.parse(config.serialize()), response.data), {freeze: true});
     } else {
@@ -31,7 +31,7 @@ axios.get('/configQA.json').then(response => {
 import React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
-import {ConnectedRouter} from 'connected-react-router';
+// import {ConnectedRouter} from 'connected-react-router';
 
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
@@ -52,9 +52,9 @@ export const store = configureStore({}, history);
 const app = (
     <Provider store={store}>
         <IntlProvider locale="en">
-            <ConnectedRouter history={history}>
+            {/*<ConnectedRouter history={history}>*/}
                 <App />
-            </ConnectedRouter>
+            {/*</ConnectedRouter>*/}
         </IntlProvider>
     </Provider>
 );
