@@ -122,7 +122,7 @@ const Navbar = connect(mapStateToProps, mapDispatchToProps, null, options)(Navba
 
 export default Navbar;
 
-import store from '../stores/index';
+import {store} from '../index';
 export const gotoAvailsDashboard = () => {
     store.dispatch(searchFormShowSearchResults(false));
     NexusBreadcrumb.set(AVAILS_DASHBOARD);

@@ -2,7 +2,7 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {resultPageSelect, resultPageSort, resultPageUpdateColumnsOrder} from '../../stores/actions/avail/dashboard';
-import store from '../../stores/index';
+import {store} from '../../index';
 
 export default function withRedux(WrappedComponent){
 

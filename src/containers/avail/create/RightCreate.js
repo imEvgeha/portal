@@ -3,7 +3,7 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import moment from 'moment';
 
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import BlockUi from 'react-block-ui';
 import {Button, Input, Label} from 'reactstrap';

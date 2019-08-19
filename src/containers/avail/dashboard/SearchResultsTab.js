@@ -15,7 +15,7 @@ import withRights from '../../../components/avails/ServerRightsResultsTable';
 import withLocalRights from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {
     resultPageUpdateColumnsOrder,
     resultPageShowSelected,

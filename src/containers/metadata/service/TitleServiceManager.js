@@ -1,4 +1,4 @@
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/metadata/index';
 import {titleService} from './TitleService';
 

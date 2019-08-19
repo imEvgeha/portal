@@ -1,46 +1,67 @@
-import React from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 import withRedux from '../../../components/avails/SaveStateTable';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import ResultsTable from '../../../components/common/ResultsTable';
-import withRights from '../../../components/avails/ServerRightsResultsTable';
-import t from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
-import {profileService} from '../service/ProfileService';
-import {configurationService} from '../service/ConfigurationService';
+import withFilteredRights from '../../../components/DOP/withFilteredRights';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
+import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
 
-let mapStateToProps = state => {
-    return {
-        availsMapping: state.root.availsMapping,
-    };
-};
-
-class SelectRightsPlanning extends React.Component {
-
-    static propTypes = {
-        availsMapping: t.object
+// we could use here react functional componenent with 'useState()' hook instead of react class component
+class SelectRightsPlanning extends Component {
+    static propTypes =  {
+        availsMapping: PropTypes.object,
+        reports: PropTypes.array,
+        fetchAvailMapping: PropTypes.func.isRequired,
+        fetchAvailConfiguration: PropTypes.func.isRequired,
     };
 
-    constructor(props) {
-        super(props);
-    }
+    static defaultProps = {
+        availsMapping: null,
+        reports: null,
+    };
 
     componentDidMount() {
-        profileService.initAvailsMapping();
-        configurationService.initConfiguration();
+        const {availsMapping, reports, fetchAvailMapping, fetchAvailConfiguration} = this.props;
+        if (!availsMapping) {
+            fetchAvailMapping();
+        }
+        if (!reports) {
+            fetchAvailConfiguration();
+        }
     }
 
-    render(){
-        const RightsResultsTable = withRedux(withColumnsReorder(withSelectIgnoreMark(withServerSorting(withRights(ResultsTable)))));
+    render() {
+        const {availsMapping} = this.props;
+        const RightsResultsTable = compose(
+            withRedux,
+            withColumnsReorder,
+            withSelectIgnoreMark,
+            withServerSorting,
+            withFilteredRights({status:'Ready,ReadyNew'}),
+        )(ResultsTable);
+
         return (
             <div>
-            {this.props.availsMapping &&
-                    <RightsResultsTable availsMapping = {this.props.availsMapping}/>
-            }
+                {availsMapping && (
+                    <RightsResultsTable availsMapping = {availsMapping}/>
+                )}
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, null)(SelectRightsPlanning);
+const mapStateToProps = ({root}) => ({
+    availsMapping: root.availsMapping,
+    reports: root.reports,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
+    fetchAvailConfiguration: payload => dispatch(fetchAvailConfiguration(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsPlanning);

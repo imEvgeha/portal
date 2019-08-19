@@ -1,6 +1,6 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
@@ -71,6 +71,7 @@ const loadConfiguration = (configuration) => {
 };
 
 export const configurationService = {
+    getConfiguration,
     initConfiguration: (forceReload) => {
         if (forceReload || !store.getState().root.reports) {
             getConfiguration().then( (response) => {
