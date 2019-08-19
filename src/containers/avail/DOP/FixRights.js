@@ -8,13 +8,15 @@ import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {profileService} from '../service/ProfileService';
 import {configurationService} from '../service/ConfigurationService';
-import withSelect from '../../../components/common/SelectionTable';
-// import NexusBreadcrumb from '../../NexusBreadcrumb';
 import RightsURL from '../util/RightsURL';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {
     searchFormSetAdvancedSearchCriteria,
 } from '../../../stores/actions/avail/dashboard';
+import DOP from '../../../util/DOP';
+import NexusBreadcrumb from '../../NexusBreadcrumb';
+import { RIGHTS_FIX } from '../../../constants/breadcrumb';
+
 
 let mapStateToProps = state => {
     return {
@@ -41,11 +43,22 @@ class FixRights extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            availHistoryId: this.props.match.params.availHistoryIds
+        };
     }
 
     componentDidMount() {
-        // NexusBreadcrumb.set(AVAILS_DASHBOARD);
+        if (this.props.location && this.props.location.search) {
+            const sparams = new URLSearchParams(this.props.location.search);
+            const availHistoryIds = sparams.get('availHistoryIds');
+            if (availHistoryIds) {
+                sparams.delete('availHistoryIds');
+                this.context.router.history.replace('/avails/history/' + availHistoryIds + '/fix-errors?' + sparams.toString());
+                return;
+            }
+        }
+        NexusBreadcrumb.set(RIGHTS_FIX);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
 
@@ -66,7 +79,13 @@ class FixRights extends React.Component {
         params.push('invalid=true');
         let criteria = RightsURL.ArraytoFilter(params);
         this.props.searchFormSetAdvancedSearchCriteria(criteria);
-        rightSearchHelper.advancedSearch(criteria);
+        rightSearchHelper.advancedSearch(criteria, false);
+    }
+
+    parseLoadedData(response){
+        if(response && response.data && response.data.data){
+            DOP.setErrorsCount(response.data.total);
+        }
     }
 
     render(){
@@ -74,7 +93,11 @@ class FixRights extends React.Component {
         return (
             <div>
                 {this.props.availsMapping &&
-                <RightsResultsTable availsMapping = {this.props.availsMapping}/>
+                <RightsResultsTable
+                    availsMapping = {this.props.availsMapping}
+                    onDataLoaded = {this.parseLoadedData}
+                    nav={{ back: 'fix-errors', params: { availHistoryId: this.state.availHistoryId } }}
+                />
                 }
             </div>
         );

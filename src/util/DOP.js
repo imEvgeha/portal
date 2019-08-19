@@ -2,6 +2,8 @@ import React from 'react';
 
 class DOP extends React.Component {
 
+    static instance = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -11,6 +13,7 @@ class DOP extends React.Component {
 
     componentDidMount() {
         window.addEventListener('message', this.onDOPMessage);
+        DOP.instance = this;
     }
 
     componentWillUnmount() {
@@ -23,6 +26,12 @@ class DOP extends React.Component {
             setTimeout(()=>{
                 parent.postMessage('{"errorCount": ' + this.state.errorCount + '}', '*');
             }, 100);
+        }
+    }
+
+    static setErrorsCount(val){
+        if(DOP.instance) {
+            DOP.instance.setState({errorCount: val});
         }
     }
 
