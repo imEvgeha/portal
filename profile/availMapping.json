@@ -1299,8 +1299,8 @@
 }, {
   "javaVariableName": "daysFromLVR",
   "displayName": "Days From LVR",
-  "dataType": "date",
-  "searchDataType": "date",
+  "dataType": "integer",
+  "searchDataType": "integer",
   "queryParamName": "daysFromLVR",
   "readOnly": false,
   "enableSearch": true,
