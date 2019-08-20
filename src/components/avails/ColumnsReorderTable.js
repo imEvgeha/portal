@@ -16,8 +16,12 @@ export default function withColumnsReorder(WrappedComponent){
                 cols: [],
                 columnsSize: {}
             };
+        }
 
-            this.refreshColumns();
+        componentDidMount() {
+            if(this.props.availsMapping) {
+                this.refreshColumns();
+            }
         }
 
         componentDidUpdate(prevProps) {

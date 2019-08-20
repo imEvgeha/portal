@@ -101,7 +101,7 @@ class DashboardContainer extends React.Component {
             const sparams = new URLSearchParams(this.props.location.search);
             const dest = sparams.get('back');
             if(dest){
-                if(dest === 'create_from_attachments'){
+                if(['create_from_attachments', 'fix-errors'].includes(dest)){
                     sparams.delete('back');
                     const availHistoryId = sparams.get('availHistoryId');
                     sparams.delete('availHistoryId');
