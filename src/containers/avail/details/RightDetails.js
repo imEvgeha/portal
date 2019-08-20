@@ -728,12 +728,12 @@ class RightDetails extends React.Component {
                  } else {
                      selectedVal = selectedVal ? [...selectedVal, option] : [option];
                  }
-                 
+
                  ref.current.handleChange(option ? selectedVal: null);
                  setTimeout(() => {
                      this.setState({});
                  }, 1);
-                 
+
              };
 
             let deleteTerritory = (country) => {
@@ -871,9 +871,9 @@ class RightDetails extends React.Component {
                         case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, value ? value.substr(0, 10) : value, error, readOnly, required, highlighted));
-                            break;
+                             break;
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, value ? value.toString().substr(0, 10) : value, error, readOnly, required, highlighted));
+                             break;
                         case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));

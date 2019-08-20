@@ -769,7 +769,7 @@ class RightCreate extends React.Component {
                             break;
                         case 'localdate' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value ? value.substr(0, 10) : value));
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value ? value.toString().substr(0, 10) : value));
                              break;
                          case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
