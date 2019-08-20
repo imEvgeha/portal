@@ -120,25 +120,6 @@ export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
     return configCrewList;
 };
 
-// export const getFilteredEditorialCastList = (originalConfigCrewList, isConfig) => {
-//     let configCrewList = [];
-//     let param = isConfig ? 'personTypes' : 'personType';
-//     originalConfigCrewList && originalConfigCrewList
-//         .filter((f) => {
-//             return f[param] && isCastEditorialPersonType(f, param, isConfig);
-//         })
-//         .forEach((e) => {
-//             if(isConfig) {
-//                 e[param].forEach((p) => {
-//                     createNewEditorialCast(e, p, configCrewList);
-//                 });
-//             } else {
-//                 createNewEditorialCast(e, e[param], configCrewList);
-//             }
-//         });
-//     return configCrewList;
-// };
-
 export const getFormatTypeName = (personType) => {
     if(personType) {
         switch (personType) {
