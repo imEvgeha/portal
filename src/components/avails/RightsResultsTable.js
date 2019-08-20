@@ -33,6 +33,13 @@ export default class RightsResultsTable extends React.Component {
                         return data;
                     } else return undefined;
                 }; else return null;
+                case 'territoryType' : return function(params){
+                    if(params.data && params.data[column.javaVariableName]) {
+                        let cellValue = params.data[column.javaVariableName].map(e => e.country).join(', ');
+                        return cellValue ? cellValue : null;
+                    }
+                    else return undefined;
+                };
                 default: return null;
             }
         };
