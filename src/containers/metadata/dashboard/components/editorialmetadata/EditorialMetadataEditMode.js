@@ -423,6 +423,8 @@ class EditorialMetadataEditMode extends Component {
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                                 personsLimit={CAST_LIMIT}
+                                getFormatTypeName={getFormatTypeName}
+                                showPersonType={true}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
                             />
                         </Col>

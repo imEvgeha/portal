@@ -66,7 +66,7 @@ class PersonList extends React.Component {
 
     isSelectedPersonValid = (selectedPerson) => {
         return this.props.persons === null || this.props.persons.findIndex(person =>
-            person.id === selectedPerson.id && person.personType === selectedPerson.personType) < 0;
+            person.id === selectedPerson.id && person.personType.toString().toLowerCase() === selectedPerson.personType.toString().toLowerCase()) < 0;
     };
 
     validateAndAddPerson = (personJSON) => {
