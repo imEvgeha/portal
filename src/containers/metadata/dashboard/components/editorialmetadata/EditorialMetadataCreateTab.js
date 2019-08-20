@@ -1,14 +1,35 @@
-import React, {Component, Fragment} from 'react';
-import {Col, Label, Row} from 'reactstrap';
-import {AvField} from 'availity-reactstrap-validation';
+import React, { Component, Fragment } from 'react';
+import { Col, Label, Row } from 'reactstrap';
+import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
-import {resolutionFormat} from '../../../../../constants/resolutionFormat';
-import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
-import {configFields} from '../../../service/ConfigService';
-import {connect} from 'react-redux';
+import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
+import { resolutionFormat } from '../../../../../constants/resolutionFormat';
+import { EDITORIAL_METADATA_PREFIX } from '../../../../../constants/metadata/metadataComponent';
+import { configFields, searchPerson } from '../../../service/ConfigService';
+import { connect } from 'react-redux';
 import Select from 'react-select';
-import {EVENT, SEASON} from '../../../../../constants/metadata/contentType';
+import { EVENT, SEASON } from '../../../../../constants/metadata/contentType';
+
+import PersonList from '../coretitlemetadata/PersonList'; 
+import {
+    CREW_LIST_LABEL,
+    CAST_LIST_LABEL,
+    CAST_LABEL,
+    CREW_LABEL,
+    CAST_HTML_FOR,
+    CREW_HTML_FOR,
+    CAST_HEADER,
+    CREW_HEADER,
+    CAST_LIMIT
+} from '../../../../../constants/metadata/constant-variables';
+import {
+    CAST,
+    getFilteredCrewList,
+    getFormatTypeName,
+    CREW,
+    PERSONS_PER_REQUEST,
+    getFilteredCastList
+} from '../../../../../constants/metadata/configAPI';
 
 const mapStateToProps = state => {
     return {
@@ -43,13 +64,13 @@ class EditorialMetadataCreateTab extends Component {
     }
 
     handleGenreChange = (e) => {
-        if(e.length > 3) {
+        if (e.length > 3) {
             this.setState({
                 showGenreError: true
             });
             e.pop();
         } else {
-            if(this.state.showGenreError) {
+            if (this.state.showGenreError) {
                 this.setState({
                     showGenreError: false
                 });
@@ -58,8 +79,50 @@ class EditorialMetadataCreateTab extends Component {
         this.props.handleGenreChange(e);
     };
 
+    loadOptionsPerson = (searchPersonText, type) => {
+        if (type === CAST) {
+            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true)
+                .then(res => getFilteredCastList(res.data.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+                );
+        } else {
+            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
+                .then(res => getFilteredCrewList(res.data.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+                );
+        }
+    };
+
+    handleEditorialRemovePerson = (person, castCrew) => {
+        let newCastCrewList = [];
+        if (castCrew) {
+            newCastCrewList = castCrew.filter(e => e.id !== person.id);
+        }
+        this.props.handleEditorialCastCrewCreate(newCastCrewList, this.props.editorialMetadataForCreate);
+    }
+
+    handleEditorialAddPerson = (person, castCrew) => {
+        let newCastCrewList = [person];
+        if (castCrew) {
+            newCastCrewList = [...castCrew, person];
+        }
+        this.props.handleEditorialCastCrewCreate(newCastCrewList, this.props.editorialMetadataForCreate);
+    }
+    castAndCrewReorder = (orderedArray, type, castCrew) => {
+        let castList;
+        let crewList;
+        if (type === CAST) {
+            crewList = getFilteredCrewList(castCrew, false);
+            castList = orderedArray;
+        } else {
+            castList = getFilteredCastList(castCrew, false, true);
+            crewList = orderedArray;
+        }
+
+        let castAndCrewList = [...castList, ...crewList];
+        this.props.handleEditorialCastCrewCreate(castAndCrewList, this.props.editorialMetadataForCreate);
+    }
+
     render() {
-        const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId } = this.props.editorialMetadataForCreate;
+        const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
         return (
             <div id="editorialMetadataCreate">
                 <Fragment>
@@ -145,7 +208,7 @@ class EditorialMetadataCreateTab extends Component {
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }} />
-                                <span style={{float:'right', fontSize: '13px', color: seriesName ? this.handleFieldLength(seriesName) === 200 ? 'red' : '#111' : '#111'}}>{seriesName ? this.handleFieldLength(seriesName)  : 0}/200 char</span>
+                                <span style={{ float: 'right', fontSize: '13px', color: seriesName ? this.handleFieldLength(seriesName) === 200 ? 'red' : '#111' : '#111' }}>{seriesName ? this.handleFieldLength(seriesName) : 0}/200 char</span>
                             </Col>
                             <Col md={2}>
                                 <b>Season Number</b>
@@ -182,17 +245,17 @@ class EditorialMetadataCreateTab extends Component {
                             <Select
                                 name={this.getNameWithPrefix('genres')}
                                 value={this.props.editorialMetadataForCreate.genres ? this.props.editorialMetadataForCreate.genres.map(e => {
-                                    return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
+                                    return { id: e.id, genre: e.genre, value: e.genre, label: e.genre };
                                 }) : []}
                                 onChange={this.handleGenreChange}
                                 isMulti
                                 placeholder='Select Genre'
                                 options={this.props.configGenre ? this.props.configGenre.value
                                     .filter(e => e.name !== null)
-                                    .map(e => { return {id: e.id, genre: e.name, value: e.name, label: e.name};})
+                                    .map(e => { return { id: e.id, genre: e.name, value: e.name, label: e.name }; })
                                     : []}
                             />
-                            { this.state.showGenreError && <Label style={{color: 'red'}}>Max 3 genres</Label> }
+                            {this.state.showGenreError && <Label style={{ color: 'red' }}>Max 3 genres</Label>}
                         </Col>
                     </Row>
 
@@ -206,7 +269,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.' }
                                 }} />
-                                <span style={{float:'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === 200 ? 'red' : '#111' : '#111'}}>{title ? this.handleFieldLength(title.title)  : 0}/200 char</span>
+                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === 200 ? 'red' : '#111' : '#111' }}>{title ? this.handleFieldLength(title.title) : 0}/200 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -219,7 +282,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: title ? this.handleFieldLength(title.shortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.shortTitle)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.shortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.shortTitle) : 0}/200 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -232,7 +295,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: title ? this.handleFieldLength(title.mediumTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.mediumTitle)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.mediumTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.mediumTitle) : 0}/200 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -245,7 +308,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: title ? this.handleFieldLength(title.longTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.longTitle)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.longTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.longTitle) : 0}/200 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -258,7 +321,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: title ? this.handleFieldLength(title.sortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{title ? this.handleFieldLength(title.sortTitle)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.sortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.sortTitle) : 0}/200 char</span>
                         </Col>
                     </Row>
 
@@ -272,7 +335,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Short Synopsis. Max 500 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.description) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.description)  : 0}/500 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.description) : 0}/500 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -287,7 +350,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.shortDescription)  : 0}/500 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/500 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -301,11 +364,47 @@ class EditorialMetadataCreateTab extends Component {
                                 style={{ resize: 'none' }}
                                 validate={{
                                     maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 1000 symbols.' }
-                                }} />                                
-                            <span style={{float:'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{synopsis ? this.handleFieldLength(synopsis.longDescription)  : 0}/1000 char</span>
+                                }} />
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.longDescription) : 0}/1000 char</span>
                         </Col>
                     </Row>
-
+                    <Row style={{ padding: '15px' }}>
+                        <Col>
+                            <PersonList
+                                personLabel={CAST_LABEL}
+                                personHtmlFor={CAST_HTML_FOR}
+                                personListLabel={CAST_LIST_LABEL}
+                                personHeader={CAST_HEADER}
+                                type={CAST}
+                                persons={getFilteredCastList(castCrew, false, true)}
+                                filterPersonList={getFilteredCastList}
+                                removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
+                                loadOptionsPerson={this.loadOptionsPerson}
+                                addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
+                                personsLimit={CAST_LIMIT}
+                                getFormatTypeName={getFormatTypeName}
+                                showPersonType={true}
+                                onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
+                            />
+                        </Col>
+                        <Col>
+                            <PersonList
+                                personLabel={CREW_LABEL}
+                                personHtmlFor={CREW_HTML_FOR}
+                                personListLabel={CREW_LIST_LABEL}
+                                personHeader={CREW_HEADER}
+                                type={CREW}
+                                persons={getFilteredCrewList(castCrew, false)}
+                                filterPersonList={getFilteredCrewList}
+                                removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
+                                loadOptionsPerson={this.loadOptionsPerson}
+                                addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
+                                getFormatTypeName={getFormatTypeName}
+                                showPersonType={true}
+                                onReOrder={(newArray) => this.castAndCrewReorder(newArray, CREW, castCrew)}
+                            />
+                        </Col>
+                    </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
                             <b>Copyright</b>
@@ -316,7 +415,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.' }
                                 }} />
-                                <span style={{float:'right', color: copyright ? this.handleFieldLength(copyright) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{copyright ? this.handleFieldLength(copyright)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: copyright ? this.handleFieldLength(copyright) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{copyright ? this.handleFieldLength(copyright) : 0}/200 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -329,7 +428,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Awards. Max 500 symbols.' }
                                 }} />
-                                 <span style={{float:'right', color: awards ? this.handleFieldLength(awards) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{awards ? this.handleFieldLength(awards)  : 0}/500 char</span>
+                            <span style={{ float: 'right', color: awards ? this.handleFieldLength(awards) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{awards ? this.handleFieldLength(awards) : 0}/500 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -342,7 +441,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.' }
                                 }} />
-                                 <span style={{float:'right', color: sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{sasktelInventoryId ? this.handleFieldLength(sasktelInventoryId) : 0}/200 char</span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -355,7 +454,7 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Lineup ID. Max 200 symbols.' }
                                 }} />
-                                 <span style={{float:'right', color: sasktelLineupId ? this.handleFieldLength(sasktelLineupId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{sasktelLineupId ? this.handleFieldLength(sasktelLineupId)  : 0}/200 char</span>
+                            <span style={{ float: 'right', color: sasktelLineupId ? this.handleFieldLength(sasktelLineupId) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{sasktelLineupId ? this.handleFieldLength(sasktelLineupId) : 0}/200 char</span>
                         </Col>
                     </Row>
                 </Fragment>
@@ -374,7 +473,8 @@ EditorialMetadataCreateTab.propTypes = {
     editorialMetadataForCreate: PropTypes.object,
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
-    configGenre: PropTypes.object
+    configGenre: PropTypes.object,
+    handleEditorialCastCrewCreate: PropTypes.func
 };
 
 
