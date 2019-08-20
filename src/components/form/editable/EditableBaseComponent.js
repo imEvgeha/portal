@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
 
+import Popup from 'reactjs-popup';
+import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
+
+
 class EditableBaseComponent extends Component {
 
     static propTypes = {
@@ -12,23 +16,26 @@ class EditableBaseComponent extends Component {
         disabled: t.bool,
         onChange: t.func,
         priorityDisplay: t.any,
-        showError: t.bool
+        showError: t.bool,
+        isArrayOfObject: t.bool
     };
 
     static defaultProps = {
         value: null,
-        showError:true
+        showError: true,
+        isArrayOfObject: false
     }
 
     constructor(props) {
         super(props);
 
         this.state = {
-            value:props.value,
+            value: props.value,
             showStateValue: false,
             editable: false,
             errorMessage: '',
-            submitStatus: false
+            submitStatus: false,
+            arrayOfValue: []
         };
 
         this.handleShowHelperComponent = this.handleShowHelperComponent.bind(this);
@@ -40,7 +47,7 @@ class EditableBaseComponent extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.value != this.props.value){
+        if (prevProps.value != this.props.value) {
             this.setState({
                 showStateValue: false,
                 value: this.props.value ? this.props.value : null,
@@ -104,29 +111,40 @@ class EditableBaseComponent extends Component {
     }
 
     render() {
-        const displayFunc = (value)=>{
+        const displayFunc = (value) => {
             return (<span
                 onClick={this.handleShowHelperComponent}
-                style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
+                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px' }}
                 className={this.props.disabled ? 'disabled' : ''}>
-                       {Array.isArray(value) ? value.length > 0 ? value.join(',') : '' : value}
-                   </span>);
+                {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
+                    <Popup
+                        key={i}
+                        trigger={
+                            <TerritoryTag isCreate>{e.country}</TerritoryTag>
+                        }
+                        position="top center"
+                        on="hover"
+                    >
+                        {TerritoryTooltip(e)}
+                    </Popup>
+                )) : value.join(',') : '' : value}
+            </span>);
         };
 
-        const unfocusedRender = ()=>{
-            if(this.props.priorityDisplay) {
+        const unfocusedRender = () => {
+            if (this.props.priorityDisplay) {
                 return displayFunc(this.props.priorityDisplay);
             } else {
-                if(this.state.showStateValue){
+                if (this.state.showStateValue) {
                     return displayFunc(this.state.value);
                 } else {
-                    if(this.props.value && (!Array.isArray(this.props.value) || (Array.isArray(this.props.value) && this.props.value.length > 0))){
+                    if (this.props.value && (!Array.isArray(this.props.value) || (Array.isArray(this.props.value) && this.props.value.length > 0))) {
                         return displayFunc(this.props.value);
-                    }else {
+                    } else {
                         return (
                             <span
                                 className="displayDate"
-                                style={{color: '#808080', cursor: 'pointer', width:'100%'}}
+                                style={{ color: '#808080', cursor: 'pointer', width: '100%' }}
                                 onClick={this.handleShowHelperComponent}>
                                 {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
                             </span>
@@ -140,11 +158,11 @@ class EditableBaseComponent extends Component {
             <div className="editable-container">
                 {
                     this.state.editable ?
-                        <div style={{width:'100%'}}>
-                            <div className="dPicker" style={{ marginBottom: '5px', minWidth:'500px', width:'90%'}}>
+                        <div style={{ width: '100%' }}>
+                            <div className="dPicker" style={{ marginBottom: '5px', minWidth: '500px', width: '90%' }}>
                                 {this.props.helperComponent}
                             </div>
-                            <div style={{ float: 'left', paddingLeft: '10px'}}>
+                            <div style={{ float: 'left', paddingLeft: '10px' }}>
                                 <Button
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
@@ -159,7 +177,7 @@ class EditableBaseComponent extends Component {
                             </div>
                             {
                                 this.props.showError && this.state.errorMessage &&
-                                <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
+                                <small className={'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>
                             }

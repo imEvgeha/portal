@@ -1,33 +1,13 @@
-import {combineReducers, createStore } from 'redux';
-import root from './reducers/index';
-import titleReducer from './reducers/metadata/titleReducer';
-import dashboard from './reducers/avail/dashboard';
-import createright from './reducers/avail/createright';
-import history from './reducers/history';
-import media from './reducers/media/search';
 import {loadDashboardSession} from './actions/avail/dashboard';
 import {loadCreateRightSession} from './actions/avail/createright';
 import {loadHistorySession} from './actions/avail/history';
-import dopReducer from './reducers/DOP/dopReducer';
+import {store} from '../index';
 import {loadDopSession} from './actions/DOP';
 
 const DASHBOARD_SESSION_VERSION = '0.5';
 const CREATERIGHT_SESSION_VERSION = '0.2';
 const HISTORY_SESSION_VERSION = '0.3';
 const DOP_SESSION_VERSION = '0.1';
-
-const reducers = combineReducers({
-    root,
-    titleReducer,
-    dashboard,
-    media,
-    history,
-    createright,
-    dopReducer
-});
-const store = createStore(reducers,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()); // REDUX DEVTOOLS allows you to see your action and state changes real-time in the browser.
-
-export default store;
 
 export const loadHistoryState = () => {
     loadFromWebLocalStorage('history', loadHistorySession, HISTORY_SESSION_VERSION);

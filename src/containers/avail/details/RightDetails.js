@@ -4,35 +4,39 @@ import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
-import {Button, Label} from 'reactstrap';
+import { Button, Label } from 'reactstrap';
 
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
-import {oneOfValidation, rangeValidation} from '../../../util/Validation';
-import {profileService} from '../service/ProfileService';
-import {cannot} from '../../../ability';
+import { oneOfValidation, rangeValidation } from '../../../util/Validation';
+import { profileService } from '../service/ProfileService';
+import { cannot } from '../../../ability';
 import './RightDetails.scss';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
+import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
 import Select from 'react-select';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {equalOrIncluded, getDeepValue, safeTrim} from '../../../util/Common';
+import { AvField, AvForm } from 'availity-reactstrap-validation';
+import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
 import moment from 'moment';
-import {momentToISO} from '../../../util/Common';
+import { momentToISO } from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import {confirmModal} from '../../../components/modal/ConfirmModal';
+import { confirmModal } from '../../../components/modal/ConfirmModal';
+
+import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
+import Popup from 'reactjs-popup';
+import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
-   return {
-       availsMapping: state.root.availsMapping,
-       selectValues: state.root.selectValues,
-       blocking: state.root.blocking,
-   };
+    return {
+        availsMapping: state.root.availsMapping,
+        selectValues: state.root.selectValues,
+        blocking: state.root.blocking,
+    };
 };
 
 class RightDetails extends React.Component {
@@ -62,22 +66,26 @@ class RightDetails extends React.Component {
         this.fields = {};
 
         this.state = {
-            errorMessage: ''
+            errorMessage: '',
+            isRightTerritoryFormOpen: false,
+            isRightTerritoryEditFormOpen: false,
+            territoryIndex: null,
+            isEdit: false,
         };
     }
 
     componentDidMount() {
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-        NexusBreadcrumb.push({name: '', path: '/avails/'});
+        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
+        NexusBreadcrumb.push({ name: '', path: '/avails/' });
         profileService.initAvailsMapping();
         this.getRightData();
-        if(this.refresh === null){
+        if (this.refresh === null) {
             this.refresh = setInterval(this.getRightData, config.get('avails.edit.refresh.interval'));
         }
     }
 
     componentWillUnmount() {
-        if(this.refresh !== null){
+        if (this.refresh !== null) {
             clearInterval(this.refresh);
             this.refresh = null;
         }
@@ -85,16 +93,17 @@ class RightDetails extends React.Component {
     }
 
     getRightData() {
-        if(this.props.match && this.props.match.params && this.props.match.params.id){
+        if (this.props.match && this.props.match.params && this.props.match.params.id) {
             rightsService.get(this.props.match.params.id)
                 .then(res => {
-                    if(res && res.data){
+                    if (res && res.data) {
                         this.setState({
                             right: res.data,
-                            flatRight: this.flattenRight(res.data)
+                            flatRight: this.flattenRight(res.data),
+                            territory: this.state.right && this.state.right['territory'] && this.state.right['territory']
                         });
                         NexusBreadcrumb.pop();
-                        NexusBreadcrumb.push({name: res.data.title, path: '/avails/' + res.data.id});
+                        NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
                     }
                 })
                 .catch(() => {
@@ -108,19 +117,19 @@ class RightDetails extends React.Component {
     handleSubmit(editable) {
         const name = editable.props.title;
         let value = safeTrim(editable.value);
-        if(value === ''){
+        if (value === '') {
             value = null;
         }
 
         this.update(name, value, () => {
-            editable.setState({rightLastEditSucceed: false});
+            editable.setState({ rightLastEditSucceed: false });
             editable.value = this.state.right[name];
             editable.newValue = this.state.right[name];
         });
     }
 
     handleEditableSubmit(name, value, cancel) {
-        const schema = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
+        const schema = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === name);
         switch (schema.dataType) {
             case 'date': value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
                 break;
@@ -132,15 +141,15 @@ class RightDetails extends React.Component {
         });
     }
 
-    flattenRight(right){
+    flattenRight(right) {
         let rightCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
-            if(val || val === false || val === null) {
-                if(Array.isArray(val) && map.dataType === 'string') {
+            if (val || val === false || val === null) {
+                if (Array.isArray(val) && map.dataType === 'string') {
                     rightCopy[map.javaVariableName] = val.join(',');
-                }else {
+                } else {
                     rightCopy[map.javaVariableName] = val;
                 }
             }
@@ -150,15 +159,15 @@ class RightDetails extends React.Component {
     }
 
     update(name, value, onError) {
-        if(this.state.flatRight[name] === value){
+        if (this.state.flatRight[name] === value) {
             onError();
             return;
         }
-        let updatedRight = {[name]: value};
-        if(name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes'){
-            if(name.split('.')[1] === 'language'){
+        let updatedRight = { [name]: value };
+        if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
+            if (name.split('.')[1] === 'language') {
                 updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
-            }else{
+            } else {
                 updatedRight['languageAudioTypes.language'] = this.state.flatRight['languageAudioTypes.language'];
             }
         }
@@ -172,7 +181,7 @@ class RightDetails extends React.Component {
                     errorMessage: ''
                 });
                 NexusBreadcrumb.pop();
-                NexusBreadcrumb.push({name: editedRight.title, path: '/avails/' + editedRight.id});
+                NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
             })
             .catch(() => {
@@ -189,13 +198,13 @@ class RightDetails extends React.Component {
     }
 
     validateTextField(target, field) {
-        const value =  target.newValue ? target.newValue.trim() : '';
+        const value = target.newValue ? target.newValue.trim() : '';
 
-        for(let i=0; i < this.props.availsMapping.mappings.length; i++){
+        for (let i = 0; i < this.props.availsMapping.mappings.length; i++) {
             let mapping = this.props.availsMapping.mappings[i];
-            if(mapping.javaVariableName === field) {
+            if (mapping.javaVariableName === field) {
                 const isOriginRightIdRequired = field === 'originalRightId' && this.state.right.temporaryPriceReduction === true && this.state.right.status === 'Ready';
-                if(mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
+                if (mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
             }
         }
         return '';
@@ -209,43 +218,58 @@ class RightDetails extends React.Component {
         }
     }
 
-    extraValidation(name, displayName, date, right){
+    extraValidation(name, displayName, date, right) {
         const pairFieldName = this.getPairFieldName(name);
-        if(pairFieldName) {
-            const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
+        if (pairFieldName) {
+            const mappingPair = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === pairFieldName);
             return oneOfValidation(name, displayName, date, pairFieldName, mappingPair.displayName, right);
         }
     }
 
-    cancel(){
+    cancel() {
         this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
     }
 
-    onFieldClicked(e){
+    onFieldClicked(e) {
         const node = ReactDOM.findDOMNode(e.currentTarget);
-        if(e.target.tagName === 'A' || e.target.tagName === 'SPAN'){
+        if (e.target.tagName === 'A' || e.target.tagName === 'SPAN') {
             node.classList.add('no-border');
         }
-        if(e.target.tagName === 'I' || e.target.tagName === 'BUTTON'){
+        if (e.target.tagName === 'I' || e.target.tagName === 'BUTTON') {
             node.classList.remove('no-border');
         }
     }
 
-    onEditableClick(ref){
-        if(ref && ref.current){
+    onEditableClick(ref) {
+        if (ref && ref.current) {
             const component = ref.current;
-            if(component instanceof Editable || component instanceof EditableBaseComponent){
-                if(component.state && !component.state.editable) {
+            if (component instanceof Editable || component instanceof EditableBaseComponent) {
+                if (component.state && !component.state.editable) {
                     confirmModal.open('Confirm edit',
                         () => {
                         },
                         () => {
                             component.setEditable(false);
                         },
-                        {description: 'Are you sure you want to edit this field?'});
+                        { description: 'Are you sure you want to edit this field?' });
                 }
             }
         }
+    }
+
+    toggleRightTerritoryForm = (index) => {
+        this.setState({
+            isEdit: true,
+            territoryIndex: index,
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+        });
+    }
+
+    toggleAddRightTerritoryForm = () => {
+        this.setState({
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen,
+            isEdit: false
+        });
     }
 
     render() {
@@ -254,28 +278,29 @@ class RightDetails extends React.Component {
             return (
                 <div key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
-                    style={{backgroundColor: hasValidationError ? '#f2dede' : '#fff',
-                            color: hasValidationError ? '#a94442' : null,
-                            border:'none',
-                            position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px',
-                        }}>
+                    style={{
+                        backgroundColor: hasValidationError ? '#f2dede' : '#fff',
+                        color: hasValidationError ? '#a94442' : null,
+                        border: 'none',
+                        position: 'relative', display: 'block', padding: '0.75rem 1.25rem', marginBottom: '-1px',
+                    }}>
                     <div className="row">
                         <div className="col-4">{displayName}
-                            {required ? <span className="text-danger">*</span>:''}
+                            {required ? <span className="text-danger">*</span> : ''}
                             :
-                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
-                            {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                         </div>
                         <div
-                            onClick = {this.onFieldClicked}
+                            onClick={this.onFieldClicked}
                             className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
                             id={'right-detail-' + name + '-field'}>
                             <div className="editable-field-content"
-                                 onClick={highlighted ? () => this.onEditableClick(ref) : null}
+                                onClick={highlighted ? () => this.onEditableClick(ref) : null}
                             >
                                 {content}
                             </div>
-                            <span className="edit-icon" style={{color: 'gray'}}><i className="fas fa-pen"></i></span>
+                            <span className="edit-icon" style={{ color: 'gray' }}><i className="fas fa-pen"></i></span>
                         </div>
                     </div>
                 </div>
@@ -284,13 +309,14 @@ class RightDetails extends React.Component {
         const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
             const ref = React.createRef();
             const displayFunc = (val) => {
-                if(error){
-                    return (<div title = {error}
-                        style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap',
-                                color: error ? '#a94442' : null
-                            }}
-                        > {error} </div>);
-                }else{
+                if (error) {
+                    return (<div title={error}
+                        style={{
+                            textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                            color: error ? '#a94442' : null
+                        }}
+                    > {error} </div>);
+                } else {
                     return val;
                 }
             };
@@ -315,18 +341,18 @@ class RightDetails extends React.Component {
         const renderAvField = (name, displayName, value, error, readOnly, required, highlighted, tooltip, validation) => {
             const ref = React.createRef();
             let priorityError = null;
-            if(error){
-                priorityError = <div title = {error}
-                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+            if (error) {
+                priorityError = <div title={error}
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
                 </div>;
             }
 
             let handleValueChange = (newVal) => {
                 const error = validate(newVal);
-                if(error){
+                if (error) {
                     ref.current.handleInvalid(newVal, error);
-                }else{
+                } else {
                     ref.current.handleChange(newVal);
                 }
                 setTimeout(() => {
@@ -335,49 +361,49 @@ class RightDetails extends React.Component {
             };
 
             const validate = (val) => {
-                if(validation && validation.pattern){
+                if (validation && validation.pattern) {
                     const isValid = val ? validation.pattern.value.test(val) : !required;
-                    if(!isValid) {
+                    if (!isValid) {
                         return validation.pattern.errorMessage;
                     }
-                }else if(validation && validation.number) {
-                    const isNumber = !isNaN(val.replace(',','.'));
-                    if(!isNumber) {
+                } else if (validation && validation.number) {
+                    const isNumber = !isNaN(val.replace(',', '.'));
+                    if (!isNumber) {
                         return 'Please enter a valid number!';
                     }
                 }
             };
 
             const innerValidate = (val, ctx, input, cb) => {
-                if(validation && validation.pattern){
+                if (validation && validation.pattern) {
                     cb(val ? validation.pattern.value.test(val) : !required);
-                }else if(validation && validation.number) {
-                    const isNumber = !isNaN(val.replace(',','.'));
+                } else if (validation && validation.number) {
+                    const isNumber = !isNaN(val.replace(',', '.'));
                     cb(isNumber);
                 }
 
-                if(!validation){
+                if (!validation) {
                     cb(true);
                 }
             };
 
             const convert = (val) => {
-                if(val && validation && validation.number) {
-                    return Number(val.replace(',','.'));
+                if (val && validation && validation.number) {
+                    return Number(val.replace(',', '.'));
                 }
                 return val ? val : null;
             };
 
-            let errorMessage='';
-            if(validation){
-                if(validation.pattern && validation.pattern.errorMessage){
+            let errorMessage = '';
+            if (validation) {
+                if (validation.pattern && validation.pattern.errorMessage) {
                     errorMessage = validation.pattern.errorMessage;
-                }else if(validation.number){
+                } else if (validation.number) {
                     errorMessage = 'Please enter a valid number!';
                 }
             }
 
-            const modifiedValidation = {...validation};
+            const modifiedValidation = { ...validation };
             delete modifiedValidation.number;
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, (
@@ -396,9 +422,9 @@ class RightDetails extends React.Component {
                             value={value}
                             name={name}
                             placeholder={'Enter ' + displayName}
-                            onChange={(e) => {handleValueChange(e.target.value);}}
+                            onChange={(e) => { handleValueChange(e.target.value); }}
                             type="text"
-                            validate={{...modifiedValidation, async: innerValidate}}
+                            validate={{ ...modifiedValidation, async: innerValidate }}
                             errorMessage={errorMessage}
                         />
                     </AvForm>}
@@ -407,19 +433,19 @@ class RightDetails extends React.Component {
         };
 
         const renderIntegerField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {number : true, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { number: true, pattern: { value: /^\d+$/, errorMessage: 'Please enter a valid integer' } });
         };
 
         const renderYearField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { pattern: { value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)' } });
         };
 
         const renderDoubleField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {number : true, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { number: true, pattern: { value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number' } });
         };
 
         const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}});
+            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { pattern: { value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)' } });
         };
 
         const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
@@ -430,24 +456,24 @@ class RightDetails extends React.Component {
 
         const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
-            if(error){
-                priorityError = <div title = {error}
-                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+            if (error) {
+                priorityError = <div title={error}
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
                 </div>;
             }
 
             let ref;
-            if(this.fields[name]){
+            if (this.fields[name]) {
                 ref = this.fields[name];
 
-            }else{
+            } else {
                 this.fields[name] = ref = React.createRef();
             }
 
-            let options = [ {server: null, value: 1, label: 'Select...', display: null},
-                            {server: false, value: 2, label: 'No', display: 'No'},
-                            {server: true, value: 3, label: 'Yes', display: 'Yes'}];
+            let options = [{ server: null, value: 1, label: 'Select...', display: null },
+            { server: false, value: 2, label: 'No', display: 'No' },
+            { server: true, value: 3, label: 'Yes', display: 'Yes' }];
             const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
 
             let handleOptionsChange = (option) => {
@@ -465,8 +491,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={() => {}}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({display}) => display == value).server, cancel) }
+                    validate={() => { }}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({ display }) => display == value).server, cancel)}
                     helperComponent={<Select
                         name={name}
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
@@ -480,36 +506,40 @@ class RightDetails extends React.Component {
 
         const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
-            if(error){
-                priorityError = <div title = {error}
-                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+            if (error) {
+                priorityError = <div title={error}
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
                 </div>;
             }
 
             let ref;
-            if(this.fields[name]){
+            if (this.fields[name]) {
                 ref = this.fields[name];
 
-            }else{
+            } else {
                 this.fields[name] = ref = React.createRef();
             }
 
             let options = [];
-            let selectedVal = ref.current? ref.current.state.value : value;
+            let selectedVal = ref.current ? ref.current.state.value : value;
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if (this.props.selectValues && this.props.selectValues[name]) {
+                options = this.props.selectValues[name];
             }
 
-            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+            options = options.filter((rec) => (rec.value)).map(rec => {
+                return {
+                    ...rec,
+                    label: rec.label || rec.value,
+                    aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                };
+            });
 
-            if(options.length > 0 && selectedVal){
+            if (options.length > 0 && selectedVal) {
                 val = options.find((opt) => opt.value === selectedVal);
-                if(!required) {
-                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                if (!required) {
+                    options.unshift({ value: '', label: value ? 'Select...' : '' });
                 }
             }
 
@@ -528,7 +558,7 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     helperComponent={<Select
                         name={name}
@@ -544,32 +574,32 @@ class RightDetails extends React.Component {
 
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
-            if(error){
-                priorityError = <div title = {error}
-                                     style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
+            if (error) {
+                priorityError = <div title={error}
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
                 </div>;
             }
 
             let ref;
-            if(this.fields[name]){
+            if (this.fields[name]) {
                 ref = this.fields[name];
 
-            }else{
+            } else {
                 this.fields[name] = ref = React.createRef();
             }
 
             let options = [];
-            let selectedVal = ref.current? ref.current.state.value : value;
+            let selectedVal = ref.current ? ref.current.state.value : value;
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if (this.props.selectValues && this.props.selectValues[name]) {
+                options = this.props.selectValues[name];
             }
 
             //fields with enpoints (these have ids)
-            const filterKeys = Object.keys(this.state.flatRight).filter((key) => this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key).configEndpoint);
+            const filterKeys = Object.keys(this.state.flatRight).filter((key) => this.props.availsMapping.mappings.find((x) => x.javaVariableName === key).configEndpoint);
             let filters = filterKeys.map((key) => {
-                if(this.state.flatRight[key] && this.props.selectValues[key]) {
+                if (this.state.flatRight[key] && this.props.selectValues[key]) {
                     const filt = (Array.isArray(this.state.flatRight[key]) ? this.state.flatRight[key] : [this.state.flatRight[key]]).map(val => {
                         const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
                         return candidates.length ? candidates : null;
@@ -581,25 +611,29 @@ class RightDetails extends React.Component {
             let filteredOptions = options;
             filters.map(filter => {
                 const fieldName = filter[0].type + 'Id';
-                const allowedOptions = filter.map(({id}) => id);
+                const allowedOptions = filter.map(({ id }) => id);
                 filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
             });
 
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                        label: rec.label || rec.value,
-                        aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
+                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => {
+                        return {
+                            ...rec,
+                            label: rec.label || rec.value,
+                            aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                        };
+                    })
                 }
             ];
 
-            if(allOptions[0].options && allOptions[0].options.length > 0 && selectedVal && Array.isArray(selectedVal)){
+            if (allOptions[0].options && allOptions[0].options.length > 0 && selectedVal && Array.isArray(selectedVal)) {
                 val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
             }
 
             let handleOptionsChange = (selectedOptions) => {
-                const selVal = selectedOptions.map(({value}) => value);
+                const selVal = selectedOptions.map(({ value }) => value);
                 ref.current.handleChange(selVal ? selVal : null);
                 setTimeout(() => {
                     this.setState({});
@@ -614,23 +648,23 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     helperComponent={<ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
-                            if(value && value.length > 0){
+                        getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
+                            if (value && value.length > 0) {
                                 return (
                                     <div
-                                        style={{width:'100%'}}
+                                        style={{ width: '100%' }}
                                     >
                                         <div
-                                            style={{maxWidth:'90%', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                            style={{ maxWidth: '90%', float: 'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
                                         >
-                                            {value.map(({value}) => value).join(', ')}
+                                            {value.map(({ value }) => value).join(', ')}
                                         </div>
                                         <div
-                                            style={{width:'10%', float:'left', paddingLeft:'5px'}}
+                                            style={{ width: '10%', float: 'left', paddingLeft: '5px' }}
                                         >
                                             {' (' + value.length + ' selected)'}
                                         </div>
@@ -647,14 +681,126 @@ class RightDetails extends React.Component {
             ));
         };
 
+        const renderTerritoryField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            let priorityError = null;
+            if (error) {
+                priorityError = <div title={error}
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
+                    {error}
+                </div>;
+            }
+            let ref;
+            if (this.fields[name]) {
+                ref = this.fields[name];
+
+            } else {
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [];
+            let selectedVal = ref.current ? ref.current.state.value : value;
+            let val;
+            if (this.props.selectValues && this.props.selectValues[name]) {
+                options = this.props.selectValues[name];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => {
+                return {
+                    ...rec,
+                    label: rec.label || rec.value,
+                    aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                };
+            });
+
+            if (options.length > 0 && selectedVal) {
+                val = options.find((opt) => opt.value === selectedVal);
+                if (!required) {
+                    options.unshift({ value: '', label: value ? 'Select...' : '' });
+                }
+            }
+
+            let addTerritory = (option) => {
+                 if(this.state.isEdit) {
+                     let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.territoryIndex]['country']);
+                    //  selectedVal = selectedVal.splice(updatedTerritoryIndex, 1, option);
+                     selectedVal.splice(updatedTerritoryIndex, 1);
+                     selectedVal = [...selectedVal, option];
+                 } else {
+                     selectedVal = selectedVal ? [...selectedVal, option] : [option];
+                 }
+
+                 ref.current.handleChange(option ? selectedVal: null);
+                 setTimeout(() => {
+                     this.setState({});
+                 }, 1);
+
+             };
+
+            let deleteTerritory = (country) => {
+                let newArray = selectedVal && selectedVal.filter(e => e.country !== country);
+                ref.current.handleChange(country ? newArray: null);
+                setTimeout(() => {
+                        this.setState({});
+                }, 1);
+            };
+
+            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
+                <EditableBaseComponent
+                    ref={ref}
+                    value={value}
+                    priorityDisplay={priorityError}
+                    name={name}
+                    disabled={readOnly}
+                    isArrayOfObject={true}
+                    validate={() => { }}
+                    displayName={displayName}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    showError={false}
+                    helperComponent={
+                        <div>
+                            {selectedVal && selectedVal.length > 0 ?
+                                selectedVal.map((e, i) => (
+                                    <div key={i}>
+                                        <Popup
+                                            trigger={
+                                                <TerritoryTag isEdit onClick={() => this.toggleRightTerritoryForm(i)}>
+                                                    {e.country}
+                                                </TerritoryTag>
+                                            }
+                                            position="top center"
+                                            on="hover"
+                                        >
+                                            {TerritoryTooltip(e)}
+                                        </Popup>
+                                        <RemovableButton isEdit onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
+                                    </div>)
+                                )
+                                : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
+                            }
+                            <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                            <RightTerritoryForm
+                                onSubmit={(e) => addTerritory(e)}
+                                isOpen={this.state.isRightTerritoryFormOpen}
+                                onClose={this.toggleRightTerritoryForm}
+                                existingTerritoryList={selectedVal}
+                                territoryIndex={this.state.territoryIndex}
+                                data={val}
+                                isEdit={this.state.isEdit}
+                                options={options} />
+                        </div>
+                    } />
+
+            ));
+        };
+
         const renderDatepickerField = (showTime, name, displayName, value, error, readOnly, required, highlighted) => {
             let ref;
             let priorityError = null;
-            if(error){
-                priorityError = <div title = {error}
-                                    style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', color: '#a94442'}}>
-                                    {error}
-                                </div>;
+            if (error) {
+                priorityError = <div title={error}
+                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
+                    {error}
+                </div>;
             }
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
@@ -667,11 +813,11 @@ class RightDetails extends React.Component {
                     disabled={readOnly}
                     displayName={displayName}
                     validate={(date) => {
-                        if(!date && required){
+                        if (!date && required) {
                             return 'Mandatory Field. Date cannot be empty';
                         }
                         const rangeError = rangeValidation(name, displayName, date, this.state.flatRight);
-                        if(rangeError) return rangeError;
+                        if (rangeError) return rangeError;
                         return this.extraValidation(name, displayName, date, this.state.flatRight);
                     }}
                     onChange={(date, cancel) => this.handleEditableSubmit(name, date, cancel)}
@@ -681,8 +827,8 @@ class RightDetails extends React.Component {
 
         const renderFields = [];
 
-        if(this.state.flatRight && this.props.availsMapping) {
-            this.props.availsMapping.mappings.map((mapping)=> {
+        if (this.state.flatRight && this.props.availsMapping) {
+            this.props.availsMapping.mappings.map((mapping) => {
                 if (mapping.enableEdit) {
                     let error = null;
                     if (this.state.right && this.state.right.validationErrors) {
@@ -703,9 +849,10 @@ class RightDetails extends React.Component {
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
+
                     const required = mapping.required;
                     let highlighted = false;
-                    if(this.state.right && this.state.right.highlightedFields) {
+                    if (this.state.right && this.state.right.highlightedFields) {
                         highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
                     }
                     switch (mapping.dataType) {
@@ -730,7 +877,9 @@ class RightDetails extends React.Component {
                         case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                             break;
+                            break;
+                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                            break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
                     }
@@ -738,24 +887,24 @@ class RightDetails extends React.Component {
             });
         }
 
-        return(
-            <div style={{position: 'relative'}}>
+        return (
+            <div style={{ position: 'relative' }}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
                         this.state.errorMessage &&
-                        <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                        <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{ top: '-20px', zIndex: '1000', height: '25px' }}>
                             <Label id='right-edit-error-message'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
                     }
                     <div className="nx-stylish row mt-3 mx-5">
-                        <div className={'nx-stylish list-group col-12'} style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                        <div className={'nx-stylish list-group col-12'} style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
                             {renderFields}
                         </div>
                     </div>
                     {this.props.availsMapping &&
-                        <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
                             <div className="mt-4 mx-5 px-5">
                                 <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>

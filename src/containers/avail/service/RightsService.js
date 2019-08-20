@@ -1,15 +1,15 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
-import store from '../../../stores/index';
+import {store} from '../../../index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
 
 const http = Http.create();
 const httpNoError = Http.create({noDefaultErrorHandling:true});
 
 const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId'];
-const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes', 'territory'];
-
+const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
+const ARRAY_OF_OBJETS = ['territory'];
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -18,7 +18,7 @@ const isNotEmpty = function(obj){
     return obj && safeTrim(obj);
 };
 
-const parse = function(value){
+const parse = function(value, key){
     if(typeof value === 'number' || typeof  value === 'boolean')
         return value;
 
@@ -27,6 +27,10 @@ const parse = function(value){
 
     if(value instanceof moment){
         return momentToISO(value);
+    }
+
+    if(ARRAY_OF_OBJETS.includes(key)) {
+        return value;
     }
 
     if(Array.isArray(value))
@@ -68,11 +72,11 @@ const populate = function(key, value, location){
             }
             populate(restKey, value, location[firstKey]);
         }
-    }else{
-        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+    }else{        
+        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){            
             value = value.split(',');
         }
-        location[key] = parse(value);
+        location[key] = parse(value, key);
     }
 };
 

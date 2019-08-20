@@ -667,6 +667,7 @@ class CheckBoxHeaderInternal extends Component {
         this.onCheckBoxClick = this.onCheckBoxClick.bind(this);
     }
 
+
     onCheckBoxClick(){
         const visibleRange = this.props.api.getVerticalPixelRange();
         const topOffset = 0.4;

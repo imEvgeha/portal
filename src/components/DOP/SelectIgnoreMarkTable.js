@@ -187,12 +187,17 @@ class SelectIgnoreCell extends React.Component {
     constructor(props) {
         super(props);
 
-        let isIgnored = this.props.node.data && this.props.node.data.status === 'Ready';
-
         this.state = {
-            isIgnored: isIgnored,
+            isIgnored: null,
             isLoading: false
         };
+    }
+
+    componentDidMount() {
+        let isIgnored = this.props.node.data && this.props.node.data.status === 'Ready';
+        this.setState({
+            isIgnored: isIgnored
+        });
     }
 
     isPromoted = () => {

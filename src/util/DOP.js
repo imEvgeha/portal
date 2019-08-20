@@ -2,8 +2,18 @@ import React from 'react';
 
 class DOP extends React.Component {
 
+    static instance = null;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            errorCount: 0
+        };
+    }
+
     componentDidMount() {
         window.addEventListener('message', this.onDOPMessage);
+        DOP.instance = this;
     }
 
     componentWillUnmount() {
@@ -14,8 +24,14 @@ class DOP extends React.Component {
         if(e.data === 'completeTriggered'){
             //Save or Complete clicked
             setTimeout(()=>{
-                parent.postMessage('{"errorCount": 0}', '*');
+                parent.postMessage('{"errorCount": ' + this.state.errorCount + '}', '*');
             }, 100);
+        }
+    }
+
+    static setErrorsCount(val){
+        if(DOP.instance) {
+            DOP.instance.setState({errorCount: val});
         }
     }
 
