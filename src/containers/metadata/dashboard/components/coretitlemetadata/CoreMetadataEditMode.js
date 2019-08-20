@@ -26,11 +26,11 @@ import {
   CAST_HTML_FOR,
   CREW_HTML_FOR,
   CAST_HEADER,
-  CREW_HEADER
+  CREW_HEADER,
+  CAST_LIMIT
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
-import { CAST_LIMIT } from '../../../../../constants/metadata/constant-variables';
 
 const mapStateToProps = state => {
   return {
