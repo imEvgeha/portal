@@ -54,6 +54,9 @@ export default function withColumnsReorder(WrappedComponent){
             if(!this.props.columnsOrder){
                 let columns = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
                 this.setState({ columns: columns});
+                if(this.props.updateColumnsOrder){
+                    this.props.updateColumnsOrder(columns);
+                }
             }
         }
 
