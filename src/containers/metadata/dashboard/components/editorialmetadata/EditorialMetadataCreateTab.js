@@ -25,10 +25,10 @@ import {
 import {
     CAST,
     getFilteredCrewList,
-    getFilteredCastList,
     getFormatTypeName,
     CREW,
-    PERSONS_PER_REQUEST
+    PERSONS_PER_REQUEST,
+    getFilteredCastList
 } from '../../../../../constants/metadata/configAPI';
 
 const mapStateToProps = state => {
@@ -81,8 +81,8 @@ class EditorialMetadataCreateTab extends Component {
 
     loadOptionsPerson = (searchPersonText, type) => {
         if (type === CAST) {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST)
-                .then(res => getFilteredCastList(res.data.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true)
+                .then(res => getFilteredCastList(res.data.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
                 );
         } else {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
@@ -113,7 +113,7 @@ class EditorialMetadataCreateTab extends Component {
             crewList = getFilteredCrewList(castCrew, false);
             castList = orderedArray;
         } else {
-            castList = getFilteredCastList(castCrew, false);
+            castList = getFilteredCastList(castCrew, false, true);
             crewList = orderedArray;
         }
 
@@ -376,12 +376,14 @@ class EditorialMetadataCreateTab extends Component {
                                 personListLabel={CAST_LIST_LABEL}
                                 personHeader={CAST_HEADER}
                                 type={CAST}
-                                persons={getFilteredCastList(castCrew, false)}
+                                persons={getFilteredCastList(castCrew, false, true)}
                                 filterPersonList={getFilteredCastList}
                                 removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                                 personsLimit={CAST_LIMIT}
+                                getFormatTypeName={getFormatTypeName}
+                                showPersonType={true}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
                             />
                         </Col>
@@ -471,7 +473,8 @@ EditorialMetadataCreateTab.propTypes = {
     editorialMetadataForCreate: PropTypes.object,
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
-    configGenre: PropTypes.object
+    configGenre: PropTypes.object,
+    handleEditorialCastCrewCreate: PropTypes.func
 };
 
 

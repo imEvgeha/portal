@@ -154,7 +154,9 @@ EditorialMetadata.propTypes = {
     updatedEditorialMetadata: PropTypes.array,
     handleGenreChange: PropTypes.func.isRequired,
     handleGenreEditChange: PropTypes.func.isRequired,
-    configLanguage: PropTypes.object
+    configLanguage: PropTypes.object,
+    handleEditorialCastCrewCreate: PropTypes.func,
+    handleEditorialCastCrew: PropTypes.func
 };
 
 

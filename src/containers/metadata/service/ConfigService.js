@@ -2,7 +2,7 @@ import store from '../../../stores/index';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER} from '../../../constants/metadata/configAPI';
+import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER, ANIMATED_CHARACTER, AWARD, RECORDING_ARTIST, VOICE_TALENT} from '../../../constants/metadata/configAPI';
 
 export const configFields = {
     LOCALE: 'countries',
@@ -22,13 +22,18 @@ const getConfigValues = (field, page, size, sortBy) => {
     return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
 };
 
-export const searchPerson = (inputValue, size, castOrCrew) => {
+export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
     let displayNameMatchPath = '?';
     if(inputValue) {
         displayNameMatchPath += `displayNameMatch=${inputValue}&`;
     }
     let sortPath = ';'+ 'displayName' +'=ASC';
-    let personTypePath = castOrCrew === CAST ? `personTypes=${ACTOR.toLowerCase()}&` : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
+    let personTypePath;
+    if(isMultiCastType) {
+        personTypePath = `personTypes=${ACTOR.toLowerCase()},${ANIMATED_CHARACTER.toLowerCase()},${AWARD.toLowerCase()},${RECORDING_ARTIST.toLowerCase()},${VOICE_TALENT.toLowerCase()}&`;
+    } else {
+        personTypePath = castOrCrew === CAST ? `personTypes=${ACTOR.toLowerCase()}&` : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
+    }
     let path = `/persons${sortPath}${displayNameMatchPath}${personTypePath}page=0&size=${size}`;
     return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
 };

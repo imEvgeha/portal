@@ -112,8 +112,8 @@ class EditorialMetadataEditMode extends Component {
 
     loadOptionsPerson = (searchPersonText, type) => {
         if (type === CAST) {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST)
-                .then(res => getFilteredCastList(res.data.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true)
+                .then(res => getFilteredCastList(res.data.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
                 );
         } else {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
@@ -144,7 +144,7 @@ class EditorialMetadataEditMode extends Component {
             crewList = getFilteredCrewList(castCrew, false);
             castList = orderedArray;
         } else {
-            castList = getFilteredCastList(castCrew, false);
+            castList = getFilteredCastList(castCrew, false, true);
             crewList = orderedArray;
         }
 
@@ -417,7 +417,7 @@ class EditorialMetadataEditMode extends Component {
                                 personListLabel={CAST_LIST_LABEL}
                                 personHeader={CAST_HEADER}
                                 type={CAST}
-                                persons={getFilteredCastList(castCrew, false)}
+                                persons={getFilteredCastList(castCrew, false, true)}
                                 filterPersonList={getFilteredCastList}
                                 removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
                                 loadOptionsPerson={this.loadOptionsPerson}
@@ -515,7 +515,8 @@ EditorialMetadataEditMode.propTypes = {
     updatedEditorialMetadata: PropTypes.array,
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
-    configGenre: PropTypes.object
+    configGenre: PropTypes.object,
+    handleEditorialCastCrew: PropTypes.func
 };
 
 
