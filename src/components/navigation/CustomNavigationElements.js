@@ -2,11 +2,11 @@ import styled from 'styled-components';
 
 export const SideMenu = styled.div`
     width: 15%;
-    height: 90vh;
-    display: inline-block;
     background-color: ${props => props.primary ? '#F1F6F7' : 'white'};
     float:left;
-    padding: 15px;
+    height: 90vh;
+    padding: 15px;    
+    overflow-y: ${props => props.isScrollable ? 'scroll' : 'none'};
 `;
 
 export const TextHeader = styled.span`

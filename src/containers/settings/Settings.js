@@ -9,6 +9,7 @@ import {
 import {EndpointContainer} from '../config/EndpointContainer';
 import {loadConfigAPIEndPoints} from '../config/service/ConfigService';
 import {TabContent, TabPane} from 'reactstrap';
+import './settings.scss';
 
 export default class Settings extends Component {
 
@@ -16,7 +17,8 @@ export default class Settings extends Component {
         super(props);
         this.state = {
             configApiSchema: null,
-            selectedApi: null
+            selectedApi: null,
+            active: 0
         };
 
         loadConfigAPIEndPoints().then((response) => {
@@ -24,8 +26,8 @@ export default class Settings extends Component {
         });
     }
 
-    onApiNavClick = (selectedApi) => {
-        this.setState({selectedApi: selectedApi});
+    onApiNavClick = (selectedApi, index) => {
+        this.setState({selectedApi: selectedApi, active: index});
     };
 
     render() {
@@ -39,13 +41,13 @@ export default class Settings extends Component {
                     </ListParent>
                 </SideMenu>
 
-                <SideMenu>
+                <SideMenu isScrollable className="custom-scrollbar">
                     <TextHeader>APIs</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
                         {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
-                            <ListElement key={i} onClick={() => {
-                                this.onApiNavClick(e);
+                            <ListElement key={i} className={this.state.active === i ? 'list-item' : null} onClick={() => {
+                                this.onApiNavClick(e, i);
                             }}>{e.displayName}</ListElement>
                         ))}
                     </ListParent>
@@ -56,8 +58,7 @@ export default class Settings extends Component {
                         <TabPane key={i} tabId={e}>
                             <EndpointContainer selectedApi={e}/>
                         </TabPane>
-                    ))
-                    }
+                    ))}
                 </TabContent>
             </div>
         );

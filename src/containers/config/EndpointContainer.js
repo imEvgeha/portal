@@ -43,7 +43,7 @@ const CustomContainer = styled.div`
     `}
 `;
 
-const pageSize = 10;
+const pageSize = 12;
 
 export const cache={};
 
@@ -167,7 +167,8 @@ export class EndpointContainer extends Component {
                             overflowY: 'hidden',
                             overFlowX: 'hidden',
                             margin: '10px',
-                            paddingRight: '24px'
+                            paddingRight: '24px',
+                            height: '70vh'
                         }}
                         id='listContainer'
                     >
