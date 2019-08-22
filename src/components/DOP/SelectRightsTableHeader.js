@@ -79,11 +79,16 @@ class TableHeader extends React.Component {
         return this.props.promotedRights.findIndex(e => e.rightId === node.data.id) > -1;
     };
 
+    getPromotableStatus = node => {
+        return  node && node.data.territory.some(({country, selected}) => country && !selected);
+    }
+
     onBulkPromote = () => {
         const {promotedRights, updatePromotedRights, table} = this.props;
         let toPromote = [];
         table.api.getSelectedNodes().forEach(node => {
-            if (!this.isPromoted(node)) {
+            const isPromotable = this.getPromotableStatus(node);
+            if (isPromotable && !this.isPromoted(node)) {
                 const territories = (node && node.data && node.data.territory) || [];
                 const selectableTerritories = territories.filter(({country, selected}) => !selected && country) || [];
                 const territoryNameList = selectableTerritories.map(el => el.country);
