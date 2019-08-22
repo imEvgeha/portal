@@ -8,6 +8,16 @@ import LoadingGif from '../../img/loading.gif';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
+
+    const errorCellColor = '#f2dede';
+    const readyNewCellColor = '#FFFFFF';
+    const readyCellColor = '#D3D3D3';
+    const selectedColor = '#00FF00';
+    const defaultCellColor= '#ededed';
+
+    const defaultMode = 'defaultMode';
+    const selectRightMode = 'selectRightsMode';
+
     const ComposedComponent = props => {
         // parse colums schema
         const parseColumnsSchema = mappings => {
@@ -153,7 +163,7 @@ const withRightsResultsTable = BaseComponent => {
         };
 
         // style cell
-        const cellStyle = ({data, colDef}) => {
+        const cellStyle = ({data, colDef, node}) => {
             let error = null;
             if(data && data.validationErrors){
                 data.validationErrors.forEach(e => {
@@ -162,9 +172,20 @@ const withRightsResultsTable = BaseComponent => {
                     }
                 });
             }
+
             if (colDef.headerName !== '' && error) {
-                return {backgroundColor: '#f2dede'};
-            } 
+                return {backgroundColor: errorCellColor};
+            } else if(props.mode === selectRightMode) {
+                if(node.selected === true) {
+                    return {backgroundColor: selectedColor};
+                } else if(data && data.status === 'ReadyNew') {
+                    return {backgroundColor: readyNewCellColor};
+                } else if(data && data.status === 'Ready') {
+                    return {backgroundColor: readyCellColor};
+                } else {
+                    return {backgroundColor: defaultCellColor};
+                }
+            }
         };
 
         return (
