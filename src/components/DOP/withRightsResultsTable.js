@@ -22,13 +22,13 @@ const withRightsResultsTable = BaseComponent => {
                             return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format('HH:mm')}`;
                         }
                     };
-                    case 'date': 
+                    case 'date':
                         return (params) => {
-                        const {data} = params;
-                        if (data && data[column.javaVariableName]) {
-                            return moment(data[javaVariableName].substr(0, 10)).format('L');
-                        }
-                    };
+                            const {data} = params;
+                            if ((data && data[column.javaVariableName]) && moment(data[column.javaVariableName].toString().substr(0, 10)).isValid()) {
+                                return moment(data[column.javaVariableName].toString().substr(0, 10)).format('L');
+                            }
+                        };
                     case 'string': 
                         if (javaVariableName === 'castCrew') {
                         return (params) => {

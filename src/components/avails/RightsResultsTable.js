@@ -23,7 +23,7 @@ export default class RightsResultsTable extends React.Component {
                     else return undefined;
                 };
                 case 'date' : return function(params){
-                    if((params.data && params.data[column.javaVariableName]) && moment(params.data[column.javaVariableName].toString().substr(0, 10), 'L').isValid()) {
+                    if((params.data && params.data[column.javaVariableName]) && moment(String(params.data[column.javaVariableName]).substr(0, 10)).isValid()) {
                         return moment(params.data[column.javaVariableName].toString().substr(0, 10)).format('L');
                     }
                     else return undefined;
