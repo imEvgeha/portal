@@ -19,7 +19,7 @@ class SelectPlanTerritoryEditor extends Component {
         super(props);
         const right = props.getPromotedRights()
             .find(el => el.rightId === (props.node && props.node.id));
-        const value = (right && right.territories && right.territories.map(el => {
+            const value = (right && right.territories && right.territories.map(el => {
             return {
                 value: el, 
                 label: el,
@@ -56,7 +56,7 @@ class SelectPlanTerritoryEditor extends Component {
 
     isPopup() {
         const {node} = this.props;
-        const territories = (node && node.data && node.data.territory) || [];
+        const territories = (node && node.data && node.data.territory && node.data.territory.filter(el => el.country)) || [];
         return territories.length > 0;
     }
 
@@ -118,12 +118,14 @@ class SelectPlanTerritoryEditor extends Component {
     } 
 
     getOptions(territories = []) {
-        const result = territories.map(el => {
-            el.value = el.country;
-            el.label = el.country;
-            el.isDisabled = el.selected;
-            return el;
-        });
+        const result = territories && territories
+            .filter(el => el.country)
+            .map(el => {
+                el.value = el.country;
+                el.label = el.country;
+                el.isDisabled = el.selected;
+                return el;
+            });
 
         return result || [];
     }

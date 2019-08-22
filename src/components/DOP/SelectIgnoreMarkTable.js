@@ -61,6 +61,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                         getPromotedRights: this.getPromotedRights,
                         updatePromotedRights,
                     },
+                    cellStyle: {height: '100%'},
                     editable: true,
                 },
             };
