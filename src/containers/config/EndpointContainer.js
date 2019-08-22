@@ -17,7 +17,7 @@ import CreateEditConfigForm from './CreateEditConfigForm';
 const DataContainer = styled.div`
     width: 65%;
     float: left;
-    height: 90vh;
+    height: ${props => props.height - 30}vh;
     margin-left: 10px;
     padding: 15px;
 `;
@@ -59,21 +59,33 @@ export class EndpointContainer extends Component {
             // searchValue: '"David Arkin"',
             searchValue: '',
             isLoading: false,
-            currentRecord: null
+            currentRecord: null,
+            containerHeight: 70
         };
 
         this.keyInputTimeout = 0;
         this.editRecord = this.editRecord.bind(this);
         this.onNewRecord = this.onNewRecord.bind(this);
 
-        getConfigApiValues(this.props.selectedApi.url, 0 , 1000).then(response => {
+        getConfigApiValues(this.props.selectedApi.urls['CRUD'], 0 , 1000).then(response => {
             cache[this.props.selectedApi.url] = response.data.data;
         });
     }
 
     componentDidMount() {
-        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName, this.state.searchValue);
+        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName[0], this.state.searchValue);
+        let h = document.getElementById('listContainer').clientHeight;
+        let h2 = document.getElementById('listContainer').offsetHeight;
+        let h3 = document.getElementById('listContainer').scrollHeight;
+        console.log('Heights', h, h2, h3);
+        window.addEventListener('resize', function(){
+                console.log('Height:', window.innerHeight);                
+                this.setState({containerHeight: window.innerHeight / 12});
+                console.log('State Height', this.state.containerHeight + 'vh');
+        }.bind(this));
+
     }
+    
 
     loadEndpointData = (page, searchField, searchValue) => {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
@@ -85,7 +97,7 @@ export class EndpointContainer extends Component {
                 searchField: searchField,
                 currentPage: page,
             });
-            getConfigApiValues(this.props.selectedApi.url, page - 1, pageSize, null, searchField, searchValue)
+            getConfigApiValues(this.props.selectedApi.urls['search'], page - 1, pageSize, null, searchField, searchValue)
                 .then((res) => {
                     this.setState({
                         pages: Array.from({length: (res.data.total / pageSize < 1 ? 1 : res.data.total / pageSize)}, (v, k) => k + 1),
@@ -98,7 +110,7 @@ export class EndpointContainer extends Component {
     };
 
     handleTitleFreeTextSearch = (searchValue) => {
-        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName, searchValue);
+        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName[0], searchValue);
     };
 
     onEditRecord(rec){
@@ -108,7 +120,7 @@ export class EndpointContainer extends Component {
     editRecord(val){
         const newVal={...this.state.currentRecord, ...val};
         if(newVal.id) {
-            configService.update(this.props.selectedApi.url, newVal.id, newVal)
+            configService.update(this.props.selectedApi.urls['CRUD'], newVal.id, newVal)
                 .then(response => {
                     let data = this.state.data.slice(0);
                     let index = data.findIndex(item => item.id === newVal.id);
@@ -117,7 +129,7 @@ export class EndpointContainer extends Component {
                 }
             );
         }else{
-            configService.create(this.props.selectedApi.url, newVal)
+            configService.create(this.props.selectedApi.urls['CRUD'], newVal)
                 .then(response => {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
@@ -133,13 +145,23 @@ export class EndpointContainer extends Component {
     }
 
     onRemoveItem = (item) => {
-        configService.delete(this.props.selectedApi.url, item.id);
+        configService.delete(this.props.selectedApi.urls['CRUD'], item.id);
         this.loadEndpointData(this.state.currentPage);
     };
 
+    renderList = data => {
+        if(data.ratingSystem) {            
+            return data.ratingSystem + this.props.selectedApi['displayValueDelimiter'] + data[this.props.selectedApi.displayValueFieldName[1]];
+        } else {
+            if(this.props.selectedApi.displayValueFieldName) {
+                return data[this.props.selectedApi.displayValueFieldName[0]] ? data[this.props.selectedApi.displayValueFieldName[0]] : `[id = ${data.id}]`;
+            }
+        }
+    }
+
     render() {
         return (
-            <DataContainer>
+            <DataContainer height={this.state.containerHeight}>
                 <TextHeader>{this.props.selectedApi.displayName + ' (' + this.state.total + ') '}
                     {this.state.currentRecord === null  &&
                         <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
@@ -164,31 +186,31 @@ export class EndpointContainer extends Component {
                     {!this.state.isLoading &&
                     <ListGroup
                         style={{
-                            overflowY: 'hidden',
+                            overflowY: 'auto',
                             overFlowX: 'hidden',
                             margin: '10px',
                             paddingRight: '24px',
-                            height: '70vh'
+                            height: `${this.state.containerHeight}vh`,
+                            border: '1px solid #000',
                         }}
                         id='listContainer'
                     >
                         {this.state.data.map((item, i) => {
-                            let label = item[this.props.selectedApi.displayValueFieldName] || '[id = ' + item.id + ']';
                             return (
-                                <React.Fragment key={i}>
-                                    <ListGroupItem key={i}>
-                                        <a href="#"
-                                           onClick={() => this.onEditRecord(item)}>{label}</a>
-                                        <FontAwesome
-                                            className='float-right'
-                                            name='times-circle'
-                                            style={{marginTop: '5px', cursor: 'pointer'}}
-                                            color='#111'
-                                            size='lg'
-                                            onClick={() => this.onRemoveItem(item)}
-                                        />
-                                    </ListGroupItem>
-                                </React.Fragment>
+                                <ListGroupItem key={i}>
+                                    <a href="#"
+                                        onClick={() => this.onEditRecord(item)}>
+                                        {this.renderList(item)}
+                                    </a>
+                                    <FontAwesome
+                                        className='float-right'
+                                        name='times-circle'
+                                        style={{marginTop: '5px', cursor: 'pointer'}}
+                                        color='#111'
+                                        size='lg'
+                                        onClick={() => this.onRemoveItem(item)}
+                                    />
+                                </ListGroupItem>
                             );
                         })}
                     </ListGroup>
