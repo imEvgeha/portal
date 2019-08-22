@@ -29,7 +29,14 @@ const withRightsResultsTable = BaseComponent => {
                                 return moment(data[column.javaVariableName].toString().substr(0, 10)).format('L');
                             }
                         };
-                    case 'string': 
+                    case 'territoryType':
+                        return (params) => {
+                            const {data} = params;
+                            if(data && data[column.javaVariableName]) {
+                                return data[column.javaVariableName].map(e => String(e.country)).join(', ');
+                            }
+                        };
+                    case 'string':
                         if (javaVariableName === 'castCrew') {
                         return (params) => {
                             const {data} = params;
