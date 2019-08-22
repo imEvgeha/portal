@@ -76,29 +76,34 @@ class TableHeader extends React.Component {
     };
 
     isPromoted = (node) => {
-        return this.props.promotedRights.findIndex(e => e === node.data.id) > -1;
+        return this.props.promotedRights.findIndex(e => e.rightId === node.data.id) > -1;
     };
 
     onBulkPromote = () => {
+        const {promotedRights, updatePromotedRights, table} = this.props;
         let toPromote = [];
-        this.props.table.api.getSelectedNodes().forEach(node => {
+        table.api.getSelectedNodes().forEach(node => {
             if (!this.isPromoted(node)) {
-                toPromote.push(node.id);
+                const territories = (node && node.data && node.data.territory) || [];
+                const selectableTerritories = territories.filter(({country, selected}) => !selected && country) || [];
+                const territoryNameList = selectableTerritories.map(el => el.country);
+                toPromote.push({rightId: node.id, territories: territoryNameList});
             }
         });
 
-        this.props.updatePromotedRights([...this.props.promotedRights, ...toPromote]);
+        updatePromotedRights([...promotedRights, ...toPromote]);
     };
 
     onBulkUnPromote = () => {
-        let unPromotedRights = this.props.promotedRights.slice(0);
-        this.props.table.api.getSelectedNodes().forEach(node => {
+        const {promotedRights, updatePromotedRights, table} = this.props;
+        let unPromotedRights = promotedRights.slice(0);
+        table.api.getSelectedNodes().forEach(node => {
             if (this.isPromoted(node)) {
-                unPromotedRights = unPromotedRights.filter(e => e !== node.data.id);
+                unPromotedRights = unPromotedRights.filter(e => e.rightId !== node.data.id);
             }
         });
 
-        this.props.updatePromotedRights(unPromotedRights);
+        updatePromotedRights(unPromotedRights);
     };
 
     onBulkIgnore = () => {
