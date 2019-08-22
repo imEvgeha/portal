@@ -33,16 +33,17 @@ class DOP extends React.Component {
         }
     }
 
-    static mockOnDOPMessage(){
-        if(DOP.instance) {
-            DOP.instance.onDOPMessage({data: 'completeTriggered'});
-        }
-    }
+    // static mockOnDOPMessage(){
+    //     if(DOP.instance) {
+    //         DOP.instance.onDOPMessage({data: 'completeTriggered'});
+    //     }
+    // }
 
     static sendInfoToDOP(errorCount, data){
-        // setTimeout(() => {
-        //     parent.postMessage('{"errorCount": ' + errorCount + (data || '') + '}', '*');
-        // }, 100);
+        let message = {errorCount: errorCount, ...data};
+        setTimeout(() => {
+            parent.postMessage(message, '*');
+        }, 100);
     }
 
     static setErrorsCount(val){

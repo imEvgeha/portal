@@ -11,23 +11,78 @@ import withFilteredRights from '../../../components/DOP/withFilteredRights';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
 import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
 import withSelectRightHeader from '../../../components/DOP/SelectRightsTableHeader';
-import DOP from '../../../util/DOP';
 
-
-import Button from '@atlaskit/button'; //TO BE DELETED
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
     static propTypes =  {
         availsMapping: PropTypes.object,
-        reports: PropTypes.array,
         fetchAvailMapping: PropTypes.func.isRequired,
         fetchAvailConfiguration: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
-        availsMapping: null,
-        reports: null,
+        availsMapping: null
+    };
+
+    componentDidMount() {
+        const {availsMapping, fetchAvailMapping, fetchAvailConfiguration} = this.props;
+        if (!availsMapping) {
+            fetchAvailMapping();
+        }
+        fetchAvailConfiguration();
+    }
+
+    render() {
+        const {availsMapping} = this.props;
+
+        const RightsResultsTable = compose(
+            withSelectRightHeader,
+            withRedux,
+            withColumnsReorder,
+            withSelectIgnoreMark,
+            withServerSorting,
+            withFilteredRights({status:'Ready,ReadyNew', invalid:'true'}),
+        )(ResultsTable);
+
+        return (
+            <div>
+                <DOPConnector/>
+                {availsMapping && (
+                    <RightsResultsTable
+                        availsMapping={availsMapping}
+                        mode={'selectRightsMode'}/>
+                )}
+            </div>
+        );
+    }
+}
+
+let mapStateToProps = ({root}) => ({
+    availsMapping: root.availsMapping
+});
+
+let mapDispatchToProps = (dispatch) => ({
+    fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
+    fetchAvailConfiguration: payload => dispatch(fetchAvailConfiguration(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsPlanning);
+
+
+//--------------------------------------
+// import Button from '@atlaskit/button';
+import DOP from '../../../util/DOP';
+import {rightsService} from '../service/RightsService';
+
+mapStateToProps = state => {
+    return {
+        promotedRights: state.dopReducer.session.promotedRights
+    };
+};
+class DOPConnectorInternal extends Component {
+    static propTypes = {
+        promotedRights: PropTypes.array,
     };
 
     constructor(props) {
@@ -36,64 +91,65 @@ class SelectRightsPlanning extends Component {
             isConfirmOpen: false,
             isSendingData: false
         };
+
         this.showConfirmDialog = this.showConfirmDialog.bind(this);
         this.onModalApply = this.onModalApply.bind(this);
     }
 
     componentDidMount() {
-        const {availsMapping, reports, fetchAvailMapping, fetchAvailConfiguration} = this.props;
-        if (!availsMapping) {
-            fetchAvailMapping();
-        }
-        if (!reports) {
-            fetchAvailConfiguration();
-        }
-
         DOP.setDOPMessageCallback(this.showConfirmDialog);
     }
 
     showConfirmDialog(){
-        this.setState({isConfirmOpen : true});
+        const { promotedRights } = this.props;
+        if(promotedRights.length > 0){
+            this.setState({isConfirmOpen : true});
+        }
     }
 
     onModalApply(){
         this.setState({isSendingData : true});
+        const { promotedRights } = this.props;
         // send flag changes to server
-        // DOP.sendInfoToDOP();
-        // this.setState({isConfirmOpen : false});
+        Promise.all(promotedRights.map(right => {
+            return rightsService.get(right.rightId).then(response => {
+                if(response.data.territory){
+                    let availableTerritories = response.data.territory.filter(({selected}) => !selected);
+                    let toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
+                    if(toChangeTerritories.length > 0){
+                        let toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
+                        let newTerritories = response.data.territory.map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
+//                        newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
+                        return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
+                            return {rightId: right.rightId, territories: toChangeTerritoriesCountry};
+                        });
+                    }
+                }
+                return null;
+            });
+        })).then(result => {
+            let newDopInfo = result.filter(a => a);
+            DOP.sendInfoToDOP(newDopInfo.length > 0 ? 0 : 1, {selectedRights : newDopInfo});
+            this.setState({isSendingData : false, isConfirmOpen : false});
+        });
     }
 
-    render() {
-        const {availsMapping} = this.props;
+    render(){
         const { isConfirmOpen } = this.state;
-
-        const RightsResultsTable = compose(
-            withSelectRightHeader,
-            withRedux,
-            withColumnsReorder,
-            withSelectIgnoreMark,
-            withServerSorting,
-            withFilteredRights({status:'Ready,ReadyNew', invalid:'false'}),
-        )(ResultsTable);
-
+        const { promotedRights } = this.props;
         const actions = [
             { text: 'Cancel', onClick: () =>   this.setState({isConfirmOpen : false}), appearance:'default', isDisabled:this.state.isSendingData},
             { text: 'Apply', onClick: this.onModalApply, appearance:'primary', isLoading:this.state.isSendingData},
         ];
 
-        return (
+        return(
             <div>
-                <Button onClick={DOP.mockOnDOPMessage}>CLICK</Button>
-                {availsMapping && (
-                    <RightsResultsTable
-                        availsMapping={availsMapping}
-                        mode={'selectRightsMode'}/>
-                )}
+                {/*<Button onClick={DOP.mockOnDOPMessage}>DOP Trigger</Button>*/}
                 <ModalTransition>
                     {isConfirmOpen && (
                         <Modal actions={actions} onClose={this.close} heading="Selected Rights">
-                            You are about to move X avail rights to the selected folder.
-                            This will enable you to schedule them in plans.
+                            You are about to move {promotedRights.length} avail right{promotedRights.length > 1 && 's'} to the selected folder.
+                            This will enable you to schedule {promotedRights.length > 1 ? 'them' : 'it'} in plans.
                         </Modal>
                     )}
                 </ModalTransition>
@@ -101,15 +157,6 @@ class SelectRightsPlanning extends Component {
         );
     }
 }
+let DOPConnector = connect(mapStateToProps, null)(DOPConnectorInternal);
 
-const mapStateToProps = ({root}) => ({
-    availsMapping: root.availsMapping,
-    reports: root.reports,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
-    fetchAvailConfiguration: payload => dispatch(fetchAvailConfiguration(payload)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsPlanning);
+//--------------------------------------
