@@ -98,6 +98,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     onBodyScroll={this.onScroll}
                     staticDataLoaded={this.staticDataLoaded}
                     frameworkComponents={frameworkComponents}
+                    singleClickEdit={true}
                 />
             );
         }
