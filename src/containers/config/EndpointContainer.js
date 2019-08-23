@@ -17,7 +17,7 @@ import CreateEditConfigForm from './CreateEditConfigForm';
 const DataContainer = styled.div`
     width: 65%;
     float: left;
-    height: ${props => props.height - 30}vh;
+    height: 90vh;
     margin-left: 10px;
     padding: 15px;
 `;
@@ -43,7 +43,7 @@ const CustomContainer = styled.div`
     `}
 `;
 
-const pageSize = 12;
+const pageSize = 13;
 
 export const cache={};
 
@@ -72,6 +72,11 @@ export class EndpointContainer extends Component {
         });
     }
 
+    calculatePageSize = () => {
+        console.log('Page size', this.state.containerHeight < 40 ? 4 : this.state.containerHeight / 10);
+        return Math.floor(this.state.containerHeight < 40 ? 4 : this.state.containerHeight / 5);
+    }
+
     componentDidMount() {
         this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName[0], this.state.searchValue);
         let h = document.getElementById('listContainer').clientHeight;
@@ -79,13 +84,11 @@ export class EndpointContainer extends Component {
         let h3 = document.getElementById('listContainer').scrollHeight;
         console.log('Heights', h, h2, h3);
         window.addEventListener('resize', function(){
-                console.log('Height:', window.innerHeight);                
+                console.log('Height:', window.innerHeight);    
+                console.log('Height:', window.innerHeight / 12 + 'vh');               
                 this.setState({containerHeight: window.innerHeight / 12});
-                console.log('State Height', this.state.containerHeight + 'vh');
         }.bind(this));
-
-    }
-    
+    }    
 
     loadEndpointData = (page, searchField, searchValue) => {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
@@ -97,10 +100,10 @@ export class EndpointContainer extends Component {
                 searchField: searchField,
                 currentPage: page,
             });
-            getConfigApiValues(this.props.selectedApi.urls['search'], page - 1, pageSize, null, searchField, searchValue)
+            getConfigApiValues(this.props.selectedApi.urls['search'], page - 1, this.calculatePageSize(), null, searchField, searchValue)
                 .then((res) => {
                     this.setState({
-                        pages: Array.from({length: (res.data.total / pageSize < 1 ? 1 : res.data.total / pageSize)}, (v, k) => k + 1),
+                        pages: Array.from({length: (res.data.total / this.calculatePageSize() < 1 ? 1 : res.data.total / this.calculatePageSize())}, (v, k) => k + 1),
                         data: res.data.data,
                         total: res.data.total,
                         isLoading: false,
@@ -151,7 +154,7 @@ export class EndpointContainer extends Component {
 
     renderList = data => {
         if(data.ratingSystem) {            
-            return data.ratingSystem + this.props.selectedApi['displayValueDelimiter'] + data[this.props.selectedApi.displayValueFieldName[1]];
+            return data.ratingSystem + this.props.selectedApi['displayValueDelimiter'] + data[this.props.selectedApi.displayValueFieldName[0]];
         } else {
             if(this.props.selectedApi.displayValueFieldName) {
                 return data[this.props.selectedApi.displayValueFieldName[0]] ? data[this.props.selectedApi.displayValueFieldName[0]] : `[id = ${data.id}]`;
@@ -196,22 +199,24 @@ export class EndpointContainer extends Component {
                         id='listContainer'
                     >
                         {this.state.data.map((item, i) => {
-                            return (
-                                <ListGroupItem key={i}>
-                                    <a href="#"
-                                        onClick={() => this.onEditRecord(item)}>
-                                        {this.renderList(item)}
-                                    </a>
-                                    <FontAwesome
-                                        className='float-right'
-                                        name='times-circle'
-                                        style={{marginTop: '5px', cursor: 'pointer'}}
-                                        color='#111'
-                                        size='lg'
-                                        onClick={() => this.onRemoveItem(item)}
-                                    />
-                                </ListGroupItem>
-                            );
+                            if(i <= this.calculatePageSize()) {
+                                return (
+                                    <ListGroupItem key={i} id="list-item-1">
+                                        <a href="#"
+                                            onClick={() => this.onEditRecord(item)}>
+                                            {this.renderList(item)}
+                                        </a>
+                                        <FontAwesome
+                                            className='float-right'
+                                            name='times-circle'
+                                            style={{marginTop: '5px', cursor: 'pointer'}}
+                                            color='#111'
+                                            size='lg'
+                                            onClick={() => this.onRemoveItem(item)}
+                                        />
+                                    </ListGroupItem>
+                                );
+                            }
                         })}
                     </ListGroup>
                     }
