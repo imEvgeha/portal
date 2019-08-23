@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {getDeepValue} from '../../util/Common';
@@ -138,22 +138,31 @@ const withRightsResultsTable = BaseComponent => {
                     if (data && data.highlightedFields) {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
-                    return (
-                        <Link to={RightsURL.getRightUrl(data.id, props.nav)}>
+                    let cellVisualContent = <Fragment>
+                        <div
+                            title= {error}
+                            className = {highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            {String(content)}
+                        </div>
+                        {highlighted && (
                             <div
-                                title= {error}
-                                className = {highlighted ? 'font-weight-bold' : ''}
-                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                                {String(content)}
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
+                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
                             </div>
-                            {highlighted && (
-                                <div
-                                    style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                    <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
-                                </div>
-                            )}
-                        </Link>
-                    );
+                        )}
+                    </Fragment>;
+                    if(props.disableEdit){
+                        return (
+                            <div> {cellVisualContent} </div>
+                        );
+                    }else{
+                        return (
+                            <Link to={RightsURL.getRightUrl(data.id, props.nav)}>
+                                {cellVisualContent}
+                            </Link>
+                        );
+                    }
                 }
 
                 return val;
@@ -203,6 +212,7 @@ const withRightsResultsTable = BaseComponent => {
         nav: PropTypes.object,
         columnsSize: PropTypes.object,
         columns: PropTypes.array,
+        disableEdit: PropTypes.bool
     };
 
     ComposedComponent.defaultProps = {

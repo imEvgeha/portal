@@ -51,7 +51,9 @@ class SelectRightsPlanning extends Component {
                 {availsMapping && (
                     <RightsResultsTable
                         availsMapping={availsMapping}
-                        mode={'selectRightsMode'}/>
+                        mode={'selectRightsMode'}
+                        disableEdit={true}
+                    />
                 )}
             </div>
         );
