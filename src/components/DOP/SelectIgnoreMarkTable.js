@@ -42,6 +42,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                 checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
                 select_ignore_sel: {
                     headerName: '',
+                    field: 'select_ignore_sel',
                     width: 200,
                     pinned: 'left',
                     suppressResize: true,

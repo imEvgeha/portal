@@ -259,6 +259,7 @@ export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInterna
 
 export const defaultSelectionColDef = {
     headerName: '',
+    field: 'checkbox_sel',
     checkboxSelection: true,
     width: 40,
     pinned: 'left',

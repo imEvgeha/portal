@@ -46,19 +46,19 @@ const withRightsResultsTable = BaseComponent => {
                                 return data[column.javaVariableName].map(e => String(e.country)).join(', ');
                             }
                         };
-                    case 'string':
+                    case 'string': 
                         if (javaVariableName === 'castCrew') {
-                        return (params) => {
-                            const {data} = params;
-                            if (data && data[javaVariableName]){
-                                const result = data[javaVariableName]
-                                .map(({personType, displayName}) => `${personType}: ${displayName}`)
-                                .join('; ');
-                                return result;
+                            return (params) => {
+                                const {data} = params;
+                                if (data && data[javaVariableName]) {
+                                    const result = data[javaVariableName]
+                                        .map(({personType, displayName}) => `${personType}: ${displayName}`)
+                                        .join('; ');
+                                        return result;
+                                    }
+                                };
                             }
-                        };
-                    }
-                    return;
+                            return;
                     default: return null;
                 }
             };
