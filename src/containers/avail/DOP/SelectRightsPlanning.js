@@ -10,46 +10,50 @@ import withFilteredRights from '../../../components/DOP/withFilteredRights';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
 import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
 import withSelectRightHeader from '../../../components/DOP/SelectRightsTableHeader';
+import SelectRightsDOPConnector from './SelectRightsDOPConnector';
+
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
     static propTypes =  {
         availsMapping: PropTypes.object,
-        reports: PropTypes.array,
         fetchAvailMapping: PropTypes.func.isRequired,
         fetchAvailConfiguration: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
-        availsMapping: null,
-        reports: null,
+        availsMapping: null
     };
 
     componentDidMount() {
-        const {availsMapping, reports, fetchAvailMapping, fetchAvailConfiguration} = this.props;
+        const {availsMapping, fetchAvailMapping, fetchAvailConfiguration} = this.props;
         if (!availsMapping) {
             fetchAvailMapping();
         }
-        if (!reports) {
-            fetchAvailConfiguration();
-        }
+        fetchAvailConfiguration();
     }
 
     render() {
         const {availsMapping} = this.props;
+
         const RightsResultsTable = compose(
             withSelectRightHeader,
             withRedux,
             withColumnsReorder,
             withSelectIgnoreMark,
             withServerSorting,
-            withFilteredRights({status:'Ready,ReadyNew'}),
+            withFilteredRights({status:'Ready,ReadyNew', invalid:'false'}),
         )(ResultsTable);
 
         return (
             <div>
+                <SelectRightsDOPConnector/>
                 {availsMapping && (
-                    <RightsResultsTable availsMapping = {availsMapping}/>
+                    <RightsResultsTable
+                        availsMapping={availsMapping}
+                        mode={'selectRightsMode'}
+                        disableEdit={true}
+                    />
                 )}
             </div>
         );
@@ -57,8 +61,7 @@ class SelectRightsPlanning extends Component {
 }
 
 const mapStateToProps = ({root}) => ({
-    availsMapping: root.availsMapping,
-    reports: root.reports,
+    availsMapping: root.availsMapping
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -7,7 +7,9 @@ class DOP extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            errorCount: 0
+            errorCount: 0,
+            data: null,
+            onDOPMessage: null
         };
     }
 
@@ -23,15 +25,42 @@ class DOP extends React.Component {
     onDOPMessage(e){
         if(e.data === 'completeTriggered'){
             //Save or Complete clicked
-            setTimeout(()=>{
-                parent.postMessage('{"errorCount": ' + this.state.errorCount + '}', '*');
-            }, 100);
+            if(this.state.onDOPMessage) {
+                this.state.onDOPMessage(this.state.errorCount, this.state.data);
+            }else{
+                DOP.sendInfoToDOP(this.state.errorCount, this.state.data);
+            }
         }
+    }
+
+    // static mockOnDOPMessage(){
+    //     if(DOP.instance) {
+    //         DOP.instance.onDOPMessage({data: 'completeTriggered'});
+    //     }
+    // }
+
+    static sendInfoToDOP(errorCount, data){
+        let message = {errorCount: errorCount, ...data};
+        setTimeout(() => {
+            parent.postMessage(message, '*');
+        }, 100);
     }
 
     static setErrorsCount(val){
         if(DOP.instance) {
             DOP.instance.setState({errorCount: val});
+        }
+    }
+
+    static setData(data){
+        if(DOP.instance) {
+            DOP.instance.setState({data: data});
+        }
+    }
+
+    static setDOPMessageCallback(f){
+        if(DOP.instance) {
+            DOP.instance.setState({onDOPMessage: f});
         }
     }
 

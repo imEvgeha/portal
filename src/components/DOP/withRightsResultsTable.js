@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {getDeepValue} from '../../util/Common';
@@ -8,6 +8,16 @@ import LoadingGif from '../../img/loading.gif';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
+
+    const errorCellColor = '#f2dede';
+    const readyNewCellColor = '#FFFFFF';
+    const readyCellColor = '#D3D3D3';
+    const selectedColor = '#808080';
+    const defaultCellColor= '#ededed';
+
+    // const defaultMode = 'defaultMode';
+    const selectRightMode = 'selectRightsMode';
+
     const ComposedComponent = props => {
         // parse colums schema
         const parseColumnsSchema = mappings => {
@@ -128,22 +138,31 @@ const withRightsResultsTable = BaseComponent => {
                     if (data && data.highlightedFields) {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
-                    return (
-                        <Link to={RightsURL.getRightUrl(data.id, props.nav)}>
+                    let cellVisualContent = <Fragment>
+                        <div
+                            title= {error}
+                            className = {highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            {String(content)}
+                        </div>
+                        {highlighted && (
                             <div
-                                title= {error}
-                                className = {highlighted ? 'font-weight-bold' : ''}
-                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                                {String(content)}
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
+                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
                             </div>
-                            {highlighted && (
-                                <div
-                                    style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                    <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
-                                </div>
-                            )}
-                        </Link>
-                    );
+                        )}
+                    </Fragment>;
+                    if(props.disableEdit){
+                        return (
+                            <div> {cellVisualContent} </div>
+                        );
+                    }else{
+                        return (
+                            <Link to={RightsURL.getRightUrl(data.id, props.nav)}>
+                                {cellVisualContent}
+                            </Link>
+                        );
+                    }
                 }
 
                 return val;
@@ -153,7 +172,7 @@ const withRightsResultsTable = BaseComponent => {
         };
 
         // style cell
-        const cellStyle = ({data, colDef}) => {
+        const cellStyle = ({data, colDef, node}) => {
             let error = null;
             if(data && data.validationErrors){
                 data.validationErrors.forEach(e => {
@@ -162,9 +181,20 @@ const withRightsResultsTable = BaseComponent => {
                     }
                 });
             }
+
             if (colDef.headerName !== '' && error) {
-                return {backgroundColor: '#f2dede'};
-            } 
+                return {backgroundColor: errorCellColor};
+            } else if(props.mode === selectRightMode) {
+                if(node.selected === true) {
+                    return {backgroundColor: selectedColor};
+                } else if(data && data.status === 'ReadyNew') {
+                    return {backgroundColor: readyNewCellColor};
+                } else if(data && data.status === 'Ready') {
+                    return {backgroundColor: readyCellColor};
+                } else {
+                    return {backgroundColor: defaultCellColor};
+                }
+            }
         };
 
         return (
@@ -182,6 +212,7 @@ const withRightsResultsTable = BaseComponent => {
         nav: PropTypes.object,
         columnsSize: PropTypes.object,
         columns: PropTypes.array,
+        disableEdit: PropTypes.bool
     };
 
     ComposedComponent.defaultProps = {
