@@ -54,6 +54,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                 plan_territory: {
                     headerName: 'Plan Territory',
                     field: 'plan_territory',
+                    pinned: 'left',
                     width: 200,
                     cellRenderer: 'selectPlanTerritory',
                     cellEditorFramework: SelectPlanTerritoryEditor,

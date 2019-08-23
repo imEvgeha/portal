@@ -15,7 +15,7 @@ const withRightsResultsTable = BaseComponent => {
     const selectedColor = '#00FF00';
     const defaultCellColor= '#ededed';
 
-    const defaultMode = 'defaultMode';
+    // const defaultMode = 'defaultMode';
     const selectRightMode = 'selectRightsMode';
 
     const ComposedComponent = props => {

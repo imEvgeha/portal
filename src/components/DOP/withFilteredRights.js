@@ -30,7 +30,7 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                 datasource: props.autoload ? {rowCount: null, getRows: this.getRows} : null,
             };
             const originalColDef = props.parseColumnsSchema((props.availsMapping && props.availsMapping.mappings) || []);
-            const colDef = {...props.colDef};
+            const colDef = {...props.colDef, ...originalColDef};
             this.state = {
                 originalColDef,
                 colDef,
@@ -43,7 +43,7 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
 
         componentDidMount() {
             // newColDef === colDef from constructor ?
-            const colDef = {...this.props.colDef, };
+            const colDef = {...this.props.colDef, ...this.state.originalColDef};
             this.setState({
                 colDef, 
                 cols: this.props.refreshColumns(colDef)

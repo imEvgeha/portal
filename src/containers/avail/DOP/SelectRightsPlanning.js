@@ -74,15 +74,22 @@ export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsPlanning
 // import Button from '@atlaskit/button';
 import DOP from '../../../util/DOP';
 import {rightsService} from '../service/RightsService';
+import {updatePromotedRights} from '../../../stores/actions/DOP';
 
 mapStateToProps = state => {
     return {
         promotedRights: state.dopReducer.session.promotedRights
     };
 };
+
+mapDispatchToProps = (dispatch) => ({
+    updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
+});
+
 class DOPConnectorInternal extends Component {
     static propTypes = {
         promotedRights: PropTypes.array,
+        updatePromotedRights: PropTypes.func
     };
 
     constructor(props) {
@@ -109,7 +116,7 @@ class DOPConnectorInternal extends Component {
 
     onModalApply(){
         this.setState({isSendingData : true});
-        const { promotedRights } = this.props;
+        const { promotedRights, updatePromotedRights } = this.props;
         // send flag changes to server
         Promise.all(promotedRights.map(right => {
             return rightsService.get(right.rightId).then(response => {
@@ -119,7 +126,7 @@ class DOPConnectorInternal extends Component {
                     if(toChangeTerritories.length > 0){
                         let toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
                         let newTerritories = response.data.territory.map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
-//                        newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
+                        // newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
                         return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
                             return {rightId: right.rightId, territories: toChangeTerritoriesCountry};
                         });
@@ -129,8 +136,9 @@ class DOPConnectorInternal extends Component {
             });
         })).then(result => {
             let newDopInfo = result.filter(a => a);
-            DOP.sendInfoToDOP(newDopInfo.length > 0 ? 0 : 1, {selectedRights : newDopInfo});
             this.setState({isSendingData : false, isConfirmOpen : false});
+            updatePromotedRights([]);
+            DOP.sendInfoToDOP(newDopInfo.length > 0 ? 0 : 1, {selectedRights : newDopInfo});
         });
     }
 
@@ -157,6 +165,6 @@ class DOPConnectorInternal extends Component {
         );
     }
 }
-let DOPConnector = connect(mapStateToProps, null)(DOPConnectorInternal);
+let DOPConnector = connect(mapStateToProps, mapDispatchToProps)(DOPConnectorInternal);
 
 //--------------------------------------
