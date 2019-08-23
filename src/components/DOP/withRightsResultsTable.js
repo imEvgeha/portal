@@ -12,7 +12,7 @@ const withRightsResultsTable = BaseComponent => {
     const errorCellColor = '#f2dede';
     const readyNewCellColor = '#FFFFFF';
     const readyCellColor = '#D3D3D3';
-    const selectedColor = '#00FF00';
+    const selectedColor = '#808080';
     const defaultCellColor= '#ededed';
 
     // const defaultMode = 'defaultMode';

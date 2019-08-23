@@ -20,16 +20,16 @@ export default function withSelectIgnoreMark(WrappedComponent) {
 
         constructor(props) {
             super(props);
-            const {rowsProps, availTabPageSelection, columns} = props;
+            const {rowsProps, columns} = props;
             const updatedColumns = ['checkbox_sel', 'select_ignore_sel', 'plan_territory', ...columns];
             const uniqueColumnsSet = new Set(updatedColumns);
             this.state = {
                 rowsProps,
                 table: null,
                 colDef: [],
-                selected: availTabPageSelection.selected || [],
-                selectAll: availTabPageSelection.selectAll,
-                selectNone: availTabPageSelection.selectNone || true,
+                selected:  [],
+                selectAll: false,
+                selectNone: true,
                 columns: [...uniqueColumnsSet],
             };
         }
@@ -68,6 +68,36 @@ export default function withSelectIgnoreMark(WrappedComponent) {
             this.setState({colDef});
         }
 
+        onSelectionChangedProcess() {
+            this.registeredOnSelect = false;
+            if (!this.state.table) return;
+
+            let selected = this.state.table.api.getSelectedRows().slice(0);
+            if (this.state.table.api.getDisplayedRowCount() > 0) {
+                this.state.selected.map(sel => {
+                    if (selected.find(rec => (sel.id === rec.id)) === null && this.state.table.api.getRowNode(sel.id) === null) {
+                        selected.push(sel);
+                    }
+                });
+            } else {
+                if (this.state.selected && this.state.selected.length > 0)
+                    selected = selected.concat(this.state.selected);
+            }
+
+            let nodesToUpdate = selected
+                .filter(x => !this.state.selected.includes(x))
+                .concat(this.state.selected.filter(x => !selected.includes(x)))
+                .map(i => this.state.table.api.getRowNode(i.id));
+
+            this.state.table.api.redrawRows({rowNodes: nodesToUpdate});
+
+            this.setState({
+                selected: selected,
+                selectNone: !this.isOneVisibleSelected(),
+                selectAll: this.areAllVisibleSelected()
+            });
+        }
+
         onDataLoaded(response) {
             const {onDataLoaded} = this.props;
             if (typeof onDataLoaded === 'function') {
@@ -95,9 +125,11 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     setTable={this.setTable}
                     onDataLoaded={this.onDataLoaded}
                     rowSelection="multiple"
+                    onSelectionChanged={this.onSelectionChanged}
                     suppressRowClickSelection={true}
                     onBodyScroll={this.onScroll}
                     staticDataLoaded={this.staticDataLoaded}
+
                     frameworkComponents={frameworkComponents}
                     singleClickEdit={true}
                 />

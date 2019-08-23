@@ -42,7 +42,7 @@ class SelectRightsPlanning extends Component {
             withColumnsReorder,
             withSelectIgnoreMark,
             withServerSorting,
-            withFilteredRights({status:'Ready,ReadyNew', invalid:'true'}),
+            withFilteredRights({status:'Ready,ReadyNew', invalid:'false'}),
         )(ResultsTable);
 
         return (
