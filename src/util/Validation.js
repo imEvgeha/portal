@@ -18,6 +18,16 @@ function rangeValidation(name, displayName, date, avail) {
         rangeError = displayName + ' must be after Created At date';
     }
 
+    if (name === 'originallyReceivedAt' && avail['lastUpdateReceivedAt']) {
+        startDate = date;
+        endDate = avail['lastUpdateReceivedAt'];
+        rangeError = displayName + ' must be before Last Update Received At date';
+    } else if (name === 'lastUpdateReceivedAt' && avail['originallyReceivedAt']) {
+        startDate = avail['originallyReceivedAt'];
+        endDate = date;
+        rangeError = displayName + ' must be after Originally Received At date';
+    }
+
     if (name === 'start' && avail['end']) {
         startDate = date;
         endDate = avail['end'];
