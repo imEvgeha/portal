@@ -7,7 +7,7 @@ import {QuickSearch} from '@atlaskit/quick-search';
 import PropTypes from 'prop-types';
 import {TextHeader} from '../../components/navigation/CustomNavigationElements';
 import styled, {css} from 'styled-components';
-import {ListGroup, ListGroupItem} from 'reactstrap';
+import {ListGroupItem} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
 import {configService} from './service/ConfigService';
@@ -17,7 +17,7 @@ import CreateEditConfigForm from './CreateEditConfigForm';
 const DataContainer = styled.div`
     width: 65%;
     float: left;
-    height: 90vh;
+    height: calc(100vh - 90px);
     margin-left: 10px;
     padding: 15px;
 `;
@@ -43,9 +43,9 @@ const CustomContainer = styled.div`
     `}
 `;
 
-const pageSize = 13;
-
 export const cache={};
+
+const defaultPageSize = 13;
 
 export class EndpointContainer extends Component {
 
@@ -56,11 +56,10 @@ export class EndpointContainer extends Component {
             data: [],
             total: 0,
             currentPage: 1,
-            // searchValue: '"David Arkin"',
             searchValue: '',
             isLoading: false,
             currentRecord: null,
-            containerHeight: 70
+            pageSize: defaultPageSize
         };
 
         this.keyInputTimeout = 0;
@@ -72,23 +71,24 @@ export class EndpointContainer extends Component {
         });
     }
 
-    calculatePageSize = () => {
-        console.log('Page size', this.state.containerHeight < 40 ? 4 : this.state.containerHeight / 10);
-        return Math.floor(this.state.containerHeight < 40 ? 4 : this.state.containerHeight / 5);
-    }
-
     componentDidMount() {
+        this.calculatePageSize();
         this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName[0], this.state.searchValue);
-        let h = document.getElementById('listContainer').clientHeight;
-        let h2 = document.getElementById('listContainer').offsetHeight;
-        let h3 = document.getElementById('listContainer').scrollHeight;
-        console.log('Heights', h, h2, h3);
         window.addEventListener('resize', function(){
-                console.log('Height:', window.innerHeight);    
-                console.log('Height:', window.innerHeight / 12 + 'vh');               
-                this.setState({containerHeight: window.innerHeight / 12});
+            this.calculatePageSize();
         }.bind(this));
-    }    
+    }
+    
+    calculatePageSize = () => {
+        let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            let windowViewPort =  (h) / 10;
+            let staticSectionVH = windowViewPort > 90 ? 5 : windowViewPort > 50 ? 20 : 30;
+            let numberOfItems = Math.ceil((defaultPageSize * (windowViewPort - staticSectionVH)) / 100);
+            numberOfItems = numberOfItems <= 0 ? 1 : numberOfItems;
+            this.setState({
+                pageSize: numberOfItems
+            });
+    }
 
     loadEndpointData = (page, searchField, searchValue) => {
         if (this.keyInputTimeout) clearTimeout(this.keyInputTimeout);
@@ -100,10 +100,10 @@ export class EndpointContainer extends Component {
                 searchField: searchField,
                 currentPage: page,
             });
-            getConfigApiValues(this.props.selectedApi.urls['search'], page - 1, this.calculatePageSize(), null, searchField, searchValue)
+            getConfigApiValues(this.props.selectedApi.urls['search'], page - 1, this.state.pageSize, null, searchField, searchValue)
                 .then((res) => {
                     this.setState({
-                        pages: Array.from({length: (res.data.total / this.calculatePageSize() < 1 ? 1 : res.data.total / this.calculatePageSize())}, (v, k) => k + 1),
+                        pages: Array.from({length: (res.data.total / this.state.pageSize < 1 ? 1 : res.data.total / this.state.pageSize)}, (v, k) => k + 1),
                         data: res.data.data,
                         total: res.data.total,
                         isLoading: false,
@@ -164,7 +164,7 @@ export class EndpointContainer extends Component {
 
     render() {
         return (
-            <DataContainer height={this.state.containerHeight}>
+            <DataContainer>
                 <TextHeader>{this.props.selectedApi.displayName + ' (' + this.state.total + ') '}
                     {this.state.currentRecord === null  &&
                         <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
@@ -187,19 +187,9 @@ export class EndpointContainer extends Component {
                         />
                     </CustomContainer>
                     {!this.state.isLoading &&
-                    <ListGroup
-                        style={{
-                            overflowY: 'auto',
-                            overFlowX: 'hidden',
-                            margin: '10px',
-                            paddingRight: '24px',
-                            height: `${this.state.containerHeight}vh`,
-                            border: '1px solid #000',
-                        }}
-                        id='listContainer'
-                    >
+                    <div style={{marginBottom: '5px'}}>
                         {this.state.data.map((item, i) => {
-                            if(i <= this.calculatePageSize()) {
+                            if(i < this.state.pageSize) {
                                 return (
                                     <ListGroupItem key={i} id="list-item-1">
                                         <a href="#"
@@ -218,7 +208,7 @@ export class EndpointContainer extends Component {
                                 );
                             }
                         })}
-                    </ListGroup>
+                        </div>
                     }
                     <CustomContainer center><Pagination selectedIndex={this.state.currentPage - 1}
                                                         pages={this.state.pages}

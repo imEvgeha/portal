@@ -4,7 +4,7 @@ export const SideMenu = styled.div`
     width: 15%;
     background-color: ${props => props.primary ? '#F1F6F7' : 'white'};
     float:left;
-    height: 90vh;
+    height: calc(100vh - 90px);
     padding: 15px;    
     overflow-y: ${props => props.isScrollable ? 'scroll' : 'none'};
 `;
