@@ -60,6 +60,11 @@ const app = (
     </Provider>
 );
 
+const setMomentLocale = () => {
+    let userLocale = window.navigator.language;
+    moment.locale(userLocale);
+};
+
 function init() {
     keycloak.instance = Keycloak(config.get('keycloak'));
     keycloak.instance.init({onLoad: 'check-sso'}).success(authenticated => {
@@ -75,9 +80,7 @@ function init() {
                 loadCreateRightState();
                 loadHistoryState();
                 loadDopState();
-
-                let locale = window.navigator.userLanguage || window.navigator.language;
-                moment.locale(locale);
+                setMomentLocale();
 
                 render(
                     app,
