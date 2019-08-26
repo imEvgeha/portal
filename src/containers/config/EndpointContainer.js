@@ -13,6 +13,7 @@ import {INPUT_TIMEOUT} from '../../constants/common-ui';
 import {configService} from './service/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
+import { Can } from '../../ability';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -196,14 +197,16 @@ export class EndpointContainer extends Component {
                                             onClick={() => this.onEditRecord(item)}>
                                             {this.renderList(item)}
                                         </a>
-                                        <FontAwesome
-                                            className='float-right'
-                                            name='times-circle'
-                                            style={{marginTop: '5px', cursor: 'pointer'}}
-                                            color='#111'
-                                            size='lg'
-                                            onClick={() => this.onRemoveItem(item)}
-                                        />
+                                        <Can I="delete" a="Settings">
+                                            <FontAwesome
+                                                className='float-right'
+                                                name='times-circle'
+                                                style={{marginTop: '5px', cursor: 'pointer'}}
+                                                color='#111'
+                                                size='lg'
+                                                onClick={() => this.onRemoveItem(item)}
+                                            />
+                                        </Can>
                                     </ListGroupItem>
                                 );
                             }

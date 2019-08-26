@@ -66,7 +66,7 @@ export default class App extends React.Component {
                         <Route exact path="/contractsearch" component={Contract} />
 
                         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
-                        <Route exact path="/settings" component={Settings} />
+                        <Route exact path="/settings" component={canRender(Settings, 'read', 'Settings')} />
 
                     </div>
                 </div>
