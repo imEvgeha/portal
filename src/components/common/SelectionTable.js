@@ -43,7 +43,7 @@ export class SelectionTable extends React.Component {
             this.refreshColumns();
         }
         if (prevProps.columns !== this.props.columns) {
-            this.setState({columns: ['sel'].concat(this.props.columns)});
+            this.setState({columns: ['checkbox_sel'].concat(this.props.columns)});
         }
 
         if (prevProps.availTabPageSelection !== this.props.availTabPageSelection) {
