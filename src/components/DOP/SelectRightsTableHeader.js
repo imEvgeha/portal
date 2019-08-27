@@ -4,6 +4,11 @@ import {updatePromotedRights} from '../../stores/actions/DOP';
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {rightsService} from '../../containers/avail/service/RightsService';
+import styled from 'styled-components';
+import {colors} from '@atlaskit/theme';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
+import ToggleButton from 'react-toggle-button';
+import {UserTerritoriesModal} from './elements/UserTerritiesModal';
 
 export default function withSelectRightHeader(SelectRightHeaderWrappedComponent) {
     return (props) => <SelectRightsTableHeader
@@ -54,6 +59,24 @@ let mapDispatchToProps = {
     updatePromotedRights
 };
 
+const IconExplorerLink = styled.a`
+  &,
+  &:hover,
+  &:active,
+  &:focus {
+    border-radius: 5px;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    line-height: 0;
+    padding: 10px;
+  }
+
+  &:hover {
+    background: ${colors.N30A};
+  }
+`;
+
 class TableHeader extends React.Component {
 
     static propTypes = {
@@ -65,7 +88,9 @@ class TableHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dropdownOpen: false
+            dropdownOpen: false,
+            isUserTerritoriesModalOpen: false,
+            useUserTerritories: false
         };
     }
 
@@ -139,9 +164,13 @@ class TableHeader extends React.Component {
         });
     };
 
+    toggleModal = () => {
+        this.setState({ isUserTerritoriesModalOpen: !this.state.isUserTerritoriesModalOpen });
+    };
+
     render() {
         return (
-            <div style={{marginLeft: '20px', marginBottom: '10px'}}>
+            <div style={{marginLeft: '20px', marginBottom: '10px', display: 'flex', paddingLeft: '10px', paddingRight: '10px',  justifyContent: 'space-between'}}>
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                     <DropdownToggle color="light">
                         <b>...</b>
@@ -155,6 +184,23 @@ class TableHeader extends React.Component {
                         <DropdownItem onClick={this.onClearSelection}>Clear Selection</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
+
+                <div style={{ display: 'flex', alignItems: 'center', verticalAlign: 'middle'}}>
+                    <span >User Territories: </span>
+                    <IconExplorerLink onClick={this.toggleModal}>
+                        <ShortcutIcon  size='small'/>
+                    </IconExplorerLink>
+                    <ToggleButton
+                        value={ this.state.useUserTerritories || false }
+                        onToggle={(useUserTerritories) => {
+                            this.setState({
+                                useUserTerritories: !useUserTerritories,
+                            });
+                        }} />
+
+                    <UserTerritoriesModal isOpen={this.state.isUserTerritoriesModalOpen} toggle={this.toggleModal}/>
+
+                </div>
             </div>
         );
     }
