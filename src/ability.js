@@ -39,15 +39,15 @@ const updateAbility = (keycloak) => {
         can(['create', 'read', 'update', 'delete'], 'AssetManagement');
     }
 
-    // ******** Settings  *************
+    // ******** Config UI  *************
     if (keycloak.hasRealmRole('configuration_viewer')) {
-        can('read', 'Settings');
+        can('read', 'ConfigUI');
     }
     if (keycloak.hasRealmRole('configuration_user')) {        
-        can(['create', 'read', 'update'], 'Settings');
+        can(['create', 'read', 'update'], 'ConfigUI');
     }
     if (keycloak.hasRealmRole('configuration_admin')) {        
-        can(['create', 'read', 'update', 'delete'], 'Settings');
+        can(['create', 'read', 'update', 'delete'], 'ConfigUI');
     }
 
     // ******** Metadata *************
