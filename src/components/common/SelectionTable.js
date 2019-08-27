@@ -43,7 +43,7 @@ export class SelectionTable extends React.Component {
             this.refreshColumns();
         }
         if (prevProps.columns !== this.props.columns) {
-            this.setState({columns: ['sel'].concat(this.props.columns)});
+            this.setState({columns: ['checkbox_sel'].concat(this.props.columns)});
         }
 
         if (prevProps.availTabPageSelection !== this.props.availTabPageSelection) {
@@ -259,6 +259,7 @@ export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInterna
 
 export const defaultSelectionColDef = {
     headerName: '',
+    field: 'checkbox_sel',
     checkboxSelection: true,
     width: 40,
     pinned: 'left',

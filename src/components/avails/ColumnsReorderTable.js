@@ -25,6 +25,7 @@ export default function withColumnsReorder(WrappedComponent){
         }
 
         componentDidUpdate(prevProps) {
+            // it is false always
             if(prevProps.availsMapping !== this.props.availsMapping){
                 this.refreshColumns();
             }
@@ -34,13 +35,16 @@ export default function withColumnsReorder(WrappedComponent){
         }
 
         onColumnReordered(e) {
-            let cols = [];
-            e.columnApi.getAllGridColumns().map(column => {
-                if(column.colDef.headerName !== '') cols.push(column.colDef.field);
+            const {updateColumnsOrder} = this.props;
+            let columns = [];
+            e.columnApi.getAllGridColumns().forEach(({colDef}) => {
+                if (colDef && colDef.field) {
+                    columns.push(colDef.field);
+                }
             });
-            this.setState({columns: cols});
-            if(this.props.updateColumnsOrder){
-                this.props.updateColumnsOrder(cols);
+            this.setState({columns});
+            if (typeof updateColumnsOrder === 'function'){
+                updateColumnsOrder(columns);
             }
         }
 

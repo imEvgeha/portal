@@ -18,6 +18,16 @@ export default function withSelectIgnoreMark(WrappedComponent) {
             ...WrappedComponent.propTypes,
         }
 
+        static getDerivedStateFromProps(props, state) {
+            if (Array.isArray(props.columns) && props.columns.length !== state.columns.length) {
+                return {
+                    ...state,
+                    columns: [...new Set(['checkbox_sel', 'select_ignore_sel', 'plan_territory', ...props.columns])],
+                };
+            }
+            return null;
+        }
+
         constructor(props) {
             super(props);
             const {rowsProps, columns} = props;
@@ -42,6 +52,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                 checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
                 select_ignore_sel: {
                     headerName: '',
+                    field: 'select_ignore_sel',
                     width: 200,
                     pinned: 'left',
                     suppressResize: true,
@@ -130,7 +141,6 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     suppressRowClickSelection={true}
                     onBodyScroll={this.onScroll}
                     staticDataLoaded={this.staticDataLoaded}
-
                     frameworkComponents={frameworkComponents}
                     singleClickEdit={true}
                 />
