@@ -42,6 +42,7 @@ import App from './containers/App';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
+import * as moment from 'moment';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
@@ -59,6 +60,11 @@ const app = (
     </Provider>
 );
 
+const setMomentLocale = () => {
+    let userLocale = window.navigator.language;
+    moment.locale(userLocale);
+};
+
 function init() {
     keycloak.instance = Keycloak(config.get('keycloak'));
     keycloak.instance.init({onLoad: 'check-sso'}).success(authenticated => {
@@ -74,6 +80,7 @@ function init() {
                 loadCreateRightState();
                 loadHistoryState();
                 loadDopState();
+                setMomentLocale();
 
                 render(
                     app,
