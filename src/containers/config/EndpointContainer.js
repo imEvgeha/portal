@@ -153,7 +153,8 @@ export class EndpointContainer extends Component {
         this.loadEndpointData(this.state.currentPage);
     };
 
-    render() {
+    render() {        
+        let canUpdate = can('update', 'ConfigUI');
         return (
             <DataContainer>
                 <TextHeader>{this.props.selectedApi.displayName + ' (' + this.state.total + ') '}
@@ -182,9 +183,8 @@ export class EndpointContainer extends Component {
                             {this.state.data.map((item, i) => {
                                 let label = item[this.props.selectedApi.displayValueFieldName] || '[id = ' + item.id + ']';
                                 if (i < this.state.pageSize) {
-                                    let canUpdate = can('update', 'ConfigUI');
                                     return (
-                                        <ListGroupItem key={i} id="list-item-1">
+                                        <ListGroupItem key={i}>
                                             {
                                                 canUpdate ?
                                                     <a href="#" onClick={() => this.onEditRecord(item)}>
