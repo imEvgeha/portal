@@ -13,7 +13,7 @@ import { INPUT_TIMEOUT } from '../../constants/common-ui';
 import { configService } from './service/ConfigService';
 import { getConfigApiValues } from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
-import { Can, cannot, can } from '../../ability';
+import { Can, can } from '../../ability';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -180,7 +180,7 @@ export class EndpointContainer extends Component {
                     {!this.state.isLoading &&
                         <div style={{ marginBottom: '5px' }}>
                             {this.state.data.map((item, i) => {
-                                let label = item[this.props.selectedApi.displayValueFieldName[0]] || '[id = ' + item.id + ']';
+                                let label = item[this.props.selectedApi.displayValueFieldName] || '[id = ' + item.id + ']';
                                 if (i < this.state.pageSize) {
                                     let canUpdate = can('update', 'ConfigUI');
                                     return (
