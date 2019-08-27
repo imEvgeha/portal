@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
+import cloneDeep from 'lodash/cloneDeep';
 
 import Popup from 'reactjs-popup';
 import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
@@ -30,7 +31,7 @@ class EditableBaseComponent extends Component {
         super(props);
 
         this.state = {
-            value: props.value,
+            value: cloneDeep(props.value),
             showStateValue: false,
             editable: false,
             errorMessage: '',
@@ -50,7 +51,7 @@ class EditableBaseComponent extends Component {
         if (prevProps.value != this.props.value) {
             this.setState({
                 showStateValue: false,
-                value: this.props.value ? this.props.value : null,
+                value: cloneDeep(this.props.value) ? this.props.value : null,
             });
         }
 
@@ -72,20 +73,23 @@ class EditableBaseComponent extends Component {
 
     cancel() {
         this.setState({
-            value: this.props.value,
+            value: cloneDeep(this.props.value),
             showStateValue: false,
             editable: false,
             errorMessage: ''
         });
+        if(this.props.onCancel){
+            this.props.onCancel();
+        }
     }
 
     handleChange(val) {
-        this.setState({ value: val, submitStatus: false, errorMessage: '' });
+        this.setState({ value: cloneDeep(val), submitStatus: false, errorMessage: '' });
     }
 
     handleInvalid(val, error) {
         if (error) {
-            this.setState({ value: val, errorMessage: error, submitStatus: true });
+            this.setState({ value: cloneDeep(val), errorMessage: error, submitStatus: true });
         }
     }
 
@@ -100,13 +104,13 @@ class EditableBaseComponent extends Component {
                 editable: false,
                 showStateValue: true
             });
-            this.props.onChange(val, this.cancel);
+            this.props.onChange(cloneDeep(val), this.cancel);
         }
     }
 
     setEditable(val) {
         this.setState({
-            editable: val,
+            editable: cloneDeep(val),
         });
     }
 

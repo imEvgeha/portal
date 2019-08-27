@@ -5,6 +5,7 @@ import t from 'prop-types';
 import Editable from 'react-x-editable';
 import config from 'react-global-configuration';
 import { Button, Label } from 'reactstrap';
+import cloneDeep from 'lodash/cloneDeep';
 
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -528,6 +529,13 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
 
+            let onCancel = () => {
+                selectedVal = cloneDeep(value);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
             options = options.filter((rec) => (rec.value)).map(rec => {
                 return {
                     ...rec,
@@ -560,6 +568,7 @@ class RightDetails extends React.Component {
                     displayName={displayName}
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    onCancel={onCancel}
                     helperComponent={<Select
                         name={name}
                         isSearchable
@@ -632,6 +641,13 @@ class RightDetails extends React.Component {
                 val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
             }
 
+            let onCancel = () => {
+                selectedVal = cloneDeep(value);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
             let handleOptionsChange = (selectedOptions) => {
                 const selVal = selectedOptions.map(({ value }) => value);
                 ref.current.handleChange(selVal ? selVal : null);
@@ -650,6 +666,7 @@ class RightDetails extends React.Component {
                     displayName={displayName}
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    onCancel={onCancel}
                     helperComponent={<ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
@@ -698,8 +715,7 @@ class RightDetails extends React.Component {
             }
 
             let options = [];
-            let selectedVal = ref.current ? ref.current.state.value : value;
-            let val;
+            let selectedVal = ref.current ? ref.current.state.value : cloneDeep(value);
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
             }
@@ -712,19 +728,16 @@ class RightDetails extends React.Component {
                 };
             });
 
-            if (options.length > 0 && selectedVal) {
-                val = options.find((opt) => opt.value === selectedVal);
-                if (!required) {
-                    options.unshift({ value: '', label: value ? 'Select...' : '' });
-                }
-            }
+            let onCancel = () => {
+                selectedVal = cloneDeep(value);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
 
             let addTerritory = (option) => {
                  if(this.state.isEdit) {
-                     let updatedTerritoryIndex = selectedVal.findIndex(a => a.country === selectedVal[this.state.territoryIndex]['country']);
-                    //  selectedVal = selectedVal.splice(updatedTerritoryIndex, 1, option);
-                     selectedVal.splice(updatedTerritoryIndex, 1);
-                     selectedVal = [...selectedVal, option];
+                     selectedVal.splice(this.state.territoryIndex, 1, option);
                  } else {
                      selectedVal = selectedVal ? [...selectedVal, option] : [option];
                  }
@@ -755,6 +768,7 @@ class RightDetails extends React.Component {
                     validate={() => { }}
                     displayName={displayName}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    onCancel={onCancel}
                     showError={false}
                     helperComponent={
                         <div>
@@ -784,7 +798,6 @@ class RightDetails extends React.Component {
                                 onClose={this.toggleRightTerritoryForm}
                                 existingTerritoryList={selectedVal}
                                 territoryIndex={this.state.territoryIndex}
-                                data={val}
                                 isEdit={this.state.isEdit}
                                 options={options} />
                         </div>
