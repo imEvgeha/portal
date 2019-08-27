@@ -14,7 +14,7 @@ const updateAbility = (keycloak) => {
     const { can, rules, cannot } = AbilityBuilder.extract();
 
     // ******** Avail *************
-    const edit_only_admin = ['createdAt', 'updatedAt'];
+    const edit_only_admin = ['createdAt', 'updatedAt', 'originallyReceivedAt', 'lastUpdateReceivedAt'];
     if (keycloak.hasRealmRole('avails_viewer')) {
         can('read', 'Avail');
     }
