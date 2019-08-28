@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import Pagination from '@atlaskit/pagination';
-import Button from '@atlaskit/button';
-import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import {QuickSearch} from '@atlaskit/quick-search';
 
 import PropTypes from 'prop-types';
 import {TextHeader} from '../../components/navigation/CustomNavigationElements';
 import styled, {css} from 'styled-components';
-import {ListGroup, ListGroupItem} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
 import {configService} from './service/ConfigService';
@@ -41,6 +38,38 @@ const CustomContainer = styled.div`
     ${props => props.right && css`
         float:right;
     `}
+`;
+
+const ListContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-right: 24px;
+    margin: 10px;
+`;
+
+const ListItem = styled.div`
+    border: 1px solid #DDD;
+    padding: 10px;
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 2px;
+    &:nth-child(even) {
+        background: #F9F9F9;
+    }
+`;
+
+const CustomButton = styled.div`
+    float: right;
+    font-size: 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #F9F9F9;
+    color: #666;
+    padding: 5px 10px 5px;
+    &:hover {
+        background: #EEE;
+    }
 `;
 
 const pageSize = 10;
@@ -142,10 +171,19 @@ export class EndpointContainer extends Component {
             <DataContainer>
                 <TextHeader>{this.props.selectedApi.displayName + ' (' + this.state.total + ') '}
                     {this.state.currentRecord === null  &&
-                        <Button onClick = {this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{float: 'right'}}>Add</Button>
+                        <CustomButton onClick = {this.onNewRecord}>
+                                    <FontAwesome
+                                        
+                                            name='plus'
+                                            style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '16px', marginRight: '5px'}}
+                                            color='#111'
+                                        />
+                                        Add
+                        </CustomButton>
                     }
+                    
+                <div style={{clear: 'both'}} />
                 </TextHeader>
-
                 {this.state.currentRecord &&
                 <DataBody>
                     <CreateEditConfigForm schema={this.props.selectedApi.uiSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({currentRecord:null})}/>
@@ -162,35 +200,24 @@ export class EndpointContainer extends Component {
                         />
                     </CustomContainer>
                     {!this.state.isLoading &&
-                    <ListGroup
-                        style={{
-                            overflowY: 'hidden',
-                            overFlowX: 'hidden',
-                            margin: '10px',
-                            paddingRight: '24px'
-                        }}
-                        id='listContainer'
-                    >
+                    <ListContainer>
                         {this.state.data.map((item, i) => {
                             let label = item[this.props.selectedApi.displayValueFieldName] || '[id = ' + item.id + ']';
                             return (
-                                <React.Fragment key={i}>
-                                    <ListGroupItem key={i}>
+                                <ListItem key={i}>
                                         <a href="#"
                                            onClick={() => this.onEditRecord(item)}>{label}</a>
                                         <FontAwesome
                                             className='float-right'
-                                            name='times-circle'
-                                            style={{marginTop: '5px', cursor: 'pointer'}}
+                                            name='times'
+                                            style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '16px'}}
                                             color='#111'
-                                            size='lg'
                                             onClick={() => this.onRemoveItem(item)}
                                         />
-                                    </ListGroupItem>
-                                </React.Fragment>
+                                 </ListItem>
                             );
                         })}
-                    </ListGroup>
+                    </ListContainer>
                     }
                     <CustomContainer center><Pagination selectedIndex={this.state.currentPage - 1}
                                                         pages={this.state.pages}
