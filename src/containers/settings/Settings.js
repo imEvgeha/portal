@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {TabContent, TabPane} from 'reactstrap';
 import {
     // GroupHeader,
     ListElement,
@@ -7,28 +10,48 @@ import {
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
 import {EndpointContainer} from '../config/EndpointContainer';
-import {loadConfigAPIEndPoints} from '../config/service/ConfigService';
-import {TabContent, TabPane} from 'reactstrap';
+import {fetchConfigApiEndpoints} from './settingsActions';
 
-export default class Settings extends Component {
+class Settings extends Component {
+
+    static propTypes = {
+        fetchConfigApiEndpoints: PropTypes.func.isRequired,
+        configEndpoints: PropTypes.array,
+    };
+
+    static defaultProps = {
+        configEndpoints: null,
+    };
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.configEndpoints && props.configEndpoints.length > 0 && !state.selectedApi) {
+            return {
+                ...state,
+                selectedApi: props.configEndpoints[0],
+            };
+        }
+
+        return null;
+    }
 
     constructor(props) {
         super(props);
         this.state = {
-            configApiSchema: null,
-            selectedApi: null
+            selectedApi: null,
         };
-
-        loadConfigAPIEndPoints().then((response) => {
-            this.setState({configApiSchema: response.data, selectedApi: response.data['endpoints'] ? response.data['endpoints'][0] : null});
-        });
     }
 
-    onApiNavClick = (selectedApi) => {
-        this.setState({selectedApi: selectedApi});
-    };
+    componentDidMount() {
+        // TODO: if store settings (configEndpoints) is set don't dispatch action
+        this.props.fetchConfigApiEndpoints();
+    }
+
+    onApiNavClick = selectedApi => this.setState({selectedApi});
 
     render() {
+        const {configEndpoints} = this.props;
+        const {selectedApi} = this.state;
+
         return (
             <div>
                 <SideMenu primary>
@@ -43,23 +66,38 @@ export default class Settings extends Component {
                     <TextHeader>APIs</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                        {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
-                            <ListElement key={i} onClick={() => {
-                                this.onApiNavClick(e);
-                            }}>{e.displayName}</ListElement>
+                        {configEndpoints && configEndpoints.map(endpoint => (
+                            <ListElement 
+                                key={endpoint.url} 
+                                onClick={() => this.onApiNavClick(endpoint)}
+                            >
+                                {endpoint.displayName}
+                            </ListElement>
                         ))}
                     </ListParent>
                 </SideMenu>
 
-                <TabContent activeTab={this.state.selectedApi}>
-                    {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
-                        <TabPane key={i} tabId={e}>
-                            <EndpointContainer selectedApi={e}/>
+                <TabContent activeTab={selectedApi}>
+                    {configEndpoints && configEndpoints.map(endpoint => (
+                        <TabPane 
+                            key={endpoint.url} 
+                            tabId={endpoint}
+                        >
+                            <EndpointContainer selectedApi={endpoint}/>
                         </TabPane>
-                    ))
-                    }
+                    ))}
                 </TabContent>
             </div>
         );
     }
 }
+
+const mapStateToProps = ({settings}) => ({
+    configEndpoints: settings.configEndpoints,
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

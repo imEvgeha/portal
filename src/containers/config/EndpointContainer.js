@@ -172,7 +172,14 @@ export class EndpointContainer extends Component {
                         id='listContainer'
                     >
                         {this.state.data.map((item, i) => {
-                            let label = item[this.props.selectedApi.displayValueFieldName] || '[id = ' + item.id + ']';
+                        const result = this.props.selectedApi.displayValueFieldNames.reduce((acc, curr) => {
+                            let result;
+                            if (item[curr]) {
+                                result = [...acc, item[curr]];
+                            }
+                            return result;
+                        }, []);
+                        const label = (Array.isArray(result) && result.join(this.props.selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
                             return (
                                 <React.Fragment key={i}>
                                     <ListGroupItem key={i}>
