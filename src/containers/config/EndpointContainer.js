@@ -104,7 +104,7 @@ export class EndpointContainer extends Component {
             getConfigApiValues(this.props.selectedApi.urls['search'], page - 1, this.state.pageSize, null, searchField, searchValue)
                 .then((res) => {
                     this.setState({
-                        pages: Array.from({ length: (res.data.total / this.state.pageSize < 1 ? 1 : res.data.total / this.state.pageSize) }, (v, k) => k + 1),
+                        pages: Array.from({ length: Math.ceil(res.data.total / this.state.pageSize < 1 ? 1 : res.data.total / this.state.pageSize) }, (v, k) => k + 1),
                         data: res.data.data,
                         total: res.data.total,
                         isLoading: false,
