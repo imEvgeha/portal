@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {TabContent, TabPane} from 'reactstrap';
+import './settings.scss';
 import {
     // GroupHeader,
     ListElement,
@@ -39,6 +40,7 @@ class Settings extends Component {
         super(props);
         this.state = {
             selectedApi: null,
+            active: 0
         };
     }
 
@@ -47,11 +49,13 @@ class Settings extends Component {
         this.props.fetchConfigApiEndpoints();
     }
 
-    onApiNavClick = selectedApi => this.setState({selectedApi});
+    onApiNavClick = (selectedApi, index) => {
+        this.setState({selectedApi: selectedApi, active: index});
+    };
 
     render() {
         const {configEndpoints} = this.props;
-        const {selectedApi} = this.state;
+        const {selectedApi, active} = this.state;
 
         return (
             <div>
@@ -59,18 +63,19 @@ class Settings extends Component {
                     <TextHeader>Settings</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                        <ListElement>API Configuration</ListElement>
+                        <ListElement className="list-item">API Configuration</ListElement>
                     </ListParent>
                 </SideMenu>
 
-                <SideMenu>
+                <SideMenu isScrollable className="custom-scrollbar">
                     <TextHeader>APIs</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                        {configEndpoints && configEndpoints.map(endpoint => (
+                        {configEndpoints && configEndpoints.map((endpoint, i) => (
                             <ListElement 
+                                className={active === i ? 'list-item' : null} 
                                 key={endpoint.url} 
-                                onClick={() => this.onApiNavClick(endpoint)}
+                                onClick={() => this.onApiNavClick(endpoint, i)}
                             >
                                 {endpoint.displayName}
                             </ListElement>

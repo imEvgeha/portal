@@ -18,7 +18,8 @@ class EditableBaseComponent extends Component {
         onChange: t.func,
         priorityDisplay: t.any,
         showError: t.bool,
-        isArrayOfObject: t.bool
+        isArrayOfObject: t.bool,
+        onCancel: t.func
     };
 
     static defaultProps = {
