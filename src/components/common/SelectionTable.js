@@ -166,10 +166,10 @@ export class SelectionTable extends React.Component {
     }
 
     refreshColumns() {
-        let colDef = {
-            sel: defaultSelectionColDef
+        const colDef = {
+            'checkbox_sel': defaultSelectionColDef
         };
-        this.setState({colDef: colDef});
+        this.setState({colDef});
     }
 
     setTable(element) {
