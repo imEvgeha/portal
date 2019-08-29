@@ -4,8 +4,7 @@ import Http from '../../../util/Http';
 const http = Http.create({noDefaultErrorHandling: true});
 
 export const loadConfigAPIEndPoints = () => {
-    return http.get('/src/containers/settings/configApiEndpointsSchema.json'); // temporally solution with mock json data
-    // return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/endpoints');
+    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/endpoints');
 };
 
 export const configService = {

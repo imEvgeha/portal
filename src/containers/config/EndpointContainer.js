@@ -72,7 +72,9 @@ export class EndpointContainer extends Component {
     }
 
     componentDidMount() {
-        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName, this.state.searchValue);
+        const {selectedApi} = this.props;
+        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || []; 
+        this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', this.state.searchValue);
     }
 
     loadEndpointData = (page, searchField, searchValue) => {
@@ -98,7 +100,9 @@ export class EndpointContainer extends Component {
     };
 
     handleTitleFreeTextSearch = (searchValue) => {
-        this.loadEndpointData(1, this.props.selectedApi.displayValueFieldName, searchValue);
+        const {selectedApi} = this.props;
+        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || []; 
+        this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', searchValue);
     };
 
     onEditRecord(rec){
@@ -172,14 +176,15 @@ export class EndpointContainer extends Component {
                         id='listContainer'
                     >
                         {this.state.data.map((item, i) => {
-                        const result = this.props.selectedApi.displayValueFieldNames.reduce((acc, curr) => {
-                            let result;
-                            if (item[curr]) {
-                                result = [...acc, item[curr]];
-                            }
-                            return result;
-                        }, []);
-                        const label = (Array.isArray(result) && result.join(this.props.selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
+                            const {selectedApi = {}} = this.props;
+                            const result = selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames.reduce((acc, curr) => {
+                                let result = [...acc];
+                                if (item[curr]) {
+                                    result = [...acc, item[curr]];
+                                }
+                                return result;
+                            }, []);
+                            const label = (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
                             return (
                                 <React.Fragment key={i}>
                                     <ListGroupItem key={i}>

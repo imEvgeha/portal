@@ -11,6 +11,7 @@ import {
 } from '../../components/navigation/CustomNavigationElements';
 import {EndpointContainer} from '../config/EndpointContainer';
 import {fetchConfigApiEndpoints} from './settingsActions';
+import * as selectors from './settingsSelectors';
 
 class Settings extends Component {
 
@@ -92,12 +93,15 @@ class Settings extends Component {
     }
 }
 
-const mapStateToProps = ({settings}) => ({
-    configEndpoints: settings.configEndpoints,
-});
+const createMapStateToProps = () => {
+    const settingsConfigEndpointsSelector = selectors.createSettingsEndpointsSelector();
+    return (state, props) => ({
+        configEndpoints: settingsConfigEndpointsSelector(state, props),
+    });
+};
 
 const mapDispatchToProps = dispatch => ({
     fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(createMapStateToProps, mapDispatchToProps)(Settings);
