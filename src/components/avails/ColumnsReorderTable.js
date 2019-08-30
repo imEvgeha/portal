@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash.isequal';
 
 export default function withColumnsReorder(WrappedComponent){
     return class extends React.Component {
@@ -25,12 +26,13 @@ export default function withColumnsReorder(WrappedComponent){
         }
 
         componentDidUpdate(prevProps) {
-            // it is false always
-            if(prevProps.availsMapping !== this.props.availsMapping){
+            const {availsMapping, columnsOrder} = this.props;
+            if (Array.isArray(prevProps.availsMapping) && !isEqual(prevProps.availsMapping, availsMapping)) {
                 this.refreshColumns();
             }
-            if(prevProps.columnsOrder !== this.props.columnsOrder){
-                this.setState({columns: this.props.columnsOrder});
+
+            if (Array.isArray(prevProps.columnsOrder) && !isEqual(prevProps.columnsOrder, columnsOrder)) {
+                this.setState({columns: columnsOrder});
             }
         }
 
@@ -54,12 +56,13 @@ export default function withColumnsReorder(WrappedComponent){
             }
         }
 
-        refreshColumns(){
-            if(!this.props.columnsOrder){
-                let columns = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
-                this.setState({ columns: columns});
-                if(this.props.updateColumnsOrder){
-                    this.props.updateColumnsOrder(columns);
+        refreshColumns() {
+            const {columnsOrder, availsMapping, updateColumnsOrder} = this.props;
+            if (!columnsOrder) {
+                const columns = availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
+                this.setState({columns});
+                if (updateColumnsOrder) {
+                    updateColumnsOrder(columns);
                 }
             }
         }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
+import isEqual from 'lodash.isequal';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
 import withRightsResultsTable from './withRightsResultsTable';
 
@@ -29,11 +30,8 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                 maxConcurrentDatasourceRequests: '1',
                 datasource: props.autoload ? {rowCount: null, getRows: this.getRows} : null,
             };
-            const originalColDef = props.parseColumnsSchema((props.availsMapping && props.availsMapping.mappings) || []);
-            const colDef = {...props.colDef, ...originalColDef};
             this.state = {
-                originalColDef,
-                colDef,
+                colDef: props.colDef,
                 rowsProps,
                 cols: [],
                 pageSize: config.get('avails.page.size'),
@@ -42,22 +40,20 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
         }
 
         componentDidMount() {
-            // newColDef === colDef from constructor ?
-            const colDef = {...this.props.colDef, ...this.state.originalColDef};
+            const {colDef, refreshColumns} = this.props;
             this.setState({
-                colDef, 
-                cols: this.props.refreshColumns(colDef)
+                cols: refreshColumns(colDef)
             });
         }
 
         componentDidUpdate(prevProps) {
-            const {colDef, cols, columns, availTabPageLoading, refreshColumns} = this.props;
-            const {originalColDef, table} = this.state;
-            if (prevProps.colDef !== colDef || prevProps.cols !== cols || prevProps.columns !== columns){
-                const newColDef = {...colDef, ...originalColDef};
+            const {colDef, columns, availTabPageLoading, refreshColumns} = this.props;
+            const {table} = this.state;
+
+            if (!isEqual(prevProps.colDef, colDef) || !isEqual(prevProps.columns, columns)) {
                 this.setState({
-                    colDef: newColDef, 
-                    cols: refreshColumns(newColDef)
+                    colDef, 
+                    cols: refreshColumns(colDef)
                 });
             }
 

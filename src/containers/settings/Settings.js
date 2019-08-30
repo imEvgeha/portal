@@ -1,4 +1,8 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {TabContent, TabPane} from 'reactstrap';
+import './settings.scss';
 import {
     // GroupHeader,
     ListElement,
@@ -7,23 +11,42 @@ import {
     TextHeader
 } from '../../components/navigation/CustomNavigationElements';
 import {EndpointContainer} from '../config/EndpointContainer';
-import {loadConfigAPIEndPoints} from '../config/service/ConfigService';
-import {TabContent, TabPane} from 'reactstrap';
-import './settings.scss';
+import {fetchConfigApiEndpoints} from './settingsActions';
+import * as selectors from './settingsSelectors';
 
-export default class Settings extends Component {
+class Settings extends Component {
+
+    static propTypes = {
+        fetchConfigApiEndpoints: PropTypes.func.isRequired,
+        configEndpoints: PropTypes.array,
+    };
+
+    static defaultProps = {
+        configEndpoints: null,
+    };
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.configEndpoints && props.configEndpoints.length > 0 && !state.selectedApi) {
+            return {
+                ...state,
+                selectedApi: props.configEndpoints[0],
+            };
+        }
+
+        return null;
+    }
 
     constructor(props) {
         super(props);
         this.state = {
-            configApiSchema: null,
             selectedApi: null,
             active: 0
         };
+    }
 
-        loadConfigAPIEndPoints().then((response) => {
-            this.setState({configApiSchema: response.data, selectedApi: response.data['endpoints'] ? response.data['endpoints'][0] : null});
-        });
+    componentDidMount() {
+        // TODO: if store settings (configEndpoints) is set don't dispatch action
+        this.props.fetchConfigApiEndpoints();
     }
 
     onApiNavClick = (selectedApi, index) => {
@@ -31,6 +54,9 @@ export default class Settings extends Component {
     };
 
     render() {
+        const {configEndpoints} = this.props;
+        const {selectedApi, active} = this.state;
+
         return (
             <div>
                 <SideMenu primary>
@@ -45,18 +71,25 @@ export default class Settings extends Component {
                     <TextHeader>APIs</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                        {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
-                            <ListElement key={i} className={this.state.active === i ? 'list-item' : null} onClick={() => {
-                                this.onApiNavClick(e, i);
-                            }}>{e.displayName}</ListElement>
+                        {configEndpoints && configEndpoints.map((endpoint, i) => (
+                            <ListElement 
+                                className={active === i ? 'list-item' : null} 
+                                key={endpoint.url} 
+                                onClick={() => this.onApiNavClick(endpoint, i)}
+                            >
+                                {endpoint.displayName}
+                            </ListElement>
                         ))}
                     </ListParent>
                 </SideMenu>
 
-                <TabContent activeTab={this.state.selectedApi}>
-                    {this.state.configApiSchema && this.state.configApiSchema['endpoints'].map((e, i) => (
-                        <TabPane key={i} tabId={e}>
-                            <EndpointContainer selectedApi={e}/>
+                <TabContent activeTab={selectedApi}>
+                    {configEndpoints && configEndpoints.map(endpoint => (
+                        <TabPane 
+                            key={endpoint.url} 
+                            tabId={endpoint}
+                        >
+                            <EndpointContainer selectedApi={endpoint}/>
                         </TabPane>
                     ))}
                 </TabContent>
@@ -64,3 +97,16 @@ export default class Settings extends Component {
         );
     }
 }
+
+const createMapStateToProps = () => {
+    const settingsConfigEndpointsSelector = selectors.createSettingsEndpointsSelector();
+    return (state, props) => ({
+        configEndpoints: settingsConfigEndpointsSelector(state, props),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
+});
+
+export default connect(createMapStateToProps, mapDispatchToProps)(Settings); // eslint-disable-line
