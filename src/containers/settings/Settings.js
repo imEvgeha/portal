@@ -109,4 +109,4 @@ const mapDispatchToProps = dispatch => ({
     fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(Settings);
+export default connect(createMapStateToProps, mapDispatchToProps)(Settings); // eslint-disable-line
