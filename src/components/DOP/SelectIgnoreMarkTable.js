@@ -1,11 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import isEqual from 'lodash.isequal';
 import {updatePromotedRights} from '../../stores/actions/DOP';
 import {defaultSelectionColDef, SelectionTable} from '../common/SelectionTable';
 import CheckBoxHeaderInternal from './elements/CheckBoxHeaderInternal';
 import selectIgnoreCell from './elements/SelectIgnoreCell';
 import SelectPlanTerritoryRenderer from './elements/SelectPlanTerritoryRenderer';
 import SelectPlanTerritoryEditor from './elements/SelectPlanTerritoryEditor';
+import withRightsResultsTable from './withRightsResultsTable';
 
 export default function withSelectIgnoreMark(WrappedComponent) {
     // anti-pattern: we should use composition not inheritance inside React apps
@@ -23,6 +25,12 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                 return {
                     ...state,
                     columns: [...new Set(['checkbox_sel', 'select_ignore_sel', 'plan_territory', ...props.columns])],
+                };
+            }
+            if (!isEqual(props.columns, state.columns)) {
+                return {
+                    ...state,
+                    columns: props.columns,
                 };
             }
             return null;
@@ -47,7 +55,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         // TODO - create HOC to dynamically add column (including it position inside table) 
         // Bug - this method is called twice 
         refreshColumns() {
-            const {updatePromotedRights} = this.props;
+            const {updatePromotedRights, parseColumnsSchema, availsMapping} = this.props;
+            const originalColDef = parseColumnsSchema((availsMapping && availsMapping.mappings) || []);
             const colDef = {
                 checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
                 select_ignore_sel: {
@@ -65,8 +74,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                 plan_territory: {
                     headerName: 'Plan Territory',
                     field: 'plan_territory',
-                    pinned: 'left',
-                    width: 200,
+                    width: 250,
                     cellRenderer: 'selectPlanTerritory',
                     cellEditorFramework: SelectPlanTerritoryEditor,
                     cellEditorParams: {
@@ -76,6 +84,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     cellStyle: {height: '100%'},
                     editable: true,
                 },
+                ...originalColDef,
             };
             this.setState({colDef});
         }
@@ -148,7 +157,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         }
     }
 
-    const mapStateToProps = ({dopReducer}) => ({
+    const mapStateToProps = ({dopReducer, root}) => ({
+        availsMapping: root.availsMapping,
         promotedRights: dopReducer.session.promotedRights,
     });
 
@@ -156,5 +166,5 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
     });
 
-    return connect(mapStateToProps, mapDispatchToProps)(ComposedComponent);
+    return connect(mapStateToProps, mapDispatchToProps)(withRightsResultsTable(ComposedComponent));
 }
