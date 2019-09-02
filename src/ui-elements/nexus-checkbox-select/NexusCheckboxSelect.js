@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Select from "@atlaskit/select";
+import Select from '@atlaskit/select';
 import NexusCheckboxSelectOption from './elements/NexusCheckboxSelectOption';
 import NexusCheckboxSelectValueContainer from './elements/NexusCheckboxSelectValueContainer';
 
 const selectAll = {
-    label: "Select All",
-    value: "*"
+    label: 'Select All',
+    value: '*'
 };
 
 const NexusCheckboxSelect = ({
@@ -24,7 +24,7 @@ const NexusCheckboxSelect = ({
     }, options.length);
 
     const onChange = (values, event) => {
-        if (event.action === "select-option") {
+        if (event.action === 'select-option') {
             if (event.option && event.option.value === selectAll.value) {
                 const result = optionList.filter(el => !el.isDisabled);
                 setValues(optionList.filter(el => !el.isDisabled));
@@ -41,7 +41,7 @@ const NexusCheckboxSelect = ({
                 return;
             }
         }
-        if (event.action === "deselect-option") {
+        if (event.action === 'deselect-option') {
             if (event.option && event.option.value === selectAll.value) {
                 setValues([]);
                 if (typeof onCheckboxSelectChange === 'function') {
@@ -50,7 +50,7 @@ const NexusCheckboxSelect = ({
                 return;
             }
         }
-        const filteredValues = values.filter(val => val.value !== selectAll.value)
+        const filteredValues = values.filter(val => val.value !== selectAll.value);
         setValues(filteredValues);
         if (typeof onCheckboxSelectChange === 'function') {
             onCheckboxSelectChange(filteredValues);
@@ -73,7 +73,7 @@ const NexusCheckboxSelect = ({
             }}
             placeholder={placeholder}
         />
-    )
+    );
 };
 
 NexusCheckboxSelect.propTypes = {
@@ -88,6 +88,6 @@ NexusCheckboxSelect.defaultProps = {
     options: [],
     onCheckboxSelectChange: null,
     placeholder: 'Select',
-}
+};
 
 export default NexusCheckboxSelect;

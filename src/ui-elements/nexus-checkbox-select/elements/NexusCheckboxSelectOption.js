@@ -1,10 +1,9 @@
-import React, {useState} from "react";
-import {components} from "react-select";
-import {themed} from "@atlaskit/theme/components";
-import {gridSize} from "@atlaskit/theme/constants";
-import * as colors from "@atlaskit/theme/colors";
-import CheckboxIcon from "@atlaskit/icon/glyph/checkbox";
-import CheckboxIconIndeterminate from "@atlaskit/icon/glyph/checkbox-indeterminate";
+import React, {useState} from 'react';
+import {themed} from '@atlaskit/theme/components';
+import {gridSize} from '@atlaskit/theme/constants';
+import * as colors from '@atlaskit/theme/colors';
+import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
+import CheckboxIconIndeterminate from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import './NexusCheckboxSelectOption.scss';
 
 // CheckboxSelect atlaskit package as components prop has {...components, Option: CheckboxOption}
@@ -19,26 +18,26 @@ const getPrimitiveStyles = props => {
     const { cx, className, getStyles, isDisabled, isFocused, isSelected } = props;
 
     const styles = {
-        alignItems: "center",
-        backgroundColor: isFocused ? colors.N30 : "transparent",
-        color: "inherit",
-        display: "flex",
-        flexDirection: "row",
+        alignItems: 'center',
+        backgroundColor: isFocused ? colors.N30 : 'transparent',
+        color: 'inherit',
+        display: 'flex',
+        flexDirection: 'row',
         paddingBottom: 4,
         paddingLeft: `${gridSize() * 2}px`,
         paddingTop: 4,
 
-        ":active": {
+        ':active': {
             backgroundColor: colors.B50
         }
     };
 
-    const augmentedStyles = { ...getStyles("option", props), ...styles };
+    const augmentedStyles = { ...getStyles('option', props), ...styles };
     const bemClasses = {
         option: true,
-        "option--is-disabled": isDisabled,
-        "option--is-focused": isFocused,
-        "option--is-selected": isSelected
+        'option--is-disabled': isDisabled,
+        'option--is-focused': isFocused,
+        'option--is-selected': isSelected
     };
 
     // maintain react-select API
@@ -47,7 +46,7 @@ const getPrimitiveStyles = props => {
 
 // maintains function shape
 const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
-const transparent = themed({ light: "transparent", dark: "transparent" });
+const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
 // the primary color represents the outer or background element
 const getPrimaryColor = ({

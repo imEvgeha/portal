@@ -16,8 +16,7 @@ class SelectPlanTerritoryEditor extends Component {
 
     constructor(props) {
         super(props);
-        const right = props.getPromotedRights()
-            .find(el => el.rightId === (props.node && props.node.id));
+        const right = props.getPromotedRights().find(el => el.rightId === (props.node && props.node.id));
         const value = (right && right.territories && right.territories
             .map(el => {
                 return {
@@ -50,17 +49,14 @@ class SelectPlanTerritoryEditor extends Component {
     }
 
     onCheckboxSelect = values => {
-        console.error(values, 'values ')
         const {updatePromotedRights, getPromotedRights, node} = this.props;
         const territories = values.map(el => el.value);
         let updatedRights = getPromotedRights().filter(right => right.rightId !== node.data.id);
-        console.error(getPromotedRights(), updatedRights, node.data.id);
         if (territories.length > 0) {
-            const updatedRight = {
-                rightId: node.data.id,
-                territories,
-            };
-            updatedRights = [...updatedRights, updatedRight];    
+            updatedRights = [
+                ...updatedRights, 
+                {rightId: node.data.id, territories}
+            ];    
         }
         return updatePromotedRights(updatedRights); 
     } 
@@ -86,6 +82,6 @@ class SelectPlanTerritoryEditor extends Component {
             ) : null
         );
     }
-};
+}
 
 export default SelectPlanTerritoryEditor;
