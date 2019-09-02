@@ -38,8 +38,8 @@ class SelectIgnoreCell extends Component {
 
     onPromoteClick = () => {
         const {updatePromotedRights, promotedRights, node} = this.props;
-        const territories = (node && node.data && node.data.territory && node.data.territory.map(el => el.country)) || [];
-        const promotableTerritories = territories.filter(el => el && !el.selected);
+        const promotableTerritoriesObject = (node && node.data && node.data.territory && node.data.territory.filter(el => el.country && !el.selected)) || [];
+        const promotableTerritories = promotableTerritoriesObject.map(el => el.country);
         if (this.isPromoted()) {
             return updatePromotedRights(promotedRights.filter(e => e.rightId !== node.id));
         } 
