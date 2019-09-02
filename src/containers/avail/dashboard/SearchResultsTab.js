@@ -178,12 +178,19 @@ class SearchResultsTab extends React.Component {
 
     storeData(response){
         store.dispatch(resultPageLoading(false));
-        if(response.data.page === 0){
+        if(response && response.data && response.data.page === 0){
             store.dispatch(resultPageUpdate({
                 pages: 1,
                 avails: response.data.data,
                 pageSize: response.data.data.length,
                 total: response.data.total
+            }));
+        }else{
+            store.dispatch(resultPageUpdate({
+                pages: 0,
+                avails: [],
+                pageSize: 1,
+                total: 0
             }));
         }
     }
