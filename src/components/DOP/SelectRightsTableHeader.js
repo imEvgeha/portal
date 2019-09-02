@@ -1,6 +1,6 @@
 import React from 'react';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {updatePromotedRights, updateUseSelectedTerritories} from '../../stores/actions/DOP';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Tooltip} from 'reactstrap';
+import {updatePromotedRights, updateSelectedTerritories, updateUseSelectedTerritories} from '../../stores/actions/DOP';
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {rightsService} from '../../containers/avail/service/RightsService';
@@ -9,6 +9,8 @@ import {colors} from '@atlaskit/theme';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import ToggleButton from 'react-toggle-button';
 import UserTerritoriesModal from './elements/UserTerritoriesModal';
+import union from 'lodash.union';
+import {DeleteButton, TerritoryTag} from './elements/TerritoryItem';
 
 export default function withSelectRightHeader(SelectRightHeaderWrappedComponent) {
     return (props) => <SelectRightsTableHeader
@@ -52,13 +54,15 @@ export class SelectRightsTableHeader extends React.Component {
 let mapStateToProps = state => {
     return {
         promotedRights: state.dopReducer.session.promotedRights,
+        selectedTerritories: state.dopReducer.session.selectedTerritories,
         useSelectedTerritories: state.dopReducer.session.useSelectedTerritories
     };
 };
 
 let mapDispatchToProps = {
     updatePromotedRights,
-    updateUseSelectedTerritories
+    updateUseSelectedTerritories,
+    updateSelectedTerritories
 };
 
 const IconExplorerLink = styled.a`
@@ -85,15 +89,18 @@ class TableHeader extends React.Component {
         table: t.object,
         promotedRights: t.array,
         updatePromotedRights: t.func,
+        selectedTerritories: t.array,
         useSelectedTerritories: t.bool,
         updateUseSelectedTerritories: t.func,
+        updateSelectedTerritories: t.func
     };
 
     constructor(props) {
         super(props);
         this.state = {
             dropdownOpen: false,
-            isUserTerritoriesModalOpen: false
+            isUserTerritoriesModalOpen: false,
+            isOpenTooltip: false
         };
     }
 
@@ -102,6 +109,12 @@ class TableHeader extends React.Component {
             dropdownOpen: !prevState.dropdownOpen
         }));
     };
+
+    toggleTooltip = () => {
+        this.setState(prevState => ({
+            isOpenTooltip: !prevState.isOpenTooltip
+        }));
+    }
 
     isPromoted = (node) => {
         return this.props.promotedRights.findIndex(e => e.rightId === node.data.id) > -1;
@@ -118,13 +131,23 @@ class TableHeader extends React.Component {
             const isPromotable = this.getPromotableStatus(node);
             if (isPromotable && !this.isPromoted(node)) {
                 const territories = (node && node.data && node.data.territory) || [];
-                const selectableTerritories = territories.filter(({country, selected}) => !selected && country) || [];
-                const territoryNameList = selectableTerritories.map(el => el.country);
-                toPromote.push({rightId: node.id, territories: territoryNameList});
+                const newTerritories = this.getTerritoriesWithUserSelected(territories);
+
+                toPromote.push({rightId: node.id, territories: newTerritories});
             }
         });
 
         updatePromotedRights([...promotedRights, ...toPromote]);
+    };
+
+    getTerritoriesWithUserSelected = (territories) => {
+        const selectableTerritories = territories.filter(({country, selected}) => !selected && country) || [];
+        let newTerritories = selectableTerritories.map(el => el.country);
+        if (this.props.useSelectedTerritories) {
+            const userSelectedTerritoryList = this.props.selectedTerritories.map((el => el.countryCode));
+            newTerritories = union(newTerritories, userSelectedTerritoryList);
+        }
+        return newTerritories;
     };
 
     onBulkUnPromote = () => {
@@ -171,6 +194,11 @@ class TableHeader extends React.Component {
         this.setState({ isUserTerritoriesModalOpen: !this.state.isUserTerritoriesModalOpen });
     };
 
+    onRemoveSelectedTerritory = (territory) => {
+        let filteredTerritories = this.props.selectedTerritories.filter(el => el.id !== territory.id);
+        this.props.updateSelectedTerritories(filteredTerritories);
+    };
+
     render() {
         return (
             <div style={{marginLeft: '20px', marginBottom: '10px', display: 'flex', paddingLeft: '10px', paddingRight: '10px',  justifyContent: 'space-between'}}>
@@ -188,14 +216,23 @@ class TableHeader extends React.Component {
                     </DropdownMenu>
                 </Dropdown>
 
-                <div style={{ display: 'flex', alignItems: 'center', verticalAlign: 'middle'}}>
+                <div id='selectedUserTerritories' style={{ display: 'flex', alignItems: 'center', verticalAlign: 'middle'}}>
                     <span >User Territories: </span>
                     <IconExplorerLink onClick={this.toggleModal}>
                         <ShortcutIcon  size='small'/>
                     </IconExplorerLink>
+                    <Tooltip style={{background: '#ffffff', border: '1px solid #000', weight:'100px'}} target='selectedUserTerritories' autohide={false} placement='bottom' isOpen={this.state.isOpenTooltip} toggle={this.toggleTooltip}>
+                        <div style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: '2px', marginBottom: '2px'}}>
+                            {this.props.selectedTerritories.map((e, index) => {
+                                return (
+                                    <TerritoryTag key={index}>{e.countryName} <DeleteButton onClick={() => this.onRemoveSelectedTerritory(e)}>&times;</DeleteButton> </TerritoryTag>
+                                );
+                            })}
+                        </div>
+                    </Tooltip>
                     <ToggleButton
                         value={ this.props.useSelectedTerritories }
-                        onToggle={(useSelectedTerritories) => this.props.updateUseSelectedTerritories(useSelectedTerritories)} />
+                        onToggle={(useSelectedTerritories) => this.props.updateUseSelectedTerritories(!useSelectedTerritories)} />
 
                     <UserTerritoriesModal isOpen={this.state.isUserTerritoriesModalOpen} toggle={this.toggleModal}/>
 

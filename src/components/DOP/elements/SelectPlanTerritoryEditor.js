@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import t from 'prop-types';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Option from './MultiSelectOption'; // need Option as a name inside react select components prop
+import union from 'lodash.union';
 
 class SelectPlanTerritoryEditor extends Component {
     static propTypes = {
         node: t.object,
         getPromotedRights: t.func.isRequired,
         updatePromotedRights: t.func,
+        selectedTerritories: t.array,
+        useSelectedTerritories: t.bool
     };
 
     static defaultProps = {
@@ -63,7 +66,8 @@ class SelectPlanTerritoryEditor extends Component {
     handleAllSelectButtonClick = (action, updatePromotedRights, filteredPromotedRights) => {
         const {node} = this.props;
         const selectableOptions = [this.allOption, ...this.getOptions(node && node.data && node.data.territory).filter(option => !option.selected)];
-        const values = selectableOptions.map(option => option.value);
+        const values = this.getTerritoriesWithUserSelected(selectableOptions);
+
         this.setState({
             value: action === 'select-option' ? selectableOptions : [],
         }, () => {
@@ -79,6 +83,8 @@ class SelectPlanTerritoryEditor extends Component {
 
     handleSelectClick = (value, updatePromotedRights, filteredPromotedRights) => {
         const {node} = this.props;
+        let territories = this.getTerritoriesWithUserSelected(value);
+
         this.setState(() => {
             const isAllSelected = this.isAllSelectableItemsSelected(value);
             return {
@@ -88,7 +94,7 @@ class SelectPlanTerritoryEditor extends Component {
             if (value.length > 0) {
                 return updatePromotedRights([
                     ...filteredPromotedRights,
-                    {rightId: node.id, territories: value.map(el => el.value)}
+                    {rightId: node.id, territories: territories}
                 ]);
             }
             updatePromotedRights(filteredPromotedRights);
@@ -129,6 +135,14 @@ class SelectPlanTerritoryEditor extends Component {
 
         return result || [];
     }
+
+    getTerritoriesWithUserSelected = (values) => {
+        let territories = values.map(el => el.value);
+        if (this.props.useSelectedTerritories) {
+            territories = union(territories, this.props.selectedTerritories.map(el => el.countryCode));
+        }
+        return territories;
+    };
 
     render() {
         const {node} = this.props;

@@ -10,7 +10,8 @@ import {INPUT_TIMEOUT} from '../../../constants/common-ui';
 import {configFields} from '../../../containers/metadata/service/ConfigService';
 import {QuickSearch} from '@atlaskit/quick-search';
 import {Checkbox} from '@atlaskit/checkbox';
-import styled from 'styled-components';
+import {DeleteButton, TerritoryTag} from './TerritoryItem';
+import union from 'lodash.union';
 
 let mapStateToProps = state => {
     return {
@@ -23,26 +24,6 @@ let mapDispatchToProps = {
 };
 
 const pageSize = 1000;
-
-const TerritoryTag = styled.div`
-    padding: 10px;
-    border: 1px solid #EEE;
-    color: #111;
-    font-weight: bold;
-    display: inline-block;
-    margin-right: 2px;
-    font-size: 14px;
-    margin-top: 2px;
-`;
-
-const DeleteButton = styled.div`
-    color: #c0392b;
-    display: inline-block;
-    cursor: pointer;
-    &:hover {
-        color: #e74c3c;
-    }
-`;
 
 class UserTerritoriesModal extends React.Component {
 
@@ -59,7 +40,7 @@ class UserTerritoriesModal extends React.Component {
             searchValue: null,
             configTerritories: [],
             isLoading: false,
-            selectedTerritories: this.props.selectedTerritories
+            tempSelectedTerritories: []
         };
 
         this.keyInputTimeout = 0;
@@ -85,35 +66,56 @@ class UserTerritoriesModal extends React.Component {
     };
 
     onRemoveSelected = (territory) => {
-        let newSelectedTerritories = this.state.selectedTerritories.filter(e => e.id !== territory.id);
+        let newSelectedTerritories = this.getSelectedTerritories().filter(e => e.id !== territory.id);
         this.setState({
-            selectedTerritories: newSelectedTerritories
+            tempSelectedTerritories: newSelectedTerritories
         });
     };
 
     onCheckBoxClick = (event) => {
         let territory = JSON.parse(event.target.value);
-        let newSelectedTerritories = this.state.selectedTerritories.filter(e => e.id !== territory.id);
+        let newSelectedTerritories = this.getSelectedTerritories().filter(e => e.id !== territory.id);
         if (event.target.checked) {
             newSelectedTerritories.push(territory);
         }
         this.setState({
-            selectedTerritories: newSelectedTerritories
+            tempSelectedTerritories: newSelectedTerritories
         });
     };
 
     isTerritoryChecked = (territory) => {
-        return this.state.selectedTerritories.findIndex(e => e.id === territory.id) > -1;
+        return this.getSelectedTerritories().findIndex(e => e.id === territory.id) > -1;
     };
 
     onSave = () => {
-        this.props.updateSelectedTerritories(this.state.selectedTerritories);
-        this.props.toggle();
+        this.props.updateSelectedTerritories(this.getSelectedTerritories());
+        this.toggle();
     };
 
+    getCheckbox = (c, index) => {
+        return (<Checkbox
+            key={index}
+            isChecked={this.isTerritoryChecked(c)}
+            value={JSON.stringify(c)}
+            label={c.countryName}
+            onChange={this.onCheckBoxClick}
+        />);
+    };
+    
+    getSelectedTerritories = () => {
+        return union(this.props.selectedTerritories, this.state.tempSelectedTerritories);
+    };
+
+    toggle = () => {
+        this.props.toggle();
+        this.setState({
+            tempSelectedTerritories: []
+        });
+    };
+    
     render() {
         return (
-            <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
+            <Modal isOpen={this.props.isOpen} toggle={this.toggle}>
                 <ModalHeader toggle={this.props.toggle}>User Territories</ModalHeader>
                 <ModalBody>
                     <div style={{display: 'flex', flexDirection: 'column', padding: '5px'}}>
@@ -122,14 +124,14 @@ class UserTerritoriesModal extends React.Component {
                         <span>Notice: You can manually change this per right</span>
 
                         <div style={{flexWrap: 'wrap', marginTop: '10px', marginBottom: '10px'}}>
-                            {this.state.selectedTerritories.map((e, index) => {
+                            {this.getSelectedTerritories().map((e, index) => {
                                 return (
                                     <TerritoryTag key={index}>{e.countryName} <DeleteButton onClick={() => this.onRemoveSelected(e)}>&times;</DeleteButton> </TerritoryTag>
                                 );
                             })}
                         </div>
 
-                        <div style={{marginTop: '10px', marginBottom: '10px'}}>
+                        <div style={{marginTop: '10px', marginBottom: '20px'}}>
                             <QuickSearch
                                 isLoading={this.state.isLoading}
                                 onSearchInput={({target}) => {
@@ -142,28 +144,14 @@ class UserTerritoriesModal extends React.Component {
                         <div style={{
                             display: 'flex',
                             height: '100px',
-                            overflowY: this.state.configTerritories.length > 3 ? 'scroll' : ''
+                            overflowY: this.state.configTerritories.length > 6 ? 'scroll' : ''
                         }}>
                             <div>{this.state.configTerritories.map((c, index) => {
-                                if(index % 2 === 0) return (<Checkbox
-                                    key={index}
-                                    isChecked={this.isTerritoryChecked(c)}
-                                    value={JSON.stringify(c)}
-                                    label={c.countryName}
-                                    onChange={this.onCheckBoxClick}
-                                />
-                                );
+                                if(index % 2 === 0) return this.getCheckbox(c, index);
                             })}
                             </div>
                             <div>{this.state.configTerritories.map((c, index) => {
-                                if(index % 2 !== 0) return (<Checkbox
-                                        key={index}
-                                        isChecked={this.isTerritoryChecked(c)}
-                                        value={JSON.stringify(c)}
-                                        label={c.countryName}
-                                        onChange={this.onCheckBoxClick}
-                                    />
-                                );
+                                if(index % 2 !== 0) return this.getCheckbox(c, index);
                             })}
                             </div>
                         </div>
@@ -172,7 +160,7 @@ class UserTerritoriesModal extends React.Component {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={this.onSave}>Save</Button>
-                    <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         );
