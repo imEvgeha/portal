@@ -1,0 +1,17 @@
+.nexus-checkbox-select {
+
+}
+
+.nexus-checkbox-select__checkbox {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    padding-right: 4px;
+}
+
+.nexus-checkbox-select__text {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    flex-grow: 1;
+    white-space: nowrap;
+}
