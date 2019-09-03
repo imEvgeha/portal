@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import {TextHeader} from '../../components/navigation/CustomNavigationElements';
-import {INPUT_TIMEOUT} from '../../constants/common-ui';
-import {configService} from './service/ConfigService';
-import {getConfigApiValues} from '../../common/CommonConfigService';
 import FontAwesome from 'react-fontawesome';
 import styled, { css } from 'styled-components';
 import Pagination from '@atlaskit/pagination';
-import { QuickSearch } from '@atlaskit/quick-search';
+import {QuickSearch} from '@atlaskit/quick-search';
 import { TextHeader } from '../../components/navigation/CustomNavigationElements';
 import { INPUT_TIMEOUT } from '../../constants/common-ui';
 import { configService } from './service/ConfigService';
