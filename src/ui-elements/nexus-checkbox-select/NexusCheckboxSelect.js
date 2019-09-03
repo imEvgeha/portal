@@ -21,7 +21,7 @@ const NexusCheckboxSelect = ({
         if (defaultValues.length === options.filter(el => !el.isDisabled).length) {
             setValues([...values, selectAll]);
         }
-    }, options.length);
+    }, []);
 
     const onChange = (values, event) => {
         if (event.action === 'select-option') {
