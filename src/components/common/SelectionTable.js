@@ -18,6 +18,8 @@ export class SelectionTable extends React.Component {
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
 
+        const uniqueColumns = props.columns ? [...new Set(['checkbox_sel', ...props.columns])] : ['checkbox_sel'];
+
         this.state = {
             rowsProps: this.props.rowsProps,
             table: null,
@@ -25,7 +27,7 @@ export class SelectionTable extends React.Component {
             selected: this.props.availTabPageSelection && this.props.availTabPageSelection.selected ? this.props.availTabPageSelection.selected : [],
             selectAll: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectAll : false,
             selectNone: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectNone : true,
-            columns: this.props.columns ? ['sel'].concat(this.props.columns) : ['sel']
+            columns: uniqueColumns,
         };
 
         this.registeredOnSelect = false;
@@ -43,7 +45,7 @@ export class SelectionTable extends React.Component {
             this.refreshColumns();
         }
         if (prevProps.columns !== this.props.columns) {
-            this.setState({columns: ['checkbox_sel'].concat(this.props.columns)});
+            this.setState({columns: [...new Set(['checkbox_sel', ...this.props.columns])]});
         }
 
         if (prevProps.availTabPageSelection !== this.props.availTabPageSelection) {
@@ -164,10 +166,10 @@ export class SelectionTable extends React.Component {
     }
 
     refreshColumns() {
-        let colDef = {
-            sel: defaultSelectionColDef
+        const colDef = {
+            'checkbox_sel': defaultSelectionColDef
         };
-        this.setState({colDef: colDef});
+        this.setState({colDef});
     }
 
     setTable(element) {
