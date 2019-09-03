@@ -2,6 +2,8 @@ import React from 'react';
 import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
 import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';
+// import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import RepeatingFormField from './Repeats';
 import RepeatingField from './RepeatsPrimitives';
@@ -95,15 +97,23 @@ export default class CreateEditConfigForm extends React.Component {
 
     render() {
         return (
-            <Form renderer = {renderer}
-                  defaultFields={this.props.schema}
-                  optionsHandler={this.optionsHandler}
-                  value = {this.state.value}
-                  onChange = {(value) => this.setState({value: value})}
-            >
-                <Button onClick={this.props.onCancel}>Cancel</Button>
-                <FormButton onClick={this.props.onSubmit}/>
-            </Form>
+                <Modal isOpen={!!this.props.value} toggle={this.props.onCancel}>
+                <ModalHeader toggle={this.props.onCancel}>Modal title</ModalHeader>
+                <ModalBody>
+                <Form 
+                        renderer = {renderer}
+                        defaultFields={this.props.schema}
+                        optionsHandler={this.optionsHandler}
+                        value = {this.state.value}
+                        onChange = {(value) => this.setState({value: value})}
+                    >
+                    </Form>
+                </ModalBody>
+                <ModalFooter>
+                    <Button onClick={this.props.onCancel}>Cancel</Button>
+                    <FormButton onClick={this.props.onSubmit}/>
+                </ModalFooter>
+                </Modal>
         );
     }
 }
