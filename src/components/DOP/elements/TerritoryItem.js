@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 export const TerritoryTag = styled.div`
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #EEE;
     color: #111;
     font-weight: bold;
     display: inline-block;
     margin-right: 2px;
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 2px;
 `;
 

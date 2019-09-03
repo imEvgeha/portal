@@ -11,17 +11,6 @@ import {configFields} from '../../../containers/metadata/service/ConfigService';
 import {QuickSearch} from '@atlaskit/quick-search';
 import {Checkbox} from '@atlaskit/checkbox';
 import {DeleteButton, TerritoryTag} from './TerritoryItem';
-import union from 'lodash.union';
-
-let mapStateToProps = state => {
-    return {
-        selectedTerritories: state.dopReducer.session.selectedTerritories
-    };
-};
-
-let mapDispatchToProps = {
-    updateSelectedTerritories
-};
 
 const pageSize = 1000;
 
@@ -44,7 +33,21 @@ class UserTerritoriesModal extends React.Component {
         };
 
         this.keyInputTimeout = 0;
+    }
+
+    componentDidMount() {
         this.loadTerritoriesData();
+        this.setState({
+            tempSelectedTerritories: this.props.selectedTerritories
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.selectedTerritories !== prevProps.selectedTerritories) {
+            this.setState({
+                tempSelectedTerritories: this.props.selectedTerritories
+            });
+        }
     }
 
     loadTerritoriesData = (searchValue) => {
@@ -66,30 +69,29 @@ class UserTerritoriesModal extends React.Component {
     };
 
     onRemoveSelected = (territory) => {
-        let newSelectedTerritories = this.getSelectedTerritories().filter(e => e.id !== territory.id);
+        const tempSelectedTerritories = this.state.tempSelectedTerritories.filter(e => e.id !== territory.id);
         this.setState({
-            tempSelectedTerritories: newSelectedTerritories
+            tempSelectedTerritories
         });
     };
 
     onCheckBoxClick = (event) => {
-        let territory = JSON.parse(event.target.value);
-        let newSelectedTerritories = this.getSelectedTerritories().filter(e => e.id !== territory.id);
-        if (event.target.checked) {
-            newSelectedTerritories.push(territory);
-        }
+        const territory = JSON.parse(event.target.value);
+        const newSelectedTerritories = this.state.tempSelectedTerritories.filter(e => e.id !== territory.id);
+        const tempSelectedTerritories = event.target.checked ? [...newSelectedTerritories, territory] : newSelectedTerritories;
+
         this.setState({
-            tempSelectedTerritories: newSelectedTerritories
+            tempSelectedTerritories
         });
     };
 
     isTerritoryChecked = (territory) => {
-        return this.getSelectedTerritories().findIndex(e => e.id === territory.id) > -1;
+        return this.state.tempSelectedTerritories.findIndex(e => e.id === territory.id) > -1;
     };
 
     onSave = () => {
-        this.props.updateSelectedTerritories(this.getSelectedTerritories());
-        this.toggle();
+        this.props.updateSelectedTerritories(this.state.tempSelectedTerritories);
+        this.props.toggle();
     };
 
     getCheckbox = (c, index) => {
@@ -101,15 +103,11 @@ class UserTerritoriesModal extends React.Component {
             onChange={this.onCheckBoxClick}
         />);
     };
-    
-    getSelectedTerritories = () => {
-        return union(this.props.selectedTerritories, this.state.tempSelectedTerritories);
-    };
 
     toggle = () => {
         this.props.toggle();
         this.setState({
-            tempSelectedTerritories: []
+            tempSelectedTerritories: this.props.selectedTerritories
         });
     };
     
@@ -124,7 +122,7 @@ class UserTerritoriesModal extends React.Component {
                         <span>Notice: You can manually change this per right</span>
 
                         <div style={{flexWrap: 'wrap', marginTop: '10px', marginBottom: '10px'}}>
-                            {this.getSelectedTerritories().map((e, index) => {
+                            {this.state.tempSelectedTerritories.map((e, index) => {
                                 return (
                                     <TerritoryTag key={index}>{e.countryName} <DeleteButton onClick={() => this.onRemoveSelected(e)}>&times;</DeleteButton> </TerritoryTag>
                                 );
@@ -166,5 +164,15 @@ class UserTerritoriesModal extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        selectedTerritories: state.dopReducer.session.selectedTerritories
+    };
+};
+
+const mapDispatchToProps = {
+    updateSelectedTerritories
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserTerritoriesModal);
