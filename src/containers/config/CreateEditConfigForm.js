@@ -3,7 +3,7 @@ import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
 import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';
 // import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 import RepeatingFormField from './Repeats';
 import RepeatingField from './RepeatsPrimitives';
@@ -20,7 +20,7 @@ const renderer = (
     onFieldBlur
 ) => {
     const { defaultValue, id, label, type, value, misc = {} } = field;
-
+    // console.log('Field', field)
     if(field.hasOwnProperty('disable')) {
         field.disabled = field.disable;
     }
@@ -97,10 +97,11 @@ export default class CreateEditConfigForm extends React.Component {
 
     render() {
         return (
-                <Modal isOpen={!!this.props.value} toggle={this.props.onCancel}>
-                <ModalHeader toggle={this.props.onCancel}>Modal title</ModalHeader>
-                <ModalBody>
-                <Form 
+                <Modal isOpen={!!this.props.value} toggle={this.props.onCancel} style={{paddingLeft: '30px'}}>
+                <ModalBody>                    
+                    <p><b style={{color: '#999', fontSize: '13px'}}>COUNTRY</b></p>
+                    <p style={{marginTop: '-20px'}}><b><i style={{fontSize: '20px'}}>{this.state.value.name ? this.state.value.name : 'New Country'}</i></b></p>
+                    <Form 
                         renderer = {renderer}
                         defaultFields={this.props.schema}
                         optionsHandler={this.optionsHandler}

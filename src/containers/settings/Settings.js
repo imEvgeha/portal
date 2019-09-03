@@ -74,7 +74,7 @@ class Settings extends Component {
                         {configEndpoints && configEndpoints.map((endpoint, i) => (
                             <ListElement 
                                 className={active === i ? 'list-item' : null} 
-                                key={endpoint.url} 
+                                key={i} 
                                 onClick={() => this.onApiNavClick(endpoint, i)}
                             >
                                 {endpoint.displayName}
@@ -84,9 +84,9 @@ class Settings extends Component {
                 </SideMenu>
 
                 <TabContent activeTab={selectedApi}>
-                    {configEndpoints && configEndpoints.map(endpoint => (
+                    {configEndpoints && configEndpoints.map((endpoint, i) => (
                         <TabPane 
-                            key={endpoint.url} 
+                            key={i} 
                             tabId={endpoint}
                         >
                             <EndpointContainer selectedApi={endpoint}/>

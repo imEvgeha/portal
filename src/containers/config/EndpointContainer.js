@@ -11,6 +11,7 @@ import { configService } from './service/ConfigService';
 import { getConfigApiValues } from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import { Can, can } from '../../ability';
+import './ConfigUI.scss';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -174,8 +175,7 @@ export class EndpointContainer extends Component {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
                     this.setState({ data, currentRecord: null });
-                }
-                );
+                });
         }
 
     }
@@ -216,7 +216,7 @@ export class EndpointContainer extends Component {
                         <CreateEditConfigForm schema={selectedApi && selectedApi.uiSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
                 }
-                {!this.state.currentRecord && <DataBody>
+                <DataBody>
                     <CustomContainer left>
                         <QuickSearch
                             isLoading={this.state.isLoading}
@@ -271,7 +271,7 @@ export class EndpointContainer extends Component {
                         />
                     </CustomContainer>
                 </DataBody>
-            }
+            
             </DataContainer>
         );
     }
