@@ -25,10 +25,10 @@ class DOP extends React.Component {
     onDOPMessage(e){
         if(e.data === 'completeTriggered'){
             //Save or Complete clicked
-            if(this.state.onDOPMessage) {
-                this.state.onDOPMessage(this.state.errorCount, this.state.data);
+            if(DOP.instance.state.onDOPMessage) {
+                DOP.instance.state.onDOPMessage(DOP.instance.state.errorCount, DOP.instance.state.data);
             }else{
-                DOP.sendInfoToDOP(this.state.errorCount, this.state.data);
+                DOP.sendInfoToDOP(DOP.instance.state.errorCount, DOP.instance.state.data);
             }
         }
     }
@@ -42,7 +42,7 @@ class DOP extends React.Component {
     static sendInfoToDOP(errorCount, data){
         let message = {errorCount: errorCount, externalAppData: data};
         setTimeout(() => {
-            parent.postMessage(message, '*');
+            parent.postMessage(JSON.stringify(message), '*');
         }, 100);
     }
 
