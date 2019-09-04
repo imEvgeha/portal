@@ -729,7 +729,7 @@
   "displayName": "NG Audio",
   "dataType": "select",
   "searchDataType": "multiselect",
-  "options": ["Atmos", "DTSX", "Auro3D"],
+  "configEndpoint": "/ng-audios",
   "queryParamName": "ngAudio",
   "readOnly": false,
   "enableSearch": true,
