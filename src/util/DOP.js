@@ -40,7 +40,7 @@ class DOP extends React.Component {
     // }
 
     static sendInfoToDOP(errorCount, data){
-        let message = {errorCount: errorCount, ...data};
+        let message = {errorCount: errorCount, externalAppData: data};
         setTimeout(() => {
             parent.postMessage(message, '*');
         }, 100);
