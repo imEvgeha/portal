@@ -30,8 +30,10 @@ class SelectPlanTerritoryEditor extends Component {
     }
 
     isPopup() {
-        const {node} = this.props;
-        const territories = (node && node.data && node.data.territory && node.data.territory.filter(el => el.country)) || [];
+        const {node = {}} = this.props;
+        const {data = {}} = node;
+        const {territory = []} = data;
+        const territories = (territory && territory.filter(el => el.country)) || [];
         return territories.length > 0;
     }
 
@@ -42,6 +44,7 @@ class SelectPlanTerritoryEditor extends Component {
                 el.value = el.country;
                 el.label = el.country;
                 el.isDisabled = el.selected;
+                el.isChecked = el.selected;
                 return el;
             });
 
@@ -49,33 +52,33 @@ class SelectPlanTerritoryEditor extends Component {
     }
 
     onCheckboxSelect = values => {
-        const {updatePromotedRights, getPromotedRights, node} = this.props;
-        const territories = values.map(el => el.value);
-        let updatedRights = getPromotedRights().filter(right => right.rightId !== node.data.id);
-        if (territories.length > 0) {
-            updatedRights = [
-                ...updatedRights, 
-                {rightId: node.data.id, territories}
-            ];    
-        }
+        const {updatePromotedRights, getPromotedRights, node = {}} = this.props;
+        const {data = {}} = node;
+        const rightId = data && data.id;
+        const territories = values.map(el => el.value) || [];
+        const filteredRights = getPromotedRights().filter(right => right.rightId !== rightId);
+        const updatedRights = (territories.length > 0 && rightId) 
+            ? [...filteredRights, {rightId, territories}] 
+            : filteredRights;
         return updatePromotedRights(updatedRights); 
     } 
 
     render() {
-        const {node} = this.props;
+        const {node = {}} = this.props;
+        const {data = {}} = node;
         const {value} = this.state;
-        const options = this.getOptions(node && node.data && node.data.territory);
+        const options = this.getOptions(data && data.territory);
 
         return (
             options.length > 0 ? (
                 <div 
-                    className="nexus-select-plan-territory-editor"
+                    className="nexus-c-select-plan-territory-editor"
                     style={{width: '200px'}} 
                 >
                     <NexusCheckboxSelect
                         options={options}
                         defaultValues={value}
-                        placeholder="Select all"
+                        placeholder="Select territory"
                         onCheckboxSelectChange={this.onCheckboxSelect}
                     />
                 </div>

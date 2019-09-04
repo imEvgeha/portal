@@ -77,7 +77,7 @@ const getPrimaryColor = ({
 const getSecondaryColor = ({isActive, isDisabled, isSelected, ...rest }) => {
     let color = themed({ light: colors.N0, dark2gt: colors.DN10 });
 
-    if (isDisabled) {
+    if ((isDisabled && isSelected) || (isDisabled && rest.data.isChecked)) {
         color = themed({light: colors.N70, dark: colors.DN10});
     } else if (isActive && isSelected && !isDisabled) {
         color = themed({light: colors.B400, dark: colors.DN10});
@@ -114,11 +114,11 @@ const NexusCheckboxSelectOption = props => {
     return (
         <div 
             style={styles} 
-            className={`nexus-checkbox-select ${classes}`} 
+            className={`nexus-c-checkbox-select ${classes}`} 
             ref={innerRef} 
             {...updatedProps}
         >
-            <div className="nexus-checkbox-select__checkbox">
+            <div className="nexus-c-checkbox-select__checkbox">
             {value === '*' 
                 && selectProps 
                 && Array.isArray(selectProps.value) 
@@ -136,7 +136,7 @@ const NexusCheckboxSelectOption = props => {
                     />
                 )}
             </div>
-            <div className="nexus-checkbox-select__text">{children}</div>
+            <div className={`nexus-c-checkbox-select__text ${props.isDisabled ? 'nexus-c-checkbox-select__text--disabled': ''}`}>{children}</div>
         </div>
     );
 };
