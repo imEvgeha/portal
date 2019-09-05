@@ -19,13 +19,14 @@ class EditableBaseComponent extends Component {
         priorityDisplay: t.any,
         showError: t.bool,
         isArrayOfObject: t.bool,
-        onCancel: t.func
+        onCancel: t.func,
     };
 
     static defaultProps = {
         value: null,
         showError: true,
-        isArrayOfObject: false
+        isArrayOfObject: false,
+        onCancel: null,
     }
 
     constructor(props) {

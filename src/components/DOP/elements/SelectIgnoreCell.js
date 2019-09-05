@@ -42,15 +42,15 @@ class SelectIgnoreCell extends Component {
     checkPromotableStatus = (territories = []) => territories && territories.some(territory => !territory.selected && territory.country);
 
     onPromoteClick = () => {
-        const {updatePromotedRights, promotedRights, node} = this.props;
-        const territoryList = (node && node.data && node.data.territory && node.data.territory.map(el => el.country)) || [];
-        const promotableTerritories = territoryList.filter(el => el && !el.selected);
+        const {updatePromotedRights, promotedRights, node = {}} = this.props;
+        const {id, data = {}} = node;
+        const rightId = id;
+        const promotableTerritoriesObject = (data && data.territory && data.territory.filter(el => el.country && !el.selected)) || [];
+        const promotableTerritories = promotableTerritoriesObject.map(el => el.country);
         const territories = this.getTerritoriesWithUserSelected(promotableTerritories);
-
-        if (this.isPromoted()) {
-            return updatePromotedRights(promotedRights.filter(e => e.rightId !== node.id));
-        } 
-        updatePromotedRights([...promotedRights.filter(el => el.rightId !== node.id), {rightId: node.id, territories}]);
+        const filteredPromotedRights = promotedRights.filter(e => e.rightId !== rightId);
+        const updatedPromotedRights = this.isPromoted() ? filteredPromotedRights : [...filteredPromotedRights, {rightId, territories}];
+        updatePromotedRights(updatedPromotedRights);
     };
 
     getTerritoriesWithUserSelected = (territories) => {
