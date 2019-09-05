@@ -3,6 +3,7 @@ import t from 'prop-types';
 import {connect} from 'react-redux';
 import {updatePromotedRights} from '../../../stores/actions/DOP';
 import {rightsService} from '../../../containers/avail/service/RightsService';
+import union from 'lodash.union';
 
 const defaultColor = '#606060';
 const selectedColor = '#D7D7D7';
@@ -12,13 +13,17 @@ class SelectIgnoreCell extends Component {
     static propTypes = {
         node: t.object,
         promotedRights: t.array,
-        updatePromotedRights: t.func
+        updatePromotedRights: t.func,
+        useSelectedTerritories: t.bool,
+        selectedTerritories: t.array
     };
 
     static defaultProps = {
         node: null,
         promotedRights: [],
         updatePromotedRights: null,
+        useSelectedTerritories: false,
+        selectedTerritories: []
     }
 
     constructor(props) {
@@ -37,13 +42,22 @@ class SelectIgnoreCell extends Component {
     checkPromotableStatus = (territories = []) => territories && territories.some(territory => !territory.selected && territory.country);
 
     onPromoteClick = () => {
-        const {updatePromotedRights, promotedRights, node} = this.props;
-        const promotableTerritoriesObject = (node && node.data && node.data.territory && node.data.territory.filter(el => el.country && !el.selected)) || [];
+        const {updatePromotedRights, promotedRights, node = {}} = this.props;
+        const {id, data = {}} = node;
+        const rightId = id;
+        const promotableTerritoriesObject = (data && data.territory && data.territory.filter(el => el.country && !el.selected)) || [];
         const promotableTerritories = promotableTerritoriesObject.map(el => el.country);
-        if (this.isPromoted()) {
-            return updatePromotedRights(promotedRights.filter(e => e.rightId !== node.id));
-        } 
-        updatePromotedRights([...promotedRights.filter(el => el.rightId !== node.id), {rightId: node.id, territories: promotableTerritories}]);
+        const territories = this.getTerritoriesWithUserSelected(promotableTerritories);
+        const filteredPromotedRights = promotedRights.filter(e => e.rightId !== rightId);
+        const updatedPromotedRights = this.isPromoted() ? filteredPromotedRights : [...filteredPromotedRights, {rightId, territories}];
+        updatePromotedRights(updatedPromotedRights);
+    };
+
+    getTerritoriesWithUserSelected = (territories) => {
+        if (this.props.useSelectedTerritories) {
+            territories = union(territories, this.props.selectedTerritories.map(el => el.countryCode));
+        }
+        return territories;
     };
 
     onIgnoreClick = () => {
@@ -103,8 +117,10 @@ class SelectIgnoreCell extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    promotedRights: state.dopReducer.session.promotedRights
+const mapStateToProps = ({dopReducer}) => ({
+    promotedRights: dopReducer.session.promotedRights,
+    selectedTerritories: dopReducer.session.selectedTerritories,
+    useSelectedTerritories: dopReducer.session.useSelectedTerritories
 });
 
 const mapDispatchToProps = (dispatch) => ({

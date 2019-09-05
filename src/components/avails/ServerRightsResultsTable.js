@@ -95,14 +95,14 @@ class ServerRightsResultsTable extends RightsResultsTable {
             if(this.state.table){
                 callback.successCallback(response.data.data, lastRow);
                 this.state.table.api.hideOverlay();
-                if(this.props.onDataLoaded){
-                    this.props.onDataLoaded(response);
-                }
             }
         }else{
             if(this.state.table){
                 this.state.table.api.showNoRowsOverlay();
             }
+        }
+        if(this.props.onDataLoaded){
+            this.props.onDataLoaded(response);
         }
     }
 

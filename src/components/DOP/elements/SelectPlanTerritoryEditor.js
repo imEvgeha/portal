@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import union from 'lodash.union';
 import NexusCheckboxSelect from '../../../ui-elements/nexus-checkbox-select/NexusCheckboxSelect';
 
 class SelectPlanTerritoryEditor extends Component {
@@ -7,11 +8,15 @@ class SelectPlanTerritoryEditor extends Component {
         node: PropTypes.object,
         getPromotedRights: PropTypes.func.isRequired,
         updatePromotedRights: PropTypes.func,
+        selectedTerritories: PropTypes.array,
+        useSelectedTerritories: PropTypes.bool,
     };
 
     static defaultProps = {
         node: {},
         updatePromotedRights: [],
+        selectedTerritories: [],
+        useSelectedTerritories: false,
     };
 
     constructor(props) {
@@ -55,7 +60,7 @@ class SelectPlanTerritoryEditor extends Component {
         const {updatePromotedRights, getPromotedRights, node = {}} = this.props;
         const {data = {}} = node;
         const rightId = data && data.id;
-        const territories = values.map(el => el.value) || [];
+        const territories = this.getTerritoriesWithUserSelected(values);
         const filteredRights = getPromotedRights().filter(right => right.rightId !== rightId);
         const updatedRights = (territories.length > 0 && rightId) 
             ? [...filteredRights, {rightId, territories}] 
@@ -63,10 +68,18 @@ class SelectPlanTerritoryEditor extends Component {
         return updatePromotedRights(updatedRights); 
     } 
 
+    getTerritoriesWithUserSelected = (values) => {
+        let territories = values.map(el => el.value) || [];
+        if (this.props.useSelectedTerritories) {
+            territories = union(territories, this.props.selectedTerritories.map(el => el.countryCode));
+        }
+        return territories || [];
+    };
+
     render() {
+        const {value} = this.state;
         const {node = {}} = this.props;
         const {data = {}} = node;
-        const {value} = this.state;
         const options = this.getOptions(data && data.territory);
 
         return (
