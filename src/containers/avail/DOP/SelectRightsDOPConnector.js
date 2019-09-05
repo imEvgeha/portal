@@ -27,7 +27,7 @@ class SelectRightsDOPConnector extends Component {
     }
 
     componentDidMount() {
-        DOP.setDOPMessageCallback(this.showConfirmDialog);
+        DOP.setDOPMessageCallback(this.onModalApply);
     }
 
     showConfirmDialog(){

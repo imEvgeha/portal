@@ -43,12 +43,12 @@
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
 
-"@atlaskit/analytics-next@^6.0.3", "@atlaskit/analytics-next@^6.1.0":
-  version "6.2.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.2.0.tgz#61656e08658709014c152c04ff632a64dff9637a"
-  integrity sha512-l4+UHQ2RihanUuiXiAq0IHFyTPZTHsF/s+akAFKcfioI3hiVMZW9XiY6LctbjoGKQHh0FLdG0EbBz9ob92WXfg==
+"@atlaskit/analytics-next@^6.0.3":
+  version "6.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.0.3.tgz#6edaea1deb3d896801a8e5d4fb20b8d643f8fa5d"
+  integrity sha512-5eZPw1GQPgAGdCaFeC8fJhFATw7zA53oQ1wyyFDskyI54M6a5p6DknFn1Dlq8oSm6MDlSoT7rjGAydg29iuBKw==
   dependencies:
-    "@atlaskit/type-helpers" "^4.2.0"
+    "@atlaskit/type-helpers" "^4.1.8"
     prop-types "^15.5.10"
     tslib "^1.9.3"
 
@@ -194,6 +194,19 @@
     "@atlaskit/analytics-next" "^5.1.2"
     "@atlaskit/icon" "^19.0.0"
     "@atlaskit/theme" "^9.1.0"
+    "@babel/runtime" "^7.0.0"
+    "@emotion/core" "^10.0.9"
+    emotion-theming "^10.0.7"
+    tslib "^1.9.3"
+
+"@atlaskit/checkbox@^9.0.9":
+  version "9.0.9"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/checkbox/-/checkbox-9.0.9.tgz#189ed914429d19b8cc39c1ff0187aeb344bbd581"
+  integrity sha512-W7BXqXP302G4JE8LOa5Kg6SScFzAkmvuDxMmGHE2CxB+5wdUP8Hm0K6/cytDhKmpEX0agiaDNLjxOFPXdQheYA==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.0.3"
+    "@atlaskit/icon" "^19.0.6"
+    "@atlaskit/theme" "^9.1.6"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
     emotion-theming "^10.0.7"
@@ -14191,7 +14204,7 @@ lodash.tonumber@^4.0.3:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.tonumber/-/lodash.tonumber-4.0.3.tgz#0b96b31b35672793eb7f5a63ee791f1b9e9025d9"
   integrity sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
 
-lodash.union@~4.6.0:
+lodash.union@^4.6.0, lodash.union@~4.6.0:
   version "4.6.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
   integrity sha1-SLtQiECfFvGCFmZkHETdGqrjzYg=
@@ -17868,7 +17881,7 @@ raf@3.4.0:
   dependencies:
     performance-now "^2.1.0"
 
-raf@3.4.1, raf@^3.4.0:
+raf@3.4.1, raf@^3.1.0, raf@^3.4.0:
   version "3.4.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   integrity sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
@@ -18311,6 +18324,15 @@ react-loaders@^3.0.1:
   dependencies:
     classnames "^2.2.3"
 
+react-motion@^0.5.2:
+  version "0.5.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-motion/-/react-motion-0.5.2.tgz#0dd3a69e411316567927917c6626551ba0607316"
+  integrity sha512-9q3YAvHoUiWlP3cK0v+w1N5Z23HXMj4IF4YuvjvWegWqNPfLXsOBE/V7UvQGpXxHFKRQQcNcVQE31g9SB/6qgQ==
+  dependencies:
+    performance-now "^0.2.0"
+    prop-types "^15.5.8"
+    raf "^3.1.0"
+
 react-multiselect-checkboxes@^0.1.1:
   version "0.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-multiselect-checkboxes/-/react-multiselect-checkboxes-0.1.1.tgz#d282f6407f2a59c7a0766055b08ac11f85225475"
@@ -18690,6 +18712,14 @@ react-tagsinput@3.19.0, react-tagsinput@^3.19.0:
   version "3.19.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-tagsinput/-/react-tagsinput-3.19.0.tgz#6e3b45595f2d295d4657bf194491988f948caabf"
   integrity sha512-ni+/qnZrYrvLg83LtTFHErKy1KQHL0fi0Y6C5jgC1dNUePE9cS/OlQ4XH6JRSjv9GGoeVE0R/ujSBaS1uzCRYQ==
+
+react-toggle-button@^2.2.0:
+  version "2.2.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-toggle-button/-/react-toggle-button-2.2.0.tgz#a1b92143aa0df414642fcb141f0879f545bc5a89"
+  integrity sha1-obkhQ6oN9BRkL8sUHwh59UW8Wok=
+  dependencies:
+    prop-types "^15.6.0"
+    react-motion "^0.5.2"
 
 react-transform-catch-errors@1.0.2:
   version "1.0.2"
