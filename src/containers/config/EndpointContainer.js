@@ -63,14 +63,14 @@ const ListItem = styled.div`
 
 const CustomButton = styled.div`
     float: right;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
-    background: #F9F9F9;
+    background: #EBEDF0;
     color: #666;
-    padding: 5px 10px 5px;
+    padding: 7px 10px 7px;
     &:hover {
-        background: #EEE;
+        background: #B8BABC;
     }
 `;
 
@@ -193,7 +193,6 @@ export class EndpointContainer extends Component {
     render() {        
         const {selectedApi} = this.props;
         let canUpdate = can('update', 'ConfigUI');
-
         return (
             <DataContainer>
                 <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
@@ -213,7 +212,7 @@ export class EndpointContainer extends Component {
                 </TextHeader>
                 {this.state.currentRecord &&
                     <DataBody>
-                        <CreateEditConfigForm schema={selectedApi && selectedApi.uiSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
                 }
                 <DataBody>

@@ -1,10 +1,19 @@
 // @flow
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uniqueId from 'lodash/uniqueId';
 import Button from '@atlaskit/button';
 import { Form, FormContext } from 'react-forms-processor';
 import { Field as AkField } from '@atlaskit/form';
+
+const portal = document.createElement('div');
+portal.classList.add('my-portal');
+
+if (!document.body) {
+    throw new Error('body not ready for portal creation!');
+}
+document.body.appendChild(portal);
 
 const createFormForItem = (
     item,
@@ -46,7 +55,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'white'
+    background: isDraggingOver ? '#DDD' : 'white'
 });
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -54,7 +63,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: 'none',
 
     // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'white',
+    background: isDragging ? '#EEE' : 'white',
 
     // styles we need to apply on draggables
     ...draggableStyle
@@ -151,29 +160,39 @@ export default class RepeatsPrimitives extends Component {
                                 );
                                 return (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
-                                        {(provided, snapshot) => (
-                                            <div
-                                                className="columns"
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                                )}
-                                            >
-                                                <div className="container">
-                                                    <div className="row">
-                                                        <div className="col-md-auto" style={{padding:'0'}}>
-                                                            {form}
-                                                        </div>
-                                                        <div className="col-md-auto" style={{padding:'0', marginTop:'8px'}}>
-                                                            <Button onClick={() => {this.removeItem(item.id);}}>X</Button>
+                                        {(provided, snapshot) => {
+                                            const child = (
+                                                (
+                                                    <div
+                                                        className="columns"
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        style={getItemStyle(
+                                                            snapshot.isDragging,
+                                                            provided.draggableProps.style
+                                                        )}
+                                                    >
+                                                        <div className="container">
+                                                            <div className="row">
+                                                                <div className="col-md-auto" style={{padding:'0'}}>
+                                                                    {form}
+                                                                </div>
+                                                                <div className="col-md-auto" style={{padding:'0', marginTop:'8px'}}>
+                                                                    <Button onClick={() => {this.removeItem(item.id);}}>&times;</Button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        )}
+                                                )
+                                            );
+                                            const usePortal = snapshot.isDragging;
+                                            if(!usePortal) {
+                                                return child;
+                                            }
+
+                                            return ReactDOM.createPortal(child, portal);
+                                        }}
                                     </Draggable>
                                 );
                             })}
