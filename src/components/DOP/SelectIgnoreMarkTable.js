@@ -55,7 +55,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         // TODO - create HOC to dynamically add column (including it position inside table) 
         // Bug - this method is called twice 
         refreshColumns() {
-            const {updatePromotedRights, parseColumnsSchema, availsMapping} = this.props;
+            const {updatePromotedRights, parseColumnsSchema, availsMapping, selectedTerritories, useSelectedTerritories} = this.props;
             const originalColDef = parseColumnsSchema((availsMapping && availsMapping.mappings) || []);
             const colDef = {
                 checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
@@ -80,6 +80,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     cellEditorParams: {
                         getPromotedRights: this.getPromotedRights,
                         updatePromotedRights,
+                        selectedTerritories,
+                        useSelectedTerritories
                     },
                     cellStyle: {height: '100%'},
                     editable: true,
@@ -160,6 +162,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
     const mapStateToProps = ({dopReducer, root}) => ({
         availsMapping: root.availsMapping,
         promotedRights: dopReducer.session.promotedRights,
+        selectedTerritories: dopReducer.session.selectedTerritories,
+        useSelectedTerritories: dopReducer.session.useSelectedTerritories
     });
 
     const mapDispatchToProps = (dispatch) => ({
