@@ -699,13 +699,13 @@ class RightDetails extends React.Component {
         };
 
         const renderTerritoryField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            let priorityError = null;
+            {/*let priorityError = null;
             if (error) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
                 </div>;
-            }
+                }*/}
             let ref;
             if (this.fields[name]) {
                 ref = this.fields[name];
@@ -715,7 +715,8 @@ class RightDetails extends React.Component {
             }
 
             let options = [];
-            let selectedVal = ref.current ? ref.current.state.value : cloneDeep(value);
+            // deepClone(value) returns null for country 
+            let selectedVal = ref.current ? ref.current.state.value : value;
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
             }
@@ -757,11 +758,18 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+            const result = value.map(el => {
+                if (!el.country) {
+                    el.country = error;
+                } 
+                el.isValid = el.country !== error;
+                return el;
+            });
+
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
-                    value={value}
-                    priorityDisplay={priorityError}
+                    value={result}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -773,11 +781,12 @@ class RightDetails extends React.Component {
                     helperComponent={
                         <div>
                             {selectedVal && selectedVal.length > 0 ?
-                                selectedVal.map((e, i) => (
+                            selectedVal.map((e, i) => {
+                            return (
                                     <div key={i}>
                                         <Popup
                                             trigger={
-                                                <TerritoryTag isEdit onClick={() => this.toggleRightTerritoryForm(i)}>
+                                                <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
                                                     {e.country}
                                                 </TerritoryTag>
                                             }
@@ -787,8 +796,8 @@ class RightDetails extends React.Component {
                                             {TerritoryTooltip(e)}
                                         </Popup>
                                         <RemovableButton isEdit onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
-                                    </div>)
-                                )
+                                    </div>);
+                                })
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
                             <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
@@ -846,7 +855,7 @@ class RightDetails extends React.Component {
                     let error = null;
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
+                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';

@@ -103,7 +103,7 @@ const withRightsResultsTable = BaseComponent => {
             let error = null;
             if (data && data.validationErrors){
                 data.validationErrors.forEach(({sourceDetails, fieldName, message}) => {
-                    if (fieldName === colDef.field){
+                    if (fieldName === colDef.field || (fieldName.includes('country') && colDef.field === 'territory')) {
                         error = message;
                         if (sourceDetails){
                             if (sourceDetails.originalValue) {
@@ -176,7 +176,7 @@ const withRightsResultsTable = BaseComponent => {
             let error = null;
             if(data && data.validationErrors){
                 data.validationErrors.forEach(e => {
-                    if (e.fieldName === colDef.field){
+                    if (e.fieldName === colDef.field || (e.fieldName.includes('country') && colDef.field === 'territory')) {
                         error = e;
                     }
                 });
