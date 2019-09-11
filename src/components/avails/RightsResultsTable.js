@@ -102,7 +102,8 @@ export default class RightsResultsTable extends React.Component {
         if(val && val === Object(val) && !Array.isArray(val)){
             val = JSON.stringify(val);
         }
-        if(Array.isArray(val) && val.length > 1){
+
+        if(Array.isArray(val)){
             const {colDef = {}} = params;
             if (colDef.field === 'territory') {
                 const countries = val.filter(el => el.country).map(el => {
@@ -117,13 +118,13 @@ export default class RightsResultsTable extends React.Component {
                     .map(el => {
                         return {
                             type: 'error',
-                            name: el.sourceDetails.originalValue,
+                            name: el.sourceDetails.originalValue || el.message,
                         };
                     });
 
                 const result = [...countries, ...errors]
                     .map((item, index, arr) => {
-                        const style = item.type === 'error' ? {color: 'red'} : {};
+                        const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
                         return (
                            <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
                         );
@@ -132,6 +133,37 @@ export default class RightsResultsTable extends React.Component {
                 return (
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
                 );
+            }
+
+            if (colDef.field === 'territoryExcluded') {
+                const countries = val.filter(el => el).map(el => {
+                    return {
+                        type: 'country',
+                        name: el,
+                    };
+                });
+
+                const errors = params.data.validationErrors
+                .filter(el => el.fieldName.includes('territoryExcluded'))
+                .map(el => {
+                    return {
+                        type: 'error',
+                        name: el.sourceDetails.originalValue || el.message,
+                    };
+                });
+
+                const result = [...countries, ...errors]
+                    .map((item, index, arr) => {
+                        const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
+                        return (
+                            <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                        );
+                    });
+
+                return (
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
+                );
+
             }
         }
         const content = error || params.valueFormatted || val;
@@ -171,7 +203,9 @@ export default class RightsResultsTable extends React.Component {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
-                if(e.fieldName === params.colDef.field || (e.fieldName.includes('country') && params.colDef.field === 'territory')) {
+                if(e.fieldName === params.colDef.field 
+                    || (e.fieldName.includes('country') && params.colDef.field === 'territory') 
+                    || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')) {
                     error = e;
                 }
             });

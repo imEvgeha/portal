@@ -137,6 +137,15 @@ class RightDetails extends React.Component {
             case 'localdate': value = value && moment(value).isValid() ? momentToISO(value) : value;
                 break;
         }
+        if (Array.isArray(value)) {
+            value = value.map(el => {
+                if (el.hasOwnProperty('isValid')) {
+                    delete el.isValid;
+                }
+                return el;
+            });
+        }
+
         this.update(name, value, () => {
             cancel();
         });
@@ -750,21 +759,26 @@ class RightDetails extends React.Component {
 
              };
 
-            let deleteTerritory = (country) => {
-                let newArray = selectedVal && selectedVal.filter(e => e.country !== country);
-                ref.current.handleChange(country ? newArray: null);
+            let deleteTerritory = (territory) => {
+                let newArray = selectedVal && selectedVal.filter(e => e.country !== territory.country);
+                if (!territory.isValid) {
+                    newArray = newArray.filter(el => el.country !== territory.country);
+                }
+                ref.current.handleChange(territory.country ? newArray: null);
                 setTimeout(() => {
                         this.setState({});
                 }, 1);
             };
 
-            const result = value.map(el => {
+            const result = Array.isArray(value) && value.map(el => {
                 if (!el.country) {
                     el.country = error;
                 } 
                 el.isValid = el.country !== error;
                 return el;
             });
+
+
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
@@ -795,7 +809,7 @@ class RightDetails extends React.Component {
                                         >
                                             {TerritoryTooltip(e)}
                                         </Popup>
-                                        <RemovableButton isEdit onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
+                                        <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
                                     </div>);
                                 })
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
