@@ -78,8 +78,10 @@ export default class RightsResultsTable extends React.Component {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
-                // if(e.fieldName === params.colDef.field || (e.fieldName.includes('country') && params.colDef.field === 'territory')) {
-                    if(params.colDef && e.fieldName === params.colDef.field) {
+                if(params.colDef 
+                    && ((e.fieldName === params.colDef.field) 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart'))) {
                     error = e.message;
                     if(e.sourceDetails){
                         if(e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -205,7 +207,9 @@ export default class RightsResultsTable extends React.Component {
             params.data.validationErrors.forEach( e => {
                 if(e.fieldName === params.colDef.field 
                     || (e.fieldName.includes('country') && params.colDef.field === 'territory') 
-                    || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')) {
+                    || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')) {
                     error = e;
                 }
             });
