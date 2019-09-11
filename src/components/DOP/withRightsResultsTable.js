@@ -103,7 +103,10 @@ const withRightsResultsTable = BaseComponent => {
             let error = null;
             if (data && data.validationErrors){
                 data.validationErrors.forEach(({sourceDetails, fieldName, message}) => {
-                    if (fieldName === colDef.field || (fieldName.includes('country') && colDef.field === 'territory')) {
+                    if (colDef 
+                        && ((fieldName === colDef.field) 
+                        || (fieldName === '[start, availStart]' && colDef.field === 'start') 
+                        || (fieldName === '[start, availStart]' && colDef.field === 'availStart'))) {
                         error = message;
                         if (sourceDetails){
                             if (sourceDetails.originalValue) {
@@ -176,7 +179,11 @@ const withRightsResultsTable = BaseComponent => {
             let error = null;
             if(data && data.validationErrors){
                 data.validationErrors.forEach(e => {
-                    if (e.fieldName === colDef.field || (e.fieldName.includes('country') && colDef.field === 'territory')) {
+                    if (e.fieldName === colDef.field 
+                        || (e.fieldName.includes('country') && colDef.field === 'territory') 
+                        || (e.fieldName.includes('territoryExcluded') && colDef.field === 'territoryExcluded')
+                        || (e.fieldName === '[start, availStart]' && colDef.field === 'start') 
+                        || (e.fieldName === '[start, availStart]' && colDef.field === 'availStart')) {
                         error = e;
                     }
                 });
