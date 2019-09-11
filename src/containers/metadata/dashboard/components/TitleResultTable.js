@@ -339,7 +339,7 @@ class TitleResultTable extends React.Component {
         let error = null;
         if (!params.value && params.data && params.data.validationErrors) {
             params.data.validationErrors.forEach(e => {
-                if (e.fieldName === params.colDef.field) {
+                if(e.fieldName === params.colDef.field || (e.fieldName.includes('country') && params.colDef.field === 'territory')) {
                     error = e.message + ', error processing field ' + e.originalFieldName +
                         ' with value ' + e.originalValue +
                         ' at row ' + e.rowId +
@@ -372,7 +372,7 @@ class TitleResultTable extends React.Component {
         let error = null;
         if (!params.value && params.data && params.data.validationErrors) {
             params.data.validationErrors.forEach(e => {
-                if (e.fieldName === params.colDef.field) {
+                if (e.fieldName === params.colDef.field || (e.fieldName.includes('country') && params.colDef.field === 'territory')) {
                     error = e;
                     return;
                 }
