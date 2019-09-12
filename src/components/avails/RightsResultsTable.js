@@ -19,28 +19,32 @@ export default class RightsResultsTable extends React.Component {
         let formatter = (column) => {
             switch (column.dataType) {
                 case 'localdate' : return function(params){
-                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L') + ' ' + moment(params.data[column.javaVariableName]).format('HH:mm');
-                    else return undefined;
+                    if(params.data && params.data[column.javaVariableName]) {
+                        return moment(params.data[column.javaVariableName]).format('L') + ' ' + moment(params.data[column.javaVariableName]).format('HH:mm');
+                    }
+                    return;
                 };
                 case 'date' : return function(params){
                     if((params.data && params.data[column.javaVariableName]) && moment(String(params.data[column.javaVariableName]).substr(0, 10)).isValid()) {
                         return moment(params.data[column.javaVariableName].toString().substr(0, 10)).format('L');
                     }
-                    else return undefined;
+                    return;
                 };
                 case 'string' : if(column.javaVariableName === 'castCrew') return function(params){
                     if(params.data && params.data[column.javaVariableName]){
                         let data = params.data[column.javaVariableName];
                         data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
                         return data;
-                    } else return undefined;
+                    }
+                    return;
                 }; else return null;
                 case 'territoryType' : return function(params){
                     if(params.data && params.data[column.javaVariableName]) {
-                        let cellValue = params.data[column.javaVariableName].map(e => String(e.country)).join(', ');
-                        return cellValue ? cellValue : undefined;
+                        const cellValue = params.data[column.javaVariableName]
+                        .map(e => String(e.country)).join(', ');
+                        return cellValue;
                     }
-                    else return undefined;
+                    return;
                 };
                 default: return null;
             }
@@ -74,7 +78,10 @@ export default class RightsResultsTable extends React.Component {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
-                if(e.fieldName === params.colDef.field){
+                if(params.colDef 
+                    && ((e.fieldName === params.colDef.field) 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart'))) {
                     error = e.message;
                     if(e.sourceDetails){
                         if(e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -97,8 +104,69 @@ export default class RightsResultsTable extends React.Component {
         if(val && val === Object(val) && !Array.isArray(val)){
             val = JSON.stringify(val);
         }
-        if(Array.isArray(val) && val.length > 1){
-            val = val.join(', ');
+
+        if(Array.isArray(val)){
+            const {colDef = {}} = params;
+            if (colDef.field === 'territory') {
+                const countries = val.filter(el => el.country).map(el => {
+                    return {
+                        type: 'country',
+                        name: el.country,
+                    };
+                });
+
+                const errors = params.data.validationErrors
+                    .filter(el => el.fieldName.includes('country'))
+                    .map(el => {
+                        return {
+                            type: 'error',
+                            name: el.sourceDetails.originalValue || el.message,
+                        };
+                    });
+
+                const result = [...countries, ...errors]
+                    .map((item, index, arr) => {
+                        const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
+                        return (
+                           <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                        );
+                    });
+
+                return (
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
+                );
+            }
+
+            if (colDef.field === 'territoryExcluded') {
+                const countries = val.filter(el => el).map(el => {
+                    return {
+                        type: 'country',
+                        name: el,
+                    };
+                });
+
+                const errors = params.data.validationErrors
+                .filter(el => el.fieldName.includes('territoryExcluded'))
+                .map(el => {
+                    return {
+                        type: 'error',
+                        name: el.sourceDetails.originalValue || el.message,
+                    };
+                });
+
+                const result = [...countries, ...errors]
+                    .map((item, index, arr) => {
+                        const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
+                        return (
+                            <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                        );
+                    });
+
+                return (
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
+                );
+
+            }
         }
         const content = error || params.valueFormatted || val;
         if (val !== undefined) {
@@ -126,11 +194,10 @@ export default class RightsResultsTable extends React.Component {
             }
             else return val;
         } else {
-            if(params.data){
+            if (params.data){
                 return '';
-            }else {
-                return <img src={LoadingGif}/>;
             }
+            return <img src={LoadingGif}/>;
         }
     }
 
@@ -138,7 +205,11 @@ export default class RightsResultsTable extends React.Component {
         let error = null;
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
-                if(e.fieldName === params.colDef.field){
+                if(e.fieldName === params.colDef.field 
+                    || (e.fieldName.includes('country') && params.colDef.field === 'territory') 
+                    || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')) {
                     error = e;
                 }
             });

@@ -51,6 +51,10 @@ class EditableBaseComponent extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.value != this.props.value) {
+            // dirty fix for territory field
+            if (Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
+                return;
+            }
             this.setState({
                 showStateValue: false,
                 value: cloneDeep(this.props.value) ? this.props.value : null,
@@ -126,7 +130,7 @@ class EditableBaseComponent extends Component {
                     <Popup
                         key={i}
                         trigger={
-                            <TerritoryTag isCreate>{e.country}</TerritoryTag>
+                            <TerritoryTag isValid={e.isValid} isCreate>{e.country}</TerritoryTag>
                         }
                         position="top center"
                         on="hover"
