@@ -98,10 +98,36 @@ class RightDetails extends React.Component {
             rightsService.get(this.props.match.params.id)
                 .then(res => {
                     if (res && res.data) {
+                        const regForEror = /\[(.*?)\]/i;
+                        const regForSubField = /.([A-Za-z]+)$/;
+                        const territoryErrors = res.data.validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
+                            .map(error => {
+                                const matchObj = error.fieldName.match(regForEror);
+                                if (matchObj) {
+                                    const matchSubField = error.fieldName.match(regForSubField);
+                                    error.index = Number(matchObj[1]); 
+                                    error.subField = matchSubField[1]; 
+                                }
+                                return error;
+                            });
+
+                        const territory = res.data['territory'].map((el, index) => {
+                            const error = territoryErrors.find(error => error.index === index);
+                            if (error) {
+                                el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                el.isValid = false;
+                                el.errors = territoryErrors.filter(error => error.index === index);
+                            } else {
+                                el.isValid = true;
+                                el.name = el.country;
+                            }
+                            el.id = index;
+                            return el;
+                        });
                         this.setState({
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
-                            territory: this.state.right && this.state.right['territory'] && this.state.right['territory']
+                            territory,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -141,6 +167,15 @@ class RightDetails extends React.Component {
             value = value.map(el => {
                 if (el.hasOwnProperty('isValid')) {
                     delete el.isValid;
+                }
+                if (el.hasOwnProperty('errors')) {
+                    delete el.errors;
+                }
+                if (el.hasOwnProperty('name')) {
+                    delete el.name;
+                }
+                if (el.hasOwnProperty('id')) {
+                    delete el.id;
                 }
                 return el;
             });
@@ -268,23 +303,23 @@ class RightDetails extends React.Component {
     }
 
     toggleRightTerritoryForm = (index) => {
-        this.setState({
+        this.setState(state => ({
             isEdit: true,
             territoryIndex: index,
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
-        });
+            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen
+        }));
     }
 
     toggleAddRightTerritoryForm = () => {
-        this.setState({
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen,
-            isEdit: false
-        });
+        this.setState(state => ({
+            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen,
+            isEdit: false,
+        }));
     }
 
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
-            const hasValidationError = error;
+            const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             return (
                 <div key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
@@ -707,7 +742,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderTerritoryField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             {/*let priorityError = null;
             if (error) {
                 priorityError = <div title={error}
@@ -746,13 +781,21 @@ class RightDetails extends React.Component {
             };
 
             let addTerritory = (option) => {
+                const {territoryIndex, isEdit} = this.state;
+                const item = {
+                    ...option,
+                    isValid: true,
+                    name: option.country,
+                    id: isEdit ? territoryIndex : selectedVal.length,
+                };
                  if(this.state.isEdit) {
-                     selectedVal.splice(this.state.territoryIndex, 1, option);
+                     selectedVal.splice(this.state.territoryIndex, 1, item);
                  } else {
-                     selectedVal = selectedVal ? [...selectedVal, option] : [option];
+                     selectedVal = selectedVal ? [...selectedVal, item] : [item];
                  }
 
                  ref.current.handleChange(option ? selectedVal: null);
+                 // ??? - call set state that clean state inside timeout 
                  setTimeout(() => {
                      this.setState({});
                  }, 1);
@@ -760,30 +803,17 @@ class RightDetails extends React.Component {
              };
 
             let deleteTerritory = (territory) => {
-                let newArray = selectedVal && selectedVal.filter(e => e.country !== territory.country);
-                if (!territory.isValid) {
-                    newArray = newArray.filter(el => el.country !== territory.country);
-                }
-                ref.current.handleChange(territory.country ? newArray: null);
+                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id);
+                ref.current.handleChange(newArray);
                 setTimeout(() => {
-                        this.setState({});
+                    this.setState({});
                 }, 1);
             };
 
-            const result = Array.isArray(value) && value.map(el => {
-                if (!el.country) {
-                    el.country = error;
-                } 
-                el.isValid = el.country !== error;
-                return el;
-            });
-
-
-
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
+            return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
-                    value={result}
+                    value={value}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -796,22 +826,22 @@ class RightDetails extends React.Component {
                         <div>
                             {selectedVal && selectedVal.length > 0 ?
                             selectedVal.map((e, i) => {
-                            return (
-                                    <div key={i}>
-                                        <Popup
-                                            trigger={
-                                                <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
-                                                    {e.country}
-                                                </TerritoryTag>
-                                            }
-                                            position="top center"
-                                            on="hover"
-                                        >
-                                            {TerritoryTooltip(e)}
-                                        </Popup>
-                                        <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
-                                    </div>);
-                                })
+                                return (
+                                        <div key={i}>
+                                            <Popup
+                                                trigger={
+                                                    <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
+                                                        {e.name}
+                                                    </TerritoryTag>
+                                                }
+                                                position="top center"
+                                                on="hover"
+                                            >
+                                                {TerritoryTooltip(e)}
+                                            </Popup>
+                                            <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
+                                        </div>);
+                                    })
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
                             <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
@@ -822,7 +852,8 @@ class RightDetails extends React.Component {
                                 existingTerritoryList={selectedVal}
                                 territoryIndex={this.state.territoryIndex}
                                 isEdit={this.state.isEdit}
-                                options={options} />
+                                options={options} 
+                            />
                         </div>
                     } />
 
@@ -867,6 +898,7 @@ class RightDetails extends React.Component {
             this.props.availsMapping.mappings.map((mapping) => {
                 if (mapping.enableEdit) {
                     let error = null;
+                    // TODO: write this from scratch
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
                             if (equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) {
@@ -884,6 +916,7 @@ class RightDetails extends React.Component {
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
+
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
 
                     const required = mapping.required;
@@ -914,7 +947,16 @@ class RightDetails extends React.Component {
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'territoryType': renderFields.push(
+                             renderTerritoryField(
+                                 mapping.javaVariableName, 
+                                 mapping.displayName, 
+                                 this.state.territory, 
+                                 this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')), 
+                                 readOnly, 
+                                 required, 
+                                 highlighted
+                            ));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
