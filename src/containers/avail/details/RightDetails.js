@@ -99,20 +99,24 @@ class RightDetails extends React.Component {
                 .then(res => {
                     if (res && res.data) {
                         const regForEror = /\[(.*?)\]/i;
-                        const errorArr = res.data.validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory'))
+                        const regForSubField = /.([A-Za-z]+)$/;
+                        const territoryErrors = res.data.validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
                                 const matchObj = error.fieldName.match(regForEror);
-                                if (error.fieldName.match(regForEror)) {
+                                if (matchObj) {
+                                    const matchSubField = error.fieldName.match(regForSubField);
                                     error.index = Number(matchObj[1]); 
+                                    error.subField = matchSubField[1]; 
                                 }
                                 return error;
                             });
 
                         const territory = res.data['territory'].map((el, index) => {
-                            const error = errorArr.find(error => error.index === index);
+                            const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 el.isValid = false;
+                                el.errors = territoryErrors.filter(error => error.index === index);
                             } else {
                                 el.isValid = true;
                                 el.name = el.country;
@@ -164,8 +168,8 @@ class RightDetails extends React.Component {
                 if (el.hasOwnProperty('isValid')) {
                     delete el.isValid;
                 }
-                if (el.hasOwnProperty('type')) {
-                    delete el.type;
+                if (el.hasOwnProperty('errors')) {
+                    delete el.errors;
                 }
                 if (el.hasOwnProperty('name')) {
                     delete el.name;
@@ -299,23 +303,23 @@ class RightDetails extends React.Component {
     }
 
     toggleRightTerritoryForm = (index) => {
-        this.setState({
+        this.setState(state => ({
             isEdit: true,
             territoryIndex: index,
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
-        });
+            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen
+        }));
     }
 
     toggleAddRightTerritoryForm = () => {
-        this.setState({
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen,
-            isEdit: false
-        });
+        this.setState(state => ({
+            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen,
+            isEdit: false,
+        }));
     }
 
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
-            const hasValidationError = error;
+            const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             return (
                 <div key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
@@ -822,22 +826,22 @@ class RightDetails extends React.Component {
                         <div>
                             {selectedVal && selectedVal.length > 0 ?
                             selectedVal.map((e, i) => {
-                            return (
-                                    <div key={i}>
-                                        <Popup
-                                            trigger={
-                                                <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
-                                                    {e.name}
-                                                </TerritoryTag>
-                                            }
-                                            position="top center"
-                                            on="hover"
-                                        >
-                                            {TerritoryTooltip(e)}
-                                        </Popup>
-                                        <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
-                                    </div>);
-                                })
+                                return (
+                                        <div key={i}>
+                                            <Popup
+                                                trigger={
+                                                    <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
+                                                        {e.name}
+                                                    </TerritoryTag>
+                                                }
+                                                position="top center"
+                                                on="hover"
+                                            >
+                                                {TerritoryTooltip(e)}
+                                            </Popup>
+                                            <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
+                                        </div>);
+                                    })
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
                             <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
@@ -848,7 +852,8 @@ class RightDetails extends React.Component {
                                 existingTerritoryList={selectedVal}
                                 territoryIndex={this.state.territoryIndex}
                                 isEdit={this.state.isEdit}
-                                options={options} />
+                                options={options} 
+                            />
                         </div>
                     } />
 

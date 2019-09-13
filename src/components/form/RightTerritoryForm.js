@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Form, { Field, ErrorMessage } from '@atlaskit/form';
 import Button from '@atlaskit/button';
@@ -12,14 +11,17 @@ import { convertBooleanToString } from '../../containers/avail/util/format';
 import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
 import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-
+// TODO: write this from scratch
+// component rerender 11 times
 class RightTerritoryForm extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     static propTypes = {
-        isEdit: false
+        isEdit: PropTypes.bool,
     };
+
+    static defaultProps = {
+        isEdit: false,
+    };
+
     setProperValues = (data) => {
         if (data.country && data.rightContractStatus) {
             let newObject = {
@@ -53,7 +55,6 @@ class RightTerritoryForm extends React.Component {
         }
     }
 
-
     returnValidData = data => {
         return this.props.existingTerritoryList && this.props.existingTerritoryList[this.props.territoryIndex] && this.props.existingTerritoryList[this.props.territoryIndex][data] && this.props.existingTerritoryList[this.props.territoryIndex][data] !== null;
     }
@@ -80,6 +81,16 @@ class RightTerritoryForm extends React.Component {
     };
 
     render() {
+        const {existingTerritoryList, territoryIndex} = this.props;
+        const currentTerritory = existingTerritoryList[territoryIndex];
+        const errors = (currentTerritory && currentTerritory.errors) || [];
+        const getError = (field, value, errorList = errors) => {
+            const error = errorList.find(({subField}) => subField === field);
+            if (error && (!value || value.label === error.message)) {
+                return error;
+            }
+        };
+
         return (
             <ModalTransition>
                 {this.props.isOpen && (
@@ -101,13 +112,31 @@ class RightTerritoryForm extends React.Component {
                         }}
                     >
                         <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Territory Data</ModalHeader>
-                        <Field label="COUNTRY" isRequired name="country" validate={this.validate} defaultValue={this.props.isEdit ? { label: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'], value: this.returnValidData('country') && this.props.existingTerritoryList[this.props.territoryIndex]['country'] } : ''}>
+                        <Field 
+                            label="COUNTRY" 
+                            isRequired 
+                            name="country" 
+                            validate={this.validate} 
+                            defaultValue={
+                                this.props.isEdit 
+                                    ? { 
+                                        label: getError('country') ? getError('country').message : this.returnValidData('country') && currentTerritory['country'], 
+                                        value: this.returnValidData('country') && currentTerritory['country'] 
+                                    } : ''
+                            }
+                        >
                             {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
                                 <React.Fragment>
                                     <Select
                                         id={`select-${id}`}
                                         {...rest}
                                         validationState={this.getValidationState(error, valid)}
+                                        styles={{
+                                            control: (base) => { 
+                                                return getError('country', rest.value) ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'} : {...base, borderColor: '#F4F5F7'};
+                                            },
+                                            singleValue: base => getError('country', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
+                                        }}
                                         isSearchable={true}
                                         placeholder="Choose Country"
                                         options={this.removeExistingOptions()}
@@ -137,7 +166,19 @@ class RightTerritoryForm extends React.Component {
                             )}
                         </Field>
 
-                        <Field label="RIGHTS CONTRACT STATUS" isRequired validate={this.validate} name="rightContractStatus" defaultValue={this.props.isEdit ? { label: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'], value: this.returnValidData('rightContractStatus') && this.props.existingTerritoryList[this.props.territoryIndex]['rightContractStatus'] } : ''}>
+                        <Field 
+                            label="RIGHTS CONTRACT STATUS" 
+                            isRequired 
+                            validate={this.validate} 
+                            name="rightContractStatus" 
+                            defaultValue={
+                                this.props.isEdit
+                                ? { 
+                                    label: getError('rightContractStatus') ? getError('rightContractStatus').message : this.returnValidData('rightContractStatus') && currentTerritory['rightContractStatus'], 
+                                    value: this.returnValidData('rightContractStatus') && currentTerritory['rightContractStatus'] } 
+                                : ''
+                            }
+                        >
                             {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
                                 <React.Fragment>
                                     <Select
@@ -145,7 +186,19 @@ class RightTerritoryForm extends React.Component {
                                         {...rest}
                                         isSearchable={false}
                                         styles={{
-                                            control: (base) => ({ ...base, fontSize: '15px' })
+                                            control: (base) => { 
+                                                const defaultStyle = {
+                                                    ...base,
+                                                    borderColor: '#F4F5F6',
+                                                    fontSize: '15px',
+                                                };
+                                                const controlStyle = getError('rightContractStatus', rest.value) ? {...defaultStyle, backgroundColor: 'rgb(242, 222, 222)'} : defaultStyle;
+                                                return controlStyle;
+                                            },
+                                            singleValue: base => {
+                                                const style = getError('rightContractStatus', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base;
+                                                return style;
+                                            },
                                         }}
                                         validationState={this.getValidationState(error, valid)}
                                         placeholder="Choose Status"
