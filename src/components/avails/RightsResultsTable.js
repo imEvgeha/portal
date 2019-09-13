@@ -165,7 +165,96 @@ export default class RightsResultsTable extends React.Component {
                 return (
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
                 );
+            }
 
+            if (colDef.field === 'affiliate') {
+                const affiliate = val.filter(el => el).map(el => {
+                    return {
+                        type: 'affiliate',
+                        name: el,
+                    };
+                });
+
+                const errors = params.data.validationErrors
+                .filter(el => el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
+                .map(el => {
+                    return {
+                        type: 'error',
+                        name: el.sourceDetails.originalValue || el.message,
+                    };
+                });
+
+                const result = [...affiliate, ...errors]
+                .map((item, index, arr) => {
+                    const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
+                    return (
+                        <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                    );
+                });
+
+                return (
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
+                );
+            }
+
+            if (colDef.field === 'affiliateExclude') {
+                const affiliateExclude = val.filter(el => el).map(el => {
+                    return {
+                        type: 'affiliateExclude',
+                        name: el,
+                    };
+                });
+
+                const errors = params.data.validationErrors
+                .filter(el => el.fieldName.includes('affiliateExclude'))
+                .map(el => {
+                    return {
+                        type: 'error',
+                        name: el.sourceDetails.originalValue || el.message,
+                    };
+                });
+
+                const result = [...affiliateExclude, ...errors]
+                .map((item, index, arr) => {
+                    const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
+                    return (
+                        <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                    );
+                });
+
+                return (
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
+                );
+            }
+
+            if (colDef.field === 'castCrew') {
+                const castCrew = val.filter(el => el).map(el => {
+                    return {
+                        type: 'castCrew',
+                        name: el.personType,
+                    };
+                });
+
+                const errors = params.data.validationErrors
+                .filter(el => el.fieldName.includes('castCrew'))
+                .map(el => {
+                    return {
+                        type: 'error',
+                        name: el.sourceDetails.originalValue || el.message,
+                    };
+                });
+
+                const result = [...castCrew, ...errors]
+                .map((item, index, arr) => {
+                    const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
+                    return (
+                        <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                    );
+                });
+
+                return (
+                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
+                );
             }
         }
         const content = error || params.valueFormatted || val;
@@ -206,10 +295,13 @@ export default class RightsResultsTable extends React.Component {
         if(params.data && params.data.validationErrors){
             params.data.validationErrors.forEach( e => {
                 if(e.fieldName === params.colDef.field 
-                    || (e.fieldName.includes('country') && params.colDef.field === 'territory') 
+                    || (e.fieldName.includes('territory') && !e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territory') 
                     || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
                     || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
-                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')) {
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')
+                    || (e.fieldName.includes('affiliate') && params.colDef.field === 'affiliate')
+                    || (e.fieldName.includes('affiliateExclude') && params.colDef.field === 'affiliateExclude')
+                    || (e.fieldName.includes('castCrew') && params.colDef.field === 'castCrew')) {
                     error = e;
                 }
             });

@@ -100,7 +100,9 @@ class RightDetails extends React.Component {
                     if (res && res.data) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
-                        const territoryErrors = res.data.validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
+                        const {validationErrors = [], territory, affiliate, affiliateExclude, castCrew} = res.data;
+                        // temporally solution for territory - all should be refactor
+                        const territoryErrors = validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
                                 const matchObj = error.fieldName.match(regForEror);
                                 if (matchObj) {
@@ -111,7 +113,7 @@ class RightDetails extends React.Component {
                                 return error;
                             });
 
-                        const territory = res.data['territory'].map((el, index) => {
+                        const territories = territory.map((el, index) => {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
@@ -124,10 +126,65 @@ class RightDetails extends React.Component {
                             el.id = index;
                             return el;
                         });
+                        // temporally solution for affiliate and affilateExclude
+                        const affiliateErrors = validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
+                        .map(error => {
+                            const matchObj = error.fieldName.match(regForEror);
+                            if (matchObj) {
+                                error.index = Number(matchObj[1]); 
+                            }
+                            return error;
+                        });
+
+                        const affiliateExcludeErrors = validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude'))
+                        .map(error => {
+                            const matchObj = error.fieldName.match(regForEror);
+                            if (matchObj) {
+                                error.index = Number(matchObj[1]); 
+                            }
+                            return error;
+                        });
+
+                        const affiliates = [...affiliate.map((el, i) => {
+                            return {
+                                isValid:true,
+                                name: el,
+                                id: i,
+                            };}),
+                            ...affiliateErrors.map((el, index) => {
+                                let obj = {};
+                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.isValid = false;
+                                obj.errors = affiliateErrors[index];
+                                obj.id = el.index;
+                                return obj;
+                            })
+                        ];
+                        const affiliatesExclude = [
+                            ...affiliateExclude.map((el, index) => {
+                            return {
+                                isValid:true,
+                                name: el,
+                                id: index,
+                            };}),
+                            ...affiliateExcludeErrors.map((error, index) => {
+                                let obj = {};
+                                obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                obj.isValid = false;
+                                obj.errors = affiliateExcludeErrors[index];
+                                obj.id = error.index;
+                                return obj;
+                        })];
+
+                        const castCrews = castCrew;
+
                         this.setState({
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
-                            territory,
+                            territory: territories,
+                            affiliates,
+                            affiliatesExclude,
+                            castCrews,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -626,6 +683,7 @@ class RightDetails extends React.Component {
         };
 
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
+            console.error(value, 'value')
             let priorityError = null;
             if (error) {
                 priorityError = <div title={error}
@@ -935,7 +993,31 @@ class RightDetails extends React.Component {
                             break;
                         case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'multiselect': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'multiselect': 
+                            if (mapping.javaVariableName === 'affiliate') {
+                                renderFields.push(renderMultiSelectField(
+                                    mapping.javaVariableName, 
+                                    mapping.displayName, 
+                                    this.state.affiliates, 
+                                    this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && el.fieldName.includes('affiliateExclude')), 
+                                    readOnly, 
+                                    required, 
+                                    highlighted
+                                ));
+                                break;
+                            } else if (mapping.javaVariableName === 'affiliateExclude') {
+                                renderFields.push(renderMultiSelectField(
+                                    mapping.javaVariableName, 
+                                    mapping.displayName, 
+                                    this.state.affiliatesExclude, 
+                                    this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')), 
+                                    readOnly, 
+                                    required, 
+                                    highlighted
+                                ));
+                                break;
+                            }
+                            renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
