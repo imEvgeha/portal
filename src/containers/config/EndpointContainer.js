@@ -142,7 +142,7 @@ export class EndpointContainer extends Component {
                 .then(response => {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
-                    this.setState({ data, currentRecord: null });
+                    this.setState(prevState => ({ data, total: prevState.total + 1, currentRecord: null }));
                 }
                 );
         }

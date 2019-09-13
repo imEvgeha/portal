@@ -6,7 +6,7 @@ function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
     const currentTime = new Date();
-    let filename = 'avails_';
+    let filename = 'INT_avails_';
     filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate() + '_';
     filename += currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds();
     filename += '.xlsx';
