@@ -103,6 +103,17 @@ class CoreMetadataReadOnlyMode extends Component {
                             : null
                     }
                 </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    {
+                        this.props.data.imdbLink && this.props.data.imdbLink.length > 0 ?
+                            <Col>
+                                <FormGroup>
+                                    <Alert color='light' style={{wordWrap: 'break-word'}}><b>IMDb Link: </b> {this.props.data.imdbLink}</Alert>
+                                </FormGroup>
+                            </Col>
+                            : null
+                    }
+                </Row>
                 {
                     this.props.data.externalIds ?
                         <Fragment>

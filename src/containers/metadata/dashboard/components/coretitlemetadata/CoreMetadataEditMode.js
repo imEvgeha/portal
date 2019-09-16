@@ -150,9 +150,28 @@ class CoreMetadataEditMode extends Component {
                 name='awards'
                 onChange={e => this.props.onChange(e)}
                 id='awards'
+                value={this.props.data.awards ? this.props.data.awards : ''}
                 placeholder='Awards'
                 validate={{
                   maxLength: { value: 500 }
+                }}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label for='imdbLink'>IMDb Link</Label>
+              <AvField
+                type='text'
+                name='imdbLink'
+                onChange={e => this.props.onChange(e)}
+                id='imdbLink'
+                value={this.props.data.imdbLink ? this.props.data.imdbLink : ''}
+                placeholder='IMDb Link'
+                validate={{
+                  maxLength: { value: 200 }
                 }}
               />
             </FormGroup>
