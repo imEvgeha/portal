@@ -231,7 +231,7 @@ export default class RightsResultsTable extends React.Component {
                 const castCrew = val.filter(el => el).map(el => {
                     return {
                         type: 'castCrew',
-                        name: el.personType,
+                        name: `${el.displayName || ''} (${el.personType})`,
                     };
                 });
 

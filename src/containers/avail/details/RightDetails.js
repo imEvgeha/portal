@@ -682,10 +682,10 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            console.error(value, 'value')
+        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
+            // value = typeof value === 'object' ? value.name : value;
             let priorityError = null;
-            if (error) {
+            if (error && !name.includes('affiliate')) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
