@@ -103,9 +103,9 @@ export default class CreateEditConfigForm extends React.Component {
     }
 
     toggle = () => {
-        this.setState({
-            dropdownOpen: !this.state.dropdownOpen
-        });
+        this.setState(previousState => ({
+            dropdownOpen: !previousState.dropdownOpen
+        }));
     }
 
     render() {
