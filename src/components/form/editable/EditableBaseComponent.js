@@ -66,10 +66,10 @@ class EditableBaseComponent extends Component {
     handleShowHelperComponent(e) {
         e.preventDefault();
         if (!this.props.disabled) {
-            this.setState({
+            this.setState(state => ({
                 editable: true,
-                value: this.state.value ? this.state.value : null,
-            });
+                value: state.value,
+            }));
         }
     }
     handleCancelHelperComponent(e) {
@@ -124,13 +124,13 @@ class EditableBaseComponent extends Component {
         const displayFunc = (value) => {
             return (<span
                 onClick={this.handleShowHelperComponent}
-                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px' }}
+                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
                 className={this.props.disabled ? 'disabled' : ''}>
                 {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
                     <Popup
                         key={i}
                         trigger={
-                            <TerritoryTag isValid={e.isValid} isCreate>{e.country}</TerritoryTag>
+                            <TerritoryTag isValid={e.isValid} isCreate>{e.country || e.name}</TerritoryTag>
                         }
                         position="top center"
                         on="hover"

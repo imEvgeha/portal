@@ -174,8 +174,9 @@ export class EndpointContainer extends Component {
                 .then(response => {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
-                    this.setState({ data, currentRecord: null });
-                });
+                    this.setState(prevState => ({ data, total: prevState.total + 1, currentRecord: null }));
+                }
+                );
         }
 
     }
@@ -199,7 +200,7 @@ export class EndpointContainer extends Component {
                     {this.state.currentRecord === null &&
                         <CustomButton onClick = {this.onNewRecord}>
                             <FontAwesome
-                                
+
                                     name='plus'
                                     style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
                                     color='#111'
@@ -207,7 +208,7 @@ export class EndpointContainer extends Component {
                             Add
                         </CustomButton>
                     }
-                    
+
                 <div style={{clear: 'both'}} />
                 </TextHeader>
                 {this.state.currentRecord &&
@@ -252,7 +253,7 @@ export class EndpointContainer extends Component {
                                                     className='float-right'
                                                     name='times'
                                                     style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '16px'}}
-                                                    color='#111'    
+                                                    color='#111'
                                                     onClick={() => this.onRemoveItem(item)}
                                                 />
                                             </Can>
@@ -270,7 +271,7 @@ export class EndpointContainer extends Component {
                         />
                     </CustomContainer>
                 </DataBody>
-            
+
             </DataContainer>
         );
     }
