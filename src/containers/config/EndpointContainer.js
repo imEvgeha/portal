@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { ListGroupItem } from 'reactstrap';
+
 import FontAwesome from 'react-fontawesome';
 import styled, { css } from 'styled-components';
 import Pagination from '@atlaskit/pagination';
-import Button from '@atlaskit/button';
-import AddIcon from '@atlaskit/icon/glyph/editor/add';
-import { QuickSearch } from '@atlaskit/quick-search';
+import {QuickSearch} from '@atlaskit/quick-search';
 import { TextHeader } from '../../components/navigation/CustomNavigationElements';
 import { INPUT_TIMEOUT } from '../../constants/common-ui';
 import { configService } from './service/ConfigService';
 import { getConfigApiValues } from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import { Can, can } from '../../ability';
+import './ConfigUI.scss';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -43,6 +42,38 @@ const CustomContainer = styled.div`
     `}
 `;
 
+const ListContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-right: 24px;
+    margin: 10px;
+`;
+
+const ListItem = styled.div`
+    border: 1px solid #DDD;
+    padding: 10px;
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 2px;
+    &:nth-child(even) {
+        background: #F9F9F9;
+    }
+`;
+
+const CustomButton = styled.div`
+    float: right;
+    font-size: 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #EBEDF0;
+    color: #666;
+    padding: 7px 10px 7px;
+    &:hover {
+        background: #B8BABC;
+    }
+`;
+
 export const cache = {};
 
 const defaultPageSize = 13;
@@ -59,7 +90,8 @@ export class EndpointContainer extends Component {
             searchValue: '',
             isLoading: false,
             currentRecord: null,
-            pageSize: defaultPageSize
+            pageSize: defaultPageSize,
+            isModalOpen: false
         };
 
         this.keyInputTimeout = 0;
@@ -143,8 +175,7 @@ export class EndpointContainer extends Component {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
                     this.setState({ data, currentRecord: null });
-                }
-                );
+                });
         }
 
     }
@@ -162,21 +193,29 @@ export class EndpointContainer extends Component {
     render() {        
         const {selectedApi} = this.props;
         let canUpdate = can('update', 'ConfigUI');
-
         return (
             <DataContainer>
                 <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
                     {this.state.currentRecord === null &&
-                        <Button onClick={this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{ float: 'right' }}>Add</Button>
+                        <CustomButton onClick = {this.onNewRecord}>
+                            <FontAwesome
+                                
+                                    name='plus'
+                                    style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
+                                    color='#111'
+                                />
+                            Add
+                        </CustomButton>
                     }
+                    
+                <div style={{clear: 'both'}} />
                 </TextHeader>
-
                 {this.state.currentRecord &&
                     <DataBody>
-                        <CreateEditConfigForm schema={selectedApi && selectedApi.uiSchema} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
                 }
-                {!this.state.currentRecord && <DataBody>
+                <DataBody>
                     <CustomContainer left>
                         <QuickSearch
                             isLoading={this.state.isLoading}
@@ -187,7 +226,7 @@ export class EndpointContainer extends Component {
                         />
                     </CustomContainer>
                     {!this.state.isLoading && (
-                        <div style={{ marginBottom: '5px' }}>
+                        <ListContainer>
                             {this.state.data.map((item, i) => {
                                 const {selectedApi = {}} = this.props;
                                 const result = selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames.reduce((acc, curr) => {
@@ -200,7 +239,7 @@ export class EndpointContainer extends Component {
                                 const label = (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
                                 if (i < this.state.pageSize) {
                                     return (
-                                        <ListGroupItem key={i}>
+                                        <ListItem key={i}>
                                             {
                                                 canUpdate ?
                                                     <a href="#" onClick={() => this.onEditRecord(item)}>
@@ -211,18 +250,17 @@ export class EndpointContainer extends Component {
                                             <Can I="delete" a="ConfigUI">
                                                 <FontAwesome
                                                     className='float-right'
-                                                    name='times-circle'
-                                                    style={{ marginTop: '5px', cursor: 'pointer' }}
-                                                    color='#111'
-                                                    size='lg'
+                                                    name='times'
+                                                    style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '16px'}}
+                                                    color='#111'    
                                                     onClick={() => this.onRemoveItem(item)}
                                                 />
                                             </Can>
-                                        </ListGroupItem>
+                                        </ListItem>
                                     );
                                 }
                             })}
-                        </div>
+                        </ListContainer>
                     )}
                     <CustomContainer center>
                         <Pagination 
@@ -232,7 +270,7 @@ export class EndpointContainer extends Component {
                         />
                     </CustomContainer>
                 </DataBody>
-            }
+            
             </DataContainer>
         );
     }
