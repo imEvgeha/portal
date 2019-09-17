@@ -120,7 +120,7 @@ export default class RightsResultsTable extends React.Component {
                 }
             };
             const filterFieldValues = (values, field) => {
-                const result = values.map((el, index) => {
+                const result = values && values.map((el, index) => {
                     const updatedObject = {
                         type: field,
                         field,
@@ -135,12 +135,12 @@ export default class RightsResultsTable extends React.Component {
                     return updatedObject;
                 });
 
-                return result;
+                return result || [];
             };
 
             const filterFieldErrors = (errors, type) => {
                 const regForEror = /\[(.*?)\]/i;
-                const result = errors.filter(({fieldName}) => {
+                const result = errors && errors.filter(({fieldName}) => {
                     const complexFieldIndex = fieldName.indexOf('[');
                     if (complexFieldIndex > -1) {
                         const fieldNameBase = fieldName.slice(0, complexFieldIndex);
@@ -161,7 +161,7 @@ export default class RightsResultsTable extends React.Component {
                         };
                     });
 
-                return result;
+                return result || [];
             };
 
             let errors = [...filterFieldErrors(params.data.validationErrors, colDef.field)];
@@ -171,6 +171,9 @@ export default class RightsResultsTable extends React.Component {
                 if (errors.some(el => el.id === value.id)) {
                     value.type = 'error';
                     value.isValid = false;
+                    if (!value.value) {
+                        value.value = errors.find(el => el.id === value.id) && errors.find(el => el.id === value.id).value;
+                    }
                 }
                 result = [...mergedValues, value];
                 return result;
