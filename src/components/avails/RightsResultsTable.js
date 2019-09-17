@@ -105,157 +105,90 @@ export default class RightsResultsTable extends React.Component {
             val = JSON.stringify(val);
         }
 
+        let arrayTypeFieldValue = null;
+
         if(Array.isArray(val)){
             const {colDef = {}} = params;
-            if (colDef.field === 'territory') {
-                const countries = val.filter(el => el.country).map(el => {
-                    return {
-                        type: 'country',
-                        name: el.country,
+            const getComplexFieldValue = (field, element) => {
+                switch (field) {
+                    case 'territory':
+                        return element.country;
+                    case 'castCrew':
+                        return `${element.displayName || ''}(${element.personType}`;
+                    default:
+                        return null;
+                }
+            };
+            const filterFieldValues = (values, field) => {
+                const result = values.map((el, index) => {
+                    const updatedObject = {
+                        type: field,
+                        field,
+                        id: index,
+                        isValid: true,
                     };
+                    if (typeof el === 'object') {
+                        updatedObject.value = getComplexFieldValue(field, el) || el[Object.keys(el)[0]];
+                    } else {
+                        updatedObject.value = el;
+                    }
+                    return updatedObject;
                 });
 
-                const errors = params.data.validationErrors
-                    .filter(el => el.fieldName.includes('country'))
-                    .map(el => {
+                return result;
+            };
+
+            const filterFieldErrors = (errors, type) => {
+                const regForEror = /\[(.*?)\]/i;
+                const result = errors.filter(({fieldName}) => {
+                    const complexFieldIndex = fieldName.indexOf('[');
+                    if (complexFieldIndex > -1) {
+                        const fieldNameBase = fieldName.slice(0, complexFieldIndex);
+                        return fieldNameBase === type;
+                    }
+
+                    return fieldName === type;
+                })
+                    .map(({sourceDetails, severityType, message}) => {
+                        const matchObj = sourceDetails && sourceDetails.originalFieldName && sourceDetails.originalFieldName.match(regForEror);
                         return {
                             type: 'error',
-                            name: el.sourceDetails.originalValue || el.message,
+                            value: (sourceDetails && sourceDetails.originalValue) || message,
+                            field: sourceDetails && sourceDetails.originalFieldName,
+                            severityType,
+                            id: matchObj && Number(matchObj[1]),
+                            isValid: false,
                         };
                     });
 
-                const result = [...countries, ...errors]
-                    .map((item, index, arr) => {
-                        const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
-                        return (
-                           <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
-                        );
-                    });
+                return result;
+            };
 
-                return (
-                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
-                );
-            }
+            let errors = [...filterFieldErrors(params.data.validationErrors, colDef.field)];
 
-            if (colDef.field === 'territoryExcluded') {
-                const countries = val.filter(el => el).map(el => {
-                    return {
-                        type: 'country',
-                        name: el,
-                    };
-                });
+            const updatedValues = [...filterFieldValues(val, colDef.field)].reduce((mergedValues, value) => {
+                let result = mergedValues;
+                if (errors.some(el => el.id === value.id)) {
+                    value.type = 'error';
+                    value.isValid = false;
+                }
+                result = [...mergedValues, value];
+                return result;
+            }, []);
 
-                const errors = params.data.validationErrors
-                .filter(el => el.fieldName.includes('territoryExcluded'))
-                .map(el => {
-                    return {
-                        type: 'error',
-                        name: el.sourceDetails.originalValue || el.message,
-                    };
-                });
+            errors = errors.filter(el => updatedValues.every(value => value.id !== el.id));
 
-                const result = [...countries, ...errors]
-                    .map((item, index, arr) => {
-                        const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
-                        return (
-                            <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
-                        );
-                    });
+            const mergedValues = [...updatedValues, ...errors];
 
-                return (
-                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
-                );
-            }
-
-            if (colDef.field === 'affiliate') {
-                const affiliate = val.filter(el => el).map(el => {
-                    return {
-                        type: 'affiliate',
-                        name: el,
-                    };
-                });
-
-                const errors = params.data.validationErrors
-                .filter(el => el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
-                .map(el => {
-                    return {
-                        type: 'error',
-                        name: el.sourceDetails.originalValue || el.message,
-                    };
-                });
-
-                const result = [...affiliate, ...errors]
+            const result = mergedValues
                 .map((item, index, arr) => {
                     const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
                     return (
-                        <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                        <span key={index} style={style}>{`${item.value}${index < arr.length - 1 ? ', ' : ' '}`}</span>
                     );
                 });
 
-                return (
-                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
-                );
-            }
-
-            if (colDef.field === 'affiliateExclude') {
-                const affiliateExclude = val.filter(el => el).map(el => {
-                    return {
-                        type: 'affiliateExclude',
-                        name: el,
-                    };
-                });
-
-                const errors = params.data.validationErrors
-                .filter(el => el.fieldName.includes('affiliateExclude'))
-                .map(el => {
-                    return {
-                        type: 'error',
-                        name: el.sourceDetails.originalValue || el.message,
-                    };
-                });
-
-                const result = [...affiliateExclude, ...errors]
-                .map((item, index, arr) => {
-                    const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
-                    return (
-                        <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
-                    );
-                });
-
-                return (
-                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
-                );
-            }
-
-            if (colDef.field === 'castCrew') {
-                const castCrew = val.filter(el => el).map(el => {
-                    return {
-                        type: 'castCrew',
-                        name: `${el.displayName || ''} (${el.personType})`,
-                    };
-                });
-
-                const errors = params.data.validationErrors
-                .filter(el => el.fieldName.includes('castCrew'))
-                .map(el => {
-                    return {
-                        type: 'error',
-                        name: el.sourceDetails.originalValue || el.message,
-                    };
-                });
-
-                const result = [...castCrew, ...errors]
-                .map((item, index, arr) => {
-                    const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
-                    return (
-                        <span key={index} style={style}>{`${item.name}${index < arr.length - 1 ? ', ' : ' '}`}</span>
-                    );
-                });
-
-                return (
-                    <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>{result}</Link>
-                );
-            }
+            arrayTypeFieldValue = result;
         }
         const content = error || params.valueFormatted || val;
         if (val !== undefined) {
@@ -270,7 +203,7 @@ export default class RightsResultsTable extends React.Component {
                             title= {error}
                             className = {highlighted ? 'font-weight-bold' : ''}
                             style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                            {String(content)}
+                            {arrayTypeFieldValue || String(content)}
                         </div>
                         {highlighted &&
                         <div

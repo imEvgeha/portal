@@ -999,7 +999,7 @@ class RightDetails extends React.Component {
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
                                     this.state.affiliates, 
-                                    this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && el.fieldName.includes('affiliateExclude')), 
+                                    this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')), 
                                     readOnly, 
                                     required, 
                                     highlighted
