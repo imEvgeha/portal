@@ -3,6 +3,7 @@ import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
 import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import { Link } from 'react-router-dom';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
@@ -31,8 +32,19 @@ class TitleReadOnlyMode extends Component {
             seasonFinale,
             contentType,
             originalLanguage,
-            episodic
+            episodic,
+            parentIds
         } = this.props.data;
+        let seriesLink;
+        let seasonLink;
+        parentIds && parentIds.map(e => {
+            if(e.contentType === 'SERIES') {
+                seriesLink = e.id;
+            }
+            if(e.contentType === 'SEASON') {
+                seasonLink = e.id;
+            }
+        })
 
         return (
             <Fragment>
@@ -57,14 +69,14 @@ class TitleReadOnlyMode extends Component {
                                     {
                                         episodic && episodic.seriesTitleName ?
                                             <Col>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Series: </b>{episodic.seriesTitleName ? episodic.seriesTitleName : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Series: </b>{episodic.seriesTitleName ? contentType === 'EPISODE' ? <a href={seriesLink} className={'linked-data'}>{episodic.seriesTitleName}</a> : episodic.seriesTitleName  : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
                                     {
-                                       episodic &&episodic.seasonNumber ?
+                                        episodic && episodic.seasonNumber ?
                                             <Col>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{episodic.seasonNumber ? episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{episodic.seasonNumber ? contentType === 'EPISODE' ? <a href={seasonLink} className={'linked-data'}>{episodic.seasonNumber}</a> : episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
