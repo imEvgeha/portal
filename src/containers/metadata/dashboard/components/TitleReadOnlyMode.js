@@ -3,7 +3,6 @@ import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
 import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
-import { Link } from 'react-router-dom';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
@@ -44,7 +43,7 @@ class TitleReadOnlyMode extends Component {
             if(e.contentType === 'SEASON') {
                 seasonLink = e.id;
             }
-        })
+        });
 
         return (
             <Fragment>
