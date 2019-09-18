@@ -13,6 +13,7 @@ import { configService } from './service/ConfigService';
 import { getConfigApiValues } from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import { Can, can } from '../../ability';
+import './ConfigUI.scss';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -200,17 +201,16 @@ export class EndpointContainer extends Component {
                                 const label = (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
                                 if (i < this.state.pageSize) {
                                     return (
-                                        <ListGroupItem key={i}>
+                                        <ListGroupItem key={i} style={{display: 'flex', justifyContent: 'space-between'}}>
                                             {
                                                 canUpdate ?
-                                                    <a href="#" onClick={() => this.onEditRecord(item)}>
+                                                    <a href="#" className={'text-truncate'} onClick={() => this.onEditRecord(item)}>
                                                         {label}
                                                     </a>
-                                                : <span>{label}</span>
+                                                : <span className={'text-truncate'}>{label}</span>
                                             }
                                             <Can I="delete" a="ConfigUI">
                                                 <FontAwesome
-                                                    className='float-right'
                                                     name='times-circle'
                                                     style={{ marginTop: '5px', cursor: 'pointer' }}
                                                     color='#111'
