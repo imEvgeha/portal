@@ -1,12 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import connect from 'react-redux/es/connect/connect';
-import t from 'prop-types';
-import Editable from 'react-x-editable';
+import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref 
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import moment from 'moment';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replace by new NexusSelectCheckbox
+import Select from 'react-select';
+import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
+import Popup from 'reactjs-popup'; // remove thuis package too, add our component set by atalskit
 import config from 'react-global-configuration';
 import { Button, Label } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
-
+import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
@@ -15,21 +19,15 @@ import EditableBaseComponent from '../../../components/form/editable/EditableBas
 import { oneOfValidation, rangeValidation } from '../../../util/Validation';
 import { profileService } from '../service/ProfileService';
 import { cannot } from '../../../ability';
-import './RightDetails.scss';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
-import Select from 'react-select';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
-import moment from 'moment';
 import { momentToISO } from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import { confirmModal } from '../../../components/modal/ConfirmModal';
-
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import Popup from 'reactjs-popup';
 import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
@@ -41,17 +39,24 @@ const mapStateToProps = state => {
 };
 
 class RightDetails extends React.Component {
-
     static propTypes = {
-        selectValues: t.object,
-        availsMapping: t.any,
-        match: t.any,
-        location: t.any,
-        blocking: t.bool
+        selectValues: PropTypes.object,
+        availsMapping: PropTypes.any,
+        match: PropTypes.any,
+        location: PropTypes.any,
+        blocking: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        selectValues: null,
+        availsMapping: null,
+        match: {},
+        location: {},
+        blocking: null,
     };
 
     static contextTypes = {
-        router: t.object
+        router: PropTypes.object,
     }
 
     refresh = null;
@@ -100,9 +105,9 @@ class RightDetails extends React.Component {
                     if (res && res.data) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
-                        const {validationErrors = [], territory, affiliate, affiliateExclude, castCrew} = res.data;
+                        const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res.data || {};
                         // temporally solution for territory - all should be refactor
-                        const territoryErrors = validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
+                        const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
                                 const matchObj = error.fieldName.match(regForEror);
                                 if (matchObj) {
@@ -111,9 +116,9 @@ class RightDetails extends React.Component {
                                     error.subField = matchSubField[1]; 
                                 }
                                 return error;
-                            });
+                            })) || [];
 
-                        const territories = territory.map((el, index) => {
+                        const territories = (Array.isArray(territory) && territory.map((el, index) => {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
@@ -125,32 +130,27 @@ class RightDetails extends React.Component {
                             }
                             el.id = index;
                             return el;
-                        });
+                        })) || [];
                         // temporally solution for affiliate and affilateExclude
-                        const affiliateErrors = validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
+                        const affiliateErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
                         .map(error => {
                             const matchObj = error.fieldName.match(regForEror);
                             if (matchObj) {
                                 error.index = Number(matchObj[1]); 
                             }
                             return error;
-                        });
+                        })) || [];
 
-                        const affiliateExcludeErrors = validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude'))
-                        .map(error => {
-                            const matchObj = error.fieldName.match(regForEror);
-                            if (matchObj) {
-                                error.index = Number(matchObj[1]); 
-                            }
-                            return error;
-                        });
-
-                        const affiliates = [...affiliate.map((el, i) => {
+                        const affiliateList = (Array.isArray(affiliate) && affiliate.map((el, i) => {
                             return {
                                 isValid:true,
                                 name: el,
                                 id: i,
-                            };}),
+                            };
+                        })) || [];
+
+                        const affiliates = [
+                            ...affiliateList,
                             ...affiliateErrors.map((el, index) => {
                                 let obj = {};
                                 obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
@@ -160,13 +160,26 @@ class RightDetails extends React.Component {
                                 return obj;
                             })
                         ];
-                        const affiliatesExclude = [
-                            ...affiliateExclude.map((el, index) => {
+
+                        const affiliateExcludeErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude'))
+                        .map(error => {
+                            const matchObj = error.fieldName.match(regForEror);
+                            if (matchObj) {
+                                error.index = Number(matchObj[1]); 
+                            }
+                            return error;
+                        })) || [];
+
+                        const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.map((el, i) => {
                             return {
                                 isValid:true,
                                 name: el,
-                                id: index,
-                            };}),
+                                id: i,
+                            };
+                        })) || [];
+
+                        const affiliatesExclude = [
+                            ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
                                 let obj = {};
                                 obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
@@ -982,6 +995,10 @@ class RightDetails extends React.Component {
                     if (this.state.right && this.state.right.highlightedFields) {
                         highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
                     }
+
+                    const {right = {}} = this.state;
+                    const {validationErrors} = right || {};
+
                     switch (mapping.dataType) {
                         case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
@@ -999,7 +1016,7 @@ class RightDetails extends React.Component {
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
                                     this.state.affiliates, 
-                                    this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')), 
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')), 
                                     readOnly, 
                                     required, 
                                     highlighted
@@ -1010,7 +1027,7 @@ class RightDetails extends React.Component {
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
                                     this.state.affiliatesExclude, 
-                                    this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')), 
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')), 
                                     readOnly, 
                                     required, 
                                     highlighted
@@ -1034,7 +1051,7 @@ class RightDetails extends React.Component {
                                  mapping.javaVariableName, 
                                  mapping.displayName, 
                                  this.state.territory, 
-                                 this.state.right.validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')), 
+                                 Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')), 
                                  readOnly, 
                                  required, 
                                  highlighted
@@ -1076,4 +1093,4 @@ class RightDetails extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, null)(RightDetails);
+export default connect(mapStateToProps)(RightDetails);

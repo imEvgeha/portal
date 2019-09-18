@@ -1,17 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
 import {getDeepValue} from '../../util/Common';
-import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import LoadingGif from '../../img/loading.gif';
-import t from 'prop-types';
+import {isObject} from '../../util/Common';
 
 export default class RightsResultsTable extends React.Component {
-
     static propTypes = {
-        nav: t.object,
-        columnsSize: t.object,
-        columns: t.array
+        nav: PropTypes.object,
+        columnsSize: PropTypes.object,
+        columns: PropTypes.array
+    };
+
+    static defaultProps = {
+        nav: null,
+        columnsSize: null,
+        columns: null,
     };
 
     parseColumnsSchema(mappings){
@@ -127,7 +133,7 @@ export default class RightsResultsTable extends React.Component {
                         id: index,
                         isValid: true,
                     };
-                    if (typeof el === 'object') {
+                    if (isObject(el)) {
                         updatedObject.value = getComplexFieldValue(field, el) || el[Object.keys(el)[0]];
                     } else {
                         updatedObject.value = el;
@@ -249,3 +255,4 @@ export default class RightsResultsTable extends React.Component {
         }
     }
 }
+
