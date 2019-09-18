@@ -163,13 +163,18 @@ export class EndpointContainer extends Component {
     render() {        
         const {selectedApi} = this.props;
         let canUpdate = can('update', 'ConfigUI');
+        let canCreate = can('create', 'ConfigUI');
 
         return (
             <DataContainer>
                 <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
-                    {this.state.currentRecord === null &&
-                        <Button onClick={this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{ float: 'right' }}>Add</Button>
-                    }
+                    {canCreate && (
+                        this.state.currentRecord === null &&
+                            <Button onClick={this.onNewRecord} iconBefore={<AddIcon label="add" />} appearance={'default'} style={{ float: 'right' }}>
+                                Add
+                            </Button>
+                        
+                    )}
                 </TextHeader>
 
                 {this.state.currentRecord &&
