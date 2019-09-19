@@ -48,7 +48,8 @@ class SelectRightsDOPConnector extends Component {
                     let toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
                     if(toChangeTerritories.length > 0){
                         let toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
-                        let newTerritories = response.data.territory.map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
+                        let newTerritories = response.data.territory.
+                        map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
                         // newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
                         return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
                             return {rightId: right.rightId, territories: toChangeTerritoriesCountry};

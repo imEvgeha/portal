@@ -1,5 +1,5 @@
 import React from 'react';
-import {updatePromotedRights,  } from '../../../../stores/actions/DOP';
+import {updatePromotedRights, updatePromotedRightsFullData,} from '../../../../stores/actions/DOP';
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {rightsService} from '../../../../containers/avail/service/RightsService';
@@ -14,7 +14,9 @@ class TableHeader extends React.Component {
     static propTypes = {
         table: t.object,
         promotedRights: t.array,
+        promotedRightsFullData: t.array,
         updatePromotedRights: t.func,
+        updatePromotedRightsFullData: t.func,
         selectedTerritories: t.array,
         useSelectedTerritories: t.bool,
     };
@@ -32,8 +34,9 @@ class TableHeader extends React.Component {
     };
 
     onBulkPromote = () => {
-        const {promotedRights, updatePromotedRights, table} = this.props;
+        const {promotedRights, updatePromotedRights, promotedRightsFullData, updatePromotedRightsFullData, table} = this.props;
         let toPromote = [];
+        let toPromoteFullData = [];
         table.api.getSelectedNodes().forEach(node => {
             const isPromotable = this.getPromotableStatus(node);
             if (isPromotable && !this.isPromoted(node)) {
@@ -41,10 +44,12 @@ class TableHeader extends React.Component {
                 const territories = this.getTerritoriesWithUserSelected(territoryList);
 
                 toPromote.push({rightId: node.id, territories});
+                toPromoteFullData.push(node.data);
             }
         });
 
         updatePromotedRights([...promotedRights, ...toPromote]);
+        updatePromotedRightsFullData([...promotedRightsFullData, ...toPromoteFullData]);
     };
 
     getTerritoriesWithUserSelected = (territories) => {
@@ -58,15 +63,18 @@ class TableHeader extends React.Component {
     };
 
     onBulkUnPromote = () => {
-        const {promotedRights, updatePromotedRights, table} = this.props;
+        const {promotedRights, updatePromotedRights, promotedRightsFullData, updatePromotedRightsFullData, table} = this.props;
         let unPromotedRights = promotedRights.slice(0);
+        let unPromotedRightsFullData = promotedRightsFullData.slice(0);
         table.api.getSelectedNodes().forEach(node => {
             if (this.isPromoted(node)) {
                 unPromotedRights = unPromotedRights.filter(e => e.rightId !== node.data.id);
+                unPromotedRightsFullData = unPromotedRightsFullData.filter(e => e.id !== node.data.id);
             }
         });
 
         updatePromotedRights(unPromotedRights);
+        updatePromotedRightsFullData(unPromotedRightsFullData);
     };
 
     onBulkIgnore = () => {
@@ -118,13 +126,15 @@ class TableHeader extends React.Component {
 const mapStateToProps = state => {
     return {
         promotedRights: state.dopReducer.session.promotedRights,
+        promotedRightsFullData: state.dopReducer.session.promotedRightsFullData,
         selectedTerritories: state.dopReducer.session.selectedTerritories,
         useSelectedTerritories: state.dopReducer.session.useSelectedTerritories
     };
 };
 
 const mapDispatchToProps = {
-    updatePromotedRights
+    updatePromotedRights,
+    updatePromotedRightsFullData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableHeader);
