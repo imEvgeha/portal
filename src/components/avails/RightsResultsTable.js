@@ -146,11 +146,11 @@ export default class RightsResultsTable extends React.Component {
 
             const filterFieldErrors = (errors, type) => {
                 const regForEror = /\[(.*?)\]/i;
-                const result = errors && errors.filter(({fieldName}) => {
+                const result = Array.isArray(errors) && errors.filter(({fieldName}) => {
                     const complexFieldIndex = fieldName.indexOf('[');
                     if (complexFieldIndex > -1) {
                         const fieldNameBase = fieldName.slice(0, complexFieldIndex);
-                        return fieldNameBase === type;
+                        return fieldNameBase === type || type.includes(fieldNameBase);
                     }
 
                     return fieldName === type;
@@ -170,24 +170,54 @@ export default class RightsResultsTable extends React.Component {
                 return result || [];
             };
 
-            let errors = [...filterFieldErrors(params.data.validationErrors, colDef.field)];
+            const regForSubField = /.([A-Za-z]+)$/;
+            const parsedFields = ['languageAudioTypes.languge', 'languageAudioTypes.audioType'];
 
-            const updatedValues = [...filterFieldValues(val, colDef.field)].reduce((mergedValues, value) => {
-                let result = mergedValues;
+            let errors = filterFieldErrors(params.data.validationErrors, colDef.field)
+                .filter(error => {
+                    const {field} = error || {};
+                    const errorSubField = field && field.match(regForSubField) && field.match(regForSubField)[1];
+                    return errorSubField && parsedFields.every(field => !field.includes(errorSubField));
+                });
+
+            let parsedFieldsErrors = filterFieldErrors(params.data.validationErrors, colDef.field)
+                .filter(error => {
+                    const {field} = error || {};
+                    const errorSubField = field && field.match(regForSubField) && field.match(regForSubField)[1];
+                    return errorSubField && parsedFields.some(field => field.includes(errorSubField));
+                })
+                .map(error => {
+                    const errorSubField = error.field.match(regForSubField)[1];
+                    error.subField = errorSubField;
+                    return error;
+                });
+
+            const updatedValues = filterFieldValues(val, colDef.field).reduce((mergedValues, value) => {
                 if (errors.some(el => el.id === value.id)) {
                     value.type = 'error';
                     value.isValid = false;
                     if (!value.value) {
-                        value.value = errors.find(el => el.id === value.id) && errors.find(el => el.id === value.id).value;
+                        const error = errors.find(({id}) => id === value.id);
+                        value.value = error && error.value;
                     }
-                }
-                result = [...mergedValues, value];
-                return result;
+                } else if (parsedFieldsErrors.some(err => err.id === value.id)) {
+                    const error = parsedFieldsErrors.find(err => value.field.includes(err.subField));
+                    if (error) {
+                        value.type = 'error';
+                        value.isValid = false;
+                        if (!value.value) {
+                            value.value = error && error.value;
+                        }
+                    }
+                }  
+                return [...mergedValues, value];
             }, []);
 
             errors = errors.filter(el => updatedValues.every(value => value.id !== el.id));
 
-            const mergedValues = [...updatedValues, ...errors];
+            parsedFieldsErrors = parsedFieldsErrors.filter(el => updatedValues.every(value => value.id !== el.id));
+
+            const mergedValues = [...updatedValues, ...errors, ...parsedFieldsErrors];
 
             const result = mergedValues
                 .map((item, index, arr) => {

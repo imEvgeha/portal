@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
-
+import {isObject} from '../../../util/Common';
 import Popup from 'reactjs-popup';
 import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
-import {isObject} from '../../../util/Common';
 
 class EditableBaseComponent extends Component {
 
@@ -52,7 +51,7 @@ class EditableBaseComponent extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.value != this.props.value) {
             // dirty fix for territory field
-            if (Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
+            if (this.props.displayName === 'Territory' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
                 return;
             }
             this.setState({
@@ -121,11 +120,21 @@ class EditableBaseComponent extends Component {
     }
 
     render() {
+        const {displayName} = this.props;
         const displayFunc = (value) => {
-
+            const getComplexFieldValue = (name, element) => {
+                switch (name) {
+                    case 'Territory':
+                        return element.country;
+                    case 'CastCrew':
+                        return `${element.displayName || ''}(${element.personType}`;
+                     default:
+                    return element.value || element[Object.keys(element)[0]];
+                }
+            };
             const setSimpleArrayWithError = arr => {
                 const updatedArr = arr.map((el, index, array) => {
-                    const value = isObject(el) ? el.name || el[Object.keys(el)[0]] : el;
+                    const value = isObject(el) ? getComplexFieldValue(displayName, el) : el;
                     const style = isObject(el) && el.hasOwnProperty('isValid') && !el.isValid ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'} : {color: '#1a1a1a', paddingRight: '4px'};
                     return (
                         <span key={index} style={style}>{`${value}${index < array.length - 1 ? ', ' : ''}`}</span>

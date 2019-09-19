@@ -105,7 +105,14 @@ class RightDetails extends React.Component {
                     if (res && res.data) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
-                        const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res.data || {};
+                        const {
+                            validationErrors = [], 
+                            territory = [], 
+                            affiliate = [], 
+                            affiliateExclude = [], 
+                            castCrew = [],
+                            languageAudioTypes =  [],
+                        } = res.data || {};
                         // temporally solution for territory - all should be refactor
                         const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
@@ -118,7 +125,7 @@ class RightDetails extends React.Component {
                                 return error;
                             })) || [];
 
-                        const territories = (Array.isArray(territory) && territory.map((el, index) => {
+                            const territories = (Array.isArray(territory) && territory.filter(el => el).map((el, index) => {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
@@ -141,7 +148,7 @@ class RightDetails extends React.Component {
                             return error;
                         })) || [];
 
-                        const affiliateList = (Array.isArray(affiliate) && affiliate.map((el, i) => {
+                        const affiliateList = (Array.isArray(affiliate) && affiliate.filter(el => el).map((el, i) => {
                             return {
                                 isValid:true,
                                 name: el,
@@ -170,7 +177,7 @@ class RightDetails extends React.Component {
                             return error;
                         })) || [];
 
-                        const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.map((el, i) => {
+                        const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.filter(el => el).map((el, i) => {
                             return {
                                 isValid:true,
                                 name: el,
@@ -189,6 +196,63 @@ class RightDetails extends React.Component {
                                 return obj;
                         })];
 
+                        const languageAudioTypesLang = (Array.isArray(languageAudioTypes) && languageAudioTypes.map(el => el && el.language)) || []; 
+                        const languageAudioTypesAudio = (Array.isArray(languageAudioTypes) && languageAudioTypes.map(el => el && el.audioType)) || []; 
+                        const languageAudioTypesErrors = (Array.isArray(validationErrors) && validationErrors.filter(({fieldName}) => {
+                            return fieldName && fieldName.includes('languageAudioTypes');
+                        })
+                            .map(error => {
+                                const matchObj = error.fieldName.match(regForEror);
+                                if (matchObj) {
+                                    error.index = Number(matchObj[1]); 
+                                }
+                                return error;
+                            })) || [];
+
+                            const languageAudioTypesList = (languageAudioTypesLang.filter(el => el).map((el, i) => {
+                            return {
+                                isValid: true,
+                                name: el,
+                                id: i,
+                            };
+                        })) || [];
+
+                        const languageAudioTypesAudioTypeList = (languageAudioTypesAudio.filter(el => el).map((el, i) => {
+                            return {
+                                isValid: true,
+                                name: el,
+                                id: i,
+                            };
+                        })) || [];
+
+                        const languageAudioTypesLanguage = [
+                            ...languageAudioTypesList,
+                            ...languageAudioTypesErrors
+                            .filter(({fieldName}) => fieldName.includes('.language'))
+                            .map((el, index) => {
+                                let obj = {};
+                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.isValid = false;
+                                obj.errors = languageAudioTypesErrors[index];
+                                obj.id = el.index;
+                                return obj;
+                            })
+                        ];
+
+                        const languageAudioTypesAudioType = [
+                            ...languageAudioTypesAudioTypeList,
+                            ...languageAudioTypesErrors
+                                .filter(({fieldName}) => fieldName.includes('.audioType'))
+                                .map((el, index) => {
+                                let obj = {};
+                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.isValid = false;
+                                obj.errors = languageAudioTypesErrors[index];
+                                obj.id = el.index;
+                                return obj;
+                            })
+                        ];
+
                         const castCrews = castCrew;
 
                         this.setState({
@@ -198,6 +262,8 @@ class RightDetails extends React.Component {
                             affiliates,
                             affiliatesExclude,
                             castCrews,
+                            languageAudioTypesLanguage,
+                            languageAudioTypesAudioType,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -423,24 +489,46 @@ class RightDetails extends React.Component {
         };
         const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
             const ref = React.createRef();
-            const displayFunc = (val) => {
-                if (error) {
-                    return (<div title={error}
-                        style={{
-                            textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
-                            color: error ? '#a94442' : null
-                        }}
-                    > {error} </div>);
-                } else {
-                    return val;
-                }
+            let copiedValue = [];
+            if (Array.isArray(value) && value.length > 0 && name === 'languageAudioTypes.audioType') {
+                copiedValue = [...value];
+                value = value.map(({name}) => name);
+            }
+            const handleAudioType = (audioTypes, value) => {
+                const result = (Array.isArray(audioTypes) && audioTypes.length > 0 && audioTypes.map(({isValid, name}, index, arr) => {
+                    return (
+                        <span key={index + 1} style={!isValid ? {color: 'rgb(169, 68, 66)'} : {}}>
+                            {`${name} ${index < arr.length - 1 ? ', ' : ''}`}
+                        </span>
+                    ); 
+                })) || value;
+                return result;
             };
+            const displayFunc = (val) => {
+                if (name === 'languageAudioTypes.audioType') {
+                    return handleAudioType(copiedValue, val);
+                } else 
+                if (error) {
+                    return (
+                        <div 
+                            title={error}
+                            style={{
+                                textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                                color: error ? '#a94442' : null
+                            }}
+                        > 
+                            {error} 
+                        </div>);
+                }
+                return val;
+            };
+            
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <Editable
                     ref={ref}
                     title={name}
-                    value={value}
+                    value={name === 'languageAudioTypes.audioType' && Array.isArray(value) && value.length > 0 ? value.filter(el => el && el.isValid) : value}
                     disabled={readOnly}
                     dataType="text"
                     mode="inline"
@@ -698,7 +786,7 @@ class RightDetails extends React.Component {
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
             // value = typeof value === 'object' ? value.name : value;
             let priorityError = null;
-            if (error && !name.includes('affiliate')) {
+            if (error && !name.includes('affiliate') && !name.includes('languageAudioTypes')) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
@@ -972,7 +1060,7 @@ class RightDetails extends React.Component {
                     // TODO: write this from scratch
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) {
+                            if ((equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) && !e.fieldName.includes('languageAudioTypes')) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -1000,7 +1088,20 @@ class RightDetails extends React.Component {
                     const {validationErrors} = right || {};
 
                     switch (mapping.dataType) {
-                        case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'string': 
+                            if (mapping.javaVariableName === 'languageAudioTypes.audioType') {
+                                renderFields.push(renderTextField(
+                                    mapping.javaVariableName, 
+                                    mapping.displayName, 
+                                    this.state.languageAudioTypesAudioType,
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.audioType')), 
+                                    readOnly, 
+                                    required, 
+                                    highlighted,
+                                ));
+                                break;
+                            }
+                            renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
@@ -1031,6 +1132,17 @@ class RightDetails extends React.Component {
                                     readOnly, 
                                     required, 
                                     highlighted
+                                ));
+                                break;
+                            } else if (mapping.javaVariableName === 'languageAudioTypes.language') {
+                                renderFields.push(renderMultiSelectField(
+                                    mapping.javaVariableName, 
+                                    mapping.displayName, 
+                                    this.state.languageAudioTypesLanguage, 
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.language') && el.fieldName.includes('languageAudioTypes')), 
+                                    readOnly, 
+                                    required, 
+                                    highlighted,
                                 ));
                                 break;
                             }
