@@ -1,6 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled, {css} from 'styled-components';
 import PropTypes from 'prop-types';
+import {updateSelectedTerritoriesTab} from '../../../../stores/actions/DOP';
+import connect from 'react-redux/es/connect/connect';
+import {ALL_RIGHT, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
+
+const TabContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
 
 const Tab = styled.div`
     display: inline-block;
@@ -25,37 +33,36 @@ const Tab = styled.div`
     `}
 `;
 
-const allRight = 'allRight';
-const incoming = 'incoming';
-const selected = 'selected';
-const pendingSelection = 'pendingSelection';
-
 function Tabs(props) {
 
-    const [lastActive, setLastActive] = useState(allRight);
-
-    const onFilterChangeClick = (activeTab) => {
-        setLastActive(activeTab);
-    };
-
-    const onPendingSelectionClick = () => {
-        setLastActive(pendingSelection);
-    };
-
     return (
-        <div style={{ display:'flex', alignItems: 'center'}}>
-            <Tab isActive={lastActive === allRight} onClick={() => onFilterChangeClick(allRight)}>All Right ()</Tab>
-            <Tab isActive={lastActive === incoming} onClick={() => onFilterChangeClick(incoming)}>Incoming ()</Tab>
-            <Tab isActive={lastActive === selected} onClick={() => onFilterChangeClick(selected)}>Selected ()</Tab>
-            <Tab isActive={lastActive === pendingSelection} onClick={onPendingSelectionClick}>Pending selection ()</Tab>
-        </div>
+        <TabContainer>
+            <Tab isActive={props.selectedTerritoriesTab === ALL_RIGHT}
+                 onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHT)}>All Right ()</Tab>
+            <Tab isActive={props.selectedTerritoriesTab === INCOMING}
+                 onClick={() => props.updateFilterSelectedTerritories(INCOMING)}>Incoming ()</Tab>
+            <Tab isActive={props.selectedTerritoriesTab === SELECTED}
+                 onClick={() => props.updateFilterSelectedTerritories(SELECTED)}>Selected ()</Tab>
+            <Tab isActive={props.selectedTerritoriesTab === PENDING_SELECTION}
+                 onClick={() => props.updateFilterSelectedTerritories(PENDING_SELECTION)}>Pending selection ()</Tab>
+        </TabContainer>
     );
 
 }
 
 Tabs.propTypes = {
-    onFilterChanged: PropTypes.func,
+    selectedTerritoriesTab: PropTypes.string,
     updateFilterSelectedTerritories: PropTypes.func
 };
 
-export default Tabs;
+const mapStateToProps = state => {
+    return {
+        selectedTerritoriesTab: state.dopReducer.session.selectedTerritoriesTab,
+    };
+};
+
+const mapDispatchToProps = {
+    updateFilterSelectedTerritories: updateSelectedTerritoriesTab
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tabs);

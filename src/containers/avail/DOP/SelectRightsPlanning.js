@@ -8,10 +8,17 @@ import withServerSorting from '../../../components/avails/ServerSortingTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 import withFilteredRights from '../../../components/DOP/withFilteredRights';
 import withSelectIgnoreMark from '../../../components/DOP/SelectIgnoreMarkTable';
-import {fetchAvailMapping, fetchAvailConfiguration} from '../availActions';
+import {fetchAvailConfiguration, fetchAvailMapping} from '../availActions';
 import withSelectRightHeader from '../../../components/DOP/SelectRightsTableHeader';
 import SelectRightsDOPConnector from './SelectRightsDOPConnector';
+import {ALL_RIGHT, INCOMING, PENDING_SELECTION, SELECTED} from '../../../constants/DOP/selectedTab';
+import withLocalRights from '../../../components/avails/LocalRightsResultsTable';
 
+const tabFilter = new Map([
+    [ALL_RIGHT, {status: 'Ready,ReadyNew', invalid: 'false'}],
+    [INCOMING,  {status: 'ReadyNew', invalid: 'false'}],
+    [SELECTED,  {rightSelected: true, invalid: 'false'}]
+]); 
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
@@ -19,11 +26,20 @@ class SelectRightsPlanning extends Component {
         availsMapping: PropTypes.object,
         fetchAvailMapping: PropTypes.func.isRequired,
         fetchAvailConfiguration: PropTypes.func.isRequired,
+        selectedTerritoriesTab: PropTypes.string.isRequired
     };
 
     static defaultProps = {
         availsMapping: null
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isPendingSelectionHide: true,
+            rightsFilteredBy: {}
+        };
+    }
 
     componentDidMount() {
         const {availsMapping, fetchAvailMapping, fetchAvailConfiguration} = this.props;
@@ -33,7 +49,30 @@ class SelectRightsPlanning extends Component {
         fetchAvailConfiguration();
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps.selectedTerritoriesTab !== this.props.selectedTerritoriesTab) {
+            this.renderTableFilter();
+        }
+    }
+
+    renderTableFilter = () => {
+        const {selectedTerritoriesTab} = this.props;
+        const filterBy = tabFilter.get(selectedTerritoriesTab);
+
+        if (selectedTerritoriesTab !== PENDING_SELECTION) {
+            this.setState({
+                isPendingSelectionHide: true,
+                rightsFilteredBy: filterBy
+            });
+        } else {
+            this.setState({
+                isPendingSelectionHide: false
+            });
+        }
+    };
+
     render() {
+        console.log(this.state);
         const {availsMapping} = this.props;
 
         const RightsResultsTable = compose(
@@ -42,8 +81,16 @@ class SelectRightsPlanning extends Component {
             withColumnsReorder,
             withSelectIgnoreMark,
             withServerSorting,
-            withFilteredRights({status:'Ready,ReadyNew', invalid:'false'}),
+            withFilteredRights(this.state.rightsFilteredBy),
         )(ResultsTable);
+
+        const SelectedRightsResultsTable = compose(
+            // withSelectRightHeader,
+            withRedux,
+            withColumnsReorder,
+            withSelectIgnoreMark,
+            withServerSorting,
+            withLocalRights)(ResultsTable);
 
         return (
             <div>
@@ -53,6 +100,12 @@ class SelectRightsPlanning extends Component {
                         availsMapping={availsMapping}
                         mode={'selectRightsMode'}
                         disableEdit={true}
+                        hidden={this.props.selectedTerritoriesTab !== PENDING_SELECTION}
+                    />
+                )}
+                {availsMapping && (
+                    <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
+                                                hidden={this.props.selectedTerritoriesTab === PENDING_SELECTION}
                     />
                 )}
             </div>
@@ -60,8 +113,9 @@ class SelectRightsPlanning extends Component {
     }
 }
 
-const mapStateToProps = ({root}) => ({
-    availsMapping: root.availsMapping
+const mapStateToProps = ({root, dopReducer}) => ({
+    availsMapping: root.availsMapping,
+    selectedTerritoriesTab: dopReducer.session.selectedTerritoriesTab,
 });
 
 const mapDispatchToProps = (dispatch) => ({
