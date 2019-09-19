@@ -6,6 +6,7 @@ import {rightsService} from '../../../../containers/avail/service/RightsService'
 
 import union from 'lodash.union';
 import {BulkActionButton} from './BulkActionButton';
+import Tabs from './Tabs';
 import UserTerritories from './territories/UserTerritories';
 
 class TableHeader extends React.Component {
@@ -101,8 +102,12 @@ class TableHeader extends React.Component {
         return (
             <div style={{marginLeft: '20px', marginBottom: '10px', display: 'flex', paddingLeft: '10px', paddingRight: '10px',  justifyContent: 'space-between'}}>
 
-                <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection}/>
+                <div style={{display: 'flex'}}>
+                    <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection}/>
 
+                    <Tabs />
+                </div>
+                
                 <UserTerritories />
 
             </div>
