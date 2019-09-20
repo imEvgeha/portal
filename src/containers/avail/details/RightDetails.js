@@ -1093,7 +1093,7 @@ class RightDetails extends React.Component {
                                 renderFields.push(renderTextField(
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
-                                    this.state.languageAudioTypesAudioType,
+                                    value,
                                     Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.audioType')), 
                                     readOnly, 
                                     required, 
@@ -1138,7 +1138,7 @@ class RightDetails extends React.Component {
                                 renderFields.push(renderMultiSelectField(
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
-                                    this.state.languageAudioTypesLanguage, 
+                                    value,
                                     Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.language') && el.fieldName.includes('languageAudioTypes')), 
                                     readOnly, 
                                     required, 
