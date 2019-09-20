@@ -68,14 +68,14 @@ class TitleReadOnlyMode extends Component {
                                     {
                                         episodic && episodic.seriesTitleName ?
                                             <Col>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Series: </b>{episodic.seriesTitleName ? contentType === 'EPISODE' ? <a href={seriesLink} className={'linked-data'}>{episodic.seriesTitleName}</a> : episodic.seriesTitleName  : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Series: </b>{episodic.seriesTitleName ? <a href={seriesLink} className={'linked-data'}>{episodic.seriesTitleName}</a> : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
                                     {
                                         episodic && episodic.seasonNumber ?
                                             <Col>
-                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{episodic.seasonNumber ? contentType === 'EPISODE' ? <a href={seasonLink} className={'linked-data'}>{episodic.seasonNumber}</a> : episodic.seasonNumber : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                                <Alert color="light" id="titleSeasonNumber"><b>Season Number: </b>{episodic.seasonNumber ? <a href={seasonLink} className={'linked-data'}>{episodic.seasonNumber}</a> : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                             </Col>
                                             : null
                                     }
