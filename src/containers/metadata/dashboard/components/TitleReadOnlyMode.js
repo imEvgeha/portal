@@ -17,7 +17,7 @@ class TitleReadOnlyMode extends Component {
         return fieldName;
     };
 
-    renderFields = () => {
+    renderFields = (data) => {
         const { 
             title,
             releaseYear,
@@ -32,9 +32,10 @@ class TitleReadOnlyMode extends Component {
             seasonFinale,
             contentType,
             originalLanguage,
-            episodic: { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount },
+            episodic,
             parentIds
-        } = this.props.data;
+        } = data;
+        const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
         let seriesLink;
         let seasonLink;
         parentIds && parentIds.map(e => {
@@ -242,9 +243,9 @@ class TitleReadOnlyMode extends Component {
     };
 
     render() {
-        const {data: { episodic }} = this.props;
-        if (episodic) {
-            return this.renderFields();
+        const { data } = this.props;
+        if (Object.values(data).length > 0) {
+            return this.renderFields(data);
         } else {
             return (
                 <div style={{textAlign: 'center'}}>
