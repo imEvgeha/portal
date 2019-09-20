@@ -51,6 +51,8 @@ const ListContainer = styled.div`
 `;
 
 const ListItem = styled.div`
+    display: flex;
+    justify-content: space-between;
     border: 1px solid #DDD;
     padding: 10px;
     width: 100%;
@@ -194,10 +196,12 @@ export class EndpointContainer extends Component {
     render() {        
         const {selectedApi} = this.props;
         let canUpdate = can('update', 'ConfigUI');
+        let canCreate = can('create', 'ConfigUI');
+
         return (
             <DataContainer>
                 <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
-                    {this.state.currentRecord === null &&
+                    {canCreate && this.state.currentRecord === null &&
                         <CustomButton onClick = {this.onNewRecord}>
                             <FontAwesome
 
@@ -243,14 +247,13 @@ export class EndpointContainer extends Component {
                                         <ListItem key={i}>
                                             {
                                                 canUpdate ?
-                                                    <a href="#" onClick={() => this.onEditRecord(item)}>
+                                                    <a href="#" className={'text-truncate'} onClick={() => this.onEditRecord(item)}>
                                                         {label}
                                                     </a>
-                                                : <span>{label}</span>
+                                                : <span className={'text-truncate'}>{label}</span>
                                             }
                                             <Can I="delete" a="ConfigUI">
                                                 <FontAwesome
-                                                    className='float-right'
                                                     name='times'
                                                     style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '16px'}}
                                                     color='#111'

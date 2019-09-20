@@ -52,6 +52,15 @@
     prop-types "^15.5.10"
     tslib "^1.9.3"
 
+"@atlaskit/analytics-next@^6.1.0":
+  version "6.3.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.3.0.tgz#3657dd183d569e458ea3d424a9f38563085fb82e"
+  integrity sha512-3lXGKhE5adgMS+KKV6VFSflbJ0pbKHWWhTyB3vp/xbujl8umjE5bepXiuoBTA2mguhTG0n0GPtlqa+HhN7XYfA==
+  dependencies:
+    "@atlaskit/type-helpers" "^4.2.0"
+    prop-types "^15.5.10"
+    tslib "^1.9.3"
+
 "@atlaskit/analytics@^6.0.0", "@atlaskit/analytics@^6.0.1":
   version "6.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics/-/analytics-6.0.1.tgz#397abcf7c835269ff90ac50463ad12453f0bcc19"

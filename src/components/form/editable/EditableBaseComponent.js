@@ -122,6 +122,18 @@ class EditableBaseComponent extends Component {
 
     render() {
         const displayFunc = (value) => {
+
+            const setSimpleArrayWithError = arr => {
+                const updatedArr = arr.map((el, index, array) => {
+                    const value = typeof el === 'object' ? el.name || el[Object.keys(el)[0]] : el;
+                    const style = el.hasOwnProperty('isValid') && !el.isValid ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'} : {color: '#1a1a1a', paddingRight: '4px'};
+                    return (
+                        <span key={index} style={style}>{`${value}${index < array.length - 1 ? ', ' : ''}`}</span>
+                    );
+                });
+                return updatedArr;
+            };
+
             return (<span
                 onClick={this.handleShowHelperComponent}
                 style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
@@ -137,7 +149,7 @@ class EditableBaseComponent extends Component {
                     >
                         {TerritoryTooltip(e)}
                     </Popup>
-                )) : value.join(',') : '' : value}
+                )) : setSimpleArrayWithError(value) : '' : value}
             </span>);
         };
 
