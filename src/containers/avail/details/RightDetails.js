@@ -29,6 +29,7 @@ import RightsURL from '../util/RightsURL';
 import { confirmModal } from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
+import {isObject} from '../../../util/Common';
 
 const mapStateToProps = state => {
     return {
@@ -128,12 +129,12 @@ class RightDetails extends React.Component {
                             const territories = (Array.isArray(territory) && territory.filter(el => el).map((el, index) => {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
-                                el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                el.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 el.isValid = false;
                                 el.errors = territoryErrors.filter(error => error.index === index);
                             } else {
                                 el.isValid = true;
-                                el.name = el.country;
+                                el.value = el.country;
                             }
                             el.id = index;
                             return el;
@@ -151,7 +152,7 @@ class RightDetails extends React.Component {
                         const affiliateList = (Array.isArray(affiliate) && affiliate.filter(el => el).map((el, i) => {
                             return {
                                 isValid:true,
-                                name: el,
+                                value: el,
                                 id: i,
                             };
                         })) || [];
@@ -160,7 +161,7 @@ class RightDetails extends React.Component {
                             ...affiliateList,
                             ...affiliateErrors.map((el, index) => {
                                 let obj = {};
-                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateErrors[index];
                                 obj.id = el.index;
@@ -177,10 +178,10 @@ class RightDetails extends React.Component {
                             return error;
                         })) || [];
 
-                        const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.filter(el => el).map((el, i) => {
+                        const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.filter(Boolean).map((el, i) => {
                             return {
                                 isValid:true,
-                                name: el,
+                                value: el,
                                 id: i,
                             };
                         })) || [];
@@ -189,7 +190,7 @@ class RightDetails extends React.Component {
                             ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
                                 let obj = {};
-                                obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                obj.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateExcludeErrors[index];
                                 obj.id = error.index;
@@ -209,18 +210,18 @@ class RightDetails extends React.Component {
                                 return error;
                             })) || [];
 
-                            const languageAudioTypesList = (languageAudioTypesLang.filter(el => el).map((el, i) => {
+                            const languageAudioTypesList = (languageAudioTypesLang.filter(Boolean).map((el, i) => {
                             return {
                                 isValid: true,
-                                name: el,
+                                value: el,
                                 id: i,
                             };
                         })) || [];
 
-                        const languageAudioTypesAudioTypeList = (languageAudioTypesAudio.filter(el => el).map((el, i) => {
+                        const languageAudioTypesAudioTypeList = (languageAudioTypesAudio.filter(Boolean).map((el, i) => {
                             return {
                                 isValid: true,
-                                name: el,
+                                value: el,
                                 id: i,
                             };
                         })) || [];
@@ -231,7 +232,7 @@ class RightDetails extends React.Component {
                             .filter(({fieldName}) => fieldName.includes('.language'))
                             .map((el, index) => {
                                 let obj = {};
-                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = languageAudioTypesErrors[index];
                                 obj.id = el.index;
@@ -245,7 +246,7 @@ class RightDetails extends React.Component {
                                 .filter(({fieldName}) => fieldName.includes('.audioType'))
                                 .map((el, index) => {
                                 let obj = {};
-                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = languageAudioTypesErrors[index];
                                 obj.id = el.index;
@@ -307,7 +308,7 @@ class RightDetails extends React.Component {
                 if (el.hasOwnProperty('errors')) {
                     delete el.errors;
                 }
-                if (el.hasOwnProperty('name')) {
+                if (el.hasOwnProperty('value')) {
                     delete el.name;
                 }
                 if (el.hasOwnProperty('id')) {
@@ -492,13 +493,13 @@ class RightDetails extends React.Component {
             let copiedValue = [];
             if (Array.isArray(value) && value.length > 0 && name === 'languageAudioTypes.audioType') {
                 copiedValue = [...value];
-                value = value.map(({name}) => name);
+                value = value.filter(el => el.isValid).map(({value}) => value);
             }
             const handleAudioType = (audioTypes, value) => {
-                const result = (Array.isArray(audioTypes) && audioTypes.length > 0 && audioTypes.map(({isValid, name}, index, arr) => {
+                const result = (Array.isArray(audioTypes) && audioTypes.length > 0 && audioTypes.map(({isValid, value}, index, arr) => {
                     return (
                         <span key={index + 1} style={!isValid ? {color: 'rgb(169, 68, 66)'} : {}}>
-                            {`${name} ${index < arr.length - 1 ? ', ' : ''}`}
+                            {`${value} ${index < arr.length - 1 ? ', ' : ''}`}
                         </span>
                     ); 
                 })) || value;
@@ -507,8 +508,7 @@ class RightDetails extends React.Component {
             const displayFunc = (val) => {
                 if (name === 'languageAudioTypes.audioType') {
                     return handleAudioType(copiedValue, val);
-                } else 
-                if (error) {
+                } else if (error) {
                     return (
                         <div 
                             title={error}
@@ -518,17 +518,17 @@ class RightDetails extends React.Component {
                             }}
                         > 
                             {error} 
-                        </div>);
+                        </div>
+                    );
                 }
                 return val;
             };
-            
 
             return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
                 <Editable
                     ref={ref}
                     title={name}
-                    value={name === 'languageAudioTypes.audioType' && Array.isArray(value) && value.length > 0 ? value.filter(el => el && el.isValid) : value}
+                    value={value}
                     disabled={readOnly}
                     dataType="text"
                     mode="inline"
@@ -784,7 +784,6 @@ class RightDetails extends React.Component {
         };
 
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
-            // value = typeof value === 'object' ? value.name : value;
             let priorityError = null;
             if (error && !name.includes('affiliate') && !name.includes('languageAudioTypes')) {
                 priorityError = <div title={error}
@@ -803,6 +802,14 @@ class RightDetails extends React.Component {
 
             let options = [];
             let selectedVal = ref.current ? ref.current.state.value : value;
+            if (name === 'languageAudioTypes.language' 
+                && Array.isArray(selectedVal) 
+                && selectedVal.length > 0 
+                && isObject(selectedVal[0])
+                && selectedVal[0].hasOwnProperty('isValid')
+            ) {
+                selectedVal = selectedVal.filter(el => el.isValid).map(el => el.value);
+            }
             let val;
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];

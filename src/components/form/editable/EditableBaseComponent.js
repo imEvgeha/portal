@@ -151,7 +151,7 @@ class EditableBaseComponent extends Component {
                     <Popup
                         key={i}
                         trigger={
-                            <TerritoryTag isValid={e.isValid} isCreate>{e.country || e.name}</TerritoryTag>
+                            <TerritoryTag isValid={e.isValid} isCreate>{e.country || e.value}</TerritoryTag>
                         }
                         position="top center"
                         on="hover"
