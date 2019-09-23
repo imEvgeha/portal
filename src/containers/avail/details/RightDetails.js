@@ -491,10 +491,11 @@ class RightDetails extends React.Component {
         const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
             const ref = React.createRef();
             let copiedValue = [];
-            if (Array.isArray(value) && value.length > 0 && name === 'languageAudioTypes.audioType') {
+            if (Array.isArray(value) && name === 'languageAudioTypes.audioType') {
                 copiedValue = [...value];
-                value = value.filter(el => el.isValid).map(({value}) => value);
+                value = value.length && value.filter(el => el.isValid).map(({value}) => value);
             }
+
             const handleAudioType = (audioTypes, value) => {
                 const result = (Array.isArray(audioTypes) && audioTypes.length > 0 && audioTypes.map(({isValid, value}, index, arr) => {
                     return (
