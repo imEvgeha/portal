@@ -306,8 +306,24 @@ class TitleEdit extends Component {
         return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} activeTab={this.state.titleRankingActiveTab} />;
     };
 
+    handleAddCharacterName = (id, newData) => {
+        let newArray = this.state.editedForm.castCrew.filter(e => e.id !== id);
+        newArray = [newData, ...newArray];
+        //TODO Convert empty string to null!
+        let newObject = {
+            ...this.state.editedForm,
+            castCrew: newArray
+        };
+        this.setState({
+            editedForm: newObject
+        });
+
+        console.log('New Array', newArray);
+    }
+
     editMode = () => {
         return <TitleEditMode
+            handleAddCharacterName={this.handleAddCharacterName}
             castAndCrewReorder={this.reOrderedCastCrewArray}
             titleRankingActiveTab={this.state.titleRankingActiveTab}
             toggleTitleRating={this.toggleTitleRating}
@@ -381,7 +397,7 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.formatRating(newAdditionalFields);
-
+            console.log('newAdditionalFields', newAdditionalFields);
             titleService.updateTitle(newAdditionalFields).then((response) => {
                 this.setState({
                     isLoading: false,

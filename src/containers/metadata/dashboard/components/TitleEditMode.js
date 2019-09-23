@@ -459,6 +459,7 @@ class TitleEditMode extends Component {
             </Col>
           </Row>
           <CoreMetadataEditMode
+              handleAddCharacterName={this.props.handleAddCharacterName}
               titleRankingActiveTab={this.props.titleRankingActiveTab}
               toggleTitleRating={this.props.toggleTitleRating}
               addTitleRatingTab={this.props.addTitleRatingTab}

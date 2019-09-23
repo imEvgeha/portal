@@ -89,6 +89,7 @@ class CoreMetadataEditMode extends Component {
         <Row>
           <Col>
           <PersonList
+              handleAddCharacterName={this.props.handleAddCharacterName}
               personLabel={CAST_LABEL}
               personHtmlFor={CAST_HTML_FOR}
               personListLabel={CAST_LIST_LABEL}
@@ -99,7 +100,9 @@ class CoreMetadataEditMode extends Component {
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
+              showPersonType={true}
               personsLimit={CAST_LIMIT}
+              getFormatTypeName={getFormatTypeName}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
             />
           </Col>

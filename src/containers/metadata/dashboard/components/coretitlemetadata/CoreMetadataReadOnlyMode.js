@@ -46,6 +46,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                                         <ListGroupItem key={i}>
                                                             <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle'}} />
                                                             <span style={{marginLeft: '10px'}}>{cast.displayName}</span>
+                                                            <span style={{marginLeft: '10px'}}>{cast.characterName}</span>
                                                         </ListGroupItem>
                                                     );
                                                 })}

@@ -12,6 +12,9 @@ import PersonListContainer from './PersonListContainer';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import DefaultUserIcon from '../../../../../img/default-user.png';
+import InlineEdit from '@atlaskit/inline-edit';
+import Textfield from '@atlaskit/textfield';
+import CharacterModal from './CharacterModal';
 
 const DraggableContent = styled.div`
     border:${props => props.isDragging ? '2px dotted #111' : '1px solid #EEE'};
@@ -38,7 +41,6 @@ const PersonListAvatar = styled.div`
 
 const PersonListFlag = styled.div`
     box-sizing: border-box;
-    width: 14%;
     display: inline-block;
     padding: 7px;
     vertical-align: middle;
@@ -47,8 +49,31 @@ const PersonListFlag = styled.div`
 const PersonListName = styled.div`
      box-sizing: border-box;
      width: ${props => props.showPersonType ? '75%' : '89%'};
-     display: inline-block;
+     display: flex;
      vertical-align: middle;
+`;
+
+const ListContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const ListImage = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const ListText = styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: ${props => props.showPersonType ? '10px' : 0};
+`;
+
+const CustomAddButton = styled.span`
+    font-weight: bold;
+    font-size: 12px;
+    font-style: italic;
 `;
 
 class PersonList extends React.Component {
@@ -60,7 +85,8 @@ class PersonList extends React.Component {
         super(props);
         this.state = {
             searchPersonText: '',
-            isPersonValid: true
+            isPersonValid: true,
+            isModalOpen: false
         };
     }
 
@@ -119,6 +145,20 @@ class PersonList extends React.Component {
         this.props.onReOrder(items);
     }
 
+    toggleModal = (id) => {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+
+    setSelectedPerson = (id) => {        
+        const selectedPerson = this.props.persons && this.props.persons[id];
+        this.toggleModal();
+        this.setState({
+            selectedPerson
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -167,25 +207,55 @@ class PersonList extends React.Component {
                                                                     <DraggableContent
                                                                         isDragging={snapshot.isDragging}
                                                                     >
-                                                                        <PersonListAvatar>
-                                                                            <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px' }} />
-                                                                        </PersonListAvatar>
-                                                                        {this.props.showPersonType ? (
-                                                                            <PersonListFlag>
-                                                                                <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
-                                                                            </PersonListFlag>) : null}
-                                                                        <PersonListName showPersonType={this.props.showPersonType}>
-                                                                            <UserPicker
-                                                                                width="100%"
-                                                                                appearance="normal"
-                                                                                subtle
-                                                                                value={person.displayName}
-                                                                                disableInput={true}
-                                                                                search={person.displayName}
-                                                                                onClear={() => this.props.removePerson(person)}
-                                                                            />
-                                                                        </PersonListName>
-                                                                        <FontAwesome name="bars" style={{marginLeft: '5px', cursor: 'move'}} {...provided.dragHandleProps} />
+                                                                        <ListContainer>
+                                                                            {/* <PersonListAvatar>
+                                                                                <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px' }} />
+                                                                            </PersonListAvatar>
+                                                                            {this.props.showPersonType ? (
+                                                                                <PersonListFlag>
+                                                                                    <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
+                                                                                </PersonListFlag>) : null}
+                                                                            <PersonListName showPersonType={this.props.showPersonType}>
+                                                                                <UserPicker
+                                                                                    width="100%"
+                                                                                    appearance="normal"
+                                                                                    subtle
+                                                                                    value={person.displayName}
+                                                                                    disableInput={true}
+                                                                                    search={person.displayName}
+                                                                                    onClear={() => this.props.removePerson(person)}
+                                                                                />
+                                                                            </PersonListName>                                                                            
+                                                                            <div>Add</div>
+                                                                            <FontAwesome name="bars" style={{marginLeft: '5px', cursor: 'move'}} {...provided.dragHandleProps} /> */}
+                                                                            <ListImage>
+                                                                                <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px'}} />
+                                                                                <ListText showPersonType>
+                                                                            {this.props.showPersonType ? (
+                                                                                <PersonListFlag>
+                                                                                    <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
+                                                                                </PersonListFlag>) : null}
+                                                                                {person.displayName}
+                                                                            </ListText>
+                                                                            {this.props.type === 'CAST' ? (
+                                                                                
+                                                                            <ListText>
+                                                                                <PersonListFlag>
+                                                                                    <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>CHARACTER</Lozenge></span>
+                                                                                </PersonListFlag>
+                                                                                    {
+                                                                                        person.characterName ? 
+                                                                                            <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} alt={person.characterName}>{person.characterName}</div>
+                                                                                        : <CustomAddButton onClick={() => this.setSelectedPerson(i)}>Add</CustomAddButton>
+                                                                                    }
+                                                                            </ListText>) : null}
+                                                                                
+                                                                            </ListImage>
+                                                                                <div>
+                                                                                    <FontAwesome onClick={() => this.props.removePerson(person)} name="times" style={{marginRight: '5px', cursor: 'pointer'}} />
+                                                                                    <FontAwesome name="bars" style={{marginLeft: '5px', cursor: 'move'}} {...provided.dragHandleProps} />
+                                                                                </div>
+                                                                        </ListContainer>
                                                                     </DraggableContent>
                                                                 </div>
                                                             )}
@@ -200,6 +270,7 @@ class PersonList extends React.Component {
                         </Label>
                     </PersonListContainer>
                 </Col>
+                <CharacterModal handleAddCharacterName={this.props.handleAddCharacterName} selectedPerson={this.state.selectedPerson} isModalOpen={this.state.isModalOpen} toggleModal={this.toggleModal} />
             </React.Fragment>
         );
     }
