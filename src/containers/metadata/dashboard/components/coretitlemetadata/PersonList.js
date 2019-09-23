@@ -12,8 +12,6 @@ import PersonListContainer from './PersonListContainer';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import DefaultUserIcon from '../../../../../img/default-user.png';
-import InlineEdit from '@atlaskit/inline-edit';
-import Textfield from '@atlaskit/textfield';
 import CharacterModal from './CharacterModal';
 
 const DraggableContent = styled.div`
@@ -31,26 +29,12 @@ const DroppableContent = styled.div`
     border:${props => props.isDragging ? '2px dotted #111' : ''};
 `;
 
-const PersonListAvatar = styled.div`
-    box-sizing: border-box;
-    width: 6%;
-    display: inline-block;
-    padding: 7px;
-    vertical-align: middle;
-`;
 
 const PersonListFlag = styled.div`
     box-sizing: border-box;
     display: inline-block;
     padding: 7px;
     vertical-align: middle;
-`;
-
-const PersonListName = styled.div`
-     box-sizing: border-box;
-     width: ${props => props.showPersonType ? '75%' : '89%'};
-     display: flex;
-     vertical-align: middle;
 `;
 
 const ListContainer = styled.div`
@@ -145,7 +129,7 @@ class PersonList extends React.Component {
         this.props.onReOrder(items);
     }
 
-    toggleModal = (id) => {
+    toggleModal = () => {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         });
@@ -290,7 +274,8 @@ PersonList.propTypes = {
     personsLimit: PropTypes.number,
     showPersonType: PropTypes.bool,
     addPerson: PropTypes.func,
-    onReOrder: PropTypes.func
+    onReOrder: PropTypes.func,
+    handleAddCharacterName: PropTypes.func
 };
 
 export default PersonList;

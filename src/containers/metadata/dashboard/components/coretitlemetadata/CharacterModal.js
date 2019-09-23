@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 
 const CustomInput = styled.input`
@@ -22,7 +23,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
     const [characterName, setCharacterName] = useState('');
     const toggle = () => {
         toggleModal();
-    }
+    };
 
     useEffect(() => {
         setCharacterName(selectedPerson && selectedPerson.characterName ? selectedPerson.characterName : '');
@@ -30,7 +31,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
 
     const handleChange = (e) => {
         setCharacterName(e.target.value);
-    }
+    };
 
     const handleSubmit = () => {
         const newObject = {
@@ -39,7 +40,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
         };
         handleAddCharacterName(selectedPerson.id, newObject);
         toggle();
-    }
+    };
     return (
         <Modal isOpen={isModalOpen} toggle={toggle}>
             <ModalHeader toggle={toggle}>Add Character Name</ModalHeader>
@@ -67,5 +68,12 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
     );
 };
 
+
+CharacterModal.propTypes = {
+    handleAddCharacterName: PropTypes.func,
+    isModalOpen: PropTypes.bool,
+    toggleModal: PropTypes.func,
+    selectedPerson: PropTypes.object
+};
 
 export default CharacterModal;

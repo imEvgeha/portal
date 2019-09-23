@@ -317,8 +317,6 @@ class TitleEdit extends Component {
         this.setState({
             editedForm: newObject
         });
-
-        console.log('New Array', newArray);
     }
 
     editMode = () => {
@@ -397,7 +395,6 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.formatRating(newAdditionalFields);
-            console.log('newAdditionalFields', newAdditionalFields);
             titleService.updateTitle(newAdditionalFields).then((response) => {
                 this.setState({
                     isLoading: false,
