@@ -126,7 +126,7 @@ class RightDetails extends React.Component {
                                 return error;
                             })) || [];
 
-                            const territories = (Array.isArray(territory) && territory.filter(el => el).map((el, index) => {
+                            const territories = (Array.isArray(territory) && territory.filter(Boolean).map((el, index) => {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
@@ -149,7 +149,7 @@ class RightDetails extends React.Component {
                             return error;
                         })) || [];
 
-                        const affiliateList = (Array.isArray(affiliate) && affiliate.filter(el => el).map((el, i) => {
+                        const affiliateList = (Array.isArray(affiliate) && affiliate.filter(Boolean).map((el, i) => {
                             return {
                                 isValid:true,
                                 value: el,
@@ -1100,7 +1100,7 @@ class RightDetails extends React.Component {
                                 renderFields.push(renderTextField(
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
-                                    value,
+                                    this.state.languageAudioTypesAudioType,
                                     Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.audioType')), 
                                     readOnly, 
                                     required, 
@@ -1145,7 +1145,7 @@ class RightDetails extends React.Component {
                                 renderFields.push(renderMultiSelectField(
                                     mapping.javaVariableName, 
                                     mapping.displayName, 
-                                    value,
+                                    this.state.languageAudioTypesLanguage,
                                     Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.language') && el.fieldName.includes('languageAudioTypes')), 
                                     readOnly, 
                                     required, 
