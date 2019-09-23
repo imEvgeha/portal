@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import RightDashboardContainer  from './containers/avail/dashboard/DashboardContainer';
 import RightDetails  from './containers/avail/details/RightDetails';
@@ -15,7 +15,7 @@ import ContractProfile from './containers/contracts/profile/ContractProfile.jsx'
 import Contract from './containers/contracts/search/Contract.jsx';
 import Media from './containers/media/search/Media.js';
 import Settings from './containers/settings/Settings';
-import RightMatchingView from './avails/right-matching-view/RightMatchingView';
+import RightMatchingView from './avails/right-matching/RightMatchingView';
 import UnderConstructionView from './containers/UnderConstructionView';
 import NotFound from './static-page-view/NotFound';
 
