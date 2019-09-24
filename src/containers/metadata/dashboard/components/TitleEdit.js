@@ -319,6 +319,31 @@ class TitleEdit extends Component {
         });
     }
 
+    handleAddEditorialCharacterName = (id, newData) => {
+        let newArray = this.state.editorialMetadataForCreate.castCrew.filter(e => e.id !== id);
+        newArray = [newData, ...newArray];
+        let newObject = {
+            ...this.state.editorialMetadataForCreate,
+            castCrew: newArray
+        };
+
+        this.setState({
+            editorialMetadataForCreate: newObject
+        });
+    }
+
+    handleAddEditorialCharacterNameEdit = (parentId, id, newData) => {
+        let edited = this.state.updatedEditorialMetadata.find(e => e.id === parentId);
+        if (!edited) {
+            edited = JSON.parse(JSON.stringify(newData));
+        }
+        edited = newData;
+
+        this.updateEditedEditorialMetadata(edited, parentId);
+        
+        
+    }
+
     editMode = () => {
         return <TitleEditMode
             handleAddCharacterName={this.handleAddCharacterName}
@@ -884,6 +909,9 @@ class TitleEdit extends Component {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
                     <EditorialMetadata
+                        handleAddEditorialCharacterName={this.handleAddEditorialCharacterName}
+                        handleAddEditorialCharacterNameEdit={this.handleAddEditorialCharacterNameEdit}
+                        updateEditedEditorialMetadata={this.updateEditedEditorialMetadata}
                         areFieldsRequired={this.state.areEditorialMetadataFieldsRequired}
                         validSubmit={this.handleOnSave}
                         toggle={this.toggleEditorialMetadata}

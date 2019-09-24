@@ -39,6 +39,7 @@ class EditorialMetadata extends Component {
     }
 
     render() {
+        console.log('updatedEditorialMetadata', this.props.updatedEditorialMetadata)
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
 
@@ -96,6 +97,7 @@ class EditorialMetadata extends Component {
                                     <Row>
                                         <Col>
                                             <EditorialMetadataCreateTab
+                                                handleAddEditorialCharacterName={this.props.handleAddEditorialCharacterName}
                                                 validSubmit={this.props.validSubmit}
                                                 areFieldsRequired={this.props.areFieldsRequired}
                                                 handleChange={this.props.handleChange}
@@ -115,7 +117,9 @@ class EditorialMetadata extends Component {
                                                 <Row>
                                                     <Col>
                                                         <EditorialMetadataEditMode
+                                                            handleAddEditorialCharacterNameEdit={this.props.handleAddEditorialCharacterNameEdit}
                                                             titleContentType={this.props.titleContentType}
+                                                            updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
                                                             handleEditorialCastCrew={this.props.handleEditorialCastCrew}

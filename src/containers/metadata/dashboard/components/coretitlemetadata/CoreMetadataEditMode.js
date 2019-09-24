@@ -101,6 +101,7 @@ class CoreMetadataEditMode extends Component {
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
               showPersonType={true}
+              isMultiColumn={true}
               personsLimit={CAST_LIMIT}
               getFormatTypeName={getFormatTypeName}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
@@ -120,6 +121,7 @@ class CoreMetadataEditMode extends Component {
               addPerson={this.props.addCastCrew}
               getFormatTypeName={getFormatTypeName}
               showPersonType={true}
+              isMultiColumn={false}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CREW)}
             />
           </Col>

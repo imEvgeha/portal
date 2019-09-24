@@ -123,6 +123,7 @@ class EditorialMetadataCreateTab extends Component {
 
     render() {
         const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
+        console.log(castCrew);
         return (
             <div id="editorialMetadataCreate">
                 <Fragment>
@@ -382,8 +383,10 @@ class EditorialMetadataCreateTab extends Component {
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                                 personsLimit={CAST_LIMIT}
+                                isMultiColumn={true}
                                 getFormatTypeName={getFormatTypeName}
                                 showPersonType={true}
+                                handleAddCharacterName={this.props.handleAddEditorialCharacterName}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
                             />
                         </Col>
@@ -400,6 +403,7 @@ class EditorialMetadataCreateTab extends Component {
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                                 getFormatTypeName={getFormatTypeName}
+                                isMultiColumn={false}
                                 showPersonType={true}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CREW, castCrew)}
                             />
