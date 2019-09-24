@@ -82,7 +82,7 @@ class RightTerritoryForm extends React.Component {
 
     render() {
         const {existingTerritoryList, territoryIndex} = this.props;
-        const currentTerritory = existingTerritoryList[territoryIndex];
+        const currentTerritory = (existingTerritoryList && existingTerritoryList[territoryIndex]) || null;
         const errors = (currentTerritory && currentTerritory.errors) || [];
         const getError = (field, value, errorList = errors) => {
             const error = errorList.find(({subField}) => subField === field);
