@@ -227,20 +227,6 @@ class SearchResultsTab extends React.Component {
     }
 
     render() {
-        const renderReportSelect = () => {
-            return (
-                <select className="form-control border-0 d-inline"
-                        id={'dashboard-avails-report-select'}
-                        onChange={this.handleChangeReport}
-                        value={this.props.reportName}>
-                    <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
-                    {
-                        configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
-                    }
-                </select>
-            );
-        };
-
         const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
         const SelectedRightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withLocalRights(ResultsTable)))));
 
@@ -264,7 +250,10 @@ class SearchResultsTab extends React.Component {
                             <IfEmbedded value={false}>
                                 <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
                                     <span className="align-self-center" >Selected report:</span>
-                                    {renderReportSelect()}
+                                    <Reports
+                                        onChange={this.handleChangeReport}
+                                        reportName={this.props.reportName}
+                                    />
                                 </div>
                                 <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
                             </IfEmbedded>
@@ -293,6 +282,37 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
+
+//--------------------------------------
+
+mapStateToProps = state => {
+    return {
+        reports: state.root.reports
+    };
+};
+class ReportsInternal extends Component {
+
+    static propTypes = {
+        reports: t.array,
+        onChange: t.func,
+        reportName: t.string
+    };
+
+    render(){
+        return (
+            <select className="form-control border-0 d-inline"
+                    id={'dashboard-avails-report-select'}
+                    onChange={this.props.onChange}
+                    value={this.props.reportName}>
+                <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
+                {
+                    configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
+                }
+            </select>
+        );
+    }
+}
+let Reports = connect(mapStateToProps, null)(ReportsInternal);
 
 //--------------------------------------
 
