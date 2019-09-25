@@ -64,6 +64,7 @@ class ServerRightsResultsTable extends RightsResultsTable {
         }
 
         if(this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.state.table != null) {
+            console.error('update')
             this.state.table.api.setDatasource({ rowCount: null, getRows: this.getRows});
         }
     }
