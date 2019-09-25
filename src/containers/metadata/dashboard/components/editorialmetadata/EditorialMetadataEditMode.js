@@ -523,7 +523,9 @@ EditorialMetadataEditMode.propTypes = {
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
     configGenre: PropTypes.object,
-    handleEditorialCastCrew: PropTypes.func
+    handleEditorialCastCrew: PropTypes.func,
+    updateEditedEditorialMetadata: PropTypes.func,
+    handleAddEditorialCharacterNameEdit: PropTypes.func
 };
 
 

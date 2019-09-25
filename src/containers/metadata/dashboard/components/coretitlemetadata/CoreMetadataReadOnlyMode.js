@@ -5,7 +5,6 @@ import {
     Row,
     Col,
     ListGroup,
-    ListGroupItem,
     Card,
     CardHeader,
     CardBody,
@@ -18,7 +17,6 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 import Rating from './rating/Rating';
 import PersonListReadOnly from './PersonListReadOnly';
-import Lozenge from '@atlaskit/lozenge';
 import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-variables';
 
 class CoreMetadataReadOnlyMode extends Component {

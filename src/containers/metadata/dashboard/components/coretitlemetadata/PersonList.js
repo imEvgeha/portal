@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FontAwesome from 'react-fontawesome';
 
 import UserPicker from '@atlaskit/user-picker';
 import { Label } from '@atlaskit/field-base';
@@ -10,7 +9,18 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import DefaultUserIcon from '../../../../../img/default-user.png';
 import CharacterModal from './CharacterModal';
 import { Row, Col } from 'reactstrap';
-import { DraggableContent, DroppableContent, PersonListFlag, ListText, CustomAddButton} from './CustomComponents';
+import { 
+    DraggableContent, 
+    DroppableContent, 
+    PersonListFlag, 
+    ListText, 
+    CustomAddButton, 
+    CustomColumn, 
+    CustomEllipsis, 
+    ListItemText, 
+    CustomDeleteButton, 
+    CustomDragButton } 
+from './CustomComponents';
 
 
 class PersonList extends React.Component {
@@ -146,38 +156,39 @@ class PersonList extends React.Component {
                                                                         isDragging={snapshot.isDragging}
                                                                     >                       
                                                                                     <Row>
-                                                                                        <Col xs={!this.props.isMultiColumn ? 10 : 5} style={{display: 'flex', alignItems: 'center'}}>
-                                                                                            <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                                                                                        <CustomColumn xs={!this.props.isMultiColumn ? 10 : 5}>
+                                                                                            <CustomEllipsis>
                                                                                             <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px'}} />
                                                                                             {this.props.showPersonType && (
                                                                                                 <PersonListFlag>
                                                                                                 <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
                                                                                                 </PersonListFlag>
                                                                                             )}
-                                                                                            <span title={person.displayName} style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{person.displayName}</span>
-                                                                                            </div>
-                                                                                        </Col>
+                                                                                            <CustomEllipsis isInline={true} title={person.displayName}>{person.displayName}</CustomEllipsis>
+                                                                                            </CustomEllipsis>
+                                                                                        </CustomColumn>
                                                                                         {this.props.isMultiColumn ? (
-                                                                                            <Col xs={5} style={{display: 'flex', alignItems: 'center'}}>
-                                                                                            
-                                                                                            <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                                                                                            <CustomColumn xs={5}>                                                                                            
+                                                                                            <CustomEllipsis>
                                                                                             <ListText>
                                                                                                 <PersonListFlag>
                                                                                                     <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>CHARACTER</Lozenge></span>
                                                                                                 </PersonListFlag>
                                                                                                     {
                                                                                                         person.characterName ? 
-                                                                                                            <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '40%'}} title={person.characterName}>{person.characterName}</div>
+                                                                                                            <ListItemText isEditMode onClick={() => this.setSelectedPerson(i)} title={person.characterName}>
+                                                                                                                {person.characterName}
+                                                                                                            </ListItemText>
                                                                                                         : <CustomAddButton onClick={() => this.setSelectedPerson(i)}>Add</CustomAddButton>
                                                                                                     }
                                                                                             </ListText>
-                                                                                            </div>
-                                                                                        </Col>
+                                                                                            </CustomEllipsis>
+                                                                                        </CustomColumn>
                                                                                         ) : null}
-                                                                                        <Col xs={2} style={{display: 'flex', alignItems: 'center', position: 'relative'}}>
-                                                                                            <FontAwesome onClick={() => this.props.removePerson(person)} name="times" style={{marginRight: '5px', cursor: 'pointer', position: 'absolute', right: '35px'}} />
-                                                                                            <FontAwesome name="bars" style={{marginLeft: '5px', cursor: 'move', position: 'absolute', right: '15px'}} {...provided.dragHandleProps} />
-                                                                                        </Col>
+                                                                                        <CustomColumn xs={2}>
+                                                                                            <CustomDeleteButton onClick={() => this.props.removePerson(person)} name="times" />
+                                                                                            <CustomDragButton name="bars"  {...provided.dragHandleProps} />
+                                                                                        </CustomColumn>
                                                                                     </Row>    
                                                                     </DraggableContent>
                                                                 </div>

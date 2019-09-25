@@ -123,7 +123,6 @@ class EditorialMetadataCreateTab extends Component {
 
     render() {
         const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
-        console.log(castCrew);
         return (
             <div id="editorialMetadataCreate">
                 <Fragment>
@@ -478,7 +477,8 @@ EditorialMetadataCreateTab.propTypes = {
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
     configGenre: PropTypes.object,
-    handleEditorialCastCrewCreate: PropTypes.func
+    handleEditorialCastCrewCreate: PropTypes.func,
+    handleAddEditorialCharacterName: PropTypes.func
 };
 
 

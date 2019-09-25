@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { CustomInput, CustomLabel } from './CustomComponents';
 
 const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId}) => {
-    console.log('selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId', selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId)
     const [characterName, setCharacterName] = useState('');
     const toggle = () => {
         toggleModal();
@@ -62,7 +61,8 @@ CharacterModal.propTypes = {
     handleAddCharacterName: PropTypes.func,
     isModalOpen: PropTypes.bool,
     toggleModal: PropTypes.func,
-    selectedPerson: PropTypes.object
+    selectedPerson: PropTypes.object,
+    parentId: PropTypes.string
 };
 
 export default CharacterModal;

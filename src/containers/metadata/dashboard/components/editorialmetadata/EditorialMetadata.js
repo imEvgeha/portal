@@ -39,7 +39,6 @@ class EditorialMetadata extends Component {
     }
 
     render() {
-        console.log('updatedEditorialMetadata', this.props.updatedEditorialMetadata)
         return (
             <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
 
@@ -160,7 +159,10 @@ EditorialMetadata.propTypes = {
     handleGenreEditChange: PropTypes.func.isRequired,
     configLanguage: PropTypes.object,
     handleEditorialCastCrewCreate: PropTypes.func,
-    handleEditorialCastCrew: PropTypes.func
+    handleEditorialCastCrew: PropTypes.func,
+    handleAddEditorialCharacterName: PropTypes.func,
+    handleAddEditorialCharacterNameEdit: PropTypes.func,
+    updateEditedEditorialMetadata: PropTypes.func
 };
 
 

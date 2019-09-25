@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Row, Col } from 'reactstrap';
+import FontAwesome from 'react-fontawesome';
 
 const PersonListFlag = styled.div`
     box-sizing: border-box;
@@ -93,6 +94,32 @@ const ListItemText = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     width: 40%;
+    ${props => props.isEditMode && css`
+        cursor: pointer;
+        &:hover {
+            color: #2ecc71;
+        }
+    `};
+`;
+
+const CustomDeleteButton = styled(FontAwesome)`
+    margin-right: 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 45px;
+    &:hover {
+        color: #e74c3c;
+    }
+`;
+
+const CustomDragButton = styled(FontAwesome)`
+    margin-left: 5px;
+    cursor: move;
+    position: absolute;
+    right: 25px;
+    &:hover {
+        color: #3498db;
+    }
 `;
 
 export {
@@ -107,5 +134,7 @@ export {
     DroppableContent,
     ListContainer,
     CustomAddButton,
-    ListItemText
-}
+    ListItemText,
+    CustomDeleteButton,
+    CustomDragButton
+};
