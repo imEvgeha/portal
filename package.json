@@ -26,6 +26,7 @@
     "@atlaskit/portal": "^3.0.9",
     "@atlaskit/quick-search": "^7.6.6",
     "@atlaskit/select": "^10.0.0",
+    "@atlaskit/spinner": "^12.0.9",
     "@atlaskit/textfield": "^2.0.4",
     "@atlaskit/theme": "^9.1.6",
     "@atlaskit/tooltip": "^15.0.14",
