@@ -112,18 +112,6 @@ export const configurationService = {
         const reports = store.getState().root.reports;
         const newReport = readReportFromStore();
 
-        //TEMPORARY WORKAROUND to prevent ACCOUNT CRASHING: exclude 'complex'fields from saved filters
-        const allFilters = newReport.orderedFilter;
-        if(allFilters) {
-            newReport.orderedFilter = {};
-            for (let [key, value] of Object.entries(allFilters)) {
-                if(!value.hasOwnProperty('options')){
-                    newReport.orderedFilter[key] = value;
-                }
-            }
-        }
-        //END of TEMPORARY WORKAROUND
-
         const currentReport = reports.find((report) => {return report.name === reportName;});
         if (currentReport) {
             currentReport.orderedFilter = newReport.orderedFilter;
