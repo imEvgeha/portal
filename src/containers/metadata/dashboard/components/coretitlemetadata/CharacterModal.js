@@ -6,6 +6,7 @@ import { CustomInput, CustomLabel } from './CustomComponents';
 const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data}) => {
     const [characterName, setCharacterName] = useState('');
     const [isInvalid, setIsInvalid] = useState(false);
+    const [error, setError] = useState(null);
     const toggle = () => {
         toggleModal();
         setCharacterName(selectedPerson && selectedPerson.characterName ? selectedPerson.characterName : '');
@@ -23,19 +24,24 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
 
     const handleSubmit = () => {
         if(characterName) {
-            const newObject = {
-                ...selectedPerson,
-                characterName: characterName
-            };
-            if(parentId) {        
-                handleAddCharacterName(data, parentId, selectedPerson.id, newObject);
-            } else {            
-                handleAddCharacterName(selectedPerson.id, newObject);
+            if(characterName.length > 0 && characterName.length <= 100) {
+                const newObject = {
+                    ...selectedPerson,
+                    characterName: characterName
+                };
+                if(parentId) {        
+                    handleAddCharacterName(data, parentId, selectedPerson.id, newObject);
+                } else {            
+                    handleAddCharacterName(selectedPerson.id, newObject);
+                }
+                toggle();
+                setIsInvalid(false);
+            } else {
+                setError('Character name must be less than 100 characters long!');
             }
-            toggle();
-            setIsInvalid(false);
         } else {
             setIsInvalid(true);
+            setError('Character name cannot be empty!');
         }
     };
     return (
@@ -58,7 +64,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
                 value={characterName}
             />
             {isInvalid && (                
-                <CustomLabel isError={isInvalid} style={{fontSize: '14px'}} htmlFor="characterName">Character name cannot be empty!</CustomLabel>
+                <CustomLabel isError={isInvalid} style={{fontSize: '14px'}} htmlFor="characterName">{error}</CustomLabel>
             )}
             </ModalBody>
             <ModalFooter>
