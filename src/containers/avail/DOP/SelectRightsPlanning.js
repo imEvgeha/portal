@@ -83,7 +83,8 @@ class SelectRightsPlanning extends Component {
             withColumnsReorder,
             withSelectIgnoreMark,
             withServerSorting,
-            withLocalRights(DOP_SELECTION))(ResultsTable);
+            withLocalRights(DOP_SELECTION)
+        )(ResultsTable);
 
         return (
             <div>

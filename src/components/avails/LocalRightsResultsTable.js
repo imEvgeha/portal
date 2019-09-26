@@ -31,7 +31,6 @@ const withLocalRights = (selectedType) => WrappedComponent => {
             rowsProps = {
                 ...rowsProps,
                 rowBuffer: '0',
-                onFirstDataRendered: this.props.staticDataLoaded
             };
 
             this.state = {
@@ -48,6 +47,12 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         componentDidMount() {
             let newColDef = {...this.props.colDef, ...this.state.originalColDef};
             this.refreshColumns(newColDef);
+            if(this.state.originalData.length === 0) {
+                this.table.api.showNoRowsOverlay();
+            }
+            if(selectedType === AVAILS_SELECTION) {
+                nextFrame(this.selectAll);
+            }
         }
 
         componentDidUpdate(prevProps) {
@@ -56,9 +61,11 @@ const withLocalRights = (selectedType) => WrappedComponent => {
                 this.refreshColumns(newColDef);
             }
 
-            if (prevProps.hidden !== this.props.hidden && !this.props.hidden && selectedType === AVAILS_SELECTION) {
+            if (prevProps.hidden !== this.props.hidden && !this.props.hidden) {
                 this.setState({originalData: this.getSelectedRights().slice(0)});
-                nextFrame(this.selectAll);
+                if(selectedType === AVAILS_SELECTION) {
+                    nextFrame(this.selectAll);
+                }
             }
         }
 
@@ -72,9 +79,9 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         };
 
         selectAll() {
-            if (!this.state.table) return;
-            this.state.table.api.deselectAll();
-            this.state.table.api.forEachNode(rowNode => {
+            if (!this.table) return;
+            this.table.api.deselectAll();
+            this.table.api.forEachNode(rowNode => {
                 if (rowNode.data && this.getSelectedRights().filter(sel => (sel.id === rowNode.data.id)).length > 0) {
                     rowNode.setSelected(true);
                 }
@@ -84,7 +91,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         setTable(element) {
             if (element) {
                 element.api.showLoadingOverlay();
-                this.setState({table: element});
+                this.table = element;
                 if (this.props.setTable) {
                     this.props.setTable(element);
                 }
