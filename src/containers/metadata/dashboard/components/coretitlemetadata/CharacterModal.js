@@ -37,6 +37,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
                 toggle();
                 setIsInvalid(false);
             } else {
+                setIsInvalid(true);
                 setError('Character name must be less than 100 characters long!');
             }
         } else {
