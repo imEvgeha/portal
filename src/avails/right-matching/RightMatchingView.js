@@ -1,48 +1,63 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {compose} from 'redux';
 import './RightMatchingView.scss';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScroll from '../../ui-elements/nexus-grid/withInfiniteScroll';
+import withInfinitScroll from '../../ui-elements/nexus-grid/hoc/withInfinitScroll';
+import {getRightMatchingList} from './rightMatchingService';
+import * as selectors from './rightMatchingSelectors';
+import {createRightMatchingColumnDefs} from './rightMatchingActions';
+import CustomActionsCellRenderer from './components/CustomActionsCellRenderer';
 
-const RightMatchingView = (props) => {
-    const [rowData, setRowData] = useState([]);
-    const getGridApi = (api, columnApi) => {        
-        fetchData().then(data => {
-            setRowData(data);
-            props.updateData(data, api)
-        });
-    };
+const NexusGridWithInfinitScroll = compose(withInfinitScroll(getRightMatchingList)(NexusGrid));
 
-    const fetchData = () => {
-        const httpRequest = new XMLHttpRequest();
-        const url = 'https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json';
-        return new Promise((resolve, reject) => {
-            return fetch(url)
-                .then(response => {
-                    response.json().then(result => resolve(result));
-                })
-                .catch(error => reject(error));
-        });
-    };
+const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs}) => {
+    useEffect(() => {
+        if (!columnDefs.length) {
+            createRightMatchingColumnDefs(mapping);
+        }    
+    }, [mapping, columnDefs]); // eslint-disable-line
+    const getGridApi = (api, columnApi) => {};
+
+    const onFocusButtonClick = (cell) => {
+       console.log(cell, 'cell') 
+    }
 
     return (
         <div className="nexus-c-right-matching-view">
             Right Matching
-            <NexusGrid 
-                columnDefs={[]}
-                context={{name: 'infinite'}}
-                rowData={rowData}
+            <NexusGridWithInfinitScroll
+                columnDefs={columnDefs}
                 getGridApi={getGridApi}
-                rowBuffer={0}
-                rowModelType='infinite'
-                paginationPageSize={10}
-                cacheOverflowSize={2}
-                maxConcurrentDatasourceRequests={1}
-                infiniteInitialRowCount={1000}
-                maxBlocksInCache={10}
+                context={{onFocusButtonClick}}
             />
         </div>
     );
 };
 
-export default compose(withInfiniteScroll)(RightMatchingView);
+RightMatchingView.propTypes = {
+    createRightMatchingColumnDefs: PropTypes.func.isRequired,
+    columnDefs: PropTypes.array,
+    mapping: PropTypes.array,
+};
+
+RightMatchingView.defaultProps = {
+    columnDefs: [],
+    mapping: [],
+};
+
+const createMapStateToProps = () => {
+    const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector(CustomActionsCellRenderer);
+    const availsMappingSelector = selectors.createAvailsMappingSelector();
+    return (state, props) => ({
+        columnDefs: rightMatchingColumnDefsSelector(state, props),
+        mapping: availsMappingSelector(state, props),
+    });
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+});
+
+export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line

@@ -11,21 +11,27 @@ const NexusGrid = ({
     getGridApi,
     headerHeight,
     rowHeight,
+    setRowData,
     ...restProps,
 }) => {
     const gridApiRef = useRef();
     const onGridReady = params => {
         gridApiRef.current = params;
         const {api, columnApi} = gridApiRef.current;
+        // api.sizeColumnsToFit();
 
         if (typeof getGridApi === 'function') {
-            api.sizeColumnsToFit();
             getGridApi(api, columnApi);
         }
+        if (typeof setRowData === 'function') {
+            setRowData(api);
+            return;
+        }
+        api.setRowData(rowData);
     };
     const onGridSizeChanged = () => {
         const {api = {}} = gridApiRef.current;
-        api.sizeColumnsToFit();
+        // api.sizeColumnsToFit();
     };
 
     return (
@@ -35,6 +41,9 @@ const NexusGrid = ({
                 columnDefs={columnDefs}
                 onGridReady={onGridReady}
                 onGridSizeChanged={onGridSizeChanged}
+                deltaRowDataMode={true}
+                getRowNodeId={data => data.id}
+                suppressAnimationFrame={true}
             >
             </AgGridReact> 
         </div> 
@@ -47,6 +56,7 @@ NexusGrid.propTypes = {
     getGridApi: PropTypes.func,
     headerHeight: PropTypes.number,
     rowHeight: PropTypes.number,
+    setRowData: PropTypes.func,
 };
 
 NexusGrid.defaultProps = {
@@ -55,6 +65,7 @@ NexusGrid.defaultProps = {
     getGridApi: null,
     headerHeight: 52,
     rowHeight: 48,
+    setRowData: null,
 };
 
 export default NexusGrid;
