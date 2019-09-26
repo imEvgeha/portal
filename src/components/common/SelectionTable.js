@@ -149,7 +149,7 @@ export class SelectionTable extends React.Component {
     isOneVisibleSelected() {
         const visibleRange = this.state.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
         return selectedNodes.length > 0;
@@ -158,7 +158,7 @@ export class SelectionTable extends React.Component {
     areAllVisibleSelected() {
         const visibleRange = this.state.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
 
@@ -229,7 +229,7 @@ class CheckBoxHeaderInternal extends Component {
     onCheckBoxClick(){
         const visibleRange = this.props.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.props.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.props.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
 
         if(!this.props.availTabPageSelection.selectAll) {
@@ -269,7 +269,7 @@ export const defaultSelectionColDef = {
     checkboxSelection: true,
     width: 40,
     pinned: 'left',
-    suppressResize: true,
+    resizable: false,
     suppressSizeToFit: true,
     suppressMovable: true,
     lockPosition: true,

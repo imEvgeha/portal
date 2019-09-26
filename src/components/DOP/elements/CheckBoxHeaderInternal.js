@@ -48,7 +48,7 @@ class CheckBoxHeaderInternal extends Component {
         const {api} = this.props;
         const visibleRange = api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         return api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom)) || [];
     };
 

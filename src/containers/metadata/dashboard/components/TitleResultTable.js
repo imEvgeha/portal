@@ -76,6 +76,8 @@ class TitleResultTable extends React.Component {
             pageSize: config.get('title.page.size'),
             cols: [],
             defaultColDef: {
+                sortable: true,
+                resizable: true,
                 cellStyle: this.cellStyle
             }
 
@@ -216,7 +218,7 @@ class TitleResultTable extends React.Component {
         let allLoadedSelected = true;
 
         e.api.forEachNode(node => {
-            if (!node.isPromoted()) allLoadedSelected = false;
+            if (!node.isSelected()) allLoadedSelected = false;
         });
         this.props.resultPageSelect({ selected: selected, selectAll: allLoadedSelected });
     }
@@ -423,7 +425,6 @@ class TitleResultTable extends React.Component {
                     defaultColDef={this.state.defaultColDef}
                     columnDefs={this.cols}
                     suppressDragLeaveHidesColumns={true}
-                    enableColResize={true}
                     onDragStopped={this.onColumnReordered}
                     onColumnResized={this.onColumnResized}
 
@@ -437,8 +438,6 @@ class TitleResultTable extends React.Component {
 
                     pagination={true}
 
-                    enableSorting={true}
-                    enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
 
                     // enableFilter
