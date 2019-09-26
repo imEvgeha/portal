@@ -208,8 +208,7 @@ class PersonList extends React.Component {
                     </PersonListContainer>
                 </Col>
                 <CharacterModal 
-                    parentId={this.props.parentId} 
-                    updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata} 
+                    parentId={this.props.parentId}
                     handleAddCharacterName={this.props.handleAddCharacterName} 
                     selectedPerson={this.state.selectedPerson} 
                     isModalOpen={this.state.isModalOpen} 

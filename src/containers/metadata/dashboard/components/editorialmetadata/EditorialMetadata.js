@@ -118,7 +118,6 @@ class EditorialMetadata extends Component {
                                                         <EditorialMetadataEditMode
                                                             handleAddEditorialCharacterNameEdit={this.props.handleAddEditorialCharacterNameEdit}
                                                             titleContentType={this.props.titleContentType}
-                                                            updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
                                                             handleEditorialCastCrew={this.props.handleEditorialCastCrew}
@@ -161,8 +160,7 @@ EditorialMetadata.propTypes = {
     handleEditorialCastCrewCreate: PropTypes.func,
     handleEditorialCastCrew: PropTypes.func,
     handleAddEditorialCharacterName: PropTypes.func,
-    handleAddEditorialCharacterNameEdit: PropTypes.func,
-    updateEditedEditorialMetadata: PropTypes.func
+    handleAddEditorialCharacterNameEdit: PropTypes.func
 };
 
 

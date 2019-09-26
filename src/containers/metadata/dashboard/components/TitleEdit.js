@@ -309,7 +309,6 @@ class TitleEdit extends Component {
     handleAddCharacterName = (id, newData) => {
         let newArray = this.state.editedForm.castCrew.filter(e => e.id !== id);
         newArray = [newData, ...newArray];
-        //TODO Convert empty string to null!
         let newObject = {
             ...this.state.editedForm,
             castCrew: newArray
@@ -911,7 +910,6 @@ class TitleEdit extends Component {
                     <EditorialMetadata
                         handleAddEditorialCharacterName={this.handleAddEditorialCharacterName}
                         handleAddEditorialCharacterNameEdit={this.handleAddEditorialCharacterNameEdit}
-                        updateEditedEditorialMetadata={this.updateEditedEditorialMetadata}
                         areFieldsRequired={this.state.areEditorialMetadataFieldsRequired}
                         validSubmit={this.handleOnSave}
                         toggle={this.toggleEditorialMetadata}

@@ -427,7 +427,6 @@ class EditorialMetadataEditMode extends Component {
                                 showPersonType={true}                                
                                 isMultiColumn={true}
                                 parentId={this.props.data.id}
-                                updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata}
                                 handleAddCharacterName={this.props.handleAddEditorialCharacterNameEdit}
                                 data={this.props.data}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
@@ -525,7 +524,6 @@ EditorialMetadataEditMode.propTypes = {
     configLocale: PropTypes.object,
     configGenre: PropTypes.object,
     handleEditorialCastCrew: PropTypes.func,
-    updateEditedEditorialMetadata: PropTypes.func,
     handleAddEditorialCharacterNameEdit: PropTypes.func
 };
 
