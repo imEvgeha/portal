@@ -332,16 +332,16 @@ class TitleEdit extends Component {
         });
     }
 
-    handleAddEditorialCharacterNameEdit = (parentId, id, newData) => {
+    handleAddEditorialCharacterNameEdit = (data, parentId, id, newData) => {
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === parentId);
         if (!edited) {
-            edited = JSON.parse(JSON.stringify(newData));
+            edited = JSON.parse(JSON.stringify(data));
         }
-        edited = newData;
 
+        let newCastCrewList = edited.castCrew.filter(e => e.id !== id);
+        newCastCrewList = [newData, ...newCastCrewList];
+        edited.castCrew = newCastCrewList;
         this.updateEditedEditorialMetadata(edited, parentId);
-        
-        
     }
 
     editMode = () => {

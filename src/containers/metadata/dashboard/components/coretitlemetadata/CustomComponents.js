@@ -39,17 +39,18 @@ const CustomEllipsis = styled.div`
 
 const CustomInput = styled.input`
     padding: 7px;
-    border: 1px solid #DDD;
+    border: ${props => props.isError ? '1px solid #e74c3c' : '1px solid #DDD;'};
+    color: ${props => props.isError ? '#e74c3c' : '#111;'};
     border-radius: 3px;
     outline: none;
     width: 100%;    
-    margin-bottom: 10px;
+    margin-bottom: 10px;    
 `;
 
 const CustomLabel = styled.div`
     font-weight: bold;
     font-size: 16px;
-    color: #666;
+    color: ${props => props.isError ? '#e74c3c' : '#666'};
 `;
 
 const DraggableContent = styled.div`
@@ -93,7 +94,7 @@ const ListItemText = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 40%;
+    width: 45%;
     ${props => props.isEditMode && css`
         cursor: pointer;
         &:hover {

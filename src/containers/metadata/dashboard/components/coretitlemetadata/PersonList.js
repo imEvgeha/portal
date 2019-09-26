@@ -34,7 +34,8 @@ class PersonList extends React.Component {
         this.state = {
             searchPersonText: '',
             isPersonValid: true,
-            isModalOpen: false
+            isModalOpen: false,
+            modalType: null
         };
     }
 
@@ -99,11 +100,13 @@ class PersonList extends React.Component {
         });
     }
 
-    setSelectedPerson = (id) => {        
+    setSelectedPerson = (id, type) => {       
+        let modalType = type === 'add' ? 'Add' : 'Edit'; 
         const selectedPerson = this.props.persons && this.props.persons[id];
         this.toggleModal();
         this.setState({
-            selectedPerson
+            selectedPerson,
+            modalType
         });
     }
 
@@ -176,10 +179,10 @@ class PersonList extends React.Component {
                                                                                                 </PersonListFlag>
                                                                                                     {
                                                                                                         person.characterName ? 
-                                                                                                            <ListItemText isEditMode onClick={() => this.setSelectedPerson(i)} title={person.characterName}>
+                                                                                                            <ListItemText isEditMode onClick={() => this.setSelectedPerson(i, 'edit')} title={person.characterName}>
                                                                                                                 {person.characterName}
                                                                                                             </ListItemText>
-                                                                                                        : <CustomAddButton onClick={() => this.setSelectedPerson(i)}>Add</CustomAddButton>
+                                                                                                        : <CustomAddButton onClick={() => this.setSelectedPerson(i, 'add')}>Add</CustomAddButton>
                                                                                                     }
                                                                                             </ListText>
                                                                                             </CustomEllipsis>
@@ -204,7 +207,16 @@ class PersonList extends React.Component {
                         </Label>
                     </PersonListContainer>
                 </Col>
-                <CharacterModal parentId={this.props.parentId} updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata} handleAddCharacterName={this.props.handleAddCharacterName} selectedPerson={this.state.selectedPerson} isModalOpen={this.state.isModalOpen} toggleModal={this.toggleModal} />
+                <CharacterModal 
+                    parentId={this.props.parentId} 
+                    updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata} 
+                    handleAddCharacterName={this.props.handleAddCharacterName} 
+                    selectedPerson={this.state.selectedPerson} 
+                    isModalOpen={this.state.isModalOpen} 
+                    toggleModal={this.toggleModal} 
+                    modalType={this.state.modalType}
+                    data={this.props.data}
+                />
             </React.Fragment>
         );
     }

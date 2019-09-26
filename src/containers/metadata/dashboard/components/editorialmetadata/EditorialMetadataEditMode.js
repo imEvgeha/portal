@@ -429,6 +429,7 @@ class EditorialMetadataEditMode extends Component {
                                 parentId={this.props.data.id}
                                 updateEditedEditorialMetadata={this.props.updateEditedEditorialMetadata}
                                 handleAddCharacterName={this.props.handleAddEditorialCharacterNameEdit}
+                                data={this.props.data}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
                             />
                         </Col>

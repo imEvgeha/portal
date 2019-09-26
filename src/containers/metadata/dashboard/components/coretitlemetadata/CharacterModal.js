@@ -3,10 +3,13 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { CustomInput, CustomLabel } from './CustomComponents';
 
-const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId}) => {
+const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data}) => {
     const [characterName, setCharacterName] = useState('');
+    const [isInvalid, setIsInvalid] = useState(false);
     const toggle = () => {
         toggleModal();
+        setCharacterName(selectedPerson && selectedPerson.characterName ? selectedPerson.characterName : '');
+        setIsInvalid(false);
     };
 
     useEffect(() => {
@@ -14,24 +17,30 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
     }, [selectedPerson]);
 
     const handleChange = (e) => {
-        setCharacterName(e.target.value);
+        const { value } = e.target;
+        setCharacterName(value);
     };
 
     const handleSubmit = () => {
-        const newObject = {
-            ...selectedPerson,
-            characterName: characterName
-        };
-        if(parentId) {            
-            handleAddCharacterName(parentId, selectedPerson.id, newObject);
-        } else {            
-            handleAddCharacterName(selectedPerson.id, newObject);
+        if(characterName) {
+            const newObject = {
+                ...selectedPerson,
+                characterName: characterName
+            };
+            if(parentId) {        
+                handleAddCharacterName(data, parentId, selectedPerson.id, newObject);
+            } else {            
+                handleAddCharacterName(selectedPerson.id, newObject);
+            }
+            toggle();
+            setIsInvalid(false);
+        } else {
+            setIsInvalid(true);
         }
-        toggle();
     };
     return (
         <Modal isOpen={isModalOpen} toggle={toggle}>
-            <ModalHeader toggle={toggle}>Add Character Name</ModalHeader>
+            <ModalHeader toggle={toggle}>{modalType} Character Name</ModalHeader>
             <ModalBody>
             <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
             <CustomInput
@@ -40,13 +49,17 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
                 disabled={true}
                 value={selectedPerson && selectedPerson.displayName}
             />
-            <CustomLabel htmlFor="characterName">Character Name</CustomLabel>
-            <CustomInput
+            <CustomLabel isError={isInvalid} htmlFor="characterName">Character Name</CustomLabel>
+            <CustomInput            
+                isError={isInvalid}
                 onChange={value => handleChange(value)}
                 placeholder="Character Name"
                 name="characterName"
                 value={characterName}
             />
+            {isInvalid && (                
+                <CustomLabel isError={isInvalid} style={{fontSize: '14px'}} htmlFor="characterName">Character name cannot be empty!</CustomLabel>
+            )}
             </ModalBody>
             <ModalFooter>
                 <Button color="primary" onClick={handleSubmit}>Add</Button>{' '}
@@ -62,7 +75,9 @@ CharacterModal.propTypes = {
     isModalOpen: PropTypes.bool,
     toggleModal: PropTypes.func,
     selectedPerson: PropTypes.object,
-    parentId: PropTypes.string
+    parentId: PropTypes.string,
+    modalType: PropTypes.string,
+    data: PropTypes.object
 };
 
 export default CharacterModal;
