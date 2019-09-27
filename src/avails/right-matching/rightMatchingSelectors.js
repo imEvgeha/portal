@@ -21,7 +21,7 @@ export const createRightMatchingColumnDefsSelector = (cellRenderer) => createSel
             colId: 'actions',
             width: 100,
             pinned: 'left',
-            suppressResize: true,
+            resizable: false,
             suppressSizeToFit: true,
             suppressMovable: true,
             lockPosition: true,

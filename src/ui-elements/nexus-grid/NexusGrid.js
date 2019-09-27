@@ -9,8 +9,8 @@ const NexusGrid = ({
     columnDefs,
     rowData,
     getGridApi,
-    headerHeight,
-    rowHeight,
+    // headerHeight,
+    // rowHeight,
     setRowData,
     ...restProps,
 }) => {
@@ -30,7 +30,7 @@ const NexusGrid = ({
         api.setRowData(rowData);
     };
     const onGridSizeChanged = () => {
-        const {api = {}} = gridApiRef.current;
+        // const {api = {}} = gridApiRef.current;
         // api.sizeColumnsToFit();
     };
 
@@ -54,8 +54,8 @@ NexusGrid.propTypes = {
     columnDefs: PropTypes.array,
     rowData: PropTypes.array,
     getGridApi: PropTypes.func,
-    headerHeight: PropTypes.number,
-    rowHeight: PropTypes.number,
+    // headerHeight: PropTypes.number,
+    // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
 };
 
@@ -63,8 +63,8 @@ NexusGrid.defaultProps = {
     columnDefs: [],
     rowData: [],
     getGridApi: null,
-    headerHeight: 52,
-    rowHeight: 48,
+    // headerHeight: 52,
+    // rowHeight: 48,
     setRowData: null,
 };
 

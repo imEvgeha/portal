@@ -9,24 +9,27 @@ import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from './rightMatchingActions';
 import CustomActionsCellRenderer from './components/CustomActionsCellRenderer';
+import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 
 const NexusGridWithInfinitScroll = compose(withInfinitScroll(getRightMatchingList)(NexusGrid));
 
-const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs}) => {
+const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, location}) => {
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
         }    
-    }, [mapping, columnDefs]); // eslint-disable-line
-    const getGridApi = (api, columnApi) => {};
+    }, [mapping, columnDefs]);
+    const getGridApi = (api, columnApi) => {}; // eslint-disable-line
 
-    const onFocusButtonClick = (cell) => {
-       console.log(cell, 'cell') 
-    }
+    const onFocusButtonClick = (rightId) => {
+        history.push(`${location.pathname}/${rightId}`);
+    };
 
     return (
         <div className="nexus-c-right-matching-view">
-            Right Matching
+            <NexusTitle>
+                Right Matching
+            </NexusTitle> 
             <NexusGridWithInfinitScroll
                 columnDefs={columnDefs}
                 getGridApi={getGridApi}
@@ -40,11 +43,14 @@ RightMatchingView.propTypes = {
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
+    history: PropTypes.object,
+    location: PropTypes.object,
 };
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
     mapping: [],
+    location: {},
 };
 
 const createMapStateToProps = () => {

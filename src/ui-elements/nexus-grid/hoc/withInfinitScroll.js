@@ -2,7 +2,7 @@ import React from 'react';
 
 const withInfinitScroll = (fetchData, infinitProps = {}) => BaseComponent => {
     const {
-        rowBuffer = 50,
+        rowBuffer = 10,
         paginationPageSize = 100,
         cacheOverflowSize = 2,
         rowModelType = 'infinite',

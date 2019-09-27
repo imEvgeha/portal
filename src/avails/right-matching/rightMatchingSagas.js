@@ -1,4 +1,4 @@
-import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
+import {call, put, all, take, takeEvery} from 'redux-saga/effects';
 import React from 'react';
 import moment from 'moment';
 import * as actionTypes from './rightMatchingActionTypes';
@@ -31,7 +31,7 @@ export function* createRightMatchingColumnDefs({payload}) {
             }
             break;
         }
-    } catch (error) {}
+    } catch (error) {throw new Error();}
 }
 
 // should be outside sagas
@@ -78,8 +78,9 @@ function createFormatter({dataType, javaVariableName}) {
 // should be outside sagas
 function createLoadingRenderer(params) {
     const {data, colDef, valueFormatted} = params;
-    if (!data) {
-        return <img src={loadingGif} alt='loadingSpinner' />;
+    if (!data && colDef !== 'actions') {
+        // return <img src={loadingGif} alt='loadingSpinner' />;
+        return null;
     }
     let value = getDeepValue(data, colDef.field);
     if (isObject(value)) {
