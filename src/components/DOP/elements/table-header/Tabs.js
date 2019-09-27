@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 import PropTypes from 'prop-types';
 import {updateSelectedTerritoriesTab} from '../../../../stores/actions/DOP';
 import connect from 'react-redux/es/connect/connect';
-import {ALL_RIGHT, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
+import {ALL_RIGHTS, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
 import {rightServiceManager} from '../../../../containers/avail/service/RightServiceManager';
 import {tabFilter} from '../../../../constants/DOP/tabFilter';
 
@@ -33,6 +33,9 @@ const Tab = styled.div`
         font-size: 15px;
         color: #000;
     `}
+    ${props => props.isDisabled && css`
+        pointer-events: none;
+    `}
 `;
 
 function Tabs(props) {
@@ -42,7 +45,7 @@ function Tabs(props) {
     const [selectedCount, setSelectedCount] = useState();
 
     useEffect(() => {
-        rightServiceManager.callPlanningSearch(tabFilter.get(ALL_RIGHT), 0, 1)
+        rightServiceManager.callPlanningSearch(tabFilter.get(ALL_RIGHTS), 0, 1)
             .then(response => setAllRightCount(response.data.total));
         rightServiceManager.callPlanningSearch(tabFilter.get(INCOMING), 0, 1)
             .then(response => setIncomingCount(response.data.total));
@@ -52,13 +55,14 @@ function Tabs(props) {
 
     return (
         <TabContainer>
-            <Tab isActive={props.selectedTerritoriesTab === ALL_RIGHT}
-                 onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHT)}>All Right ({allRightCount})</Tab>
+            <Tab isActive={props.selectedTerritoriesTab === ALL_RIGHTS}
+                 onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHTS)}>All Right ({allRightCount})</Tab>
             <Tab isActive={props.selectedTerritoriesTab === INCOMING}
                  onClick={() => props.updateFilterSelectedTerritories(INCOMING)}>Incoming ({incomingCount})</Tab>
             <Tab isActive={props.selectedTerritoriesTab === SELECTED}
                  onClick={() => props.updateFilterSelectedTerritories(SELECTED)}>Selected ({selectedCount})</Tab>
             <Tab isActive={props.selectedTerritoriesTab === PENDING_SELECTION}
+                 isDisabled={props.promotedRightsCount === 0}
                  onClick={() => props.updateFilterSelectedTerritories(PENDING_SELECTION)}>Pending selection ({props.promotedRightsCount})</Tab>
         </TabContainer>
     );

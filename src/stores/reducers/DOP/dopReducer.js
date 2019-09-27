@@ -7,7 +7,7 @@ import {
     DOP_UPDATE_PROMOTED_RIGHTS_FULL_DATA
 } from '../../../constants/action-types';
 import {saveDopState} from '../../index';
-import {ALL_RIGHT} from '../../../constants/DOP/selectedTab';
+import {ALL_RIGHTS} from '../../../constants/DOP/selectedTab';
 
 const initialState = {
     session: {
@@ -15,7 +15,7 @@ const initialState = {
         promotedRightsFullData: [],
         selectedTerritories: [],
         useSelectedTerritories: true,
-        selectedTerritoriesTab: ALL_RIGHT
+        selectedTerritoriesTab: ALL_RIGHTS
     }
 };
 

@@ -50,7 +50,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
             if(this.state.originalData.length === 0) {
                 this.table.api.showNoRowsOverlay();
             }
-            if(selectedType === AVAILS_SELECTION) {
+            if(this.props.isSelectAll) {
                 nextFrame(this.selectAll);
             }
         }

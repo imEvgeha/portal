@@ -100,6 +100,7 @@ class SelectRightsPlanning extends Component {
                 {availsMapping && (
                     <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
                                                 hidden={this.props.selectedTerritoriesTab !== PENDING_SELECTION}
+                                                disableEdit={true}
                     />
                 )}
             </div>
