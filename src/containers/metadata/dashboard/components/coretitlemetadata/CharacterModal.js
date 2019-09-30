@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { CustomInput, CustomLabel } from './CustomComponents';
+import { ErrorMessage } from '@atlaskit/form';
+import Button from '@atlaskit/button';
 
 const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data}) => {
     const [characterName, setCharacterName] = useState('');
@@ -51,26 +53,29 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
             <ModalBody>
             <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
             <CustomInput
+                readOnly
                 placeholder="Display Name"
                 name="displayName"
                 disabled={true}
                 value={selectedPerson && selectedPerson.displayName}
             />
             <CustomLabel isError={isInvalid} htmlFor="characterName">Character Name</CustomLabel>
-            <CustomInput            
+            <CustomInput        
                 isError={isInvalid}
                 onChange={value => handleChange(value)}
                 placeholder="Character Name"
                 name="characterName"
                 value={characterName}
             />
-            {isInvalid && (                
-                <CustomLabel isError={isInvalid} style={{fontSize: '14px'}} htmlFor="characterName">{error}</CustomLabel>
-            )}
+            {isInvalid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={handleSubmit}>Add</Button>{' '}
-                <Button color="secondary" onClick={toggle}>Cancel</Button>
+                <Button onClick={handleSubmit} appearance={'primary'}>
+                    Add
+                </Button>
+                <Button onClick={toggle} appearance={'danger'}>
+                    Cancel
+                </Button>
             </ModalFooter>
         </Modal>
     );

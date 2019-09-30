@@ -38,19 +38,27 @@ const CustomEllipsis = styled.div`
 `;
 
 const CustomInput = styled.input`
-    padding: 7px;
-    border: ${props => props.isError ? '1px solid #e74c3c' : '1px solid #DDD;'};
+    padding: 5px;
+    border: ${props => props.isError ? '2px solid #e74c3c' : '2px solid #DFE1E6;'};
     color: ${props => props.isError ? '#e74c3c' : '#111;'};
+    ${props => props.readOnly && css`
+        margin-bottom: 10px;
+    `};
     border-radius: 3px;
     outline: none;
     width: 100%;    
-    margin-bottom: 10px;    
+    font-size: 14px;
+    &:hover {
+        background: #EBECF0;
+    }   
+
 `;
 
 const CustomLabel = styled.div`
     font-weight: bold;
-    font-size: 16px;
-    color: ${props => props.isError ? '#e74c3c' : '#666'};
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: ${props => props.isError ? '#DE350B' : '#666'};
 `;
 
 const DraggableContent = styled.div`
