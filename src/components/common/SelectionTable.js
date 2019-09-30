@@ -18,7 +18,7 @@ export class SelectionTable extends React.Component {
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
 
-        const uniqueColumns = props.columns ? [...new Set(['checkbox_sel', ...props.columns])] : ['checkbox_sel'];
+        const uniqueColumns = props.columns ? [...new Set([CHECKBOX_HEADER, ...props.columns])] : [CHECKBOX_HEADER];
 
         this.state = {
             rowsProps: this.props.rowsProps,
@@ -46,9 +46,9 @@ export class SelectionTable extends React.Component {
         }
         if (prevProps.columns !== this.props.columns) {
             if(this.props.columns) {
-                this.setState({columns: [...new Set(['checkbox_sel', ...this.props.columns])]});
+                this.setState({columns: [...new Set([CHECKBOX_HEADER, ...this.props.columns])]});
             }else{
-                this.setState({columns: ['checkbox_sel']});
+                this.setState({columns: [CHECKBOX_HEADER]});
             }
         }
 
@@ -171,7 +171,7 @@ export class SelectionTable extends React.Component {
 
     refreshColumns() {
         const colDef = {
-            'checkbox_sel': defaultSelectionColDef
+            CHECKBOX_HEADER: defaultSelectionColDef
         };
         this.setState({colDef});
     }
@@ -208,6 +208,7 @@ export class SelectionTable extends React.Component {
 import {Component} from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
+import {CHECKBOX_HEADER} from '../../constants/customColumnHeaders';
 
 let mapStateToProps = state => {
     return {
@@ -265,7 +266,7 @@ export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInterna
 
 export const defaultSelectionColDef = {
     headerName: '',
-    field: 'checkbox_sel',
+    field: CHECKBOX_HEADER,
     checkboxSelection: true,
     width: 40,
     pinned: 'left',
