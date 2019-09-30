@@ -1,39 +1,44 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import Button from '@atlaskit/button';
 import './RightMatchingView.scss';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import withInfinitScroll from '../../ui-elements/nexus-grid/hoc/withInfinitScroll';
+import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from './rightMatchingActions';
-import CustomActionsCellRenderer from './components/CustomActionsCellRenderer';
+import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 
-const NexusGridWithInfinitScroll = compose(withInfinitScroll(getRightMatchingList)(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
 const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, location}) => {
+    const [totalCount, setTotalCount] = useState(0);
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
-        }    
+        }
     }, [mapping, columnDefs]);
-    const getGridApi = (api, columnApi) => {}; // eslint-disable-line
 
     const onFocusButtonClick = (rightId) => {
         history.push(`${location.pathname}/${rightId}`);
     };
 
+    const getTotalCount = totalRightsForMatching => setTotalCount(totalRightsForMatching);
+
     return (
         <div className="nexus-c-right-matching-view">
             <NexusTitle>
-                Right Matching
+                Right Matching {totalCount && `(${totalCount})`}
             </NexusTitle> 
-            <NexusGridWithInfinitScroll
+            <NexusGridWithInfiniteScrolling
                 columnDefs={columnDefs}
-                getGridApi={getGridApi}
-                context={{onFocusButtonClick}}
+                context={{
+                    onFocusButtonClick,
+                    getTotalCount,
+                }}
             />
         </div>
     );
@@ -54,7 +59,18 @@ RightMatchingView.defaultProps = {
 };
 
 const createMapStateToProps = () => {
-    const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector(CustomActionsCellRenderer);
+    // TODO - remove cell renderer from selector
+    // transform cell renderer to function from react component - optimization
+    const renderCellRenderer = ({data, context}) => { // eslint-disable-line
+        const {onFocusButtonClick} = context || {};
+        const handleClick = () => typeof context.onFocusButtonClick === 'function' && data ? onFocusButtonClick(data.id) : null;
+        return (
+            <CustomActionsCellRenderer id={data && data.id}>
+                <Button onClick={handleClick}>Focus</Button>
+            </CustomActionsCellRenderer>
+        );
+    };
+    const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector(renderCellRenderer);
     const availsMappingSelector = selectors.createAvailsMappingSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),

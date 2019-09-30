@@ -18,6 +18,7 @@ export const createRightMatchingColumnDefsSelector = (cellRenderer) => createSel
         const columnDef = {
             field: 'buttons',
             headerName: 'Actions',
+            id: 'actions',
             colId: 'actions',
             width: 100,
             pinned: 'left',

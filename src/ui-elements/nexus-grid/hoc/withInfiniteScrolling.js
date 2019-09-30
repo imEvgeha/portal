@@ -1,6 +1,6 @@
 import React from 'react';
 
-const withInfinitScroll = (fetchData, infinitProps = {}) => BaseComponent => {
+const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent => {
     const {
         rowBuffer = 10,
         paginationPageSize = 100,
@@ -8,7 +8,7 @@ const withInfinitScroll = (fetchData, infinitProps = {}) => BaseComponent => {
         rowModelType = 'infinite',
         maxConcurrentDatasourceRequests = 1,
         maxBlocksInCache = 100,
-    } = infinitProps;
+    } = infiniteProps;
 
     const ComposedComponent = props => {
         const getRows = (params, fetchData, gridApi) => {
@@ -26,6 +26,9 @@ const withInfinitScroll = (fetchData, infinitProps = {}) => BaseComponent => {
                         let lastRow = -1;
                         if ((page + 1) * size >= total) {
                             lastRow = total;
+                        }
+                        if (props.context && typeof props.context.getTotalCount === 'function') { 
+                            props.context.getTotalCount(total);
                         }
                         successCallback(data.data, lastRow);
                         gridApi.hideOverlay();
@@ -62,4 +65,4 @@ const withInfinitScroll = (fetchData, infinitProps = {}) => BaseComponent => {
     return ComposedComponent;
 };
 
-export default withInfinitScroll;
+export default withInfiniteScrolling;
