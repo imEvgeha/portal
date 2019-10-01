@@ -38,7 +38,6 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
         field: 'buttons',
         headerName: 'Actions',
         colId: 'actions',
-        id: 'actions',
         width: 100,
         pinned: 'left',
         resizable: false,
@@ -46,7 +45,7 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
         cellRendererFramework: createCellRenderer,
         suppressMovable: true,
         lockPosition: true,
-        sorting: false,
+        sortable: false,
     };
 
     const updatedColumnDefs = columnDefs.length ? [aditionalColumnDef, ...columnDefs]: columnDefs;
