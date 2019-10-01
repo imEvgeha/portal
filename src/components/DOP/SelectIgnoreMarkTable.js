@@ -64,7 +64,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     field: 'select_ignore_sel',
                     width: 200,
                     pinned: 'left',
-                    suppressResize: true,
+                    resizable: false,
                     suppressSizeToFit: true,
                     suppressMovable: true,
                     lockPosition: true,

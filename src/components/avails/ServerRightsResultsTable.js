@@ -27,7 +27,10 @@ class ServerRightsResultsTable extends RightsResultsTable {
 
         let originalColDef = this.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
 
-        let rowsProps = {defaultColDef: {cellStyle: this.cellStyle}};
+        let rowsProps = {defaultColDef: {
+            ...this.props.defaultColDef,
+            cellStyle: this.cellStyle
+        }};
 
         rowsProps = {
             ...rowsProps,

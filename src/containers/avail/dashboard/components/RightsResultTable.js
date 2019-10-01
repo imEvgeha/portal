@@ -92,6 +92,8 @@ class RightsResultTable extends React.Component {
             pageSize: config.get('avails.page.size'),
             cols:[],
             defaultColDef: {
+                sortable: true,
+                resizable: true,
                 cellStyle: this.cellStyle
             }
         };
@@ -351,7 +353,7 @@ class RightsResultTable extends React.Component {
     isOneVisibleSelected(){
         const visibleRange = this.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
         return selectedNodes.length > 0;
@@ -360,7 +362,7 @@ class RightsResultTable extends React.Component {
     areAllVisibleSelected(){
         const visibleRange = this.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
 
@@ -481,7 +483,7 @@ class RightsResultTable extends React.Component {
             checkboxSelection: true,
             width: 40,
             pinned: 'left',
-            suppressResize: true,
+            resizable: false,
             suppressSizeToFit: true,
             suppressMovable: true,
             lockPosition: true,
@@ -608,7 +610,6 @@ class RightsResultTable extends React.Component {
                 cacheOverflowSize: '2',
                 maxConcurrentDatasourceRequests: '1',
                 datasource: this.props.autoload ? this.dataSource : null,
-                enableServerSideSorting: true,
                 onSortChanged: this.onSortChanged
             };
         }
@@ -631,11 +632,9 @@ class RightsResultTable extends React.Component {
                         defaultColDef = {this.state.defaultColDef}
                         columnDefs= {this.state.cols}
                         suppressDragLeaveHidesColumns= {true}
-                        enableColResize= {true}
                         onDragStopped = {this.onColumnReordered}
                         onColumnResized = {this.onColumnResized}
 
-                        enableSorting={true}
                         onBodyScroll={this.onScroll}
 
                         rowSelection="multiple"
@@ -678,7 +677,7 @@ class CheckBoxHeaderInternal extends Component {
     onCheckBoxClick(){
         const visibleRange = this.props.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.props.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.props.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
 
         if(!this.props.availTabPageSelection.selectAll) {
