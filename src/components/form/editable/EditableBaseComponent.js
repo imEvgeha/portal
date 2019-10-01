@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import Popup from 'reactjs-popup';
 import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
-
+import {isObject} from '../../../util/Common';
 
 class EditableBaseComponent extends Component {
 
@@ -125,8 +125,8 @@ class EditableBaseComponent extends Component {
 
             const setSimpleArrayWithError = arr => {
                 const updatedArr = arr.map((el, index, array) => {
-                    const value = typeof el === 'object' ? el.name || el[Object.keys(el)[0]] : el;
-                    const style = el.hasOwnProperty('isValid') && !el.isValid ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'} : {color: '#1a1a1a', paddingRight: '4px'};
+                    const value = isObject(el) ? el.name || el[Object.keys(el)[0]] : el;
+                    const style = isObject(el) && el.hasOwnProperty('isValid') && !el.isValid ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'} : {color: '#1a1a1a', paddingRight: '4px'};
                     return (
                         <span key={index} style={style}>{`${value}${index < array.length - 1 ? ', ' : ''}`}</span>
                     );

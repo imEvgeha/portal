@@ -289,7 +289,7 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
-import {compose} from "redux";
+import {compose} from 'redux';
 import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
 
 //--------------------------------------
