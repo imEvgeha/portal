@@ -3482,15 +3482,15 @@ after@0.8.2:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
-ag-grid-community@^19.1.2:
-  version "19.1.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-community/-/ag-grid-community-19.1.2.tgz#4dddba4492bfbc21d93634cd7aae396b452d187f"
-  integrity sha512-nbnapa1D8usuDf80Vd09gpAosCFyvdwhq6zL4T7FSePYFjRhvvToryJ2wcDE0vcIuI5lpnR0Nrj3kRcXM+/3cQ==
+ag-grid-community@^21.2.1:
+  version "21.2.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-community/-/ag-grid-community-21.2.1.tgz#0d8ab868f2fe8da302e19d14ef99669ef00d3b28"
+  integrity sha512-UmS0j7pOz6SqN++Thg1a82LghW1zKk0k30kpPWxlOzC5On5b8MyKVsYZbGFtpdIHyJlPH3qbkw+PcFWSK168sw==
 
-ag-grid-react@^19.1.2:
-  version "19.1.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-react/-/ag-grid-react-19.1.2.tgz#e1d29d19b0993301a468648d034aec245afa6935"
-  integrity sha512-87XaXdtuvy2/krFhyFfocIstRCwRX8G0uYBq78SD8VUoblEXN0nA77mStjMdfbjPbU+GxIbdULKOEdqlHVoDcg==
+ag-grid-react@^21.2.1:
+  version "21.2.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-react/-/ag-grid-react-21.2.1.tgz#f1c97cb673ef8c30ae39b4774772a5a7b83593c1"
+  integrity sha512-cEDFOZF0GXolW60QCGwikToJxyacuUPEhb7x0vfK4XiHrT9aQ0+0l+KcmvvqWfN2sK78oRgKpjFI2wQjw2QYuA==
   dependencies:
     prop-types "^15.6.2"
 

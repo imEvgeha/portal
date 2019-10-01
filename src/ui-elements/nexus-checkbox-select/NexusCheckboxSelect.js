@@ -16,10 +16,11 @@ const NexusCheckboxSelect = ({
     placeholder,
 }) => {
     const [values, setValues] = useState(defaultValues);
-    const optionList = [selectAll, ...options];
+    const optionList = options.some(el => !el.isDisabled) ? [selectAll, ...options] : options;
     useEffect(() => {
         if (defaultValues.length === options.filter(el => !el.isDisabled).length) {
-            setValues([...values, selectAll]);
+            const newValues = values.some(el => !el.isDisabled) ? [...values, selectAll] : values;
+            setValues(newValues);
         }
     }, []);
 
