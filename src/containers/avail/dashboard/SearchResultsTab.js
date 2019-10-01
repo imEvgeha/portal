@@ -210,7 +210,8 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), store.getState().dashboard.session.columns)
+        const filteredColumns = store.getState().dashboard.session.columns.filter(el => !CUSTOM_HEADER_LIST.includes(el));
+        exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), filteredColumns)
         .then(function (response) {
             downloadFile(response.data);
         });
@@ -282,6 +283,7 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
+import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
 
 //--------------------------------------
 
