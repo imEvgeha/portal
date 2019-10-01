@@ -210,7 +210,7 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        const filteredColumns = store.getState().dashboard.session.columns.filter(el => el !== CHECKBOX_HEADER && el !== SELECT_IGNORE_HEADER && el !== PLAN_TERRITORY_HEADER);
+        const filteredColumns = store.getState().dashboard.session.columns.filter(el => !CUSTOM_HEADER_LIST.includes(el));
         exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), filteredColumns)
         .then(function (response) {
             downloadFile(response.data);
@@ -283,7 +283,7 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
-import {CHECKBOX_HEADER, PLAN_TERRITORY_HEADER, SELECT_IGNORE_HEADER} from '../../../constants/customColumnHeaders';
+import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
 
 //--------------------------------------
 
