@@ -17,11 +17,10 @@ export const configFields = {
 
 const http = Http.create({noDefaultErrorHandling: true});
 
-
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
-    let displayNameMatchPath = '?';
+    let displayNamePath = '?';
     if(inputValue) {
-        displayNameMatchPath += `displayNameMatch=${inputValue}&`;
+        displayNamePath += `displayName=${inputValue}&`;
     }
     let sortPath = ';'+ 'displayName' +'=ASC';
     let personTypePath;
@@ -30,7 +29,8 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     } else {
         personTypePath = castOrCrew === CAST ? `personTypes=${ACTOR.toLowerCase()}&` : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
     }
-    let path = `/persons${sortPath}${displayNameMatchPath}${personTypePath}page=0&size=${size}`;
+    // TODO: Lazy scrolling should be implemented as a feature to make use of 'page=X' parameter, so that PORT-728 is avoided
+    let path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
     return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
 };
 

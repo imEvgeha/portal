@@ -10,7 +10,7 @@ export const AWARD = 'Award';
 export const RECORDING_ARTIST = 'Recording Artist';
 export const VOICE_TALENT = 'Voice Talent';
 
-export const PERSONS_PER_REQUEST = 20;
+export const PERSONS_PER_REQUEST = 1000;
 
 export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCastType = false) => {
     let configCastList = [];

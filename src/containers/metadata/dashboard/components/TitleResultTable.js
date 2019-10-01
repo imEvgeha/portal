@@ -76,6 +76,8 @@ class TitleResultTable extends React.Component {
             pageSize: config.get('title.page.size'),
             cols: [],
             defaultColDef: {
+                sortable: true,
+                resizable: true,
                 cellStyle: this.cellStyle
             }
 
@@ -216,7 +218,7 @@ class TitleResultTable extends React.Component {
         let allLoadedSelected = true;
 
         e.api.forEachNode(node => {
-            if (!node.isPromoted()) allLoadedSelected = false;
+            if (!node.isSelected()) allLoadedSelected = false;
         });
         this.props.resultPageSelect({ selected: selected, selectAll: allLoadedSelected });
     }
@@ -339,7 +341,10 @@ class TitleResultTable extends React.Component {
         let error = null;
         if (!params.value && params.data && params.data.validationErrors) {
             params.data.validationErrors.forEach(e => {
-                if (e.fieldName === params.colDef.field) {
+                if(params.colDef 
+                   && ((e.fieldName === params.colDef.field) 
+                   || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
+                   || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart'))) {
                     error = e.message + ', error processing field ' + e.originalFieldName +
                         ' with value ' + e.originalValue +
                         ' at row ' + e.rowId +
@@ -372,7 +377,11 @@ class TitleResultTable extends React.Component {
         let error = null;
         if (!params.value && params.data && params.data.validationErrors) {
             params.data.validationErrors.forEach(e => {
-                if (e.fieldName === params.colDef.field) {
+                if (e.fieldName === params.colDef.field 
+                    || (e.fieldName.includes('country') && params.colDef.field === 'territory') 
+                    || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
+                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')) {
                     error = e;
                     return;
                 }
@@ -416,7 +425,6 @@ class TitleResultTable extends React.Component {
                     defaultColDef={this.state.defaultColDef}
                     columnDefs={this.cols}
                     suppressDragLeaveHidesColumns={true}
-                    enableColResize={true}
                     onDragStopped={this.onColumnReordered}
                     onColumnResized={this.onColumnResized}
 
@@ -430,8 +438,6 @@ class TitleResultTable extends React.Component {
 
                     pagination={true}
 
-                    enableSorting={true}
-                    enableServerSideSorting={true}
                     onSortChanged={this.onSortChanged}
 
                     // enableFilter

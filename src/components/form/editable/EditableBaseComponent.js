@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import Popup from 'reactjs-popup';
 import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
-
+import {isObject} from '../../../util/Common';
 
 class EditableBaseComponent extends Component {
 
@@ -51,6 +51,10 @@ class EditableBaseComponent extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.value != this.props.value) {
+            // dirty fix for territory field
+            if (Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
+                return;
+            }
             this.setState({
                 showStateValue: false,
                 value: cloneDeep(this.props.value) ? this.props.value : null,
@@ -62,10 +66,10 @@ class EditableBaseComponent extends Component {
     handleShowHelperComponent(e) {
         e.preventDefault();
         if (!this.props.disabled) {
-            this.setState({
+            this.setState(state => ({
                 editable: true,
-                value: this.state.value ? this.state.value : null,
-            });
+                value: state.value,
+            }));
         }
     }
     handleCancelHelperComponent(e) {
@@ -118,22 +122,34 @@ class EditableBaseComponent extends Component {
 
     render() {
         const displayFunc = (value) => {
+
+            const setSimpleArrayWithError = arr => {
+                const updatedArr = arr.map((el, index, array) => {
+                    const value = isObject(el) ? el.name || el[Object.keys(el)[0]] : el;
+                    const style = isObject(el) && el.hasOwnProperty('isValid') && !el.isValid ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'} : {color: '#1a1a1a', paddingRight: '4px'};
+                    return (
+                        <span key={index} style={style}>{`${value}${index < array.length - 1 ? ', ' : ''}`}</span>
+                    );
+                });
+                return updatedArr;
+            };
+
             return (<span
                 onClick={this.handleShowHelperComponent}
-                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px' }}
+                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
                 className={this.props.disabled ? 'disabled' : ''}>
                 {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
                     <Popup
                         key={i}
                         trigger={
-                            <TerritoryTag isCreate>{e.country}</TerritoryTag>
+                            <TerritoryTag isValid={e.isValid} isCreate>{e.country || e.name}</TerritoryTag>
                         }
                         position="top center"
                         on="hover"
                     >
                         {TerritoryTooltip(e)}
                     </Popup>
-                )) : value.join(',') : '' : value}
+                )) : setSimpleArrayWithError(value) : '' : value}
             </span>);
         };
 

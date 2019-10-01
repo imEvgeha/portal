@@ -72,6 +72,7 @@ class CoreMetadataEditMode extends Component {
   
 
   loadOptionsPerson = (searchPersonText, type) => {
+    if(searchPersonText.length < 2) return [];
     if(type === CAST) {
       return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST)
             .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
@@ -150,9 +151,28 @@ class CoreMetadataEditMode extends Component {
                 name='awards'
                 onChange={e => this.props.onChange(e)}
                 id='awards'
+                value={this.props.data.awards ? this.props.data.awards : ''}
                 placeholder='Awards'
                 validate={{
                   maxLength: { value: 500 }
+                }}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label for='imdbLink'>IMDb Link</Label>
+              <AvField
+                type='text'
+                name='imdbLink'
+                onChange={e => this.props.onChange(e)}
+                id='imdbLink'
+                value={this.props.data.imdbLink ? this.props.data.imdbLink : ''}
+                placeholder='IMDb Link'
+                validate={{
+                  maxLength: { value: 200 }
                 }}
               />
             </FormGroup>

@@ -5,3 +5,11 @@
     border:2px solid #999;
     width: 98%;
 }
+
+.linked-data {
+    font-weight: bold;
+    color: #FF7274;
+    &:hover {
+        color: red;
+    }
+}

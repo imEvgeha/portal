@@ -71,9 +71,8 @@ export default function withServerSorting(WrappedComponent){
         render(){
             return <WrappedComponent
                 {...this.props}
+                defaultColDef={{...this.props.defaultColDef, sortable:true}}
                 setTable={this.setTable}
-                enableSorting={true}
-                enableServerSideSorting={true}
                 onSortChanged={this.onSortChanged}
                 sort={this.state.sort}
             />;

@@ -30,6 +30,9 @@ const TerritoryTag = styled.div`
     ${props => props.isCreate && css`
         margin-right: 5px;
     `}
+    ${props => props.isValid && css`
+        color: #000;
+    `}
 `;
 
 const AddButton = styled.div`
@@ -69,12 +72,13 @@ const RemovableButton = styled.div`
         padding: 9px;
         margin-right: 5px;
     `}
-   
-
 `;
 
 const TooltipContainer = styled.div`
     padding: 5px;
+    ${props => props.isValid && css`
+        color: #000;
+    `}
 `;
 const TooltipItem = styled.div`
     padding: 5px;
@@ -99,7 +103,7 @@ const SmallTag = styled.span`
 `;
 
 const TerritoryTooltip = (data) => (
-    <TooltipContainer>
+    <TooltipContainer isValid={data && data.isValid} >
         <TooltipItem>Territory: <b>{data && data.country ? data.country : '-'}</b></TooltipItem>
         <TooltipItem>Selected: <b>{data && convertBooleanToString(data.selected)}</b></TooltipItem>        
         <TooltipItem>Date Selected: <b>{data && data.dateSelected ? moment(data.dateSelected).format('L') : '-'}</b></TooltipItem>

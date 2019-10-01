@@ -12,7 +12,7 @@ import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';
 import withRights from '../../../components/avails/ServerRightsResultsTable';
-import withLocalRights from '../../../components/avails/LocalRightsResultsTable';
+import withLocalRights, {AVAILS_SELECTION} from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 import {store} from '../../../index';
@@ -210,7 +210,8 @@ class SearchResultsTab extends React.Component {
     };
 
     requestFile() {
-        exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), store.getState().dashboard.session.columns)
+        const filteredColumns = store.getState().dashboard.session.columns.filter(el => !CUSTOM_HEADER_LIST.includes(el));
+        exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), filteredColumns)
         .then(function (response) {
             downloadFile(response.data);
         });
@@ -227,22 +228,13 @@ class SearchResultsTab extends React.Component {
     }
 
     render() {
-        const renderReportSelect = () => {
-            return (
-                <select className="form-control border-0 d-inline"
-                        id={'dashboard-avails-report-select'}
-                        onChange={this.handleChangeReport}
-                        value={this.props.reportName}>
-                    <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
-                    {
-                        configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
-                    }
-                </select>
-            );
-        };
-
         const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
-        const SelectedRightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withLocalRights(ResultsTable)))));
+        const SelectedRightsResultsTable = compose(
+            withRedux,
+            withColumnsReorder,
+            withSelection,
+            withServerSorting,
+            withLocalRights(AVAILS_SELECTION))(ResultsTable);
 
         return (
             <div id="dashboard-result-table">
@@ -264,7 +256,10 @@ class SearchResultsTab extends React.Component {
                             <IfEmbedded value={false}>
                                 <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
                                     <span className="align-self-center" >Selected report:</span>
-                                    {renderReportSelect()}
+                                    <Reports
+                                        onChange={this.handleChangeReport}
+                                        reportName={this.props.reportName}
+                                    />
                                 </div>
                                 <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
                             </IfEmbedded>
@@ -281,6 +276,7 @@ class SearchResultsTab extends React.Component {
                         <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
+                            isAvailSelectedTab ={true}
                         />
                     </div>
 
@@ -293,6 +289,39 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
+import {compose} from 'redux';
+import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
+
+//--------------------------------------
+
+mapStateToProps = state => {
+    return {
+        reports: state.root.reports
+    };
+};
+class ReportsInternal extends Component {
+
+    static propTypes = {
+        reports: t.array,
+        onChange: t.func,
+        reportName: t.string
+    };
+
+    render(){
+        return (
+            <select className="form-control border-0 d-inline"
+                    id={'dashboard-avails-report-select'}
+                    onChange={this.props.onChange}
+                    value={this.props.reportName}>
+                <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
+                {
+                    configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
+                }
+            </select>
+        );
+    }
+}
+let Reports = connect(mapStateToProps, null)(ReportsInternal);
 
 //--------------------------------------
 

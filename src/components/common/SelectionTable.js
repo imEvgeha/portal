@@ -18,7 +18,7 @@ export class SelectionTable extends React.Component {
         this.onScroll = this.onScroll.bind(this);
         this.onSelectionChangedProcess = this.onSelectionChangedProcess.bind(this);
 
-        const uniqueColumns = props.columns ? [...new Set(['checkbox_sel', ...props.columns])] : ['checkbox_sel'];
+        const uniqueColumns = props.columns ? [...new Set([CHECKBOX_HEADER, ...props.columns])] : [CHECKBOX_HEADER];
 
         this.state = {
             rowsProps: this.props.rowsProps,
@@ -45,7 +45,11 @@ export class SelectionTable extends React.Component {
             this.refreshColumns();
         }
         if (prevProps.columns !== this.props.columns) {
-            this.setState({columns: [...new Set(['checkbox_sel', ...this.props.columns])]});
+            if(this.props.columns) {
+                this.setState({columns: [...new Set([CHECKBOX_HEADER, ...this.props.columns])]});
+            }else{
+                this.setState({columns: [CHECKBOX_HEADER]});
+            }
         }
 
         if (prevProps.availTabPageSelection !== this.props.availTabPageSelection) {
@@ -145,7 +149,7 @@ export class SelectionTable extends React.Component {
     isOneVisibleSelected() {
         const visibleRange = this.state.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
         return selectedNodes.length > 0;
@@ -154,7 +158,7 @@ export class SelectionTable extends React.Component {
     areAllVisibleSelected() {
         const visibleRange = this.state.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
 
@@ -204,6 +208,7 @@ export class SelectionTable extends React.Component {
 import {Component} from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
+import {CHECKBOX_HEADER} from '../../constants/customColumnHeaders';
 
 let mapStateToProps = state => {
     return {
@@ -225,7 +230,7 @@ class CheckBoxHeaderInternal extends Component {
     onCheckBoxClick(){
         const visibleRange = this.props.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.props.api.headerRootComp.scrollVisibleService.bodyHorizontalScrollShowing ? 0.4 : 0);
+        const bottomOffset = 0.7 + (this.props.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
 
         if(!this.props.availTabPageSelection.selectAll) {
@@ -261,11 +266,11 @@ export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInterna
 
 export const defaultSelectionColDef = {
     headerName: '',
-    field: 'checkbox_sel',
+    field: CHECKBOX_HEADER,
     checkboxSelection: true,
     width: 40,
     pinned: 'left',
-    suppressResize: true,
+    resizable: false,
     suppressSizeToFit: true,
     suppressMovable: true,
     lockPosition: true,

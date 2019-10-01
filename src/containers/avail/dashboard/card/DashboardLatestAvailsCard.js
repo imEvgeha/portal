@@ -30,7 +30,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
                     {headerName: 'Provider', field: 'provider', width:90},
                     {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIconRender, width:55},
                     {headerName: 'Ingest Method', field: 'ingestType', width:105},
-                    {headerName: 'Filename', tooltip: this.showFileNames, valueFormatter: this.showFileNames, width:180}
+                    {headerName: 'Filename', tooltipValueGetter: this.showFileNames, valueFormatter: this.showFileNames, width:180}
             ]
         };
 
@@ -139,8 +139,6 @@ export default class DashboardLatestAvailsCard extends React.Component {
                         headerHeight= '30'
                         rowHeight= '23'
                         suppressDragLeaveHidesColumns= {true}
-                        enableColResize= {false}
-                        enableSorting= {false}
                         suppressHorizontalScroll= {true}
                         suppressMovableColumns = {true}
                         suppressRowClickSelection = {true}

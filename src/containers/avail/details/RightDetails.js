@@ -1,12 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import connect from 'react-redux/es/connect/connect';
-import t from 'prop-types';
-import Editable from 'react-x-editable';
+import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref 
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import moment from 'moment';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replace by new NexusSelectCheckbox
+import Select from 'react-select';
+import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
+import Popup from 'reactjs-popup'; // remove thuis package too, add our component set by atalskit
 import config from 'react-global-configuration';
 import { Button, Label } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
-
+import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
@@ -15,21 +19,15 @@ import EditableBaseComponent from '../../../components/form/editable/EditableBas
 import { oneOfValidation, rangeValidation } from '../../../util/Validation';
 import { profileService } from '../service/ProfileService';
 import { cannot } from '../../../ability';
-import './RightDetails.scss';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
-import Select from 'react-select';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { AvField, AvForm } from 'availity-reactstrap-validation';
 import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
-import moment from 'moment';
 import { momentToISO } from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import { confirmModal } from '../../../components/modal/ConfirmModal';
-
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import Popup from 'reactjs-popup';
 import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
@@ -41,17 +39,24 @@ const mapStateToProps = state => {
 };
 
 class RightDetails extends React.Component {
-
     static propTypes = {
-        selectValues: t.object,
-        availsMapping: t.any,
-        match: t.any,
-        location: t.any,
-        blocking: t.bool
+        selectValues: PropTypes.object,
+        availsMapping: PropTypes.any,
+        match: PropTypes.any,
+        location: PropTypes.any,
+        blocking: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        selectValues: null,
+        availsMapping: null,
+        match: {},
+        location: {},
+        blocking: null,
     };
 
     static contextTypes = {
-        router: t.object
+        router: PropTypes.object,
     }
 
     refresh = null;
@@ -98,10 +103,101 @@ class RightDetails extends React.Component {
             rightsService.get(this.props.match.params.id)
                 .then(res => {
                     if (res && res.data) {
+                        const regForEror = /\[(.*?)\]/i;
+                        const regForSubField = /.([A-Za-z]+)$/;
+                        const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res.data || {};
+                        // temporally solution for territory - all should be refactor
+                        const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
+                            .map(error => {
+                                const matchObj = error.fieldName.match(regForEror);
+                                if (matchObj) {
+                                    const matchSubField = error.fieldName.match(regForSubField);
+                                    error.index = Number(matchObj[1]); 
+                                    error.subField = matchSubField[1]; 
+                                }
+                                return error;
+                            })) || [];
+
+                        const territories = (Array.isArray(territory) && territory.map((el, index) => {
+                            const error = territoryErrors.find(error => error.index === index);
+                            if (error) {
+                                el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                el.isValid = false;
+                                el.errors = territoryErrors.filter(error => error.index === index);
+                            } else {
+                                el.isValid = true;
+                                el.name = el.country;
+                            }
+                            el.id = index;
+                            return el;
+                        })) || [];
+                        // temporally solution for affiliate and affilateExclude
+                        const affiliateErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
+                        .map(error => {
+                            const matchObj = error.fieldName.match(regForEror);
+                            if (matchObj) {
+                                error.index = Number(matchObj[1]); 
+                            }
+                            return error;
+                        })) || [];
+
+                        const affiliateList = (Array.isArray(affiliate) && affiliate.map((el, i) => {
+                            return {
+                                isValid:true,
+                                name: el,
+                                id: i,
+                            };
+                        })) || [];
+
+                        const affiliates = [
+                            ...affiliateList,
+                            ...affiliateErrors.map((el, index) => {
+                                let obj = {};
+                                obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
+                                obj.isValid = false;
+                                obj.errors = affiliateErrors[index];
+                                obj.id = el.index;
+                                return obj;
+                            })
+                        ];
+
+                        const affiliateExcludeErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude'))
+                        .map(error => {
+                            const matchObj = error.fieldName.match(regForEror);
+                            if (matchObj) {
+                                error.index = Number(matchObj[1]); 
+                            }
+                            return error;
+                        })) || [];
+
+                        const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.map((el, i) => {
+                            return {
+                                isValid:true,
+                                name: el,
+                                id: i,
+                            };
+                        })) || [];
+
+                        const affiliatesExclude = [
+                            ...affiliateiExcludeList,
+                            ...affiliateExcludeErrors.map((error, index) => {
+                                let obj = {};
+                                obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                obj.isValid = false;
+                                obj.errors = affiliateExcludeErrors[index];
+                                obj.id = error.index;
+                                return obj;
+                        })];
+
+                        const castCrews = castCrew;
+
                         this.setState({
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
-                            territory: this.state.right && this.state.right['territory'] && this.state.right['territory']
+                            territory: territories,
+                            affiliates,
+                            affiliatesExclude,
+                            castCrews,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -137,6 +233,24 @@ class RightDetails extends React.Component {
             case 'localdate': value = value && moment(value).isValid() ? momentToISO(value) : value;
                 break;
         }
+        if (Array.isArray(value)) {
+            value = value.map(el => {
+                if (el.hasOwnProperty('isValid')) {
+                    delete el.isValid;
+                }
+                if (el.hasOwnProperty('errors')) {
+                    delete el.errors;
+                }
+                if (el.hasOwnProperty('name')) {
+                    delete el.name;
+                }
+                if (el.hasOwnProperty('id')) {
+                    delete el.id;
+                }
+                return el;
+            });
+        }
+
         this.update(name, value, () => {
             cancel();
         });
@@ -259,23 +373,23 @@ class RightDetails extends React.Component {
     }
 
     toggleRightTerritoryForm = (index) => {
-        this.setState({
+        this.setState(state => ({
             isEdit: true,
             territoryIndex: index,
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
-        });
+            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen
+        }));
     }
 
     toggleAddRightTerritoryForm = () => {
-        this.setState({
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen,
-            isEdit: false
-        });
+        this.setState(state => ({
+            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen,
+            isEdit: false,
+        }));
     }
 
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
-            const hasValidationError = error;
+            const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             return (
                 <div key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
@@ -581,9 +695,10 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
+            // value = typeof value === 'object' ? value.name : value;
             let priorityError = null;
-            if (error) {
+            if (error && !name.includes('affiliate')) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
@@ -698,14 +813,14 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderTerritoryField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            let priorityError = null;
+        const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
+            {/*let priorityError = null;
             if (error) {
                 priorityError = <div title={error}
                     style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
                     {error}
                 </div>;
-            }
+                }*/}
             let ref;
             if (this.fields[name]) {
                 ref = this.fields[name];
@@ -715,7 +830,8 @@ class RightDetails extends React.Component {
             }
 
             let options = [];
-            let selectedVal = ref.current ? ref.current.state.value : cloneDeep(value);
+            // deepClone(value) returns null for country 
+            let selectedVal = ref.current ? ref.current.state.value : value;
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
             }
@@ -736,32 +852,39 @@ class RightDetails extends React.Component {
             };
 
             let addTerritory = (option) => {
+                const {territoryIndex, isEdit} = this.state;
+                const item = {
+                    ...option,
+                    isValid: true,
+                    name: option.country,
+                    id: isEdit ? territoryIndex : selectedVal.length,
+                };
                  if(this.state.isEdit) {
-                     selectedVal.splice(this.state.territoryIndex, 1, option);
+                     selectedVal.splice(this.state.territoryIndex, 1, item);
                  } else {
-                     selectedVal = selectedVal ? [...selectedVal, option] : [option];
+                     selectedVal = selectedVal ? [...selectedVal, item] : [item];
                  }
 
                  ref.current.handleChange(option ? selectedVal: null);
+                 // ??? - call set state that clean state inside timeout 
                  setTimeout(() => {
                      this.setState({});
                  }, 1);
 
              };
 
-            let deleteTerritory = (country) => {
-                let newArray = selectedVal && selectedVal.filter(e => e.country !== country);
-                ref.current.handleChange(country ? newArray: null);
+            let deleteTerritory = (territory) => {
+                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id);
+                ref.current.handleChange(newArray);
                 setTimeout(() => {
-                        this.setState({});
+                    this.setState({});
                 }, 1);
             };
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
+            return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
-                    priorityDisplay={priorityError}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -773,22 +896,23 @@ class RightDetails extends React.Component {
                     helperComponent={
                         <div>
                             {selectedVal && selectedVal.length > 0 ?
-                                selectedVal.map((e, i) => (
-                                    <div key={i}>
-                                        <Popup
-                                            trigger={
-                                                <TerritoryTag isEdit onClick={() => this.toggleRightTerritoryForm(i)}>
-                                                    {e.country}
-                                                </TerritoryTag>
-                                            }
-                                            position="top center"
-                                            on="hover"
-                                        >
-                                            {TerritoryTooltip(e)}
-                                        </Popup>
-                                        <RemovableButton isEdit onClick={() => deleteTerritory(e.country)}>x</RemovableButton>
-                                    </div>)
-                                )
+                            selectedVal.map((e, i) => {
+                                return (
+                                        <div key={i}>
+                                            <Popup
+                                                trigger={
+                                                    <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
+                                                        {e.name}
+                                                    </TerritoryTag>
+                                                }
+                                                position="top center"
+                                                on="hover"
+                                            >
+                                                {TerritoryTooltip(e)}
+                                            </Popup>
+                                            <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
+                                        </div>);
+                                    })
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
                             <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
@@ -799,7 +923,8 @@ class RightDetails extends React.Component {
                                 existingTerritoryList={selectedVal}
                                 territoryIndex={this.state.territoryIndex}
                                 isEdit={this.state.isEdit}
-                                options={options} />
+                                options={options} 
+                            />
                         </div>
                     } />
 
@@ -844,9 +969,10 @@ class RightDetails extends React.Component {
             this.props.availsMapping.mappings.map((mapping) => {
                 if (mapping.enableEdit) {
                     let error = null;
+                    // TODO: write this from scratch
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
+                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -861,6 +987,7 @@ class RightDetails extends React.Component {
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
+
                     const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
 
                     const required = mapping.required;
@@ -868,6 +995,10 @@ class RightDetails extends React.Component {
                     if (this.state.right && this.state.right.highlightedFields) {
                         highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
                     }
+
+                    const {right = {}} = this.state;
+                    const {validationErrors} = right || {};
+
                     switch (mapping.dataType) {
                         case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
@@ -879,7 +1010,31 @@ class RightDetails extends React.Component {
                             break;
                         case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'multiselect': renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'multiselect': 
+                            if (mapping.javaVariableName === 'affiliate') {
+                                renderFields.push(renderMultiSelectField(
+                                    mapping.javaVariableName, 
+                                    mapping.displayName, 
+                                    this.state.affiliates, 
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')), 
+                                    readOnly, 
+                                    required, 
+                                    highlighted
+                                ));
+                                break;
+                            } else if (mapping.javaVariableName === 'affiliateExclude') {
+                                renderFields.push(renderMultiSelectField(
+                                    mapping.javaVariableName, 
+                                    mapping.displayName, 
+                                    this.state.affiliatesExclude, 
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')), 
+                                    readOnly, 
+                                    required, 
+                                    highlighted
+                                ));
+                                break;
+                            }
+                            renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
@@ -891,7 +1046,16 @@ class RightDetails extends React.Component {
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'territoryType': renderFields.push(
+                             renderTerritoryField(
+                                 mapping.javaVariableName, 
+                                 mapping.displayName, 
+                                 this.state.territory, 
+                                 Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')), 
+                                 readOnly, 
+                                 required, 
+                                 highlighted
+                            ));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
@@ -929,4 +1093,4 @@ class RightDetails extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, null)(RightDetails);
+export default connect(mapStateToProps)(RightDetails);
