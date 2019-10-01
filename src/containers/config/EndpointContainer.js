@@ -101,7 +101,7 @@ export class EndpointContainer extends Component {
         this.onNewRecord = this.onNewRecord.bind(this);
 
         getConfigApiValues(props.selectedApi && props.selectedApi.urls && props.selectedApi.urls['CRUD'], 0, 1000).then(response => {
-            cache[props.selectedApi.url] = response.data.data;
+            cache[props.selectedApi.urls['CRUD']] = response.data.data;
         });
     }
 
@@ -176,6 +176,9 @@ export class EndpointContainer extends Component {
                 .then(response => {
                     let data = this.state.data.slice(0);
                     data.unshift(response.data);
+                    if(cache[selectedApi.urls['CRUD']]) {     
+                        cache[selectedApi.urls['CRUD']] = data;
+                    }
                     this.setState(prevState => ({ data, total: prevState.total + 1, currentRecord: null }));
                 }
                 );
