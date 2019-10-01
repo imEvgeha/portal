@@ -11,30 +11,9 @@ export const getAvailsMapping = (state) => {
     return root && root.availsMapping;
 };
 
-export const createRightMatchingColumnDefsSelector = (cellRenderer) => createSelector(
+export const createRightMatchingColumnDefsSelector = () => createSelector(
     getColumnDefs,
-    columnDefs => {
-        // add new column defintion
-        const columnDef = {
-            field: 'buttons',
-            headerName: 'Actions',
-            id: 'actions',
-            colId: 'actions',
-            width: 100,
-            pinned: 'left',
-            resizable: false,
-            suppressSizeToFit: true,
-            suppressMovable: true,
-            lockPosition: true,
-            cellRendererFramework: cellRenderer,
-            sorting: false,
-        };
-        if (columnDefs.length) {
-            const updatedColumnDefs = [columnDef, ...columnDefs];
-            return updatedColumnDefs;
-        }
-        return columnDefs;
-    }
+    columnDefs => columnDefs,
 );
 
 export const createAvailsMappingSelector = () => createSelector(

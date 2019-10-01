@@ -28,17 +28,43 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
 
     const getTotalCount = totalRightsForMatching => setTotalCount(totalRightsForMatching);
 
+    const createCellRenderer = ({data}) => ( // eslint-disable-line
+        <CustomActionsCellRenderer id={data && data.id}>
+            <Button onClick={() => onFocusButtonClick(data.id)}>Focus</Button>
+        </CustomActionsCellRenderer>
+    );
+
+    const aditionalColumnDef = {
+        field: 'buttons',
+        headerName: 'Actions',
+        colId: 'actions',
+        id: 'actions',
+        width: 100,
+        pinned: 'left',
+        resizable: false,
+        suppressSizeToFit: true,
+        cellRendererFramework: createCellRenderer,
+        suppressMovable: true,
+        lockPosition: true,
+        sorting: false,
+    };
+
+    const updatedColumnDefs = columnDefs.length ? [aditionalColumnDef, ...columnDefs]: columnDefs;
+
     return (
         <div className="nexus-c-right-matching-view">
             <NexusTitle>
                 Right Matching {totalCount && `(${totalCount})`}
             </NexusTitle> 
             <NexusGridWithInfiniteScrolling
-                columnDefs={columnDefs}
+                columnDefs={updatedColumnDefs}
                 context={{
                     onFocusButtonClick,
                     getTotalCount,
                 }}
+                deltaRowDataMode={true}
+                getRowNodeId={data => data.id}
+                suppressAnimationFrame={true}
             />
         </div>
     );
@@ -59,18 +85,7 @@ RightMatchingView.defaultProps = {
 };
 
 const createMapStateToProps = () => {
-    // TODO - remove cell renderer from selector
-    // transform cell renderer to function from react component - optimization
-    const renderCellRenderer = ({data, context}) => { // eslint-disable-line
-        const {onFocusButtonClick} = context || {};
-        const handleClick = () => typeof context.onFocusButtonClick === 'function' && data ? onFocusButtonClick(data.id) : null;
-        return (
-            <CustomActionsCellRenderer id={data && data.id}>
-                <Button onClick={handleClick}>Focus</Button>
-            </CustomActionsCellRenderer>
-        );
-    };
-    const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector(renderCellRenderer);
+    const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),

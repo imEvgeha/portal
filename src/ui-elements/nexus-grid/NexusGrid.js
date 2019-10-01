@@ -37,13 +37,10 @@ const NexusGrid = ({
     return (
         <div className='nexus-c-nexus-grid ag-theme-balham'>
             <AgGridReact
-                {...restProps}
                 columnDefs={columnDefs}
                 onGridReady={onGridReady}
                 onGridSizeChanged={onGridSizeChanged}
-                deltaRowDataMode={true}
-                getRowNodeId={data => data.id}
-                suppressAnimationFrame={true}
+                {...restProps}
             >
             </AgGridReact> 
         </div> 

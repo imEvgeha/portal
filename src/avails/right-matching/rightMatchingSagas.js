@@ -1,10 +1,8 @@
 import {call, put, all, take, takeEvery} from 'redux-saga/effects';
-import React from 'react';
 import moment from 'moment';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
-import loadingGif from '../../img/loading.gif';
-import {getDeepValue, isObject} from '../../util/Common';
+import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/createLoadingCellRenderer';
 
 export function* createRightMatchingColumnDefs({payload}) {
     try {
@@ -34,7 +32,7 @@ export function* createRightMatchingColumnDefs({payload}) {
     } catch (error) {throw new Error();}
 }
 
-// should be outside sagas
+// should be outside sagas, in selector?
 function createFormatter({dataType, javaVariableName}) {
     switch (dataType) {
         case 'localdate': 
@@ -75,47 +73,6 @@ function createFormatter({dataType, javaVariableName}) {
     }
 } 
 
-// should be outside sagas
-function createLoadingRenderer(params) {
-    const {data, colDef, valueFormatted} = params;
-    if (!data && colDef !== 'actions') {
-        // return <img src={loadingGif} alt='loadingSpinner' />;
-        return null;
-    }
-    let value = getDeepValue(data, colDef.field);
-    if (isObject(value)) {
-        value = JSON.stringify(value);
-    }
-    if (Array.isArray(value) && value.length > 1){
-        value = value.join(', ');
-    }
-    const content = valueFormatted || value;
-    if (content) {
-        let highlighted = false;
-        if (data && data.highlightedFields) {
-            highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
-        }
-        return (
-            <div>
-                <div
-                    className = {highlighted ? 'font-weight-bold' : ''}
-                    style={{textOverflow: 'ellipsis', overflow: 'hidden'}}
-                >
-                    {String(content)}
-                </div>
-                {highlighted && (
-                    <div style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                        <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}>
-                            <i className="far fa-question-circle" />
-                        </span>
-                    </div>
-                )}
-            </div>
-        );
-    }
-    return null;
-}
-
 function createColumnDefs(payload) {
     const result = payload.reduce((columnDefs, column) => {
         const {javaVariableName, displayName, id} = column;
@@ -123,12 +80,13 @@ function createColumnDefs(payload) {
             field: javaVariableName,
             headerName: displayName,
             colId: id,
-            cellRendererFramework: createLoadingRenderer,
+            cellRenderer: createLoadingCellRenderer,
             valueFormatter: createFormatter(column),
             width: 150,
         };
         return [...columnDefs, columnDef];
     }, []);
+
 
     return result;
 }
