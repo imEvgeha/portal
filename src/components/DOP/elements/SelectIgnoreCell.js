@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import t from 'prop-types';
 import {connect} from 'react-redux';
-import {updatePromotedRights} from '../../../stores/actions/DOP';
+import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 import {rightsService} from '../../../containers/avail/service/RightsService';
 import union from 'lodash.union';
 
@@ -13,7 +13,9 @@ class SelectIgnoreCell extends Component {
     static propTypes = {
         node: t.object,
         promotedRights: t.array,
+        promotedRightsFullData: t.array,
         updatePromotedRights: t.func,
+        updatePromotedRightsFullData: t.func,
         useSelectedTerritories: t.bool,
         selectedTerritories: t.array
     };
@@ -21,7 +23,9 @@ class SelectIgnoreCell extends Component {
     static defaultProps = {
         node: null,
         promotedRights: [],
+        promotedRightsFullData: [],
         updatePromotedRights: null,
+        updatePromotedRightsFullData: null,
         useSelectedTerritories: false,
         selectedTerritories: []
     }
@@ -42,7 +46,7 @@ class SelectIgnoreCell extends Component {
     checkPromotableStatus = (territories = []) => territories && territories.some(territory => !territory.selected && territory.country);
 
     onPromoteClick = () => {
-        const {updatePromotedRights, promotedRights, node = {}} = this.props;
+        const {updatePromotedRights, updatePromotedRightsFullData, promotedRights, promotedRightsFullData, node = {}} = this.props;
         const {id, data = {}} = node;
         const rightId = id;
         const promotableTerritoriesObject = (data && data.territory && data.territory.filter(el => el.country && !el.selected)) || [];
@@ -51,6 +55,10 @@ class SelectIgnoreCell extends Component {
         const filteredPromotedRights = promotedRights.filter(e => e.rightId !== rightId);
         const updatedPromotedRights = this.isPromoted() ? filteredPromotedRights : [...filteredPromotedRights, {rightId, territories}];
         updatePromotedRights(updatedPromotedRights);
+
+        const filteredPromotedRightsFullData = promotedRightsFullData.filter(e => e.id !== rightId);
+        const updatedPromotedRightsFullData = this.isPromoted() ? filteredPromotedRightsFullData : [...filteredPromotedRightsFullData, data];
+        updatePromotedRightsFullData(updatedPromotedRightsFullData);
     };
 
     getTerritoriesWithUserSelected = (territories) => {
@@ -119,12 +127,14 @@ class SelectIgnoreCell extends Component {
 
 const mapStateToProps = ({dopReducer}) => ({
     promotedRights: dopReducer.session.promotedRights,
+    promotedRightsFullData: dopReducer.session.promotedRightsFullData,
     selectedTerritories: dopReducer.session.selectedTerritories,
     useSelectedTerritories: dopReducer.session.useSelectedTerritories
 });
 
 const mapDispatchToProps = (dispatch) => ({
     updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
+    updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectIgnoreCell);

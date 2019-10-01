@@ -12,7 +12,7 @@ import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';
 import withRights from '../../../components/avails/ServerRightsResultsTable';
-import withLocalRights from '../../../components/avails/LocalRightsResultsTable';
+import withLocalRights, {AVAILS_SELECTION} from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 import {store} from '../../../index';
@@ -229,7 +229,12 @@ class SearchResultsTab extends React.Component {
 
     render() {
         const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
-        const SelectedRightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withLocalRights(ResultsTable)))));
+        const SelectedRightsResultsTable = compose(
+            withRedux,
+            withColumnsReorder,
+            withSelection,
+            withServerSorting,
+            withLocalRights(AVAILS_SELECTION))(ResultsTable);
 
         return (
             <div id="dashboard-result-table">
@@ -271,6 +276,7 @@ class SearchResultsTab extends React.Component {
                         <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
+                            isAvailSelectedTab ={true}
                         />
                     </div>
 
@@ -283,6 +289,7 @@ class SearchResultsTab extends React.Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
+import {compose} from "redux";
 import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
 
 //--------------------------------------

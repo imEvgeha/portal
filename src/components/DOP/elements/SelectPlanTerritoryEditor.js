@@ -6,8 +6,10 @@ import NexusCheckboxSelect from '../../../ui-elements/nexus-checkbox-select/Nexu
 class SelectPlanTerritoryEditor extends Component {
     static propTypes = {
         node: PropTypes.object,
-        getPromotedRights: PropTypes.func.isRequired,
+        promotedRights: PropTypes.array.isRequired,
+        promotedRightsFullData: PropTypes.array.isRequired,
         updatePromotedRights: PropTypes.func,
+        updatePromotedRightsFullData: PropTypes.func,
         selectedTerritories: PropTypes.array,
         useSelectedTerritories: PropTypes.bool,
     };
@@ -21,7 +23,7 @@ class SelectPlanTerritoryEditor extends Component {
 
     constructor(props) {
         super(props);
-        const right = props.getPromotedRights().find(el => el.rightId === (props.node && props.node.id));
+        const right = props.promotedRights.find(el => el.rightId === (props.node && props.node.id));
         const value = (right && right.territories && right.territories
             .map(el => {
                 return {
@@ -57,14 +59,21 @@ class SelectPlanTerritoryEditor extends Component {
     }
 
     onCheckboxSelect = values => {
-        const {updatePromotedRights, getPromotedRights, node = {}} = this.props;
+        const {updatePromotedRights, promotedRights, updatePromotedRightsFullData, promotedRightsFullData, node = {}} = this.props;
         const {data = {}} = node;
         const rightId = data && data.id;
         const territories = this.getTerritoriesWithUserSelected(values);
-        const filteredRights = getPromotedRights().filter(right => right.rightId !== rightId);
+        const filteredRights = promotedRights.filter(right => right.rightId !== rightId);
         const updatedRights = (territories.length > 0 && rightId) 
             ? [...filteredRights, {rightId, territories}] 
             : filteredRights;
+
+        const filteredRightsFullData = promotedRightsFullData.filter(right => right.id !== rightId);
+        const updatedRightsFullData = (territories.length > 0 && rightId)
+            ? [...filteredRightsFullData, data]
+            : filteredRightsFullData;
+        updatePromotedRightsFullData(updatedRightsFullData);
+
         return updatePromotedRights(updatedRights); 
     } 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
-import {updatePromotedRights} from '../../stores/actions/DOP';
+import {updatePromotedRights, updatePromotedRightsFullData} from '../../stores/actions/DOP';
 import {defaultSelectionColDef, SelectionTable} from '../common/SelectionTable';
 import CheckBoxHeaderInternal from './elements/CheckBoxHeaderInternal';
 import selectIgnoreCell from './elements/SelectIgnoreCell';
@@ -56,7 +56,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         // TODO - create HOC to dynamically add column (including it position inside table) 
         // Bug - this method is called twice 
         refreshColumns() {
-            const {updatePromotedRights, parseColumnsSchema, availsMapping, selectedTerritories, useSelectedTerritories} = this.props;
+            const {updatePromotedRights, updatePromotedRightsFullData, parseColumnsSchema, availsMapping, selectedTerritories, useSelectedTerritories} = this.props;
             const originalColDef = parseColumnsSchema((availsMapping && availsMapping.mappings) || []);
             const colDef = {
                 checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
@@ -79,8 +79,10 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     cellRenderer: 'selectPlanTerritory',
                     cellEditorFramework: SelectPlanTerritoryEditor,
                     cellEditorParams: {
-                        getPromotedRights: this.getPromotedRights,
+                        promotedRights: this.props.promotedRights,
+                        promotedRightsFullData: this.props.promotedRightsFullData,
                         updatePromotedRights,
+                        updatePromotedRightsFullData,
                         selectedTerritories,
                         useSelectedTerritories
                     },
@@ -163,12 +165,14 @@ export default function withSelectIgnoreMark(WrappedComponent) {
     const mapStateToProps = ({dopReducer, root}) => ({
         availsMapping: root.availsMapping,
         promotedRights: dopReducer.session.promotedRights,
+        promotedRightsFullData: dopReducer.session.promotedRightsFullData,
         selectedTerritories: dopReducer.session.selectedTerritories,
         useSelectedTerritories: dopReducer.session.useSelectedTerritories
     });
 
     const mapDispatchToProps = (dispatch) => ({
         updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
+        updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload)),
     });
 
     return connect(mapStateToProps, mapDispatchToProps)(withRightsResultsTable(ComposedComponent));

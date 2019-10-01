@@ -3,11 +3,11 @@ import React from 'react';
 import t from 'prop-types';
 import {
     updateSelectedTerritories
-} from '../../../stores/actions/DOP';
+} from '../../../../../stores/actions/DOP';
 import connect from 'react-redux/es/connect/connect';
-import {getConfigApiValues} from '../../../common/CommonConfigService';
-import {INPUT_TIMEOUT} from '../../../constants/common-ui';
-import {configFields} from '../../../containers/metadata/service/ConfigService';
+import {getConfigApiValues} from '../../../../../common/CommonConfigService';
+import {INPUT_TIMEOUT} from '../../../../../constants/common-ui';
+import {configFields} from '../../../../../containers/metadata/service/ConfigService';
 import {QuickSearch} from '@atlaskit/quick-search';
 import {Checkbox} from '@atlaskit/checkbox';
 import {DeleteButton, TerritoryTag} from './TerritoryItem';

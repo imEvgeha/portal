@@ -6,7 +6,7 @@ import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 
 import DOP from '../../../util/DOP';
 import {rightsService} from '../service/RightsService';
-import {updatePromotedRights} from '../../../stores/actions/DOP';
+import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 
 
 class SelectRightsDOPConnector extends Component {
@@ -48,7 +48,8 @@ class SelectRightsDOPConnector extends Component {
                     let toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
                     if(toChangeTerritories.length > 0){
                         let toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
-                        let newTerritories = response.data.territory.map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
+                        let newTerritories = response.data.territory.
+                        map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
                         // newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
                         return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
                             return {rightId: right.rightId, territories: toChangeTerritoriesCountry};
@@ -64,6 +65,7 @@ class SelectRightsDOPConnector extends Component {
             let newDopInfo = result.filter(a => a);
             this.setState({isSendingData : false, isConfirmOpen : false});
             updatePromotedRights([]);
+            updatePromotedRightsFullData([]);
             DOP.sendInfoToDOP(newDopInfo.length > 0 ? 0 : 1, {selectedRights : newDopInfo});
         }).catch((e) => {
             console.error('Unexpected error');
@@ -103,6 +105,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => ({
     updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
+    updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsDOPConnector);

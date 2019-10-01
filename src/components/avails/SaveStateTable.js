@@ -32,6 +32,8 @@ export default function withRedux(WrappedComponent){
                 availTabPageSelection = {store.getState().dashboard.session.availTabPageSelection}
                 resultPageSelect = {(selection) => store.dispatch(resultPageSelect(selection))}
 
+                promotedRightsFullData = {store.getState().dopReducer.session.promotedRightsFullData}
+
                 columnsOrder = {store.getState().dashboard.session.columns}
                 updateColumnsOrder = {(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
             />;
