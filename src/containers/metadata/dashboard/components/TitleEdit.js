@@ -307,27 +307,27 @@ class TitleEdit extends Component {
     };
 
     handleAddCharacterName = (id, newData) => {
-        let newArray = this.state.editedForm.castCrew.filter(e => e.id !== id);
-        newArray = [newData, ...newArray];
-        let newObject = {
+        let castCrew = this.state.editedForm.castCrew;
+        this.state.editedForm.castCrew.splice(id, 1, newData);
+        let editedForm = {
             ...this.state.editedForm,
-            castCrew: newArray
+            castCrew
         };
         this.setState({
-            editedForm: newObject
+            editedForm
         });
     }
 
     handleAddEditorialCharacterName = (id, newData) => {
-        let newArray = this.state.editorialMetadataForCreate.castCrew.filter(e => e.id !== id);
-        newArray = [newData, ...newArray];
-        let newObject = {
+        let castCrew = this.state.editorialMetadataForCreate.castCrew;
+        this.state.editorialMetadataForCreate.castCrew.splice(id, 1, newData);
+        let editorialMetadataForCreate = {
             ...this.state.editorialMetadataForCreate,
-            castCrew: newArray
+            castCrew
         };
 
         this.setState({
-            editorialMetadataForCreate: newObject
+            editorialMetadataForCreate
         });
     }
 
@@ -336,10 +336,9 @@ class TitleEdit extends Component {
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
         }
-
-        let newCastCrewList = edited.castCrew.filter(e => e.id !== id);
-        newCastCrewList = [newData, ...newCastCrewList];
-        edited.castCrew = newCastCrewList;
+        let newCastCrew =  edited.castCrew;
+        edited.castCrew.splice(id, 1, newData);
+        edited.castCrew = newCastCrew;
         this.updateEditedEditorialMetadata(edited, parentId);
     }
 

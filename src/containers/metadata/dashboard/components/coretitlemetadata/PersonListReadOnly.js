@@ -31,8 +31,8 @@ const PersonListReadOnly = ({ showPersonType, getFormatTypeName, person, columnN
                     </CustomColumn>
                     {person.characterName ? (
                         <CustomColumn xs={6}>  
-                        <CustomEllipsis>
-                        <ListText>
+                        <CustomEllipsis style={{width: '100%'}}>
+                        <ListText style={{width: '100%'}}>
                             <PersonListFlag>
                             <span style={{ marginLeft: '10px' }}>
                                 <Lozenge appearance={'default'}>{columnName.toString().toUpperCase()}

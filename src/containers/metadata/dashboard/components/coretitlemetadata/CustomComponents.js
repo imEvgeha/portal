@@ -102,7 +102,6 @@ const ListItemText = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 45%;
     ${props => props.isEditMode && css`
         cursor: pointer;
         &:hover {

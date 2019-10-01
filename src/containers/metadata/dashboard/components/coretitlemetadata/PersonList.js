@@ -35,7 +35,8 @@ class PersonList extends React.Component {
             searchPersonText: '',
             isPersonValid: true,
             isModalOpen: false,
-            modalType: null
+            modalType: null,
+            selectedId: null
         };
     }
 
@@ -95,9 +96,9 @@ class PersonList extends React.Component {
     }
 
     toggleModal = () => {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
+        this.setState(prevState => ({
+            isModalOpen: !prevState.isModalOpen
+        }));
     }
 
     setSelectedPerson = (id, type) => {       
@@ -105,6 +106,7 @@ class PersonList extends React.Component {
         const selectedPerson = this.props.persons && this.props.persons[id];
         this.toggleModal();
         this.setState({
+            selectedId: id,
             selectedPerson,
             modalType
         });
@@ -172,8 +174,8 @@ class PersonList extends React.Component {
                                                                                         </CustomColumn>
                                                                                         {this.props.isMultiColumn ? (
                                                                                             <CustomColumn xs={5}>                                                                                            
-                                                                                            <CustomEllipsis>
-                                                                                            <ListText>
+                                                                                            <CustomEllipsis style={{width: '100%'}}>
+                                                                                            <ListText style={{width: '100%'}}>
                                                                                                 <PersonListFlag>
                                                                                                     <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>CHARACTER</Lozenge></span>
                                                                                                 </PersonListFlag>
@@ -211,6 +213,7 @@ class PersonList extends React.Component {
                     parentId={this.props.parentId}
                     handleAddCharacterName={this.props.handleAddCharacterName} 
                     selectedPerson={this.state.selectedPerson} 
+                    selectedId={this.state.selectedId}
                     isModalOpen={this.state.isModalOpen} 
                     toggleModal={this.toggleModal} 
                     modalType={this.state.modalType}

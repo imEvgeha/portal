@@ -5,7 +5,7 @@ import { CustomInput, CustomLabel } from './CustomComponents';
 import { ErrorMessage } from '@atlaskit/form';
 import Button from '@atlaskit/button';
 
-const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data}) => {
+const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data, selectedId}) => {
     const [characterName, setCharacterName] = useState('');
     const [isInvalid, setIsInvalid] = useState(false);
     const [error, setError] = useState(null);
@@ -32,9 +32,9 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
                     characterName: characterName
                 };
                 if(parentId) {        
-                    handleAddCharacterName(data, parentId, selectedPerson.id, newObject);
+                    handleAddCharacterName(data, parentId, selectedId, newObject);
                 } else {            
-                    handleAddCharacterName(selectedPerson.id, newObject);
+                    handleAddCharacterName(selectedId, newObject);
                 }
                 toggle();
                 setIsInvalid(false);
@@ -71,7 +71,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
             </ModalBody>
             <ModalFooter>
                 <Button onClick={handleSubmit} appearance={'primary'}>
-                    Add
+                    OK
                 </Button>
                 <Button onClick={toggle} appearance={'danger'}>
                     Cancel
@@ -89,7 +89,8 @@ CharacterModal.propTypes = {
     selectedPerson: PropTypes.object,
     parentId: PropTypes.string,
     modalType: PropTypes.string,
-    data: PropTypes.object
+    data: PropTypes.object,
+    selectedId: PropTypes.number
 };
 
 export default CharacterModal;
