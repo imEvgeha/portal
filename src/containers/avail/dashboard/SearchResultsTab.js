@@ -286,7 +286,7 @@ class SearchResultsTab extends React.Component {
                         <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
-                            isSelectAll ={true}
+                            isAvailSelectedTab ={true}
                         />
                     </div>
 

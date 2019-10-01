@@ -23,7 +23,13 @@ const withLocalRights = (selectedType) => WrappedComponent => {
             this.setTable = this.setTable.bind(this);
             this.selectAll = this.selectAll.bind(this);
 
-            let originalColDef = this.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
+            let originalColDef;
+            if(props.isAvailSelectedTab) {
+                originalColDef = this.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
+            } else {
+                // this.props.parseColumnsSchema in this case comes from withSelectIgnoreMark
+                originalColDef = this.props.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
+            }
             let colDef = {...this.props.colDef, ...originalColDef};
 
             let rowsProps = {defaultColDef: {cellStyle: this.cellStyle}};
@@ -50,7 +56,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
             if(this.state.originalData.length === 0) {
                 this.table.api.showNoRowsOverlay();
             }
-            if(this.props.isSelectAll) {
+            if(this.props.isAvailSelectedTab) {
                 nextFrame(this.selectAll);
             }
         }
