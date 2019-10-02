@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Form, { FormFooter, Field, CheckboxField, ErrorMessage } from '@atlaskit/form';
-import Button from '@atlaskit/button';
-import { Checkbox } from '@atlaskit/checkbox';
-import Select, { CreatableSelect } from '@atlaskit/select';
-import { DatePicker } from '@atlaskit/datetime-picker';
+import Form, {FormFooter, Field, CheckboxField, ErrorMessage} from '@atlaskit/form';
+import Button, {ButtonGroup} from '@atlaskit/button';
+import {Checkbox} from '@atlaskit/checkbox';
+import Select, {CreatableSelect} from '@atlaskit/select';
+import {DatePicker} from '@atlaskit/datetime-picker';
 import moment from 'moment';
-import { momentToISO } from '../../util/Common';
+import {momentToISO} from '../../util/Common';
 
 
 const RightTerritoryForm = ({
-                                options = [],
-                                existingTerritoryList = [],
-                                territoryIndex,
-                                isEdit = false,
-                                onClose,
-                                onSubmit,
-                            }) => {
+    options = [],
+    existingTerritoryList = [],
+    territoryIndex,
+    isEdit = false,
+    onClose,
+    onSubmit,
+}) => {
     const setProperValues = (data) => {
         const {
             country = null,
@@ -213,8 +213,11 @@ const RightTerritoryForm = ({
                         )}
                     </Field>
                     <FormFooter>
-                        <Button type="submit" appearance="primary">Submit</Button>
-                        <Button onClick={onClose}>Close</Button>
+                        {/* TODO: Add handler, type submit could be confusing */}
+                        <ButtonGroup>
+                            <Button type="submit" appearance="primary">Submit</Button>
+                            <Button onClick={onClose}>Close</Button>
+                        </ButtonGroup>
                     </FormFooter>
                 </form>
             )}
@@ -222,12 +225,19 @@ const RightTerritoryForm = ({
     );
 };
 
-// RightTerritoryForm.propTypes = {
-//   onClose: PropTypes.func,
-//   options: PropTypes.array,
-//   onSubmit: PropTypes.func,
-//   isEdit: PropTypes.bool,
-//   existingTerritoryList: PropTypes.array
-// };
+RightTerritoryForm.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    options: PropTypes.array.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    isEdit: PropTypes.bool,
+    existingTerritoryList: PropTypes.array,
+    territoryIndex: PropTypes.number,
+};
+
+RightTerritoryForm.defaultProps = {
+    isEdit: false,
+    existingTerritoryList: [],
+    territoryIndex: -1,
+};
 
 export default RightTerritoryForm;
