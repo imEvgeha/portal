@@ -1,16 +1,23 @@
-.itemized-field-wrapper {
+.nexus-c-nexus-custom-itemized-field {
     padding: 5px;
     border: 1px solid hsl(0,0%,80%);
     border-radius: 4px;
     display: grid;
     grid-template-columns: 4fr 1fr;
     justify-content: flex-end;
+
+    // TODO: Check what's wrong with AtlasKit Buttons
+    .button-fix span span {
+        display: flex;
+    }
 }
 
-.itemized-field-content {
+.nexus-c-nexus-custom-itemized-field__content {
+    display: flex;
     grid-column: 1;
+    align-items: center;
 }
 
-.itemized-field-controls {
+.nexus-c-nexus-custom-itemized-field__controls {
     grid-column: -1;
 }

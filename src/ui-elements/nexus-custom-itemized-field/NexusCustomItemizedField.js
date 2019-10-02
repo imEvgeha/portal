@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import React, {useState, useContext, Fragment} from 'react';
+import React, {useState, useContext, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
+import './NexusCustomItemizedField.scss';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {
     RemovableButton,
@@ -22,8 +23,15 @@ const NexusCustomItemizedField = ({
     const [existingItems, setExistingItems] = useState(items);
     const {setModalContent, close}= useContext(NexusModalContext);
 
+    useEffect(() => setExistingItems(items));
+
     const addItem = () => {
-        const content = <Form onClose={close} onSubmit={(e) => setAddedItems([...addedItems, e])}/>;
+        const content = (
+            <Form
+                onClose={close}
+                onSubmit={(e) => setAddedItems([...addedItems, e])}
+            />
+        );
         setModalContent(content);
     };
 
@@ -43,8 +51,8 @@ const NexusCustomItemizedField = ({
     const cancelChanges = () => setAddedItems([]);
 
     return (
-        <div className="itemized-field-wrapper">
-            <div className="itemized-field-content">
+        <div className="nexus-c-nexus-custom-itemized-field">
+            <div className="nexus-c-nexus-custom-itemized-field__content">
                 {(!existingItems.length && !addedItems.length) &&
                     PLACEHOLDER
                 }
@@ -67,18 +75,18 @@ const NexusCustomItemizedField = ({
                     </TerritoryTag>
                 ))}
             </div>
-            <div className="itemized-field-controls">
+            <div className="nexus-c-nexus-custom-itemized-field__controls">
                 {!!addedItems.length &&
                     <>
-                        <Button appearance="subtle" onClick={submitChanges}>
+                        <Button appearance="subtle" onClick={submitChanges} className="button-fix">
                             <EditorDoneIcon />
                         </Button>
-                        <Button appearance="subtle" onClick={cancelChanges}>
+                        <Button appearance="subtle" onClick={cancelChanges} className="button-fix">
                             <EditorCloseIcon />
                         </Button>
                     </>
                 }
-                <Button onClick={addItem}>
+                <Button onClick={addItem} className="button-fix">
                     <AddIcon />
                 </Button>
             </div>
