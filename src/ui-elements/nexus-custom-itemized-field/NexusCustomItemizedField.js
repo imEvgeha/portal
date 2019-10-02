@@ -23,7 +23,7 @@ const NexusCustomItemizedField = ({
     const [existingItems, setExistingItems] = useState(items);
     const {setModalContent, close}= useContext(NexusModalContext);
 
-    useEffect(() => setExistingItems(items));
+    useEffect(() => setExistingItems(items), [items]);
 
     const addItem = () => {
         const content = (
