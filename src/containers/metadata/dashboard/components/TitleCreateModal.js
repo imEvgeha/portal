@@ -6,6 +6,7 @@ import '../Title.scss';
 import { titleService } from '../../service/TitleService';
 import connect from 'react-redux/es/connect/connect';
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
+import constants from '../../MetadataConstants';
 
 class TitleCreate extends React.Component {
 
@@ -286,6 +287,7 @@ class TitleCreate extends React.Component {
     };
 
     render() {
+        const { MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH, } = constants;
         return (
             <Modal isOpen={this.props.display} toggle={this.toggle} id="titleModalBox" className={this.props.className} fade={false} backdrop={true}>
                 <AvForm onValidSubmit={this.onSubmit} id="titleCreateForm" ref={c => (this.form = c)}>
@@ -302,7 +304,7 @@ class TitleCreate extends React.Component {
                                             <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
                                             <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={this.state.titleForm.title} placeholder="Enter Title" onChange={this.handleChange} validate={{
                                                 required: { errorMessage: 'Field cannot be empty!' },
-                                                maxLength: { value: 200 }
+                                                maxLength: { value: MAX_TITLE_LENGTH }
                                             }} />
                                         </Col>
                                     </Row>
@@ -346,7 +348,7 @@ class TitleCreate extends React.Component {
                                                         <Label for="titleSeasonNumber">Season{this.state.isSeasonNumberRequired ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                                                         <AvField type="number" name="seasonNumber" disabled={this.state.seasonChecked} value={this.state.titleForm.episodic.seasonNumber} id="titleSeasonNumber" placeholder={'Enter Season Number'} errorMessage="Please enter a valid season number!" onChange={this.handleChangeSeasonNumber}
                                                             validate={{
-                                                                maxLength: { value: 3 },
+                                                                maxLength: { value: MAX_SEASON_LENGTH },
                                                                 required: { value: this.state.isSeasonNumberRequired, errorMessage: 'Field cannot be empty!'}
                                                             }}
                                                         />
@@ -360,7 +362,7 @@ class TitleCreate extends React.Component {
                                                                     <Label for="titleEpisodeNumber">Episode{this.state.isEpisodeNumberRequired ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                                                                     <AvField type="number" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber} disabled={this.state.episodeChecked} id="titleEpisodeNumber" errorMessage="Please enter a valid episode number!" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} 
                                                                     validate={{
-                                                                        maxLength: { value: 3 },
+                                                                        maxLength: { value: MAX_EPISODE_LENGTH },
                                                                         required: { value: this.state.isEpisodeNumberRequired, errorMessage: 'Field cannot be empty!'}
                                                                     }}/>
                                                                 </FormGroup>
@@ -383,8 +385,8 @@ class TitleCreate extends React.Component {
                                                     errorMessage: 'Field cannot be empty!'
                                                 },
                                                 pattern: {value: '^[0-9]+$'},
-                                                minLength: {value: 4},
-                                                maxLength: {value: 4}
+                                                minLength: {value: MAX_RELEASE_YEAR_LENGTH},
+                                                maxLength: {value: MAX_RELEASE_YEAR_LENGTH}
                                             }} placeholder="Enter Release Year" value={this.state.titleForm.releaseYear}
                                                      onChange={this.handleChange}/>
                                         </Col>

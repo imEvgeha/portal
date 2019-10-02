@@ -426,7 +426,7 @@ class TitleEditMode extends Component {
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },
-                      minLength: { value: constants.MIN_RELEASE_YEAR_LENGTH },
+                      minLength: { value: constants.MAX_RELEASE_YEAR_LENGTH },
                       maxLength: { value: constants.MAX_RELEASE_YEAR_LENGTH }
                     }}
                     placeholder='Enter Release Year'
