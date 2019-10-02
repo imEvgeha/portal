@@ -2,34 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import moment from 'moment';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replace by new NexusSelectCheckbox
-import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
-import Popup from 'reactjs-popup'; // remove thuis package too, add our component set by atalskit
 import config from 'react-global-configuration';
+import InlineEdit from '@atlaskit/inline-edit';
+// TODO: move to AtlasKit
 import { Button, Label } from 'reactstrap';
-import cloneDeep from 'lodash/cloneDeep';
 import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
-import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
-import { oneOfValidation, rangeValidation } from '../../../util/Validation';
-import { profileService } from '../service/ProfileService';
-import { cannot } from '../../../ability';
+import {profileService} from '../service/ProfileService';
+import {cannot} from '../../../ability';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
-import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
-import { momentToISO } from '../../../util/Common';
+import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
+import {getDeepValue, momentToISO} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import { confirmModal } from '../../../components/modal/ConfirmModal';
-import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
-import NexusCustomItemizedField from "../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField";
+import {confirmModal} from '../../../components/modal/ConfirmModal';
+import RightTerritoryForm from '../../../components/form/RightTerritoryFormv2';
+import NexusCustomItemizedField from '../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField';
 
 const mapStateToProps = state => {
     return {
@@ -39,6 +31,7 @@ const mapStateToProps = state => {
     };
 };
 
+// TODO: Way too many renders
 class RightDetails extends React.Component {
     static propTypes = {
         selectValues: PropTypes.object,
@@ -206,52 +199,7 @@ class RightDetails extends React.Component {
                     });
                 });
         }
-    }
-
-    handleSubmit = (editable) => {
-        const name = editable.props.title;
-        let value = safeTrim(editable.value);
-        if (value === '') {
-            value = null;
-        }
-
-        this.update(name, value, () => {
-            editable.setState({ rightLastEditSucceed: false });
-            editable.value = this.state.right[name];
-            editable.newValue = this.state.right[name];
-        });
     };
-
-    handleEditableSubmit(name, value, cancel) {
-        const schema = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === name);
-        switch (schema.dataType) {
-            case 'date': value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
-                break;
-            case 'localdate': value = value && moment(value).isValid() ? momentToISO(value) : value;
-                break;
-        }
-        if (Array.isArray(value)) {
-            value = value.map(el => {
-                if (el.hasOwnProperty('isValid')) {
-                    delete el.isValid;
-                }
-                if (el.hasOwnProperty('errors')) {
-                    delete el.errors;
-                }
-                if (el.hasOwnProperty('name')) {
-                    delete el.name;
-                }
-                if (el.hasOwnProperty('id')) {
-                    delete el.id;
-                }
-                return el;
-            });
-        }
-
-        this.update(name, value, () => {
-            cancel();
-        });
-    }
 
     flattenRight(right) {
         let rightCopy = {};
@@ -275,6 +223,7 @@ class RightDetails extends React.Component {
             onError();
             return;
         }
+        console.log(value);
         let updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
@@ -309,84 +258,14 @@ class RightDetails extends React.Component {
         return data.trim() ? '' : <small>Field can not be empty</small>;
     }
 
-    validateTextField(target, field) {
-        const value = target.newValue ? target.newValue.trim() : '';
-
-        for (let i = 0; i < this.props.availsMapping.mappings.length; i++) {
-            let mapping = this.props.availsMapping.mappings[i];
-            if (mapping.javaVariableName === field) {
-                const isOriginRightIdRequired = field === 'originalRightId' && this.state.right.temporaryPriceReduction === true && this.state.right.status === 'Ready';
-                if (mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
-            }
-        }
-        return '';
-    }
-
-    getPairFieldName(name) {
-        switch (name) {
-            case 'start': return 'availStart';
-            case 'availStart': return 'start';
-            default: return '';
-        }
-    }
-
-    extraValidation(name, displayName, date, right) {
-        const pairFieldName = this.getPairFieldName(name);
-        if (pairFieldName) {
-            const mappingPair = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === pairFieldName);
-            return oneOfValidation(name, displayName, date, pairFieldName, mappingPair.displayName, right);
-        }
-    }
-
     cancel = () => {
         this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
-    }
-
-    onFieldClicked(e) {
-        const node = ReactDOM.findDOMNode(e.currentTarget);
-        if (e.target.tagName === 'A' || e.target.tagName === 'SPAN') {
-            node.classList.add('no-border');
-        }
-        if (e.target.tagName === 'I' || e.target.tagName === 'BUTTON') {
-            node.classList.remove('no-border');
-        }
-    }
-
-    onEditableClick(ref) {
-        if (ref && ref.current) {
-            const component = ref.current;
-            if (component instanceof Editable || component instanceof EditableBaseComponent) {
-                if (component.state && !component.state.editable) {
-                    confirmModal.open('Confirm edit',
-                        () => {
-                        },
-                        () => {
-                            component.setEditable(false);
-                        },
-                        { description: 'Are you sure you want to edit this field?' });
-                }
-            }
-        }
-    }
-
-    toggleRightTerritoryForm = (index) => {
-        this.setState(state => ({
-            isEdit: true,
-            territoryIndex: index,
-            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen
-        }));
-    }
-
-    toggleAddRightTerritoryForm = () => {
-        this.setState(state => ({
-            isRightTerritoryFormOpen: !state.isRightTerritoryFormOpen,
-            isEdit: false,
-        }));
-    }
+    };
 
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
             const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
+            // TODO: Use AtlasKit icons; Remove inline css
             return (
                 <div key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
@@ -403,411 +282,12 @@ class RightDetails extends React.Component {
                             {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                             {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                         </div>
-                        <div
-                            onClick={this.onFieldClicked}
-                            className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
-                            id={'right-detail-' + name + '-field'}>
-                            <div className="editable-field-content"
-                                onClick={highlighted ? () => this.onEditableClick(ref) : null}
-                            >
-                                {content}
-                            </div>
-                            <span className="edit-icon" style={{ color: 'gray' }}><i className="fas fa-pen"></i></span>
+                        <div className="col-8">
+                            {content}
                         </div>
                     </div>
                 </div>
             );
-        };
-        const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            const ref = React.createRef();
-            const displayFunc = (val) => {
-                if (error) {
-                    return (<div title={error}
-                        style={{
-                            textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
-                            color: error ? '#a94442' : null
-                        }}
-                    > {error} </div>);
-                } else {
-                    return val;
-                }
-            };
-
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
-                <Editable
-                    ref={ref}
-                    title={name}
-                    value={value}
-                    disabled={readOnly}
-                    dataType="text"
-                    mode="inline"
-                    placeholder={this.emptyValueText + ' ' + displayName}
-                    handleSubmit={this.handleSubmit}
-                    emptyValueText={displayFunc(readOnly ? '' : this.emptyValueText + ' ' + displayName)}
-                    validate={() => this.validateTextField(ref.current, name)}
-                    display={displayFunc}
-                />
-            ));
-        };
-
-        const renderAvField = (name, displayName, value, error, readOnly, required, highlighted, tooltip, validation) => {
-            const ref = React.createRef();
-            let priorityError = null;
-            if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
-            }
-
-            let handleValueChange = (newVal) => {
-                const error = validate(newVal);
-                if (error) {
-                    ref.current.handleInvalid(newVal, error);
-                } else {
-                    ref.current.handleChange(newVal);
-                }
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            const validate = (val) => {
-                if (validation && validation.pattern) {
-                    const isValid = val ? validation.pattern.value.test(val) : !required;
-                    if (!isValid) {
-                        return validation.pattern.errorMessage;
-                    }
-                } else if (validation && validation.number) {
-                    const isNumber = !isNaN(val.replace(',', '.'));
-                    if (!isNumber) {
-                        return 'Please enter a valid number!';
-                    }
-                }
-            };
-
-            const innerValidate = (val, ctx, input, cb) => {
-                if (validation && validation.pattern) {
-                    cb(val ? validation.pattern.value.test(val) : !required);
-                } else if (validation && validation.number) {
-                    const isNumber = !isNaN(val.replace(',', '.'));
-                    cb(isNumber);
-                }
-
-                if (!validation) {
-                    cb(true);
-                }
-            };
-
-            const convert = (val) => {
-                if (val && validation && validation.number) {
-                    return Number(val.replace(',', '.'));
-                }
-                return val ? val : null;
-            };
-
-            let errorMessage = '';
-            if (validation) {
-                if (validation.pattern && validation.pattern.errorMessage) {
-                    errorMessage = validation.pattern.errorMessage;
-                } else if (validation.number) {
-                    errorMessage = 'Please enter a valid number!';
-                }
-            }
-
-            const modifiedValidation = { ...validation };
-            delete modifiedValidation.number;
-
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, (
-                <EditableBaseComponent
-                    ref={ref}
-                    value={value}
-                    priorityDisplay={priorityError}
-                    name={name}
-                    disabled={readOnly}
-                    displayName={displayName}
-                    validate={validate}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, convert(value), cancel)}
-                    showError={false}
-                    helperComponent={<AvForm>
-                        <AvField
-                            value={value}
-                            name={name}
-                            placeholder={'Enter ' + displayName}
-                            onChange={(e) => { handleValueChange(e.target.value); }}
-                            type="text"
-                            validate={{ ...modifiedValidation, async: innerValidate }}
-                            errorMessage={errorMessage}
-                        />
-                    </AvForm>}
-                />
-            ));
-        };
-
-        const renderIntegerField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { number: true, pattern: { value: /^\d+$/, errorMessage: 'Please enter a valid integer' } });
-        };
-
-        const renderYearField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { pattern: { value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)' } });
-        };
-
-        const renderDoubleField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { number: true, pattern: { value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number' } });
-        };
-
-        const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, { pattern: { value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)' } });
-        };
-
-        const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            return renderAvField(name, displayName, value, error, readOnly, required, highlighted,
-                'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'
-            );
-        };
-
-        const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            let priorityError = null;
-            if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
-            }
-
-            let ref;
-            if (this.fields[name]) {
-                ref = this.fields[name];
-
-            } else {
-                this.fields[name] = ref = React.createRef();
-            }
-
-            let options = [{ server: null, value: 1, label: 'Select...', display: null },
-            { server: false, value: 2, label: 'No', display: 'No' },
-            { server: true, value: 3, label: 'Yes', display: 'Yes' }];
-            const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
-
-            let handleOptionsChange = (option) => {
-                ref.current.handleChange(option.display);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            return renderFieldTemplate(name, displayName, val.display, error, readOnly, required, highlighted, null, ref, (
-                <EditableBaseComponent
-                    ref={ref}
-                    value={options.find((opt) => opt.server === value).display}
-                    priorityDisplay={priorityError}
-                    name={name}
-                    disabled={readOnly}
-                    displayName={displayName}
-                    validate={() => { }}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({ display }) => display == value).server, cancel)}
-                    helperComponent={<Select
-                        name={name}
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={options}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
-                />
-            ));
-        };
-
-        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            let priorityError = null;
-            if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
-            }
-
-            let ref;
-            if (this.fields[name]) {
-                ref = this.fields[name];
-
-            } else {
-                this.fields[name] = ref = React.createRef();
-            }
-
-            let options = [];
-            let selectedVal = ref.current ? ref.current.state.value : value;
-            let val;
-            if (this.props.selectValues && this.props.selectValues[name]) {
-                options = this.props.selectValues[name];
-            }
-
-            let onCancel = () => {
-                selectedVal = cloneDeep(value);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            options = options.filter((rec) => (rec.value)).map(rec => {
-                return {
-                    ...rec,
-                    label: rec.label || rec.value,
-                    aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
-                };
-            });
-
-            if (options.length > 0 && selectedVal) {
-                val = options.find((opt) => opt.value === selectedVal);
-                if (!required) {
-                    options.unshift({ value: '', label: value ? 'Select...' : '' });
-                }
-            }
-
-            let handleOptionsChange = (option) => {
-                ref.current.handleChange(option.value ? option.value : null);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
-                <EditableBaseComponent
-                    ref={ref}
-                    value={value}
-                    priorityDisplay={priorityError}
-                    name={name}
-                    disabled={readOnly}
-                    displayName={displayName}
-                    validate={() => { }}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
-                    onCancel={onCancel}
-                    helperComponent={<Select
-                        name={name}
-                        isSearchable
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={options}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
-                />
-            ));
-        };
-
-        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
-            // value = typeof value === 'object' ? value.name : value;
-            let priorityError = null;
-            if (error && !name.includes('affiliate')) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
-            }
-
-            let ref;
-            if (this.fields[name]) {
-                ref = this.fields[name];
-
-            } else {
-                this.fields[name] = ref = React.createRef();
-            }
-
-            let options = [];
-            let selectedVal = ref.current ? ref.current.state.value : value;
-            let val;
-            if (this.props.selectValues && this.props.selectValues[name]) {
-                options = this.props.selectValues[name];
-            }
-
-            //fields with enpoints (these have ids)
-            const filterKeys = Object.keys(this.state.flatRight).filter((key) => this.props.availsMapping.mappings.find((x) => x.javaVariableName === key).configEndpoint);
-            let filters = filterKeys.map((key) => {
-                if (this.state.flatRight[key] && this.props.selectValues[key]) {
-                    const filt = (Array.isArray(this.state.flatRight[key]) ? this.state.flatRight[key] : [this.state.flatRight[key]]).map(val => {
-                        const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
-                        return candidates.length ? candidates : null;
-                    }).filter(x => x).flat();
-                    return filt.length ? filt : null;
-                }
-            }).filter(x => x);//.filter(x => (Array.isArray(x) ? x.length : x));
-
-            let filteredOptions = options;
-            filters.map(filter => {
-                const fieldName = filter[0].type + 'Id';
-                const allowedOptions = filter.map(({ id }) => id);
-                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
-            });
-
-            const allOptions = [
-                {
-                    label: 'Select All',
-                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => {
-                        return {
-                            ...rec,
-                            label: rec.label || rec.value,
-                            aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
-                        };
-                    })
-                }
-            ];
-
-            if (allOptions[0].options && allOptions[0].options.length > 0 && selectedVal && Array.isArray(selectedVal)) {
-                val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
-            }
-
-            let onCancel = () => {
-                selectedVal = cloneDeep(value);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            let handleOptionsChange = (selectedOptions) => {
-                const selVal = selectedOptions.map(({ value }) => value);
-                ref.current.handleChange(selVal ? selVal : null);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
-                <EditableBaseComponent
-                    ref={ref}
-                    value={value}
-                    priorityDisplay={priorityError}
-                    name={name}
-                    disabled={readOnly}
-                    displayName={displayName}
-                    validate={() => { }}
-                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
-                    onCancel={onCancel}
-                    helperComponent={<ReactMultiSelectCheckboxes
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
-                            if (value && value.length > 0) {
-                                return (
-                                    <div
-                                        style={{ width: '100%' }}
-                                    >
-                                        <div
-                                            style={{ maxWidth: '90%', float: 'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
-                                        >
-                                            {value.map(({ value }) => value).join(', ')}
-                                        </div>
-                                        <div
-                                            style={{ width: '10%', float: 'left', paddingLeft: '5px' }}
-                                        >
-                                            {' (' + value.length + ' selected)'}
-                                        </div>
-                                    </div>
-                                );
-                            }
-                            return placeholderButtonLabel;
-                        }}
-                        options={allOptions}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
-                />
-            ));
         };
 
         const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
@@ -833,158 +313,73 @@ class RightDetails extends React.Component {
 
             const addTerritory = (items) => {
                 // TODO: don't mutate, move to state
-                 selectedVal = items;
-                 ref.current.handleChange(items);
+                selectedVal = items;
+                this.update(name, items, this.cancel);
              };
 
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
-                <NexusCustomItemizedField
-                    name={name}
-                    items={selectedVal}
-                    onSubmit={items => addTerritory(items)}
-                    form={(props) => (
-                        <RightTerritoryForm
-                            data={value}
-                            options={options}
-                            {...props}
+                <InlineEdit
+                    onConfirm={() => {}}
+                    editView={() => (
+                        <NexusCustomItemizedField
+                            name={name}
+                            items={selectedVal}
+                            onSubmit={items => addTerritory(items)}
+                            form={(props) => (
+                                <RightTerritoryForm
+                                    data={value}
+                                    options={options}
+                                    {...props}
+                                />
+                            )}
                         />
                     )}
+                    readView={() => <div>Placeholder</div> /* TODO: Use AtlasKit Tags here*/}
+                    keepEditViewOpenOnBlur
+                    readViewFitContainerWidth
                 />
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, error, readOnly, required, highlighted) => {
-            let ref;
-            let priorityError = null;
-            if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
-            }
-
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
-                <EditableDatePicker
-                    ref={ref}
-                    showTime={showTime}
-                    value={value}
-                    priorityDisplay={priorityError}
-                    name={name}
-                    disabled={readOnly}
-                    displayName={displayName}
-                    validate={(date) => {
-                        if (!date && required) {
-                            return 'Mandatory Field. Date cannot be empty';
-                        }
-                        const rangeError = rangeValidation(name, displayName, date, this.state.flatRight);
-                        if (rangeError) return rangeError;
-                        return this.extraValidation(name, displayName, date, this.state.flatRight);
-                    }}
-                    onChange={(date, cancel) => this.handleEditableSubmit(name, date, cancel)}
-                />
-            ));
+        const fieldMapping = (fieldType, jvName, displayName, required, value) => {
+            const fieldMap = {
+                string: null,
+                integer: null,
+                year: null,
+                double: null,
+                select: null,
+                multiselect: null,
+                duration: null,
+                time: null,
+                localdate: null,
+                date: null,
+                boolean: null,
+                territoryType: renderTerritoryField(
+                    jvName,
+                    displayName,
+                    this.state.territory,
+                    // Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')),
+                    // readOnly,
+                    required,
+                    value,
+                ),
+            };
+            return fieldMap[fieldType];
         };
 
-        const renderFields = [];
+        const {mappings = []} = this.props.availsMapping || {};
 
-        if (this.state.flatRight && this.props.availsMapping) {
-            this.props.availsMapping.mappings.map((mapping) => {
-                if (mapping.enableEdit) {
-                    let error = null;
-                    // TODO: write this from scratch
-                    if (this.state.right && this.state.right.validationErrors) {
-                        this.state.right.validationErrors.forEach(e => {
-                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) {
-                                error = e.message;
-                                if (e.sourceDetails) {
-                                    if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
-                                    if (e.sourceDetails.fileName) {
-                                        error += ', in file ' + e.sourceDetails.fileName
-                                            + ', row number ' + e.sourceDetails.rowId
-                                            + ', column ' + e.sourceDetails.originalFieldName;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    const readOnly = cannotUpdate || mapping.readOnly;
-
-                    const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
-
-                    const required = mapping.required;
-                    let highlighted = false;
-                    if (this.state.right && this.state.right.highlightedFields) {
-                        highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
-                    }
-
-                    const {right = {}} = this.state;
-                    const {validationErrors} = right || {};
-
-                    switch (mapping.dataType) {
-                        case 'string': renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'year': renderFields.push(renderYearField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'double': renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'multiselect':
-                            if (mapping.javaVariableName === 'affiliate') {
-                                renderFields.push(renderMultiSelectField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    this.state.affiliates,
-                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')),
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                ));
-                                break;
-                            } else if (mapping.javaVariableName === 'affiliateExclude') {
-                                renderFields.push(renderMultiSelectField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    this.state.affiliatesExclude,
-                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')),
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                ));
-                                break;
-                            }
-                            renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'duration': renderFields.push(renderDurationField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                             break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, value ? value.toString().substr(0, 10) : value, error, readOnly, required, highlighted));
-                             break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
-                            break;
-                        case 'territoryType': renderFields.push(
-                             renderTerritoryField(
-                                 mapping.javaVariableName,
-                                 mapping.displayName,
-                                 this.state.territory,
-                                 Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')),
-                                 readOnly,
-                                 required,
-                                 highlighted
-                            ));
-                            break;
-                        default:
-                            console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName);
-                    }
+        const renderFields = mappings.map((mapping) => {
+            if (mapping.enableEdit && !mapping.readOnly) {
+                let required = mapping.required;
+                const value = this.right ? this.right[mapping.javaVariableName] : '';
+                const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
+                if (cannotCreate) {
+                    return;
                 }
-            });
-        }
+                return fieldMapping(mapping.dataType, mapping.javaVariableName, mapping.displayName, required, value);
+            }
+        });
 
         return (
             <div style={{ position: 'relative' }}>
