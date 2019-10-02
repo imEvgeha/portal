@@ -22,6 +22,7 @@ import {
   SERIES,
   toPrettyContentTypeIfExist
 } from '../../../../constants/metadata/contentType';
+import constants from '../../MetadataConstants';
 
 const mapStateToProps = state => {
   return {
@@ -83,7 +84,7 @@ class TitleEditMode extends Component {
                     onChange={this.props.handleOnChangeEdit}
                     validate={{
                       required: { errorMessage: 'Field cannot be empty!' },
-                      maxLength: { value: 200 }
+                      maxLength: { value: constants.maxTitleLength }
                     }}
                   />
                 </Col>
@@ -138,7 +139,7 @@ class TitleEditMode extends Component {
                                   value: contentType === EPISODE.apiName || contentType === SEASON.apiName ? true : false,
                                   errorMessage: 'Field cannot be empty!'
                                 },
-                                maxLength: { value: 3 }
+                                maxLength: { value: constants.maxSeasonLength }
                               }}
                             />
                           </FormGroup>
@@ -168,7 +169,7 @@ class TitleEditMode extends Component {
                                       value: contentType === EPISODE.apiName ? true : false,
                                       errorMessage: 'Field cannot be empty!'
                                     },
-                                    maxLength: { value: 3 }
+                                    maxLength: { value: constants.maxEpisodeLength }
                                   }}
                                 />
                               </FormGroup>
@@ -208,7 +209,7 @@ class TitleEditMode extends Component {
                                     value={totalNumberOfEpisodes}
                                     placeholder='Episodes'
                                     validate={{
-                                      max: { value: 999, errorMessage: 'Please enter a valid episode number!' },
+                                      max: { value: constants.maxNumberOfEpisodes, errorMessage: 'Please enter a valid episode number!' },
                                       pattern: {
                                         value: '^[0-9]+$',
                                         errorMessage: 'Please enter a number!'
@@ -258,7 +259,7 @@ class TitleEditMode extends Component {
                             onChange={e => this.props.handleOnChangeEdit(e)}
                             errorMessage="Please enter a valid season number!"
                             validate={{
-                              maxLength: { value: 3 }
+                              maxLength: { value: constants.maxSeasonsLength }
                             }}
                           />
                         </Col>
@@ -281,8 +282,8 @@ class TitleEditMode extends Component {
                         placeholder="hh:mm:ss"
                         validate={{
                           pattern: { value: '^$|^(([01][0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!' },
-                          maxLength: { value: 8 },
-                          minLength: { value: 8 }
+                          maxLength: { value: constants.maxDurationLength },
+                          minLength: { value: constants.minDurationLength }
                         }}
                       />
                     </Col>
@@ -425,8 +426,8 @@ class TitleEditMode extends Component {
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },
-                      minLength: { value: 4 },
-                      maxLength: { value: 4 }
+                      minLength: { value: constants.minReleaseYearLength },
+                      maxLength: { value: constants.maxReleaseYearLength }
                     }}
                     placeholder='Enter Release Year'
                     value={releaseYear ? releaseYear : ''}
