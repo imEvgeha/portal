@@ -2,7 +2,8 @@ import {call, put, all, take, takeEvery} from 'redux-saga/effects';
 import moment from 'moment';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
-import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
+import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/createLoadingCellRenderer';
+import {rightsService} from '../../containers/avail/service/RightsService';
 
 export function* createRightMatchingColumnDefs({payload}) {
     try {
@@ -91,8 +92,32 @@ function createColumnDefs(payload) {
     return result;
 }
 
+export function* fetchFocusedRight({payload}, requestMethod) {
+    try {
+        yield put({
+            type: actionTypes.FETCH_FOCUSED_RIGHT_REQUEST,
+            payload: {}
+        });
+
+        const response = take(requestMethod, payload);
+        const {data} = response;
+        yield put({
+            type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
+            payload: data,
+        });
+
+    } catch (error) {
+        yield put({
+            type: actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
+            payload: error,
+            error: true,
+        });
+    }
+}
+
 export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
+        takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
     ]);
 }
