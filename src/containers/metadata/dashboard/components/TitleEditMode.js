@@ -84,7 +84,7 @@ class TitleEditMode extends Component {
                     onChange={this.props.handleOnChangeEdit}
                     validate={{
                       required: { errorMessage: 'Field cannot be empty!' },
-                      maxLength: { value: constants.maxTitleLength }
+                      maxLength: { value: constants.MAX_TITLE_LENGTH }
                     }}
                   />
                 </Col>
@@ -139,7 +139,7 @@ class TitleEditMode extends Component {
                                   value: contentType === EPISODE.apiName || contentType === SEASON.apiName ? true : false,
                                   errorMessage: 'Field cannot be empty!'
                                 },
-                                maxLength: { value: constants.maxSeasonLength }
+                                maxLength: { value: constants.MAX_SEASON_LENGTH }
                               }}
                             />
                           </FormGroup>
@@ -169,7 +169,7 @@ class TitleEditMode extends Component {
                                       value: contentType === EPISODE.apiName ? true : false,
                                       errorMessage: 'Field cannot be empty!'
                                     },
-                                    maxLength: { value: constants.maxEpisodeLength }
+                                    maxLength: { value: constants.MAX_EPISODE_LENGTH }
                                   }}
                                 />
                               </FormGroup>
@@ -209,7 +209,7 @@ class TitleEditMode extends Component {
                                     value={totalNumberOfEpisodes}
                                     placeholder='Episodes'
                                     validate={{
-                                      max: { value: constants.maxNumberOfEpisodes, errorMessage: 'Please enter a valid episode number!' },
+                                      max: { value: constants.MAX_NUMBER_OF_EPISODES, errorMessage: 'Please enter a valid episode number!' },
                                       pattern: {
                                         value: '^[0-9]+$',
                                         errorMessage: 'Please enter a number!'
@@ -259,7 +259,7 @@ class TitleEditMode extends Component {
                             onChange={e => this.props.handleOnChangeEdit(e)}
                             errorMessage="Please enter a valid season number!"
                             validate={{
-                              maxLength: { value: constants.maxSeasonsLength }
+                              maxLength: { value: constants.MAX_SEASONS_LENGTH }
                             }}
                           />
                         </Col>
@@ -282,8 +282,8 @@ class TitleEditMode extends Component {
                         placeholder="hh:mm:ss"
                         validate={{
                           pattern: { value: '^$|^(([01][0-9])|(2[0-3])):[0-5][0-9]:[0-5][0-9]$', errorMessage: 'Please enter a valid duration format (hh:mm:ss)!' },
-                          maxLength: { value: constants.maxDurationLength },
-                          minLength: { value: constants.minDurationLength }
+                          maxLength: { value: constants.MAX_DURATION_LENGTH },
+                          minLength: { value: constants.MIN_DURATION_LENGTH }
                         }}
                       />
                     </Col>
@@ -426,8 +426,8 @@ class TitleEditMode extends Component {
                         errorMessage: 'Field cannot be empty!'
                       },
                       pattern: { value: '^[0-9]+$' },
-                      minLength: { value: constants.minReleaseYearLength },
-                      maxLength: { value: constants.maxReleaseYearLength }
+                      minLength: { value: constants.MIN_RELEASE_YEAR_LENGTH },
+                      maxLength: { value: constants.MAX_RELEASE_YEAR_LENGTH }
                     }}
                     placeholder='Enter Release Year'
                     value={releaseYear ? releaseYear : ''}
