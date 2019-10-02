@@ -1,0 +1,16 @@
+.itemized-field-wrapper {
+    padding: 5px;
+    border: 1px solid hsl(0,0%,80%);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    justify-content: flex-end;
+}
+
+.itemized-field-content {
+    grid-column: 1;
+}
+
+.itemized-field-controls {
+    grid-column: -1;
+}
