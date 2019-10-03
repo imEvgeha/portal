@@ -96,6 +96,7 @@ class EditorialMetadata extends Component {
                                     <Row>
                                         <Col>
                                             <EditorialMetadataCreateTab
+                                                handleAddEditorialCharacterName={this.props.handleAddEditorialCharacterName}
                                                 validSubmit={this.props.validSubmit}
                                                 areFieldsRequired={this.props.areFieldsRequired}
                                                 handleChange={this.props.handleChange}
@@ -115,6 +116,7 @@ class EditorialMetadata extends Component {
                                                 <Row>
                                                     <Col>
                                                         <EditorialMetadataEditMode
+                                                            handleAddEditorialCharacterNameEdit={this.props.handleAddEditorialCharacterNameEdit}
                                                             titleContentType={this.props.titleContentType}
                                                             validSubmit={this.props.validSubmit}
                                                             handleChange={this.props.handleEditChange}
@@ -156,7 +158,9 @@ EditorialMetadata.propTypes = {
     handleGenreEditChange: PropTypes.func.isRequired,
     configLanguage: PropTypes.object,
     handleEditorialCastCrewCreate: PropTypes.func,
-    handleEditorialCastCrew: PropTypes.func
+    handleEditorialCastCrew: PropTypes.func,
+    handleAddEditorialCharacterName: PropTypes.func,
+    handleAddEditorialCharacterNameEdit: PropTypes.func
 };
 
 

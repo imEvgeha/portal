@@ -459,6 +459,7 @@ class TitleEditMode extends Component {
             </Col>
           </Row>
           <CoreMetadataEditMode
+              handleAddCharacterName={this.props.handleAddCharacterName}
               titleRankingActiveTab={this.props.titleRankingActiveTab}
               toggleTitleRating={this.props.toggleTitleRating}
               addTitleRatingTab={this.props.addTitleRatingTab}
@@ -510,7 +511,9 @@ TitleEditMode.propTypes = {
   handleAdvisoryCodeChange: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
   areRatingFieldsRequired: PropTypes.bool,
-  castAndCrewReorder: PropTypes.func
+  castAndCrewReorder: PropTypes.func,
+
+  handleAddCharacterName: PropTypes.func
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

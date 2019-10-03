@@ -90,6 +90,7 @@ class CoreMetadataEditMode extends Component {
         <Row>
           <Col>
           <PersonList
+              handleAddCharacterName={this.props.handleAddCharacterName}
               personLabel={CAST_LABEL}
               personHtmlFor={CAST_HTML_FOR}
               personListLabel={CAST_LIST_LABEL}
@@ -100,7 +101,10 @@ class CoreMetadataEditMode extends Component {
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
+              showPersonType={true}
+              isMultiColumn={true}
               personsLimit={CAST_LIMIT}
+              getFormatTypeName={getFormatTypeName}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
             />
           </Col>
@@ -118,6 +122,7 @@ class CoreMetadataEditMode extends Component {
               addPerson={this.props.addCastCrew}
               getFormatTypeName={getFormatTypeName}
               showPersonType={true}
+              isMultiColumn={false}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CREW)}
             />
           </Col>
@@ -457,7 +462,9 @@ CoreMetadataEditMode.propTypes = {
   ratingObjectForCreate: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
   areRatingFieldsRequired: PropTypes.bool,
-  castAndCrewReorder: PropTypes.func
+  castAndCrewReorder: PropTypes.func,
+
+  handleAddCharacterName: PropTypes.func
 };
 
 

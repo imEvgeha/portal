@@ -424,7 +424,11 @@ class EditorialMetadataEditMode extends Component {
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                                 personsLimit={CAST_LIMIT}
                                 getFormatTypeName={getFormatTypeName}
-                                showPersonType={true}
+                                showPersonType={true}                                
+                                isMultiColumn={true}
+                                parentId={this.props.data.id}
+                                handleAddCharacterName={this.props.handleAddEditorialCharacterNameEdit}
+                                data={this.props.data}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CAST, castCrew)}
                             />
                         </Col>
@@ -442,6 +446,7 @@ class EditorialMetadataEditMode extends Component {
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                                 getFormatTypeName={getFormatTypeName}
                                 showPersonType={true}
+                                isMultiColumn={false}
                                 onReOrder={(newArray) => this.castAndCrewReorder(newArray, CREW, castCrew)}
                             />
                         </Col>
@@ -518,7 +523,8 @@ EditorialMetadataEditMode.propTypes = {
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
     configGenre: PropTypes.object,
-    handleEditorialCastCrew: PropTypes.func
+    handleEditorialCastCrew: PropTypes.func,
+    handleAddEditorialCharacterNameEdit: PropTypes.func
 };
 
 
