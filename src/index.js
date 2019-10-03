@@ -1,11 +1,13 @@
+import { IntlProvider } from 'react-intl';
+import config from 'react-global-configuration';
+import axios from 'axios';
+import {createBrowserHistory} from 'history';
+
+import {defaultConfiguration} from './config';
 import './bootstrap.scss';
 import './WeAre138.scss';
 import './global.scss';
-import axios from 'axios';
-import config from 'react-global-configuration';
-import {defaultConfiguration} from './config';
-import { IntlProvider } from 'react-intl';
-import {createBrowserHistory} from 'history';
+import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -54,7 +56,9 @@ const app = (
     <Provider store={store}>
         <IntlProvider locale="en">
             {/*<ConnectedRouter history={history}>*/}
+            <NexusModalProvider>
                 <App />
+            </NexusModalProvider>
             {/*</ConnectedRouter>*/}
         </IntlProvider>
     </Provider>
