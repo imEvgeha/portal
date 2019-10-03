@@ -11,6 +11,11 @@ export const getAvailsMapping = (state) => {
     return root && root.availsMapping;
 };
 
+export const getFocusedRight = (state) => {
+    const {rightMatching} = state;
+    return rightMatching && rightMatching.focusedRight;
+};
+
 export const createRightMatchingColumnDefsSelector = () => createSelector(
     getColumnDefs,
     columnDefs => columnDefs,
@@ -22,4 +27,9 @@ export const createAvailsMappingSelector = () => createSelector(
         return availsMapping && availsMapping.mapping;
     }
 );
+
+export const createFocusedRightSelector = () => createSelector(
+    getFocusedRight,
+    focusedRight => focusedRight,
+)
 

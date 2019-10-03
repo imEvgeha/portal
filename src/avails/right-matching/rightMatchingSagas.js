@@ -92,18 +92,19 @@ function createColumnDefs(payload) {
     return result;
 }
 
-export function* fetchFocusedRight({payload}, requestMethod) {
+export function* fetchFocusedRight(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_REQUEST,
             payload: {}
         });
 
-        const response = take(requestMethod, payload);
-        const {data} = response;
+        const response = yield call(requestMethod, payload);
+        const focusedRight = response.data;
+
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
-            payload: data,
+            payload: {focusedRight},
         });
 
     } catch (error) {
