@@ -112,10 +112,8 @@ class RightDetails extends React.Component {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
-                                el.isValid = false;
                                 el.errors = territoryErrors.filter(error => error.index === index);
                             } else {
-                                el.isValid = true;
                                 el.name = el.country;
                             }
                             el.id = index;
@@ -133,7 +131,6 @@ class RightDetails extends React.Component {
 
                         const affiliateList = (Array.isArray(affiliate) && affiliate.map((el, i) => {
                             return {
-                                isValid:true,
                                 name: el,
                                 id: i,
                             };
@@ -144,7 +141,6 @@ class RightDetails extends React.Component {
                             ...affiliateErrors.map((el, index) => {
                                 let obj = {};
                                 obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
-                                obj.isValid = false;
                                 obj.errors = affiliateErrors[index];
                                 obj.id = el.index;
                                 return obj;
@@ -162,7 +158,6 @@ class RightDetails extends React.Component {
 
                         const affiliateiExcludeList = (Array.isArray(affiliateExclude) && affiliateExclude.map((el, i) => {
                             return {
-                                isValid:true,
                                 name: el,
                                 id: i,
                             };
@@ -173,7 +168,6 @@ class RightDetails extends React.Component {
                             ...affiliateExcludeErrors.map((error, index) => {
                                 let obj = {};
                                 obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
-                                obj.isValid = false;
                                 obj.errors = affiliateExcludeErrors[index];
                                 obj.id = error.index;
                                 return obj;
@@ -223,7 +217,6 @@ class RightDetails extends React.Component {
             onError();
             return;
         }
-        console.log(value);
         let updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
@@ -337,6 +330,7 @@ class RightDetails extends React.Component {
                     readView={() => <div>Placeholder</div> /* TODO: Use AtlasKit Tags here*/}
                     keepEditViewOpenOnBlur
                     readViewFitContainerWidth
+                    hideActionButtons
                 />
             ));
         };

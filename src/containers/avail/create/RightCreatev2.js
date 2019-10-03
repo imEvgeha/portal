@@ -257,7 +257,6 @@ class RightCreate extends React.Component {
 
             return renderFieldTemplate(name, displayName, required, null, (
                 <NexusCustomItemizedField
-                    name={name}
                     items={this.right['territory']}
                     onSubmit={items => this.handleArrayPush(items, 'territory')}
                     form={(props) => (

@@ -58,6 +58,9 @@ export default class App extends React.Component {
                             <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
                             <Route exact path="/avails/select_rights_planning" component={canRender(SelectRightsPlanning, 'update', 'Avail')}/>
+
+                            <Route exact path="/avails/rights/create/v2" component={canRender(RightCreatev2, 'create', 'Avail')}/>
+                            <Route exact path="/avails/rights/:id/v2" component={canRender(RightDetailsv2, 'read', 'Avail')}/>
                         </Switch>
                         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
                         <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
@@ -77,6 +80,8 @@ export default class App extends React.Component {
 
 import {Component} from 'react';
 import t from 'prop-types';
+import RightDetailsv2 from "./avail/details/RightDetailsv2";
+import RightCreatev2 from "./avail/create/RightCreatev2";
 class UnderConstruction extends Component {
     static propTypes = {
         match: t.object
