@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
 import config from 'react-global-configuration';
 import InlineEdit from '@atlaskit/inline-edit';
 // TODO: move to AtlasKit
@@ -11,15 +9,13 @@ import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
-import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../ability';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
-import {getDeepValue, momentToISO} from '../../../util/Common';
+import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryFormv2';
 import NexusCustomItemizedField from '../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField';
 

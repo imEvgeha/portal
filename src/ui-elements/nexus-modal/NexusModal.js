@@ -5,6 +5,7 @@ export const NexusModalContext = createContext({});
 
 export const NexusModalConsumer = NexusModalContext.Consumer;
 
+// eslint-disable-next-line react/prop-types
 export const NexusModalProvider = ({children}) => {
     const [content, setContent] = useState(null);
     const [title, setTitle] = useState('');

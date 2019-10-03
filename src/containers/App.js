@@ -11,6 +11,8 @@ import Navbar from './Navbar';
 import RightDashboardContainer  from './avail/dashboard/DashboardContainer';
 import RightDetails  from './avail/details/RightDetails';
 import RightCreate  from './avail/create/RightCreate';
+import RightDetailsv2 from './avail/details/RightDetailsv2';
+import RightCreatev2 from './avail/create/RightCreatev2';
 import RightsCreateFromAttachment  from './avail/create/RightsCreateFromAttachment';
 import SelectRightsPlanning  from './avail/DOP/SelectRightsPlanning';
 import FixRights from './avail/DOP/FixRights';
@@ -80,8 +82,6 @@ export default class App extends React.Component {
 
 import {Component} from 'react';
 import t from 'prop-types';
-import RightDetailsv2 from "./avail/details/RightDetailsv2";
-import RightCreatev2 from "./avail/create/RightCreatev2";
 class UnderConstruction extends Component {
     static propTypes = {
         match: t.object
