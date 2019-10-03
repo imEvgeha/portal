@@ -14096,6 +14096,11 @@ lodash.get@^4.4.2:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
+lodash.identity@^3.0.0:
+  version "3.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.identity/-/lodash.identity-3.0.0.tgz#ad7bc6a4e647d79c972e1b80feef7af156267876"
+  integrity sha1-rXvGpOZH15yXLhuA/u968VYmeHY=
+
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -14154,6 +14159,11 @@ lodash.pick@^4.4.0:
   version "4.4.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
   integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
+
+lodash.pickby@^4.6.0:
+  version "4.6.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.pickby/-/lodash.pickby-4.6.0.tgz#7dea21d8c18d7703a27c704c15d3b84a67e33aff"
+  integrity sha1-feoh2MGNdwOifHBMFdO4SmfjOv8=
 
 lodash.restparam@^3.0.0:
   version "3.6.1"
