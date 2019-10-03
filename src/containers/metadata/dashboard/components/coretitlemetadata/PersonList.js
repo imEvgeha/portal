@@ -25,10 +25,9 @@ from './CustomComponents';
 
 class PersonList extends React.Component {
     static defaultProps = {
-        personsLimit: Number.MAX_SAFE_INTEGER,
         showPersonType: false,
         isMultiColumn: false
-    }
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -48,19 +47,11 @@ class PersonList extends React.Component {
     validateAndAddPerson = (personJSON) => {
         let person = JSON.parse(personJSON);
         let isValid = this.isSelectedPersonValid(person);
-        const length = this.props.persons.length;
-        if (isValid && length < this.props.personsLimit) {
+        if (isValid) {
             this.props.addPerson(person);
             this.setState({
                 searchPersonText: ''
             });
-        } else {
-            if (isValid) {
-                this.props.addPerson(person);
-                this.setState({
-                    searchPersonText: ''
-                });
-            }
         }
         this.setState({
             isPersonValid: isValid
@@ -128,8 +119,7 @@ class PersonList extends React.Component {
                                 value={this.state.searchPersonText}
                                 onInputChange={this.handleInputChangePerson}
                                 onSelection={this.handleOnSelectPerson}
-                                disableInput={this.props.persons.length >= this.props.personsLimit}
-                                placeholder={this.props.persons.length >= this.props.personsLimit ? `You can add maximum ${this.props.personsLimit} ${this.props.type.toString().toLowerCase()} members` : this.props.personLabel}
+                                placeholder={this.props.personLabel}
                             />
                         </div>
                         {!this.state.isPersonValid && (<span style={{ color: '#e74c3c', fontWeight: 'bold' }}>Person is already exists!</span>)}
@@ -235,7 +225,6 @@ PersonList.propTypes = {
     personHtmlFor: PropTypes.string,
     type: PropTypes.string,
     getFormatTypeName: PropTypes.func,
-    personsLimit: PropTypes.number,
     showPersonType: PropTypes.bool,
     addPerson: PropTypes.func,
     onReOrder: PropTypes.func,

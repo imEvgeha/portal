@@ -23,7 +23,6 @@ import PersonList from '../coretitlemetadata/PersonList'; import {
     CREW_HTML_FOR,
     CAST_HEADER,
     CREW_HEADER,
-    CAST_LIMIT
 } from '../../../../../constants/metadata/constant-variables';
 import {
     CAST,
@@ -422,7 +421,6 @@ class EditorialMetadataEditMode extends Component {
                                 removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
-                                personsLimit={CAST_LIMIT}
                                 getFormatTypeName={getFormatTypeName}
                                 showPersonType={true}                                
                                 isMultiColumn={true}
