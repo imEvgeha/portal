@@ -1,12 +1,11 @@
-import {getDeepValue, isObject} from '../../../util/Common';
+import {getDeepValue, isObject} from '../../../../util/Common';
 import './createLoadingCellRenderer.scss';
-// import loadingGif from '../../img/loading.gif';
+import loadingGif from '../../../../img/loading.gif'; // we should replace it inside assets
 
 export default function createLoadingCellRenderer(params) {
     const {data, colDef, valueFormatted} = params;
-    if (!data && colDef !== 'actions') {
-        // return <img src={loadingGif} alt='loadingSpinner' />;
-        return null;
+    if (!data) {
+        return `<img src=${loadingGif} alt='loadingSpinner' />`;
     }
     let value = getDeepValue(data, colDef.field);
     if (isObject(value)) {

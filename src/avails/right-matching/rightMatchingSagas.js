@@ -2,7 +2,7 @@ import {call, put, all, take, takeEvery} from 'redux-saga/effects';
 import moment from 'moment';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
-import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/createLoadingCellRenderer';
+import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 
 export function* createRightMatchingColumnDefs({payload}) {
     try {

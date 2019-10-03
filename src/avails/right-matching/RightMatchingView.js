@@ -9,12 +9,12 @@ import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfinite
 import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from './rightMatchingActions';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/CustomActionsCellRenderer';
+import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
-const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, location}) => {
+const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, match}) => {
     const [totalCount, setTotalCount] = useState(0);
     useEffect(() => {
         if (!columnDefs.length) {
@@ -26,15 +26,16 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
         history.push(`${location.pathname}/${rightId}`);
     };
 
-    const getTotalCount = totalRightsForMatching => setTotalCount(totalRightsForMatching);
+    const createCellRenderer = ({data}) => { // eslint-disable-line
+        const {id} = data || {};
+        return (
+            <CustomActionsCellRenderer id={id}>
+                <Button onClick={() => onFocusButtonClick(id)}>Focus</Button>
+            </CustomActionsCellRenderer>
+        );
+    };
 
-    const createCellRenderer = ({data}) => ( // eslint-disable-line
-        <CustomActionsCellRenderer id={data && data.id}>
-            <Button onClick={() => onFocusButtonClick(data.id)}>Focus</Button>
-        </CustomActionsCellRenderer>
-    );
-
-    const aditionalColumnDef = {
+    const additionalColumnDef = {
         field: 'buttons',
         headerName: 'Actions',
         colId: 'actions',
@@ -48,7 +49,10 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
         sortable: false,
     };
 
-    const updatedColumnDefs = columnDefs.length ? [aditionalColumnDef, ...columnDefs]: columnDefs;
+    const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs]: columnDefs;
+
+    const {params = {}} = match;
+    const {availHistoryIds} = params || {};
 
     return (
         <div className="nexus-c-right-matching-view">
@@ -57,13 +61,8 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
             </NexusTitle> 
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}
-                context={{
-                    onFocusButtonClick,
-                    getTotalCount,
-                }}
-                deltaRowDataMode={true}
-                getRowNodeId={data => data.id}
-                suppressAnimationFrame={true}
+                setTotalCount={setTotalCount}
+                params={{availHistoryIds}}
             />
         </div>
     );
@@ -74,13 +73,13 @@ RightMatchingView.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
     history: PropTypes.object,
-    location: PropTypes.object,
+    match: PropTypes.object,
 };
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
     mapping: [],
-    location: {},
+    match: {},
 };
 
 const createMapStateToProps = () => {

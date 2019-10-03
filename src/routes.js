@@ -16,7 +16,6 @@ import Contract from './containers/contracts/search/Contract.jsx';
 import Media from './containers/media/search/Media.js';
 import Settings from './containers/settings/Settings';
 import RightMatchingView from './avails/right-matching/RightMatchingView';
-import UnderConstructionView from './containers/UnderConstructionView';
 import NotFound from './static-page-view/NotFound';
 import RightToMatchView from './avails/right-matching/right-to-match/RightToMatchView';
 
@@ -26,8 +25,6 @@ const routes = (
         <Route exact path="/avails" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/rights" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
-        <Route exact path="/avails/rights/select_available" component={canRender(UnderConstructionView, 'create', 'Avail')}/>
-        <Route exact path="/avails/rights/:id/match" component={canRender(UnderConstructionView, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/" component={canRender(RightDetails, 'read', 'Avail')}/>
         <Route exact path="/avails/history/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
@@ -38,9 +35,9 @@ const routes = (
         <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
+        <Route exact path="/avails/history/:availHistoryIds/right_matching" component={canRender(RightMatchingView, 'update', 'Avail')}/>
+        <Route exact path="/avails/history/:availHistoryIds/right_matching/:rightId" component={canRender(RightToMatchView, 'update', 'Avail')}/>
         <Route exact path="/avails/select_rights_planning" component={canRender(SelectRightsPlanning, 'update', 'Avail')}/>
-        <Route exact path="/avails/right_matching" component={canRender(RightMatchingView, 'update', 'Avail')}/>
-        <Route exact path="/avails/right_matching/:rightId" component={canRender(RightToMatchView, 'update', 'Avail')}/>
         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
         <Route path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
         <Route exact path="/contractprofile" component={ContractProfile} />

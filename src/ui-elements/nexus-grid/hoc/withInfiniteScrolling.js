@@ -18,7 +18,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();
             }
-            fetchData(pageNumber, pageSize)
+            fetchData(pageNumber, pageSize, props.params)
                 .then(response => {
                     const {data = {}} = response || {};
                     const {page = 0, size = 0, total = 0} = data;
@@ -27,8 +27,8 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                         if ((page + 1) * size >= total) {
                             lastRow = total;
                         }
-                        if (props.context && typeof props.context.getTotalCount === 'function') { 
-                            props.context.getTotalCount(total);
+                        if (typeof props.setTotalCount === 'function') { 
+                            props.setTotalCount(total);
                         }
                         successCallback(data.data, lastRow);
                         gridApi.hideOverlay();
@@ -54,6 +54,9 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             cacheOverflowSize,
             maxConcurrentDatasourceRequests,
             maxBlocksInCache,
+            deltaRowDataMode: true,
+            getRowNodeId: data => data.id,
+            suppressAnimationFrame: true,
         };
 
         return (

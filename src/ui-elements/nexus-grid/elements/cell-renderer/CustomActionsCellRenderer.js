@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CustomActionsCellRenderer.scss';
-import loadingGif from '../../../img/loading.gif';
+import loadingGif from '../../../../img/loading.gif';
 
 const CustomActionsCellRenderer = ({id, children}) => ( // eslint-disable-line
     <div className="nexus-c-custom-actions-cell-renderer">

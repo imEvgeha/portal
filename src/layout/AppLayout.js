@@ -8,7 +8,7 @@ import DOP from '../util/DOP';
 import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import routes from '../routes';
 
-const App = ({history}) => (
+const AppLayout = ({history}) => (
     <ConnectedRouter history={history} >
         <div className="nexus-c-app-layout">
             <IfEmbedded>
@@ -25,12 +25,12 @@ const App = ({history}) => (
      </ConnectedRouter>
 );
 
-App.propTypes = {
+AppLayout.propTypes = {
     history: PropTypes.object,
 };
 
-App.defaultProps = {
+AppLayout.defaultProps = {
     history: null,
 };
 
-export default App;
+export default AppLayout;
