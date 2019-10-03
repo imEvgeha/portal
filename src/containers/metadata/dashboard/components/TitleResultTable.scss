@@ -33,8 +33,7 @@ html {
     user-select: none !important;
 }
 
-.ag-theme-balham {
-
+.ag-theme-balham:not(.nexus-c-nexus-grid) {
     background-color: #ffffff;
     .ag-header, .ag-floating-top, .ag-body {
          background-color: #ffffff;
