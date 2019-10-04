@@ -8,14 +8,23 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
-import {createRightMatchingColumnDefs} from './rightMatchingActions';
+import {
+    cleanStoredRightMatchDataWithIds,
+    createRightMatchingColumnDefs,
+    storeRightMatchDataWithIds
+} from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
-const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, match}) => {
+const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, match, storeRightMatchDataWithIds, cleanStoredRightMatchDataWithIds}) => {
     const [totalCount, setTotalCount] = useState(0);
+
+    useEffect(() => {
+        cleanStoredRightMatchDataWithIds();
+    }, []);
+
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
@@ -63,6 +72,7 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
                 columnDefs={updatedColumnDefs}
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
+                storeRightMatchDataWithIds={storeRightMatchDataWithIds}
             />
         </div>
     );
@@ -74,6 +84,8 @@ RightMatchingView.propTypes = {
     mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
+    storeRightMatchDataWithIds: PropTypes.func,
+    cleanStoredRightMatchDataWithIds: PropTypes.func
 };
 
 RightMatchingView.defaultProps = {
@@ -93,6 +105,8 @@ const createMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
+    cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line

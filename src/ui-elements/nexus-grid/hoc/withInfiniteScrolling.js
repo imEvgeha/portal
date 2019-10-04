@@ -1,9 +1,10 @@
 import React from 'react';
+import {RIGHT_MATCHING_PAGE_SIZE} from '../../../constants/rightMatching';
 
 const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent => {
     const {
         rowBuffer = 10,
-        paginationPageSize = 100,
+        paginationPageSize = RIGHT_MATCHING_PAGE_SIZE,
         cacheOverflowSize = 2,
         rowModelType = 'infinite',
         maxConcurrentDatasourceRequests = 1,
@@ -11,6 +12,14 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
     } = infiniteProps;
 
     const ComposedComponent = props => {
+        const storeData = (page, data) => {
+            if(props.storeRightMatchDataWithIds) {
+                let pages = {};
+                pages[page] = data.data.map(e => e.id);
+                const rightMatchPageData = {pages, total: data.total};
+                props.storeRightMatchDataWithIds({ rightMatchPageData });
+            }
+        };
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback} = params || {};
             const pageSize = paginationPageSize || 100;
@@ -30,7 +39,10 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                         if (typeof props.setTotalCount === 'function') { 
                             props.setTotalCount(total);
                         }
+
                         successCallback(data.data, lastRow);
+                        storeData(pageNumber, data);
+
                         gridApi.hideOverlay();
                         return;
                     } 
