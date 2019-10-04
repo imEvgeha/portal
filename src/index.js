@@ -43,6 +43,7 @@ import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
 import * as moment from 'moment';
+import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
@@ -53,7 +54,9 @@ export const store = configureStore({}, history);
 const app = (
     <Provider store={store}>
         <IntlProvider locale="en">
-            <AppLayout history={history} />
+            <NexusModalProvider>
+                <AppLayout history={history} />
+            </NexusModalProvider>
         </IntlProvider>
     </Provider>
 );
