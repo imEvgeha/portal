@@ -79,6 +79,7 @@ class RightCreate extends React.Component {
     };
 
     handleArrayPush = (e, name) => {
+        // TODO: redundant?
         this.checkRight(name, e, true);
     };
 

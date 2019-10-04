@@ -61,6 +61,7 @@ class RightDetails extends React.Component {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
             isRightTerritoryEditFormOpen: false,
+            editedField: {},
             territoryIndex: null,
             isEdit: false,
         };
@@ -208,7 +209,10 @@ class RightDetails extends React.Component {
         return rightCopy;
     }
 
-    update(name, value, onError) {
+    update(name, onError) {
+        const {editedField = {}} = this.state;
+        const value = editedField[name] || null;
+
         if (this.state.flatRight[name] === value) {
             onError();
             return;
@@ -301,18 +305,22 @@ class RightDetails extends React.Component {
             ));
 
             const addTerritory = (items) => {
-                // TODO: don't mutate, move to state
                 selectedVal = items;
-                this.update(name, items, this.cancel);
+                this.setState((prevState) => ({
+                    editedField: {
+                        ...prevState.editedField,
+                        [name]: items
+                    }
+                }));
              };
 
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <InlineEdit
-                    onConfirm={() => {}}
+                    onConfirm={() => this.update(name, this.cancel)}
                     editView={() => (
                         <NexusCustomItemizedField
                             name={name}
-                            items={selectedVal}
+                            existingItems={selectedVal}
                             onSubmit={items => addTerritory(items)}
                             form={(props) => (
                                 <RightTerritoryForm
@@ -324,9 +332,8 @@ class RightDetails extends React.Component {
                         />
                     )}
                     readView={() => <div>Placeholder</div> /* TODO: Use AtlasKit Tags here*/}
-                    keepEditViewOpenOnBlur
                     readViewFitContainerWidth
-                    hideActionButtons
+                    defaultValue={[]}
                 />
             ));
         };

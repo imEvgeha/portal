@@ -3,8 +3,6 @@ import React, {useState, useContext, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import './NexusCustomItemizedField.scss';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {
@@ -12,24 +10,25 @@ import {
     TerritoryTag,
 } from '../../containers/avail/custom-form-components/CustomFormComponents';
 
-const PLACEHOLDER = 'Press \'+\' to add a new item...';
+const PLACEHOLDER = 'Add...';
 
 const NexusCustomItemizedField = ({
     form: Form,
-    items,
+    existingItems,
     onSubmit,
 }) => {
-    const [addedItems, setAddedItems] = useState([]);
-    const [existingItems, setExistingItems] = useState(items);
+    const [items, setItems] = useState(existingItems);
     const {setModalContent, close}= useContext(NexusModalContext);
 
-    useEffect(() => setExistingItems(items), [items]);
+    useEffect(() => setItems(existingItems), [existingItems]);
 
     const addItem = () => {
         const content = (
             <Form
                 onClose={close}
-                onSubmit={(e) => setAddedItems([...addedItems, e])}
+                onSubmit={(e) => {
+                    submitChanges(e);
+                }}
             />
         );
         setModalContent(content);
@@ -38,54 +37,32 @@ const NexusCustomItemizedField = ({
     // Filters out the item at given index
     const getFilteredItems = (arr = [], index) => arr.filter((element, i) => i !== index);
 
-    const submitChanges = () => {
-        // Merging both old and added items because old items can be changed too
-        const combinedItems = [...existingItems, ...addedItems];
+    const submitChanges = (item) => {
+        const combinedItems = [...items, item];
         onSubmit(combinedItems);
 
-        // Update existingItems and clean addedItems
-        setExistingItems(combinedItems);
-        setAddedItems([]);
+        setItems(combinedItems);
     };
-
-    const cancelChanges = () => setAddedItems([]);
 
     return (
         <div className="nexus-c-nexus-custom-itemized-field">
             <div className="nexus-c-nexus-custom-itemized-field__content">
-                {(!existingItems.length && !addedItems.length) &&
-                    PLACEHOLDER
-                }
-                {existingItems.map((item, index) => (
+                <div className="nexus-c-nexus-custom-itemized-field__clickable-text" onClick={addItem}>
+                    {!items.length &&
+                        PLACEHOLDER
+                    }
+                </div>
+                {items.map((item, index) => (
                     // TODO: Refactor using AtlasKit
                     <TerritoryTag isCreate key={index}>
                         {item.country}
-                        <RemovableButton onClick={() => setExistingItems(getFilteredItems(existingItems, index))}>
-                            x
-                        </RemovableButton>
-                    </TerritoryTag>
-                ))}
-                {addedItems.map((item, index) => (
-                    // TODO: Refactor using AtlasKit
-                    <TerritoryTag isCreate key={index}>
-                        {item.country}
-                        <RemovableButton onClick={() => setAddedItems(getFilteredItems(addedItems, index))}>
+                        <RemovableButton onClick={() => setItems(getFilteredItems(items, index))}>
                             x
                         </RemovableButton>
                     </TerritoryTag>
                 ))}
             </div>
             <div className="nexus-c-nexus-custom-itemized-field__controls">
-                {!!addedItems.length &&
-                    <>
-                        <Button appearance="subtle" onClick={submitChanges} className="button-fix">
-                            <EditorDoneIcon />
-                        </Button>
-                        <Button appearance="subtle" onClick={cancelChanges} className="button-fix">
-                            <EditorCloseIcon />
-                        </Button>
-                    </>
-                }
                 <Button onClick={addItem} className="button-fix">
                     <AddIcon />
                 </Button>
@@ -95,13 +72,13 @@ const NexusCustomItemizedField = ({
 };
 
 NexusCustomItemizedField.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object),
+    existingItems: PropTypes.arrayOf(PropTypes.object),
     form: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
     onSubmit: PropTypes.func.isRequired,
 };
 
 NexusCustomItemizedField.defaultProps = {
-    items: [],
+    existingItems: [],
 };
 
 export default NexusCustomItemizedField;
