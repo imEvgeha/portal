@@ -16,3 +16,9 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
     ); 
 };
 
+export const getRightMatchingFieldSearchCriteria = (provider) => {
+    return http.get(
+        `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria`
+    );
+};
+
