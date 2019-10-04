@@ -35,7 +35,7 @@ html {
     user-select: text !important;
 }
 
-.ag-theme-balham {
+.ag-theme-balham:not(.nexus-c-nexus-grid) {
     .ag-cell {
         padding: 0;
     }

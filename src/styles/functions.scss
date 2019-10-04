@@ -1,0 +1,52 @@
+/* Functions */
+
+// Replace first occurrence of the search string with the replacement string
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1)
+            + $replace
+            + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+// Returns the value in a map associated with a given key at any level of map nesting
+@function map-deep-get($map, $keys...) {
+    @each $key in $keys {
+        $map: map-get($map, $key);
+    }
+
+    @return $map;
+}
+
+// Sets map value at given key
+@function map-set($map, $key, $value) {
+    $new: ($key: $value);
+
+    @return map-merge($map, $new);
+}
+
+// Extends map with replacement map
+@function map-extend($map-old, $map-new, $overwrite: true) {
+    @each $key, $new-value in $map-new {
+        @if map-has-key($map-old, $key) {
+            $old-value: map-get($map-old, $key);
+
+            @if type-of($new-value) == map and type-of($old-value) == map {
+                $merged-value: map-extend($old-value, $new-value);
+                $map-old: map-set($map-old, $key, $merged-value);
+            } @else {
+                @if $overwrite {
+                    $map-old: map-set($map-old, $key, $new-value);
+                }
+            }
+        } @else {
+            $map-old: map-set($map-old, $key, $new-value);
+        }
+    }
+
+    @return $map-old;
+}

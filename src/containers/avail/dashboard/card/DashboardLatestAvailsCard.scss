@@ -9,8 +9,7 @@
         padding: 0;
     }
 
-    .ag-theme-balham {
-
+    .ag-theme-balham:not(.nexus-c-nexus-grid) {
         .ag-react-container{
             line-height: 25px !important;
         }

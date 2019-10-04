@@ -3,7 +3,6 @@ import {
     Col, 
     Row,
     ListGroup,
-    ListGroupItem,
     Card,
     CardHeader,
     CardBody, } from 'reactstrap';
@@ -14,7 +13,8 @@ import {
     getFilteredCastList,
     getFilteredCrewList, getFormatTypeName,
 } from '../../../../../constants/metadata/configAPI';
-import Lozenge from '@atlaskit/lozenge';
+import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-variables';
+import PersonListReadOnly from '../coretitlemetadata/PersonListReadOnly';
 
 class EditorialMetadataTab extends Component {
 
@@ -111,13 +111,13 @@ class EditorialMetadataTab extends Component {
                                                 {this.props.data.castCrew &&
                                                     getFilteredCastList(this.props.data.castCrew, false, true).map((cast, i) => {
                                                         return (
-                                                            <ListGroupItem key={i}>
-                                                                <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle' }} />
-                                                                <span style={{ marginLeft: '10px' }}>
-                                                                    <Lozenge appearance={'default'}>{getFormatTypeName(cast.personType)}</Lozenge>
-                                                                </span>
-                                                                <span style={{ marginLeft: '10px' }}>{cast.displayName}</span>
-                                                            </ListGroupItem>
+                                                            <PersonListReadOnly 
+                                                                key={i}
+                                                                showPersonType={true} 
+                                                                person={cast} 
+                                                                columnName={CHARACTER_NAME}
+                                                                getFormatTypeName={getFormatTypeName} 
+                                                            />
                                                         );
                                                     })}
                                             </ListGroup>
@@ -140,13 +140,12 @@ class EditorialMetadataTab extends Component {
                                             >
                                                 {this.props.data.castCrew &&
                                                     getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
-                                                        <ListGroupItem key={i}>
-                                                            <img src="https://www.hbook.com/webfiles/1562167874472/images/default-user.png" alt="Cast" style={{ marginLeft: '10px', width: '30px', height: '30px', verticalAlign: 'middle' }} />
-                                                            <span style={{ marginLeft: '10px' }}>
-                                                                <Lozenge appearance={'default'}>{getFormatTypeName(crew.personType)}</Lozenge>
-                                                            </span>
-                                                            <span style={{ marginLeft: '10px' }}>{crew.displayName}</span>
-                                                        </ListGroupItem>
+                                                        <PersonListReadOnly 
+                                                            key={i}
+                                                            showPersonType={true} 
+                                                            person={crew} 
+                                                            getFormatTypeName={getFormatTypeName} 
+                                                        />
                                                     ))}
                                             </ListGroup>
                                         </CardBody>

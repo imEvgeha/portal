@@ -1,13 +1,12 @@
-import { IntlProvider } from 'react-intl';
-import config from 'react-global-configuration';
 import axios from 'axios';
+import config from 'react-global-configuration';
+import { IntlProvider } from 'react-intl';
 import {createBrowserHistory} from 'history';
-
 import {defaultConfiguration} from './config';
-import './bootstrap.scss';
-import './WeAre138.scss';
-import './global.scss';
-import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
+import './styles/index.scss';
+import './bootstrap.scss'; // TODO: remove this
+import './WeAre138.scss'; // TODO: file name ???
+import './global.scss'; // TODO; refactor this
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -33,14 +32,13 @@ axios.get('/config.json').then(response => {
 import React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
-// import {ConnectedRouter} from 'connected-react-router';
 
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
 import rootSaga from './saga';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
 
-import App from './containers/App';
+import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
@@ -55,11 +53,7 @@ export const store = configureStore({}, history);
 const app = (
     <Provider store={store}>
         <IntlProvider locale="en">
-            {/*<ConnectedRouter history={history}>*/}
-            <NexusModalProvider>
-                <App />
-            </NexusModalProvider>
-            {/*</ConnectedRouter>*/}
+            <AppLayout history={history} />
         </IntlProvider>
     </Provider>
 );
