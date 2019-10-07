@@ -7,7 +7,7 @@ import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import {fetchRightMatchDataUntilFindId} from '../../rightMatchingActions';
 import * as selectors from '../../rightMatchingSelectors';
-import {RIGHT_MATCHING_PAGE_SIZE} from '../../../../constants/rightMatching';
+import {RIGHT_PAGE_SIZE} from '../../../../constants/rightFetching';
 
 const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchDataUntilFindId, rightMatchPageData, history}) => {
 
@@ -25,7 +25,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
             fetchRightMatchDataUntilFindId({
                 id: focusedRight.id,
                 pageNumber,
-                pageSize: RIGHT_MATCHING_PAGE_SIZE,
+                pageSize: RIGHT_PAGE_SIZE,
                 searchParams
             });
         }
@@ -44,7 +44,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
                 let items = rightMatchPageData.pages[pages[i]];
                 for (let j = 0; j < items.length; j++) {
                     if (items[j] === focusedRight.id) {
-                        const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_MATCHING_PAGE_SIZE - 1] : null);
+                        const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);
                         const nextId = j + 1 < items.length ? items[j + 1] : (i + 1 < pages.length ? rightMatchPageData.pages[pages[i + 1]][0] : null);
                         const currentPosition = (i + 1) * pages[i].length + j;
 
@@ -83,7 +83,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
             <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onNextRightClick()}>
                 <HipchatChevronDownIcon size='large'/>
             </div>
-            
+
             {isSpinnerRunning && <Spinner size='small'/>}
         </div>
     );

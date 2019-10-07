@@ -1,1 +1,0 @@
-export const RIGHT_MATCHING_PAGE_SIZE = 100;

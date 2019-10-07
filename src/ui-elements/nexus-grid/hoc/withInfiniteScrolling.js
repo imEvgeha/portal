@@ -1,10 +1,10 @@
 import React from 'react';
-import {RIGHT_MATCHING_PAGE_SIZE} from '../../../constants/rightMatching';
+import {RIGHT_PAGE_SIZE} from '../../../constants/rightFetching';
 
 const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent => {
     const {
         rowBuffer = 10,
-        paginationPageSize = RIGHT_MATCHING_PAGE_SIZE,
+        paginationPageSize = RIGHT_PAGE_SIZE,
         cacheOverflowSize = 2,
         rowModelType = 'infinite',
         maxConcurrentDatasourceRequests = 1,
