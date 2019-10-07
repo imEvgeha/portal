@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import './RightToMatchView.scss';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {Link} from 'react-router-dom';
+import Button, {ButtonGroup} from '@atlaskit/button';
+import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -45,20 +47,43 @@ const RightToMatchView = ({
         return params;
     };
 
-    const queryString = Array.isArray(fieldSearchCriteria) && fieldSearchCriteria.length && getParams(focusedRight, fieldSearchCriteria);
+    const queryString = Array.isArray(fieldSearchCriteria) && fieldSearchCriteria.length > 0 && getParams(focusedRight, fieldSearchCriteria);
+
+    const additionalColumnDef = {
+        field: 'checkbox',
+        headerName: 'Action',
+        colId: 'action',
+        width: 70,
+        pinned: 'left',
+        resizable: false,
+        suppressSizeToFit: true,
+        suppressMovable: true,
+        lockPosition: true,
+        sortable: false,
+        checkboxSelection: true,
+    };
+
+    const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs] : columnDefs;
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <NexusTitle>Right Matching</NexusTitle> 
+            <NexusTitle><Link to={`/avails/history/${availHistoryIds}/right_matching`}>Right Matching</Link></NexusTitle> 
+            <div className="nexus-c-right-to-match-view__focused-right" />
             <div className="nexus-c-right-to-match-view__avails-table">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
                 {queryString ? (
                     <NexusGridWithInfiniteScrolling
-                        columnDefs={columnDefs}
+                        columnDefs={updatedColumnDefs}
                         params={queryString}
                         setTotalCount={setTotalCount}
                     />
                 ) : null}
+            </div>
+            <div className="nexus-c-right-to-match-view__buttons">
+                <ButtonGroup>
+                    <Button className="nexus-c-button">Cancel</Button>
+                    <Button className="nexus-c-button" appearance="primary">Match</Button>
+                </ButtonGroup> 
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import {call, put, all, fork, take, takeEvery} from 'redux-saga/effects';
+import {call, put, all, actionChannel, select, fork, take, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
@@ -53,10 +53,17 @@ function createColumnDefs(payload) {
 }
 
 function* storeRightMatchingSearchCriteria(payload = []) {
-    // temporal filtering
-    const TYPES = ['Field'];
-    const CRITERIA = ['EQ'];
-    const fieldSearchCriteria = payload.filter(({type, criteria}) => TYPES.includes(type) && CRITERIA.includes(criteria));
+    // get focused right
+    const {focusedRight} = yield select(state => state.rightMatching);
+    // create query params
+    const CRITERIA = ['EQ', 'EQ', 'LT', 'GT', 'LTE',  'GTE', 'SUB'];
+    // const TYPE = ['field', 'group'];
+    const fieldSearchCriteria = payload.filter(({type, criteria}) => (!type || type === 'field') && CRITERIA.includes(criteria));
+    // const key = targetFieldName || fieldName;
+    // const value = criteria === 'SUB' ? focusedRight.fieldName.join(',') : focusedRight.fieldName;
+    // const queryParams = {
+    //     [key]: focusedRight.fieldName,
+    // };
     yield put({
         type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
         payload: {fieldSearchCriteria},
@@ -137,39 +144,59 @@ function* fetchFocusedRight(action) {
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: data,
         });
+        yield put({
+            type: actionTypes.STORE_FOCUSED_RIGHT,
+            payload: {focusedRight: data},
+        });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
             payload: error,
-            error: true,
         });
     }
+    return;
 }
 
-function* fetchAndStoreFocusedRight(requestMethod) {
-    yield fork(fetchFocusedRight, requestMethod);
-
-    while (true) {
-        const fetchFocusedRightResult = yield take([
-            actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
-            actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
-        ]);
-
-        if (fetchFocusedRightResult.type === actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS) {
-            yield put({
-                type: actionTypes.STORE_FOCUSED_RIGHT,
-                payload: {focusedRight: fetchFocusedRightResult.payload},
-            });
-            break;
-        }
-    }
-
-}
+// function* fetchAndStoreFocusedRight(action) {
+//     yield fork(fetchFocusedRight, action);
+//
+//     while (true) {
+//         const fetchFocusedRightResult = yield take([
+//             actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
+//             actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
+//         ]);
+//
+//         if (fetchFocusedRightResult.type === actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS) {
+//             yield put({
+//                 type: actionTypes.STORE_FOCUSED_RIGHT,
+//                 payload: {focusedRight: fetchFocusedRightResult.payload},
+//             });
+//             break;
+//         }
+//     }
+// }
 
 export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
-        takeEvery(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
-        takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
+        // takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
+        // takeEvery(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
     ]);
+}
+
+export function* pipelineWatcher() {
+    const types = [
+        actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT,
+        actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
+    ];
+    const channel = yield actionChannel(action => types.includes(action.type));
+
+    while (true) {
+        const action = yield take(channel);
+        if (action.type === actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT) {
+            yield call(fetchFocusedRight, action);
+        } else {
+            yield fork(fetchAndStoreRightMatchingSearchCriteria, action);
+        }
+    }
 }

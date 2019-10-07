@@ -1,7 +1,7 @@
 {
   "gateway":{
     "url":"https://availsapi.qa.vubiquity.com",
-    "availsParserUrl": '"https://avails-parser.qa.vubiquity.com",
+    "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
     "titleUrl":"https://titlesapi.qa.vubiquity.com",
     "configuration": "https://configapi.qa.vubiquity.com",
     "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",

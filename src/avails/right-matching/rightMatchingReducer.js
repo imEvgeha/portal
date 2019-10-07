@@ -23,9 +23,9 @@ const rightMatchingReducer = (state = initialState, action) => {
             };
         case actionTypes.STORE_FOCUSED_RIGHT:
             return {
-            ...state,
-            focusedRight,
-        };
+                ...state,
+                focusedRight,
+            };
         default:
             return state;
     }

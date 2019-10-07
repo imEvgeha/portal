@@ -11,7 +11,6 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
     } = infiniteProps;
 
     const ComposedComponent = props => {
-        console.error(props, 'props')
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback} = params || {};
             const pageSize = paginationPageSize || 100;
