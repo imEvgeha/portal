@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import SectionMessage from '@atlaskit/section-message';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, fetchFocusedRight} from '../rightMatchingActions';
@@ -73,6 +74,10 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
                 columnDefs={updatedColumnDefs}
                 rowData={[focusedRight]}
             />
+            <SectionMessage>
+                <p>Select rights from the repository that match the focused right or declare it as a NEW right from the
+                    action menu above. </p>
+            </SectionMessage>
         </div>
     );
 };
