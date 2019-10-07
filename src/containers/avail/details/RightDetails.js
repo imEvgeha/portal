@@ -1068,7 +1068,7 @@ class RightDetails extends React.Component {
                     // TODO: write this from scratch
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if ((equalOrIncluded(mapping.javaVariableName, e.fieldName) || e.fieldName.includes(mapping.javaVariableName)) && !e.fieldName.includes('languageAudioTypes')) {
+                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName) && !e.fieldName.includes('languageAudioTypes')) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
