@@ -22,6 +22,7 @@
     "@atlaskit/modal-dialog": "^10.1.1",
     "@atlaskit/navigation": "^35.1.12",
     "@atlaskit/page": "^11.0.5",
+    "@atlaskit/page-header": "^9.0.14",
     "@atlaskit/pagination": "^12.0.9",
     "@atlaskit/portal": "^3.0.9",
     "@atlaskit/quick-search": "^7.6.6",

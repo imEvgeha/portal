@@ -602,6 +602,15 @@
     react-scrolllock "^3.0.2"
     react-transition-group "^2.2.1"
 
+"@atlaskit/page-header@^9.0.14":
+  version "9.0.14"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/page-header/-/page-header-9.0.14.tgz#0a7a6aa2c4facdf1d667cd3ba3ce6e9819ad8b87"
+  integrity sha512-PO+dtSjjWF2f7YHEbNN0zcCMkeNQLjg+IqbTa7OnRThdC9ar8wfWtk+uVEpPcO2EX6lR0UsFKL1uadjWQhDa6w==
+  dependencies:
+    "@atlaskit/theme" "^9.2.4"
+    "@babel/runtime" "^7.0.0"
+    tslib "^1.9.3"
+
 "@atlaskit/page@^11.0.5":
   version "11.0.5"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/page/-/page-11.0.5.tgz#5c960f5e53fa93c0dad0fad285379a42c2cb0b3b"
@@ -916,6 +925,15 @@
   version "9.2.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-9.2.2.tgz#d27b3276e835d54fa166935f4abf922d9d749e2c"
   integrity sha512-/02BSjMqa2xtJ0ccUM5NurK8fkVwiLEwLdIhKrnq7ZNkbW/2SMeHcUGhVkValG5esHsj201ZjyA2zy47WzZSnQ==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    exenv "^1.2.2"
+    prop-types "^15.5.10"
+
+"@atlaskit/theme@^9.2.4":
+  version "9.2.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-9.2.4.tgz#f4951dc49e480221e7c58214cca8bcc00430956e"
+  integrity sha512-C9QCEiB9raUyb5jiZVwvCmwEQIKnHear0iY3uKd6SwYCsS7faw+71/9TylXBlgVBkwUAZ+UC3XzAv2uIXg5qlA==
   dependencies:
     "@babel/runtime" "^7.0.0"
     exenv "^1.2.2"

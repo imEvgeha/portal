@@ -1,16 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import Spinner from '@atlaskit/spinner';
+import './RightToMatchNavigation.scss';
+import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
+import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import {fetchRightMatchDataUntilFindId} from '../../rightMatchingActions';
 import * as selectors from '../../rightMatchingSelectors';
 import {RIGHT_MATCHING_PAGE_SIZE} from '../../../../constants/rightMatching';
 
-const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchDataUntilFindId, rightMatchPageData}) => {
+const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchDataUntilFindId, rightMatchPageData, history}) => {
 
     const [navigationData, setNavigationData] = useState({});
+    const [isSpinnerRunning, setIsSpinnerRunning] = useState(true);
 
     useEffect(() => {
-        if (focusedRight.id && navigationData.currentPosition !== null) {
+        setIsSpinnerRunning(true);
+    }, [])
+
+    useEffect(() => {
+        if (focusedRight.id) {
             const pages = Object.keys(rightMatchPageData.pages || {}).sort();
             const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) : 0;
             fetchRightMatchDataUntilFindId({
@@ -24,6 +33,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
 
     useEffect(() => {
         updateNavigationIds();
+        setIsSpinnerRunning(false);
     }, [rightMatchPageData]);
 
     const updateNavigationIds = () => {
@@ -36,10 +46,9 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
                     if (items[j] === focusedRight.id) {
                         const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_MATCHING_PAGE_SIZE - 1] : null);
                         const nextId = j + 1 < items.length ? items[j + 1] : (i + 1 < pages.length ? rightMatchPageData.pages[pages[i + 1]][0] : null);
-                        const currentPosition = (i + 1) * RIGHT_MATCHING_PAGE_SIZE + (j + 1);
+                        const currentPosition = (i + 1) * pages[i].length + j;
 
                         setNavigationData({previousId, currentPosition, nextId});
-                        console.log(navigationData)
 
                         break loop;
                     }
@@ -47,9 +56,35 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
             }
     };
 
+    const onPreviousRightClick = () => {
+        if (navigationData.previousId) {
+            const indexToRemove = location.pathname.lastIndexOf('/');
+            history.push(`${location.pathname.substr(0, indexToRemove)}/${navigationData.previousId}`);
+            setIsSpinnerRunning(true);
+        }
+    };
+
+    const onNextRightClick = () => {
+        if (navigationData.nextId) {
+            const indexToRemove = location.pathname.lastIndexOf('/');
+            history.push(`${location.pathname.substr(0, indexToRemove)}/${navigationData.nextId}`);
+            setIsSpinnerRunning(true);
+        }
+    };
+
     return (
-        <div>
-            Navigation
+        <div className='nexus-c-right-to-match-navigation'>
+            <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onPreviousRightClick()}>
+                <HipchatChevronUpIcon size='large'/>
+            </div>
+
+            {navigationData.currentPosition < 10 ? '0' : ''}{navigationData.currentPosition} of {rightMatchPageData.total}
+
+            <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onNextRightClick()}>
+                <HipchatChevronDownIcon size='large'/>
+            </div>
+            
+            {isSpinnerRunning && <Spinner size='small'/>}
         </div>
     );
 };
@@ -58,7 +93,8 @@ RightToMatchNavigation.propTypes = {
     focusedRight: PropTypes.object,
     fetchRightMatchDataUntilFindId: PropTypes.func,
     rightMatchPageData: PropTypes.object,
-    searchParams: PropTypes.object
+    searchParams: PropTypes.object,
+    history: PropTypes.object,
 };
 
 RightToMatchNavigation.defaultProps = {
