@@ -14,6 +14,7 @@ import CustomActionsCellRenderer
     from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import RightToMatchNavigation from './navigation/RightToMatchNavigation';
 import {URL} from '../../../util/Common';
+import BackNavigationByUrl from "../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl";
 
 const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping, history}) => {
 
@@ -62,9 +63,10 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
 
     return (
         <div className="nexus-c-right-to-match">
-            <div className='nexus-c-right-to-match-navigation-arrow' onClick={navigateToRightMatch}>
-                <PageHeader><ArrowLeftIcon size='large'/> Right to Right Matching</PageHeader>
-            </div>
+            <BackNavigationByUrl
+                title={'Right to Right Matching'}
+                onNavigationClick={navigateToRightMatch}
+            />
             <div className="nexus-c-right-to-match-table-header">
                 <NexusTitle>Focused Right</NexusTitle>
                 <RightToMatchNavigation
