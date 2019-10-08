@@ -25,9 +25,7 @@ const NexusGrid = ({
         }
         if (typeof setRowData === 'function') {
             setRowData(api);
-            return;
         }
-        api.setRowData(rowData);
     };
     const onGridSizeChanged = () => {
         // const {api = {}} = gridApiRef.current;
@@ -38,6 +36,7 @@ const NexusGrid = ({
         <div className='nexus-c-nexus-grid ag-theme-balham'>
             <AgGridReact
                 columnDefs={columnDefs}
+                rowData={rowData}
                 onGridReady={onGridReady}
                 onGridSizeChanged={onGridSizeChanged}
                 {...restProps}

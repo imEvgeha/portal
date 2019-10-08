@@ -21,6 +21,11 @@ export const getFocusedRight = (state) => {
     return rightMatching && rightMatching.focusedRight;
 };
 
+export const getRightMatchPageData = (state) => {
+    const {rightMatching} = state;
+    return rightMatching && rightMatching.rightMatchPageData;
+};
+
 export const createRightMatchingColumnDefsSelector = () => createSelector(
     getColumnDefs,
     columnDefs => columnDefs,
@@ -41,5 +46,10 @@ export const createFieldSearchCriteriaSelector = () => createSelector(
 export const createFocusedRightSelector = () => createSelector(
     getFocusedRight,
     focusedRight => focusedRight,
+);
+
+export const createRightMatchPageDataSelector = () => createSelector(
+    getRightMatchPageData,
+    rightMatchPageData => rightMatchPageData,
 );
 

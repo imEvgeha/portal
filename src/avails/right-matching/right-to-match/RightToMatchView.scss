@@ -6,10 +6,6 @@
     height: 100%;
 }
 
-.nexus-c-right-to-match-view__focused-right {
-    flex: 1;
-}
-
 .nexus-c-right-to-match-view__rights-to-match {
     height: 100%;
     display: flex;
@@ -33,3 +29,16 @@
         font-size: 14px;
     }
 }
+
+.nexus-c-right-to-match-view__table-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.nexus-c-right-to-match-view__navigation-arrow {
+    &:hover {
+        color: #666;
+        cursor: pointer;
+    }
+}
+

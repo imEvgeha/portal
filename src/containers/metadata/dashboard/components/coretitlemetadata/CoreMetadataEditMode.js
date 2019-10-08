@@ -27,7 +27,6 @@ import {
   CREW_HTML_FOR,
   CAST_HEADER,
   CREW_HEADER,
-  CAST_LIMIT
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
@@ -90,6 +89,7 @@ class CoreMetadataEditMode extends Component {
         <Row>
           <Col>
           <PersonList
+              handleAddCharacterName={this.props.handleAddCharacterName}
               personLabel={CAST_LABEL}
               personHtmlFor={CAST_HTML_FOR}
               personListLabel={CAST_LIST_LABEL}
@@ -100,7 +100,9 @@ class CoreMetadataEditMode extends Component {
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
-              personsLimit={CAST_LIMIT}
+              showPersonType={true}
+              isMultiColumn={true}
+              getFormatTypeName={getFormatTypeName}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
             />
           </Col>
@@ -118,6 +120,7 @@ class CoreMetadataEditMode extends Component {
               addPerson={this.props.addCastCrew}
               getFormatTypeName={getFormatTypeName}
               showPersonType={true}
+              isMultiColumn={false}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CREW)}
             />
           </Col>
@@ -457,7 +460,9 @@ CoreMetadataEditMode.propTypes = {
   ratingObjectForCreate: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
   areRatingFieldsRequired: PropTypes.bool,
-  castAndCrewReorder: PropTypes.func
+  castAndCrewReorder: PropTypes.func,
+
+  handleAddCharacterName: PropTypes.func
 };
 
 

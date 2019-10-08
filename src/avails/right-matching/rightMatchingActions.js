@@ -20,3 +20,17 @@ export const fetchAndStoreFocusedRight = (payload) => ({
     payload,
 });
 
+export const storeRightMatchDataWithIds = (payload) => ({
+    type: actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS,
+    payload
+});
+
+export const cleanStoredRightMatchDataWithIds = () => ({
+    type: actionTypes.CLEAN_STORED_RIGHT_MATCH_DATA_WITH_IDS
+});
+
+export const fetchRightMatchDataUntilFindId = (payload) => ({
+    type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID,
+    payload
+});
+

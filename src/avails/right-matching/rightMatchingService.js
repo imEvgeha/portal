@@ -1,5 +1,5 @@
 import config from 'react-global-configuration'; // config returns error for gateway
-import pickBy from 'lodash.pickBy';
+import pickBy from 'lodash.pickby';
 import identity from 'lodash.identity';
 import Http from '../../util/Http';
 import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common'; 

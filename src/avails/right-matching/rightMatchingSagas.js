@@ -6,6 +6,7 @@ import createValueFormatter from '../../ui-elements/nexus-grid/elements/value-fo
 import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
+import {getRightMatchingList} from './rightMatchingService';
 
 // TODO - refactor this worker sagra (use select)
 export function* createRightMatchingColumnDefs({payload}) {
@@ -33,7 +34,9 @@ export function* createRightMatchingColumnDefs({payload}) {
             }
             break;
         }
-    } catch (error) {throw new Error();}
+    } catch (error) {
+        throw new Error();
+    }
 }
 
 function createColumnDefs(payload) {
@@ -108,8 +111,6 @@ function* storeRightMatchingSearchCriteria(payload = []) {
 
     }
 }
-
-
 
 function* fetchRightMatchingFieldSearchCriteria(requestMethod, provider) {
     try {
@@ -194,7 +195,6 @@ function* fetchFocusedRight(action) {
             payload: error,
         });
     }
-    return;
 }
 
 function* fetchAndStoreFocusedRight(action) {
@@ -216,11 +216,58 @@ function* fetchAndStoreFocusedRight(action) {
     }
 }
 
+export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
+    try {
+        const {id, pageSize, searchParams} = payload || {};
+        let {pageNumber} = payload || {};
+
+        let rightMatchPageData = {};
+        let isIdFounded = false;
+        let isBoundaryValue = false;
+        while (!isIdFounded || isBoundaryValue) {
+            const response = yield call(requestMethod, pageNumber, pageSize, searchParams);
+            const ids = response.data.data.map(el => el.id);
+            if (ids.length === 0) {
+                break;
+            }
+            isIdFounded = ids.includes(id);
+
+            let pages = {};
+            pages[pageNumber] = ids;
+            rightMatchPageData = {
+                pages: {...rightMatchPageData.pages, ...pages},
+                total: response.data.total
+            };
+
+            if (isBoundaryValue) {
+                break;
+            }
+            isBoundaryValue = isIdFounded && (ids[ids.length - 1] === id);
+
+            pageNumber = pageNumber + 1;
+        }
+
+        yield put({
+                type: actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS,
+                payload: {rightMatchPageData}
+            }
+        );
+
+    } catch (error) {
+        yield put({
+            type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID_FAILED,
+            payload: error,
+            error: true,
+        });
+    }
+}
+
 export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeEvery(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
+        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
     ]);
 }
 

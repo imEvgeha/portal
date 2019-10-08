@@ -30,7 +30,12 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                         if (typeof props.setTotalCount === 'function') { 
                             props.setTotalCount(total);
                         }
+
                         successCallback(data.data, lastRow);
+                        if(typeof props.succesDataFetchCallback === 'function') {
+                            props.succesDataFetchCallback(pageNumber, data);
+                        }
+
                         gridApi.hideOverlay();
                         return;
                     } 

@@ -306,8 +306,45 @@ class TitleEdit extends Component {
         return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} activeTab={this.state.titleRankingActiveTab} />;
     };
 
+    handleAddCharacterName = (id, newData) => {
+        let castCrew = this.state.editedForm.castCrew;
+        this.state.editedForm.castCrew.splice(id, 1, newData);
+        let editedForm = {
+            ...this.state.editedForm,
+            castCrew
+        };
+        this.setState({
+            editedForm
+        });
+    }
+
+    handleAddEditorialCharacterName = (id, newData) => {
+        let castCrew = this.state.editorialMetadataForCreate.castCrew;
+        this.state.editorialMetadataForCreate.castCrew.splice(id, 1, newData);
+        let editorialMetadataForCreate = {
+            ...this.state.editorialMetadataForCreate,
+            castCrew
+        };
+
+        this.setState({
+            editorialMetadataForCreate
+        });
+    }
+
+    handleAddEditorialCharacterNameEdit = (data, parentId, id, newData) => {
+        let edited = this.state.updatedEditorialMetadata.find(e => e.id === parentId);
+        if (!edited) {
+            edited = JSON.parse(JSON.stringify(data));
+        }
+        let newCastCrew =  edited.castCrew;
+        edited.castCrew.splice(id, 1, newData);
+        edited.castCrew = newCastCrew;
+        this.updateEditedEditorialMetadata(edited, parentId);
+    }
+
     editMode = () => {
         return <TitleEditMode
+            handleAddCharacterName={this.handleAddCharacterName}
             castAndCrewReorder={this.reOrderedCastCrewArray}
             titleRankingActiveTab={this.state.titleRankingActiveTab}
             toggleTitleRating={this.toggleTitleRating}
@@ -381,7 +418,6 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.formatRating(newAdditionalFields);
-
             titleService.updateTitle(newAdditionalFields).then((response) => {
                 this.setState({
                     isLoading: false,
@@ -871,6 +907,8 @@ class TitleEdit extends Component {
                         this.state.isEditMode ? this.editMode() : this.readOnly()
                     }
                     <EditorialMetadata
+                        handleAddEditorialCharacterName={this.handleAddEditorialCharacterName}
+                        handleAddEditorialCharacterNameEdit={this.handleAddEditorialCharacterNameEdit}
                         areFieldsRequired={this.state.areEditorialMetadataFieldsRequired}
                         validSubmit={this.handleOnSave}
                         toggle={this.toggleEditorialMetadata}

@@ -5,11 +5,13 @@ const initialState = {
     rowData: [],
     fieldSearchCriteria: null,
     focusedRight: null,
+    rightMatchPageData: {},
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
-    const {columnDefs, fieldSearchCriteria, focusedRight} = payload || {};
+    const {columnDefs, fieldSearchCriteria, focusedRight, rightMatchPageData} = payload || {};
+
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
             return {
@@ -25,6 +27,19 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 focusedRight,
+            };
+        case actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS:
+            return {
+                ...state,
+                rightMatchPageData: {
+                    pages: {...state.rightMatchPageData.pages, ...rightMatchPageData.pages},
+                    total: rightMatchPageData.total
+                }
+            };
+        case actionTypes.CLEAN_STORED_RIGHT_MATCH_DATA_WITH_IDS:
+            return {
+                ...state,
+                rightMatchPageData: {},
             };
         default:
             return state;
