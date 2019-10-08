@@ -5,3 +5,21 @@ export const createRightMatchingColumnDefs = (payload) => ({
     payload,
 });
 
+export const fetchFocusedRight = (id) => ({
+    type: actionTypes.FETCH_FOCUSED_RIGHT,
+    payload: id,
+});
+
+export const storeRightMatchDataWithIds = (payload) => ({
+    type: actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS,
+    payload
+});
+
+export const cleanStoredRightMatchDataWithIds = () => ({
+    type: actionTypes.CLEAN_STORED_RIGHT_MATCH_DATA_WITH_IDS
+});
+
+export const fetchRightMatchDataUntilFindId = (payload) => ({
+    type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID,
+    payload
+});
