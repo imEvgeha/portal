@@ -15,6 +15,7 @@ import {
 } from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
+import {RIGHT_PAGE_SIZE} from '../../constants/rightFetching';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
@@ -42,6 +43,15 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
                 <Button onClick={() => onFocusButtonClick(id)}>Focus</Button>
             </CustomActionsCellRenderer>
         );
+    };
+
+    const storeData = (page, data) => {
+        if(storeRightMatchDataWithIds) {
+            let pages = {};
+            pages[page] = data.data.map(e => e.id);
+            const rightMatchPageData = {pages, total: data.total};
+            storeRightMatchDataWithIds({ rightMatchPageData });
+        }
     };
 
     const additionalColumnDef = {
@@ -73,6 +83,10 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
                 storeRightMatchDataWithIds={storeRightMatchDataWithIds}
+                infiniteProps={{
+                    paginationPageSize: RIGHT_PAGE_SIZE
+                }}
+                succesDataFetchCallback={storeData}
             />
         </div>
     );

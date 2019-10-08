@@ -13,6 +13,7 @@ import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import CustomActionsCellRenderer
     from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import RightToMatchNavigation from './navigation/RightToMatchNavigation';
+import {URL} from '../../../util/Common';
 
 const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping, history}) => {
 
@@ -40,10 +41,10 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
 
     const navigateToRightMatch = () => {
         const indexToRemove = location.pathname.lastIndexOf('/');
-        history.push(`${location.pathname.substr(0, indexToRemove)}`);
+        history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}`));
     };
 
-    const additionalColumnDef = {
+    const additionalFocusedRightColumnDef = {
         field: 'buttons',
         headerName: 'Actions',
         colId: 'actions',
@@ -57,7 +58,7 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
         sortable: false,
     };
 
-    const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs] : columnDefs;
+    const updatedFocusedRightColumnDefs = columnDefs.length ? [additionalFocusedRightColumnDef, ...columnDefs] : columnDefs;
 
     return (
         <div className="nexus-c-right-to-match">
@@ -72,7 +73,7 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
                 />
             </div>
             <NexusGrid
-                columnDefs={updatedColumnDefs}
+                columnDefs={updatedFocusedRightColumnDefs}
                 rowData={[focusedRight]}
             />
             <SectionMessage>

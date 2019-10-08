@@ -7,6 +7,7 @@ import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import {fetchRightMatchDataUntilFindId} from '../../rightMatchingActions';
 import * as selectors from '../../rightMatchingSelectors';
+import {URL} from '../../../../util/Common';
 import {RIGHT_PAGE_SIZE} from '../../../../constants/rightFetching';
 
 const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchDataUntilFindId, rightMatchPageData, history}) => {
@@ -16,7 +17,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
 
     useEffect(() => {
         setIsSpinnerRunning(true);
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (focusedRight.id) {
@@ -59,7 +60,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
     const onPreviousRightClick = () => {
         if (navigationData.previousId) {
             const indexToRemove = location.pathname.lastIndexOf('/');
-            history.push(`${location.pathname.substr(0, indexToRemove)}/${navigationData.previousId}`);
+            history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}/${navigationData.previousId}`));
             setIsSpinnerRunning(true);
         }
     };
@@ -67,7 +68,7 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
     const onNextRightClick = () => {
         if (navigationData.nextId) {
             const indexToRemove = location.pathname.lastIndexOf('/');
-            history.push(`${location.pathname.substr(0, indexToRemove)}/${navigationData.nextId}`);
+            history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}/${navigationData.nextId}`));
             setIsSpinnerRunning(true);
         }
     };
