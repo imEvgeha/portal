@@ -3,7 +3,7 @@ import * as actionTypes from './rightMatchingActionTypes';
 const initialState = {
     columnDefs: [],
     rowData: [],
-    fieldSearchCriteria: [],
+    fieldSearchCriteria: null,
     focusedRight: null,
 };
 

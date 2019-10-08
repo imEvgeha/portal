@@ -11,6 +11,7 @@ import * as selectors from './rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
+import {URL} from '../../util/Common';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
@@ -23,7 +24,7 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
     }, [mapping, columnDefs]);
 
     const onFocusButtonClick = (rightId) => {
-        history.push(`${location.pathname}/${rightId}`);
+        history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
     const createCellRenderer = ({data}) => { // eslint-disable-line

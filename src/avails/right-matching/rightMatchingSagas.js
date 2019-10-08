@@ -1,4 +1,4 @@
-import {call, put, all, actionChannel, select, fork, take, takeEvery} from 'redux-saga/effects';
+import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
@@ -7,6 +7,7 @@ import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
 
+// TODO - refactor this worker sagra (use select)
 export function* createRightMatchingColumnDefs({payload}) {
     try {
         if (payload && payload.length) {
@@ -55,20 +56,60 @@ function createColumnDefs(payload) {
 function* storeRightMatchingSearchCriteria(payload = []) {
     // get focused right
     const {focusedRight} = yield select(state => state.rightMatching);
-    // create query params
-    const CRITERIA = ['EQ', 'EQ', 'LT', 'GT', 'LTE',  'GTE', 'SUB'];
-    // const TYPE = ['field', 'group'];
-    const fieldSearchCriteria = payload.filter(({type, criteria}) => (!type || type === 'field') && CRITERIA.includes(criteria));
-    // const key = targetFieldName || fieldName;
-    // const value = criteria === 'SUB' ? focusedRight.fieldName.join(',') : focusedRight.fieldName;
-    // const queryParams = {
-    //     [key]: focusedRight.fieldName,
-    // };
-    yield put({
-        type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
-        payload: {fieldSearchCriteria},
-    });
+    const searchCriteria = payload.filter(({type}) => (!type || type === 'field'));
+    const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? cases[key] : defaultCase;
+    const parseFieldNames = (criteria, name) => {
+        const fieldNames = {
+            EQ: name,
+            SUB: name,
+            GTE: `${name}From`,
+            GT: `${name}From`,
+            LT: `${name}To`,
+            LTE: `${name}To`,
+        };
+        const parsedFieldName = switchCase(fieldNames)(name)(criteria);
+        return parsedFieldName;
+    };
+
+    const parseFieldValue = (criteria, value) => {
+        const fieldValues = {
+            EQ: value,
+            SUB: Array.isArray(value) ? value.join('') : value,
+            GTE: value,
+            GT: value,
+            LT: value,
+            LTE: value,
+        };
+        const parsedValue = switchCase(fieldValues)(value)(criteria);
+        return parsedValue;
+    };  
+
+    try {
+        const fieldSearchCriteria = searchCriteria.reduce((query, field) => {
+            const {targetFieldName, fieldName, criteria} = field;
+            const name = targetFieldName || fieldName;
+            const preparedName = `${name.slice(0, 1).toLowerCase()}${name.slice(1)}`;
+            const fieldValue = focusedRight[`${fieldName.slice(0,1).toLowerCase()}${fieldName.slice(1)}`];
+            const key = parseFieldNames(criteria, preparedName);
+            const value = parseFieldValue(criteria, fieldValue);
+            query[key] = value;
+            return query;
+        }, {});
+
+        yield put({
+            type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
+            payload: {fieldSearchCriteria},
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_ERROR,
+            payload: {error},
+        });
+
+    }
 }
+
+
 
 function* fetchRightMatchingFieldSearchCriteria(requestMethod, provider) {
     try {
@@ -113,6 +154,9 @@ function* fetchRightMatchingProvider(requestMethod, id) {
 }
 
 function* fetchAndStoreRightMatchingSearchCriteria({payload}) {
+    // wait to store update with focused right
+    yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS); 
+
     yield fork(fetchRightMatchingProvider, historyService.getHistory, payload);
 
     while (true) {
@@ -144,10 +188,6 @@ function* fetchFocusedRight(action) {
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: data,
         });
-        yield put({
-            type: actionTypes.STORE_FOCUSED_RIGHT,
-            payload: {focusedRight: data},
-        });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
@@ -157,46 +197,30 @@ function* fetchFocusedRight(action) {
     return;
 }
 
-// function* fetchAndStoreFocusedRight(action) {
-//     yield fork(fetchFocusedRight, action);
-//
-//     while (true) {
-//         const fetchFocusedRightResult = yield take([
-//             actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
-//             actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
-//         ]);
-//
-//         if (fetchFocusedRightResult.type === actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS) {
-//             yield put({
-//                 type: actionTypes.STORE_FOCUSED_RIGHT,
-//                 payload: {focusedRight: fetchFocusedRightResult.payload},
-//             });
-//             break;
-//         }
-//     }
-// }
+function* fetchAndStoreFocusedRight(action) {
+    yield fork(fetchFocusedRight, action);
+
+    while (true) {
+        const fetchFocusedRightResult = yield take([
+            actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
+            actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
+        ]);
+
+        if (fetchFocusedRightResult.type === actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS) {
+            yield put({
+                type: actionTypes.STORE_FOCUSED_RIGHT,
+                payload: {focusedRight: fetchFocusedRightResult.payload},
+            });
+            break;
+        }
+    }
+}
 
 export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
-        // takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
-        // takeEvery(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
+        takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
+        takeEvery(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
     ]);
 }
 
-export function* pipelineWatcher() {
-    const types = [
-        actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT,
-        actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
-    ];
-    const channel = yield actionChannel(action => types.includes(action.type));
-
-    while (true) {
-        const action = yield take(channel);
-        if (action.type === actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT) {
-            yield call(fetchFocusedRight, action);
-        } else {
-            yield fork(fetchAndStoreRightMatchingSearchCriteria, action);
-        }
-    }
-}

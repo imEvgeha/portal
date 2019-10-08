@@ -10,9 +10,10 @@ import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import * as selectors from '../rightMatchingSelectors';
 import {createRightMatchingColumnDefs, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
-import {getRightMatchingList} from '../rightMatchingService';
+import {getRightToMatchList} from '../rightMatchingService';
+import {URL} from '../../../util/Common';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightToMatchList)(NexusGrid));
 
 const RightToMatchView = ({
     match, 
@@ -22,9 +23,9 @@ const RightToMatchView = ({
     fetchRightMatchingFieldSearchCriteria, 
     fetchFocusedRight,
     fieldSearchCriteria,
-    focusedRight,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
+    const [isMatchDisabled, setIsMatchDisabled] = useState(true);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     useEffect(() => {
@@ -36,18 +37,6 @@ const RightToMatchView = ({
         fetchFocusedRight(rightId);
         fetchRightMatchingFieldSearchCriteria(availHistoryIds);
     }, [rightId]);
-
-    const getParams = (right, searchCriteria) => {
-        const params = right && searchCriteria && Object.keys(right).reduce((object, prop) => {
-            if (searchCriteria.some(el => el.fieldName.toLowerCase() === prop)) {
-                object[prop] = right[prop]; 
-            }
-            return object;
-        }, {});
-        return params;
-    };
-
-    const queryString = Array.isArray(fieldSearchCriteria) && fieldSearchCriteria.length > 0 && getParams(focusedRight, fieldSearchCriteria);
 
     const additionalColumnDef = {
         field: 'checkbox',
@@ -67,22 +56,31 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <NexusTitle><Link to={`/avails/history/${availHistoryIds}/right_matching`}>Right Matching</Link></NexusTitle> 
+            <NexusTitle>
+                <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)}>Right Matching</Link>
+            </NexusTitle> 
             <div className="nexus-c-right-to-match-view__focused-right" />
-            <div className="nexus-c-right-to-match-view__avails-table">
+            <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {queryString ? (
+                {fieldSearchCriteria ? (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
-                        params={queryString}
+                        params={fieldSearchCriteria}
                         setTotalCount={setTotalCount}
+                        domLayout='autoHeight'
                     />
                 ) : null}
             </div>
             <div className="nexus-c-right-to-match-view__buttons">
                 <ButtonGroup>
                     <Button className="nexus-c-button">Cancel</Button>
-                    <Button className="nexus-c-button" appearance="primary">Match</Button>
+                    <Button 
+                        className="nexus-c-button" 
+                        appearance="primary" 
+                        isDisabled={isMatchDisabled}
+                    >
+                        Match
+                    </Button>
                 </ButtonGroup> 
             </div>
         </div>
@@ -95,7 +93,7 @@ RightToMatchView.propTypes = {
     mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
-    fieldSearchCriteria: PropTypes.array,
+    fieldSearchCriteria: PropTypes.object,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
     focusedRight: PropTypes.object,
