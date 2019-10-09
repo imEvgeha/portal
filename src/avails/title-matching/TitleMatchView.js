@@ -1,10 +1,15 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import * as selectors from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs, fetchFocusedRight} from '../right-matching/rightMatchingActions';
 import './TitleMatchView.scss';
+import {titleServiceManager} from '../../containers/metadata/service/TitleServiceManager';
+import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
+
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 
 const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping}) => {
     useEffect(() => {
@@ -18,12 +23,15 @@ const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight
             fetchFocusedRight(match.params.rightId);
         }
     }, [match]);
-    
+
     return (
         <div className="nexus-c-title-to-match">
             <NexusGrid
                 columnDefs={columnDefs}
                 rowData={[focusedRight]}
+            />
+            <NexusGridWithInfiniteScrolling
+                columnDefs={columnDefs}
             />
         </div>
     );

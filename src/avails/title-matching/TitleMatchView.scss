@@ -4,6 +4,9 @@
     flex-direction: column;
     width: 100%;
     .nexus-c-nexus-grid {
+        height: 500px;
+    }
+    .nexus-c-nexus-grid:first-of-type {
         height: 81px;
     }
 }
