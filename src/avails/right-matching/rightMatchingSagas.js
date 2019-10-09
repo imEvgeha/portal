@@ -217,7 +217,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
                 total: response.data.total
             };
 
-            if (isBoundaryValue) {
+            if (isBoundaryValue || ids.length < pageSize) {
                 break;
             }
             isBoundaryValue = isIdFounded && (ids[ids.length - 1] === id);

@@ -4,3 +4,10 @@
     display: flex;
     flex-direction: row;
 }
+
+.nexus-c-right-to-match-navigation-arrow {
+    &:hover {
+        color: #666;
+        cursor: pointer;
+    }
+}

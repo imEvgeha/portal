@@ -2,8 +2,6 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import PageHeader from '@atlaskit/page-header';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
@@ -14,7 +12,7 @@ import CustomActionsCellRenderer
     from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import RightToMatchNavigation from './navigation/RightToMatchNavigation';
 import {URL} from '../../../util/Common';
-import BackNavigationByUrl from "../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl";
+import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 
 const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping, history}) => {
 
@@ -25,10 +23,10 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
     }, [columnDefs, mapping]);
 
     useEffect(() => {
-        if (match && match.params.rightId) {
+        if (match && match.params.rightId && match.params.rightId !== focusedRight.id) {
             fetchFocusedRight(match.params.rightId);
         }
-    }, [match]);
+    }, [match.params.rightId]);
 
     const onNewButtonClick = () => {
         // TODO: Implement in PORT-722
@@ -60,6 +58,7 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
     };
 
     const updatedFocusedRightColumnDefs = columnDefs.length ? [additionalFocusedRightColumnDef, ...columnDefs] : columnDefs;
+    const updatedFocusedRight = match.params.rightId === focusedRight.id ? [focusedRight] : [{}];
 
     return (
         <div className="nexus-c-right-to-match">
@@ -72,11 +71,12 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
                 <RightToMatchNavigation
                     searchParams={{availHistoryIds: match.params.availHistoryIds}}
                     history={history}
+                    focusedRightId={match.params.rightId}
                 />
             </div>
             <NexusGrid
                 columnDefs={updatedFocusedRightColumnDefs}
-                rowData={[focusedRight]}
+                rowData={updatedFocusedRight}
             />
             <SectionMessage>
                 <p>Select rights from the repository that match the focused right or declare it as a NEW right from the
