@@ -52,7 +52,7 @@ export const store = configureStore({}, history);
 
 const app = (
     <Provider store={store}>
-        <IntlProvider locale="en">
+        <IntlProvider locale="en-US">
             <AppLayout history={history} />
         </IntlProvider>
     </Provider>
