@@ -13,6 +13,7 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
+import moment from 'moment';
 
 function MatchRightView({history, match, focusedRight, matchedRight, combinedRight, fetchFocusedRight, fetchMatchedRight, fetchCombinedRight, createRightMatchingColumnDefs, columnDefs, mapping}) {
 
@@ -26,6 +27,7 @@ function MatchRightView({history, match, focusedRight, matchedRight, combinedRig
         if (match && match.params.rightId && match.params.matchedRightId) {
             fetchFocusedRight(match.params.rightId);
             fetchMatchedRight(match.params.matchedRightId);
+            // matchedRightId from url should be correct one.
             fetchCombinedRight(match.params.rightId, match.params.matchedRightId);
         }
     }, match);
@@ -35,7 +37,8 @@ function MatchRightView({history, match, focusedRight, matchedRight, combinedRig
         history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}`));
     };
 
-    const matchedRightRowData = [focusedRight, matchedRight]; // add sort by date
+    // Sorted by start field. desc
+    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => moment.utc(b.start).diff(moment.utc(a.start)));
 
     return (
         <div className='nexus-c-match-right'>
