@@ -1,17 +1,21 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
+import SectionMessage from '@atlaskit/section-message';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
+import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
+import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import * as selectors from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs, fetchFocusedRight} from '../right-matching/rightMatchingActions';
 import './TitleMatchView.scss';
 import {titleServiceManager} from '../../containers/metadata/service/TitleServiceManager';
-import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 
 const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping}) => {
+    const [totalCount, setTotalCount] = useState(0);
+
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
@@ -26,12 +30,24 @@ const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight
 
     return (
         <div className="nexus-c-title-to-match">
-            <NexusGrid
-                columnDefs={columnDefs}
-                rowData={[focusedRight]}
-            />
+            <div className="nexus-c-title-to-match-header">
+                <NexusTitle>Title Matching</NexusTitle>
+            </div>
+            <NexusTitle>Incoming Right</NexusTitle>
+            <div className="nexus-c-title-to-match-grid">
+                <NexusGrid
+                    columnDefs={columnDefs}
+                    rowData={[focusedRight]}
+                />
+            </div>
+            <SectionMessage>
+                <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
+                    action menu.</p>
+            </SectionMessage>
+            <NexusTitle>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
                 columnDefs={columnDefs}
+                setTotalCount={setTotalCount}
             />
         </div>
     );

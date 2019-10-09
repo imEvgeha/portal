@@ -4,9 +4,19 @@
     flex-direction: column;
     width: 100%;
     .nexus-c-nexus-grid {
-        height: 500px;
+        height: 400px;
     }
-    .nexus-c-nexus-grid:first-of-type {
-        height: 81px;
+    .nexus-c-title-to-match-grid {
+        .nexus-c-nexus-grid {
+            height: 81px;
+        }
+    }
+    >.nexus-c-title{
+        font-weight: normal;
+    }
+    .nexus-c-title-to-match-header{
+        .nexus-c-title{
+            font-size: 20px;
+        }
     }
 }
