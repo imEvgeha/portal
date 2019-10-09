@@ -7,7 +7,8 @@ import {
     createRightMatchingColumnDefs,
     fetchCombinedRight,
     fetchFocusedRight,
-    fetchMatchedRight
+    fetchMatchedRight,
+    saveCombinedRight
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
@@ -75,6 +76,7 @@ MatchRightView.propTypes = {
     fetchFocusedRight: PropTypes.func,
     fetchMatchedRight: PropTypes.func,
     fetchCombinedRight: PropTypes.func,
+    saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func
 };
 
@@ -97,6 +99,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
+    saveCombinedRight:(focusedRightId, matchedRightId, combinedRight) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
 });
 

@@ -4,7 +4,7 @@ import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {getCombinedRight, getRightMatchingList} from './rightMatchingService';
+import {getCombinedRight, getRightMatchingList, putCombinedRight} from './rightMatchingService';
 
 export function* createRightMatchingColumnDefs({payload}) {
     try {
@@ -151,8 +151,6 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
             payload: {}
         });
 
-        console.log('fetchCombinedRight', payload)
-
         const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId);
         const combinedRight = response.data;
 
@@ -247,6 +245,7 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRight, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
+        takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
     ]);
 }
