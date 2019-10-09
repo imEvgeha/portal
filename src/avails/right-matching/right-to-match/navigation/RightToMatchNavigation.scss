@@ -3,4 +3,15 @@
     padding-left: 10px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.nexus-c-right-to-match-navigation__icon-button {
+    line-height: 0;
+    font-size: 0;
+}
+
+.nexus-c-right-to-match-navigation__icon {
+    line-height: 0;
+    font-size: 0;
 }

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -8,27 +8,19 @@ import './NexusGrid.scss';
 const NexusGrid = ({
     columnDefs,
     rowData,
-    getGridApi,
     // headerHeight,
     // rowHeight,
-    setRowData,
+    handleGridReady,
     ...restProps,
 }) => {
-    const gridApiRef = useRef();
     const onGridReady = params => {
-        gridApiRef.current = params;
-        const {api, columnApi} = gridApiRef.current;
-        // api.sizeColumnsToFit();
-
-        if (typeof getGridApi === 'function') {
-            getGridApi(api, columnApi);
-        }
-        if (typeof setRowData === 'function') {
-            setRowData(api);
+        const {api, columnApi} = params;
+        if (typeof handleGridReady === 'function') {
+            handleGridReady(api, columnApi);
         }
     };
+
     const onGridSizeChanged = () => {
-        // const {api = {}} = gridApiRef.current;
         // api.sizeColumnsToFit();
     };
 
@@ -49,7 +41,7 @@ const NexusGrid = ({
 NexusGrid.propTypes = {
     columnDefs: PropTypes.array,
     rowData: PropTypes.array,
-    getGridApi: PropTypes.func,
+    handleGridReady: PropTypes.func,
     // headerHeight: PropTypes.number,
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
@@ -58,7 +50,7 @@ NexusGrid.propTypes = {
 NexusGrid.defaultProps = {
     columnDefs: [],
     rowData: [],
-    getGridApi: null,
+    handleGridReady: null,
     // headerHeight: 52,
     // rowHeight: 48,
     setRowData: null,

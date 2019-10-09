@@ -1,4 +1,4 @@
-import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
+import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
@@ -168,9 +168,8 @@ function* fetchAndStoreRightMatchingSearchCriteria({payload}) {
 
         if (fetchResult.type === actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_SUCCESS) {
             const {payload} = fetchResult;
-            const provider = 'sony_latam';
-            if (provider) {
-                yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, provider);
+            if (payload) {
+                yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, payload);
             }
         }
     }
@@ -266,7 +265,7 @@ export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
-        takeEvery(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
+        takeLatest(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
     ]);
 }

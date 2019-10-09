@@ -29,6 +29,7 @@ const RightToMatchView = ({
     fetchFocusedRight,
     fieldSearchCriteria,
     focusedRight,
+    history,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
@@ -93,7 +94,7 @@ const RightToMatchView = ({
         <div className="nexus-c-right-to-match-view">
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
                 <PageHeader>
-                    <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)}>
+                    <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__link" >
                         <ArrowLeftIcon size='large'/> 
                         Right to Right Matching
                     </Link>
@@ -104,10 +105,11 @@ const RightToMatchView = ({
                     <div className="nexus-c-right-to-match-view__table-header">
                         <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
                         <RightToMatchNavigation
-                            searchParams={{availHistoryIds: match.params.availHistoryIds}}
-                            focusedId={rightId}
+                            searchParams={{availHistoryIds}}
+                            focusedRightId={rightId}
                             focusedRight={focusedRight}
                             availHistoryIds={availHistoryIds}
+                            history={history}
                         />
                     </div>
                     <div className="nexus-c-right-to-match-view__focused-right">
@@ -168,6 +170,7 @@ RightToMatchView.defaultProps = {
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
     focusedRight: null,
+    history: null,
 };
 
 const createMapStateToProps = () => {
