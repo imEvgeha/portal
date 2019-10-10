@@ -10,9 +10,14 @@ import * as selectors from '../../rightMatchingSelectors';
 import {URL} from '../../../../util/Common';
 import {RIGHT_PAGE_SIZE} from '../../../../constants/rightFetching';
 
-const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchDataUntilFindId, rightMatchPageData, history}) => {
+const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, focusedRightId, rightMatchPageData, history}) => {
 
-    const [navigationData, setNavigationData] = useState({});
+    const [navigationData, setNavigationData] = useState({
+        previousId: null,
+        currentPosition: null,
+        focusedRightId: null,
+        nextId: null
+    });
     const [isSpinnerRunning, setIsSpinnerRunning] = useState(true);
 
     useEffect(() => {
@@ -20,41 +25,53 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
     }, []);
 
     useEffect(() => {
-        if (focusedRight.id) {
+        if (focusedRightId && focusedRightId !== navigationData.focusedRightId) {
             const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-            const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) : 0;
-            fetchRightMatchDataUntilFindId({
-                id: focusedRight.id,
-                pageNumber,
-                pageSize: RIGHT_PAGE_SIZE,
-                searchParams
-            });
+            const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) + 1: 0;
+            const updatedNavigationData = getNavigationDataIfExist();
+            if(updatedNavigationData !== null) {
+                setNavigationData(updatedNavigationData);
+                setIsSpinnerRunning(false);
+            } else {
+                fetchRightMatchDataUntilFindId({
+                    id: focusedRightId,
+                    pageNumber,
+                    pageSize: RIGHT_PAGE_SIZE,
+                    searchParams
+                });
+            }
         }
-    }, [focusedRight]);
+    }, [focusedRightId]);
 
     useEffect(() => {
-        updateNavigationIds();
-        setIsSpinnerRunning(false);
+        if (rightMatchPageData.pages) {
+            let navigationData = getNavigationDataIfExist();
+            if(navigationData) {
+                setNavigationData(navigationData);
+                setIsSpinnerRunning(false);
+            }
+        }
     }, [rightMatchPageData]);
 
-    const updateNavigationIds = () => {
+    const getNavigationDataIfExist = () => {
         const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-
+        let navigationData = null;
         loop:
             for (let i = 0; i < pages.length; i++) {
                 let items = rightMatchPageData.pages[pages[i]];
                 for (let j = 0; j < items.length; j++) {
-                    if (items[j] === focusedRight.id) {
+                    if (items[j] === focusedRightId) {
                         const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);
                         const nextId = j + 1 < items.length ? items[j + 1] : (i + 1 < pages.length ? rightMatchPageData.pages[pages[i + 1]][0] : null);
-                        const currentPosition = (i + 1) * pages[i].length + j;
+                        const currentPosition = i * RIGHT_PAGE_SIZE + pages[i].length + j;
 
-                        setNavigationData({previousId, currentPosition, nextId});
+                        navigationData = {previousId, currentPosition, focusedRightId, nextId};
 
                         break loop;
                     }
                 }
             }
+        return navigationData;
     };
 
     const onPreviousRightClick = () => {
@@ -73,42 +90,47 @@ const RightToMatchNavigation = ({searchParams, focusedRight, fetchRightMatchData
         }
     };
 
+    const renderNavigationData = () => {
+        if(isSpinnerRunning) {
+            return (<Spinner size='small'/>);
+        }
+        return (
+            `${navigationData.currentPosition < 10 ? '0' : ''}${navigationData.currentPosition} of ${rightMatchPageData.total}`
+        );
+    };
+
     return (
         <div className='nexus-c-right-to-match-navigation'>
             <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onPreviousRightClick()}>
                 <HipchatChevronUpIcon size='large'/>
             </div>
 
-            {navigationData.currentPosition < 10 ? '0' : ''}{navigationData.currentPosition} of {rightMatchPageData.total}
+            {renderNavigationData()}
 
             <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onNextRightClick()}>
                 <HipchatChevronDownIcon size='large'/>
             </div>
 
-            {isSpinnerRunning && <Spinner size='small'/>}
         </div>
     );
 };
 
 RightToMatchNavigation.propTypes = {
-    focusedRight: PropTypes.object,
     fetchRightMatchDataUntilFindId: PropTypes.func,
     rightMatchPageData: PropTypes.object,
     searchParams: PropTypes.object,
     history: PropTypes.object,
+    focusedRightId: PropTypes.string
 };
 
 RightToMatchNavigation.defaultProps = {
-    focusedRight: {},
     rightMatchPageData: {},
-    searchParams: {}
+    searchParams: {},
 };
 
 const createMapStateToProps = () => {
-    const focusedRightSelector = selectors.createFocusedRightSelector();
     const rightMatchPageDataSelector = selectors.createRightMatchPageDataSelector();
     return (state, props) => ({
-        focusedRight: focusedRightSelector(state, props),
         rightMatchPageData: rightMatchPageDataSelector(state, props)
     });
 };
