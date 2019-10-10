@@ -10,7 +10,7 @@ import {Label} from '@atlaskit/field-base';
 const TIME_PLACEHOLDER = 'HH:mm:ss';
 const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
 
-const NexusDateTimePicker = ({
+const NexusSimpleDateTimePicker = ({
     label,
     id,
     value,
@@ -104,7 +104,7 @@ const NexusDateTimePicker = ({
     );
 };
 
-NexusDateTimePicker.propTypes = {
+NexusSimpleDateTimePicker.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
     error: PropTypes.string,
@@ -113,14 +113,14 @@ NexusDateTimePicker.propTypes = {
     id: PropTypes.string.isRequired,
 };
 
-NexusDateTimePicker.defaultProps = {
+NexusSimpleDateTimePicker.defaultProps = {
     label: '',
     value: '',
     error: '',
     isUTC: false,
 };
 
-export default NexusDateTimePicker;
+export default NexusSimpleDateTimePicker;
 
 // TODO: Remove when AtlasKit fixes DateTimePicker's error state
 const TemporaryErrorBorder = styled.div`

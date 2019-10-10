@@ -16,7 +16,7 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
-import NexusDateTimePicker from '../../../ui-elements/nexus-datetime-picker/NexusDateTimePicker';
+import NexusSimpleDateTimePicker from '../../../ui-elements/nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 
 
 const mapStateToProps = state => {
@@ -238,14 +238,14 @@ class RightCreate extends React.Component {
                 time: null,
                 localdate: null,
                 date: (
-                    <NexusDateTimePicker
+                    <NexusSimpleDateTimePicker
                         id={jvName}
                         label={displayName}
                         isUTC={false}
                         value={'2019-10-08T10:00:00.000Z'}
                         onChange={date => {
                             /* For testing proposes */
-                            console.warn('NexusDateTimePicker returned: ', date);
+                            console.warn('NexusSimpleDateTimePicker returned: ', date);
                         }}
                         required={required}
                     />
