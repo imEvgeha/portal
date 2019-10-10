@@ -3,6 +3,7 @@ import {Route, Switch} from 'react-router-dom';
 import RightDashboardContainer  from './containers/avail/dashboard/DashboardContainer';
 import RightDetails  from './containers/avail/details/RightDetails';
 import RightCreate  from './containers/avail/create/RightCreate';
+import RightCreateV2  from './containers/avail/create/RightCreateV2';
 import RightsCreateFromAttachment  from './containers/avail/create/RightsCreateFromAttachment';
 import SelectRightsPlanning  from './containers/avail/DOP/SelectRightsPlanning';
 import FixRights from './containers/avail/DOP/FixRights';
@@ -27,6 +28,7 @@ const routes = (
         <Route exact path="/avails/rights" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
         <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
+        <Route exact path="/avails/rights/create/v2" component={canRender(RightCreateV2, 'create', 'Avail')}/>
         <Route exact path="/avails/rights/" component={canRender(RightDetails, 'read', 'Avail')}/>
         <Route exact path="/avails/history/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
         <Route exact path="/avails/history/fix-errors" component={canRender(FixRights, 'update', 'Avail')}/>
