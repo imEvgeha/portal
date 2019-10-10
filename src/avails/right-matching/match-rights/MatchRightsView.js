@@ -51,8 +51,8 @@ function MatchRightView({
     // we should this via router Link
     const navigateToMatchPreview = () => {
         const {params} = match || {};
-        const {availsHistoryIds, rightId} = params || {};
-        history.push(URL.keepEmbedded(`/avails/history/${availsHistoryIds}/right_matching/${rightId}`));
+        const {availHistoryIds, rightId} = params || {};
+        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
     };
 
     // Sorted by start field. desc

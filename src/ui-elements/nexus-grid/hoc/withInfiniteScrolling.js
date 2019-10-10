@@ -67,6 +67,9 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
 
         const handleGridReady = gridApi => {
             const {api} = gridApiRef.current;
+            if (typeof props.handleGridReady === 'function') {
+                props.handleGridReady(gridApi);
+            }
             if (!api) {
                 gridApiRef.current = {api: gridApi};
             }

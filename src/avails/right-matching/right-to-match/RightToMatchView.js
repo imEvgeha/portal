@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from 'react'; // eslint-disable-line
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -16,8 +16,7 @@ import * as selectors from '../rightMatchingSelectors';
 import {createRightMatchingColumnDefs, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
-import RightToMatchNavigation from './navigation/RightToMatchNavigation';
-import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
+import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightToMatchList)(NexusGrid));
 
@@ -31,9 +30,11 @@ const RightToMatchView = ({
     fieldSearchCriteria,
     focusedRight,
     history,
+    location,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
+    const matchGridRef = useRef({});
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
 
@@ -92,6 +93,17 @@ const RightToMatchView = ({
     const updatedFocusedRightColumnDefs = columnDefs.length ? [additionalFocusedRightColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
+    const handleClick = () => {
+        const {api} = matchGridRef.current;
+        if (api) {
+            const selectedRows = api.getSelectedRows(); 
+            const firstRow = Array.isArray(selectedRows) && selectedRows.length && selectedRows[0];
+            if (firstRow) {
+                history.push(URL.keepEmbedded(`${location.pathname}/match/${firstRow.id}`));
+            }
+        }
+    };
+    
     return (
         <div className="nexus-c-right-to-match-view">
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
@@ -129,6 +141,7 @@ const RightToMatchView = ({
                         columnDefs={updatedColumnDefs}
                         params={fieldSearchCriteria}
                         setTotalCount={setTotalCount}
+                        handleGridReady={api => matchGridRef.current = {api}}
                     />
                 ) : null}
             </div>
@@ -138,7 +151,7 @@ const RightToMatchView = ({
                     <Button 
                         className="nexus-c-button" 
                         appearance="primary" 
-                        isDisabled={isMatchDisabled}
+                        onClick={handleClick}
                     >
                         Match
                     </Button>
@@ -149,11 +162,12 @@ const RightToMatchView = ({
 };
 
 RightToMatchView.propTypes = {
+    history: PropTypes.object,
+    match: PropTypes.object,
+    location: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    history: PropTypes.object,
-    match: PropTypes.object,
     fieldSearchCriteria: PropTypes.object,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
@@ -161,14 +175,15 @@ RightToMatchView.propTypes = {
 };
 
 RightToMatchView.defaultProps = {
+    match: {},
+    history: null,
+    location: {},
     columnDefs: [],
     mapping: [],
-    match: {},
     fieldSearchCriteria: null,
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
     focusedRight: null,
-    history: null,
 };
 
 const createMapStateToProps = () => {

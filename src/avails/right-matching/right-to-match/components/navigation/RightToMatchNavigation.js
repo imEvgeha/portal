@@ -5,10 +5,10 @@ import Spinner from '@atlaskit/spinner';
 import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import './RightToMatchNavigation.scss';
-import {fetchRightMatchDataUntilFindId} from '../../rightMatchingActions';
-import * as selectors from '../../rightMatchingSelectors';
-import {URL} from '../../../../util/Common';
-import {RIGHT_PAGE_SIZE} from '../../../../constants/rightFetching';
+import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
+import * as selectors from '../../../rightMatchingSelectors';
+import {URL} from '../../../../../util/Common';
+import {RIGHT_PAGE_SIZE} from '../../../../../constants/rightFetching';
 
 const RightToMatchNavigation = ({
     searchParams, 
