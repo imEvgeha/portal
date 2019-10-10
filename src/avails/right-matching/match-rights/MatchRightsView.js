@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import moment from 'moment';
 import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
 import {
@@ -14,10 +15,20 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
-import moment from 'moment';
 
-function MatchRightView({history, match, focusedRight, matchedRight, combinedRight, fetchFocusedRight, fetchMatchedRight, fetchCombinedRight, createRightMatchingColumnDefs, columnDefs, mapping}) {
-
+function MatchRightView({
+    history, 
+    match, 
+    focusedRight,
+    matchedRight, 
+    combinedRight, 
+    fetchFocusedRight, 
+    fetchMatchedRight, 
+    fetchCombinedRight,
+    createRightMatchingColumnDefs, 
+    columnDefs, 
+    mapping
+}) {
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
@@ -25,21 +36,27 @@ function MatchRightView({history, match, focusedRight, matchedRight, combinedRig
     }, [columnDefs, mapping]);
 
     useEffect(() => {
-        if (match && match.params.rightId && match.params.matchedRightId) {
-            fetchFocusedRight(match.params.rightId);
-            fetchMatchedRight(match.params.matchedRightId);
+        const {params} = match || {};
+        const {rightId, matchedRightId} = params || {};
+        if (rightId && matchedRightId) {
+            if (focusedRight && focusedRight.id !== rightId) {
+                fetchFocusedRight(rightId);
+            }
+            fetchMatchedRight(matchedRightId);
             // matchedRightId from url should be correct one.
-            fetchCombinedRight(match.params.rightId, match.params.matchedRightId);
+            fetchCombinedRight(rightId, matchedRightId);
         }
-    }, match);
+    },[match]);
 
+    // we should this via router Link
     const navigateToMatchPreview = () => {
-        const indexToRemove = location.pathname.lastIndexOf('/match/');
-        history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}`));
+        const {params} = match || {};
+        const {availsHistoryIds, rightId} = params || {};
+        history.push(URL.keepEmbedded(`/avails/history/${availsHistoryIds}/right_matching/${rightId}`));
     };
 
     // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => moment.utc(b.start).diff(moment.utc(a.start)));
+    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyrReceivedAt)));
 
     return (
         <div className='nexus-c-match-right'>
@@ -47,14 +64,14 @@ function MatchRightView({history, match, focusedRight, matchedRight, combinedRig
                 title={'Rights Matching Preview'}
                 onNavigationClick={navigateToMatchPreview}
             />
-            <div className='nexus-c-match-right-matched'>
+            <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
                 <NexusGrid
                     columnDefs={columnDefs}
                     rowData={matchedRightRowData}
                 />
             </div>
-            <div className='nexus-c-match-right-combined'>
+            <div className='nexus-c-match-right__combined'>
                 <NexusTitle>Combined Rights</NexusTitle>
                 <NexusGrid
                     columnDefs={columnDefs}
@@ -77,7 +94,22 @@ MatchRightView.propTypes = {
     fetchMatchedRight: PropTypes.func,
     fetchCombinedRight: PropTypes.func,
     saveCombinedRight: PropTypes.func,
-    createRightMatchingColumnDefs: PropTypes.func
+    createRightMatchingColumnDefs: PropTypes.func,
+};
+
+MatchRightView.defaultProps = {
+    history: null,
+    match: null,
+    focusedRight: null,
+    matchedRight: null,
+    combinedRight: null,
+    columnDefs: [],
+    mapping: null,
+    fetchFocusedRight: null,
+    fetchMatchedRight: null,
+    fetchCombinedRight: null,
+    saveCombinedRight: null,
+    createRightMatchingColumnDefs: null,
 };
 
 const createMapStateToProps = () => {
