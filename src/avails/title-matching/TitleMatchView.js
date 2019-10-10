@@ -7,20 +7,23 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import * as selectors from '../right-matching/rightMatchingSelectors';
-import {createRightMatchingColumnDefs, fetchFocusedRight} from '../right-matching/rightMatchingActions';
-import './TitleMatchView.scss';
+import { getFocusedRight } from './titleMatchingSelectors';
+import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
+import { fetchFocusedRight } from './titleMatchingActions';
 import {titleServiceManager} from '../../containers/metadata/service/TitleServiceManager';
+import mappings from './titleMatchingMappings.json';
+import './TitleMatchView.scss';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 
-const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping}) => {
+const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs}) => {
     const [totalCount, setTotalCount] = useState(0);
 
     useEffect(() => {
         if (!columnDefs.length) {
-            createRightMatchingColumnDefs(mapping);
+            createRightMatchingColumnDefs(mappings);
         }
-    }, [columnDefs, mapping]);
+    }, [columnDefs, mappings]);
 
     useEffect(() => {
         if (match && match.params.rightId) {
@@ -69,13 +72,10 @@ TitleMatchView.defaultProps = {
 };
 
 const createMapStateToProps = () => {
-    const focusedRightSelector = selectors.createFocusedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
-    const availsMappingSelector = selectors.createAvailsMappingSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: availsMappingSelector(state, props),
-        focusedRight: focusedRightSelector(state, props)
+        focusedRight: getFocusedRight(state)
     });
 };
 

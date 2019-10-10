@@ -9,6 +9,7 @@ import media from './stores/reducers/media/search';
 import dopReducer from './stores/reducers/DOP/dopReducer';
 import settings from './containers/settings/settingsReducer';
 import rightMatching from './avails/right-matching/rightMatchingReducer';
+import titleMatching from './avails/title-matching/titleMatchingReducer';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -21,6 +22,7 @@ const createRootReducer = routerHistory => combineReducers({
     dopReducer,
     settings,
     rightMatching,
+    titleMatching
 });
 
 export default createRootReducer;
