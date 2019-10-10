@@ -8,15 +8,33 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
-import {createRightMatchingColumnDefs} from './rightMatchingActions';
+import {
+    cleanStoredRightMatchDataWithIds,
+    storeRightMatchDataWithIds,
+    createRightMatchingColumnDefs,
+} from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
-const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, match}) => {
+const RightMatchingView = ({
+    createRightMatchingColumnDefs, 
+    mapping, 
+    columnDefs, 
+    history, 
+    match,
+    storeRightMatchDataWithIds, 
+    cleanStoredRightMatchDataWithIds,
+}) => {
     const [totalCount, setTotalCount] = useState(0);
+
+    // TODO: refactor this
+    useEffect(() => {
+        cleanStoredRightMatchDataWithIds();
+    }, []);
+
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
@@ -34,6 +52,16 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
                 <Button onClick={() => onFocusButtonClick(id)}>Focus</Button>
             </CustomActionsCellRenderer>
         );
+    };
+
+    // TODO: refactor this
+    const storeData = (page, data) => {
+        if (storeRightMatchDataWithIds) {
+            let pages = {};
+            pages[page] = data.data.map(e => e.id);
+            const rightMatchPageData = {pages, total: data.total};
+            storeRightMatchDataWithIds({ rightMatchPageData });
+        }
     };
 
     const additionalColumnDef = {
@@ -64,6 +92,7 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
                 columnDefs={updatedColumnDefs}
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
+                succesDataFetchCallback={storeData}
             />
         </div>
     );
@@ -75,12 +104,16 @@ RightMatchingView.propTypes = {
     mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
+    storeRightMatchDataWithIds: PropTypes.func,
+    cleanStoredRightMatchDataWithIds: PropTypes.func,
 };
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
     mapping: [],
     match: {},
+    storeRightMatchDataWithIds: null,
+    cleanStoredRightMatchDataWithIds: null,
 };
 
 const createMapStateToProps = () => {
@@ -95,6 +128,8 @@ const createMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
+    cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line
