@@ -226,17 +226,7 @@ class RightCreate extends React.Component {
     };
 
     render() {
-        const fieldMapping = (fieldType, jvName, displayName, required, value = []) => {
-            const prepData = (name) => {
-                const {selectValues = {}} = this.props;
-                const options  = selectValues[name] || [];
-                const alreadySelected = value.map((option) => option.country);
-
-                return options
-                    .filter((rec) => (rec.value && !alreadySelected.includes(rec.value)))
-                    .map(rec => ({...rec, label: rec.label || rec.value}));
-            };
-
+        const fieldMapping = (fieldType, jvName, displayName, required) => {
             const fieldMap = {
                 string: null,
                 integer: null,
@@ -257,6 +247,7 @@ class RightCreate extends React.Component {
                             /* For testing proposes */
                             console.warn('NexusDateTimePicker returned: ', date);
                         }}
+                        required={required}
                     />
                 ),
                 boolean: null,
