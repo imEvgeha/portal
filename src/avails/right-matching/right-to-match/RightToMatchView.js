@@ -5,9 +5,9 @@ import Button from '@atlaskit/button';
 import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import Flag, { FlagGroup } from '@atlaskit/flag';
+import Flag, {FlagGroup} from '@atlaskit/flag';
 import Warning from '@atlaskit/icon/glyph/warning';
-import { colors } from '@atlaskit/theme';
+import {colors} from '@atlaskit/theme';
 
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';

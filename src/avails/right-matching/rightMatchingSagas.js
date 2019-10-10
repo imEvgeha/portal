@@ -170,15 +170,12 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
 
 export function* createNewRight(requestMethod, {payload}) {
     try {
-        const response = yield call(requestMethod, payload);
-        const resStatus = response.status;
-        if(resStatus === 200 || resStatus === 201) {
-            yield put({
-                type: actionTypes.SET_RIGHT_SUCCESS_FLAG,
-                payload: {isSuccessFlagVisible: true}
-            });
-            yield put(goBack());
-        }
+        yield call(requestMethod, payload);
+        yield put({
+            type: actionTypes.SET_RIGHT_SUCCESS_FLAG,
+            payload: {isSuccessFlagVisible: true}
+        });
+        yield put(goBack());
     } catch (error) {
         yield put({
             type: actionTypes.SET_CREATE_NEW_RIGHT_ERROR,
