@@ -15,3 +15,11 @@
     line-height: 0;
     font-size: 0;
 }
+
+.nexus-c-right-to-match-navigation__arrow {
+    &:hover {
+        color: #666;
+        cursor: pointer;
+    }
+}
+

@@ -17,6 +17,7 @@ import {createRightMatchingColumnDefs, fetchRightMatchingFieldSearchCriteria, fe
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './navigation/RightToMatchNavigation';
+import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightToMatchList)(NexusGrid));
 
@@ -89,6 +90,7 @@ const RightToMatchView = ({
         sortable: false,
     };
     const updatedFocusedRightColumnDefs = columnDefs.length ? [additionalFocusedRightColumnDef, ...columnDefs] : columnDefs;
+    const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     return (
         <div className="nexus-c-right-to-match-view">
@@ -100,27 +102,23 @@ const RightToMatchView = ({
                     </Link>
                 </PageHeader>
             </div>
-            {focusedRight && (
-                <>
-                    <div className="nexus-c-right-to-match-view__table-header">
-                        <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
-                        <RightToMatchNavigation
-                            searchParams={{availHistoryIds}}
-                            focusedRightId={rightId}
-                            focusedRight={focusedRight}
-                            availHistoryIds={availHistoryIds}
-                            history={history}
-                        />
-                    </div>
-                    <div className="nexus-c-right-to-match-view__focused-right">
-                        <NexusGrid
-                            columnDefs={updatedFocusedRightColumnDefs}
-                            rowData={[focusedRight]}
-                            domLayout="autoHeight"
-                        />
-                    </div>
-                </>
-            )}
+            <div className="nexus-c-right-to-match-view__table-header">
+                <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
+                <RightToMatchNavigation
+                    searchParams={{availHistoryIds}}
+                    focusedRightId={rightId}
+                    focusedRight={focusedRight}
+                    availHistoryIds={availHistoryIds}
+                    history={history}
+                />
+            </div>
+            <div className="nexus-c-right-to-match-view__focused-right">
+                <NexusGrid
+                    columnDefs={updatedFocusedRightColumnDefs}
+                    rowData={updatedFocusedRight}
+                    domLayout="autoHeight"
+                />
+            </div>
             <SectionMessage>
                 <p>Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.</p>
             </SectionMessage>

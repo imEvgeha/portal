@@ -6,7 +6,7 @@ import createValueFormatter from '../../ui-elements/nexus-grid/elements/value-fo
 import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {getRightMatchingList} from './rightMatchingService';
+import {getCombinedRight, getRightMatchingList, putCombinedRight} from './rightMatchingService';
 
 // TODO - refactor this worker sagra (use select)
 export function* createRightMatchingColumnDefs({payload}) {
@@ -215,6 +215,78 @@ function* fetchAndStoreFocusedRight(action) {
     }
 }
 
+export function* fetchMatchedRight(requestMethod, {payload}) {
+    try {
+        yield put({
+            type: actionTypes.FETCH_MATCHED_RIGHT_REQUEST,
+            payload: {}
+        });
+
+        const response = yield call(requestMethod, payload);
+        const matchedRight = response.data;
+
+        yield put({
+            type: actionTypes.FETCH_MATCHED_RIGHT_SUCCESS,
+            payload: {matchedRight},
+        });
+
+    } catch (error) {
+        yield put({
+            type: actionTypes.FETCH_MATCHED_RIGHT_ERROR,
+            payload: error,
+            error: true,
+        });
+    }
+}
+
+export function* fetchCombinedRight(requestMethod, {payload}) {
+    try {
+        yield put({
+            type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
+            payload: {}
+        });
+
+        const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId);
+        const combinedRight = response.data;
+
+        yield put({
+            type: actionTypes.FETCH_COMBINED_RIGHT_SUCCESS,
+            payload: {combinedRight},
+        });
+
+    } catch (error) {
+        yield put({
+            type: actionTypes.FETCH_COMBINED_RIGHT_ERROR,
+            payload: error,
+            error: true,
+        });
+    }
+}
+
+export function* saveCombinedRight(requestMethod, {payload}) {
+    try {
+        yield put({
+            type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
+            payload: {}
+        });
+
+        const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId, payload.combinedRight);
+        const focusedRight = response.data;
+
+        yield put({
+            type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
+            payload: {focusedRight},
+        });
+
+    } catch (error) {
+        yield put({
+            type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
+            payload: error,
+            error: true,
+        });
+    }
+}
+
 export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
     try {
         const {id, pageSize, searchParams} = payload || {};
@@ -238,7 +310,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
                 total: response.data.total
             };
 
-            if (isBoundaryValue) {
+            if (isBoundaryValue || ids.length < pageSize) {
                 break;
             }
             isBoundaryValue = isIdFounded && (ids[ids.length - 1] === id);
@@ -266,6 +338,9 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeLatest(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
+        takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRight, rightsService.get),
+        takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
+        takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
     ]);
 }

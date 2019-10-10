@@ -6,11 +6,20 @@ const initialState = {
     fieldSearchCriteria: null,
     focusedRight: null,
     rightMatchPageData: {},
+    matchedRight: {},
+    combinedRight: {}
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
-    const {columnDefs, fieldSearchCriteria, focusedRight, rightMatchPageData} = payload || {};
+    const {
+        columnDefs, 
+        fieldSearchCriteria, 
+        focusedRight, 
+        rightMatchPageData,
+        matchedRight,
+        combinedRight,
+    } = payload || {};
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
@@ -27,6 +36,16 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 focusedRight,
+            };
+        case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
+            return {
+                ...state,
+                matchedRight,
+            };
+        case actionTypes.FETCH_COMBINED_RIGHT_SUCCESS:
+            return {
+                ...state,
+                combinedRight,
             };
         case actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS:
             return {
@@ -47,3 +66,4 @@ const rightMatchingReducer = (state = initialState, action) => {
 };
 
 export default rightMatchingReducer;
+

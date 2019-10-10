@@ -21,6 +21,16 @@ export const getFocusedRight = (state) => {
     return rightMatching && rightMatching.focusedRight;
 };
 
+export const getMatchedRight = (state) => {
+    const {rightMatching} = state;
+    return rightMatching && rightMatching.matchedRight;
+};
+
+export const getCombinedRight = (state) => {
+    const {rightMatching} = state;
+    return rightMatching && rightMatching.combinedRight;
+};
+
 export const getRightMatchPageData = (state) => {
     const {rightMatching} = state;
     return rightMatching && rightMatching.rightMatchPageData;
@@ -46,6 +56,16 @@ export const createFieldSearchCriteriaSelector = () => createSelector(
 export const createFocusedRightSelector = () => createSelector(
     getFocusedRight,
     focusedRight => focusedRight,
+);
+
+export const createMatchedRightSelector = () => createSelector(
+    getMatchedRight,
+    matchedRight => matchedRight,
+);
+
+export const createCombinedRightSelector = () => createSelector(
+    getCombinedRight,
+    combinedRight => combinedRight,
 );
 
 export const createRightMatchPageDataSelector = () => createSelector(
