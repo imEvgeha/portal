@@ -1,10 +1,11 @@
 import {call, put, all, take, takeEvery} from 'redux-saga/effects';
 import moment from 'moment';
+import {goBack} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {getRightMatchingList} from './rightMatchingService';
+import {getRightMatchingList, createRightById} from './rightMatchingService';
 
 export function* createRightMatchingColumnDefs({payload}) {
     try {
@@ -167,10 +168,31 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
 
 }
 
+export function* createNewRight(requestMethod, {payload}) {
+    try {
+        const response = yield call(requestMethod, payload);
+        const resStatus = response.status;
+        if(resStatus === 200 || resStatus === 201) {
+            yield put({
+                type: actionTypes.SET_RIGHT_SUCCESS_FLAG,
+                payload: {isSuccessFlagVisible: true}
+            });
+            yield put(goBack());
+        }
+    } catch (error) {
+        yield put({
+            type: actionTypes.SET_CREATE_NEW_RIGHT_ERROR,
+            payload: error,
+            error: true
+        });
+    }
+}
+
 export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
-        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
+        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
+        takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById)
     ]);
 }

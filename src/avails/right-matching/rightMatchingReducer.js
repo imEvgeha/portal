@@ -3,7 +3,8 @@ import * as actionTypes from './rightMatchingActionTypes';
 const initialState = {
     columnDefs: [],
     rightMatchPageData: {},
-    focusedRight: {}
+    focusedRight: {},
+    isSuccessFlagVisible: false
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
@@ -11,6 +12,7 @@ const rightMatchingReducer = (state = initialState, action) => {
     const {columnDefs} = payload || {};
     const {focusedRight} = payload || {};
     const {rightMatchPageData} = payload || [];
+    const {isSuccessFlagVisible} = payload || [];
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
@@ -35,6 +37,11 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 rightMatchPageData: {}
+            };
+        case actionTypes.SET_RIGHT_SUCCESS_FLAG:
+            return {
+                ...state,
+                isSuccessFlagVisible: isSuccessFlagVisible
             };
         default:
             return state;

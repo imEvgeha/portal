@@ -23,3 +23,13 @@ export const fetchRightMatchDataUntilFindId = (payload) => ({
     type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID,
     payload
 });
+
+export const setRightSuccessFlag = (payload) => ({
+    type: actionTypes.SET_RIGHT_SUCCESS_FLAG,
+    payload
+});
+
+export const createNewRight = (payload) => ({
+    type: actionTypes.CREATE_NEW_RIGHT,
+    payload
+});
