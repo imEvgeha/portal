@@ -15,7 +15,7 @@ import {
     cleanStoredRightMatchDataWithIds,
     createRightMatchingColumnDefs,
     storeRightMatchDataWithIds,
-    setRightSuccessFlag
+    setNewRightSuccessFlag
 } from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
@@ -32,7 +32,7 @@ const RightMatchingView = ({
         storeRightMatchDataWithIds, 
         cleanStoredRightMatchDataWithIds,
         isNewRightSuccessFlagVisible,
-        setSuccessFlag
+        setStateNewRightSuccessFlag
     }) => {
     const [totalCount, setTotalCount] = useState(0);
 
@@ -103,7 +103,7 @@ const RightMatchingView = ({
                 succesDataFetchCallback={storeData}
             />
             {isNewRightSuccessFlagVisible && (
-                    <FlagGroup onDismissed={() => setSuccessFlag(false)}>
+                    <FlagGroup onDismissed={() => setStateNewRightSuccessFlag(false)}>
                         <AutoDismissFlag
                             appearance="normal"
                             id="success-flag"
@@ -131,7 +131,7 @@ RightMatchingView.propTypes = {
     match: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
-    setSuccessFlag: PropTypes.func,
+    setStateNewRightSuccessFlag: PropTypes.func,
     isNewRightSuccessFlagVisible: PropTypes.bool
 };
 
@@ -156,7 +156,7 @@ const mapDispatchToProps = (dispatch) => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
     cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload)),
-    setSuccessFlag: payload => dispatch(setRightSuccessFlag(payload))
+    setStateNewRightSuccessFlag: payload => dispatch(setNewRightSuccessFlag(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line

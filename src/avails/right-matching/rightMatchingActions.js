@@ -40,7 +40,7 @@ export const saveCombinedRight = (focusedRightId, matchedRightId, combinedRight)
 
 });
 
-export const setRightSuccessFlag = (payload) => ({
+export const setNewRightSuccessFlag = (payload) => ({
     type: actionTypes.SET_NEW_RIGHT_SUCCESS_FLAG,
     payload
 });
