@@ -63,3 +63,13 @@ export const createRightMatchPageDataSelector = () => createSelector(
     rightMatchPageData => rightMatchPageData,
 );
 
+export const getSuccessStatus = (state) => {
+    const {rightMatching} = state;
+    return rightMatching && rightMatching.isNewRightSuccessFlagVisible;
+};
+
+export const getSuccessStatusSelector = () => createSelector(
+    getSuccessStatus,
+    isNewRightSuccessFlagVisible => isNewRightSuccessFlagVisible
+);
+

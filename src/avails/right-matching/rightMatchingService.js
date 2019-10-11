@@ -29,3 +29,7 @@ export const putCombinedRight = (rightId, matchedRightId, combinedRight) => {
     );
 };
 
+export const createRightById = (id) => {
+    return http.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`); 
+};
+

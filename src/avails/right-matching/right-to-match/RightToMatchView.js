@@ -1,11 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
+import Flag, {FlagGroup} from '@atlaskit/flag';
+import Warning from '@atlaskit/icon/glyph/warning';
+import {colors} from '@atlaskit/theme';
+
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import {createRightMatchingColumnDefs, fetchFocusedRight} from '../rightMatchingActions';
+import {createRightMatchingColumnDefs, fetchFocusedRight, createNewRight} from '../rightMatchingActions';
 import * as selectors from '../rightMatchingSelectors';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import CustomActionsCellRenderer
@@ -14,7 +18,8 @@ import RightToMatchNavigation from './navigation/RightToMatchNavigation';
 import {URL} from '../../../util/Common';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 
-const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping, history}) => {
+const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping, history, createNewRight}) => {
+    const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -29,12 +34,22 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
     }, [match.params.rightId]);
 
     const onNewButtonClick = () => {
-        // TODO: Implement in PORT-722
+        setShowConfirmationFlag(true);
+    };
+
+    const onDeclareNewRight = () => {
+        setShowConfirmationFlag(false);     
+        const {params: {rightId}} = match || {};
+        createNewRight(rightId);
+    };
+
+    const onCancelNewRight = () => {
+        setShowConfirmationFlag(false);
     };
 
     const createNewButtonCellRenderer = ({data}) => ( // eslint-disable-line
         <CustomActionsCellRenderer id={data && data.id}>
-            <Button onClick={onNewButtonClick}>New</Button>
+            <Button onClick={() => onNewButtonClick()}>New</Button>
         </CustomActionsCellRenderer>
     );
 
@@ -82,6 +97,20 @@ const RightToMatch = ({match, createRightMatchingColumnDefs, fetchFocusedRight, 
                 <p>Select rights from the repository that match the focused right or declare it as a NEW right from the
                     action menu above. </p>
             </SectionMessage>
+            {showConfirmationFlag && (
+                <FlagGroup onDismissed={() => onCancelNewRight()}>
+                    <Flag
+                        description="You are about to declare a new right."
+                        icon={<Warning label="Warning icon" primaryColor={colors.Y300} />}
+                        id="warning-flag"
+                        title="Warning"
+                        actions={[
+                            {content:'Cancel', onClick: () => onCancelNewRight()},
+                            {content:'OK', onClick: () => onDeclareNewRight()}
+                        ]}
+                    />
+                </FlagGroup>
+            )}
         </div>
     );
 };
@@ -93,7 +122,8 @@ RightToMatch.propTypes = {
     mapping: PropTypes.array,
     history: PropTypes.object,
     columnDefs: PropTypes.array,
-    createRightMatchingColumnDefs: PropTypes.func
+    createRightMatchingColumnDefs: PropTypes.func,
+    createNewRight: PropTypes.func
 };
 
 RightToMatch.defaultProps = {
@@ -115,7 +145,8 @@ const createMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
-    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
+    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    createNewRight: payload => dispatch(createNewRight(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatch); // eslint-disable-line

@@ -37,4 +37,15 @@ export const fetchRightMatchDataUntilFindId = (payload) => ({
 export const saveCombinedRight = (focusedRightId, matchedRightId, combinedRight) => ({
     type: actionTypes.SAVE_COMBINED_RIGHT,
     payload: {focusedRightId, matchedRightId, combinedRight}
+
+});
+
+export const setRightSuccessFlag = (payload) => ({
+    type: actionTypes.SET_NEW_RIGHT_SUCCESS_FLAG,
+    payload
+});
+
+export const createNewRight = (payload) => ({
+    type: actionTypes.CREATE_NEW_RIGHT,
+    payload
 });

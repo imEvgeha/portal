@@ -1,10 +1,11 @@
 import {call, put, all, take, takeEvery} from 'redux-saga/effects';
 import moment from 'moment';
+import {goBack} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {getCombinedRight, getRightMatchingList, putCombinedRight} from './rightMatchingService';
+import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 
 export function* createRightMatchingColumnDefs({payload}) {
     try {
@@ -239,6 +240,23 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
 
 }
 
+export function* createNewRight(requestMethod, {payload}) {
+    try {
+        yield call(requestMethod, payload);
+        yield put({
+            type: actionTypes.SET_NEW_RIGHT_SUCCESS_FLAG,
+            payload: {isNewRightSuccessFlagVisible: true}
+        });
+        yield put(goBack());
+    } catch (error) {
+        yield put({
+            type: actionTypes.SET_CREATE_NEW_RIGHT_ERROR,
+            payload: error,
+            error: true
+        });
+    }
+}
+
 export function* rightMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
@@ -246,6 +264,7 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRight, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
-        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
+        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
+        takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById)
     ]);
 }

@@ -5,7 +5,8 @@ const initialState = {
     rightMatchPageData: {},
     focusedRight: {},
     matchedRight: {},
-    combinedRight: {}
+    combinedRight: {},
+    isNewRightSuccessFlagVisible: false
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
@@ -15,6 +16,7 @@ const rightMatchingReducer = (state = initialState, action) => {
     const {matchedRight} = payload || {};
     const {combinedRight} = payload || {};
     const {rightMatchPageData} = payload || [];
+    const {isNewRightSuccessFlagVisible} = payload || [];
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
@@ -49,6 +51,11 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 rightMatchPageData: {}
+            };
+        case actionTypes.SET_NEW_RIGHT_SUCCESS_FLAG:
+            return {
+                ...state,
+                isNewRightSuccessFlagVisible: isNewRightSuccessFlagVisible
             };
         default:
             return state;
