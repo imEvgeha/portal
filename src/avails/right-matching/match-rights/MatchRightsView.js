@@ -30,7 +30,7 @@ function MatchRightView({
     mapping
 }) {
     useEffect(() => {
-        if (!columnDefs.length) {
+        if (!columnDefs.length && mapping) {
             createRightMatchingColumnDefs(mapping);
         }
     }, [columnDefs, mapping]);
@@ -56,7 +56,7 @@ function MatchRightView({
     };
 
     // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyrReceivedAt)));
+    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
 
     return (
         <div className='nexus-c-match-right'>

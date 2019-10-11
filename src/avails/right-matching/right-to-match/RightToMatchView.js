@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -18,6 +18,8 @@ import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 
+const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
+
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightToMatchList)(NexusGrid));
 
 const RightToMatchView = ({
@@ -34,7 +36,7 @@ const RightToMatchView = ({
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
-    const matchGridRef = useRef({});
+    const [selectedRows, setSelectedRows] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
 
@@ -93,17 +95,19 @@ const RightToMatchView = ({
     const updatedFocusedRightColumnDefs = columnDefs.length ? [additionalFocusedRightColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
-    const handleClick = () => {
-        const {api} = matchGridRef.current;
-        if (api) {
-            const selectedRows = api.getSelectedRows(); 
-            const firstRow = Array.isArray(selectedRows) && selectedRows.length && selectedRows[0];
-            if (firstRow) {
-                history.push(URL.keepEmbedded(`${location.pathname}/match/${firstRow.id}`));
-            }
+    const handleSelectionChange = api => {
+        const selectedRows = api.getSelectedRows();
+        setSelectedRows(selectedRows);
+        setIsMatchDisabled(!selectedRows.length);
+    };
+
+    const handleMatchClick = () => {
+        if (Array.isArray(selectedRows) && selectedRows.length) {
+            const firstRow = selectedRows[0];
+            history.push(URL.keepEmbedded(`${location.pathname}/match/${firstRow.id}`));
         }
     };
-    
+
     return (
         <div className="nexus-c-right-to-match-view">
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
@@ -132,7 +136,7 @@ const RightToMatchView = ({
                 />
             </div>
             <SectionMessage>
-                <p>Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.</p>
+                <p>{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
@@ -141,17 +145,23 @@ const RightToMatchView = ({
                         columnDefs={updatedColumnDefs}
                         params={fieldSearchCriteria}
                         setTotalCount={setTotalCount}
-                        handleGridReady={api => matchGridRef.current = {api}}
+                        handleSelectionChange={handleSelectionChange}
                     />
                 ) : null}
             </div>
             <div className="nexus-c-right-to-match-view__buttons">
                 <ButtonGroup>
-                    <Button className="nexus-c-button">Cancel</Button>
+                    <Button 
+                        className="nexus-c-button"
+                        onClick={() => history.push(`/avails/history/${availHistoryIds}/right_matching`)}
+                    >
+                        Cancel
+                    </Button>
                     <Button 
                         className="nexus-c-button" 
                         appearance="primary" 
-                        onClick={handleClick}
+                        isDisabled={isMatchDisabled}
+                        onClick={handleMatchClick}
                     >
                         Match
                     </Button>
@@ -165,25 +175,25 @@ RightToMatchView.propTypes = {
     history: PropTypes.object,
     match: PropTypes.object,
     location: PropTypes.object,
-    createRightMatchingColumnDefs: PropTypes.func.isRequired,
-    columnDefs: PropTypes.array,
-    mapping: PropTypes.array,
     fieldSearchCriteria: PropTypes.object,
+    focusedRight: PropTypes.object,
+    createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
-    focusedRight: PropTypes.object,
+    columnDefs: PropTypes.array,
+    mapping: PropTypes.array,
 };
 
 RightToMatchView.defaultProps = {
     match: {},
     history: null,
     location: {},
-    columnDefs: [],
-    mapping: [],
     fieldSearchCriteria: null,
+    focusedRight: null,
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
-    focusedRight: null,
+    columnDefs: [],
+    mapping: [],
 };
 
 const createMapStateToProps = () => {
