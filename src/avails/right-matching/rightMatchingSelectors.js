@@ -44,7 +44,7 @@ export const createRightMatchingColumnDefsSelector = () => createSelector(
 export const createAvailsMappingSelector = () => createSelector(
     getAvailsMapping,
     availsMapping => {
-        return availsMapping && availsMapping.mapping;
+        return availsMapping && availsMapping.mappings;
     }
 );
 

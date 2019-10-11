@@ -12,9 +12,11 @@ const NexusGrid = ({
     // rowHeight,
     handleGridReady,
     handleSelectionChange,
+    onGridEvent,
     ...restProps,
 }) => {
     const onGridReady = params => {
+        // TODO: add onGridEvent callback instead
         const {api, columnApi} = params;
         if (typeof handleGridReady === 'function') {
             handleGridReady(api, columnApi);
@@ -22,12 +24,20 @@ const NexusGrid = ({
     };
 
     const onGridSizeChanged = () => {
+        // TODO: add onGridEvent callback instead
         // api.sizeColumnsToFit();
     };
 
     const onSelectionChanged = ({api, columnApi}) => {
+        // TODO: add onGridEvent callback instead
         if (typeof handleSelectionChange === 'function') {
             handleSelectionChange(api, columnApi);
+        }
+    };
+
+    const onCellValueChanged = (data)  => {
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
         }
     };
 
@@ -39,6 +49,7 @@ const NexusGrid = ({
                 onGridReady={onGridReady}
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={onSelectionChanged}
+                onCellValueChanged={onCellValueChanged}
                 {...restProps}
             >
             </AgGridReact> 
@@ -51,6 +62,7 @@ NexusGrid.propTypes = {
     rowData: PropTypes.array,
     handleGridReady: PropTypes.func,
     handleSelectionChange: PropTypes.func,
+    handleGridEvent: PropTypes.func,
     // headerHeight: PropTypes.number,
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
@@ -61,6 +73,7 @@ NexusGrid.defaultProps = {
     rowData: [],
     handleGridReady: null,
     handleSelectionChange: null,
+    handleGridEvent: null,
     // headerHeight: 52,
     // rowHeight: 48,
     setRowData: null,

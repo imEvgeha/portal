@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -15,6 +15,7 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
+import useEditableGridColumns from '../../../ui-elements/nexus-grid/hooks/useEditableGridColumns';
 
 function MatchRightView({
     history, 
@@ -27,8 +28,10 @@ function MatchRightView({
     fetchCombinedRight,
     createRightMatchingColumnDefs, 
     columnDefs, 
-    mapping
+    mapping,
 }) {
+    const rowDataRef = useRef([]);
+
     useEffect(() => {
         if (!columnDefs.length && mapping) {
             createRightMatchingColumnDefs(mapping);
@@ -58,6 +61,15 @@ function MatchRightView({
     // Sorted by start field. desc
     const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
 
+    const handleGridEvent = ({type, api}) => {
+        let result = [];
+        // TODO: add all grid event to constant
+        if (type === 'cellValueChanged') {
+            api.forEachNode(({data}) => result.push(data));
+            rowDataRef.current = result;
+        }
+    };
+
     return (
         <div className='nexus-c-match-right'>
             <BackNavigationByUrl
@@ -67,7 +79,7 @@ function MatchRightView({
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
                 <NexusGrid
-                    columnDefs={columnDefs}
+                    columnDefs={useEditableGridColumns(columnDefs, mapping)}
                     rowData={matchedRightRowData}
                 />
             </div>
@@ -76,6 +88,7 @@ function MatchRightView({
                 <NexusGrid
                     columnDefs={columnDefs}
                     rowData={[combinedRight]}
+                    onGridEvent={handleGridEvent}
                 />
             </div>
         </div>
@@ -89,7 +102,7 @@ MatchRightView.propTypes = {
     matchedRight: PropTypes.object,
     combinedRight: PropTypes.object,
     columnDefs: PropTypes.array,
-    mapping: PropTypes.object,
+    mapping: PropTypes.array,
     fetchFocusedRight: PropTypes.func,
     fetchMatchedRight: PropTypes.func,
     fetchCombinedRight: PropTypes.func,
