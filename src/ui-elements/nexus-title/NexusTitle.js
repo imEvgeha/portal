@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTitle.scss';
 
-const NexusTitle = ({title, children}) => { // eslint-disable-line
+const NexusTitle = ({title, className, children}) => { // eslint-disable-line
     return (
-        <div className="nexus-c-title">
+        <div className={`nexus-c-title ${className}`}>
             {children}
             {title && (
                 <div className="nexus-c-title__name">{title}</div> 
@@ -15,10 +15,12 @@ const NexusTitle = ({title, children}) => { // eslint-disable-line
 
 NexusTitle.propTypes = {
     title: PropTypes.string,
+    className: PropTypes.string,
 };
 
 NexusTitle.defaultProps = {
     title: null,
+    className: '',
 };
 
 export default NexusTitle;

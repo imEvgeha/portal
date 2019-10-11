@@ -10,18 +10,28 @@ import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
 import {
     cleanStoredRightMatchDataWithIds,
+    storeRightMatchDataWithIds,
     createRightMatchingColumnDefs,
-    storeRightMatchDataWithIds
 } from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
-import {RIGHT_PAGE_SIZE} from '../../constants/rightFetching';
+import {URL} from '../../util/Common';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
-const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, history, match, storeRightMatchDataWithIds, cleanStoredRightMatchDataWithIds}) => {
+const RightMatchingView = ({
+    createRightMatchingColumnDefs, 
+    mapping, 
+    columnDefs, 
+    history, 
+    match,
+    location,
+    storeRightMatchDataWithIds, 
+    cleanStoredRightMatchDataWithIds,
+}) => {
     const [totalCount, setTotalCount] = useState(0);
 
+    // TODO: refactor this
     useEffect(() => {
         cleanStoredRightMatchDataWithIds();
     }, []);
@@ -33,7 +43,7 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
     }, [mapping, columnDefs]);
 
     const onFocusButtonClick = (rightId) => {
-        history.push(`${location.pathname}/${rightId}`);
+        history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
     const createCellRenderer = ({data}) => { // eslint-disable-line
@@ -45,8 +55,9 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
         );
     };
 
+    // TODO: refactor this
     const storeData = (page, data) => {
-        if(storeRightMatchDataWithIds) {
+        if (storeRightMatchDataWithIds) {
             let pages = {};
             pages[page] = data.data.map(e => e.id);
             const rightMatchPageData = {pages, total: data.total};
@@ -82,10 +93,6 @@ const RightMatchingView = ({createRightMatchingColumnDefs, mapping, columnDefs, 
                 columnDefs={updatedColumnDefs}
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
-                storeRightMatchDataWithIds={storeRightMatchDataWithIds}
-                infiniteProps={{
-                    paginationPageSize: RIGHT_PAGE_SIZE
-                }}
                 succesDataFetchCallback={storeData}
             />
         </div>
@@ -98,19 +105,25 @@ RightMatchingView.propTypes = {
     mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
+    location: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
-    cleanStoredRightMatchDataWithIds: PropTypes.func
+    cleanStoredRightMatchDataWithIds: PropTypes.func,
 };
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
     mapping: [],
     match: {},
+    history: {},
+    location: {},
+    storeRightMatchDataWithIds: null,
+    cleanStoredRightMatchDataWithIds: null,
 };
 
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
+
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),

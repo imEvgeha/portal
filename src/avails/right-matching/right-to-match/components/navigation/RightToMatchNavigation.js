@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
-import './RightToMatchNavigation.scss';
 import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
-import {fetchRightMatchDataUntilFindId} from '../../rightMatchingActions';
-import * as selectors from '../../rightMatchingSelectors';
-import {URL} from '../../../../util/Common';
-import {RIGHT_PAGE_SIZE} from '../../../../constants/rightFetching';
+import './RightToMatchNavigation.scss';
+import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
+import * as selectors from '../../../rightMatchingSelectors';
+import {URL} from '../../../../../util/Common';
+import {RIGHT_PAGE_SIZE} from '../../../../../constants/rightFetching';
 
-const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, focusedRightId, rightMatchPageData, history}) => {
-
+const RightToMatchNavigation = ({
+    searchParams, 
+    focusedRightId, 
+    fetchRightMatchDataUntilFindId, 
+    rightMatchPageData, 
+    availHistoryIds, 
+    history
+}) => {
     const [navigationData, setNavigationData] = useState({
         previousId: null,
         currentPosition: null,
@@ -29,6 +35,7 @@ const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, f
             const pages = Object.keys(rightMatchPageData.pages || {}).sort();
             const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) + 1: 0;
             const updatedNavigationData = getNavigationDataIfExist();
+            // TODO: refactor
             if(updatedNavigationData !== null) {
                 setNavigationData(updatedNavigationData);
                 setIsSpinnerRunning(false);
@@ -45,8 +52,8 @@ const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, f
 
     useEffect(() => {
         if (rightMatchPageData.pages) {
-            let navigationData = getNavigationDataIfExist();
-            if(navigationData) {
+            const navigationData = getNavigationDataIfExist();
+            if (navigationData) {
                 setNavigationData(navigationData);
                 setIsSpinnerRunning(false);
             }
@@ -64,9 +71,7 @@ const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, f
                         const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);
                         const nextId = j + 1 < items.length ? items[j + 1] : (i + 1 < pages.length ? rightMatchPageData.pages[pages[i + 1]][0] : null);
                         const currentPosition = i * RIGHT_PAGE_SIZE + pages[i].length + j;
-
                         navigationData = {previousId, currentPosition, focusedRightId, nextId};
-
                         break loop;
                     }
                 }
@@ -74,18 +79,18 @@ const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, f
         return navigationData;
     };
 
+    const url = `/avails/history/${availHistoryIds}/right_matching`;
+
     const onPreviousRightClick = () => {
         if (navigationData.previousId) {
-            const indexToRemove = location.pathname.lastIndexOf('/');
-            history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}/${navigationData.previousId}`));
+            history.push(URL.keepEmbedded(`${url}/${navigationData.previousId}`));
             setIsSpinnerRunning(true);
         }
     };
 
     const onNextRightClick = () => {
         if (navigationData.nextId) {
-            const indexToRemove = location.pathname.lastIndexOf('/');
-            history.push(URL.keepEmbedded(`${location.pathname.substr(0, indexToRemove)}/${navigationData.nextId}`));
+            history.push(URL.keepEmbedded(`${url}/${navigationData.nextId}`));
             setIsSpinnerRunning(true);
         }
     };
@@ -100,32 +105,36 @@ const RightToMatchNavigation = ({searchParams, fetchRightMatchDataUntilFindId, f
     };
 
     return (
-        <div className='nexus-c-right-to-match-navigation'>
-            <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onPreviousRightClick()}>
-                <HipchatChevronUpIcon size='large'/>
+        navigationData && navigationData.currentPosition ? (
+            <div className='nexus-c-right-to-match-navigation'>
+                <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onPreviousRightClick}>
+                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" />
+                </div>
+                {renderNavigationData()}
+                <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
+                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" />
+                </div>
             </div>
-
-            {renderNavigationData()}
-
-            <div className='nexus-c-right-to-match-navigation-arrow' onClick={() => onNextRightClick()}>
-                <HipchatChevronDownIcon size='large'/>
-            </div>
-
-        </div>
+        ) : null 
     );
 };
 
 RightToMatchNavigation.propTypes = {
+    focusedRightId: PropTypes.string,
     fetchRightMatchDataUntilFindId: PropTypes.func,
     rightMatchPageData: PropTypes.object,
     searchParams: PropTypes.object,
+    availHistoryIds: PropTypes.string,
     history: PropTypes.object,
-    focusedRightId: PropTypes.string
 };
 
 RightToMatchNavigation.defaultProps = {
+    focusedRightId: null,
+    fetchRightMatchDataUntilFindId: null,
     rightMatchPageData: {},
     searchParams: {},
+    availHistoryIds: null,
+    history: null,
 };
 
 const createMapStateToProps = () => {

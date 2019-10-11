@@ -7,7 +7,7 @@ import * as selectors from '../rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
     fetchCombinedRight,
-    fetchFocusedRight,
+    fetchAndStoreFocusedRight,
     fetchMatchedRight,
     saveCombinedRight
 } from '../rightMatchingActions';
@@ -30,7 +30,7 @@ function MatchRightView({
     mapping
 }) {
     useEffect(() => {
-        if (!columnDefs.length) {
+        if (!columnDefs.length && mapping) {
             createRightMatchingColumnDefs(mapping);
         }
     }, [columnDefs, mapping]);
@@ -51,12 +51,12 @@ function MatchRightView({
     // we should this via router Link
     const navigateToMatchPreview = () => {
         const {params} = match || {};
-        const {availsHistoryIds, rightId} = params || {};
-        history.push(URL.keepEmbedded(`/avails/history/${availsHistoryIds}/right_matching/${rightId}`));
+        const {availHistoryIds, rightId} = params || {};
+        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
     };
 
     // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyrReceivedAt)));
+    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
 
     return (
         <div className='nexus-c-match-right'>
@@ -128,7 +128,7 @@ const createMapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
+    fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
     saveCombinedRight:(focusedRightId, matchedRightId, combinedRight) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight)),

@@ -5,9 +5,19 @@ export const createRightMatchingColumnDefs = (payload) => ({
     payload,
 });
 
-export const fetchFocusedRight = (id) => ({
-    type: actionTypes.FETCH_FOCUSED_RIGHT,
-    payload: id,
+export const fetchRightMatchingProvider = (payload) => ({
+    type: actionTypes.FETCH_RIGHT_MATCHING_PROVIDER,
+    payload,
+});
+
+export const fetchRightMatchingFieldSearchCriteria = (payload) => ({
+    type: actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
+    payload,
+});
+
+export const fetchAndStoreFocusedRight = (payload) => ({
+    type: actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT,
+    payload,
 });
 
 export const fetchMatchedRight = (id) => ({
@@ -38,3 +48,4 @@ export const saveCombinedRight = (focusedRightId, matchedRightId, combinedRight)
     type: actionTypes.SAVE_COMBINED_RIGHT,
     payload: {focusedRightId, matchedRightId, combinedRight}
 });
+
