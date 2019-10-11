@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import * as selectors from '../right-matching/rightMatchingSelectors';
-import {createRightMatchingColumnDefs, fetchFocusedRight} from '../right-matching/rightMatchingActions';
+import {createRightMatchingColumnDefs, fetchAndStoreFocusedRight} from '../right-matching/rightMatchingActions';
 import './TitleMatchView.scss';
 
 const TitleMatchView = ({match, createRightMatchingColumnDefs, fetchFocusedRight, focusedRight, columnDefs, mapping}) => {
@@ -56,7 +56,7 @@ const createMapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
+    fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
 });
 

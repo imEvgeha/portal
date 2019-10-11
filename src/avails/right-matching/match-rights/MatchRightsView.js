@@ -7,7 +7,7 @@ import * as selectors from '../rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
     fetchCombinedRight,
-    fetchFocusedRight,
+    fetchAndStoreFocusedRight,
     fetchMatchedRight,
     saveCombinedRight
 } from '../rightMatchingActions';
@@ -128,7 +128,7 @@ const createMapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
+    fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
     saveCombinedRight:(focusedRightId, matchedRightId, combinedRight) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight)),
