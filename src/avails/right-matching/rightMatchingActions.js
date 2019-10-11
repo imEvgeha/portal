@@ -49,3 +49,12 @@ export const saveCombinedRight = (focusedRightId, matchedRightId, combinedRight)
     payload: {focusedRightId, matchedRightId, combinedRight}
 });
 
+export const setNewRightSuccessFlag = (payload) => ({
+    type: actionTypes.SET_NEW_RIGHT_FLAG,
+    payload
+});
+
+export const createNewRight = (payload) => ({
+    type: actionTypes.CREATE_NEW_RIGHT,
+    payload
+});

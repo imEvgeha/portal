@@ -16,6 +16,7 @@
     "@atlaskit/datetime-picker": "^9.0.1",
     "@atlaskit/dropdown-menu": "^8.1.1",
     "@atlaskit/field-base": "^13.0.6",
+    "@atlaskit/flag": "^12.3.2",
     "@atlaskit/form": "^6.1.4",
     "@atlaskit/icon": "^19.0.1",
     "@atlaskit/lozenge": "^9.0.3",
