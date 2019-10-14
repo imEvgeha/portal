@@ -21,6 +21,7 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
+import BottomButtons from "../components/bottom-buttons/BottomButons";
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -162,24 +163,19 @@ const RightToMatchView = ({
                     />
                 ) : null}
             </div>
-            <div className="nexus-c-right-to-match-view__buttons">
-                <ButtonGroup>
-                    <Button 
-                        className="nexus-c-button"
-                        onClick={() => history.push(`/avails/history/${availHistoryIds}/right_matching`)}
-                    >
-                        Cancel
-                    </Button>
-                    <Button 
-                        className="nexus-c-button" 
-                        appearance="primary" 
-                        isDisabled={isMatchDisabled}
-                        onClick={handleMatchClick}
-                    >
-                        Match
-                    </Button>
-                </ButtonGroup> 
-            </div>
+
+            <BottomButtons buttons={[
+                {
+                    name: 'Cancel',
+                    onClick: () => history.push(`/avails/history/${availHistoryIds}/right_matching`),
+                },
+                {
+                    name: 'Match',
+                    onClick: handleMatchClick,
+                    isDisabled: {isMatchDisabled},
+                    appearance: 'primary'
+                }
+            ]}/>
             {showConfirmationFlag && (
                 <FlagGroup onDismissed={() => onCancelNewRight()}>
                     <Flag

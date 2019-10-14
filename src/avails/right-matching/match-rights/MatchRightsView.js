@@ -15,6 +15,7 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
+import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 function MatchRightView({
     history, 
@@ -26,11 +27,12 @@ function MatchRightView({
     fetchMatchedRight, 
     fetchCombinedRight,
     createRightMatchingColumnDefs, 
-    columnDefs, 
-    mapping
+    columnDefs,
+    mapping,
+    
 }) {
     useEffect(() => {
-        if (!columnDefs.length && mapping) {
+        if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
         }
     }, [columnDefs, mapping]);
@@ -38,21 +40,27 @@ function MatchRightView({
     useEffect(() => {
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
-        if (rightId && matchedRightId) {
-            if (focusedRight && focusedRight.id !== rightId) {
+        if (rightId && matchedRightId && columnDefs.length) {
+            if (!focusedRight || (focusedRight && focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
             fetchMatchedRight(matchedRightId);
             // matchedRightId from url should be correct one.
             fetchCombinedRight(rightId, matchedRightId);
         }
-    },[match]);
+    },[match.params.matchedRightId, match.params.rightId, columnDefs.length]);
 
     // we should this via router Link
     const navigateToMatchPreview = () => {
         const {params} = match || {};
         const {availHistoryIds, rightId} = params || {};
         history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
+    };
+
+    const onSaveCombinedRight = () => {
+        const {params} = match || {};
+        const {rightId, matchedRightId} = params || {};
+        saveCombinedRight(rightId, matchedRightId, combinedRight);
     };
 
     // Sorted by start field. desc
@@ -66,18 +74,30 @@ function MatchRightView({
             />
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
-                <NexusGrid
+                {columnDefs.length && <NexusGrid
                     columnDefs={columnDefs}
                     rowData={matchedRightRowData}
-                />
+                />}
             </div>
             <div className='nexus-c-match-right__combined'>
                 <NexusTitle>Combined Rights</NexusTitle>
-                <NexusGrid
+                {columnDefs.length && <NexusGrid
                     columnDefs={columnDefs}
                     rowData={[combinedRight]}
-                />
+                />}
             </div>
+            <BottomButtons buttons={[
+                {
+                    name: 'Cancel',
+                    // onClick: () => history.push(`/avails/history/${availHistoryIds}/right_matching`),
+                },
+                {
+                    name: 'Save',
+                    onClick: onSaveCombinedRight,
+                    isDisabled: !combinedRight.id,
+                    appearance: 'primary'
+                }
+            ]}/>
         </div>
     );
 }
