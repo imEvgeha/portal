@@ -38,9 +38,9 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
     ); 
 };
 
-export const getRightMatchingFieldSearchCriteria = (provider) => {
+export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
     return http.get(
-        `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria`
+        `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria/templateName=${templateName}`
     );
 };
 

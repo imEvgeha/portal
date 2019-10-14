@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
+import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {
     createRightMatchingColumnDefs,
     fetchCombinedRight,
@@ -29,6 +30,7 @@ function MatchRightView({
     createRightMatchingColumnDefs, 
     columnDefs, 
     mapping,
+    selectValues,
 }) {
     const rowDataRef = useRef([]);
 
@@ -49,7 +51,9 @@ function MatchRightView({
             // matchedRightId from url should be correct one.
             fetchCombinedRight(rightId, matchedRightId);
         }
-    },[match]);
+    },[match.params.rightId, match.params.matchedRightId]);
+
+    const matchedRightColumnDefs = useEditableGridColumns(columnDefs, createRightMatchingColumnDefs, mapping, selectValues);
 
     // we should this via router Link
     const navigateToMatchPreview = () => {
@@ -79,7 +83,7 @@ function MatchRightView({
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
                 <NexusGrid
-                    columnDefs={useEditableGridColumns(columnDefs, mapping)}
+                    columnDefs={matchedRightColumnDefs}
                     rowData={matchedRightRowData}
                 />
             </div>
@@ -131,12 +135,14 @@ const createMapStateToProps = () => {
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
+    const availSelectValuesSelector = createAvailSelectValuesSelector();
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
         matchedRight: matchedRightSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
+        selectValues: availSelectValuesSelector(state, props),
     });
 };
 
