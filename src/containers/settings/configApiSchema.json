@@ -1756,7 +1756,7 @@
                 "id": "defaultRatingSystems",
                 "name": "defaultRatingSystems",
                 "label": "Default Rating Systems",
-                "type": "select",
+                "type": "multiselect",
                 "source": {
                   "url": "rating-systems",
                   "value": "value",

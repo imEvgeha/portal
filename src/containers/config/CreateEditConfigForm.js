@@ -116,6 +116,10 @@ export default class CreateEditConfigForm extends React.Component {
                     const items = response.data.data.map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
                     return [{items}];
                 });
+            }else{
+                if (field.type === 'array' || field.type === 'object'){
+                    field.misc.fields.forEach(subfield => this.optionsHandler(subfield.id, field.misc.fields));
+                }
             }
         }
         return null;

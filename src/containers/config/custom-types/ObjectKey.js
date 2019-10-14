@@ -74,12 +74,11 @@ export default class ObjectKey extends Component {
 
         // Map the supplied Object to an Item[] in order to give each piece of data an id for drag-and-drop
         const keys = Object.keys(defaultValue);
-        const items = keys.map(key => ({ id: uniqueId(), data: defaultValue[key] }));
+        const items = keys.map(key => ({ id: uniqueId(), key:key, data: defaultValue[key].map(val => {return {id: uniqueId(), data: val};}) }));
         this.getForm = this.getForm.bind(this);
         this.state = {
             value: defaultValue,
             keyName: '',
-            keys,
             items
         };
     }
@@ -91,12 +90,10 @@ export default class ObjectKey extends Component {
     }
 
     addItem() {
-        let { items, keys, keyName} = this.state;
-        keys = [...keys, keyName.trim()];
-        items = [...items, { id: uniqueId(), data: [] }];
+        let { items, keyName} = this.state;
+        items = [...items, { id: uniqueId(), key:keyName, data: [] }];
         this.setState({
             items,
-            keys,
             keyName: ''
         });
     }
@@ -105,7 +102,7 @@ export default class ObjectKey extends Component {
         let { items } = this.state;
         let item = items.find(({id}) => id === itemId);
         if(item){
-            item.data.push({});
+            item.data.push({id: uniqueId(), data: {}});
         }
         this.setState({
             items
@@ -113,34 +110,24 @@ export default class ObjectKey extends Component {
     }
 
     removeItem(id) {
-        let { items, keys } = this.state;
-        let pos = items.findIndex(item => item.id === id);
-        keys.splice(pos, 1);
+        let { items } = this.state;
         items = items.filter(item => item.id !== id);
         this.updateItemState(items);
     }
 
-    removeSubItem(itemId, field, subId) {
+    removeSubItem(itemId, subId) {
         let { items } = this.state;
         let item = items.find(({id}) => id === itemId);
         if(item){
-            item.data = item.data.filter(subItem => subItem[field] !== subId);
+            item.data = item.data.filter(subItem => subItem.id !== subId);
         }
         this.updateItemState(items);
-    }
-
-    createFormChangeHandler(index) {
-        return (value) => {
-            const { items } = this.state;
-            items[index].data = value;
-            this.updateItemState(items);
-        };
     }
 
     createSubFormChangeHandler(index, index2) {
         return (value) => {
             const { items } = this.state;
-            items[index].data[index2] = value;
+            items[index].data[index2].data = value;
             this.updateItemState(items);
         };
     }
@@ -152,9 +139,9 @@ export default class ObjectKey extends Component {
             },
             () => {
                 const { onChange } = this.props;
-                const { items, keys } = this.state;
+                const { items } = this.state;
                 const value = {};
-                items.forEach((currentValue, index) => {value[keys[index]] = currentValue.data;});
+                items.forEach((currentValue) => {value[currentValue.key] = currentValue.data.map(rec => rec.data);});
                 onChange && onChange(value);
             }
         );
@@ -175,7 +162,7 @@ export default class ObjectKey extends Component {
         this.updateItemState(items);
     }
 
-    getForm(item, index, fields, formChangeHandler, label, field, parentId){
+    getForm(item, index, fields, formChangeHandler, fieldName, parentId){
         const form = createFormForItem(
             item.data,
             index,
@@ -183,17 +170,15 @@ export default class ObjectKey extends Component {
             formChangeHandler
         );
         return (
-            <div>
-                <Expander
-                    key={`exp_${item.id}`}
-                    label={label}
-                    remove={() => {
-                        this.removeSubItem(parentId, field, item.id);
-                    }}
-                >
-                    {form}
-                </Expander>
-            </div>
+            <Expander
+                key={`exp_${item.id}`}
+                label={item.data[fieldName]}
+                remove={() => {
+                    this.removeSubItem(parentId, item.id);
+                }}
+            >
+                {form}
+            </Expander>
         );
 
         // return (
@@ -224,7 +209,7 @@ export default class ObjectKey extends Component {
     }
 
     getForms() {
-        const { keys, items } = this.state;
+        const { items } = this.state;
         const {
             fields,
             idAttribute = 'id',
@@ -240,30 +225,22 @@ export default class ObjectKey extends Component {
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
                             {items.map((item, index) => {
-
-                                const label = get(keys, index, unidentifiedLabel);
-                                if(Array.isArray(item.data)){
-                                    return (<div>
-                                        <Expander
-                                            key={`exp_${item.id}`}
-                                            label={label}
-                                            remove={() => {
-                                                this.removeItem(item.id);
-                                            }}
-                                        >
-                                            {
-                                                item.data.map( (data, index2) => {
-                                                    const formChangeHandler = this.createSubFormChangeHandler(index, index2);
-                                                    return this.getForm({data: data, id:data[idAttribute]}, index2, fields, formChangeHandler, data[idAttribute], idAttribute, item.id);
-                                                })
-                                            }
-                                            <Button onClick={() => this.addSubItem(item.id)}>{'Add'}</Button>
-                                        </Expander>
-                                    </div>);
-                                }else{
-                                    const formChangeHandler = this.createFormChangeHandler(index);
-                                    return this.getForm(item, index, fields, formChangeHandler, label);
-                                }
+                                const label = item.key;
+                                return (<Expander
+                                        key={`exp_${item.id}`}
+                                        label={label}
+                                        remove={() => {
+                                            this.removeItem(item.id);
+                                        }}
+                                    >
+                                        {
+                                            item.data.map( (data, index2) => {
+                                                const formChangeHandler = this.createSubFormChangeHandler(index, index2);
+                                                return this.getForm(data, index2, fields, formChangeHandler, idAttribute, item.id);
+                                            })
+                                        }
+                                        <Button onClick={() => this.addSubItem(item.id)}>{'Add'}</Button>
+                                    </Expander>);
                             })}
                             {provided.placeholder}
                         </div>
