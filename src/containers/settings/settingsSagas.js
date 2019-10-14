@@ -2,19 +2,17 @@ import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './settingsActionTypes';
 import {loadConfigAPIEndPoints} from '../config/service/ConfigService';
 
-import configApiSchema from './configApiSchema';
-
 export function* fetchConfigApiEndpoints(requestMethod) {
     try {
-        // yield put({
-        //     type: actionTypes.FETCH_CONFIG_API_ENDPOINTS_REQUEST,
-        //     payload: {},
-        // });
-        // const response = yield call(requestMethod);
-        // const {data} = response;
+        yield put({
+            type: actionTypes.FETCH_CONFIG_API_ENDPOINTS_REQUEST,
+            payload: {},
+        });
+        const response = yield call(requestMethod);
+        const {data} = response;
         yield put({
             type: actionTypes.FETCH_CONFIG_API_ENDPOINTS_SUCCESS,
-            payload: configApiSchema,
+            payload: data,
         });
     } catch (error) {
         yield put({
