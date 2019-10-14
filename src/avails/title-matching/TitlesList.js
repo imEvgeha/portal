@@ -7,6 +7,7 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {titleServiceManager} from '../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import ActionsBar from './titleMatchingActionsBar.js';
 import Constants from './titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
@@ -38,18 +39,24 @@ class TitlesList extends React.PureComponent {
 
     matchClickHandler = (id, repo, checked) => {
         if(checked) {
+            const {NEXUS, VZ, MOVIDA} = Constants.repository;
             const { duplicateList, matchList} = this.state;
+            const newMatchList = {...matchList};
             if(duplicateList[id]){
                 let list = {...duplicateList};
                 delete list[id];
                 this.setState({duplicateList: list});
             }
-            this.setState({
-                matchList: {
-                    ...matchList,
-                    [repo]: id
-                }
-            });
+
+            if(repo === NEXUS){
+                delete newMatchList[VZ];
+                delete newMatchList[MOVIDA];
+            }
+            else{
+                delete newMatchList[NEXUS];
+            }
+            newMatchList[repo] = id;
+            this.setState({ matchList: newMatchList });
         }
     };
     matchButtonCell = ({data}) => {
@@ -98,9 +105,11 @@ class TitlesList extends React.PureComponent {
     };
 
     repositoryCell = ({data}) => {
-        const {legacyIds} = data || {};
+        const {id, legacyIds} = data || {};
         return (
-            <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(legacyIds).toUpperCase()}</div>
+            <CustomActionsCellRenderer id={id}>
+                <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(legacyIds).toUpperCase()}</div>
+            </CustomActionsCellRenderer>
         );
     };
 
@@ -136,6 +145,7 @@ class TitlesList extends React.PureComponent {
                 <NexusGridWithInfiniteScrolling
                     columnDefs={[matchButton, duplicateButton, repository, ...this.props.columnDefs]}
                     setTotalCount={this.setTotalCount} />
+                    <ActionsBar matchList={matchList} duplicateList={duplicateList} />
             </React.Fragment>
         );
     }

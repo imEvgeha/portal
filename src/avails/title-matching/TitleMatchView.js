@@ -56,11 +56,6 @@ const TitleMatchView = ({match, fetchFocusedRight, focusedRight}) => {
                     action menu.</p>
             </SectionMessage>
             <TitlesList columnDefs={columnDefs} />
-            <div className="nexus-c-title-matching-custom-actions">
-                <Button>Cancel</Button>
-                <Button>Match</Button>
-                <Button>Match & Create</Button>
-            </div>
         </div>
     );
 };
