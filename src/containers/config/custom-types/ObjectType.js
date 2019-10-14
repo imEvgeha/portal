@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import uniqueId from 'lodash/uniqueId';
-import get from 'lodash/get';
 import { Form, FormContext } from 'react-forms-processor';
-import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
-import Textfield  from '@atlaskit/textfield';
-import Button from '@atlaskit/button';
+import PropTypes from 'prop-types';
 
 const createFormForItem = (
     item,
@@ -23,7 +19,7 @@ const createFormForItem = (
                 return (
                     <Form
                         parentContext={context}
-                        key={`FIELD_0`}
+                        key={'FIELD_0'}
                         defaultFields={mappedFields}
                         renderer={renderer}
                         value={item}
@@ -37,7 +33,7 @@ const createFormForItem = (
     );
 };
 
-export default class DynamicObjectType extends Component {
+export default class ObjectType extends Component {
     constructor(props) {
         super(props);
 
@@ -84,7 +80,6 @@ export default class DynamicObjectType extends Component {
         }
 
     render() {
-        const { value } = this.state;
         const {label = 'Item'} = this.props;
 
         return(
@@ -96,3 +91,12 @@ export default class DynamicObjectType extends Component {
         );
     }
 }
+
+ObjectType.propTypes = {
+    defaultValue: PropTypes.func.isRequired,
+    onChange:PropTypes.func.isRequired,
+    fields: PropTypes.array.isRequired,
+    label: PropTypes.string,
+    addButtonLabel: PropTypes.string,
+    noItemsMessage: PropTypes.string
+};

@@ -5,6 +5,7 @@ import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
 import Textfield  from '@atlaskit/textfield';
 import Button from '@atlaskit/button';
+import PropTypes from 'prop-types';
 
 const createFormForItem = (
     item,
@@ -155,3 +156,12 @@ export default class DynamicObjectType extends Component {
         );
     }
 }
+
+DynamicObjectType.propTypes = {
+    defaultValue: PropTypes.func.isRequired,
+    onChange:PropTypes.func.isRequired,
+    fields: PropTypes.array.isRequired,
+    label: PropTypes.string,
+    addButtonLabel: PropTypes.string,
+    noItemsMessage: PropTypes.string
+};

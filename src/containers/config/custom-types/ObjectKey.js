@@ -1,14 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable} from 'react-beautiful-dnd';
 import uniqueId from 'lodash/uniqueId';
-import get from 'lodash/get';
 import Button from '@atlaskit/button';
 import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
 import Textfield  from '@atlaskit/textfield';
-// import TextField from '@atlaskit/field-text';
+import PropTypes from 'prop-types';
 
 const createFormForItem = (
     item,
@@ -52,17 +51,6 @@ const reorder = (list, startIndex, endIndex) => {
 
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightblue' : 'white'
-});
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: 'none',
-
-    // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'white',
-
-    // styles we need to apply on draggables
-    ...draggableStyle
 });
 
 export default class ObjectKey extends Component {
@@ -180,32 +168,6 @@ export default class ObjectKey extends Component {
                 {form}
             </Expander>
         );
-
-        // return (
-        //     <Draggable key={item.id} draggableId={item.id} index={index}>
-        //         {(provided, snapshot) => (
-        //             <div
-        //                 ref={provided.innerRef}
-        //                  {...provided.draggableProps}
-        //                  {...provided.dragHandleProps}
-        //                  style={getItemStyle(
-        //                      snapshot.isDragging,
-        //                      provided.draggableProps.style
-        //                  )}
-        //             >
-        //                 <Expander
-        //                     key={`exp_${item.id}`}
-        //                     label={label}
-        //                     remove={() => {
-        //                         this.removeSubItem(parentId, field, item.id);
-        //                     }}
-        //                 >
-        //                     {form}
-        //                 </Expander>
-        //             </div>
-        //         )}
-        //     </Draggable>
-        // );
     }
 
     getForms() {
@@ -213,7 +175,6 @@ export default class ObjectKey extends Component {
         const {
             fields,
             idAttribute = 'id',
-            unidentifiedLabel = 'Unidentified item'
         } = this.props;
 
         return (
@@ -278,3 +239,13 @@ export default class ObjectKey extends Component {
         );
     }
 }
+
+ObjectKey.propTypes = {
+    defaultValue: PropTypes.func.isRequired,
+    onChange:PropTypes.func.isRequired,
+    fields: PropTypes.array.isRequired,
+    label: PropTypes.string,
+    addButtonLabel: PropTypes.string,
+    noItemsMessage: PropTypes.string,
+    idAttribute: PropTypes.string
+};
