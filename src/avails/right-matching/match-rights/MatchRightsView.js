@@ -1,10 +1,10 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import moment from 'moment';
 import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
-import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {
     createRightMatchingColumnDefs,
     fetchCombinedRight,
@@ -16,7 +16,9 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
-import useEditableGridColumns from '../../../ui-elements/nexus-grid/hooks/useEditableGridColumns';
+import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
+
+const EditableNexusGrid = compose(withEditableColumns())(NexusGrid);
 
 function MatchRightView({
     history, 
@@ -30,7 +32,6 @@ function MatchRightView({
     createRightMatchingColumnDefs, 
     columnDefs, 
     mapping,
-    selectValues,
 }) {
     const rowDataRef = useRef([]);
 
@@ -44,7 +45,7 @@ function MatchRightView({
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
         if (rightId && matchedRightId) {
-            if (focusedRight && focusedRight.id !== rightId) {
+            if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
             fetchMatchedRight(matchedRightId);
@@ -52,8 +53,6 @@ function MatchRightView({
             fetchCombinedRight(rightId, matchedRightId);
         }
     },[match.params.rightId, match.params.matchedRightId]);
-
-    const matchedRightColumnDefs = useEditableGridColumns(columnDefs, createRightMatchingColumnDefs, mapping, selectValues);
 
     // we should this via router Link
     const navigateToMatchPreview = () => {
@@ -82,14 +81,15 @@ function MatchRightView({
             />
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
-                <NexusGrid
-                    columnDefs={matchedRightColumnDefs}
+                <EditableNexusGrid
+                    columnDefs={columnDefs}
                     rowData={matchedRightRowData}
+                    onGridEvent={handleGridEvent}
                 />
             </div>
             <div className='nexus-c-match-right__combined'>
                 <NexusTitle>Combined Rights</NexusTitle>
-                <NexusGrid
+                <EditableNexusGrid
                     columnDefs={columnDefs}
                     rowData={[combinedRight]}
                     onGridEvent={handleGridEvent}
@@ -135,14 +135,12 @@ const createMapStateToProps = () => {
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
-    const availSelectValuesSelector = createAvailSelectValuesSelector();
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
         matchedRight: matchedRightSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
-        selectValues: availSelectValuesSelector(state, props),
     });
 };
 

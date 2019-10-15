@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
 
-class SelectCellEditor extends Component {
+class MultiSelectCellEditor extends Component {
     static propTypes = {
         options: PropTypes.array,
-        value: PropTypes.string,
+        value: PropTypes.array,
     }; 
 
     static defaultProps = {
@@ -15,18 +15,26 @@ class SelectCellEditor extends Component {
 
     constructor(props) {
         super(props);
+        const {value} = props;
         this.state = {
-            value: {
-                label: props.value, 
-                value: props.value,
-            },
+            value: this.prepareDataForSelect(value), 
         };
     }
 
-    defaultValue = {
-        label: this.props.value,
-        value: this.props.value,
-    };
+    prepareDataForSelect = data => {
+        if (data.length) {
+            const arr = data.filter(Boolean);
+            const result = arr.map(el => {
+                return {
+                    value: el,
+                    label: el,
+                    key: el,
+                };
+            });
+            return result;
+        }
+        return [];
+    }
 
     isPopup = () => {
         const {options} = this.props;
@@ -37,8 +45,8 @@ class SelectCellEditor extends Component {
     }
 
     getValue = () => {
-        const {value} = this.state.value;
-        return value;
+        const {value} = this.state;
+        return value.map(el => el.value);
     }
 
     handleChange = (value) => {
@@ -53,19 +61,22 @@ class SelectCellEditor extends Component {
 
         return (
             <div 
-                className="nexus-c-select-cell-editor"
+                className="nexus-c-multi-select-cell-editor"
                 style={{width: '150px'}} 
             >
                 <Select
                     options={options}
+                    isMulti={true}
+                    isSearchable={true}
                     placeholder="Select"
                     onChange={this.handleChange}
                     value={value}
-                    defaultValue={this.defaultValue}
+                    defaultValue={this.prepareDataForSelect(this.props.value)}
                 />
             </div>
         );
     }
 }
 
-export default SelectCellEditor;
+export default MultiSelectCellEditor;
+
