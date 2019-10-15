@@ -77,7 +77,7 @@ export default class ObjectKey extends Component {
         });
     }
 
-    addItem() {
+    addItem = () => {
         let { items, keyName} = this.state;
         items = [...items, { id: uniqueId(), key:keyName, data: [] }];
         this.setState({
@@ -174,7 +174,7 @@ export default class ObjectKey extends Component {
         const { items } = this.state;
         const {
             fields,
-            idAttribute = 'id',
+            idAttribute,
         } = this.props;
 
         return (
@@ -213,10 +213,9 @@ export default class ObjectKey extends Component {
 
     render() {
         const {
-            label = 'Item',
-            // description,
-            addButtonLabel = 'Add',
-            noItemsMessage = 'No items yet'
+            label,
+            addButtonLabel,
+            noItemsMessage
         } = this.props;
         const { items, keyName } = this.state;
         const noItems = <span className="no-items">{noItemsMessage}</span>;
@@ -228,12 +227,13 @@ export default class ObjectKey extends Component {
                 </AkField>
                 <div className="d-flex flex-row align-items-start">
                     <Button
-                            isDisabled={keyName.trim().length === 0}
-                            onClick={() => this.addItem()}>{addButtonLabel}</Button>
+                        isDisabled={keyName.trim().length === 0}
+                        onClick={this.addItem}>{addButtonLabel}
+                    </Button>
                     <Textfield
-                               value={keyName}
-                               onChange={(e) =>  this.onKeyNameChange(e.target.value)}/>
-
+                       value={keyName}
+                       onChange={(e) =>  this.onKeyNameChange(e.target.value)}
+                    />
                 </div>
             </div>
         );
@@ -241,11 +241,18 @@ export default class ObjectKey extends Component {
 }
 
 ObjectKey.propTypes = {
-    defaultValue: PropTypes.func.isRequired,
+    defaultValue: PropTypes.any.isRequired,
     onChange:PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     label: PropTypes.string,
     addButtonLabel: PropTypes.string,
     noItemsMessage: PropTypes.string,
     idAttribute: PropTypes.string
+};
+
+ObjectKey.defaultProps = {
+    label: 'Item',
+    addButtonLabel: 'Add',
+    noItemsMessage: 'No items yet',
+    idAttribute: 'id',
 };

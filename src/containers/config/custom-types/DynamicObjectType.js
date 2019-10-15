@@ -130,10 +130,9 @@ export default class DynamicObjectType extends Component {
 
     render() {
         const {
-            label = 'Item',
-            // description,
-            addButtonLabel = 'Add',
-            noItemsMessage = 'No items yet'
+            label,
+            addButtonLabel,
+            noItemsMessage
         } = this.props;
 
         const { items, keyName } = this.state;
@@ -158,10 +157,16 @@ export default class DynamicObjectType extends Component {
 }
 
 DynamicObjectType.propTypes = {
-    defaultValue: PropTypes.func.isRequired,
+    defaultValue: PropTypes.any.isRequired,
     onChange:PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
     label: PropTypes.string,
     addButtonLabel: PropTypes.string,
     noItemsMessage: PropTypes.string
+};
+
+DynamicObjectType.defaultProps = {
+    label: 'Item',
+    addButtonLabel: 'Add',
+    noItemsMessage: 'No items yet',
 };

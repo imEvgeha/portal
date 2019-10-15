@@ -80,7 +80,7 @@ export default class ObjectType extends Component {
         }
 
     render() {
-        const {label = 'Item'} = this.props;
+        const {label} = this.props;
 
         return(
             <div>
@@ -93,10 +93,12 @@ export default class ObjectType extends Component {
 }
 
 ObjectType.propTypes = {
-    defaultValue: PropTypes.func.isRequired,
+    defaultValue: PropTypes.any.isRequired,
     onChange:PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
-    label: PropTypes.string,
-    addButtonLabel: PropTypes.string,
-    noItemsMessage: PropTypes.string
+    label: PropTypes.string
+};
+
+ObjectType.defaultProps = {
+    label: 'Item'
 };
