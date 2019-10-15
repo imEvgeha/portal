@@ -16,7 +16,8 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
-import NexusSimpleDateTimePicker from '../../../ui-elements/nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
+import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusTimeWindowPicker from '../../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
 
 
 const mapStateToProps = state => {
@@ -234,22 +235,33 @@ class RightCreate extends React.Component {
                 double: null,
                 select: null,
                 multiselect: null,
-                duration: null,
-                time: null,
                 localdate: null,
-                date: (
-                    <NexusSimpleDateTimePicker
+                time: null,
+                duration: (
+                    <NexusTimeWindowPicker
+                        label={displayName}
+                        onChange={timeWindow => {
+                            /* For testing purposes */
+                            console.warn('NexusTimeWindowPicker returned: ', timeWindow);
+                        }}
+                        startDateProps={{
+                            id: `${jvName}Start`,
+                        }}
+                        endDateProps={{
+                            id: `${jvName}End`,
+                        }}
+                    />
+                ),
+                date: <NexusDateTimePicker
                         id={jvName}
                         label={displayName}
-                        isUTC={false}
                         value={'2019-10-08T10:00:00.000Z'}
                         onChange={date => {
                             /* For testing proposes */
                             console.warn('NexusSimpleDateTimePicker returned: ', date);
                         }}
                         required={required}
-                    />
-                ),
+                    />,
                 boolean: null,
                 territoryType: null,
             };
