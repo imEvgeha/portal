@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
-import Button from '@atlaskit/button/dist/cjs/components/Button';
+import Button from '@atlaskit/button';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -45,11 +45,11 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
 
     return (
         <div className="nexus-c-title-to-match">
-            <div className="nexus-c-title-to-match-header">
+            <div className="nexus-c-title-to-match__header">
                 <NexusTitle>Title Matching</NexusTitle>
             </div>
             <NexusTitle>Incoming Right</NexusTitle>
-            <div className="nexus-c-title-to-match-grid">
+            <div className="nexus-c-title-to-match__grid">
                 <NexusGrid
                     columnDefs={[newTitleButton, ...columnDefs]}
                     rowData={[focusedRight]}

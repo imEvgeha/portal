@@ -126,10 +126,10 @@ const TitlesList = ({columnDefs, searchCriteria}) => {
         <React.Fragment>
             <NexusTitle>Title Repositories ({totalCount})</NexusTitle>
             {
-                searchCriteria.title ?
+                !!searchCriteria.title &&
                 (<NexusGridWithInfiniteScrolling
                     columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
-                    setTotalCount={setTotalCount}/>) : null
+                    setTotalCount={setTotalCount}/>)
             }
                 <ActionsBar matchList={matchList} duplicateList={duplicateList} />
         </React.Fragment>
