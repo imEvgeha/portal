@@ -1,6 +1,8 @@
 import {call, put, all, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
+import { createColumnDefs } from '../utils';
+import mappings from './titleMatchingMappings';
 
 export function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -14,7 +16,7 @@ export function* fetchFocusedRight(requestMethod, {payload}) {
 
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
-            payload: {focusedRight},
+            payload: focusedRight,
         });
 
     } catch (error) {
@@ -26,8 +28,21 @@ export function* fetchFocusedRight(requestMethod, {payload}) {
     }
 }
 
+export function* createTitleMatchingColumnDefs(){
+    try{
+        const columnDefs = yield call(createColumnDefs, mappings);
+        yield put({
+            type: actionTypes.STORE_COLUMN_DEFS,
+            payload: columnDefs,
+        });
+    } catch (error) {
+        throw new Error();
+    }
+}
+
 export function* titleMatchingWatcher() {
     yield all([
-        takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get)
+        takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
+        takeEvery(actionTypes.CREATE_COLUMN_DEFS, createTitleMatchingColumnDefs)
     ]);
 }

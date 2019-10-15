@@ -7,15 +7,13 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TitlesList from './TitlesList';
-import { getFocusedRight } from './titleMatchingSelectors';
-import { fetchFocusedRight } from './titleMatchingActions';
-import { createColumnDefs } from '../utils';
-import mappings from './titleMatchingMappings.json';
+import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
+import { fetchFocusedRight, createColumnDefs } from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
-const TitleMatchView = ({match, fetchFocusedRight, focusedRight}) => {
-    const columnDefs = createColumnDefs(mappings);
+const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
+                            focusedRight, columnDefs}) => {
 
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -38,6 +36,12 @@ const TitleMatchView = ({match, fetchFocusedRight, focusedRight}) => {
             fetchFocusedRight(match.params.rightId);
         }
     }, [match]);
+
+    useEffect(() => {
+        if (!columnDefs.length) {
+            createColumnDefs();
+        }
+    }, [columnDefs]);
 
     return (
         <div className="nexus-c-title-to-match">
@@ -62,22 +66,27 @@ const TitleMatchView = ({match, fetchFocusedRight, focusedRight}) => {
 
 TitleMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func.isRequired,
+    createColumnDefs: PropTypes.func.isRequired,
     match: PropTypes.object,
     focusedRight: PropTypes.object,
+    columnDefs: PropTypes.array,
 };
 
 TitleMatchView.defaultProps = {
     focusedRight: {},
+    columnDefs: [],
 };
 
 const createMapStateToProps = () => {
     return (state) => ({
-        focusedRight: getFocusedRight(state)
+        focusedRight: getFocusedRight(state),
+        columnDefs: getColumnDefs(state),
     });
 };
 
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
+    createColumnDefs: () => dispatch(createColumnDefs()),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line
