@@ -3,6 +3,8 @@ import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import { createColumnDefs } from '../utils';
 import mappings from './titleMatchingMappings';
+import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA} from '../../constants/action-types';
+import Constants from './titleMatchingConstants';
 
 export function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -17,6 +19,16 @@ export function* fetchFocusedRight(requestMethod, {payload}) {
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: focusedRight,
+        });
+        const { title, releaseYear, contentType } = focusedRight;
+        const {searchParameters: { TITLE, CONTENT_TYPE, RELEASE_YEAR}} = Constants;
+        yield put({
+            type: METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
+            payload: {
+                [TITLE]: title,
+                [RELEASE_YEAR]: releaseYear,
+                [CONTENT_TYPE]: contentType
+            },
         });
 
     } catch (error) {

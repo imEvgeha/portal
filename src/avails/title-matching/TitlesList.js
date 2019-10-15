@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
@@ -22,30 +22,19 @@ const getRepositoryName = legacy => {
   return '';
 };
 
-class TitlesList extends React.PureComponent {
+const TitlesList = ({columnDefs, searchCriteria}) => {
+    const [totalCount, setTotalCount] = useState(0);
+    const [matchList, setMatchList] = useState({});
+    const [duplicateList, setDuplicateList] = useState({});
 
-    constructor () {
-        super();
-        this.state = {
-            totalCount: 0,
-            matchList: {},
-            duplicateList: {},
-        };
-    }
-
-    setTotalCount = (totalCount) => {
-        this.setState({totalCount});
-    };
-
-    matchClickHandler = (id, repo, checked) => {
+    const matchClickHandler = (id, repo, checked) => {
         if(checked) {
             const {NEXUS, VZ, MOVIDA} = Constants.repository;
-            const { duplicateList, matchList} = this.state;
             const newMatchList = {...matchList};
             if(duplicateList[id]){
                 let list = {...duplicateList};
                 delete list[id];
-                this.setState({duplicateList: list});
+                setDuplicateList(list);
             }
 
             if(repo === NEXUS){
@@ -56,55 +45,52 @@ class TitlesList extends React.PureComponent {
                 delete newMatchList[NEXUS];
             }
             newMatchList[repo] = id;
-            this.setState({ matchList: newMatchList });
+            setMatchList(newMatchList);
         }
     };
-    matchButtonCell = ({data}) => {
+    const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id, legacyIds} = data || {};
         const repoName = getRepositoryName(legacyIds);
         return (
             <CustomActionsCellRenderer id={id} >
                 <input type={'radio'} name={repoName}
-                       checked={this.state.matchList[repoName] === id}
-                       onChange={event => this.matchClickHandler(id, repoName, event.target.checked)}/>
+                       checked={matchList[repoName] === id}
+                       onChange={event => matchClickHandler(id, repoName, event.target.checked)}/>
             </CustomActionsCellRenderer>
         );
     };
 
-    duplicateClickHandler = (id, name, checked) => {
-        const { duplicateList, matchList } = this.state;
+    const duplicateClickHandler = (id, name, checked) => {
         if(checked) {
             if(matchList[name] === id) {
                 let list = {...matchList};
                 delete list[name];
-                this.setState({matchList: list});
+                setMatchList(list);
             }
-            this.setState({
-                duplicateList: {
-                    ...duplicateList,
-                    [id]: name
-                }
+            setDuplicateList({
+                ...duplicateList,
+                [id]: name
             });
         }
         else {
             let list = {...duplicateList};
             delete list[id];
-            this.setState({ duplicateList: list });
+            setDuplicateList(list);
         }
     };
-    duplicateButtonCell = ({data}) => {
+    const duplicateButtonCell = ({data}) => { // eslint-disable-line
         const {id, legacyIds} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
                 <Checkbox
-                    isChecked={this.state.duplicateList[id]}
-                    onChange={event => this.duplicateClickHandler(id,
+                    isChecked={duplicateList[id]}
+                    onChange={event => duplicateClickHandler(id,
                         getRepositoryName(legacyIds), event.currentTarget.checked)}/>
             </CustomActionsCellRenderer>
         );
     };
 
-    repositoryCell = ({data}) => {
+    const repositoryCell = ({data}) => {// eslint-disable-line
         const {id, legacyIds} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
@@ -113,50 +99,51 @@ class TitlesList extends React.PureComponent {
         );
     };
 
-    render(){
-        const {totalCount, duplicateList, matchList} = this.state;
-        const matchButton = {
-            ...Constants.ADDITIONAL_COLUMN_DEF,
-            colId: 'matchButton',
-            field: 'matchButton',
-            headerName: 'Match',
-            cellRendererParams: matchList,
-            cellRendererFramework: this.matchButtonCell,
-        };
-        const duplicateButton = {
-            ...Constants.ADDITIONAL_COLUMN_DEF,
-            colId: 'duplicateButton',
-            field: 'duplicateButton',
-            headerName: 'Duplicate',
-            cellRendererParams: duplicateList,
-            cellRendererFramework: this.duplicateButtonCell,
-        };
-        const repository = {
-            ...Constants.ADDITIONAL_COLUMN_DEF,
-            colId: 'repository',
-            field: 'repository',
-            headerName: 'Repository',
-            cellRendererFramework: this.repositoryCell,
-        };
-
-        return (
-            <React.Fragment>
-                <NexusTitle>Title Repositories ({totalCount})</NexusTitle>
-                <NexusGridWithInfiniteScrolling
-                    columnDefs={[matchButton, duplicateButton, repository, ...this.props.columnDefs]}
-                    setTotalCount={this.setTotalCount} />
-                    <ActionsBar matchList={matchList} duplicateList={duplicateList} />
-            </React.Fragment>
-        );
-    }
-}
+    const matchButton = {
+        ...Constants.ADDITIONAL_COLUMN_DEF,
+        colId: 'matchButton',
+        field: 'matchButton',
+        headerName: 'Match',
+        cellRendererParams: matchList,
+        cellRendererFramework: matchButtonCell,
+    };
+    const duplicateButton = {
+        ...Constants.ADDITIONAL_COLUMN_DEF,
+        colId: 'duplicateButton',
+        field: 'duplicateButton',
+        headerName: 'Duplicate',
+        cellRendererParams: duplicateList,
+        cellRendererFramework: duplicateButtonCell,
+    };
+    const repository = {
+        ...Constants.ADDITIONAL_COLUMN_DEF,
+        colId: 'repository',
+        field: 'repository',
+        headerName: 'Repository',
+        cellRendererFramework: repositoryCell,
+    };
+    return (
+        <React.Fragment>
+            <NexusTitle>Title Repositories ({totalCount})</NexusTitle>
+            {
+                searchCriteria.title ?
+                (<NexusGridWithInfiniteScrolling
+                    columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
+                    setTotalCount={setTotalCount}/>) : null
+            }
+                <ActionsBar matchList={matchList} duplicateList={duplicateList} />
+        </React.Fragment>
+    );
+};
 
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
+    searchCriteria: PropTypes.object,
 };
 
 TitlesList.defaultProps = {
     columnDefs: [],
+    searchCriteria: {},
 };
 
 export default TitlesList;

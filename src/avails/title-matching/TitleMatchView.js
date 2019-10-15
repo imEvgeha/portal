@@ -8,13 +8,13 @@ import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TitlesList from './TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
+import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
 import { fetchFocusedRight, createColumnDefs } from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
 const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
-                            focusedRight, columnDefs}) => {
-
+                            focusedRight, columnDefs, searchCriteria}) => {
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
@@ -59,7 +59,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
                 <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
                     action menu.</p>
             </SectionMessage>
-            <TitlesList columnDefs={columnDefs} />
+            <TitlesList columnDefs={columnDefs} searchCriteria={searchCriteria}/>
         </div>
     );
 };
@@ -69,18 +69,21 @@ TitleMatchView.propTypes = {
     createColumnDefs: PropTypes.func.isRequired,
     match: PropTypes.object,
     focusedRight: PropTypes.object,
+    searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
 };
 
 TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
+    searchCriteria: {},
 };
 
 const createMapStateToProps = () => {
     return (state) => ({
         focusedRight: getFocusedRight(state),
         columnDefs: getColumnDefs(state),
+        searchCriteria: getSearchCriteria(state),
     });
 };
 

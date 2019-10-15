@@ -12,5 +12,10 @@ export default {
         suppressMovable: true,
         lockPosition: true,
         sortable: false,
+    },
+    searchParameters: {
+        TITLE: 'title',
+        CONTENT_TYPE: 'contentType',
+        RELEASE_YEAR: 'releaseYear'
     }
 };
