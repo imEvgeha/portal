@@ -5,9 +5,29 @@ export const createRightMatchingColumnDefs = (payload) => ({
     payload,
 });
 
-export const fetchFocusedRight = (id) => ({
-    type: actionTypes.FETCH_FOCUSED_RIGHT,
+export const fetchRightMatchingProvider = (payload) => ({
+    type: actionTypes.FETCH_RIGHT_MATCHING_PROVIDER,
+    payload,
+});
+
+export const fetchRightMatchingFieldSearchCriteria = (payload) => ({
+    type: actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
+    payload,
+});
+
+export const fetchAndStoreFocusedRight = (payload) => ({
+    type: actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT,
+    payload,
+});
+
+export const fetchMatchedRight = (id) => ({
+    type: actionTypes.FETCH_MATCHED_RIGHT,
     payload: id,
+});
+
+export const fetchCombinedRight = (focusedRightId, matchedRightId) => ({
+    type: actionTypes.FETCH_COMBINED_RIGHT,
+    payload: {focusedRightId, matchedRightId}
 });
 
 export const storeRightMatchDataWithIds = (payload) => ({
@@ -21,5 +41,20 @@ export const cleanStoredRightMatchDataWithIds = () => ({
 
 export const fetchRightMatchDataUntilFindId = (payload) => ({
     type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID,
+    payload
+});
+
+export const saveCombinedRight = (focusedRightId, matchedRightId, combinedRight) => ({
+    type: actionTypes.SAVE_COMBINED_RIGHT,
+    payload: {focusedRightId, matchedRightId, combinedRight}
+});
+
+export const setNewRightSuccessFlag = (payload) => ({
+    type: actionTypes.SET_NEW_RIGHT_FLAG,
+    payload
+});
+
+export const createNewRight = (payload) => ({
+    type: actionTypes.CREATE_NEW_RIGHT,
     payload
 });

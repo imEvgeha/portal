@@ -1,5 +1,13 @@
 {"mappings":
 [{
+  "javaVariableName": "id",
+  "displayName": "Right ID",
+  "dataType": "string",
+  "readOnly": true,
+  "enableSearch": false,
+  "enableEdit": true,
+  "required": true
+}, {
   "javaVariableName": "title",
   "displayName": "Title",
   "dataType": "string",

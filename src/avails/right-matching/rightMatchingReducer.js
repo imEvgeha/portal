@@ -2,15 +2,26 @@ import * as actionTypes from './rightMatchingActionTypes';
 
 const initialState = {
     columnDefs: [],
+    rowData: [],
+    fieldSearchCriteria: null,
+    focusedRight: null,
     rightMatchPageData: {},
-    focusedRight: {}
+    matchedRight: {},
+    combinedRight: {},
+    isNewRightSuccessFlagVisible: false
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
-    const {columnDefs} = payload || {};
-    const {focusedRight} = payload || {};
-    const {rightMatchPageData} = payload || [];
+    const {
+        columnDefs, 
+        fieldSearchCriteria, 
+        focusedRight, 
+        rightMatchPageData,
+        matchedRight,
+        combinedRight,
+        isNewRightSuccessFlagVisible
+    } = payload || {};
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
@@ -18,11 +29,26 @@ const rightMatchingReducer = (state = initialState, action) => {
             ...state,
             columnDefs,
         };
-        case actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS:
+        case actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA:
             return {
-            ...state,
-            focusedRight,
-        };
+                ...state,
+                fieldSearchCriteria,
+            };
+        case actionTypes.STORE_FOCUSED_RIGHT:
+            return {
+                ...state,
+                focusedRight,
+            };
+        case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
+            return {
+                ...state,
+                matchedRight,
+            };
+        case actionTypes.FETCH_COMBINED_RIGHT_SUCCESS:
+            return {
+                ...state,
+                combinedRight,
+            };
         case actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS:
             return {
                 ...state,
@@ -34,7 +60,12 @@ const rightMatchingReducer = (state = initialState, action) => {
         case actionTypes.CLEAN_STORED_RIGHT_MATCH_DATA_WITH_IDS:
             return {
                 ...state,
-                rightMatchPageData: {}
+                rightMatchPageData: {},
+            };
+        case actionTypes.SET_NEW_RIGHT_FLAG:
+            return {
+                ...state,
+                isNewRightSuccessFlagVisible
             };
         default:
             return state;
@@ -42,3 +73,4 @@ const rightMatchingReducer = (state = initialState, action) => {
 };
 
 export default rightMatchingReducer;
+
