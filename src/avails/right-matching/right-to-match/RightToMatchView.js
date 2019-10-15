@@ -167,7 +167,7 @@ const RightToMatchView = ({
             <BottomButtons buttons={[
                 {
                     name: 'Cancel',
-                    onClick: () => history.push(`/avails/history/${availHistoryIds}/right_matching`),
+                    onClick: () => history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)),
                 },
                 {
                     name: 'Match',

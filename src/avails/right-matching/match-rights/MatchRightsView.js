@@ -6,10 +6,11 @@ import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
-    fetchCombinedRight,
     fetchAndStoreFocusedRight,
+    fetchCombinedRight,
     fetchMatchedRight,
-    saveCombinedRight, setCombinedSavedFlag
+    saveCombinedRight,
+    setCombinedSavedFlag
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
@@ -51,7 +52,7 @@ function MatchRightView({
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
         if (rightId && matchedRightId && columnDefs.length) {
-            if (!focusedRight || (focusedRight && focusedRight.id !== rightId)) {
+            if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
             fetchMatchedRight(matchedRightId);
@@ -62,10 +63,10 @@ function MatchRightView({
 
     useEffect(() => {
         setSaveButtonDisabled(false);
-        if(isCombinedRightSaved === true) {
+        if(isCombinedRightSaved) {
             const {params} = match || {};
             const {availHistoryIds} = params || {};
-            history.push(`/avails/history/${availHistoryIds}/right_matching`);
+            history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`));
         }
     }, [isCombinedRightSaved]);
 
@@ -79,7 +80,7 @@ function MatchRightView({
     const onCancel = () => {
         const {params} = match || {};
         const {rightId, availHistoryIds} = params || {};
-        history.push(`/avails/history/${availHistoryIds}/right_matching/${rightId}`);
+        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
     };
 
     const onSaveCombinedRight = () => {
@@ -99,17 +100,21 @@ function MatchRightView({
             />
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
-                {columnDefs.length && <NexusGrid
-                    columnDefs={columnDefs}
-                    rowData={matchedRightRowData}
-                />}
+                {!!columnDefs &&
+                    <NexusGrid
+                        columnDefs={columnDefs}
+                        rowData={matchedRightRowData}
+                    />
+                }
             </div>
             <div className='nexus-c-match-right__combined'>
                 <NexusTitle>Combined Rights</NexusTitle>
-                {columnDefs.length && <NexusGrid
-                    columnDefs={columnDefs}
-                    rowData={[combinedRight]}
-                />}
+                {!!columnDefs &&
+                    <NexusGrid
+                        columnDefs={columnDefs}
+                        rowData={[combinedRight]}
+                    />
+                }
             </div>
 
             <div className='nexus-c-match-right__buttons'>
