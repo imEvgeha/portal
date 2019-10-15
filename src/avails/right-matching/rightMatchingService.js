@@ -44,3 +44,8 @@ export const getRightMatchingFieldSearchCriteria = (provider) => {
     );
 };
 
+
+export const createRightById = (id) => {
+    return http.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`); 
+};
+

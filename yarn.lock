@@ -422,6 +422,21 @@
     "@atlaskit/theme" "^7.0.1"
     "@babel/runtime" "^7.0.0"
 
+"@atlaskit/flag@^12.3.2":
+  version "12.3.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/flag/-/flag-12.3.2.tgz#3dd1a1a8fe3086f818e1591fe3d45c1fab2a2d0a"
+  integrity sha512-IRw+K3brsHujRXckLOMdToUGskhvPtNXQfMTgU4OsOcqndR0r/R0rNKE1ACC4OnwPem/IDbFh5whkYs8s6CjYA==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.3.1"
+    "@atlaskit/button" "^13.3.3"
+    "@atlaskit/icon" "^19.0.6"
+    "@atlaskit/portal" "^3.1.1"
+    "@atlaskit/theme" "^9.2.4"
+    "@babel/runtime" "^7.0.0"
+    react-transition-group "^2.2.1"
+    tslib "^1.9.3"
+    uuid "^3.1.0"
+
 "@atlaskit/form@5.1.1":
   version "5.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-5.1.1.tgz#497a40b157f5509d2362110a0e19f9ecd6fe14a4"
@@ -793,6 +808,17 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/portal/-/portal-3.0.9.tgz#70acc3502051fd30e6c6a0bfadb52dbadba88f01"
   integrity sha512-v0QSrRY5CJMrOWZY6BVWzz/i/q9JGKcF8Gwvnbej2X2+5RZFoj27RwMRl7s1OR/m0pdjrO5mJH44VmEdQI/Y8w==
   dependencies:
+    "@babel/runtime" "^7.0.0"
+    exenv "^1.2.2"
+    tiny-invariant "^0.0.3"
+    tslib "^1.9.3"
+
+"@atlaskit/portal@^3.1.1":
+  version "3.1.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/portal/-/portal-3.1.2.tgz#510cc347550e0235ce38b313acb579fd104a5b90"
+  integrity sha512-OQ5HIapaSDdhvwt/Ni7cM1XM7vYMqh53KpjHJjkjWXWXGR8E3lvDQRAxcYX49TAqbS6rUp9gLiLByquekX9UdA==
+  dependencies:
+    "@atlaskit/theme" "^9.2.4"
     "@babel/runtime" "^7.0.0"
     exenv "^1.2.2"
     tiny-invariant "^0.0.3"
