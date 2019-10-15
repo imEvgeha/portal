@@ -88,7 +88,7 @@ const RightToMatchView = ({
     
     const createNewButtonCellRenderer = ({data}) => ( // eslint-disable-line
         <CustomActionsCellRenderer id={data && data.id}>
-            <Button onClick={() => onNewButtonClick()}>New</Button>
+            <Button className="nexus-c-new-button" onClick={() => onNewButtonClick()}>New</Button>
         </CustomActionsCellRenderer>
     );
 
@@ -126,8 +126,10 @@ const RightToMatchView = ({
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
                 <PageHeader>
                     <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__link" >
-                        <ArrowLeftIcon size='large'/> 
-                        Right to Right Matching
+                        <div className="nexus-c-page-header">
+                            <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                            <span className="nexus-c-page-header-title">Right to Right Matching</span>
+                        </div>
                     </Link>
                 </PageHeader>
             </div>
@@ -148,8 +150,8 @@ const RightToMatchView = ({
                     domLayout="autoHeight"
                 />
             </div>
-            <SectionMessage>
-                <p>{SECTION_MESSAGE}</p>
+            <SectionMessage appearance='info'>
+                <p className="nexus-c-right-section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
