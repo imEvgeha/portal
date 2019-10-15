@@ -4,10 +4,11 @@ const initialState = {
     columnDefs: [],
     rowData: [],
     fieldSearchCriteria: null,
-    focusedRight: null,
+    focusedRight: {},
     rightMatchPageData: {},
     matchedRight: {},
     combinedRight: {},
+    isCombinedRightSaved: false,
     isNewRightSuccessFlagVisible: false
 };
 
@@ -20,7 +21,8 @@ const rightMatchingReducer = (state = initialState, action) => {
         rightMatchPageData,
         matchedRight,
         combinedRight,
-        isNewRightSuccessFlagVisible
+        isCombinedRightSaved,
+        isNewRightSuccessFlagVisible,
     } = payload || {};
 
     switch (type) {
@@ -48,6 +50,11 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 combinedRight,
+            };
+        case actionTypes.SET_COMBINED_RIGHT_SAVED_FLAG:
+            return {
+              ...state,
+                isCombinedRightSaved
             };
         case actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS:
             return {

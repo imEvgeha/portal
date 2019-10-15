@@ -18,13 +18,13 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
 
 export const getCombinedRight = (rightId, matchedRightId) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${rightId}/match/${matchedRightId}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`
     );
 };
 
 export const putCombinedRight = (rightId, matchedRightId, combinedRight) => {
-    return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${rightId}/match/${matchedRightId}`,
+    return http.put(
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`,
         combinedRight
     );
 };

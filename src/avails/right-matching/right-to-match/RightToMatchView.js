@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {Link} from 'react-router-dom';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
@@ -21,7 +21,7 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
-import BottomButtons from "../components/bottom-buttons/BottomButons";
+import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -172,7 +172,7 @@ const RightToMatchView = ({
                 {
                     name: 'Match',
                     onClick: handleMatchClick,
-                    isDisabled: {isMatchDisabled},
+                    isDisabled: isMatchDisabled,
                     appearance: 'primary'
                 }
             ]}/>
