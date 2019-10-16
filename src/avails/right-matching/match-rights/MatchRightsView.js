@@ -108,7 +108,6 @@ function MatchRightView({
         if (type === 'cellValueChanged') {
             api.forEachNode(({data}) => result.push(data));
             rowDataRef.current = result;
-            console.log(rowDataRef.current)
         }
     };
 
