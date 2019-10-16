@@ -48,18 +48,24 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
             <div className="nexus-c-title-to-match__header">
                 <NexusTitle>Title Matching</NexusTitle>
             </div>
-            <NexusTitle>Incoming Right</NexusTitle>
-            <div className="nexus-c-title-to-match__grid">
-                <NexusGrid
-                    columnDefs={[newTitleButton, ...columnDefs]}
-                    rowData={[focusedRight]}
-                />
-            </div>
-            <SectionMessage>
-                <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
-                    action menu.</p>
-            </SectionMessage>
-            <TitlesList columnDefs={columnDefs} searchCriteria={searchCriteria}/>
+            {
+                !!searchCriteria.title && (
+                    <React.Fragment>
+                        <NexusTitle>Incoming Right</NexusTitle>
+                        <div className="nexus-c-title-to-match__grid">
+                            <NexusGrid
+                                columnDefs={[newTitleButton, ...columnDefs]}
+                                rowData={[focusedRight]}
+                            />
+                        </div>
+                        <SectionMessage>
+                            <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
+                                action menu.</p>
+                        </SectionMessage>
+                        <TitlesList columnDefs={columnDefs}/>
+                    </React.Fragment>
+                )
+            }
         </div>
     );
 };

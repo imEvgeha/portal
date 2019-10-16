@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -6,31 +6,44 @@ import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
-    fetchCombinedRight,
     fetchAndStoreFocusedRight,
+    fetchCombinedRight,
     fetchMatchedRight,
-    saveCombinedRight
+    saveCombinedRight,
+    setCombinedSavedFlag
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
+import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 function MatchRightView({
-    history, 
-    match, 
+    history,
+    match,
     focusedRight,
-    matchedRight, 
-    combinedRight, 
-    fetchFocusedRight, 
-    fetchMatchedRight, 
+    matchedRight,
+    combinedRight,
+    fetchFocusedRight,
+    fetchMatchedRight,
     fetchCombinedRight,
-    createRightMatchingColumnDefs, 
-    columnDefs, 
-    mapping
+    saveCombinedRight,
+    createRightMatchingColumnDefs,
+    columnDefs,
+    mapping,
+    setCombinedSavedFlag,
+    isCombinedRightSaved,
+
 }) {
+
+    const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
+
     useEffect(() => {
-        if (!columnDefs.length && mapping) {
+        setCombinedSavedFlag({isCombinedRightSaved: false});
+    }, []);
+
+    useEffect(() => {
+        if (!columnDefs.length) {
             createRightMatchingColumnDefs(mapping);
         }
     }, [columnDefs, mapping]);
@@ -38,15 +51,24 @@ function MatchRightView({
     useEffect(() => {
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
-        if (rightId && matchedRightId) {
-            if (focusedRight && focusedRight.id !== rightId) {
+        if (rightId && matchedRightId && columnDefs.length) {
+            if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
             fetchMatchedRight(matchedRightId);
             // matchedRightId from url should be correct one.
             fetchCombinedRight(rightId, matchedRightId);
         }
-    },[match]);
+    },[match.params.matchedRightId, match.params.rightId, columnDefs.length]);
+
+    useEffect(() => {
+        setSaveButtonDisabled(false);
+        if(isCombinedRightSaved) {
+            const {params} = match || {};
+            const {availHistoryIds} = params || {};
+            history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`));
+        }
+    }, [isCombinedRightSaved]);
 
     // we should this via router Link
     const navigateToMatchPreview = () => {
@@ -55,9 +77,21 @@ function MatchRightView({
         history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
     };
 
+    const onCancel = () => {
+        const {params} = match || {};
+        const {rightId, availHistoryIds} = params || {};
+        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
+    };
+
+    const onSaveCombinedRight = () => {
+        const {params} = match || {};
+        const {rightId, matchedRightId} = params || {};
+        setSaveButtonDisabled(true);
+        saveCombinedRight(rightId, matchedRightId, combinedRight);
+    };
+
     // Sorted by start field. desc
     const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
-
     return (
         <div className='nexus-c-match-right'>
             <BackNavigationByUrl
@@ -66,18 +100,38 @@ function MatchRightView({
             />
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
-                <NexusGrid
-                    columnDefs={columnDefs}
-                    rowData={matchedRightRowData}
-                />
+                {!!columnDefs &&
+                    <NexusGrid
+                        columnDefs={columnDefs}
+                        rowData={matchedRightRowData}
+                    />
+                }
             </div>
             <div className='nexus-c-match-right__combined'>
                 <NexusTitle>Combined Rights</NexusTitle>
-                <NexusGrid
-                    columnDefs={columnDefs}
-                    rowData={[combinedRight]}
-                />
+                {!!columnDefs &&
+                    <NexusGrid
+                        columnDefs={columnDefs}
+                        rowData={[combinedRight]}
+                    />
+                }
             </div>
+
+            <div className='nexus-c-match-right__buttons'>
+                <BottomButtons buttons={[
+                    {
+                        name: 'Cancel',
+                        onClick: onCancel
+                    },
+                    {
+                        name: 'Save',
+                        onClick: onSaveCombinedRight,
+                        isDisabled: saveButtonDisabled || !focusedRight.id || !matchedRight.id || !combinedRight.id,
+                        appearance: 'primary'
+                    }
+                ]}/>
+            </div>
+
         </div>
     );
 }
@@ -95,6 +149,8 @@ MatchRightView.propTypes = {
     fetchCombinedRight: PropTypes.func,
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
+    setCombinedSavedFlag: PropTypes.func,
+    isCombinedRightSaved: PropTypes.bool,
 };
 
 MatchRightView.defaultProps = {
@@ -110,18 +166,22 @@ MatchRightView.defaultProps = {
     fetchCombinedRight: null,
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
+    isCombinedRightSaved: false
 };
 
 const createMapStateToProps = () => {
     const focusedRightSelector = selectors.createFocusedRightSelector();
     const matchedRightSelector = selectors.createMatchedRightSelector();
     const combinedRightSelector = selectors.createCombinedRightSelector();
+    const combinedRightSavedFlagSelector = selectors.createCombinedRightSavedFlagSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
+
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
         matchedRight: matchedRightSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
+        isCombinedRightSaved: combinedRightSavedFlagSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
     });
@@ -132,7 +192,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
     saveCombinedRight:(focusedRightId, matchedRightId, combinedRight) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight)),
-    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
+    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    setCombinedSavedFlag: payload => dispatch(setCombinedSavedFlag(payload)),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MatchRightView); // eslint-disable-line

@@ -22,7 +22,7 @@ const getRepositoryName = legacy => {
   return '';
 };
 
-const TitlesList = ({columnDefs, searchCriteria}) => {
+const TitlesList = ({columnDefs}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
@@ -125,25 +125,20 @@ const TitlesList = ({columnDefs, searchCriteria}) => {
     return (
         <React.Fragment>
             <NexusTitle>Title Repositories ({totalCount})</NexusTitle>
-            {
-                !!searchCriteria.title &&
-                (<NexusGridWithInfiniteScrolling
-                    columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
-                    setTotalCount={setTotalCount}/>)
-            }
-                <ActionsBar matchList={matchList} duplicateList={duplicateList} />
+            <NexusGridWithInfiniteScrolling
+                columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
+                setTotalCount={setTotalCount}/>
+            <ActionsBar matchList={matchList} duplicateList={duplicateList} />
         </React.Fragment>
     );
 };
 
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
-    searchCriteria: PropTypes.object,
 };
 
 TitlesList.defaultProps = {
     columnDefs: [],
-    searchCriteria: {},
 };
 
 export default TitlesList;

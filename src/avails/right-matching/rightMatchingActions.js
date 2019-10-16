@@ -58,3 +58,8 @@ export const createNewRight = (payload) => ({
     type: actionTypes.CREATE_NEW_RIGHT,
     payload
 });
+
+export const setCombinedSavedFlag = (payload) => ({
+    type: actionTypes.SET_COMBINED_RIGHT_SAVED_FLAG,
+    payload
+});

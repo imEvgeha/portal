@@ -6,6 +6,7 @@ import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
+import {setCombinedSavedFlag} from './rightMatchingActions';
 import { createColumnDefs } from '../utils';
 
 // TODO - refactor this worker sagra (use select)
@@ -252,7 +253,6 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
-
         const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId, payload.combinedRight);
         const focusedRight = response.data;
 
@@ -260,8 +260,10 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
+        yield put(setCombinedSavedFlag({isCombinedRightSaved: true}));
 
     } catch (error) {
+        yield put(setCombinedSavedFlag({isCombinedRightSaved: false}));
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
