@@ -88,32 +88,40 @@ class TerritoryMetadataCreateTab extends Component {
                             <NexusDateTimePicker
                                 label="Original Air Date"
                                 id="territoryOriginalAirDate"
-                                onChange={this.props.handleChange}
+                                onChange={date => this.props.handleChangeDate('originalAirDate', date)}
                             />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <AvField label="Home Video Release Date" validate={{
-                                date: { format: 'YYYY-mm-DD' }
-                            }} type="date" id="territoryHomeVideoReleaseDate" name="homeVideoReleaseDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                            <NexusDateTimePicker
+                                label="Home Video Release Date"
+                                id="territoryHomeVideoReleaseDate"
+                                onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', date)}
+                            />
                         </Col>
                         <Col>
-                            <AvField label="Avail Announce Date" type="date" id="territoryAvailAnnounceDate" name="availAnnounceDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                            <NexusDateTimePicker
+                                label="Avail Announce Date"
+                                id="territoryAvailAnnounceDate"
+                                onChange={date => this.props.handleChangeDate('availAnnounceDate', date)}
+                            />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <AvField label="Theatrical Release Date" type="date" id="territoryTheatricalReleaseDate"
-                                name="theatricalReleaseDate"
-                                onChange={this.props.handleChange}
-                                errorMessage="Please enter a valid date!" />
+                            <NexusDateTimePicker
+                                label="Theatrical Release Date"
+                                id="territoryTheatricalReleaseDate"
+                                onChange={date => this.props.handleChangeDate('theatricalReleaseDate', date)}
+                            />
                         </Col>
                         <Col>
-                            <AvField label="EST Release Date" type="date" id="territoryESTReleaseDate"
-                                name="estReleaseDate"
-                                onChange={this.props.handleChange}
-                                errorMessage="Please enter a valid date!" />
+                            <NexusDateTimePicker
+                                label="EST Release Date"
+                                id="territoryESTReleaseDate"
+                                onChange={date => this.props.handleChangeDate('estReleaseDate', date)}
+                            />
                         </Col>
                     </Row>
                 </Container>
@@ -124,6 +132,7 @@ class TerritoryMetadataCreateTab extends Component {
 
 TerritoryMetadataCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
+    handleChangeDate: PropTypes.func.isRequired,
     isRequired: PropTypes.bool.isRequired,
     configLocale: PropTypes.array,
     territories: PropTypes.object

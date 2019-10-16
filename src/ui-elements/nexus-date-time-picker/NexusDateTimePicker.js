@@ -5,6 +5,8 @@ import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSim
 import Select from '@atlaskit/select';
 import InlineEdit from '@atlaskit/inline-edit';
 import './NexusDateTimePicker.scss';
+import moment from 'moment';
+import {useIntl} from 'react-intl';
 
 // TODO: Move to a separate file for constants
 const RELATIVE_TIME_LABEL = 'Relative';
@@ -12,7 +14,7 @@ const SIMULCAST_TIME_LABEL = 'Simulcast (UTC)';
 
 const NexusDateTimePicker = ({
     id,
-    isEdit,
+    isWithInlineEdit,
     onChange,
     onConfirm,
     value,
@@ -20,12 +22,23 @@ const NexusDateTimePicker = ({
     ...restProps,
 }) => {
     const [isUTC, setIsUTC] = useState(false);
+    // Get locale provided by intl
+    const intl = useIntl();
+    const {locale = 'en-US'} = intl || {};
+
+    // Create date format based on locale
+    const dateFormat = moment()
+        .locale(locale)
+        .localeData()
+        .longDateFormat('L')
+        .toUpperCase();
+
     const DatePicker = (
         <div className="nexus-c-date-time-picker">
             {label &&
-            <div className="nexus-c-date-time-picker__label">
-                {label}
-            </div>
+                <div className="nexus-c-date-time-picker__label">
+                    {label}
+                </div>
             }
             <div className="nexus-c-date-time-picker__date-time">
                 <NexusSimpleDateTimePicker
@@ -51,10 +64,10 @@ const NexusDateTimePicker = ({
 
     return (
         <>
-            {isEdit
+            {isWithInlineEdit
                 ? (
                     <InlineEdit
-                        readView={() => value || `Enter ${label}`}
+                        readView={() => moment(value).format(dateFormat) || `Enter ${label}`}
                         editView={() => DatePicker}
                         defaultValue={value}
                         onConfirm={onConfirm}
@@ -72,14 +85,14 @@ NexusDateTimePicker.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
     id: PropTypes.string.isRequired,
-    isEdit: PropTypes.bool,
+    isWithInlineEdit: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onConfirm: PropTypes.func,
 };
 
 NexusDateTimePicker.defaultProps = {
     label: '',
-    isEdit: false,
+    isWithInlineEdit: false,
 };
 
 export default NexusDateTimePicker;

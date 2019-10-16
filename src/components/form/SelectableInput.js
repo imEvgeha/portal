@@ -261,13 +261,15 @@ class SelectableInput extends Component {
                         } = timeWindow || {};
                         onChange({...value, from, to});
                     }}
-                    startDateProps={{
+                    startDateTimePickerProps={{
                         id: `${id}-datepicker-start`,
                         defaultValue: from,
+                        label: 'From'
                     }}
-                    endDateProps={{
+                    endDateTimePickerProps={{
                         id: `${id}-datepicker-end`,
                         defaultValue: to,
+                        label: 'To'
                     }}
                 />
             );
@@ -356,7 +358,7 @@ class SelectableInput extends Component {
         };
 
         return (
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr 2fr', gridGap: '5px'}}>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr 2fr', gridGap: '5px', alignItems: 'center'}}>
                 <div style={{margin: '0 0 16px'}}>
                     <Select
                         id={this.props.id + '-select'}

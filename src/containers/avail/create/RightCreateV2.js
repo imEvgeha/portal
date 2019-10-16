@@ -244,10 +244,10 @@ class RightCreate extends React.Component {
                             /* For testing purposes */
                             console.warn('NexusTimeWindowPicker returned: ', timeWindow);
                         }}
-                        startDateProps={{
+                        startDateTimePickerProps={{
                             id: `${jvName}Start`,
                         }}
-                        endDateProps={{
+                        endDateTimePickerProps={{
                             id: `${jvName}End`,
                         }}
                     />

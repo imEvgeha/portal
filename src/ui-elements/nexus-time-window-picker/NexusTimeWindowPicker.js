@@ -14,15 +14,15 @@ const END_DATE_ERROR = 'End date must be after Start date';
 const NexusTimeWindowPicker = ({
     label,
     onChange,
-    startDateProps,
-    endDateProps,
+    startDateTimePickerProps,
+    endDateTimePickerProps,
 }) => {
     const [isUTC, setIsUTC] = useState(false);
 
-    const [startDate, setStartDate] = useState(startDateProps.defaultValue || '');
+    const [startDate, setStartDate] = useState(startDateTimePickerProps.defaultValue || '');
     const [startDateError, setStartDateError] = useState('');
 
-    const [endDate, setEndDate] = useState(endDateProps.defaultValue || '');
+    const [endDate, setEndDate] = useState(endDateTimePickerProps.defaultValue || '');
     const [endDateError, setEndDateError] = useState('');
 
     // When date changes, validate and trigger change
@@ -72,7 +72,7 @@ const NexusTimeWindowPicker = ({
                     value={startDate}
                     onChange={setStartDate}
                     error={startDateError}
-                    {...startDateProps}
+                    {...startDateTimePickerProps}
                 />
             </div>
             <div className="nexus-c-time-window-picker__end-date">
@@ -81,18 +81,21 @@ const NexusTimeWindowPicker = ({
                         value={endDate}
                         onChange={setEndDate}
                         error={endDateError}
-                        {...endDateProps}
+                        {...endDateTimePickerProps}
                     />
             </div>
             <div className="nexus-c-date-time-picker__type-select">
+                <label className="nexus-c-date-time-picker__label">
+                    Select Type
+                </label>
                 <Select
                     defaultValue={{label: RELATIVE_TIME_LABEL, value: false}}
                     options={[
                         {label: RELATIVE_TIME_LABEL, value: false},
                         {label: SIMULCAST_TIME_LABEL, value: true},
-                        ]}
-                        onChange={type => setIsUTC(type.value)}
-                    />
+                    ]}
+                    onChange={type => setIsUTC(type.value)}
+                />
             </div>
         </div>
     );
@@ -101,10 +104,10 @@ const NexusTimeWindowPicker = ({
 NexusTimeWindowPicker.propTypes = {
     label: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    startDateProps: PropTypes.shape({
+    startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
-    endDateProps: PropTypes.shape({
+    endDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
 };

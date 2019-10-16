@@ -462,6 +462,24 @@ class TitleEdit extends Component {
         }
     };
 
+    handleTerritoryMetadataEditDateChange = (name, id, value, data) => {
+        let edited = this.state.updatedTerritories.find(e => e.id === data.id);
+        if (edited) {
+            edited[name] = value;
+            let newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
+            newOne.push(edited);
+            this.setState({
+                updatedTerritories: newOne
+            });
+        } else {
+            edited = Object.assign({}, data);
+            edited[name] = value;
+            this.setState({
+                updatedTerritories: [edited, ...this.state.updatedTerritories]
+            });
+        }
+    };
+
     handleTerritoryMetadataChange = (e) => {
         this.setState({
             territories: {
@@ -469,6 +487,15 @@ class TitleEdit extends Component {
                 [e.target.name]: e.target.value
             }
         });
+    };
+
+    handleTerritoryMetadataDateChange = (name, date) => {
+        this.setState(prevState => ({
+            territories: {
+                ...prevState.territories,
+                [name]: date,
+            }
+        }));
     };
 
     cleanTerritoryMetadata = () => {
@@ -942,7 +969,9 @@ class TitleEdit extends Component {
                         territory={this.state.territory}
                         territories={this.state.territories}
                         handleChange={this.handleTerritoryMetadataChange}
+                        handleChangeDate={this.handleTerritoryMetadataDateChange}
                         handleEditChange={this.handleTerritoryMetadataEditChange}
+                        handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
                         isEditMode={this.state.isEditMode} />
                 </AvForm>
             </EditPage>

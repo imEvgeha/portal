@@ -5,7 +5,6 @@ import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
-import {Label} from '@atlaskit/field-base';
 
 // TODO: Move to a separate file for constants
 const TIME_PLACEHOLDER = 'HH:mm:ss';
@@ -72,13 +71,14 @@ const NexusSimpleDateTimePicker = ({
     return (
         <>
             {label &&
-                <Label
-                    label={label}
+                <label
                     // TODO: To be fixed
                     // This id manipulation is necessary as per AtlasKit docs
                     // https://atlaskit.atlassian.com/packages/core/datetime-picker
                     htmlFor={`react-select-${id}--input`}
-                />
+                >
+                    {label}
+                </label>
             }
             <TemporaryErrorBorder error={error}>
                 <>
@@ -88,7 +88,7 @@ const NexusSimpleDateTimePicker = ({
                         parseValue={parseTimezoneValue}
                         defaultValue={defaultValue}
                         value={date}
-                        onChange={date => onChange(convertToISO(date))}
+                        onChange={date => date && onChange(convertToISO(date))}
                         datePickerProps={{
                             placeholder: datePlaceholder,
                         }}

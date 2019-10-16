@@ -1061,7 +1061,7 @@ class RightDetails extends React.Component {
                     value={value}
                     error={error}
                     required={required}
-                    isEdit={true}
+                    isWithInlineEdit={true}
                 />
             );
             return renderFieldTemplate(
