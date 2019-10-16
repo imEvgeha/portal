@@ -10,7 +10,6 @@ import SectionMessage from '@atlaskit/section-message';
 import Flag, {FlagGroup} from '@atlaskit/flag';
 import Warning from '@atlaskit/icon/glyph/warning';
 import {colors} from '@atlaskit/theme';
-
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
@@ -158,7 +157,7 @@ const RightToMatchView = ({
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
-                        params={{fieldSearchCriteria}}
+                        params={fieldSearchCriteria}
                         handleSelectionChange={handleSelectionChange}
                     />
                 ) : null}

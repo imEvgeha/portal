@@ -90,6 +90,12 @@ function MatchRightView({
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
         setSaveButtonDisabled(true);
+        // TODO: fix this
+        if (Array.isArray(rowDataRef.current) && rowDataRef.current.length) {
+            const updateCombinedRight = rowDataRef.current[0]; 
+            saveCombinedRight(rightId, matchedRightId, updateCombinedRight);
+            return;
+        }
         saveCombinedRight(rightId, matchedRightId, combinedRight);
     };
 
@@ -102,6 +108,7 @@ function MatchRightView({
         if (type === 'cellValueChanged') {
             api.forEachNode(({data}) => result.push(data));
             rowDataRef.current = result;
+            console.log(rowDataRef.current)
         }
     };
 

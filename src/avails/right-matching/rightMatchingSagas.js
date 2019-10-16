@@ -44,7 +44,7 @@ export function* createRightMatchingColumnDefs({payload}) {
 function* storeRightMatchingSearchCriteria(payload = []) {
     // get focused right
     const {focusedRight} = yield select(state => state.rightMatching);
-    const searchCriteria = payload.filter(({type}) => (!type || type === 'field'));
+    const searchCriteria = payload.filter(({type}) => (!type || type === 'Field'));
     const parseFieldNames = (criteria, name) => {
         const fieldNames = {
             EQ: name,

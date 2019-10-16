@@ -40,7 +40,6 @@ const NexusGrid = ({
     };
 
     const onCellValueChanged = (data)  => {
-        console.log(data, 'data')
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
         }

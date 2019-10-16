@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
-import CheckboxCellEditor from '../elements/cell-editor/CheckboxCellEditor';
 import {isObject} from '../../../util/Common';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
