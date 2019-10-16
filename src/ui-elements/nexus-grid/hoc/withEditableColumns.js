@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
+import CheckboxCellEditor from '../elements/cell-editor/CheckboxCellEditor';
 import {isObject} from '../../../util/Common';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
@@ -9,7 +10,7 @@ import {createRightMatchingColumnDefs} from '../../../avails/right-matching/righ
 
 const DEFAULT_EDITABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
 
-const withEditableColumns = (editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES) => WrappedComponent => {
+const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES) => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues, createRightMatchingColumnDefs} = props;
         useEffect(() => {
@@ -28,29 +29,42 @@ const withEditableColumns = (editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES) =>
             });
             return result;
         };
-        const editableColumnDefs = columnDefs.map(columnDef => {
-            const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
-            const isEditable = editableDataTypes.includes(dataType);
-            if (enableEdit && isEditable) {
-                columnDef.editable = true; 
+        const updateColumnDefs = columnDefs => {
+            const editableColumnDefs = columnDefs.map(columnDef => {
+                const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
+                const isEditable = editableDataTypes.includes(dataType);
+                if (enableEdit && isEditable) {
+                    columnDef.editable = true; 
+                    if (dataType === 'select') {
+                        const options = (isObject(selectValues) && Array.isArray(selectValues[columnDef.field]) && selectValues[columnDef.field]) || [];
+                        columnDef.cellEditorFramework = SelectCellEditor;
+                        columnDef.cellEditorParams = {
+                            options: getOptions(options),
+                        };
+                    } else if (dataType === 'multiselect') {
+                        const options = (isObject(selectValues) && Array.isArray(selectValues[columnDef.field]) && selectValues[columnDef.field]) || [];
+                        columnDef.cellEditorFramework = MultiSelectCellEditor;
+                        columnDef.cellEditorParams = {
+                            options: getOptions(options),
+                        };
+                    } else if (dataType === 'boolean') {
+                        const options = [{label: 'Yes', value: true}, {label: 'No', value: false}];
+                        columnDef.cellEditorFramework = SelectCellEditor;
+                        columnDef.cellEditorParams = {
+                            options,
+                        };
+                        // TODO: doesn't work try to find solution
+                        // columnDef.cellEditorFramework = CheckboxCellEditor;
+                    }
+                }
 
-                if (dataType === 'select') {
-                    const options = (selectValues && Array.isArray(selectValues[columnDef.field]) && selectValues[columnDef.field]) || [];
-                    columnDef.cellEditorFramework = SelectCellEditor;
-                    columnDef.cellEditorParams = {
-                        options: getOptions(options),
-                    };
-                } else if (dataType === 'multiselect') {
-                    const options = (isObject(selectValues) && Array.isArray(selectValues[columnDef.field]) && selectValues[columnDef.field]) || [];
-                    columnDef.cellEditorFramework = MultiSelectCellEditor;
-                    columnDef.cellEditorParams = {
-                        options: getOptions(options),
-                    };
-                } 
-            }
+                return columnDef;
+            });
 
-            return columnDef;
-        });
+            return editableColumnDefs;
+        };
+
+        const editableColumnDefs = columnDefs.length ? updateColumnDefs(columnDefs) : columnDefs;
 
         return (
             <WrappedComponent 

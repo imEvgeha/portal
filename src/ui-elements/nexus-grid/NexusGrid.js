@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './NexusGrid.scss';
+
+const OVERFLOW_VISIBLE_NUMBER = 2;
 
 const NexusGrid = ({
     columnDefs,
@@ -15,9 +17,11 @@ const NexusGrid = ({
     onGridEvent,
     ...restProps,
 }) => {
+    const gridRowCountRef = useRef();
     const onGridReady = params => {
         // TODO: add onGridEvent callback instead
         const {api, columnApi} = params;
+        gridRowCountRef.current = api.getDisplayedRowCount();
         if (typeof handleGridReady === 'function') {
             handleGridReady(api, columnApi);
         }
@@ -36,13 +40,23 @@ const NexusGrid = ({
     };
 
     const onCellValueChanged = (data)  => {
+        console.log(data, 'data')
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
         }
     };
 
+    const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
+
+    const isOverflowVisible = (count, constant = OVERFLOW_VISIBLE_NUMBER) => count && (count <= constant);
+
     return (
-        <div className='nexus-c-nexus-grid ag-theme-balham'>
+        <div className={
+            `nexus-c-nexus-grid 
+            ag-theme-balham 
+            ${isAutoHeight(restProps) ? 'nexus-c-nexus-grid--auto-height' : ''}
+            ${isOverflowVisible(gridRowCountRef.current) ? 'nexus-c-nexus-grid--overflow' : ''}
+        `}>
             <AgGridReact
                 columnDefs={columnDefs}
                 rowData={rowData}

@@ -140,10 +140,11 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {true ? (
+                {fieldSearchCriteria ? (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
+                        params={{fieldSearchCriteria}}
                         handleSelectionChange={handleSelectionChange}
                     />
                 ) : null}

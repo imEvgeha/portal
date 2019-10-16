@@ -8,6 +8,11 @@
     overflow: hidden;
 }
 
+.nexus-c-create-loading-cell-renderer__input {
+    height: 100%;
+    width: 100%;
+}
+
 .nexus-c-create-loading-cell-renderer__highlighted {
     display: flex;
     color: grey; // should use from config.scss colors

@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {compose} from 'redux';
 import moment from 'moment';
 import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
@@ -18,7 +17,7 @@ import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-
 import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 
-const EditableNexusGrid = compose(withEditableColumns())(NexusGrid);
+const EditableNexusGrid = withEditableColumns(NexusGrid);
 
 function MatchRightView({
     history, 
@@ -81,10 +80,11 @@ function MatchRightView({
             />
             <div className='nexus-c-match-right__matched'>
                 <NexusTitle>Matched Rights</NexusTitle>
-                <EditableNexusGrid
+                <NexusGrid
                     columnDefs={columnDefs}
                     rowData={matchedRightRowData}
                     onGridEvent={handleGridEvent}
+                    domLayout='autoHeight'
                 />
             </div>
             <div className='nexus-c-match-right__combined'>
@@ -93,6 +93,7 @@ function MatchRightView({
                     columnDefs={columnDefs}
                     rowData={[combinedRight]}
                     onGridEvent={handleGridEvent}
+                    domLayout='autoHeight'
                 />
             </div>
         </div>

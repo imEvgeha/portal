@@ -5,7 +5,10 @@ import Select from '@atlaskit/select';
 class SelectCellEditor extends Component {
     static propTypes = {
         options: PropTypes.array,
-        value: PropTypes.string,
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.boolean,
+        ]),
     }; 
 
     static defaultProps = {
@@ -22,11 +25,6 @@ class SelectCellEditor extends Component {
             },
         };
     }
-
-    defaultValue = {
-        label: this.props.value,
-        value: this.props.value,
-    };
 
     isPopup = () => {
         const {options} = this.props;
@@ -52,18 +50,18 @@ class SelectCellEditor extends Component {
         const {value} = this.state;
 
         return (
-            <div 
-                className="nexus-c-select-cell-editor"
-                style={{width: '150px'}} 
-            >
-                <Select
-                    options={options}
-                    placeholder="Select"
-                    onChange={this.handleChange}
-                    value={value}
-                    defaultValue={this.defaultValue}
-                />
-            </div>
+                <div 
+                    className="nexus-c-select-cell-editor"
+                    style={{width: '150px'}} 
+                >
+                    <Select
+                        options={options}
+                        placeholder="Select"
+                        onChange={this.handleChange}
+                        value={value}
+                        defaultValue={value}
+                    />
+                </div>
         );
     }
 }
