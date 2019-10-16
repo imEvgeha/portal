@@ -16,6 +16,7 @@ module.exports = {
     entry: {
         main: ["@babel/polyfill", './src/index.js']
     },
+    devtool: 'source-map',
     module: {
         rules: [
             {

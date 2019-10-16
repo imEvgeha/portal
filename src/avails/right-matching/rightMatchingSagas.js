@@ -2,13 +2,12 @@ import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-s
 import {goBack} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
-import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
-import createValueFormatter from '../../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {setCombinedSavedFlag} from './rightMatchingActions';
+import { createColumnDefs } from '../utils';
 
 // TODO - refactor this worker sagra (use select)
 export function* createRightMatchingColumnDefs({payload}) {
@@ -39,23 +38,6 @@ export function* createRightMatchingColumnDefs({payload}) {
     } catch (error) {
         throw new Error();
     }
-}
-
-function createColumnDefs(payload) {
-    const result = payload.reduce((columnDefs, column) => {
-        const {javaVariableName, displayName, id} = column;
-        const columnDef = {
-            field: javaVariableName,
-            headerName: displayName,
-            colId: id,
-            cellRenderer: createLoadingCellRenderer,
-            valueFormatter: createValueFormatter(column),
-            width: 150,
-        };
-        return [...columnDefs, columnDef];
-    }, []);
-
-    return result;
 }
 
 function* storeRightMatchingSearchCriteria(payload = []) {
