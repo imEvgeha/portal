@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import {titleServiceManager} from '../../containers/metadata/service/TitleServiceManager';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
+import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
+import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
+import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
+import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './titleMatchingActionsBar.js';
-import Constants from './titleMatchingConstants';
+import Constants from '../titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 const getRepositoryName = legacy => {

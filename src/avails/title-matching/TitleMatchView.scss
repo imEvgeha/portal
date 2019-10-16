@@ -30,6 +30,14 @@
         padding-right: 10px;
         button {
             margin-left: 20px;
+            &.nexus-c-title-matching-custom-actions__button{
+                pointer-events: none;
+            }
+            &.nexus-c-title-matching-custom-actions__button--active{
+                color: #fff!important;
+                background-color: #007bff;
+                border-color: #007bff;
+            }
         }
     }
     .nexus-c-custom-actions-cell-renderer{

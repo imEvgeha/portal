@@ -6,7 +6,7 @@ import Button from '@atlaskit/button';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import TitlesList from './TitlesList';
+import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
 import { fetchFocusedRight, createColumnDefs } from './titleMatchingActions';
