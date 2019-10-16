@@ -1,0 +1,16 @@
+.nexus-c-right-to-match-view__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// add this to ui-elements
+.nexus-c-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .nexus-c-right-to-match-view__buttons & {
+    width: 100px;
+    font-size: 14px;
+  }
+}

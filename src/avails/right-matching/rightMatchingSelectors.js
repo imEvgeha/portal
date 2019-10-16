@@ -36,6 +36,11 @@ export const getRightMatchPageData = (state) => {
     return rightMatching && rightMatching.rightMatchPageData;
 };
 
+export const getCombinedRightSavedFlag = (state) => {
+    const {rightMatching} = state;
+    return rightMatching && rightMatching.isCombinedRightSaved;
+};
+
 export const createRightMatchingColumnDefsSelector = () => createSelector(
     getColumnDefs,
     columnDefs => columnDefs,
@@ -65,7 +70,12 @@ export const createMatchedRightSelector = () => createSelector(
 
 export const createCombinedRightSelector = () => createSelector(
     getCombinedRight,
-    combinedRight => combinedRight,
+    combinedRight => combinedRight
+);
+
+export const createCombinedRightSavedFlagSelector = () => createSelector(
+    getCombinedRightSavedFlag,
+    isCombinedRightSaved => isCombinedRightSaved
 );
 
 export const createRightMatchPageDataSelector = () => createSelector(

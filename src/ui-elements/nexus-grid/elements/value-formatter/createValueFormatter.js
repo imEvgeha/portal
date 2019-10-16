@@ -19,8 +19,8 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
         case 'territoryType':
             return (params) => {
             const {data = {}} = params || {};
-            if (data[javaVariableName]) {
-                return data[javaVariableName].map(e => String(e.country)).join(', ');
+            if (data && data[javaVariableName]) {
+                return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
             }
         };
         case 'string': 
