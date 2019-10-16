@@ -1,13 +1,14 @@
 import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-saga/effects';
+import {goBack} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
-import createLoadingCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
-import createValueFormatter from '../../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {getCombinedRight, getRightMatchingList, putCombinedRight} from './rightMatchingService';
 import {switchCase} from '../../util/Common';
+import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
+import {setCombinedSavedFlag} from './rightMatchingActions';
+import {createColumnDefs} from '../utils';
 
 // TODO - refactor this worker sagra (use select)
 export function* createRightMatchingColumnDefs({payload}) {
@@ -38,23 +39,6 @@ export function* createRightMatchingColumnDefs({payload}) {
     } catch (error) {
         throw new Error();
     }
-}
-
-function createColumnDefs(payload) {
-    const result = payload.reduce((columnDefs, column) => {
-        const {javaVariableName, displayName} = column;
-        const columnDef = {
-            field: javaVariableName,
-            headerName: displayName,
-            colId: javaVariableName,
-            cellRenderer: createLoadingCellRenderer,
-            valueFormatter: createValueFormatter(column),
-            width: 150,
-        };
-        return [...columnDefs, columnDef];
-    }, []);
-
-    return result;
 }
 
 function* storeRightMatchingSearchCriteria(payload = []) {
@@ -108,7 +92,6 @@ function* storeRightMatchingSearchCriteria(payload = []) {
             type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_ERROR,
             payload: {error},
         });
-
     }
 }
 
@@ -275,7 +258,6 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
-
         const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId, payload.combinedRight);
         const focusedRight = response.data;
 
@@ -283,8 +265,10 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
+        yield put(setCombinedSavedFlag({isCombinedRightSaved: true}));
 
     } catch (error) {
+        yield put(setCombinedSavedFlag({isCombinedRightSaved: false}));
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
@@ -339,6 +323,31 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
     }
 }
 
+export function* createNewRight(requestMethod, {payload}) {
+    try {
+        yield put({
+            type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
+            payload: {}
+        });
+        yield call(requestMethod, payload);
+        
+        yield put({
+            type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
+        });
+        yield put({
+            type: actionTypes.SET_NEW_RIGHT_FLAG,
+            payload: {isNewRightSuccessFlagVisible: true}
+        });
+        yield put(goBack());
+    } catch (error) {
+        yield put({
+            type: actionTypes.CREATE_NEW_RIGHT_ERROR,
+            payload: error,
+            error: true
+        });
+    }
+}
+
 export function* rightMatchingWatcher() {
     yield all([
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
@@ -347,7 +356,8 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRight, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
-        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList)
+        takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
+        takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById)
     ]);
 }
 

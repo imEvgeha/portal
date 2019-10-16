@@ -20,7 +20,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             return (params) => {
             const {data = {}} = params || {};
             if (data && data[javaVariableName]) {
-                return data[javaVariableName].map(e => String(e.country)).join(', ');
+                return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
             }
         };
         case 'string': 
@@ -41,3 +41,4 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
 }; 
 
 export default createValueFormatter;
+

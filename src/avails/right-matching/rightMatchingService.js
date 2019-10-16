@@ -18,13 +18,13 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
 
 export const getCombinedRight = (rightId, matchedRightId) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${rightId}/match/${matchedRightId}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`
     );
 };
 
 export const putCombinedRight = (rightId, matchedRightId, combinedRight) => {
-    return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${rightId}/match/${matchedRightId}`,
+    return http.put(
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`,
         combinedRight
     );
 };
@@ -44,5 +44,10 @@ export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
         `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria`,
         {paramsSerializer: encodedSerialize, params}
     );
+};
+
+
+export const createRightById = (id) => {
+    return http.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`); 
 };
 

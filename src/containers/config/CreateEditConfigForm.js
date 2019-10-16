@@ -5,13 +5,17 @@ import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 
-import RepeatingFormField from './Repeats';
-import RepeatingField from './RepeatsPrimitives';
+import RepeatingFormField from './custom-types/Repeats';
+
+import RepeatingField from './custom-types/RepeatsPrimitives';
 
 import {isObject} from '../../util/Common';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import {cache} from './EndpointContainer';
 import PropTypes from 'prop-types';
+import DynamicObjectType from './custom-types/DynamicObjectType';
+import ObjectType from './custom-types/ObjectType';
+import ObjectKey from './custom-types/ObjectKey';
 
 const renderer = (
     field,
@@ -19,14 +23,14 @@ const renderer = (
     onFieldFocus,
     onFieldBlur
 ) => {
-    const { defaultValue, id, label, type, value, misc = {} } = field;
+    const { defaultValue, id, label, type, value, dynamic = false, misc = {} } = field;
     if(field.hasOwnProperty('disable')) {
         field.disabled = field.disable;
     }
 
     const fields = misc.fields || [];
     const singleField = fields.length === 1;
-    const RepeatingComp = singleField ? RepeatingField : RepeatingFormField;
+    let Comp;
 
     const addButtonLabel = misc.addButtonLabel;
     const unidentifiedLabel = misc.unidentifiedLabel;
@@ -34,9 +38,11 @@ const renderer = (
     const idAttribute = misc.idAttribute;
 
     switch (type) {
+        case 'array':
         case 'repeating':
+            Comp = dynamic === true ? ObjectKey : (singleField ? RepeatingField : RepeatingFormField);
             return (
-                <RepeatingComp
+                <Comp
                     key={id}
                     addButtonLabel={addButtonLabel}
                     defaultValue={value || defaultValue || []}
@@ -46,6 +52,24 @@ const renderer = (
                             value.map((v) => isObject(v)?v[idAttribute]:v)
                             : value;
                         onChange(id, val);
+                    }}
+                    fields={fields}
+                    unidentifiedLabel={unidentifiedLabel}
+                    noItemsMessage={noItemsMessage}
+                    idAttribute={idAttribute}
+                />
+            );
+        case 'object':
+            Comp = dynamic === true ? DynamicObjectType : ObjectType;
+
+            return (
+                <Comp
+                    key={id}
+                    addButtonLabel={addButtonLabel}
+                    defaultValue={value || defaultValue || []}
+                    label={label}
+                    onChange={value => {
+                        onChange(id, value);
                     }}
                     fields={fields}
                     unidentifiedLabel={unidentifiedLabel}
@@ -92,6 +116,10 @@ export default class CreateEditConfigForm extends React.Component {
                     const items = response.data.data.map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
                     return [{items}];
                 });
+            }else{
+                if (field.type === 'array' || field.type === 'object'){
+                    field.misc.fields.forEach(subfield => this.optionsHandler(subfield.id, field.misc.fields));
+                }
             }
         }
         return null;

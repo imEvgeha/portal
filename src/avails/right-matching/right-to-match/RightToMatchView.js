@@ -3,20 +3,25 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {Link} from 'react-router-dom';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
+import Flag, {FlagGroup} from '@atlaskit/flag';
+import Warning from '@atlaskit/icon/glyph/warning';
+import {colors} from '@atlaskit/theme';
+
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
+import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
+import * as selectors from '../rightMatchingSelectors';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import * as selectors from '../rightMatchingSelectors';
-import {createRightMatchingColumnDefs, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
+import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -33,12 +38,14 @@ const RightToMatchView = ({
     focusedRight,
     history,
     location,
+    createNewRight
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
     const [selectedRows, setSelectedRows] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
+    const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -67,17 +74,24 @@ const RightToMatchView = ({
     const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs] : columnDefs;
 
     const onNewButtonClick = () => {
-        // TODO: Implement in PORT-722
+        setShowConfirmationFlag(true);
     };
 
-    const createNewButtonCellRenderer = ({data}) => { // eslint-disable-line
-         const {id} = data || {};
-         return (
-            <CustomActionsCellRenderer id={id}>
-                <Button onClick={onNewButtonClick}>New</Button>
-             </CustomActionsCellRenderer>
-        );
+    const onDeclareNewRight = () => {
+        setShowConfirmationFlag(false);     
+        const {params: {rightId}} = match || {};
+        createNewRight(rightId);
     };
+
+    const onCancelNewRight = () => {
+        setShowConfirmationFlag(false);
+    };
+    
+    const createNewButtonCellRenderer = ({data}) => ( // eslint-disable-line
+        <CustomActionsCellRenderer id={data && data.id}>
+            <Button onClick={() => onNewButtonClick()}>New</Button>
+        </CustomActionsCellRenderer>
+    );
 
     const additionalFocusedRightColumnDef = {
         field: 'buttons',
@@ -149,24 +163,33 @@ const RightToMatchView = ({
                     />
                 ) : null}
             </div>
-            <div className="nexus-c-right-to-match-view__buttons">
-                <ButtonGroup>
-                    <Button 
-                        className="nexus-c-button"
-                        onClick={() => history.push(`/avails/history/${availHistoryIds}/right_matching`)}
-                    >
-                        Cancel
-                    </Button>
-                    <Button 
-                        className="nexus-c-button" 
-                        appearance="primary" 
-                        isDisabled={isMatchDisabled}
-                        onClick={handleMatchClick}
-                    >
-                        Match
-                    </Button>
-                </ButtonGroup> 
-            </div>
+
+            <BottomButtons buttons={[
+                {
+                    name: 'Cancel',
+                    onClick: () => history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)),
+                },
+                {
+                    name: 'Match',
+                    onClick: handleMatchClick,
+                    isDisabled: isMatchDisabled,
+                    appearance: 'primary'
+                }
+            ]}/>
+            {showConfirmationFlag && (
+                <FlagGroup onDismissed={() => onCancelNewRight()}>
+                    <Flag
+                        description="You are about to declare a new right."
+                        icon={<Warning label="Warning icon" primaryColor={colors.Y300} />}
+                        id="warning-flag"
+                        title="Warning"
+                        actions={[
+                            {content:'Cancel', onClick: () => onCancelNewRight()},
+                            {content:'OK', onClick: () => onDeclareNewRight()}
+                        ]}
+                    />
+                </FlagGroup>
+            )}
         </div>
     );
 };
@@ -182,6 +205,7 @@ RightToMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
+    createNewRight: PropTypes.func
 };
 
 RightToMatchView.defaultProps = {
@@ -194,6 +218,7 @@ RightToMatchView.defaultProps = {
     fetchFocusedRight: null,
     columnDefs: [],
     mapping: [],
+    createNewRight: null
 };
 
 const createMapStateToProps = () => {
@@ -214,6 +239,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchRightMatchingFieldSearchCriteria: payload => dispatch(fetchRightMatchingFieldSearchCriteria(payload)),
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    createNewRight: payload => dispatch(createNewRight(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchView); // eslint-disable-line
