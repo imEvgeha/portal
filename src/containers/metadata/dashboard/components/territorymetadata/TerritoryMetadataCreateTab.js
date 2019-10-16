@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import { configFields } from '../../../service/ConfigService';
 import { formatTypeFirstLetter } from '../../../../../constants/metadata/format';
 import { COUNTRY, REGION } from '../../../../../constants/metadata/constant-variables';
+import NexusDateTimePicker from '../../../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 
+// TODO: Convert to functional component
 class TerritoryMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
@@ -83,9 +85,11 @@ class TerritoryMetadataCreateTab extends Component {
                             />
                         </Col>
                         <Col>
-                            <AvField label="Original Air Date" validate={{
-                                date: { format: 'YYYY-mm-DD' }
-                            }} type="date" id="territoryOriginalAirDate" name="originalAirDate" onChange={this.props.handleChange} errorMessage="Please enter a valid date!" />
+                            <NexusDateTimePicker
+                                label="Original Air Date"
+                                id="territoryOriginalAirDate"
+                                onChange={this.props.handleChange}
+                            />
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
