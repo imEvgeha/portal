@@ -93,8 +93,8 @@ const RightMatchingView = ({
 
     return (
         <div className="nexus-c-right-matching-view">
-            <NexusTitle>
-                Right Matching {totalCount && `(${totalCount})`}
+            <NexusTitle className="nexus-c-title--small">
+                Right Matching {!!totalCount && `(${totalCount})`}
             </NexusTitle> 
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}

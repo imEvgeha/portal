@@ -1,13 +1,14 @@
+@import '../../styles/config.scss';
+
 .nexus-c-title {
     display: flex;
     flex-direction: row;
-    padding-top: 20px;
-    padding-left: 10px;
-    font-weight: bold;
     font-size: 24px;
 
     &--small {
-        font-size: 18px;
+        font-size: 20px;
+        color: map-get($colors, nexus-title-color);
+        font-family: $nexus-font;
     }
 }
 
@@ -16,4 +17,14 @@
     color: #000;
 }
 
+.nexus-c-right-to-match-view__page-header {
+    display: flex;
+    align-items: center;
+
+    &-title {
+        color: map-get($colors, nexus-title-color);
+        font-family: $nexus-font;
+        font-size: 27px;
+    }
+}
 

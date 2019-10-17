@@ -108,11 +108,11 @@ const RightToMatchNavigation = ({
         navigationData && navigationData.currentPosition ? (
             <div className='nexus-c-right-to-match-navigation'>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onPreviousRightClick}>
-                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" />
+                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
                 </div>
-                {renderNavigationData()}
+                <span className="nexus-c-right-to-match-navigation__data">{renderNavigationData()}</span>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
-                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" />
+                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
                 </div>
             </div>
         ) : null 

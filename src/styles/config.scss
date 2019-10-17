@@ -6,5 +6,10 @@ $app-layout: (
 
 $colors: (
     primary: #f2f4f6,
+    nexus-primary-color: #939FB5, // TODO: refactor this
+    nexus-secondary-color: #364767,
+    nexus-title-color: #42526E,
 );
+
+$nexus-font: Arial, Helvetica, sans-serif;
 

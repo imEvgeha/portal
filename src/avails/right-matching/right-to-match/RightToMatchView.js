@@ -125,8 +125,10 @@ const RightToMatchView = ({
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
                 <PageHeader>
                     <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__link" >
-                        <ArrowLeftIcon size='large'/> 
-                        Right to Right Matching
+                        <div className="nexus-c-right-to-match-view__page-header">
+                            <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                            <span className="nexus-c-right-to-match-view__page-header-title">Right to Right Matching</span>
+                        </div>
                     </Link>
                 </PageHeader>
             </div>
@@ -147,8 +149,8 @@ const RightToMatchView = ({
                     domLayout="autoHeight"
                 />
             </div>
-            <SectionMessage>
-                <p>{SECTION_MESSAGE}</p>
+            <SectionMessage appearance='info'>
+                <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
@@ -180,15 +182,15 @@ const RightToMatchView = ({
                 </ButtonGroup>
             </div>
             {showConfirmationFlag && (
-                <FlagGroup onDismissed={() => onCancelNewRight()}>
+                <FlagGroup onDismissed={onCancelNewRight}>
                     <Flag
                         description="You are about to declare a new right."
                         icon={<Warning label="Warning icon" primaryColor={colors.Y300} />}
                         id="warning-flag"
                         title="Warning"
                         actions={[
-                            {content:'Cancel', onClick: () => onCancelNewRight()},
-                            {content:'OK', onClick: () => onDeclareNewRight()}
+                            {content:'Cancel', onClick: onCancelNewRight},
+                            {content:'OK', onClick: onDeclareNewRight}
                         ]}
                     />
                 </FlagGroup>
