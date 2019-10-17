@@ -25,7 +25,7 @@ const NexusDateTimePicker = ({
     label,
     ...restProps,
 }) => {
-    const [isUTC, setIsUTC] = useState(isLocalDate);
+    const [isUTC, setIsUTC] = useState(!isLocalDate);
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
@@ -35,8 +35,8 @@ const NexusDateTimePicker = ({
         .locale(locale)
         .localeData()
         .longDateFormat('L')
-        .concat(displayTimeInReadView ? TIME_FORMAT : '')
-        .toUpperCase();
+        .toUpperCase()
+        .concat(displayTimeInReadView ? TIME_FORMAT : '');
 
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
@@ -54,7 +54,7 @@ const NexusDateTimePicker = ({
                                 id={id}
                                 onChange={onChange}
                                 isUTC={isUTC}
-                                defaultValue={value}
+                                defaultValue={isUTC ? value : moment(value).local().format(dateFormat)}
                                 {...restProps}
                             />
                         </div>
