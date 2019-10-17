@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import Button, {ButtonGroup} from '@atlaskit/button';
 import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
 import {
@@ -17,7 +18,6 @@ import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -37,8 +37,8 @@ function MatchRightView({
     setCombinedSavedFlag,
     isCombinedRightSaved,
 }) {
-    const rowDataRef = useRef([]);
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
+    const [editedCombinedRight, setEditedCombinedRight] = useState();
 
     useEffect(() => {
         setCombinedSavedFlag({isCombinedRightSaved: false});
@@ -91,9 +91,10 @@ function MatchRightView({
         const {rightId, matchedRightId} = params || {};
         setSaveButtonDisabled(true);
         // TODO: fix this
-        if (Array.isArray(rowDataRef.current) && rowDataRef.current.length) {
-            const updateCombinedRight = rowDataRef.current[0]; 
-            saveCombinedRight(rightId, matchedRightId, updateCombinedRight);
+        console.log(editedCombinedRight, 'tes')
+        return ;
+        if (editedCombinedRight) {
+            saveCombinedRight(rightId, matchedRightId, editedCombinedRight);
             return;
         }
         saveCombinedRight(rightId, matchedRightId, combinedRight);
@@ -107,50 +108,54 @@ function MatchRightView({
         // TODO: add all grid event to constant
         if (type === 'cellValueChanged') {
             api.forEachNode(({data}) => result.push(data));
-            rowDataRef.current = result;
+            setEditedCombinedRight(result[0]);
         }
     };
 
     return (
-        <div className='nexus-c-match-right'>
+        <div className="nexus-c-match-right-view">
             <BackNavigationByUrl
                 title={'Rights Matching Preview'}
                 onNavigationClick={navigateToMatchPreview}
             />
-            <div className='nexus-c-match-right__matched'>
+            <div className="nexus-c-match-right-view__matched">
                 <NexusTitle>Matched Rights</NexusTitle>
                 {!!columnDefs && (
                     <NexusGrid
                         columnDefs={columnDefs}
                         rowData={matchedRightRowData}
-                        domLayout='autoHeight'
+                        domLayout="autoHeight"
                     />
                 )}
             </div>
-            <div className='nexus-c-match-right__combined'>
+            <div className="nexus-c-match-right-view__combined">
                 <NexusTitle>Combined Rights</NexusTitle>
                 {!!columnDefs && (
                     <EditableNexusGrid
                         columnDefs={columnDefs}
                         rowData={[combinedRight]}
                         onGridEvent={handleGridEvent}
-                        domLayout='autoHeight'
+                        domLayout="autoHeight"
                     />
                 )}
             </div>
-            <div className='nexus-c-match-right__buttons'>
-                <BottomButtons buttons={[
-                    {
-                        name: 'Cancel',
-                        onClick: onCancel
-                    },
-                    {
-                        name: 'Save',
-                        onClick: onSaveCombinedRight,
-                        isDisabled: saveButtonDisabled || !focusedRight.id || !matchedRight.id || !combinedRight.id,
-                        appearance: 'primary'
-                    }
-                ]}/>
+            <div className="nexus-c-match-right-view__buttons">
+                <ButtonGroup>
+                    <Button 
+                        onClick={onCancel}
+                        className="nexus-c-button"
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        className="nexus-c-button"
+                        appearance="primary"
+                        onClick={onSaveCombinedRight}
+                        isDisabled={saveButtonDisabled || !focusedRight.id || !matchedRight.id || !combinedRight.id}
+                    >
+                        Save
+                    </Button>
+                </ButtonGroup>
             </div>
         </div>
     );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {Link} from 'react-router-dom';
-import Button from '@atlaskit/button';
+import Button, {ButtonGroup} from '@atlaskit/button';
 import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
@@ -20,7 +20,6 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
-import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -45,6 +44,7 @@ const RightToMatchView = ({
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
+    const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -72,10 +72,6 @@ const RightToMatchView = ({
     };
     const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs] : columnDefs;
 
-    const onNewButtonClick = () => {
-        setShowConfirmationFlag(true);
-    };
-
     const onDeclareNewRight = () => {
         setShowConfirmationFlag(false);     
         const {params: {rightId}} = match || {};
@@ -86,11 +82,14 @@ const RightToMatchView = ({
         setShowConfirmationFlag(false);
     };
     
-    const createNewButtonCellRenderer = ({data}) => ( // eslint-disable-line
-        <CustomActionsCellRenderer id={data && data.id}>
-            <Button onClick={() => onNewButtonClick()}>New</Button>
-        </CustomActionsCellRenderer>
-    );
+    const createNewButtonCellRenderer = ({data}) => { // eslint-disable-line
+        const {id} = data || {};
+        return (
+            <CustomActionsCellRenderer id={id}>
+                <Button onClick={() => setShowConfirmationFlag(true)}>New</Button>
+            </CustomActionsCellRenderer>
+        );
+    };
 
     const additionalFocusedRightColumnDef = {
         field: 'buttons',
@@ -153,28 +152,33 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {fieldSearchCriteria ? (
+                {fieldSearchCriteria && (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
-                        params={fieldSearchCriteria}
+                        params={{fieldSearchCriteria}}
                         handleSelectionChange={handleSelectionChange}
                     />
-                ) : null}
+                )}
             </div>
-
-            <BottomButtons buttons={[
-                {
-                    name: 'Cancel',
-                    onClick: () => history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)),
-                },
-                {
-                    name: 'Match',
-                    onClick: handleMatchClick,
-                    isDisabled: isMatchDisabled,
-                    appearance: 'primary'
-                }
-            ]}/>
+            <div className="nexus-c-right-to-match-view__buttons">
+                <ButtonGroup>
+                    <Button 
+                        className="nexus-c-button"
+                        onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        className="nexus-c-button"
+                        appearance="primary"
+                        onClick={handleMatchClick}
+                        isDisabled={isMatchDisabled}
+                    >
+                        Match
+                    </Button>
+                </ButtonGroup>
+            </div>
             {showConfirmationFlag && (
                 <FlagGroup onDismissed={() => onCancelNewRight()}>
                     <Flag
@@ -202,9 +206,9 @@ RightToMatchView.propTypes = {
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
+    createNewRight: PropTypes.func,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    createNewRight: PropTypes.func
 };
 
 RightToMatchView.defaultProps = {
@@ -215,9 +219,9 @@ RightToMatchView.defaultProps = {
     focusedRight: null,
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
+    createNewRight: null,
     columnDefs: [],
     mapping: [],
-    createNewRight: null
 };
 
 const createMapStateToProps = () => {

@@ -2,7 +2,6 @@ import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-s
 import {goBack} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
-import {historyService} from '../../containers/avail/service/HistoryService';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import {switchCase} from '../../util/Common';
@@ -96,12 +95,16 @@ function* storeRightMatchingSearchCriteria(payload = []) {
 }
 
 function* fetchRightMatchingFieldSearchCriteria(requestMethod, payload) {
+    const error = 'Provider is undefined';
     const {provider, templateName} = payload;
     try {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_REQUEST,
             payload,
         });
+        if (!provider) {
+            throw {error};
+        }
         const {data} = yield call(requestMethod, provider, templateName);
         const {fieldSearchCriteria} = data || {};
         yield put({
@@ -113,55 +116,19 @@ function* fetchRightMatchingFieldSearchCriteria(requestMethod, payload) {
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_ERROR,
-            paylaod: error,
+            payload: error,
         });
     }
 }
 
-function* fetchRightMatchingProvider(requestMethod, id) {
-    try {
-        yield put({
-            type: actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_REQUEST,
-            payload: {},
-        });
-        const {data = {}} = yield call(requestMethod, id);
-        const {provider, availSource} = data;
-        const {templateName} = availSource || {};
-        yield put({
-            type: actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_SUCCESS,
-            payload: {provider, templateName},
-        });
-    } catch (error) {
-        yield put({
-            type: actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_ERROR,
-            paylaod: error,
-        });
-    }
-}
-
-function* fetchAndStoreRightMatchingSearchCriteria({payload}) {
+function* fetchAndStoreRightMatchingSearchCriteria() {
     // wait to store update with focused right
-    const focusedRight = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS); 
+    const focusedRightActionResult = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS); 
+    const {payload = {}} = focusedRightActionResult || {};
+    const {availSource = {}} = payload || {};
+    const {provider, templateName} = availSource || {};
 
-    yield fork(fetchRightMatchingProvider, historyService.getHistory, payload);
-
-    while (true) {
-        const fetchResult  = yield take([
-             actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_SUCCESS,
-             actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_ERROR,
-        ]);
-
-        if (fetchResult.type === actionTypes.FETCH_RIGHT_MATCHING_PROVIDER_SUCCESS) {
-            const {payload} = fetchResult || {};
-            const {provider} = payload || {};
-            const {availSource} = focusedRight || {};
-            const {templateName} = availSource || {};
-
-            if (provider) {
-                yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, {provider, templateName});
-            }
-        }
-    }
+    yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, {provider, templateName});
 }
 
 function* fetchFocusedRight(action) {

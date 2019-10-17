@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
+import './SelectCellEditor.scss';
 
 class SelectCellEditor extends Component {
     static propTypes = {
@@ -50,10 +51,7 @@ class SelectCellEditor extends Component {
         const {value} = this.state;
 
         return (
-                <div 
-                    className="nexus-c-select-cell-editor"
-                    style={{width: '150px'}} 
-                >
+                <div className="nexus-c-select-cell-editor">
                     <Select
                         options={options}
                         placeholder="Select"

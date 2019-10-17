@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
+import './MultiSelectCellEditor.scss';
 
 class MultiSelectCellEditor extends Component {
     static propTypes = {
@@ -60,10 +61,7 @@ class MultiSelectCellEditor extends Component {
         const {value} = this.state;
 
         return (
-            <div 
-                className="nexus-c-multi-select-cell-editor"
-                style={{width: '150px'}} 
-            >
+            <div className="nexus-c-multi-select-cell-editor">
                 <Select
                     options={options}
                     isMulti={true}
@@ -71,7 +69,7 @@ class MultiSelectCellEditor extends Component {
                     placeholder="Select"
                     onChange={this.handleChange}
                     value={value}
-                    defaultValue={this.prepareDataForSelect(this.props.value)}
+                    defaultValue={value}
                 />
             </div>
         );

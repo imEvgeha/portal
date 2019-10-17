@@ -108,11 +108,11 @@ const RightMatchingView = ({
                             appearance="normal"
                             id="success-flag"
                             icon={
-                            <SuccessIcon
-                                label="Success"
-                                size="medium"
-                                primaryColor={colors.G300}
-                            />
+                                <SuccessIcon
+                                    label="Success"
+                                    size="medium"
+                                    primaryColor={colors.G300}
+                                />
                             }
                             title="Success"
                             description="You have successfully declared a new right."
