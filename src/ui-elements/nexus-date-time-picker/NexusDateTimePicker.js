@@ -26,6 +26,7 @@ const NexusDateTimePicker = ({
     ...restProps,
 }) => {
     const [isUTC, setIsUTC] = useState(!isLocalDate);
+
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
@@ -61,7 +62,7 @@ const NexusDateTimePicker = ({
                         <div className="nexus-c-date-time-picker__type-select">
                             <Select
                                 defaultValue={
-                                    isLocalDate
+                                    !isUTC
                                         ? {label: RELATIVE_TIME_LABEL, value: false}
                                         : {label: SIMULCAST_TIME_LABEL, value: true}
                                 }
@@ -83,7 +84,11 @@ const NexusDateTimePicker = ({
             {isWithInlineEdit && !isReadOnly
                 ? (
                     <InlineEdit
-                        readView={() => moment(value).format(dateFormat) || `Enter ${label}`}
+                        readView={() => (
+                            `${moment(value).utc(!isUTC).format(dateFormat)}
+                            ${isUTC && displayTimeInReadView ? ' (UTC)' : ''}`
+                            || `Enter ${label}`
+                        )}
                         editView={() => DatePicker(false)}
                         defaultValue={value}
                         onConfirm={onConfirm}
