@@ -9,11 +9,11 @@ import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cel
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
-import { fetchFocusedRight, createColumnDefs } from './titleMatchingActions';
+import {fetchFocusedRight, createColumnDefs, selectTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
-const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
+const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, selectTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -62,7 +62,8 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
                             <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
                                 action menu.</p>
                         </SectionMessage>
-                        <TitlesList columnDefs={columnDefs}/>
+                        <TitlesList columnDefs={columnDefs}
+                                    selectTitles={(matchList, duplicateList) => selectTitles(matchList, duplicateList, history.push)}/>
                     </React.Fragment>
                 )
             }
@@ -73,16 +74,19 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
 TitleMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func.isRequired,
     createColumnDefs: PropTypes.func.isRequired,
+    selectTitles: PropTypes.func.isRequired,
     match: PropTypes.object,
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
+    history: PropTypes.object,
 };
 
 TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
+    history: {},
 };
 
 const createMapStateToProps = () => {
@@ -96,6 +100,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
+    selectTitles: (matchList, duplicateList, historyPush) => dispatch(selectTitles(matchList, duplicateList, historyPush))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

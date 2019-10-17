@@ -22,12 +22,13 @@ const getRepositoryName = legacy => {
   return '';
 };
 
-const TitlesList = ({columnDefs}) => {
+const TitlesList = ({columnDefs, selectTitles}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
 
-    const matchClickHandler = (id, repo, checked) => {
+    const matchClickHandler = (data, repo, checked) => {
+        const {id} = data || {};
         if(checked) {
             const {NEXUS, VZ, MOVIDA} = Constants.repository;
             const newMatchList = {...matchList};
@@ -44,7 +45,7 @@ const TitlesList = ({columnDefs}) => {
             else{
                 delete newMatchList[NEXUS];
             }
-            newMatchList[repo] = id;
+            newMatchList[repo] = data;
             setMatchList(newMatchList);
         }
     };
@@ -54,15 +55,15 @@ const TitlesList = ({columnDefs}) => {
         return (
             <CustomActionsCellRenderer id={id} >
                 <input type={'radio'} name={repoName}
-                       checked={matchList[repoName] === id}
-                       onChange={event => matchClickHandler(id, repoName, event.target.checked)}/>
+                       checked={matchList[repoName] && matchList[repoName].id === id}
+                       onChange={event => matchClickHandler(data, repoName, event.target.checked)}/>
             </CustomActionsCellRenderer>
         );
     };
 
     const duplicateClickHandler = (id, name, checked) => {
         if(checked) {
-            if(matchList[name] === id) {
+            if(matchList[name] && matchList[name].id === id) {
                 let list = {...matchList};
                 delete list[name];
                 setMatchList(list);
@@ -128,17 +129,20 @@ const TitlesList = ({columnDefs}) => {
             <NexusGridWithInfiniteScrolling
                 columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
                 setTotalCount={setTotalCount}/>
-            <ActionsBar matchList={matchList} duplicateList={duplicateList} />
+            <ActionsBar matchList={matchList}
+                        selectTitles={() => selectTitles(matchList, duplicateList)}/>
         </React.Fragment>
     );
 };
 
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
+    selectTitles: PropTypes.func,
 };
 
 TitlesList.defaultProps = {
     columnDefs: [],
+    selectTitles: () => null,
 };
 
 export default TitlesList;
