@@ -27,7 +27,7 @@
 
 .nexus-c-right-to-match-navigation__data {
     color: map-get($colors, nexus-primary-color);
-    font-size: 12pt;
+    font-size: 16px;
     font-family: $nexus-font;
 }
 
@@ -35,17 +35,9 @@
     color: map-get($colors, nexus-secondary-color);
     font-weight: 500;
     font-family: $nexus-font;
-}
-
-section > div > div > p {
     margin: 0;
     padding: 0;
 }
-
-section > div > span > svg {
-    margin-top: 3px;
-}
-
 
 
 
