@@ -8,19 +8,10 @@ import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfin
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './titleMatchingActionsBar.js';
+import { getRepositoryName, getRepositoryCell } from '../../utils';
 import Constants from '../titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
-const getRepositoryName = legacy => {
-  const {NEXUS, MOVIDA, VZ} = Constants.repository;
-  if(legacy) {
-      return legacy[MOVIDA] ? MOVIDA : VZ;
-  }
-  if(legacy === null) {
-      return NEXUS;
-  }
-  return '';
-};
 
 const TitlesList = ({columnDefs, selectTitles}) => {
     const [totalCount, setTotalCount] = useState(0);
@@ -91,15 +82,6 @@ const TitlesList = ({columnDefs, selectTitles}) => {
         );
     };
 
-    const repositoryCell = ({data}) => {// eslint-disable-line
-        const {id, legacyIds} = data || {};
-        return (
-            <CustomActionsCellRenderer id={id}>
-                <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(legacyIds).toUpperCase()}</div>
-            </CustomActionsCellRenderer>
-        );
-    };
-
     const matchButton = {
         ...Constants.ADDITIONAL_COLUMN_DEF,
         colId: 'matchButton',
@@ -116,13 +98,8 @@ const TitlesList = ({columnDefs, selectTitles}) => {
         cellRendererParams: duplicateList,
         cellRendererFramework: duplicateButtonCell,
     };
-    const repository = {
-        ...Constants.ADDITIONAL_COLUMN_DEF,
-        colId: 'repository',
-        field: 'repository',
-        headerName: 'Repository',
-        cellRendererFramework: repositoryCell,
-    };
+    const repository = getRepositoryCell();
+
     return (
         <React.Fragment>
             <NexusTitle>Title Repositories ({totalCount})</NexusTitle>

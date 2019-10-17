@@ -21,7 +21,7 @@ import NotFound from './static-page-view/NotFound';
 import RightToMatchView from './avails/right-matching/right-to-match/RightToMatchView';
 import MatchRightView from './avails/right-matching/match-rights/MatchRightsView';
 import TitleMatchView from './avails/title-matching/TitleMatchView';
-import TitleMatchPreview from './avails/title-matching/TitleMatchPreview';
+import TitleMatchPreview from './avails/title-matching/TitleMatchPreview/TitleMatchPreview';
 
 const routes = (
     <Switch>
