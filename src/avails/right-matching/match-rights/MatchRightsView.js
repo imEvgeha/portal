@@ -91,8 +91,6 @@ function MatchRightView({
         const {rightId, matchedRightId} = params || {};
         setSaveButtonDisabled(true);
         // TODO: fix this
-        console.log(editedCombinedRight, 'tes')
-        return ;
         if (editedCombinedRight) {
             saveCombinedRight(rightId, matchedRightId, editedCombinedRight);
             return;
