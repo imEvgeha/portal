@@ -1,3 +1,5 @@
+@import '../../../../../styles/config.scss';
+
 .nexus-c-right-to-match-navigation {
     padding-top: 20px;
     padding-left: 10px;
@@ -23,19 +25,19 @@
     }
 }
 
-.nexus-c-right-data {
-    color: #939FB5;
+.nexus-c-right-to-match-navigation__data {
+    color: map-get($colors, nexus-primary-color);
     font-size: 12pt;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $nexus-font;
 }
 
-.nexus-c-right-section-message {
-    color: #364767;
+.nexus-c-right-to-match-view__section-message {
+    color: map-get($colors, nexus-secondary-color);
     font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $nexus-font;
 }
 
-p {
+section > div > div > p {
     margin: 0;
     padding: 0;
 }
