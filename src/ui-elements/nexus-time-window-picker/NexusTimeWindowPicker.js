@@ -13,11 +13,12 @@ const END_DATE_ERROR = 'End date must be after Start date';
 
 const NexusTimeWindowPicker = ({
     label,
+    isLocalDate,
     onChange,
     startDateTimePickerProps,
     endDateTimePickerProps,
 }) => {
-    const [isUTC, setIsUTC] = useState(false);
+    const [isUTC, setIsUTC] = useState(isLocalDate);
 
     const [startDate, setStartDate] = useState(startDateTimePickerProps.defaultValue || '');
     const [startDateError, setStartDateError] = useState('');
@@ -76,20 +77,24 @@ const NexusTimeWindowPicker = ({
                 />
             </div>
             <div className="nexus-c-time-window-picker__end-date">
-                    <NexusSimpleDateTimePicker
-                        isUTC={isUTC}
-                        value={endDate}
-                        onChange={setEndDate}
-                        error={endDateError}
-                        {...endDateTimePickerProps}
-                    />
+                <NexusSimpleDateTimePicker
+                    isUTC={isUTC}
+                    value={endDate}
+                    onChange={setEndDate}
+                    error={endDateError}
+                    {...endDateTimePickerProps}
+                />
             </div>
             <div className="nexus-c-date-time-picker__type-select">
                 <label className="nexus-c-date-time-picker__label">
                     Select Type
                 </label>
                 <Select
-                    defaultValue={{label: RELATIVE_TIME_LABEL, value: false}}
+                    defaultValue={
+                        isLocalDate
+                            ? {label: RELATIVE_TIME_LABEL, value: false}
+                            : {label: SIMULCAST_TIME_LABEL, value: true}
+                    }
                     options={[
                         {label: RELATIVE_TIME_LABEL, value: false},
                         {label: SIMULCAST_TIME_LABEL, value: true},
@@ -103,6 +108,7 @@ const NexusTimeWindowPicker = ({
 
 NexusTimeWindowPicker.propTypes = {
     label: PropTypes.string,
+    islocalDate: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -114,6 +120,7 @@ NexusTimeWindowPicker.propTypes = {
 
 NexusTimeWindowPicker.defaultProps = {
     label: '',
+    isLocalDate: false,
 };
 
 export default NexusTimeWindowPicker;

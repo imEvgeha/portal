@@ -100,9 +100,9 @@ const NexusSimpleDateTimePicker = ({
                 </>
             </TemporaryErrorBorder>
             {error &&
-            <ErrorMessage>
-                {error}
-            </ErrorMessage>
+                <ErrorMessage>
+                    {error}
+                </ErrorMessage>
             }
         </>
     );
@@ -123,7 +123,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     value: '',
     defaultValue: '',
     error: '',
-    isUTC: false,
+    isUTC: true,
 };
 
 export default NexusSimpleDateTimePicker;

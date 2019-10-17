@@ -1041,7 +1041,14 @@ class RightDetails extends React.Component {
 
             // Revert back to valid value in case of an error
             const revertChanges = () => {
-                this.setState((prevState) => ({editedRight: {...prevState.editedRight, [name]: prevState.flatRight[name]}}));
+                this.setState((prevState) => (
+                    {
+                        editedRight: {
+                            ...prevState.editedRight,
+                            [name]: prevState.flatRight[name],
+                        },
+                    })
+                );
             };
 
             const error = priorityError || validate(value);
@@ -1058,10 +1065,13 @@ class RightDetails extends React.Component {
                     // TODO: Awful. To be removed when refactoring RightDetails
                     onConfirm={(value) => !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()}
                     defaultValue={value}
+                    displayTimeInReadView={showTime}
                     value={value}
                     error={error}
                     required={required}
                     isWithInlineEdit={true}
+                    isReadOnly={readOnly}
+                    isLocalDate={showTime}
                 />
             );
             return renderFieldTemplate(
