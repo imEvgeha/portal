@@ -1,3 +1,5 @@
+@import '../../../styles/config.scss';
+
 .nexus-c-right-to-match-view {
     padding: 20px 0;
     display: flex;
@@ -24,3 +26,6 @@
     align-items: center;
 }
 
+.nexus-c-right-to-match-view__new-button {
+    font-family: $nexus-font;
+}

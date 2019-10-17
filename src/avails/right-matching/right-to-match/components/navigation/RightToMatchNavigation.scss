@@ -1,3 +1,5 @@
+@import '../../../../../styles/config.scss';
+
 .nexus-c-right-to-match-navigation {
     padding-top: 20px;
     padding-left: 10px;
@@ -22,4 +24,20 @@
         cursor: pointer;
     }
 }
+
+.nexus-c-right-to-match-navigation__data {
+    color: map-get($colors, nexus-primary-color);
+    font-size: 16px;
+    font-family: $nexus-font;
+}
+
+.nexus-c-right-to-match-view__section-message {
+    color: map-get($colors, nexus-secondary-color);
+    font-weight: 500;
+    font-family: $nexus-font;
+    margin: 0;
+    padding: 0;
+}
+
+
 
