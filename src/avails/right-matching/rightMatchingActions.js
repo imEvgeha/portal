@@ -5,11 +5,6 @@ export const createRightMatchingColumnDefs = (payload) => ({
     payload,
 });
 
-export const fetchRightMatchingProvider = (payload) => ({
-    type: actionTypes.FETCH_RIGHT_MATCHING_PROVIDER,
-    payload,
-});
-
 export const fetchRightMatchingFieldSearchCriteria = (payload) => ({
     type: actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
     payload,

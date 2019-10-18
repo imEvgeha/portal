@@ -93,8 +93,8 @@ const RightMatchingView = ({
 
     return (
         <div className="nexus-c-right-matching-view">
-            <NexusTitle>
-                Right Matching {totalCount && `(${totalCount})`}
+            <NexusTitle className="nexus-c-title--small">
+                Right Matching {!!totalCount && `(${totalCount})`}
             </NexusTitle> 
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}
@@ -108,11 +108,11 @@ const RightMatchingView = ({
                             appearance="normal"
                             id="success-flag"
                             icon={
-                            <SuccessIcon
-                                label="Success"
-                                size="medium"
-                                primaryColor={colors.G300}
-                            />
+                                <SuccessIcon
+                                    label="Success"
+                                    size="medium"
+                                    primaryColor={colors.G300}
+                                />
                             }
                             title="Success"
                             description="You have successfully declared a new right."

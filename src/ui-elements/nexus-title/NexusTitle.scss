@@ -3,12 +3,10 @@
 .nexus-c-title {
     display: flex;
     flex-direction: row;
-    padding-top: 20px;
-    padding-left: 10px;
     font-size: 24px;
 
     &--small {
-        font-size: 21px;
+        font-size: 20px;
         color: map-get($colors, nexus-title-color);
         font-family: $nexus-font;
     }
@@ -22,9 +20,11 @@
 .nexus-c-right-to-match-view__page-header {
     display: flex;
     align-items: center;
-    &-title {        
+
+    &-title {
         color: map-get($colors, nexus-title-color);
         font-family: $nexus-font;
         font-size: 27px;
     }
 }
+

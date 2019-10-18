@@ -1,4 +1,6 @@
 import React, {useRef, useEffect} from 'react';
+import isEqual from 'lodash.isequal';
+import usePrevious from '../../../util/hooks/usePrevious';
 
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;
@@ -18,12 +20,15 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
 
     const ComposedComponent = props => {
         const gridApiRef = useRef({});
+        const previousParams = usePrevious(props.params);
+
         useEffect(() => {
             const {api} = gridApiRef.current;
-            if (api) {
-                setTimeout(() => updateData(fetchData, api), 0);
+            if (!isEqual(props.params, previousParams) && props.params && api) {
+                updateData(fetchData, api);
             }
         }, [props.params]);
+
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback} = params || {};
             const pageSize = paginationPageSize || 100;

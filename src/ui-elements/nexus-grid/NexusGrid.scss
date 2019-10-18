@@ -1,4 +1,13 @@
 .nexus-c-nexus-grid {
     flex: 1;
     margin: 20px 0;
+
+    &--auto-height {
+        flex: none;
+    }
+
+    &--overflow.ag-theme-balham * {
+        overflow: overlay;
+    }
 };
+

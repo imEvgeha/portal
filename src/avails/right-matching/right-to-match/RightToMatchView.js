@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {Link} from 'react-router-dom';
-import Button from '@atlaskit/button';
+import Button, {ButtonGroup} from '@atlaskit/button';
 import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import Flag, {FlagGroup} from '@atlaskit/flag';
 import Warning from '@atlaskit/icon/glyph/warning';
 import {colors} from '@atlaskit/theme';
-
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
@@ -21,7 +20,6 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRightToMatchList} from '../rightMatchingService';
 import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
-import BottomButtons from '../components/bottom-buttons/BottomButons';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -46,6 +44,7 @@ const RightToMatchView = ({
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
+    const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -73,10 +72,6 @@ const RightToMatchView = ({
     };
     const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs] : columnDefs;
 
-    const onNewButtonClick = () => {
-        setShowConfirmationFlag(true);
-    };
-
     const onDeclareNewRight = () => {
         setShowConfirmationFlag(false);     
         const {params: {rightId}} = match || {};
@@ -87,11 +82,14 @@ const RightToMatchView = ({
         setShowConfirmationFlag(false);
     };
     
-    const createNewButtonCellRenderer = ({data}) => ( // eslint-disable-line
-        <CustomActionsCellRenderer id={data && data.id}>
-            <Button className="nexus-c-right-to-match-view__new-button" onClick={() => onNewButtonClick()}>New</Button>
-        </CustomActionsCellRenderer>
-    );
+    const createNewButtonCellRenderer = ({data}) => { // eslint-disable-line
+        const {id} = data || {};
+        return (
+            <CustomActionsCellRenderer id={id}>
+                <Button onClick={() => setShowConfirmationFlag(true)}>New</Button>
+            </CustomActionsCellRenderer>
+        );
+    };
 
     const additionalFocusedRightColumnDef = {
         field: 'buttons',
@@ -156,38 +154,43 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {fieldSearchCriteria ? (
+                {fieldSearchCriteria && (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
-                        params={fieldSearchCriteria}
                         setTotalCount={setTotalCount}
+                        params={fieldSearchCriteria}
                         handleSelectionChange={handleSelectionChange}
                     />
-                ) : null}
+                )}
             </div>
-
-            <BottomButtons buttons={[
-                {
-                    name: 'Cancel',
-                    onClick: () => history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)),
-                },
-                {
-                    name: 'Match',
-                    onClick: handleMatchClick,
-                    isDisabled: isMatchDisabled,
-                    appearance: 'primary'
-                }
-            ]}/>
+            <div className="nexus-c-right-to-match-view__buttons">
+                <ButtonGroup>
+                    <Button 
+                        className="nexus-c-button"
+                        onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        className="nexus-c-button"
+                        appearance="primary"
+                        onClick={handleMatchClick}
+                        isDisabled={isMatchDisabled}
+                    >
+                        Match
+                    </Button>
+                </ButtonGroup>
+            </div>
             {showConfirmationFlag && (
-                <FlagGroup onDismissed={() => onCancelNewRight()}>
+                <FlagGroup onDismissed={onCancelNewRight}>
                     <Flag
                         description="You are about to declare a new right."
                         icon={<Warning label="Warning icon" primaryColor={colors.Y300} />}
                         id="warning-flag"
                         title="Warning"
                         actions={[
-                            {content:'Cancel', onClick: () => onCancelNewRight()},
-                            {content:'OK', onClick: () => onDeclareNewRight()}
+                            {content:'Cancel', onClick: onCancelNewRight},
+                            {content:'OK', onClick: onDeclareNewRight}
                         ]}
                     />
                 </FlagGroup>
@@ -205,9 +208,9 @@ RightToMatchView.propTypes = {
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
+    createNewRight: PropTypes.func,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    createNewRight: PropTypes.func
 };
 
 RightToMatchView.defaultProps = {
@@ -218,9 +221,9 @@ RightToMatchView.defaultProps = {
     focusedRight: null,
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
+    createNewRight: null,
     columnDefs: [],
     mapping: [],
-    createNewRight: null
 };
 
 const createMapStateToProps = () => {
