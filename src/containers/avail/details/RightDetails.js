@@ -14,7 +14,6 @@ import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
-import EditableDatePicker from '../../../components/form/EditableDatePicker';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
 import { oneOfValidation, rangeValidation } from '../../../util/Validation';
 import { profileService } from '../service/ProfileService';
@@ -30,6 +29,7 @@ import { confirmModal } from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
 import {isObject} from '../../../util/Common';
+import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 const mapStateToProps = state => {
     return {
@@ -78,6 +78,7 @@ class RightDetails extends React.Component {
             isRightTerritoryEditFormOpen: false,
             territoryIndex: null,
             isEdit: false,
+            editedRight: {},
         };
     }
 
@@ -318,9 +319,8 @@ class RightDetails extends React.Component {
             });
         }
 
-        this.update(name, value, () => {
-            cancel();
-        });
+        this.update(name, value, cancel);
+        return true;
     }
 
     flattenRight(right) {
@@ -355,11 +355,10 @@ class RightDetails extends React.Component {
         }
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
-            .then(res => {
-                let editedRight = res.data;
+            .then(({data: editedRight = {}})=> {
                 this.setState({
-                    right: res.data,
-                    flatRight: this.flattenRight(res.data),
+                    right: editedRight,
+                    flatRight: this.flattenRight(editedRight),
                     errorMessage: ''
                 });
                 NexusBreadcrumb.pop();
@@ -1027,36 +1026,66 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, readOnly, required, highlighted) => {
             let ref;
-            let priorityError = null;
-            if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
-            }
 
-            return renderFieldTemplate(name, displayName, value, error, readOnly, required, highlighted, null, ref, (
-                <EditableDatePicker
-                    ref={ref}
-                    showTime={showTime}
+            const {flatRight} = this.state;
+            const validate = (date) => {
+                if (!date && required) {
+                    return 'Mandatory Field. Date cannot be empty';
+                }
+                const rangeError = rangeValidation(name, displayName, date, flatRight);
+                if (rangeError) return rangeError;
+                return this.extraValidation(name, displayName, date, flatRight);
+            };
+
+            // Revert back to valid value in case of an error
+            const revertChanges = () => {
+                this.setState((prevState) => (
+                    {
+                        editedRight: {
+                            ...prevState.editedRight,
+                            [name]: prevState.flatRight[name],
+                        },
+                    })
+                );
+            };
+
+            const error = priorityError || validate(value);
+
+            const component = (
+                <NexusDateTimePicker
+                    id={displayName}
+                    onChange={(date) => {
+                        // Keep a separate state for edited values
+                        this.setState((prevState) => ({
+                            editedRight: {...prevState.editedRight, [name]: date}
+                        })
+                    );}}
+                    // TODO: Awful. To be removed when refactoring RightDetails
+                    onConfirm={(value) => !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()}
+                    defaultValue={value}
+                    displayTimeInReadView={showTime}
                     value={value}
-                    priorityDisplay={priorityError}
-                    name={name}
-                    disabled={readOnly}
-                    displayName={displayName}
-                    validate={(date) => {
-                        if (!date && required) {
-                            return 'Mandatory Field. Date cannot be empty';
-                        }
-                        const rangeError = rangeValidation(name, displayName, date, this.state.flatRight);
-                        if (rangeError) return rangeError;
-                        return this.extraValidation(name, displayName, date, this.state.flatRight);
-                    }}
-                    onChange={(date, cancel) => this.handleEditableSubmit(name, date, cancel)}
+                    error={error}
+                    required={required}
+                    isWithInlineEdit={true}
+                    isReadOnly={readOnly}
+                    isLocalDate={showTime}
                 />
-            ));
+            );
+            return renderFieldTemplate(
+                name,
+                displayName,
+                value,
+                error,
+                readOnly,
+                required,
+                highlighted,
+                null,
+                ref,
+                component,
+            );
         };
 
         const renderFields = [];
@@ -1084,7 +1113,9 @@ class RightDetails extends React.Component {
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     const readOnly = cannotUpdate || mapping.readOnly;
 
-                    const value = this.state.flatRight ? this.state.flatRight[mapping.javaVariableName] : '';
+                    const {editedRight = {}, flatRight} = this.state;
+                    const value = flatRight ? flatRight[mapping.javaVariableName] : '';
+                    const valueV2 = editedRight[mapping.javaVariableName] || flatRight[mapping.javaVariableName];
 
                     const required = mapping.required;
                     let highlighted = false;
@@ -1160,9 +1191,9 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, value ? value.toString().substr(0, 10) : value, error, readOnly, required, highlighted));
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                              break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;

@@ -7,7 +7,6 @@ import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import BlockUi from 'react-block-ui';
 import {Button, Input, Label} from 'reactstrap';
-import NexusDatePicker from '../../../components/form/NexusDatePicker';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rangeValidation, oneOfValidation} from '../../../util/Validation';
@@ -24,6 +23,7 @@ import {URL} from '../../../util/Common';
 
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import { TerritoryTag, CustomFieldAddText, RemovableButton, AddButton } from '../custom-form-components/CustomFormComponents';
+import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 
 const mapStateToProps = state => {
@@ -706,34 +706,18 @@ class RightCreate extends React.Component {
         };
 
         const renderDatepickerField = (name, displayName, required, value) => {
+            const errors = this.mappingErrorMessage[name];
+            const {date, text, range, pair} = errors || {};
+            const error = date || text || range || pair || '';
+
             return renderFieldTemplate(name, displayName, required, null, (
                 <div>
-                    <NexusDatePicker
+                    <NexusDateTimePicker
                         id={'right-create-' + name + '-text'}
-                        date={value}
+                        value={value}
+                        error={error}
                         onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
-                        onInvalid={(invalid) => this.handleInvalidDatePicker(name, invalid)}
                     />
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].date &&
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name].date}
-                    </small>
-                    }
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name].text}
-                    </small>
-                    }
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].range &&
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name].range}
-                    </small>
-                    }
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].pair &&
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name].pair}
-                    </small>
-                    }
                 </div>
             ));
         };
