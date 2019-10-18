@@ -4,7 +4,8 @@ import { AvField, AvForm } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { formatTypeFirstLetter } from '../.././../../../constants/metadata/format';
-import { DATE_FORMAT } from '../../../../../constants/metadata/constant-variables';
+import NexusDateTimePicker from '../../../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import {DATE_FORMAT} from '../../../../../constants/metadata/constant-variables';
 
 class TerritoryMetadataEditMode extends Component {
 
@@ -58,46 +59,48 @@ class TerritoryMetadataEditMode extends Component {
                                     }} />
                             </Col>
                             <Col>
-                                <AvField label="Original Air Date" type="date" id="territoryOriginalAirDate"
-                                    name="originalAirDate"
+                                <NexusDateTimePicker
+                                    label="Original Air Date"
+                                    id="territoryOriginalAirDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    errorMessage="Please enter a valid date!" />
+                                    onChange={date => this.props.handleChangeDate('originalAirDate', 'territoryOriginalAirDate', date, this.props.data)}
+                                />
                             </Col>
                         </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <AvField label="Home Video Release Date" type="date" id="territoryHomeVideoReleaseDate"
-                                    name="homeVideoReleaseDate"
-                                    value={this.getValidDate(this.props.data.homeVideoReleaseDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    errorMessage="Please enter a valid date!" />
+                                <NexusDateTimePicker
+                                    label="Home Video Release Date"
+                                    id="territoryHomeVideoReleaseDate"
+                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', 'territoryHomeVideoReleaseDate', date, this.props.data)}
+                                />
                             </Col>
                             <Col>
-                                <AvField label="Avail Announce Date" type="date" id="territoryAvailAnnounceDate"
-                                    name="availAnnounceDate"
-                                    value={this.getValidDate(this.props.data.availAnnounceDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    errorMessage="Please enter a valid date!" />
+                                <NexusDateTimePicker
+                                    label="Avail Announce Date"
+                                    id="territoryAvailAnnounceDate"
+                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    onChange={date => this.props.handleChangeDate('availAnnounceDate', 'territoryAvailAnnounceDate', date, this.props.data)}
+                                />
                             </Col>
                         </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <AvField label="Theatrical Release Date" type="date" id="territoryTheatricalReleaseDate"
-                                    name="theatricalReleaseDate"
-                                    value={this.getValidDate(this.props.data.theatricalReleaseDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    validate={{
-                                        date: { format: DATE_FORMAT, errorMessage: 'Please enter a valid date!' },
-                                    }}
-                                    errorMessage="Please enter a valid date!" />
+                                <NexusDateTimePicker
+                                    label="Theatrical Release Date"
+                                    id="territoryTheatricalReleaseDate"
+                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    onChange={date => this.props.handleChangeDate('theatricalReleaseDate', 'territoryTheatricalReleaseDate', date, this.props.data)}
+                                />
                             </Col>
                             <Col>
-                                <AvField label="EST Release Date" type="date" id="territoryESTReleaseYear"
-                                    name="estReleaseDate"
-                                    value={this.getValidDate(this.props.data.estReleaseDate)}
-                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    errorMessage="Please enter a valid date!" />
+                                <NexusDateTimePicker
+                                    label="EST Release Date"
+                                    id="territoryESTReleaseDate"
+                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    onChange={date => this.props.handleChangeDate('estReleaseDate', 'territoryESTReleaseDate', date, this.props.data)}
+                                />
                             </Col>
                         </Row>
                     </AvForm>
@@ -110,6 +113,7 @@ class TerritoryMetadataEditMode extends Component {
 TerritoryMetadataEditMode.propTypes = {
     data: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
+    handleChangeDate: PropTypes.func.isRequired,
     validSubmit: PropTypes.func.isRequired,
     getLanguageByCode: PropTypes.func
 };

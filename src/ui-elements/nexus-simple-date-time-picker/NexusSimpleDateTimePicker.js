@@ -5,8 +5,8 @@ import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
-import {Label} from '@atlaskit/field-base';
 
+// TODO: Move to a separate file for constants
 const TIME_PLACEHOLDER = 'HH:mm:ss';
 const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
 
@@ -14,6 +14,7 @@ const NexusSimpleDateTimePicker = ({
     label,
     id,
     value,
+    defaultValue,
     onChange,
     error,
     isUTC,
@@ -31,8 +32,8 @@ const NexusSimpleDateTimePicker = ({
     const setDateBasedOnTimezone = (value) => {
         setDate(
             !isUTC
-                ? moment.utc(value).local().format(ATLASKIT_DATE_FORMAT)
-                : moment(value).utc(false).format(ATLASKIT_DATE_FORMAT)
+                ? moment.utc(value || defaultValue).local().format(ATLASKIT_DATE_FORMAT)
+                : moment(value || defaultValue).utc(false).format(ATLASKIT_DATE_FORMAT)
         );
     };
 
@@ -69,22 +70,25 @@ const NexusSimpleDateTimePicker = ({
 
     return (
         <>
-            <Label
-                label={label}
-                // TODO: To be fixed
-                // This id manipulation is necessary as per AtlasKit docs
-                // https://atlaskit.atlassian.com/packages/core/datetime-picker
-                htmlFor={`react-select-${id}--input`}
-            />
+            {label &&
+                <label
+                    // TODO: To be fixed
+                    // This id manipulation is necessary as per AtlasKit docs
+                    // https://atlaskit.atlassian.com/packages/core/datetime-picker
+                    htmlFor={`react-select-${id}--input`}
+                >
+                    {label}
+                </label>
+            }
             <TemporaryErrorBorder error={error}>
                 <>
                     <DateTimePicker
                         locale={locale}
                         id={id}
                         parseValue={parseTimezoneValue}
-                        defaultValue={date}
+                        defaultValue={defaultValue}
                         value={date}
-                        onChange={date => onChange(convertToISO(date))}
+                        onChange={date => date && onChange(convertToISO(date))}
                         datePickerProps={{
                             placeholder: datePlaceholder,
                         }}
@@ -96,9 +100,9 @@ const NexusSimpleDateTimePicker = ({
                 </>
             </TemporaryErrorBorder>
             {error &&
-            <ErrorMessage>
-                {error}
-            </ErrorMessage>
+                <ErrorMessage>
+                    {error}
+                </ErrorMessage>
             }
         </>
     );
@@ -107,6 +111,7 @@ const NexusSimpleDateTimePicker = ({
 NexusSimpleDateTimePicker.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
+    defaultValue: PropTypes.string,
     error: PropTypes.string,
     isUTC: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
@@ -116,8 +121,9 @@ NexusSimpleDateTimePicker.propTypes = {
 NexusSimpleDateTimePicker.defaultProps = {
     label: '',
     value: '',
+    defaultValue: '',
     error: '',
-    isUTC: false,
+    isUTC: true,
 };
 
 export default NexusSimpleDateTimePicker;

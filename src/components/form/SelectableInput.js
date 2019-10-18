@@ -3,11 +3,11 @@ import t from 'prop-types';
 import {connect} from 'react-redux';
 import {Button} from 'reactstrap';
 import Select from 'react-select';
-import RangeDatapicker from './RangeDatapicker';
 import RangeDuration from './RangeDuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
+import NexusTimeWindowPicker from '../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
 
 
 const mapStateToProps = state => {
@@ -112,8 +112,12 @@ class SelectableInput extends Component {
     }
 
     isAnyValueSpecified = () => {
-        const value = this.props.value;
-        return value.from || value.to || (value.value  && value.value.trim() || (value.options && value.options.length > 0));
+        const {value = {}} = this.props;
+        const {from = '', to = '', options} = value || {};
+
+        if (moment(from).isSameOrAfter(to)) return false;
+
+        return from || to || (value.value  && value.value.trim() || (options && options.length));
     };
 
     render() {
@@ -238,22 +242,37 @@ class SelectableInput extends Component {
                 />);
         };
 
-        const renderRangeDatepicker = (name, displayName) => {
-            const from = this.props.value.from ? (this.props.dataType === 'localdate' ? this.props.value.from.slice(0, -1) : this.props.value.from) : this.props.value.from;
-            const to = this.props.value.to ? (this.props.dataType === 'localdate' ? this.props.value.to.slice(0, -1) : this.props.value.to) : this.props.value.to;
+        const renderRangeDatepicker = () => {
+            const {value, id, dataType, onChange} = this.props;
+            let {
+                from = '',
+                to = ''
+            } = value || {};
+
+            from = dataType === 'localdate' ? from.slice(0, -1) : from;
+            to = dataType === 'localdate' ? to.slice(0, -1) : to;
+
             return (
-                <RangeDatapicker
-                    key={name.value}
-                    id={this.props.id + '-datepicker'}
-                    ref={this.refDatePicker}
-                    hideLabel={true}
-                    displayName={displayName}
-                    value={{from: from, to: to}}
-                    onFromDateChange={(value) => this.handleChange('from', value)}
-                    onToDateChange={(value) => this.handleChange('to', value)}
-                    onInvalid={this.handleInvalid}
-                    handleKeyPress={this._handleKeyPress}
-            />);
+                <NexusTimeWindowPicker
+                    onChange={(timeWindow) => {
+                        const {
+                            startDate: from = '',
+                            endDate: to = ''
+                        } = timeWindow || {};
+                        onChange({...value, from, to});
+                    }}
+                    startDateTimePickerProps={{
+                        id: `${id}-datepicker-start`,
+                        defaultValue: from,
+                        label: 'From'
+                    }}
+                    endDateTimePickerProps={{
+                        id: `${id}-datepicker-end`,
+                        defaultValue: to,
+                        label: 'To'
+                    }}
+                />
+            );
         };
 
         const renderSelect = (name, displayName) => {
@@ -339,8 +358,8 @@ class SelectableInput extends Component {
         };
 
         return (
-            <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-                <div style={{width: '250px', margin: '0 0 16px'}}>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr 2fr', gridGap: '5px', alignItems: 'center'}}>
+                <div style={{margin: '0 0 16px'}}>
                     <Select
                         id={this.props.id + '-select'}
                         onChange={this.handleSelect}
