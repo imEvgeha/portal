@@ -31,6 +31,13 @@ function* fetchFocusedRight(requestMethod, {payload}) {
                 [CONTENT_TYPE]: contentType
             },
         });
+        /*uncomment this once /titles/search api works fine to get filtered records
+        yield put({
+            type: METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH,
+            payload: {
+                [TITLE]: title,
+            },
+        });*/
 
     } catch (error) {
         yield put({
@@ -53,18 +60,21 @@ function* createTitleMatchingColumnDefs(){
     }
 }
 
-function* selectAndStoreTitles({payload}){
+function* mergeAndStoreTitles({payload}){
     try{
         const {matchList, duplicateList, historyPush} = payload;
         let query = '';
         const matches = Object.keys(matchList);
         const duplicate = Object.keys(duplicateList);
-        matches.forEach((key, index) => {
-            query = `${query}${key}=${matchList[key].id}`;
-            if(index < (matches.length -1 )){
-                query = query.concat('&');
-            }
-        });
+        if(matches.length){
+            query = query.concat('matches=');
+            matches.forEach((key, index) => {
+                query = `${query}${matchList[key].id}`;
+                if(index < (matches.length -1 )){
+                    query = query.concat(',');
+                }
+            });
+        }
         if(duplicate.length){
             query = query.concat(`&duplicate=${Object.keys(duplicateList).join(',')}`);
         }
@@ -84,6 +94,6 @@ export function* titleMatchingWatcher() {
     yield all([
         takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
         takeEvery(actionTypes.CREATE_COLUMN_DEFS, createTitleMatchingColumnDefs),
-        takeEvery(actionTypes.SELECT_TITLES, selectAndStoreTitles)
+        takeEvery(actionTypes.MERGE_TITLES, mergeAndStoreTitles)
     ]);
 }

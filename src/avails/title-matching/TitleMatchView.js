@@ -9,11 +9,11 @@ import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cel
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
-import {fetchFocusedRight, createColumnDefs, selectTitles} from './titleMatchingActions';
+import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
-const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, selectTitles,
+const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -63,7 +63,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, se
                                 action menu.</p>
                         </SectionMessage>
                         <TitlesList columnDefs={columnDefs}
-                                    selectTitles={(matchList, duplicateList) => selectTitles(matchList, duplicateList, history.push)}/>
+                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, history.push)}/>
                     </React.Fragment>
                 )
             }
@@ -74,7 +74,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, se
 TitleMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func.isRequired,
     createColumnDefs: PropTypes.func.isRequired,
-    selectTitles: PropTypes.func.isRequired,
+    mergeTitles: PropTypes.func.isRequired,
     match: PropTypes.object,
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
@@ -100,7 +100,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    selectTitles: (matchList, duplicateList, historyPush) => dispatch(selectTitles(matchList, duplicateList, historyPush))
+    mergeTitles: (matchList, duplicateList, historyPush) => dispatch(mergeTitles(matchList, duplicateList, historyPush))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

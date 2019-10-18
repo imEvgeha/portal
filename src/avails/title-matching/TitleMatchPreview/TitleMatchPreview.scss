@@ -1,10 +1,9 @@
 .nexus-c-title-to-match-preview{
-  .nexus-c-title-to-match-preview__header {
-    .nexus-c-title {
-      font-size: 20px;
-    }
+  >.nexus-c-title {
+    font-weight: normal;
+    font-size: 20px;
   }
   .nexus-c-nexus-grid{
-    height: 200px;
+    height: 100px;
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Constants from '../titleMatchingConstants';
 
-const ActionsBar = ({matchList, selectTitles}) => {
+const ActionsBar = ({matchList, mergeTitles}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
@@ -19,7 +19,7 @@ const ActionsBar = ({matchList, selectTitles}) => {
     };
 
     const onMatchAndCreate = () => {
-        selectTitles();
+        mergeTitles();
     };
 
     useEffect(() => {
@@ -49,7 +49,7 @@ const ActionsBar = ({matchList, selectTitles}) => {
 };
 ActionsBar.propTypes = {
     matchList: PropTypes.object,
-    selectTitles: PropTypes.func,
+    mergeTitles: PropTypes.func,
 };
 
 ActionsBar.defaultProps = {

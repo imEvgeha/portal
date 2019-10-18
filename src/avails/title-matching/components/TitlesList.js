@@ -13,7 +13,7 @@ import Constants from '../titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 
-const TitlesList = ({columnDefs, selectTitles}) => {
+const TitlesList = ({columnDefs, mergeTitles}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
@@ -107,19 +107,19 @@ const TitlesList = ({columnDefs, selectTitles}) => {
                 columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
                 setTotalCount={setTotalCount}/>
             <ActionsBar matchList={matchList}
-                        selectTitles={() => selectTitles(matchList, duplicateList)}/>
+                        mergeTitles={() => mergeTitles(matchList, duplicateList)}/>
         </React.Fragment>
     );
 };
 
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
-    selectTitles: PropTypes.func,
+    mergeTitles: PropTypes.func,
 };
 
 TitlesList.defaultProps = {
     columnDefs: [],
-    selectTitles: () => null,
+    mergeTitles: () => null,
 };
 
 export default TitlesList;
