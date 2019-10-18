@@ -158,7 +158,7 @@ const RightToMatchView = ({
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
-                        params={{fieldSearchCriteria}}
+                        params={fieldSearchCriteria}
                         handleSelectionChange={handleSelectionChange}
                     />
                 )}
