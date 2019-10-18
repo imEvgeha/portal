@@ -20,6 +20,9 @@ import {
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
+import DOP from '../../util/DOP';
+import useLocalStorage from '../../util/hooks/useLocalStorage';
+import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
@@ -37,6 +40,17 @@ const RightMatchingView = ({
         setCombinedSavedFlag,
     }) => {
     const [totalCount, setTotalCount] = useState(0);
+    const [dopCount, setDopCount] = useLocalStorage('rightMatchingDOP', totalCount);
+
+    // DOP integration
+    useEffect(() => {
+        if (totalCount) {
+            if (!dopCount || (dopCount && dopCount !== totalCount)) {
+                DOP.setErrorsCount(totalCount);
+                setDopCount(totalCount);
+            }
+        }
+    }, [totalCount]);
 
     // TODO: refactor this
     useEffect(() => {
@@ -72,21 +86,8 @@ const RightMatchingView = ({
         }
     };
 
-    const additionalColumnDef = {
-        field: 'buttons',
-        headerName: 'Actions',
-        colId: 'actions',
-        width: 100,
-        pinned: 'left',
-        resizable: false,
-        suppressSizeToFit: true,
-        cellRendererFramework: createCellRenderer,
-        suppressMovable: true,
-        lockPosition: true,
-        sortable: false,
-    };
-
-    const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs]: columnDefs;
+    const focusButtonColumnDef = defineActionButtonColumn('buttons', createCellRenderer);
+    const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs]: columnDefs;
 
     const {params = {}} = match;
     const {availHistoryIds} = params || {};
