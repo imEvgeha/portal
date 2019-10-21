@@ -24,10 +24,11 @@ class SelectRightsDOPConnector extends Component {
 
         this.showConfirmDialog = this.showConfirmDialog.bind(this);
         this.onModalApply = this.onModalApply.bind(this);
+        this.onModalCancel = this.onModalCancel.bind(this);
     }
 
     componentDidMount() {
-        DOP.setDOPMessageCallback(this.onModalApply);
+        DOP.setDOPMessageCallback(this.showConfirmDialog);
     }
 
     showConfirmDialog(){
@@ -73,11 +74,16 @@ class SelectRightsDOPConnector extends Component {
         });
     }
 
+    onModalCancel(){
+        this.setState({isConfirmOpen : false});
+        DOP.sendInfoToDOP(1, null);
+    }
+
     render(){
         const { isConfirmOpen, isSendingData } = this.state;
         const { promotedRights } = this.props;
         const actions = [
-            { text: 'Cancel', onClick: () =>   this.setState({isConfirmOpen : false}), appearance:'default', isDisabled:this.state.isSendingData},
+            { text: 'Cancel', onClick: this.onModalCancel, appearance:'default', isDisabled: isSendingData},
             { text: 'Apply', onClick: this.onModalApply, appearance:'primary', isLoading: isSendingData},
         ];
 

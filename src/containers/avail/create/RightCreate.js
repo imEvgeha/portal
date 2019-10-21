@@ -272,7 +272,7 @@ class RightCreate extends React.Component {
             this.setState({});
             if(response && response.data && response.data.id){
                 if(this.props.match.params.availHistoryId){
-                    this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/create_from_attachments'));
+                    this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
                 }else{
                     this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
                 }
@@ -288,7 +288,7 @@ class RightCreate extends React.Component {
 
     cancel(){
         if(this.props.match.params.availHistoryId){
-            this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/create_from_attachments'));
+            this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
         }else {
             this.context.router.history.push(URL.keepEmbedded('/avails'));
         }

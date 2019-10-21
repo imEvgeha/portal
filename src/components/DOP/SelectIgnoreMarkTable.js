@@ -70,7 +70,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     suppressMovable: true,
                     lockPosition: true,
                     cellRenderer: 'selectIgnoreMarkCell',
-                    suppressSorting: true
+                    sortable: false
                 },
                 plan_territory: {
                     headerName: 'Plan Territory',
