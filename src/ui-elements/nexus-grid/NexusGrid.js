@@ -25,6 +25,9 @@ const NexusGrid = ({
         if (typeof handleGridReady === 'function') {
             handleGridReady(api, columnApi);
         }
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(params);
+        }
     };
 
     const onGridSizeChanged = () => {
@@ -32,10 +35,14 @@ const NexusGrid = ({
         // api.sizeColumnsToFit();
     };
 
-    const onSelectionChanged = ({api, columnApi}) => {
+    const onSelectionChanged = (data) => {
+        const {api, columnApi} = data;
         // TODO: add onGridEvent callback instead
         if (typeof handleSelectionChange === 'function') {
             handleSelectionChange(api, columnApi);
+        }
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
         }
     };
 

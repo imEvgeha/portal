@@ -17,7 +17,9 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
+import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
+import useLocalStorage from '../../../util/hooks/useLocalStorage';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -39,6 +41,12 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
+    const [dopCount] = useLocalStorage('rightMatchingDOP');
+
+    // DOP Integration
+    useEffect(() => {
+        DOP.setErrorsCount(dopCount);
+    }, [dopCount]);
 
     useEffect(() => {
         setCombinedSavedFlag({isCombinedRightSaved: false});

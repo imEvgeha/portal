@@ -18,8 +18,11 @@ import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getRightToMatchList} from '../rightMatchingService';
-import {URL} from '../../../util/Common';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
+import {URL} from '../../../util/Common';
+import DOP from '../../../util/DOP';
+import useLocalStorage from '../../../util/hooks/useLocalStorage';
+import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -45,6 +48,12 @@ const RightToMatchView = ({
     const {rightId, availHistoryIds} = params || {}; 
     const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
     const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
+    const [dopCount] = useLocalStorage('rightMatchingDOP');
+
+    // DOP Integration
+    useEffect(() => {
+        DOP.setErrorsCount(dopCount);
+    }, [dopCount]);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -57,20 +66,8 @@ const RightToMatchView = ({
         fetchRightMatchingFieldSearchCriteria(availHistoryIds);
     }, [rightId]);
 
-    const additionalColumnDef = {
-        field: 'checkbox',
-        headerName: 'Action',
-        colId: 'action',
-        width: 70,
-        pinned: 'left',
-        resizable: false,
-        suppressSizeToFit: true,
-        suppressMovable: true,
-        lockPosition: true,
-        sortable: false,
-        checkboxSelection: true,
-    };
-    const updatedColumnDefs = columnDefs.length ? [additionalColumnDef, ...columnDefs] : columnDefs;
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+    const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
         setShowConfirmationFlag(false);     
@@ -81,7 +78,7 @@ const RightToMatchView = ({
     const onCancelNewRight = () => {
         setShowConfirmationFlag(false);
     };
-    
+
     const createNewButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
@@ -91,20 +88,8 @@ const RightToMatchView = ({
         );
     };
 
-    const additionalFocusedRightColumnDef = {
-        field: 'buttons',
-        headerName: 'Actions',
-        colId: 'actions',
-        width: 100,
-        pinned: 'left',
-        resizable: false,
-        suppressSizeToFit: true,
-        cellRendererFramework: createNewButtonCellRenderer,
-        suppressMovable: true,
-        lockPosition: true,
-        sortable: false,
-    };
-    const updatedFocusedRightColumnDefs = columnDefs.length ? [additionalFocusedRightColumnDef, ...columnDefs] : columnDefs;
+    const actionNewButtonColumnDef = defineActionButtonColumn('buttons', createNewButtonCellRenderer);
+    const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleSelectionChange = api => {

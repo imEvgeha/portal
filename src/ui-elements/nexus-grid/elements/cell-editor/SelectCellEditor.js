@@ -8,7 +8,7 @@ class SelectCellEditor extends Component {
         options: PropTypes.array,
         value: PropTypes.oneOfType([
             PropTypes.string,
-            PropTypes.boolean,
+            PropTypes.bool,
         ]),
     }; 
 

@@ -81,9 +81,18 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             updateData(fetchData, gridApi);
         };
 
+        const onGridEvent = data => {
+            if (data.type === 'gridReady') {
+                if (typeof props.onGridEvent === 'function') {
+                    props.onGridEvent(data);
+                }
+            }
+        };
+
         const mergedProps = {
             ...props,
             handleGridReady,
+            onGridEvent,
             rowBuffer,
             rowModelType,
             paginationPageSize,
