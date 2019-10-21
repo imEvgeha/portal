@@ -40,7 +40,10 @@ class Settings extends Component {
         super(props);
         this.state = {
             selectedApi: null,
-            active: 0
+            active: 0,
+            mainMenuActive: 0,
+            localization: null
+
         };
     }
 
@@ -53,9 +56,13 @@ class Settings extends Component {
         this.setState({selectedApi: selectedApi, active: index});
     };
 
+    handleActiveClick = (index) => {
+        this.setState({mainMenuActive: index, localization: 'Localication'});
+    }
+
     render() {
         const {configEndpoints} = this.props;
-        const {selectedApi, active} = this.state;
+        const {selectedApi, active, mainMenuActive, localization} = this.state;
 
         return (
             <div>
@@ -63,7 +70,14 @@ class Settings extends Component {
                     <TextHeader>Settings</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                        <ListElement className="list-item">API Configuration</ListElement>
+                        {['API Configuration', 'Localization'].map((e, i) => (
+                            <ListElement 
+                                key={i} 
+                                onClick={() => this.handleActiveClick(i)}
+                                className={mainMenuActive === i ? 'list-item' : null}>
+                                {e}
+                            </ListElement>
+                        ))}
                     </ListParent>
                 </SideMenu>
 
@@ -92,6 +106,11 @@ class Settings extends Component {
                             <EndpointContainer selectedApi={endpoint}/>
                         </TabPane>
                     ))}
+                </TabContent>
+                <TabContent activeTab={localization}>
+                        <TabPane>
+                            asdads
+                        </TabPane>
                 </TabContent>
             </div>
         );
