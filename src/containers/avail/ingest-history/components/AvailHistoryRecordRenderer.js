@@ -48,8 +48,9 @@ class AvailHistoryRecordRenderer extends React.Component {
         let counter = 0;
         let atts = [];
         let firstName = '';
-        if(this.props.data && this.props.data.attachments){
-            atts = this.props.data.attachments.map(attachment => {
+        const {data} = this.props;
+        if(data && data.attachments){
+            atts = data.attachments.map(attachment => {
                 if(attachment.attachmentType==='Email'){
                     email = attachment;
                     return '';
@@ -69,42 +70,57 @@ class AvailHistoryRecordRenderer extends React.Component {
             });
         }
 
+
+        const {ingestReport} = data;
+
         return(
             <div style={{display: 'flex', alignItems: 'center'}}>
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'400px', width:'25%'}}>
-                    {this.props.data.ingestType === 'Email' ?
-                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Provider:</b> &nbsp; {this.props.data.provider} </div>)
+                    {data.ingestType === 'Email' ?
+                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Provider:</b> &nbsp; {data.provider} </div>)
                         :
                         (<div style={{display: 'flex', maxWidth:'100%'}}><b>Document Name:</b> &nbsp; <div style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}} title={firstName}>{firstName}</div> </div>)
                     }
-                    <div style={{display: 'flex'}}><b>Received:</b> &nbsp; {this.props.data.received ? moment(this.props.data.received).format('llll'):''} </div>
+                    <div style={{display: 'flex'}}><b>Received:</b> &nbsp; {data.received ? moment(data.received).format('llll'):''} </div>
                 </div>
                 <div style={{display: 'flex', flex:0.5, minWidth:'30px'}}/>
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'182px'}}>
-                    <div style={{display: 'flex'}}><b>Received By:</b> &nbsp; {this.props.data.ingestType} </div>
-                    <div title={'ID: ' + this.props.data.id} style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
+                    <div style={{display: 'flex'}}><b>Received By:</b> &nbsp; {data.ingestType} </div>
+                    <div title={'ID: ' + data.id} style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
                         { (() => {
-                            switch (this.props.data.status) {
+                            switch (data.status) {
                                  case 'COMPLETED':
                                     return <span style={{ color: 'green'}}><i className="fas fa-check-circle"> </i></span>;
                                  case 'FAILED':
-                                    return <span title={this.props.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"> </i></span>;
+                                    return <span title={data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"> </i></span>;
                                  case 'MANUAL':
-                                    return <span title={this.props.data.errorDetails} style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
+                                    return <span title={data.errorDetails} style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
                                  case 'PENDING':
                                     return <img src={LoadingElipsis}/>;
                                  default:
-                                    return this.props.data.status;
+                                    return data.status;
                                  }
                         })()}
                     </div>
                 </div>
                 <div style={{display: 'flex', flex:1, minWidth:'30px'}}/>
-                <div style={{display: 'flex', paddingLeft:'10px', lineHeight: '30px', width:'345px'}}>
-                    <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'125px'}}>
+                {ingestReport &&
+                <div style={{display: 'flex', paddingLeft: '10px', lineHeight: '30px', width: '345px'}}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: '10px',
+                        lineHeight: '30px',
+                        alignItems: 'center',
+                        width: '125px'
+                    }}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
-                            {this.props.data.totalProcessed > 0 ?
-                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[1], state:this.props.data}}>
+                            {ingestReport.total > 0 ?
+                                (<Link to={{
+                                    pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
+                                    search: RightsURL.getRightsSearchUrl(data.id).split('?')[1],
+                                    state: data
+                                }}>
                                     Total Avails:
                                 </Link>)
                                 :
@@ -113,46 +129,76 @@ class AvailHistoryRecordRenderer extends React.Component {
                                 </div>)
                             }
                         </b></u></div>
-                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
-                            {this.props.data.totalProcessed > 0 ?
-                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id).split('?')[1], state:this.props.data}}>
-                                    {this.props.data.totalProcessed}
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
+                            {ingestReport.total > 0 ?
+                                (<Link to={{
+                                    pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
+                                    search: RightsURL.getRightsSearchUrl(data.id).split('?')[1],
+                                    state: data
+                                }}>
+                                    {ingestReport.total}
                                 </Link>)
                                 :
                                 (<div>
-                                    {this.props.data.totalProcessed}
+                                    {ingestReport.total}
                                 </div>)
                             }
                         </div>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'95px'}}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: '10px',
+                        lineHeight: '30px',
+                        alignItems: 'center',
+                        width: '95px'
+                    }}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
-                            {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[1], state:this.props.data}}>
+                            {ingestReport.success > 0 ?
+                                (<Link to={{
+                                    pathname: RightsURL.getRightsSearchUrl(data.id, false).split('?')[0],
+                                    search: RightsURL.getRightsSearchUrl(data.id, false).split('?')[1],
+                                    state: data
+                                }}>
                                     Success:
                                 </Link>)
                                 :
                                 (<div>
                                     Success:
-                                 </div>)
+                                </div>)
                             }
                         </b></u></div>
-                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
-                            {this.props.data.successfullyProcessed > 0 ?
-                                (<Link to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, false).split('?')[1], state:this.props.data}}>
-                                    {this.props.data.successfullyProcessed}
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
+                            {ingestReport.success > 0 ?
+                                (<Link to={{
+                                    pathname: RightsURL.getRightsSearchUrl(data.id, false).split('?')[0],
+                                    search: RightsURL.getRightsSearchUrl(data.id, false).split('?')[1],
+                                    state: data
+                                }}>
+                                    {ingestReport.success}
                                 </Link>)
                                 :
                                 (<div>
-                                    {this.props.data.successfullyProcessed}
+                                    {ingestReport.success}
                                 </div>)
                             }
                         </div>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', alignItems: 'center', width:'85px'}}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: '10px',
+                        lineHeight: '30px',
+                        alignItems: 'center',
+                        width: '85px'
+                    }}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
-                            {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[1], state:this.props.data}}>
+                            {ingestReport.fatal + ingestReport.errors > 0 ?
+                                (<Link className={'error-link'} to={{
+                                    pathname: RightsURL.getRightsSearchUrl(data.id, true).split('?')[0],
+                                    search: RightsURL.getRightsSearchUrl(data.id, true).split('?')[1],
+                                    state: data
+                                }}>
                                     Errors:
                                 </Link>)
                                 :
@@ -161,27 +207,32 @@ class AvailHistoryRecordRenderer extends React.Component {
                                 </div>)
                             }
                         </b></u></div>
-                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight:'bolder'}}>
-                            {this.props.data.failedToProcess > 0 ?
-                                (<Link className={'error-link'} to={{pathname: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[0], search: RightsURL.getRightsSearchUrl(this.props.data.id, true).split('?')[1], state:this.props.data}}>
-                                    {this.props.data.failedToProcess}
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
+                            {ingestReport.fatal + ingestReport.errors > 0 ?
+                                (<Link className={'error-link'} to={{
+                                    pathname: RightsURL.getRightsSearchUrl(data.id, true).split('?')[0],
+                                    search: RightsURL.getRightsSearchUrl(data.id, true).split('?')[1],
+                                    state: data
+                                }}>
+                                    {ingestReport.fatal + ingestReport.errors}
                                 </Link>)
                                 :
                                 (<div>
-                                    {this.props.data.failedToProcess}
+                                    {ingestReport.fatal + ingestReport.errors}
                                 </div>)
                             }
                         </div>
                     </div>
                 </div>
-                <div style={{display: 'flex', flex:1}}/>
-                <div style={{display: 'flex', width:'274px', verticalAlign: 'middle !important'}}>
-                    {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
-                    {!email && <div key={email} style={{width: '40px', display:'inline-block'}}></div>}
-                    <div style={{width: '224px', display:'inline-block', whiteSpace: 'normal'}}>
-                        {atts}
+                }
+                    <div style={{display: 'flex', flex:1}}/>
+                    <div style={{display: 'flex', width:'274px', verticalAlign: 'middle !important'}}>
+                        {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
+                        {!email && <div key={email} style={{width: '40px', display:'inline-block'}}></div>}
+                        <div style={{width: '224px', display:'inline-block', whiteSpace: 'normal'}}>
+                            {atts}
+                        </div>
                     </div>
-                </div>
             </div>
         );
     }
