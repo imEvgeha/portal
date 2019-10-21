@@ -11,6 +11,7 @@ import DashboardDropableCard from '../dashboard/card/DashboardDropableCard';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../constants/breadcrumb';
 import { connect } from 'react-redux';
+import ManualRightsEntryDOPConnector from './ManualRightsEntryDOPConnector';
 
 const REFRESH_INTERVAL = 5 * 1000; //5 seconds
 
@@ -49,7 +50,7 @@ class RightsCreateFromAttachment extends React.Component {
             const availHistoryIds = sparams.get('availHistoryIds');
             if (availHistoryIds) {
                 sparams.delete('availHistoryIds');
-                this.context.router.history.replace('/avails/history/' + availHistoryIds + '/create_from_attachments?' + sparams.toString());
+                this.context.router.history.replace('/avails/history/' + availHistoryIds + '/manual-rights-entry?' + sparams.toString());
                 return;
             }
         }
@@ -156,9 +157,10 @@ class RightsCreateFromAttachment extends React.Component {
     render() {
         return (
             <div className={'mx-2'}>
+                <ManualRightsEntryDOPConnector/>
                 <div className={'d-flex justify-content-between'}>
                     <div>
-                        <div><h3>Create Rights from PDF </h3></div>
+                        <div><h3>Manual Rights Entry </h3></div>
                         {this.state.historyData && this.state.historyData.attachments && ( 
                             <React.Fragment>
                                 <div> Studio: {this.state.historyData.provider} &nbsp; {this.renderAttachments('Email', 'far fa-envelope')}</div>
@@ -181,7 +183,7 @@ class RightsCreateFromAttachment extends React.Component {
                     <RightsResultTable
                         fromServer={true}
                         columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
-                        nav={{ back: 'create_from_attachments', params: { availHistoryId: this.state.availHistoryId } }}
+                        nav={{ back: 'manual-rights-entry', params: { availHistoryId: this.state.availHistoryId } }}
                         autoload={false}
                     />
                 }

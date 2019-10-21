@@ -30,6 +30,7 @@ import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
 import {isObject} from '../../../util/Common';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import ManualRightsEntryDOPConnector from '../create/ManualRightsEntryDOPConnector';
 
 const mapStateToProps = state => {
     return {
@@ -1217,6 +1218,7 @@ class RightDetails extends React.Component {
 
         return (
             <div style={{ position: 'relative' }}>
+                <ManualRightsEntryDOPConnector/>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
                         this.state.errorMessage &&
