@@ -6,7 +6,6 @@ import RightCreate  from './containers/avail/create/RightCreate';
 import RightCreateV2  from './containers/avail/create/RightCreateV2';
 import RightsCreateFromAttachment  from './containers/avail/create/RightsCreateFromAttachment';
 import SelectRightsPlanning  from './containers/avail/DOP/SelectRightsPlanning';
-import FixRights from './containers/avail/DOP/FixRights';
 import AvailIngestHistoryContainer from './containers/avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './containers/metadata/dashboard/DashboardContainer';
 import {canRender} from './ability';
