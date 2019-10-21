@@ -28,7 +28,7 @@ class DOP extends React.Component {
             if (onDOPMessage === 'function') {
                 onDOPMessage(errorCount, data);
             } 
-            // DOP.sendInfoToDOP(errorCount, data);
+            DOP.sendInfoToDOP(errorCount, data);
         }
     }
 
