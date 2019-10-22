@@ -52,6 +52,7 @@ const Localization = ({changeLocale}) => {
                     <Select
                     id="locale"
                     defaultValue={getLocale()}
+                    isSearchable={false}
                     onChange={value => handleChange(value)}
                     options={[
                         { label: '', value: '' },
