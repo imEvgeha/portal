@@ -7,6 +7,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import {setLocale} from '../../stores/actions/localization/setLocale';
 import { TextHeader } from '../../components/navigation/CustomNavigationElements';
+import NexusDateTimePicker from '../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -22,6 +23,13 @@ const DataBody = styled.div`
     padding: 10px;
 `;
 
+const PreviewText = styled.div`
+    font-weight: bold;
+    font-size: 16px;
+    color: #111;
+    margin-top: 10px;
+`;
+
 
 const Localization = ({changeLocale}) => {
 
@@ -34,7 +42,7 @@ const Localization = ({changeLocale}) => {
         changeLocale(value);
         moment.locale(value);
     };
-    
+
     return (
         <DataContainer>
                 <TextHeader>Set Localization
@@ -53,6 +61,12 @@ const Localization = ({changeLocale}) => {
                     placeholder="Choose a Locale"
                     styles={{control: (base) => ({...base, fontSize: '14px'})}}
                     />
+
+                    <PreviewText>Preview</PreviewText>
+                        <NexusDateTimePicker
+                            onChange={() => {}}
+                            id="date" 
+                        />
                 </DataBody>
 
             </DataContainer>
