@@ -7,6 +7,7 @@ import { getSortedData } from '../../../util/Common';
 
 const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';
+const COUNTRIES = '/countries';
 const SORT_TYPE = 'label';
 
 const http = Http.create({ noDefaultErrorHandling: true });
@@ -39,7 +40,12 @@ export const profileService = {
                                             store.dispatch(loadSelectLists(rec.javaVariableName, options));
                                             break;
                                         case LANGUAGES:
-                                            options = options.map(code => { return { value: code.languageCode, label: code.languageName }; });
+                                            options = options.map(code => ({value: code.languageCode, label: code.languageName}));
+                                            options = getSortedData(options, SORT_TYPE, true);
+                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                            break;
+                                        case COUNTRIES:
+                                            options = options.map(code => ({value: code.countryCode, label: code.countryName}));
                                             options = getSortedData(options, SORT_TYPE, true);
                                             store.dispatch(loadSelectLists(rec.javaVariableName, options));
                                             break;
