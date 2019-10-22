@@ -304,6 +304,9 @@ class RightDetails extends React.Component {
         }
         if (Array.isArray(value)) {
             value = value.map(el => {
+                if (el.hasOwnProperty('name')) {
+                    delete el.name;
+                }
                 if (el.hasOwnProperty('isValid')) {
                     delete el.isValid;
                 }
@@ -311,7 +314,7 @@ class RightDetails extends React.Component {
                     delete el.errors;
                 }
                 if (el.hasOwnProperty('value')) {
-                    delete el.name;
+                    delete el.value;
                 }
                 if (el.hasOwnProperty('id')) {
                     delete el.id;
@@ -952,7 +955,6 @@ class RightDetails extends React.Component {
                 const item = {
                     ...option,
                     isValid: true,
-                    name: option.country,
                     id: isEdit ? territoryIndex : selectedVal.length,
                 };
                  if(this.state.isEdit) {
@@ -998,7 +1000,7 @@ class RightDetails extends React.Component {
                                             <Popup
                                                 trigger={
                                                     <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
-                                                        {e.name}
+                                                        {e.country}
                                                     </TerritoryTag>
                                                 }
                                                 position="top center"
