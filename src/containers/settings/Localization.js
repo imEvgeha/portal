@@ -1,0 +1,70 @@
+import React from 'react';
+import connect from 'react-redux/es/connect/connect';
+import styled from 'styled-components';
+import Select from '@atlaskit/select';
+import moment from 'moment';
+
+import PropTypes from 'prop-types';
+import {setLocale} from '../../stores/actions/localization/setLocale';
+import { TextHeader } from '../../components/navigation/CustomNavigationElements';
+
+const DataContainer = styled.div`
+    width: 65%;
+    float: left;
+    height: calc(100vh - 90px);
+    margin-left: 10px;
+    padding: 15px;
+`;
+
+const DataBody = styled.div`
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+`;
+
+
+const Localization = ({changeLocale}) => {
+
+    const getLocale = () => {
+        return {label: localStorage.getItem('localization') == 'en-us' ? 'English (United States)' : localStorage.getItem('localization') === 'en-gb' ? 'English (United Kingdom)' : ''};
+    };
+
+    const handleChange = ({value}) => {
+        localStorage.setItem('localization', value);
+        changeLocale(value);
+        moment.locale(value);
+    };
+    
+    return (
+        <DataContainer>
+                <TextHeader>Set Localization
+                    <div style={{clear: 'both'}} />
+                </TextHeader>
+                <DataBody>            
+                    <Select
+                    id="locale"
+                    defaultValue={getLocale()}
+                    onChange={value => handleChange(value)}
+                    options={[
+                        { label: '', value: '' },
+                        { label: 'English (United States)', value: 'en-us' },
+                        { label: 'English (United Kingdom)', value: 'en-gb' },
+                    ]}
+                    placeholder="Choose a Locale"
+                    styles={{control: (base) => ({...base, fontSize: '14px'})}}
+                    />
+                </DataBody>
+
+            </DataContainer>
+    );
+};
+
+Localization.propTypes = {
+    changeLocale: PropTypes.func
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    changeLocale: payload => dispatch(setLocale(payload))
+});
+
+export default connect(null, mapDispatchToProps)(Localization);

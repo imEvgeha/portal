@@ -10,6 +10,7 @@ import dopReducer from './stores/reducers/DOP/dopReducer';
 import settings from './containers/settings/settingsReducer';
 import rightMatching from './avails/right-matching/rightMatchingReducer';
 import titleMatching from './avails/title-matching/titleMatchingReducer';
+import localeReducer from './stores/reducers/localization/localeReducer';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -22,7 +23,8 @@ const createRootReducer = routerHistory => combineReducers({
     dopReducer,
     settings,
     rightMatching,
-    titleMatching
+    titleMatching,
+    localeReducer
 });
 
 export default createRootReducer;
