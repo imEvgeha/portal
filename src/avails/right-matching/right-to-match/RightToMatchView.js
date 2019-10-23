@@ -47,7 +47,7 @@ const RightToMatchView = ({
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
-    const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
+    const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
     const [dopCount] = useLocalStorage('rightMatchingDOP');
 
     // DOP Integration
@@ -109,7 +109,7 @@ const RightToMatchView = ({
         <div className="nexus-c-right-to-match-view">
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
                 <PageHeader>
-                    <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__link" >
+                    <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching`)} className="nexus-c-right-to-match-view__link" >
                         <div className="nexus-c-right-to-match-view__page-header">
                             <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
                             <span className="nexus-c-right-to-match-view__page-header-title">Right to Right Matching</span>

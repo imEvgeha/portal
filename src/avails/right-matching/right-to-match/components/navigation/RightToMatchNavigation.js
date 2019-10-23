@@ -79,7 +79,7 @@ const RightToMatchNavigation = ({
         return navigationData;
     };
 
-    const url = `/avails/history/${availHistoryIds}/right_matching`;
+    const url = `/avails/history/${availHistoryIds}/right-matching`;
 
     const onPreviousRightClick = () => {
         if (navigationData.previousId) {
