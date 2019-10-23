@@ -6,7 +6,6 @@ import RightCreate  from './containers/avail/create/RightCreate';
 import RightCreateV2  from './containers/avail/create/RightCreateV2';
 import RightsCreateFromAttachment  from './containers/avail/create/RightsCreateFromAttachment';
 import SelectRightsPlanning  from './containers/avail/DOP/SelectRightsPlanning';
-import FixRights from './containers/avail/DOP/FixRights';
 import AvailIngestHistoryContainer from './containers/avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './containers/metadata/dashboard/DashboardContainer';
 import {canRender} from './ability';
@@ -32,11 +31,9 @@ const routes = (
         <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/create/v2" component={canRender(RightCreateV2, 'create', 'Avail')}/>
         <Route exact path="/avails/rights/" component={canRender(RightDetails, 'read', 'Avail')}/>
-        <Route exact path="/avails/history/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
-        <Route exact path="/avails/history/fix-errors" component={canRender(FixRights, 'update', 'Avail')}/>
-        <Route exact path="/avails/history/:availHistoryIds/fix-errors" component={canRender(FixRights, 'update', 'Avail')}/>
+        <Route exact path="/avails/history/manual-rights-entry" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/:valid(errors)" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
-        <Route exact path="/avails/history/:availHistoryIds/create_from_attachments" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
+        <Route exact path="/avails/history/:availHistoryIds/manual-rights-entry" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>

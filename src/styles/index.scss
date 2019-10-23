@@ -7,8 +7,9 @@
 html,
 body,
 #app {
-    //height: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
     overscroll-behavior-y: contain;
+    font-family: $nexus-font;
 }

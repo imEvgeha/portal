@@ -13,7 +13,7 @@ import './TitleMatchReview.scss';
 
 const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
-    const [mergedTitle, setMergedTitle] = useState(Object.values(combinedTitle));
+    const [mergedTitle, setMergedTitle] = useState(combinedTitle);
 
     const navigateToMatchPreview = () => {
         const {params} = match || {};

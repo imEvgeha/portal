@@ -41,3 +41,4 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
 }; 
 
 export default createValueFormatter;
+
