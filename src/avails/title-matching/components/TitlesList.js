@@ -41,8 +41,8 @@ const TitlesList = ({columnDefs, mergeTitles}) => {
         }
     };
     const matchButtonCell = ({data}) => { // eslint-disable-line
-        const {id, legacyIds} = data || {};
-        const repoName = getRepositoryName(legacyIds);
+        const {id} = data || {};
+        const repoName = getRepositoryName(id);
         return (
             <CustomActionsCellRenderer id={id} >
                 <input type={'radio'} name={repoName}
@@ -71,14 +71,16 @@ const TitlesList = ({columnDefs, mergeTitles}) => {
         }
     };
     const duplicateButtonCell = ({data}) => { // eslint-disable-line
-        const {id, legacyIds} = data || {};
+        const {id} = data || {};
+        const repo = getRepositoryName(id);
         return (
-            <CustomActionsCellRenderer id={id}>
-                <Checkbox
-                    isChecked={duplicateList[id]}
-                    onChange={event => duplicateClickHandler(id,
-                        getRepositoryName(legacyIds), event.currentTarget.checked)}/>
-            </CustomActionsCellRenderer>
+            repo !== Constants.repository.NEXUS && (
+                <CustomActionsCellRenderer id={id}>
+                    <Checkbox
+                        isChecked={duplicateList[id]}
+                        onChange={event => duplicateClickHandler(id, repo, event.currentTarget.checked)}/>
+                </CustomActionsCellRenderer>
+            )
         );
     };
 

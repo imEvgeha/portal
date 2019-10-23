@@ -3,7 +3,8 @@ import * as actionTypes from './titleMatchingActionTypes';
 const initialState = {
     focusedRight: {},
     columnDefs: [],
-    titles: {},
+    titles: [],
+    combinedTitle: {},
 };
 
 const titleMatchingReducer = (state = initialState, action) => {
@@ -23,7 +24,12 @@ const titleMatchingReducer = (state = initialState, action) => {
         case actionTypes.STORE_TITLES:
             return {
                 ...state,
-                titles: payload || {},
+                titles: payload || [],
+            };
+        case actionTypes.STORE_COMBINED_TITLE:
+            return {
+                ...state,
+                combinedTitle: payload || {},
             };
         default:
             return state;

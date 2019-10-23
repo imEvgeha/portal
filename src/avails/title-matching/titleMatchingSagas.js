@@ -3,9 +3,10 @@ import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import { createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
-import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA} from '../../constants/action-types';
+import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
 import {URL} from '../../util/Common';
+import {titleService} from '../../containers/metadata/service/TitleService';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -21,23 +22,21 @@ function* fetchFocusedRight(requestMethod, {payload}) {
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: focusedRight,
         });
-        const { title, releaseYear, contentType } = focusedRight;
-        const {searchParameters: { TITLE, CONTENT_TYPE, RELEASE_YEAR}} = Constants;
+        const { title, releaseYear } = focusedRight;
+        const {searchParameters: { TITLE, RELEASE_YEAR}} = Constants;
         yield put({
             type: METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
             payload: {
                 [TITLE]: title,
                 [RELEASE_YEAR]: releaseYear,
-                [CONTENT_TYPE]: contentType
             },
         });
-        /*uncomment this once /titles/search api works fine to get filtered records
         yield put({
             type: METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH,
             payload: {
                 [TITLE]: title,
             },
-        });*/
+        });
 
     } catch (error) {
         yield put({
@@ -65,9 +64,8 @@ function* mergeAndStoreTitles({payload}){
         const {matchList, duplicateList, historyPush} = payload;
         let query = '';
         const matches = Object.keys(matchList);
-        const duplicate = Object.keys(duplicateList);
         if(matches.length){
-            query = query.concat('matches=');
+            query = query.concat('idsToMerge=');
             matches.forEach((key, index) => {
                 query = `${query}${matchList[key].id}`;
                 if(index < (matches.length -1 )){
@@ -75,16 +73,20 @@ function* mergeAndStoreTitles({payload}){
                 }
             });
         }
-        if(duplicate.length){
-            query = query.concat(`&duplicate=${Object.keys(duplicateList).join(',')}`);
-        }
+        const mergeIds = query;
+        query = query.concat(`&idsToHide=${Object.keys(duplicateList).join(',')}`);
+
+        const response = yield call(titleService.mergeTitles, query) || {data: {}};
+
+        yield put({
+            type: actionTypes.STORE_COMBINED_TITLE,
+            payload: response.data,
+        });
         yield put({
             type: actionTypes.STORE_TITLES,
-            payload: matchList,
+            payload: Object.values(matchList),
         });
-        historyPush(URL.keepEmbedded(
-            `${location.pathname}/preview?${query}`
-        ));
+        historyPush(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
     } catch (error) {
         throw new Error();
     }

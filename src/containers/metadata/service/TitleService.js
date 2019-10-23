@@ -54,4 +54,7 @@ export const titleService = {
     updateEditorialMetadata: (editedEditorialMetadata) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
     },
+    mergeTitles: (query) => {
+        return http.post(`${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`);
+    },
 };

@@ -19,22 +19,22 @@ export function createColumnDefs(payload) {
     }, []);
 }
 
-export function getRepositoryName(legacy) {
+export function getRepositoryName(id) {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
-    if(legacy) {
-        return legacy[MOVIDA] ? MOVIDA : VZ;
+    if(id.startsWith('movtitl_')) {
+        return MOVIDA;
     }
-    if(legacy === null) {
-        return NEXUS;
+    else if(id.startsWith('vztitl_')) {
+        return VZ;
     }
-    return 'movida';
+    return NEXUS;
 }
 
 const repositoryCell = ({data}) => {// eslint-disable-line
-    const {id, legacyIds} = data || {};
+    const { id } = data || {};
     return (
         <CustomActionsCellRenderer id={id}>
-            <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(legacyIds).toUpperCase()}</div>
+            <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(id).toUpperCase()}</div>
         </CustomActionsCellRenderer>
     );
 };
