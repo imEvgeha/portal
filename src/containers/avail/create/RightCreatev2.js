@@ -260,13 +260,38 @@ class RightCreate extends React.Component {
                 <NexusCustomItemizedField
                     items={this.right['territory']}
                     onSubmit={items => this.handleArrayPush(items, 'territory')}
-                    form={(props) => (
-                        <RightTerritoryForm
-                            data={value}
-                            options={prepData(name)}
-                            {...props}
-                        />
-                    )}
+                    schema={[
+                        {
+                            id: 'Country',
+                            label: 'COUNTRY',
+                            name: 'country',
+                            type: 'text',
+                        },
+                        {
+                            id: 'selected',
+                            label: 'SELECTED',
+                            name: 'selected',
+                            type: 'checkbox',
+                        },
+                        {
+                            id: 'dateSelected',
+                            label: 'DATE SELECTED',
+                            name: 'dateSelected',
+                            type: 'date',
+                        },
+                        {
+                            id: 'rightsContractStatus',
+                            label: 'RIGHTS CONTRACT STATUS',
+                            name: 'rightsContractStatus',
+                            type: 'select',
+                        },
+                        {
+                            id: 'vuContractId',
+                            label: 'VU CONTRACT ID',
+                            name: 'vuContractId',
+                            type: 'select',
+                        },
+                    ]}
                 />
             ));
         };

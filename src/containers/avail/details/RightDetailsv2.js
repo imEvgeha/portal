@@ -322,13 +322,14 @@ class RightDetails extends React.Component {
                             name={name}
                             existingItems={selectedVal}
                             onSubmit={items => addTerritory(items)}
-                            form={(props) => (
-                                <RightTerritoryForm
-                                    data={value}
-                                    options={options}
-                                    {...props}
-                                />
-                            )}
+                            schema={[
+                                {
+                                    id: 'brt',
+                                    label: 'btt',
+                                    name: 'tbr',
+                                    type: 'text',
+                                }
+                            ]}
                         />
                     )}
                     readView={() => <div>Placeholder</div> /* TODO: Use AtlasKit Tags here*/}

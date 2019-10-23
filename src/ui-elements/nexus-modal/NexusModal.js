@@ -41,18 +41,18 @@ export const NexusModalProvider = ({children}) => {
     return (
         <NexusModalContext.Provider value={context}>
             {isOpened &&
-            <ModalTransition>
-                <Modal
-                    actions={actions.length && actions}
-                    heading={title}
-                    onClose={close}
-                >
-                    {/* TODO: Change after we decide between styled or sass */}
-                    <div style={{paddingBottom: '20px'}}>
-                        {content}
-                    </div>
-                </Modal>
-            </ModalTransition>
+                <ModalTransition>
+                    <Modal
+                        actions={actions.length && actions}
+                        heading={title}
+                        onClose={close}
+                    >
+                        {/* TODO: Change after we decide between styled or sass */}
+                        <div style={{paddingBottom: '20px'}}>
+                            {content}
+                        </div>
+                    </Modal>
+                </ModalTransition>
             }
             {children}
         </NexusModalContext.Provider>
