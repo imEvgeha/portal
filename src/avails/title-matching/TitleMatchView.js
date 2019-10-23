@@ -9,12 +9,16 @@ import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cel
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
+import { createColumnDefs as getRightColumns } from '../utils';
+import mappings from '../../../profile/titleMatching_rightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
 const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
+
+    const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
@@ -54,7 +58,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
                         <NexusTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
-                                columnDefs={[newTitleButton, ...columnDefs]}
+                                columnDefs={[newTitleButton, ...rightColumns]}
                                 rowData={[focusedRight]}
                             />
                         </div>

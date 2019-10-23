@@ -1,0 +1,93 @@
+[
+  {
+    "javaVariableName": "title",
+    "displayName": "Title",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "title",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "releaseYear",
+    "displayName": "Release Year",
+    "dataType": "year",
+    "searchDataType": "year",
+    "queryParamName": "releaseYear",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "contentType",
+    "displayName": "Content Type",
+    "dataType": "select",
+    "searchDataType": "multiselect",
+    "configEndpoint": "/content-types",
+    "queryParamName": "contentType",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "licensor",
+    "displayName": "Licensor",
+    "dataType": "select",
+    "searchDataType": "multiselect",
+    "configEndpoint": "/licensors",
+    "queryParamName": "licensor",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "rating.ratingValue",
+    "displayName": "Rating Value",
+    "dataType": "select",
+    "searchDataType": "multiselect",
+    "configEndpoint": "/ratings",
+    "queryParamName": "ratingValue",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "eidr.titleId",
+    "displayName": "EIDR Title ID",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "eidrTitleId",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "genres",
+    "displayName": "Genres",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "genres",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "castCrew",
+    "displayName": "Cast Crew",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "displayName",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  }
+]

@@ -2,7 +2,7 @@ import {call, put, all, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import { createColumnDefs } from '../utils';
-import mappings from '../../../profile/titleMatchingMappings';
+import mappings from '../../../profile/titleMatching_titleMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
 import {URL} from '../../util/Common';
