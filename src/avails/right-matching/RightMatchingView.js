@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -23,6 +23,7 @@ import {URL} from '../../util/Common';
 import DOP from '../../util/DOP';
 import useLocalStorage from '../../util/hooks/useLocalStorage';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {NexusToastNotificationContext} from '../../ui-elements/nexus-toast-notification/NexusToastNotification';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
@@ -41,6 +42,7 @@ const RightMatchingView = ({
     }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [dopCount, setDopCount] = useLocalStorage('rightMatchingDOP', totalCount);
+    const {addToast} = useContext(NexusToastNotificationContext);
 
     // DOP integration
     useEffect(() => {
@@ -63,8 +65,17 @@ const RightMatchingView = ({
         }
     }, [mapping, columnDefs]);
 
+
     const onFocusButtonClick = (rightId) => {
-        history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
+        addToast({
+            type: 'auto-dismiss',
+            id: rightId,
+            icon: 'info',
+            title: 'Success',
+            description: 'Some lorem ipsum',
+
+        });
+        // history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
     const createCellRenderer = ({data}) => { // eslint-disable-line

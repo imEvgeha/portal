@@ -10,8 +10,8 @@ import './global.scss'; // TODO; refactor this
 
 config.set(defaultConfiguration, {freeze: false});
 
-// axios.get('/configQA.json').then(response => {
-axios.get('/config.json').then(response => {
+axios.get('/configQA.json').then(response => {
+// axios.get('/config.json').then(response => {
     if (isObject(response.data)) {
         config.set(mergeDeep(JSON.parse(config.serialize()), response.data), {freeze: true});
     } else {
@@ -43,6 +43,7 @@ import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
 import * as moment from 'moment';
+import {NexusToastNotificationProvider} from './ui-elements/nexus-toast-notification/NexusToastNotification';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
@@ -53,7 +54,9 @@ export const store = configureStore({}, history);
 const app = (
     <Provider store={store}>
         <IntlProvider locale="en-US">
-            <AppLayout history={history} />
+            <NexusToastNotificationProvider>
+                <AppLayout history={history} />
+            </NexusToastNotificationProvider>
         </IntlProvider>
     </Provider>
 );
