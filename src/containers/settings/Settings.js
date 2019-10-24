@@ -41,7 +41,6 @@ class Settings extends Component {
         this.state = {
             selectedApi: null,
             active: 0,
-            mainMenuActive: 0,
             showSettings: 'apiConfiguration'
 
         };
