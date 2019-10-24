@@ -7,6 +7,7 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
 import Textfield  from '@atlaskit/textfield';
+import InlineEdit from '@atlaskit/inline-edit';
 import PropTypes from 'prop-types';
 
 const createFormForItem = (
@@ -170,6 +171,16 @@ export default class ObjectKey extends Component {
         );
     }
 
+    checkKeyName(item, value){
+        const colision = this.state.items.find(({key}) => key === value);
+        return colision === undefined || colision === item ? undefined : 'Duplicate key';
+    }
+
+    saveKeyName(item, value){
+        item.key = value;
+        this.updateItemState(this.state.items);
+    }
+
     getForms() {
         const { items } = this.state;
         const {
@@ -189,7 +200,16 @@ export default class ObjectKey extends Component {
                                 const label = item.key;
                                 return (<Expander
                                         key={`exp_${item.id}`}
-                                        label={label}
+                                        label={<InlineEdit
+                                            defaultValue={label}
+                                            editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact/>}
+                                            readView={() => (label)}
+                                            onConfirm={value => this.saveKeyName(item, value)}
+                                            validate={value => this.checkKeyName(item, value)}
+                                            isRequired
+                                            isCompact
+                                            hideActionButtons
+                                        />}
                                         remove={() => {
                                             this.removeItem(item.id);
                                         }}
@@ -226,14 +246,15 @@ export default class ObjectKey extends Component {
                     {() => <div>{items.length > 0 ? this.getForms() : noItems}</div>}
                 </AkField>
                 <div className="d-flex flex-row align-items-start">
+                    <Textfield
+                        value={keyName}
+                        onChange={(e) =>  this.onKeyNameChange(e.target.value)}
+                        placeholder='Input key name...'
+                    />
                     <Button
-                        isDisabled={keyName.trim().length === 0}
+                        isDisabled={keyName.trim().length === 0 || items.find(({key}) => key === keyName) != null}
                         onClick={this.addItem}>{addButtonLabel}
                     </Button>
-                    <Textfield
-                       value={keyName}
-                       onChange={(e) =>  this.onKeyNameChange(e.target.value)}
-                    />
                 </div>
             </div>
         );

@@ -1,0 +1,1858 @@
+{
+  "url-base": "/configuration-api/v1",
+  "endpoints": [
+    {
+      "urls": {
+        "search": "/advisories;ratingSystem=ASC;name=ASC",
+        "CRUD": "/advisories"
+      },
+      "displayValueFieldNames": [
+        "name",
+        "ratingSystem"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Advisories",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "code",
+          "name": "code",
+          "type": "text",
+          "label": "Advisory Code",
+          "required": true,
+          "validWhen": {
+            "matchesRegEx": {
+              "pattern": "^[\\w]+$",
+              "message": "Value must be 1 or more characters in length"
+            }
+          }
+        },
+        {
+          "id": "name",
+          "name": "name",
+          "type": "text",
+          "label": "Advisory Definition",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The advisory name must be at least one character."
+            }
+          }
+        },
+        {
+          "id": "ratingSystem",
+          "name": "ratingSystem",
+          "type": "select",
+          "label": "Rating System",
+          "required": true,
+          "source": {
+            "url": "rating-systems",
+            "value": "value",
+            "label": "value"
+          },
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The rating system must be at least one character."
+            }
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "Permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        }
+      ],
+      "schema": {
+        "name": "Advisories-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/affiliates;value=ASC",
+        "CRUD": "/affiliates"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Affiliates",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Affiliate Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Affiliates-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/audio-types;value=ASC",
+        "CRUD": "/audio-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Audio Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Audio Type",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Audio-Type-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/content-types;value=ASC",
+        "CRUD": "/content-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Content Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Content Type",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The content type must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Content-Type-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/countries;countryName=ASC",
+        "CRUD": "/countries"
+      },
+      "displayValueFieldNames": [
+        "countryName"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Countries",
+      "uiSchema": [
+        {
+          "id": "type",
+          "name": "type",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true
+        },
+        {
+          "id": "countryName",
+          "name": "countryName",
+          "type": "text",
+          "label": "Country Name",
+          "placeholder": "Enter Country Name",
+          "trimValue": true,
+          "required": true
+        },
+        {
+          "id": "countryCode",
+          "name": "countryCode",
+          "type": "text",
+          "label": "Country Code",
+          "placeholder": "Enter Country Code",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 3 characterrs"
+            }
+          }
+        },
+        {
+          "id": "countryName",
+          "name": "countryName",
+          "type": "text",
+          "label": "Country Name",
+          "placeholder": "Enter Country Name",
+          "trimValue": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 3 characterrs"
+            }
+          }
+        },
+        {
+          "id": "crmCountries",
+          "name": "crmCountries",
+          "type": "repeating",
+          "label": "crmCountries",
+          "misc": {
+            "fields": [
+              {
+                "id": "crmCountry",
+                "name": "crmCountry",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "crmCountry"
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "Permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        },
+        {
+          "id": "frequentlyUsed",
+          "name": "frequentlyUsed",
+          "type": "checkbox",
+          "label": "Frequently Used",
+          "defaultValue": false
+        }
+      ],
+      "schema": {
+        "name": "Countries-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/currencies;value=ASC",
+        "CRUD": "/currencies"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Currencies",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Currency",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Currency-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/entry-types",
+        "CRUD": "/entry-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Entry Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Entry Type",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Entry-Type-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/formats;value=ASC",
+        "CRUD": "/formats"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Formats",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Format",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Format-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/genres;name=ASC",
+        "CRUD": "/genres"
+      },
+      "displayValueFieldNames": [
+        "name"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Genres",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "type",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created at",
+          "disable": true
+        },
+        {
+          "id": "name",
+          "name": "name",
+          "type": "text",
+          "label": "Genre Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 3 characterrs"
+            }
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "Permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        },
+        {
+          "id": "localizations",
+          "name": "localizations",
+          "type": "repeating",
+          "label": "Localizations",
+          "misc": {
+            "fields": [
+              {
+                "id": "language",
+                "name": "language",
+                "type": "select",
+                "label": "Language",
+                "source": {
+                  "url": "languages",
+                  "value": "languageCode",
+                  "label": "languageName"
+                },
+                "validWhen": {
+                  "lengthIsGreaterThan": {
+                    "length": 0,
+                    "message": "The value must be at least one character."
+                  }
+                }
+              },
+              {
+                "id": "name",
+                "name": "name",
+                "type": "text",
+                "label": "Genre Name",
+                "required": true,
+                "validWhen": {
+                  "lengthIsGreaterThan": {
+                    "length": 1,
+                    "message": "The value must have more than 3 characterrs"
+                  }
+                }
+              },
+              {
+                "id": "permutations",
+                "name": "permutations",
+                "type": "repeating",
+                "label": "Permutations",
+                "misc": {
+                  "fields": [
+                    {
+                      "id": "permutation",
+                      "name": "permutation",
+                      "type": "text"
+                    }
+                  ],
+                  "idAttribute": "Permutation"
+                }
+              }
+            ],
+            "idAttribute": "localization"
+          }
+        }
+      ],
+      "schema": {
+        "name": "Genres-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/hdr-types;value=ASC",
+        "CRUD": "/hdr-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "HdrTypes",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "HdrType",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have at least 1 character"
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "HdrTypes-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/languages;languageName=ASC",
+        "CRUD": "/languages"
+      },
+      "displayValueFieldNames": [
+        "languageName"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Languages",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "languageCode",
+          "name": "languageCode",
+          "type": "text",
+          "label": "Language Code",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "languageName",
+          "name": "languageName",
+          "type": "text",
+          "label": "Language Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "frequentlyUsed",
+          "name": "frequentlyUsed",
+          "type": "checkbox",
+          "label": "Frequently Used",
+          "defaultValue": false
+        }
+      ],
+      "schema": {
+        "name": "Languages-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/legal-entities?name=ASC",
+        "CRUD": "/legal-entities"
+      },
+      "displayValueFieldNames": [
+        "name"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Legal Entities",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "name",
+          "name": "name",
+          "type": "text",
+          "label": "Legal Entity Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "Permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        }
+      ],
+      "schema": {
+        "name": "Legal-Entities-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/license-rights-desc;value=ASC",
+        "CRUD": "/license-rights-desc"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "License Rights Descriptions",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "License Rights Desc",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "LicenseRightsDesc-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/licence-types;value=ASC",
+        "CRUD": "/licence-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Licence Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "LicenceType",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "License-Types-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/licensees;value=ASC",
+        "CRUD": "/licensees"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Licensees",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Licensee (value)",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "licenseeName",
+          "name": "licenseeName",
+          "type": "text",
+          "label": "Licensee (name)",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "servicingRegion",
+          "name": "servicingRegion",
+          "type": "select",
+          "label": "Servicing Region",
+          "source": {
+            "url": "servicing-regions",
+            "value": "value",
+            "label": "Servicing Region"
+          },
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Licensees-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/licensors",
+        "CRUD": "/licensors"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Licensors",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Legal Entity Name (deprecated)",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "name",
+          "name": "name",
+          "type": "text",
+          "label": "Legal Entity Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        },
+        {
+          "id": "legalEntityIds",
+          "name": "legalEntityIds",
+          "type": "repeating",
+          "label": "legalEntityIds",
+          "misc": {
+            "fields": [
+              {
+                "id": "legalEntityId",
+                "name": "legalEntityId",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "legalEntityId"
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "Permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        }
+      ],
+      "schema": {
+        "name": "Licensors-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/localization-types;value=ASC",
+        "CRUD": "/localization-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Localization Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "LocalizationType",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have more than 1 character."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "Localization-Types-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/ng-audios;value=ASC",
+        "CRUD": "/ng-audios"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Ng Audios",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "NgAudio",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "ng-audios-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/person-types;value=ASC",
+        "CRUD": "/person-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Person Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created Timestamp",
+          "description": "Creation timestamp",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Person Type",
+          "description": "Cast / crew role definition",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 1,
+              "message": "The value must  1 or more characters."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "person-types-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/persons;displayName=ASC",
+        "CRUD": "/persons"
+      },
+      "displayValueFieldNames": [
+        "displayName"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Persons",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "firstName",
+          "name": "firstName",
+          "type": "text",
+          "label": "First Name"
+        },
+        {
+          "id": "middleName",
+          "name": "middleName",
+          "type": "text",
+          "label": "Middle Name"
+        },
+        {
+          "id": "lastName",
+          "name": "lastName",
+          "type": "text",
+          "label": "Last Name"
+        },
+        {
+          "id": "displayName",
+          "name": "displayName",
+          "type": "text",
+          "label": "Display Name",
+          "required": true
+        },
+        {
+          "id": "personTypes",
+          "name": "personTypes",
+          "type": "repeating",
+          "label": "Person Types",
+          "misc": {
+            "fields": [
+              {
+                "id": "personType",
+                "name": "personType",
+                "type": "select",
+                "label": "____________Person_Type___________",
+                "source": {
+                  "url": "person-types",
+                  "value": "value"
+                },
+                "validWhen": {
+                  "lengthIsGreaterThan": {
+                    "length": 0,
+                    "message": "The value must be at least one character."
+                  }
+                }
+              }
+            ],
+            "idAttribute": "personType"
+          }
+        },
+        {
+          "id": "localization",
+          "name": "localization",
+          "type": "repeating",
+          "label": "localization",
+          "misc": {
+            "fields": [
+              {
+                "id": "language",
+                "name": "language",
+                "type": "select",
+                "label": "Language",
+                "source": {
+                  "url": "languages",
+                  "value": "languageCode",
+                  "label": "languageName"
+                },
+                "validWhen": {
+                  "lengthIsGreaterThan": {
+                    "length": 0,
+                    "message": "The value must be at least one character."
+                  }
+                }
+              },
+              {
+                "id": "firstName",
+                "name": "firstName",
+                "type": "text",
+                "label": "First Name"
+              },
+              {
+                "id": "middleName",
+                "name": "middleName",
+                "type": "text",
+                "label": "Middle Name"
+              },
+              {
+                "id": "lastName",
+                "name": "lastName",
+                "type": "text",
+                "label": "Last Name"
+              },
+              {
+                "id": "displayName",
+                "name": "displayName",
+                "type": "text",
+                "required": true,
+                "label": "Display Name"
+              }
+            ],
+            "idAttribute": "language"
+          }
+        }
+      ],
+      "schema": {
+        "name": "person api schema "
+      }
+    },
+    {
+      "urls": {
+        "search": "/price-types;value=ASC",
+        "CRUD": "/price-types"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Price Types",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true,
+          "label": "Created At"
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Price Type",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "price-types-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/production-studios;name=ASC",
+        "CRUD": "/production-studios"
+      },
+      "displayValueFieldNames": [
+        "name"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Production Studios",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true,
+          "label": "Created At"
+        },
+        {
+          "id": "name",
+          "name": "name",
+          "type": "text",
+          "label": "Legal Entity Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        }
+      ],
+      "schema": {
+        "name": "production-studios-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/rating-systems",
+        "CRUD": "/rating-systems"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Rating Systems",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true,
+          "label": "Created At"
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Rating System",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "rating-systems-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/ratings;name=ASC;ratingSystem=ASC",
+        "CRUD": "/ratings"
+      },
+      "displayValueFieldNames": [
+        "value",
+        "ratingSystem"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Ratings",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true,
+          "label": "Created At"
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "label": "Value",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "name",
+          "name": "name",
+          "type": "text",
+          "label": "name",
+          "required": true
+        },
+        {
+          "id": "ratingSystem",
+          "name": "ratingSystem",
+          "type": "select",
+          "label": "Rating System",
+          "source": {
+            "url": "rating-systems",
+            "value": "value",
+            "label": "Rating System"
+          },
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must be at least one character."
+            }
+          }
+        },
+        {
+          "id": "permutations",
+          "name": "permutations",
+          "type": "repeating",
+          "label": "Permutations",
+          "misc": {
+            "fields": [
+              {
+                "id": "permutation",
+                "name": "permutation",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "permutation"
+          }
+        }
+      ],
+      "schema": {
+        "name": "Rating api schema "
+      }
+    },
+    {
+      "urls": {
+        "search": "/regions;regionName=ASC",
+        "CRUD": "/regions"
+      },
+      "displayValueFieldNames": [
+        "regionName"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Regions",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true,
+          "label": "Created At"
+        },
+        {
+          "id": "regionCode",
+          "name": "regionCode",
+          "type": "text",
+          "label": "Region Code",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        },
+        {
+          "id": "regionName",
+          "name": "regionName",
+          "type": "text",
+          "label": "Region Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        },
+        {
+          "id": "countryCodes",
+          "name": "countryCodes",
+          "type": "repeating",
+          "label": "countryCodes",
+          "misc": {
+            "fields": [
+              {
+                "id": "countryCode",
+                "name": "countryCode",
+                "type": "text"
+              }
+            ],
+            "idAttribute": "countryCode"
+          }
+        },
+        {
+          "id": "frequentlyUsed",
+          "name": "frequentlyUsed",
+          "type": "checkbox",
+          "label": "Frequently Used",
+          "defaultValue": false
+        }
+      ],
+      "schema": {
+        "name": "regions-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "/servicing-regions;value=ASC",
+        "CRUD": "/servicing-regions"
+      },
+      "displayValueFieldNames": [
+        "value"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Servicing Regions",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "disable": true
+        },
+        {
+          "id": "value",
+          "name": "value",
+          "type": "text",
+          "label": "Servicing Region",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The value must have 1 or more characters."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "name": "servicing-regions-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "licensor-regions",
+        "CRUD": "licensor-regions"
+      },
+      "displayValueFieldNames": [
+        "licensorName"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Licensor Region",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "licensorName",
+          "name": "licensorName",
+          "type": "text",
+          "label": "Licensor Name",
+          "required": true,
+          "validWhen": {
+            "lengthIsGreaterThan": {
+              "length": 0,
+              "message": "The Licensor Name must be at least one character."
+            }
+          }
+        },
+        {
+          "id": "regionTerritoryMap",
+          "name": "regionTerritoryMap",
+          "type": "array",
+          "label": "Region Territory Map",
+		  "dynamic" : true,
+          "misc": {
+            "fields": [
+              {
+                "id": "countryCode",
+                "name": "countryCode",
+                "label": "Country Code",
+                "type": "text",
+                "required": true
+              },
+              {
+                "id": "countryName",
+                "name": "countryName",
+                "label": "Country Name",
+                "type": "text",
+                "required": true
+              }
+            ],
+            "idAttribute": "countryCode"
+          }
+        }
+      ],
+      "schema": {
+        "name": "Advisories-UI-Schema"
+      }
+    },
+    {
+      "urls": {
+        "search": "metadata-reqs",
+        "CRUD": "metadata-reqs"
+      },
+      "displayValueFieldNames": [
+        "servicingRegion"
+      ],
+      "displayValueDelimiter": " / ",
+      "displayName": "Metadata Requirements",
+      "uiSchema": [
+        {
+          "id": "id",
+          "name": "id",
+          "type": "text",
+          "label": "Document Id",
+          "description": "Couchbase record id",
+          "disable": true
+        },
+        {
+          "id": "createdAt",
+          "name": "createdAt",
+          "type": "text",
+          "label": "Created At",
+          "disable": true
+        },
+        {
+          "id": "servicingRegion",
+          "name": "servicingRegion",
+          "type": "text",
+          "label": "Servicing Region",
+          "required": true
+        },
+        {
+          "id": "defaultMetadataRequirement",
+          "name": "defaultMetadataRequirement",
+          "type": "object",
+          "label": "Default Metadata Requirement",
+          "misc": {
+            "fields": [
+              {
+                "id": "language",
+                "name": "language",
+                "label": "Language",
+                "type": "text"
+              },
+              {
+                "id": "locale",
+                "name": "locale",
+                "label": "Locale",
+                "type": "text"
+              }
+            ]
+          }
+        },
+        {
+          "id": "territorialMetadataRequirements",
+          "name": "territorialMetadataRequirements",
+          "type": "object",
+          "label": "Territorial Metadata Requirements",
+          "dynamic": true,
+          "misc": {
+            "fields": [
+              {
+                "id": "defaultRatingSystems",
+                "name": "defaultRatingSystems",
+                "label": "Default Rating Systems",
+                "type": "multiselect",
+                "source": {
+                  "url": "rating-systems",
+                  "value": "value",
+                  "label": "value"
+                }
+              },
+              {
+                "id": "ratingSystems",
+                "name": "ratingSystems",
+                "label": "Rating Systems",
+                "type": "array",
+                "misc": {
+                  "fields": [
+                    {
+                      "id": "contentType",
+                      "name": "contentType",
+                      "label": "Content Type",
+                      "type": "text"
+                    },
+                    {
+                      "id": "ratingSystem",
+                      "name": "ratingSystem",
+                      "label": "Rating System",
+                      "type": "multiselect",
+                      "source": {
+                        "url": "rating-systems",
+                        "value": "value",
+                        "label": "value"
+                      }
+                    }
+                  ],
+                  "idAttribute": "contentType"
+                }
+              },
+              {
+                "id": "defaultTerritoryMetadataRequirements",
+                "name": "defaultTerritoryMetadataRequirements",
+                "label": "Default Territory Metadata Requirements",
+                "type": "array",
+                "misc": {
+                  "fields": [
+                    {
+                      "id": "language",
+                      "name": "language",
+                      "label": "Language",
+                      "type": "text"
+                    },
+                    {
+                      "id": "locale",
+                      "name": "locale",
+                      "label": "Locale",
+                      "type": "text"
+                    }
+                  ],
+                  "idAttribute": "language"
+                }
+              },
+              {
+                "id": "metadataRequirements",
+                "name": "metadataRequirements",
+                "type": "array",
+                "label": "Metadata Requirements",
+                "misc": {
+                  "fields": [
+                    {
+                      "id": "language",
+                      "name": "language",
+                      "label": "Language",
+                      "type": "text"
+                    },
+                    {
+                      "id": "locale",
+                      "name": "locale",
+                      "label": "Locale",
+                      "type": "text"
+                    },
+                    {
+                      "id": "format",
+                      "name": "format",
+                      "label": "Format",
+                      "type": "text"
+                    },
+                    {
+                      "id": "service",
+                      "name": "service",
+                      "label": "Service",
+                      "type": "text"
+                    }
+                  ],
+                  "idAttribute": "language"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
