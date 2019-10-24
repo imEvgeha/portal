@@ -4,27 +4,16 @@
     display: flex;
     flex-direction: row;
     font-size: 24px;
+    color: map-get($colors, nexus-title-color);
+    font-family: $nexus-font;
 
     &--small {
         font-size: 20px;
-        color: map-get($colors, nexus-title-color);
-        font-family: $nexus-font;
     }
 }
 
 .nexus-c-title__name {
     display: flex;
     color: #000;
-}
-
-.nexus-c-right-to-match-view__page-header {
-    display: flex;
-    align-items: center;
-
-    &-title {
-        color: map-get($colors, nexus-title-color);
-        font-family: $nexus-font;
-        font-size: 27px;
-    }
 }
 
