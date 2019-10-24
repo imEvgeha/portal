@@ -69,10 +69,9 @@ const Localization = ({changeLocale}) => {
                             id="date" 
                             value="2018-04-30T00:00:00.000Z"                            
                             isWithInlineEdit={true}
-                            onConfirm={() => {}}                            
+                            onConfirm={() => {}}
                         />
                 </DataBody>
-
             </DataContainer>
     );
 };
