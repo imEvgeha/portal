@@ -3,33 +3,12 @@ import connect from 'react-redux/es/connect/connect';
 import styled from 'styled-components';
 import Select from '@atlaskit/select';
 import moment from 'moment';
-
 import PropTypes from 'prop-types';
+import './Localization.scss';
+
 import {setLocale} from '../../stores/actions/localization/setLocale';
 import { TextHeader } from '../../components/navigation/CustomNavigationElements';
 import NexusDateTimePicker from '../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-
-const DataContainer = styled.div`
-    width: 65%;
-    float: left;
-    height: calc(100vh - 90px);
-    margin-left: 10px;
-    padding: 15px;
-`;
-
-const DataBody = styled.div`
-    width: 90%;
-    margin: auto;
-    padding: 10px;
-`;
-
-const PreviewText = styled.div`
-    font-weight: bold;
-    font-size: 16px;
-    color: #111;
-    margin-top: 10px;
-`;
-
 
 const Localization = ({changeLocale}) => {
 
@@ -45,16 +24,16 @@ const Localization = ({changeLocale}) => {
     };
 
     return (
-        <DataContainer>
+        <div className="settings-localization">
                 <TextHeader>Set Localization
                     <div style={{clear: 'both'}} />
                 </TextHeader>
-                <DataBody>            
+                <div className="settings-localization__data-body">            
                     <Select
                     id="locale"
                     defaultValue={getLocale()}
                     isSearchable={false}
-                    onChange={value => handleChange(value)}
+                    onChange={handleChange}
                     options={[
                         { label: 'English (United States)', value: 'en-us' },
                         { label: 'English (United Kingdom)', value: 'en-gb' },
@@ -63,16 +42,16 @@ const Localization = ({changeLocale}) => {
                     styles={{control: (base) => ({...base, fontSize: '14px'})}}
                     />
 
-                    <PreviewText>Preview</PreviewText>
+                    <div className="settings-localization__preview-text">Preview</div>
                         <NexusDateTimePicker
-                            onChange={() => {}}
+                            onChange={() => {/* Empty because it's just for preview */}}
                             id="date" 
                             value="2018-04-30T00:00:00.000Z"                            
                             isWithInlineEdit={true}
-                            onConfirm={() => {}}
+                            onConfirm={() => {/* Empty because it's just for preview */}}
                         />
-                </DataBody>
-            </DataContainer>
+                </div>
+            </div>
     );
 };
 
