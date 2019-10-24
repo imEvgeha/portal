@@ -13,7 +13,7 @@ import './TitleMatchReview.scss';
 
 const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
-    const [mergedTitle, setMergedTitle] = useState(combinedTitle);
+    const [mergedTitles, setMergedTitles] = useState([combinedTitle]);
 
     const navigateToMatchPreview = () => {
         const {params} = match || {};
@@ -31,20 +31,52 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         });
     };
 
+    const getParents = (titles, merged) => {
+        let getTitles = [];
+        let titleList = [];
+        titles.forEach((value, index) => {
+            getTitles = [];
+            if(value.parentIds && value.parentIds.length){
+                value.parentIds.forEach(parent => {
+                    getTitles.push(getTitle(parent.id));
+                });
+                Promise.all(getTitles).then(values => {
+                    titleList = [...titles];
+                    titleList.splice(index, 0, ...values);
+                    setTitles(titleList);
+                });
+            }
+        });
+        getTitles = [];
+        if(merged.parentIds && merged.parentIds.length){
+            merged.parentIds.forEach(parent => {
+                getTitles.push(getTitle(parent.id));
+            });
+            Promise.all(getTitles).then(values => {
+                setMergedTitles([...values, merged]);
+            });
+        }
+    };
+
     useEffect(() => {
-        const values = Object.values(matchedTitles);
-        if (!values.length) {
+        const matchedTitlesValues = Object.values(matchedTitles);
+        if (!matchedTitlesValues.length) {
+            const getTitles = [];
             const titles = URL.getParamIfExists('idsToMerge').split(',');
             const combinedTitle = URL.getParamIfExists('combinedTitle');
-            const getTitles = [];
             titles.forEach(id => {
                 getTitles.push(getTitle(id));
             });
             getTitles.push(getTitle(combinedTitle));
             Promise.all(getTitles).then(values => {
-                setMergedTitle(values.pop());
+                const merged = values.pop();
+                setMergedTitles([merged]);
                 setTitles(values);
+                getParents(values, merged);
             });
+        }
+        else{
+            getParents(matchedTitlesValues, combinedTitle);
         }
     }, [matchedTitles]);
 
@@ -72,12 +104,12 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 )
             }
             {
-                !!mergedTitle.id && (
+                !!mergedTitles[0].id && (
                     <React.Fragment>
                         <NexusTitle>Combined Title</NexusTitle>
                         <NexusGrid
                             columnDefs={[getRepositoryCell(), ...columnDefs]}
-                            rowData={[mergedTitle]}
+                            rowData={mergedTitles}
                         />
                     </React.Fragment>
                 )
