@@ -34,7 +34,8 @@ const PreviewText = styled.div`
 const Localization = ({changeLocale}) => {
 
     const getLocale = () => {
-        return {label: localStorage.getItem('localization') == 'en-us' ? 'English (United States)' : localStorage.getItem('localization') === 'en-gb' ? 'English (United Kingdom)' : ''};
+        let localStorageValue = localStorage.getItem('localization');
+        return {label: localStorageValue == 'en-us' ? 'English (United States)' : localStorageValue === 'en-gb' ? 'English (United Kingdom)' : ''};
     };
 
     const handleChange = ({value}) => {
@@ -55,7 +56,6 @@ const Localization = ({changeLocale}) => {
                     isSearchable={false}
                     onChange={value => handleChange(value)}
                     options={[
-                        { label: '', value: '' },
                         { label: 'English (United States)', value: 'en-us' },
                         { label: 'English (United Kingdom)', value: 'en-gb' },
                     ]}
@@ -67,6 +67,9 @@ const Localization = ({changeLocale}) => {
                         <NexusDateTimePicker
                             onChange={() => {}}
                             id="date" 
+                            value="2018-04-30T00:00:00.000Z"                            
+                            isWithInlineEdit={true}
+                            onConfirm={() => {}}                            
                         />
                 </DataBody>
 

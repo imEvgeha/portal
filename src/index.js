@@ -41,7 +41,6 @@ import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
-import * as moment from 'moment';
 import CustomIntlProvider from './layout/CustomIntlProvider';
 
 export const keycloak = {instance: {}};
@@ -58,17 +57,6 @@ const app = (
     </Provider>
 );
 
-const setMomentLocale = () => {
-    let userLocale;
-    if(localStorage.getItem('localization') && localStorage.getItem('localization') !== '') {
-        userLocale = localStorage.getItem('localization').toString().toLowerCase();
-    } else {
-        userLocale = window.navigator.language.toString().toLowerCase();
-        localStorage.setItem('localization', userLocale);
-    }
-    moment.locale(userLocale);
-};
-
 function init() {
     keycloak.instance = Keycloak(config.get('keycloak'));
     keycloak.instance.init({onLoad: 'check-sso'}).success(authenticated => {
@@ -84,7 +72,6 @@ function init() {
                 loadCreateRightState();
                 loadHistoryState();
                 loadDopState();
-                setMomentLocale();
 
                 render(
                     app,
