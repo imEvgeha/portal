@@ -1,13 +1,16 @@
 import {getDeepValue, isObject} from '../../../../util/Common';
 import './createLoadingCellRenderer.scss';
-import loadingGif from '../../../../img/loading.gif'; // we should replace it inside assets
+import loadingGif from '../../../../img/loading.gif';
 
 export default function createLoadingCellRenderer(params) {
     const {data, colDef, valueFormatted} = params;
-    if (!data) {
+    if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
     }
     let value = getDeepValue(data, colDef.field);
+    if (typeof value === 'boolean') {
+        return `<span>${value ? 'Yes' : 'No'}</span>`;
+    }
     if (isObject(value)) {
         value = JSON.stringify(value);
     }
@@ -21,7 +24,7 @@ export default function createLoadingCellRenderer(params) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
         return ` 
-            <div style="display: flex; justify-content: space-between" class="nexus-c-create-loading-cell-renderer">
+            <div class="nexus-c-create-loading-cell-renderer">
                 <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
                     ${String(content)}
                 </div>

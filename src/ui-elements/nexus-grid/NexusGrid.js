@@ -5,41 +5,71 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './NexusGrid.scss';
 
+const OVERFLOW_VISIBLE_NUMBER = 2;
+
 const NexusGrid = ({
     columnDefs,
     rowData,
-    getGridApi,
     // headerHeight,
     // rowHeight,
-    setRowData,
+    handleGridReady,
+    handleSelectionChange,
+    onGridEvent,
     ...restProps,
 }) => {
-    const gridApiRef = useRef();
+    const gridRowCountRef = useRef();
     const onGridReady = params => {
-        gridApiRef.current = params;
-        const {api, columnApi} = gridApiRef.current;
-        // api.sizeColumnsToFit();
+        // TODO: add onGridEvent callback instead
+        const {api, columnApi} = params;
+        gridRowCountRef.current = api.getDisplayedRowCount();
+        if (typeof handleGridReady === 'function') {
+            handleGridReady(api, columnApi);
+        }
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(params);
+        }
+    };
 
-        if (typeof getGridApi === 'function') {
-            getGridApi(api, columnApi);
-        }
-        if (typeof setRowData === 'function') {
-            setRowData(api);
-            return;
-        }
-        api.setRowData(rowData);
-    };
     const onGridSizeChanged = () => {
-        // const {api = {}} = gridApiRef.current;
+        // TODO: add onGridEvent callback instead
         // api.sizeColumnsToFit();
     };
+
+    const onSelectionChanged = (data) => {
+        const {api, columnApi} = data;
+        // TODO: add onGridEvent callback instead
+        if (typeof handleSelectionChange === 'function') {
+            handleSelectionChange(api, columnApi);
+        }
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
+        }
+    };
+
+    const onCellValueChanged = (data)  => {
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
+        }
+    };
+
+    const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
+
+    const isOverflowVisible = (count, constant = OVERFLOW_VISIBLE_NUMBER) => count && (count <= constant);
 
     return (
-        <div className='nexus-c-nexus-grid ag-theme-balham'>
+        <div className={
+            `nexus-c-nexus-grid 
+            ag-theme-balham 
+            ${isAutoHeight(restProps) ? 'nexus-c-nexus-grid--auto-height' : ''}
+            ${isOverflowVisible(gridRowCountRef.current) ? 'nexus-c-nexus-grid--overflow' : ''}
+        `}>
             <AgGridReact
                 columnDefs={columnDefs}
+                rowData={rowData}
                 onGridReady={onGridReady}
                 onGridSizeChanged={onGridSizeChanged}
+                onSelectionChanged={onSelectionChanged}
+                onCellValueChanged={onCellValueChanged}
                 {...restProps}
             >
             </AgGridReact> 
@@ -50,7 +80,9 @@ const NexusGrid = ({
 NexusGrid.propTypes = {
     columnDefs: PropTypes.array,
     rowData: PropTypes.array,
-    getGridApi: PropTypes.func,
+    handleGridReady: PropTypes.func,
+    handleSelectionChange: PropTypes.func,
+    handleGridEvent: PropTypes.func,
     // headerHeight: PropTypes.number,
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
@@ -59,7 +91,9 @@ NexusGrid.propTypes = {
 NexusGrid.defaultProps = {
     columnDefs: [],
     rowData: [],
-    getGridApi: null,
+    handleGridReady: null,
+    handleSelectionChange: null,
+    handleGridEvent: null,
     // headerHeight: 52,
     // rowHeight: 48,
     setRowData: null,

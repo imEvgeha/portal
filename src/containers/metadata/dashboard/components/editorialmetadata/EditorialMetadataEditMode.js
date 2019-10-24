@@ -23,7 +23,6 @@ import PersonList from '../coretitlemetadata/PersonList'; import {
     CREW_HTML_FOR,
     CAST_HEADER,
     CREW_HEADER,
-    CAST_LIMIT
 } from '../../../../../constants/metadata/constant-variables';
 import {
     CAST,
@@ -33,6 +32,8 @@ import {
     CREW,
     PERSONS_PER_REQUEST
 } from '../../../../../constants/metadata/configAPI';
+
+import constants from '../../../MetadataConstants';
 
 const mapStateToProps = state => {
     return {
@@ -156,6 +157,8 @@ class EditorialMetadataEditMode extends Component {
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
         const { locale, language, format, service, seriesName, seasonNumber, episodeNumber, synopsis, title, copyright, awards, sasktelInventoryId, sasktelLineupId, castCrew } = updateData ? updateData : this.props.data;
+        const { MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
+            MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
         return (
             <div id="editorialMetadataEdit">
                 <Fragment>
@@ -301,10 +304,13 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialDisplayTitle" name={this.getEditorialTitlePrefix('title')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_TITLE_LENGTH,
+                                        errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={title.title} />
-                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === 200 ? 'red' : '#111' : '#111' }}>{title ? this.handleFieldLength(title.title) : 0}/200 char</span>
+                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
+                                {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -315,10 +321,12 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialBriefTitle" name={this.getEditorialTitlePrefix('shortTitle')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_BRIEF_TITLE_LENGTH, errorMessage: `Too long Brief Title. Max ${MAX_BRIEF_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={title.shortTitle} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.shortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.shortTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.shortTitle) === MAX_BRIEF_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.shortTitle) : 0}/{MAX_BRIEF_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -329,10 +337,12 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialMediumTitle" name={this.getEditorialTitlePrefix('mediumTitle')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_MEDIUM_TITLE_LENGTH, errorMessage: `Too long Medium Title. Max ${MAX_MEDIUM_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={title.mediumTitle} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.mediumTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.mediumTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.mediumTitle) === MAX_MEDIUM_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.mediumTitle) : 0}/{MAX_MEDIUM_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -343,10 +353,12 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialLongTitle" name={this.getEditorialTitlePrefix('longTitle')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Long Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={title.longTitle} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.longTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.longTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.longTitle) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.longTitle) : 0}/{MAX_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -357,10 +369,12 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialSortTitle" name={this.getEditorialTitlePrefix('sortTitle')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_SORT_TITLE_LENGTH, errorMessage: `Too long Sort Title. Max ${MAX_SORT_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={title.sortTitle} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.sortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.sortTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.sortTitle) === MAX_SORT_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.sortTitle) : 0}/{MAX_SORT_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
 
@@ -372,10 +386,12 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialShortSynopsis" name={this.getSynopsisPrefix('description')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 500, errorMessage: 'Too long Short Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                                 value={synopsis.description} />
-                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.description) : 0}/500 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -388,10 +404,12 @@ class EditorialMetadataEditMode extends Component {
                                 style={{ resize: 'none' }}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 500, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                                 value={synopsis.shortDescription} />
-                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/500 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -403,10 +421,12 @@ class EditorialMetadataEditMode extends Component {
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
-                                    maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 1000 symbols.' }
+                                    maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Long Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                                 value={synopsis.longDescription} />
-                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.longDescription) : 0}/1000 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {synopsis ? this.handleFieldLength(synopsis.longDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -422,7 +442,6 @@ class EditorialMetadataEditMode extends Component {
                                 removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
-                                personsLimit={CAST_LIMIT}
                                 getFormatTypeName={getFormatTypeName}
                                 showPersonType={true}                                
                                 isMultiColumn={true}
@@ -459,10 +478,12 @@ class EditorialMetadataEditMode extends Component {
                             <AvField type="text" id="editorialCopyright" name={this.getNameWithPrefix('copyright')}
                                 onChange={(e) => this.props.handleChange(e, this.props.data)}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.' }
+                                    maxLength: { value: MAX_COPYRIGHT_LENGTH, errorMessage: `Too long Copyright. Max ${MAX_COPYRIGHT_LENGTH} symbols.` }
                                 }}
                                 value={copyright} />
-                            <span style={{ float: 'right', color: copyright ? this.handleFieldLength(copyright) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{copyright ? this.handleFieldLength(copyright) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: copyright ? this.handleFieldLength(copyright) === MAX_COPYRIGHT_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {copyright ? this.handleFieldLength(copyright) : 0}/{MAX_COPYRIGHT_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>

@@ -27,7 +27,6 @@ import {
   CREW_HTML_FOR,
   CAST_HEADER,
   CREW_HEADER,
-  CAST_LIMIT
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
@@ -103,7 +102,6 @@ class CoreMetadataEditMode extends Component {
               addPerson={this.props.addCastCrew}
               showPersonType={true}
               isMultiColumn={true}
-              personsLimit={CAST_LIMIT}
               getFormatTypeName={getFormatTypeName}
               onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
             />

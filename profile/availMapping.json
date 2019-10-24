@@ -1,5 +1,13 @@
 {"mappings":
 [{
+  "javaVariableName": "id",
+  "displayName": "Right ID",
+  "dataType": "string",
+  "readOnly": true,
+  "enableSearch": false,
+  "enableEdit": true,
+  "required": true
+}, {
   "javaVariableName": "title",
   "displayName": "Title",
   "dataType": "string",
@@ -69,7 +77,7 @@
   "displayName": "Territory",
   "dataType": "territoryType",
   "searchDataType": "multiselect",
-  "configEndpoint": "/territories",
+  "configEndpoint": "/countries",
   "queryParamName": "territory",
   "readOnly": false,
   "enableSearch": true,
@@ -246,7 +254,7 @@
   "displayName": "Territory Excluded",
   "dataType": "multiselect",
   "searchDataType": "multiselect",
-  "configEndpoint": "/territories",
+  "configEndpoint": "/countries",
   "queryParamName": "territoryExcluded",
   "readOnly": false,
   "enableSearch": true,

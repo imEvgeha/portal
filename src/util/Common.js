@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, {Fragment} from 'react';
 import t from 'prop-types';
 
+
 function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
@@ -204,4 +205,22 @@ class IfEmbedded extends React.Component {
     }
 }
 
-export {downloadFile, momentToISO, isObject, mergeDeep, prepareSortMatrixParam, safeTrim, equalOrIncluded, getDeepValue, prepareSortMatrixParamTitles, isObjectEmpty, encodedSerialize, nextFrame, URL, IfEmbedded};
+const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? cases[key] : defaultCase;
+
+export {
+    downloadFile, 
+    momentToISO, 
+    isObject, 
+    mergeDeep, 
+    prepareSortMatrixParam, 
+    safeTrim, 
+    equalOrIncluded, 
+    getDeepValue, 
+    prepareSortMatrixParamTitles, 
+    isObjectEmpty, 
+    encodedSerialize, 
+    nextFrame, 
+    URL, 
+    IfEmbedded,
+    switchCase,
+};

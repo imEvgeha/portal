@@ -105,7 +105,13 @@ class TerritoryMetadata extends Component {
                                 <TabPane tabId={this.props.createTerritoryTab}>
                                     <Row>
                                         <Col>
-                                            <TerritoryMetadataCreateTab territories={this.props.territories} validSubmit={this.props.validSubmit} isRequired={this.props.isLocalRequired} handleChange={this.props.handleChange} />
+                                            <TerritoryMetadataCreateTab
+                                                territories={this.props.territories}
+                                                validSubmit={this.props.validSubmit}
+                                                isRequired={this.props.isLocalRequired}
+                                                handleChange={this.props.handleChange}
+                                                handleChangeDate={this.props.handleChangeDate}
+                                            />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -115,7 +121,14 @@ class TerritoryMetadata extends Component {
                                             <TabPane key={i} tabId={i}>
                                                 <Row>
                                                     <Col>
-                                                        <TerritoryMetadataEditMode getLanguageByCode={this.getLanguageByCode} validSubmit={this.props.validSubmit} handleChange={this.props.handleEditChange} key={i} data={item} />
+                                                        <TerritoryMetadataEditMode
+                                                            getLanguageByCode={this.getLanguageByCode}
+                                                            validSubmit={this.props.validSubmit}
+                                                            handleChange={this.props.handleEditChange}
+                                                            handleChangeDate={this.props.handleEditChangeDate}
+                                                            key={i}
+                                                            data={item}
+                                                        />
                                                     </Col>
                                                 </Row>
                                             </TabPane>);
@@ -134,6 +147,7 @@ TerritoryMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
     territory: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
+    handleChangeDate: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     isLocalRequired: PropTypes.bool,
     toggle: PropTypes.func,
@@ -141,6 +155,7 @@ TerritoryMetadata.propTypes = {
     createTerritoryTab: PropTypes.string,
     validSubmit: PropTypes.func.isRequired,
     handleEditChange: PropTypes.func,
+    handleEditChangeDate: PropTypes.func,
     territories: PropTypes.object,
     configCountry: PropTypes.object,
     configRegion: PropTypes.object

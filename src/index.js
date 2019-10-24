@@ -53,7 +53,7 @@ export const store = configureStore({}, history);
 
 const app = (
     <Provider store={store}>
-        <IntlProvider locale="en">
+        <IntlProvider locale="en-US">
             <NexusModalProvider>
                 <AppLayout history={history} />
             </NexusModalProvider>

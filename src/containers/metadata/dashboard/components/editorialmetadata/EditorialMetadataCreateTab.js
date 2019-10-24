@@ -20,7 +20,6 @@ import {
     CREW_HTML_FOR,
     CAST_HEADER,
     CREW_HEADER,
-    CAST_LIMIT
 } from '../../../../../constants/metadata/constant-variables';
 import {
     CAST,
@@ -30,6 +29,7 @@ import {
     PERSONS_PER_REQUEST,
     getFilteredCastList
 } from '../../../../../constants/metadata/configAPI';
+import constants from '../../../MetadataConstants';
 
 const mapStateToProps = state => {
     return {
@@ -123,6 +123,8 @@ class EditorialMetadataCreateTab extends Component {
 
     render() {
         const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
+        const { MAX_SEASON_LENGTH, MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
+            MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH, MAX_EPISODE_LENGTH } = constants;
         return (
             <div id="editorialMetadataCreate">
                 <Fragment>
@@ -218,7 +220,7 @@ class EditorialMetadataCreateTab extends Component {
                                     onChange={this.props.handleChange}
                                     validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
-                                        maxLength: { value: 3, errorMessage: 'Max 3 digits' }
+                                        maxLength: { value: MAX_SEASON_LENGTH, errorMessage: `Max ${MAX_SEASON_LENGTH} digits` }
                                     }} />
                             </Col>
                             {this.props.titleContentType === EVENT.apiName &&
@@ -231,7 +233,7 @@ class EditorialMetadataCreateTab extends Component {
                                         onChange={this.props.handleChange}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
-                                            maxLength: { value: 3, errorMessage: 'Max 3 digits' }
+                                            maxLength: { value: MAX_EPISODE_LENGTH, errorMessage: `Max ${MAX_EPISODE_LENGTH} digits` }
                                         }} />
                                 </Col>
                             }
@@ -267,9 +269,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialDisplayTitle" name={this.getNameWithPrefix('title')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Display Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === 200 ? 'red' : '#111' : '#111' }}>{title ? this.handleFieldLength(title.title) : 0}/200 char</span>
+                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
+                                {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -280,9 +284,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialBriefTitle" name={this.getNameWithPrefix('shortTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Brief Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_BRIEF_TITLE_LENGTH, errorMessage: `Too long Brief Title. Max ${MAX_BRIEF_TITLE_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.shortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.shortTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.shortTitle) === MAX_BRIEF_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.shortTitle) : 0}/{MAX_BRIEF_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -293,9 +299,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialMediumTitle" name={this.getNameWithPrefix('mediumTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Medium Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_MEDIUM_TITLE_LENGTH, errorMessage: `Too long Medium Title. Max ${MAX_MEDIUM_TITLE_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.mediumTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.mediumTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.mediumTitle) === MAX_MEDIUM_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.mediumTitle) : 0}/{MAX_MEDIUM_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -306,9 +314,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialLongTitle" name={this.getNameWithPrefix('longTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Long Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Long Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.longTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.longTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.longTitle) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.longTitle) : 0}/{MAX_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -319,9 +329,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialSortTitle" name={this.getNameWithPrefix('sortTitle')}
                                 onChange={this.props.handleTitleChange}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Sort Title. Max 200 symbols.' }
+                                    maxLength: { value: MAX_SORT_TITLE_LENGTH, errorMessage: `Too long Sort Title. Max ${MAX_SORT_TITLE_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.sortTitle) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{title ? this.handleFieldLength(title.sortTitle) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: title ? this.handleFieldLength(title.sortTitle) === MAX_SORT_TITLE_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {title ? this.handleFieldLength(title.sortTitle) : 0}/{MAX_SORT_TITLE_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
 
@@ -333,9 +345,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialShortSynopsis" name={this.getNameWithPrefix('description')}
                                 onChange={this.props.handleSynopsisChange}
                                 validate={{
-                                    maxLength: { value: 500, errorMessage: 'Too long Short Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.description) : 0}/500 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -348,9 +362,11 @@ class EditorialMetadataCreateTab extends Component {
                                 style={{ resize: 'none' }}
                                 onChange={this.props.handleSynopsisChange}
                                 validate={{
-                                    maxLength: { value: 500, errorMessage: 'Too long Medium Synopsis. Max 500 symbols.' }
+                                    maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === 500 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/500 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -363,9 +379,11 @@ class EditorialMetadataCreateTab extends Component {
                                 cols={20} rows={5}
                                 style={{ resize: 'none' }}
                                 validate={{
-                                    maxLength: { value: 1000, errorMessage: 'Too long Long Synopsis. Max 1000 symbols.' }
+                                    maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Long Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === 1000 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{synopsis ? this.handleFieldLength(synopsis.longDescription) : 0}/1000 char</span>
+                            <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.longDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {synopsis ? this.handleFieldLength(synopsis.longDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>
@@ -381,7 +399,6 @@ class EditorialMetadataCreateTab extends Component {
                                 removePerson={(person) => this.handleEditorialRemovePerson(person, castCrew)}
                                 loadOptionsPerson={this.loadOptionsPerson}
                                 addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
-                                personsLimit={CAST_LIMIT}
                                 isMultiColumn={true}
                                 getFormatTypeName={getFormatTypeName}
                                 showPersonType={true}
@@ -416,9 +433,11 @@ class EditorialMetadataCreateTab extends Component {
                             <AvField type="text" id="editorialCopyright" name={this.getNameWithPrefix('copyright')}
                                 onChange={this.props.handleChange}
                                 validate={{
-                                    maxLength: { value: 200, errorMessage: 'Too long Copyright. Max 200 symbols.' }
+                                    maxLength: { value: MAX_COPYRIGHT_LENGTH, errorMessage: `Too long Copyright. Max ${MAX_COPYRIGHT_LENGTH} symbols.` }
                                 }} />
-                            <span style={{ float: 'right', color: copyright ? this.handleFieldLength(copyright) === 200 ? 'red' : '#111' : '#111', fontSize: '13px' }}>{copyright ? this.handleFieldLength(copyright) : 0}/200 char</span>
+                            <span style={{ float: 'right', color: copyright ? this.handleFieldLength(copyright) === MAX_COPYRIGHT_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
+                                {copyright ? this.handleFieldLength(copyright) : 0}/{MAX_COPYRIGHT_LENGTH} char
+                            </span>
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>

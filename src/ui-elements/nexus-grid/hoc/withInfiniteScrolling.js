@@ -1,16 +1,34 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
+import isEqual from 'lodash.isequal';
+import usePrevious from '../../../util/hooks/usePrevious';
+
+const ROW_BUFFER = 10;
+const PAGINATION_PAGE_SIZE = 100;
+const CACHE_OVERFLOW_SIZE = 2;
+const MAX_CONCURRENT_DATASOURCE_REQUEST = 1;
+const MAX_BLOCKS_IN_CACHE = 100;
 
 const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent => {
     const {
-        rowBuffer = 10,
-        paginationPageSize = 100,
-        cacheOverflowSize = 2,
+        rowBuffer = ROW_BUFFER,
+        paginationPageSize = PAGINATION_PAGE_SIZE,
+        cacheOverflowSize = CACHE_OVERFLOW_SIZE,
         rowModelType = 'infinite',
-        maxConcurrentDatasourceRequests = 1,
-        maxBlocksInCache = 100,
+        maxConcurrentDatasourceRequests = MAX_CONCURRENT_DATASOURCE_REQUEST,
+        maxBlocksInCache = MAX_BLOCKS_IN_CACHE,
     } = infiniteProps;
 
     const ComposedComponent = props => {
+        const gridApiRef = useRef({});
+        const previousParams = usePrevious(props.params);
+
+        useEffect(() => {
+            const {api} = gridApiRef.current;
+            if (!isEqual(props.params, previousParams) && props.params && api) {
+                updateData(fetchData, api);
+            }
+        }, [props.params]);
+
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback} = params || {};
             const pageSize = paginationPageSize || 100;
@@ -30,7 +48,12 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                         if (typeof props.setTotalCount === 'function') { 
                             props.setTotalCount(total);
                         }
+
                         successCallback(data.data, lastRow);
+                        if (typeof props.succesDataFetchCallback === 'function') {
+                            props.succesDataFetchCallback(pageNumber, data);
+                        }
+
                         gridApi.hideOverlay();
                         return;
                     } 
@@ -38,6 +61,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                 })
                 .catch(error => failCallback(error));
         };
+
         const updateData = (fetchData, gridApi) => {
             const dataSource = {
                 rowCount: null,
@@ -45,9 +69,30 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             };
             gridApi.setDatasource(dataSource);
         };
+
+        const handleGridReady = gridApi => {
+            const {api} = gridApiRef.current;
+            if (typeof props.handleGridReady === 'function') {
+                props.handleGridReady(gridApi);
+            }
+            if (!api) {
+                gridApiRef.current = {api: gridApi};
+            }
+            updateData(fetchData, gridApi);
+        };
+
+        const onGridEvent = data => {
+            if (data.type === 'gridReady') {
+                if (typeof props.onGridEvent === 'function') {
+                    props.onGridEvent(data);
+                }
+            }
+        };
+
         const mergedProps = {
             ...props,
-            setRowData: gridApi => updateData(fetchData, gridApi),
+            handleGridReady,
+            onGridEvent,
             rowBuffer,
             rowModelType,
             paginationPageSize,
