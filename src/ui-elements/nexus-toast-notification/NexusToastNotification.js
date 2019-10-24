@@ -1,4 +1,4 @@
-import React, {useState, useRef, createContext} from 'react';
+import React, {useState, createContext} from 'react';
 import Flag, {FlagGroup, AutoDismissFlag} from '@atlaskit/flag';
 import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
@@ -10,7 +10,6 @@ export const NexusToastNotificationContext = createContext({});
 
 export const NexusToastNotificationProvider = ({children}) => { // eslint-disable-line
     const [toasts, setToasts] = useState([]);
-    const toastCountRef = useRef(0);
     const addToast = (toast) => {
         let updatedToast = {};
         Object.keys(toast).map(key => {
@@ -21,13 +20,10 @@ export const NexusToastNotificationProvider = ({children}) => { // eslint-disabl
             }
         });
         setToasts([updatedToast, ...toasts]);
-        toastCountRef.current++;
     };
-
 
     const removeToast = () => {
         setToasts(toasts.slice(1));
-        toastCountRef.current--;
     };
 
     const context = {
@@ -50,12 +46,11 @@ export const NexusToastNotificationProvider = ({children}) => { // eslint-disabl
         <NexusToastNotificationContext.Provider value={context}>
             <FlagGroup onDismissed={removeToast}>
                 {toasts.map(toast => {
-                    if (toast.type && toast.type === 'auto-dismiss') {
-                        return (
-                            <AutoDismissFlag key={toast.id} {...toast} />
-                        );
-                    }
-                    return <Flag key={toast.id} {...toast} />;
+                    return toast.autoDismiss ? (
+                        <AutoDismissFlag key={toast.id} {...toast} />
+                    ) : (
+                        <Flag key={toast.id} {...toast} />
+                    );
                 })}
             </FlagGroup>
             {children}

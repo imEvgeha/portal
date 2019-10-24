@@ -1,15 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {Link} from 'react-router-dom';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import Flag, {FlagGroup} from '@atlaskit/flag';
-import Warning from '@atlaskit/icon/glyph/warning';
-import {colors} from '@atlaskit/theme';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
@@ -23,6 +19,7 @@ import {URL} from '../../../util/Common';
 import DOP from '../../../util/DOP';
 import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {NexusToastNotificationContext} from '../../../ui-elements/nexus-toast-notification/NexusToastNotification';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -44,9 +41,9 @@ const RightToMatchView = ({
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
     const [selectedRows, setSelectedRows] = useState([]);
+    const {addToast, removeToast} = useContext(NexusToastNotificationContext);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
-    const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
     const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
     const [dopCount] = useLocalStorage('rightMatchingDOP');
 
@@ -70,20 +67,29 @@ const RightToMatchView = ({
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
-        setShowConfirmationFlag(false);     
+        removeToast();
         const {params: {rightId}} = match || {};
-        createNewRight(rightId);
+        createNewRight({rightId, addToast});
     };
 
-    const onCancelNewRight = () => {
-        setShowConfirmationFlag(false);
+    const onNewRightClick = () => {
+        addToast({
+            description: 'You are about to declare a new right.',
+            icon: 'warning',
+            id: 'warning-flag',
+            title: 'Warning',
+            actions: [
+                {content:'Cancel', onClick: removeToast},
+                {content:'OK', onClick: onDeclareNewRight}
+            ],
+        });
     };
 
     const createNewButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button onClick={() => setShowConfirmationFlag(true)}>New</Button>
+                <Button onClick={onNewRightClick}>New</Button>
             </CustomActionsCellRenderer>
         );
     };
@@ -107,16 +113,12 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <div className='nexus-c-right-to-match-view__navigation-arrow'>
-                <PageHeader>
-                    <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__link" >
-                        <div className="nexus-c-right-to-match-view__page-header">
-                            <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
-                            <span className="nexus-c-right-to-match-view__page-header-title">Right to Right Matching</span>
-                        </div>
-                    </Link>
-                </PageHeader>
-            </div>
+            <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__header" >
+                <div className="nexus-c-right-to-match-view__header-content">
+                    <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                    <span className="nexus-c-right-to-match-view__header-title">Right to Right Matching</span>
+                </div>
+            </Link>
             <div className="nexus-c-right-to-match-view__table-header">
                 <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
                 <RightToMatchNavigation
@@ -166,20 +168,6 @@ const RightToMatchView = ({
                     </Button>
                 </ButtonGroup>
             </div>
-            {showConfirmationFlag && (
-                <FlagGroup onDismissed={onCancelNewRight}>
-                    <Flag
-                        description="You are about to declare a new right."
-                        icon={<Warning label="Warning icon" primaryColor={colors.Y300} />}
-                        id="warning-flag"
-                        title="Warning"
-                        actions={[
-                            {content:'Cancel', onClick: onCancelNewRight},
-                            {content:'OK', onClick: onDeclareNewRight}
-                        ]}
-                    />
-                </FlagGroup>
-            )}
         </div>
     );
 };

@@ -9,6 +9,7 @@ import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightByI
 import {setCombinedSavedFlag} from './rightMatchingActions';
 import {createColumnDefs} from '../utils';
 
+
 // TODO - refactor this worker sagra (use select)
 export function* createRightMatchingColumnDefs({payload}) {
     try {
@@ -220,6 +221,8 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
 }
 
 export function* saveCombinedRight(requestMethod, {payload}) {
+    console.log(payload, 'payload')
+    return;
     try {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
@@ -232,10 +235,8 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
-        yield put(setCombinedSavedFlag({isCombinedRightSaved: true}));
 
     } catch (error) {
-        yield put(setCombinedSavedFlag({isCombinedRightSaved: false}));
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
@@ -296,14 +297,18 @@ export function* createNewRight(requestMethod, {payload}) {
             type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
             payload: {}
         });
-        yield call(requestMethod, payload);
+        yield call(requestMethod, payload.rightId);
         
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
-        yield put({
-            type: actionTypes.SET_NEW_RIGHT_FLAG,
-            payload: {isNewRightSuccessFlagVisible: true}
+
+        yield call(payload.addToast, {
+            appearance: 'normal',
+            id: 'new-right-success',
+            icon: 'success',
+            title: 'Success',
+            description: 'You have successfully declared a new right.',
         });
         yield put(goBack());
     } catch (error) {
