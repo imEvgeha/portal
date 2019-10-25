@@ -4,7 +4,6 @@ import React from 'react';
 import {alertModal} from '../../../components/modal/AlertModal';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import t from 'prop-types';
-// import RightsResultTable from './components/RightsResultTable';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
 import {downloadFile, IfEmbedded} from '../../../util/Common';
@@ -24,11 +23,20 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
 
+const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
+const SelectedRightsResultsTable = compose(
+    withRedux,
+    withColumnsReorder,
+    withSelection,
+    withServerSorting,
+    withLocalRights(AVAILS_SELECTION))(ResultsTable);
+
 let mapStateToProps = state => {
     return {
         showSelectedAvails: state.dashboard.showSelectedAvails,
         reportName: state.dashboard.session.reportName,
         availsMapping: state.root.availsMapping,
+        avails: state.dashboard.availTabPage.avails,
     };
 };
 
@@ -44,7 +52,8 @@ class SearchResultsTab extends React.Component {
         availsMapping: t.object,
         resultPageUpdateColumnsOrder: t.func,
         resultPageShowSelected: t.func,
-        showSelectedAvails: t.bool
+        showSelectedAvails: t.bool,
+        avails: t.array
     };
 
     hideShowColumns={};
@@ -176,23 +185,27 @@ class SearchResultsTab extends React.Component {
         this.hideShowColumns={};
     }
 
-    storeData(response){
+    storeData = (response) => {
         store.dispatch(resultPageLoading(false));
-        if(response && response.data && response.data.page === 0){
-            store.dispatch(resultPageUpdate({
-                pages: 1,
-                avails: response.data.data,
-                pageSize: response.data.data.length,
-                total: response.data.total
-            }));
-        }else{
-            store.dispatch(resultPageUpdate({
-                pages: 0,
-                avails: [],
-                pageSize: 1,
-                total: 0
-            }));
+        let updatedResult = {
+            pages: 0,
+            avails: [],
+            pageSize: 1,
+            total: 0
+        };
+
+        if(response && response.data){
+            updatedResult.pages = response.data.page + 1;
+            updatedResult.pageSize = response.data.data.length;
+            updatedResult.total = response.data.total;
+            if(response.data.page === 0) {
+                updatedResult.avails = response.data.data;
+            } else {
+                updatedResult.avails = [...this.props.avails, ...response.data.data];
+            }
         }
+
+        store.dispatch(resultPageUpdate(updatedResult));
     }
 
     exportAvails = () => {
@@ -228,14 +241,6 @@ class SearchResultsTab extends React.Component {
     }
 
     render() {
-        const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
-        const SelectedRightsResultsTable = compose(
-            withRedux,
-            withColumnsReorder,
-            withSelection,
-            withServerSorting,
-            withLocalRights(AVAILS_SELECTION))(ResultsTable);
-
         return (
             <div id="dashboard-result-table">
                 <div className={'container-fluid'}>
