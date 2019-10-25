@@ -19,7 +19,8 @@ import {URL} from '../../../util/Common';
 import DOP from '../../../util/DOP';
 import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import {NexusToastNotificationContext} from '../../../ui-elements/nexus-toast-notification/NexusToastNotification';
+import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
+import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '../../../ui-elements/nexus-toast-notification/constants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -74,14 +75,14 @@ const RightToMatchView = ({
 
     const onNewRightClick = () => {
         addToast({
-            description: 'You are about to declare a new right.',
-            icon: 'warning',
-            id: 'warning-flag',
             title: 'Warning',
+            description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+            icon: 'warning',
             actions: [
                 {content:'Cancel', onClick: removeToast},
                 {content:'OK', onClick: onDeclareNewRight}
             ],
+            isWithOverlay: true,
         });
     };
 

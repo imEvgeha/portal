@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
-import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import './MatchRightsView.scss';
@@ -17,11 +16,11 @@ import {
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
 import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import useLocalStorage from '../../../util/hooks/useLocalStorage';
+import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -41,6 +40,7 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
+    const {addToast} = useContext(NexusToastNotificationContext);
     const [dopCount] = useLocalStorage('rightMatchingDOP');
     const {params} = match || {};
     const {availHistoryIds, rightId} = params || {};
@@ -88,10 +88,10 @@ function MatchRightView({
         setSaveButtonDisabled(true);
         // TODO: fix this
         if (editedCombinedRight) {
-            saveCombinedRight(rightId, matchedRightId, editedCombinedRight);
+            saveCombinedRight(rightId, matchedRightId, editedCombinedRight, addToast);
             return;
         }
-        saveCombinedRight(rightId, matchedRightId, combinedRight);
+        saveCombinedRight(rightId, matchedRightId, combinedRight, addToast);
     };
 
     // Sorted by start field. desc
@@ -207,7 +207,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
-    saveCombinedRight:(focusedRightId, matchedRightId, combinedRight) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight)),
+    saveCombinedRight:(focusedRightId, matchedRightId, combinedRight, addToast) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight, addToast)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
 });
 

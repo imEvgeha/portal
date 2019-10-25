@@ -1,11 +1,8 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
-import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
-import {FlagGroup, AutoDismissFlag} from '@atlaskit/flag';
-import {colors} from '@atlaskit/theme';
 import './RightMatchingView.scss';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';

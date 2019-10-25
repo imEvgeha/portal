@@ -6,8 +6,8 @@ import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import {switchCase} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
-import {setCombinedSavedFlag} from './rightMatchingActions';
 import {createColumnDefs} from '../utils';
+import {CREATE_NEW_RIGHT_SUCCESS_MESSAGE, CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../ui-elements/nexus-toast-notification/constants';
 
 
 // TODO - refactor this worker sagra (use select)
@@ -221,8 +221,6 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
 }
 
 export function* saveCombinedRight(requestMethod, {payload}) {
-    console.log(payload, 'payload')
-    return;
     try {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
@@ -235,12 +233,21 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
-
+        yield call(payload.addToast, {
+            icon: 'success',
+            title: 'Success',
+            description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
             error: true,
+        });
+        yield call(payload.addToast, {
+            icon: 'error',
+            title: 'Error',
+            description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
         });
     }
 }
@@ -302,13 +309,10 @@ export function* createNewRight(requestMethod, {payload}) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
-
         yield call(payload.addToast, {
-            appearance: 'normal',
-            id: 'new-right-success',
             icon: 'success',
             title: 'Success',
-            description: 'You have successfully declared a new right.',
+            description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
         });
         yield put(goBack());
     } catch (error) {
@@ -316,6 +320,11 @@ export function* createNewRight(requestMethod, {payload}) {
             type: actionTypes.CREATE_NEW_RIGHT_ERROR,
             payload: error,
             error: true
+        });
+        yield call(payload.addToast, {
+            icon: 'error',
+            title: 'Error',
+            description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
         });
     }
 }
