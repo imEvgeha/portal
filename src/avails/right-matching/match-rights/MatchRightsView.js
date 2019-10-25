@@ -70,27 +70,10 @@ function MatchRightView({
     },[match.params.matchedRightId, match.params.rightId, columnDefs.length]);
 
     useEffect(() => {
-<<<<<<< HEAD
         if (combinedRight) {
             setSaveButtonDisabled(false);
         }
     }, [combinedRight]);
-=======
-        setSaveButtonDisabled(false);
-        if(isCombinedRightSaved) {
-            const {params} = match || {};
-            const {availHistoryIds} = params || {};
-            history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching`));
-        }
-    }, [isCombinedRightSaved]);
-
-    // TODO:  we should handle this via router Link
-    const navigateToMatchPreview = () => {
-        const {params} = match || {};
-        const {availHistoryIds, rightId} = params || {};
-        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`));
-    };
->>>>>>> af8f6e423b85555adb2e63fdda73ef3817be4ac6
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {

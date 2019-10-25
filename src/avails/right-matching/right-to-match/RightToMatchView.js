@@ -46,8 +46,6 @@ const RightToMatchView = ({
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
-    const [showConfirmationFlag, setShowConfirmationFlag] = useState(false);
-    const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
     const [dopCount] = useLocalStorage('rightMatchingDOP');
 
     // DOP Integration

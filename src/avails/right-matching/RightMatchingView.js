@@ -108,7 +108,6 @@ RightMatchingView.propTypes = {
     location: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
-    isCombinedRightSaved: PropTypes.bool,
 };
 
 RightMatchingView.defaultProps = {
@@ -124,11 +123,9 @@ RightMatchingView.defaultProps = {
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
-    const isCombinedRightSavedSelector = selectors.createCombinedRightSavedFlagSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
-        isCombinedRightSaved: isCombinedRightSavedSelector(state, props)
     });
 };
 
@@ -136,7 +133,6 @@ const mapDispatchToProps = (dispatch) => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
     cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload)),
-    setCombinedSavedFlag: payload => dispatch(setCombinedSavedFlag(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line
