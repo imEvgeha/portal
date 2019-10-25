@@ -8,3 +8,8 @@ export const fetchFocusedRight = (id) => ({
 export const createColumnDefs = () => ({
     type: actionTypes.CREATE_COLUMN_DEFS,
 });
+
+export const mergeTitles = (matchList, duplicateList, historyPush) => ({
+    type: actionTypes.MERGE_TITLES,
+    payload : { matchList, duplicateList, historyPush },
+});

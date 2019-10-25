@@ -14,11 +14,7 @@
     }
     >.nexus-c-title {
         font-weight: normal;
-    }
-    .nexus-c-title-to-match__header {
-        .nexus-c-title {
-            font-size: 20px;
-        }
+        font-size: 20px;
     }
     .nexus-c-title-matching-custom-actions {
         background: #fff;
@@ -30,6 +26,14 @@
         padding-right: 10px;
         button {
             margin-left: 20px;
+            &.nexus-c-title-matching-custom-actions__button{
+                pointer-events: none;
+            }
+            &.nexus-c-title-matching-custom-actions__button--active{
+                color: #fff!important;
+                background-color: #007bff;
+                border-color: #007bff;
+            }
         }
     }
     .nexus-c-custom-actions-cell-renderer{

@@ -42,6 +42,7 @@ class SelectRightsPlanning extends Component {
             fetchAvailMapping();
         }
         fetchAvailConfiguration();
+        this.renderTableFilter();
     }
 
     componentDidUpdate(prevProps) {

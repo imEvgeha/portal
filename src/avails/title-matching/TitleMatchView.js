@@ -6,15 +6,19 @@ import Button from '@atlaskit/button';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import TitlesList from './TitlesList';
+import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
-import { fetchFocusedRight, createColumnDefs } from './titleMatchingActions';
+import { createColumnDefs as getRightColumns } from '../utils';
+import mappings from '../../../profile/titleMatchingRightMappings';
+import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
-const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
+const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
+
+    const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
@@ -54,7 +58,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
                         <NexusTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
-                                columnDefs={[newTitleButton, ...columnDefs]}
+                                columnDefs={[newTitleButton, ...rightColumns]}
                                 rowData={[focusedRight]}
                             />
                         </div>
@@ -62,7 +66,8 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
                             <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
                                 action menu.</p>
                         </SectionMessage>
-                        <TitlesList columnDefs={columnDefs}/>
+                        <TitlesList columnDefs={columnDefs}
+                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, history.push)}/>
                     </React.Fragment>
                 )
             }
@@ -73,16 +78,19 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs,
 TitleMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func.isRequired,
     createColumnDefs: PropTypes.func.isRequired,
+    mergeTitles: PropTypes.func.isRequired,
     match: PropTypes.object,
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
+    history: PropTypes.object,
 };
 
 TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
+    history: {},
 };
 
 const createMapStateToProps = () => {
@@ -96,6 +104,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
+    mergeTitles: (matchList, duplicateList, historyPush) => dispatch(mergeTitles(matchList, duplicateList, historyPush))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line
