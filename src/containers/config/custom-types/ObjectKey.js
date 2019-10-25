@@ -63,7 +63,7 @@ export default class ObjectKey extends Component {
 
         // Map the supplied Object to an Item[] in order to give each piece of data an id for drag-and-drop
         const keys = Object.keys(defaultValue);
-        const items = keys.map(key => ({ id: uniqueId(), key:key, data: defaultValue[key].map(val => {return {id: uniqueId(), data: val};}) }));
+        const items = keys.map(key => ({ id: uniqueId(), key, data: defaultValue[key].map(val => {return {id: uniqueId(), data: val};}) }));
         this.getForm = this.getForm.bind(this);
         this.state = {
             value: defaultValue,
@@ -172,8 +172,8 @@ export default class ObjectKey extends Component {
     }
 
     checkKeyName(item, value){
-        const colision = this.state.items.find(({key}) => key === value);
-        return colision === undefined || colision === item ? undefined : 'Duplicate key';
+        const collision = this.state.items.find(({key}) => key === value);
+        return (collision && collision !== item) ? 'Duplicate key' : undefined;
     }
 
     saveKeyName(item, value){
