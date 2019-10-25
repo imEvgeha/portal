@@ -22,10 +22,11 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     };
 
     const onMatch = () => {
-      return matchList[NEXUS];
+        //addToast here with View title link pointing to id: "matchList[NEXUS]"
     };
 
     const onMatchAndCreate = () => {
+        //addtoast here for warning and then onClick of OK: mergeTitles();
         mergeTitles();
     };
 
