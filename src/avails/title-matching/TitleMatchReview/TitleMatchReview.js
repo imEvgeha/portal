@@ -31,23 +31,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         });
     };
 
-    const getParents = (titles, merged) => {
+    const setCombinedTitleParents = (merged) => {
         let getTitles = [];
-        let titleList = [];
-        titles.forEach((value, index) => {
-            getTitles = [];
-            if(value.parentIds && value.parentIds.length){
-                value.parentIds.forEach(parent => {
-                    getTitles.push(getTitle(parent.id));
-                });
-                Promise.all(getTitles).then(values => {
-                    titleList = [...titles];
-                    titleList.splice(index, 0, ...values);
-                    setTitles(titleList);
-                });
-            }
-        });
-        getTitles = [];
         if(merged.parentIds && merged.parentIds.length){
             merged.parentIds.forEach(parent => {
                 getTitles.push(getTitle(parent.id));
@@ -56,6 +41,31 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 setMergedTitles([...values, merged]);
             });
         }
+    };
+
+    const setParents = (list, merged) => {
+        let titleList = [...list];
+        let getTitles = [];
+        let indexTrack = 0;
+        let track = {};
+        list.forEach(title => {
+            if(title.parentIds && title.parentIds.length){
+                title.parentIds.forEach((parent, i) => {
+                    getTitles.push(getTitle(parent.id));
+                    track[parent.id] = indexTrack + i;
+                });
+                indexTrack = indexTrack + 1 + title.parentIds.length;
+            }
+        });
+        if(getTitles.length){
+            Promise.all(getTitles).then(values => {
+                values.forEach(parent => {
+                    titleList.splice(track[parent.id], 0, parent);
+                });
+                setTitles(titleList);
+            });
+        }
+        setCombinedTitleParents(merged);
     };
 
     useEffect(() => {
@@ -72,11 +82,11 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 const merged = values.pop();
                 setMergedTitles([merged]);
                 setTitles(values);
-                getParents(values, merged);
+                setParents(values, merged);
             });
         }
         else{
-            getParents(matchedTitlesValues, combinedTitle);
+            setParents(matchedTitlesValues, combinedTitle);
         }
     }, [matchedTitles]);
 
