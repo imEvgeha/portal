@@ -16,8 +16,8 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import RightTerritoryForm from '../../../components/form/RightTerritoryFormv2';
 import NexusCustomItemizedField from '../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField';
+import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 
 const mapStateToProps = state => {
     return {
@@ -292,19 +292,25 @@ class RightDetails extends React.Component {
                 this.fields[name] = ref = React.createRef();
             }
 
-            const {selectValues = {}} = this.props;
-            // deepClone(value) returns null for country
             let selectedVal = ref.current ? ref.current.state.value : value;
 
-            let options = selectValues[name] || [];
+            // TODO: Extract when prepping data for the whole component; To be fixed on RightDetails refactor
+            const prepData = (name) => {
+                const {selectValues = {}} = this.props;
+                const options  = selectValues[name] || [];
+                const alreadySelected = Array.isArray(value) ? value.map((option) => option.country) : [];
 
-            options = options.filter((rec) => (rec.value)).map(rec => ({
-                    ...rec,
-                    label: rec.label || rec.value,
-                }
-            ));
+                return options
+                    .filter((rec) => (rec.value && !alreadySelected.includes(rec.value)))
+                    .map(rec => ({...rec, label: rec.label || rec.value}));
+            };
 
             const addTerritory = (items) => {
+                items.map((item, index) => {
+                    item.name  && delete items[index].name;
+                    item.id && delete items[index].id;
+                });
+
                 selectedVal = items;
                 this.setState((prevState) => ({
                     editedField: {
@@ -322,14 +328,7 @@ class RightDetails extends React.Component {
                             name={name}
                             existingItems={selectedVal}
                             onSubmit={items => addTerritory(items)}
-                            schema={[
-                                {
-                                    id: 'brt',
-                                    label: 'btt',
-                                    name: 'tbr',
-                                    type: 'text',
-                                }
-                            ]}
+                            schema={RightTerritoryFormSchema(prepData('territory'))}
                         />
                     )}
                     readView={() => <div>Placeholder</div> /* TODO: Use AtlasKit Tags here*/}

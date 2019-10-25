@@ -4,16 +4,14 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import {renderer} from 'react-forms-processor-atlaskit';
-import {cache} from '../../containers/config/EndpointContainer';
-import './NexusCustomItemizedField.scss';
-import {NexusModalContext} from '../nexus-modal/NexusModal';
+import {Form} from 'react-forms-processor';
+import isEqual from 'lodash.isequal';
 import {
     RemovableButton,
     TerritoryTag,
 } from '../../containers/avail/custom-form-components/CustomFormComponents';
-import {Form} from 'react-forms-processor';
-// import {renderer} from '../../containers/config/CreateEditConfigForm';
-import {getConfigApiValues} from '../../common/CommonConfigService';
+import {NexusModalContext} from '../nexus-modal/NexusModal';
+import './NexusCustomItemizedField.scss';
 
 const PLACEHOLDER = 'Add...';
 
@@ -21,64 +19,85 @@ const NexusCustomItemizedField = ({
     schema,
     existingItems,
     onSubmit,
+    initialValue,
 }) => {
     const [items, setItems] = useState(existingItems);
+    const [editIndex, setEditIndex] = useState(-1);
+    const [formValue, setFormValue] = useState(initialValue);
     const {setModalContent, setModalActions, close}= useContext(NexusModalContext);
-    const [test, setTest] = useState({tbr: 'br'});
 
     useEffect(() => setItems(existingItems), [existingItems]);
+    useEffect(() => {
+        if (!isEqual(initialValue, formValue)) {
+            const callback = editIndex < 0 ? submitNewItem : submitEditedItems;
+            addOrEditItem(formValue, callback);
+        }
+    }, [formValue]);
 
-    const addItem = (test) => {
+    const addOrEditItem = (value, callback) => {
+        value && setFormValue(value);
         const content = (
             <>
                 <Form
                     renderer={renderer}
-                    // optionsHandler={optionsHandler}
                     defaultFields={schema}
                     onRemoveItem={() => {}}
-                    displayName={'Test'}
-                    value={test}
-                    onSubmit={submitChanges}
-                    onChange={(item) => {console.log(item); setTest(item);}}
+                    value={value || formValue}
+                    onSubmit={submitNewItem}
+                    onChange={value => setFormValue(value)}
                 />
             </>
-    );
-        setModalActions([{text: 'Cancel', onClick: close}, {text: 'Submit', onClick: submitChanges}]);
+        );
+
+        setModalActions([{text: 'Cancel', onClick: () => {setEditIndex(-1); setFormValue({}); close();}}, {text: 'Submit', onClick: callback}]);
         setModalContent(content);
     };
 
     // Filters out the item at given index
     const getFilteredItems = (arr = [], index) => arr.filter((element, i) => i !== index);
 
-    const submitChanges = (item) => {
-        const combinedItems = [...items, test];
-        console.warn(combinedItems);
+    const submitEditedItems = () => {
+        const itemsClone = items;
+        itemsClone[editIndex] = formValue;
+        onSubmit(itemsClone);
+
+        setItems(itemsClone);
+        setEditIndex(-1);
+        setFormValue({});
+        close();
+    };
+
+    const submitNewItem = () => {
+        const combinedItems = [...items, formValue];
         onSubmit(combinedItems);
 
         setItems(combinedItems);
+        setFormValue({});
         close();
     };
 
     return (
         <div className="nexus-c-nexus-custom-itemized-field">
             <div className="nexus-c-nexus-custom-itemized-field__content">
-                <div className="nexus-c-nexus-custom-itemized-field__clickable-text" onClick={() => addItem(test)}>
-                    {!items.length &&
-                        PLACEHOLDER
-                    }
+                <div className="nexus-c-nexus-custom-itemized-field__clickable-text" onClick={() => {addOrEditItem(formValue, submitNewItem);}}>
+                    {!items.length && PLACEHOLDER}
                 </div>
                 {items.map((item, index) => (
                     // TODO: Refactor using AtlasKit
-                    <TerritoryTag isCreate key={index}>
+                    <TerritoryTag
+                        key={index}
+                        onClick={() => {setEditIndex(index); addOrEditItem(item, submitEditedItems);}}
+                        isCreate
+                    >
                         {item.country}
-                        <RemovableButton onClick={() => setItems(getFilteredItems(items, index))}>
+                        <RemovableButton onClick={() => {setItems(getFilteredItems(items, index));}}>
                             x
                         </RemovableButton>
                     </TerritoryTag>
                 ))}
             </div>
             <div className="nexus-c-nexus-custom-itemized-field__controls">
-                <Button onClick={addItem} className="button-fix">
+                <Button onClick={() => addOrEditItem(formValue, submitNewItem)} className="button-fix">
                     <AddIcon />
                 </Button>
             </div>
@@ -87,13 +106,15 @@ const NexusCustomItemizedField = ({
 };
 
 NexusCustomItemizedField.propTypes = {
-    existingItems: PropTypes.arrayOf(PropTypes.object),
     onSubmit: PropTypes.func.isRequired,
     schema: PropTypes.arrayOf(PropTypes.object).isRequired,
+    existingItems: PropTypes.arrayOf(PropTypes.object),
+    initialValue: PropTypes.object,
 };
 
 NexusCustomItemizedField.defaultProps = {
     existingItems: [],
+    initialValue: {},
 };
 
 export default NexusCustomItemizedField;

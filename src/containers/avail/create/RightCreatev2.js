@@ -18,7 +18,8 @@ import {URL} from '../../../util/Common';
 
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusTimeWindowPicker from '../../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
-
+import NexusCustomItemizedField from '../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField';
+import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 
 const mapStateToProps = state => {
     return {
@@ -227,7 +228,17 @@ class RightCreate extends React.Component {
     };
 
     render() {
-        const fieldMapping = (fieldType, jvName, displayName, required) => {
+        const fieldMapping = (fieldType, jvName, displayName, required, value) => {
+            const prepData = (name) => {
+                const {selectValues = {}} = this.props;
+                const options  = selectValues[name] || [];
+                const alreadySelected = Array.isArray(value) ? value.map((option) => option.country) : [];
+
+                return options
+                    .filter((rec) => (rec.value && !alreadySelected.includes(rec.value)))
+                    .map(rec => ({...rec, label: rec.label || rec.value}));
+            };
+
             const fieldMap = {
                 string: null,
                 integer: null,
@@ -263,7 +274,13 @@ class RightCreate extends React.Component {
                         required={required}
                     />,
                 boolean: null,
-                territoryType: null,
+                territoryType: (
+                    <NexusCustomItemizedField
+                        existingItems={this.right['territory']}
+                        onSubmit={items => this.handleArrayPush(items, 'territory')}
+                        schema={RightTerritoryFormSchema(prepData('territory'))}
+                    />
+                ),
             };
             return fieldMap[fieldType];
         };
