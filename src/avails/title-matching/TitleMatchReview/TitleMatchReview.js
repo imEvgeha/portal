@@ -18,7 +18,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const navigateToMatchPreview = () => {
         const {params} = match || {};
         const {rightId} = params || {};
-        history.push(URL.keepEmbedded(`/avails/rights/${rightId}/title_matching`));
+        history.push(URL.keepEmbedded(`/avails/rights/${rightId}/title-matching`));
     };
 
     const getTitle = id => {
