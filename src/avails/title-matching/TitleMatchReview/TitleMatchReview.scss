@@ -1,0 +1,12 @@
+.nexus-c-title-to-match-review{
+  >.nexus-c-title {
+    font-weight: normal;
+    font-size: 20px;
+  }
+  .nexus-c-nexus-grid{
+    height: 300px;
+    .nexus-c-create-loading-cell-renderer, .nexus-c-create-loading-cell-renderer__value {
+      overflow: hidden;
+    }
+  }
+}

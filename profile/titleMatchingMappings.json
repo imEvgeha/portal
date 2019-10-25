@@ -22,88 +22,6 @@
     "required": false
   },
   {
-    "javaVariableName": "licensor",
-    "displayName": "Licensor",
-    "dataType": "select",
-    "searchDataType": "multiselect",
-    "configEndpoint": "/licensors",
-    "queryParamName": "licensor",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "totalRuntime",
-    "displayName": "Runtime",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "totalRuntime",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": false
-  },
-  {
-    "javaVariableName": "rightStatus",
-    "displayName": "Right Status",
-    "dataType": "select",
-    "searchDataType": "multiselect",
-    "options": [
-      "Pending",
-      "Confirmed",
-      "Tentative",
-      "Canceled",
-      "Withdrawn"
-    ],
-    "queryParamName": "rightStatus",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "status",
-    "displayName": "Status",
-    "dataType": "select",
-    "searchDataType": "multiselect",
-    "options": [
-      "Pending",
-      "Ready",
-      "ReadyNew",
-      "TakeDown"
-    ],
-    "queryParamName": "status",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "licenseType",
-    "displayName": "License Type",
-    "dataType": "select",
-    "searchDataType": "multiselect",
-    "configEndpoint": "/licence-types",
-    "queryParamName": "licenseType",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "territory",
-    "displayName": "Country",
-    "dataType": "territoryType",
-    "searchDataType": "multiselect",
-    "configEndpoint": "/territories",
-    "queryParamName": "territory",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
     "javaVariableName": "contentType",
     "displayName": "Content Type",
     "dataType": "select",
@@ -116,15 +34,60 @@
     "required": true
   },
   {
-    "javaVariableName": "format",
-    "displayName": "Format",
+    "javaVariableName": "licensor",
+    "displayName": "Licensor",
     "dataType": "select",
     "searchDataType": "multiselect",
-    "configEndpoint": "/formats",
-    "queryParamName": "format",
+    "configEndpoint": "/licensors",
+    "queryParamName": "licensor",
     "readOnly": false,
     "enableSearch": true,
     "enableEdit": true,
     "required": true
+  },
+  {
+    "javaVariableName": "rating.ratingValue",
+    "displayName": "Rating Value",
+    "dataType": "select",
+    "searchDataType": "multiselect",
+    "configEndpoint": "/ratings",
+    "queryParamName": "ratingValue",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "eidr.titleId",
+    "displayName": "EIDR Title ID",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "eidrTitleId",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "genres",
+    "displayName": "Genres",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "genres",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "castCrew",
+    "displayName": "Cast Crew",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "displayName",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
   }
 ]
