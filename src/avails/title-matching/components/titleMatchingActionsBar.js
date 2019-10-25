@@ -10,24 +10,24 @@ const ActionsBar = ({matchList, mergeTitles}) => {
         matchAndCreate: false,
     });
 
-    const onCancel = () => {
-      //future implementation
-    };
-
-    const onMatch = () => {
-      //future implementation (gets the matchList in the props)
-    };
-
-    const onMatchAndCreate = () => {
-        mergeTitles();
-    };
-
     useEffect(() => {
         setButtonStatus({
             match: matchList[NEXUS],
             matchAndCreate: matchList[MOVIDA] || matchList[VZ],
         });
     }, [matchList]);
+
+    const onCancel = () => {
+      //future implementation
+    };
+
+    const onMatch = () => {
+      return matchList[NEXUS];
+    };
+
+    const onMatchAndCreate = () => {
+        mergeTitles();
+    };
 
     return (
         <React.Fragment>
