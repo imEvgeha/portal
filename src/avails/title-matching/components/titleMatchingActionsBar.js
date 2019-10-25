@@ -35,12 +35,14 @@ const ActionsBar = ({matchList, mergeTitles}) => {
                 <Button onClick={onCancel}>
                     Cancel
                 </Button>
-                <Button onClick={onMatch}
-                        className={`nexus-c-title-matching-custom-actions__button${buttonStatus.match ? '--active' : ''}`}>
+                <Button
+                    onClick={onMatch}
+                    className={`nexus-c-title-matching-custom-actions__button${buttonStatus.match ? '--active' : ''}`}>
                     Match
                 </Button>
-                <Button onClick={onMatchAndCreate}
-                        className={`nexus-c-title-matching-custom-actions__button${buttonStatus.matchAndCreate ? '--active' : ''}`}>
+                <Button
+                    onClick={onMatchAndCreate}
+                    className={`nexus-c-title-matching-custom-actions__button${buttonStatus.matchAndCreate ? '--active' : ''}`}>
                     Match & Create
                 </Button>
             </div>

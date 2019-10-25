@@ -45,9 +45,10 @@ const TitlesList = ({columnDefs, mergeTitles}) => {
         const repoName = getRepositoryName(id);
         return (
             <CustomActionsCellRenderer id={id} >
-                <input type={'radio'} name={repoName}
-                       checked={matchList[repoName] && matchList[repoName].id === id}
-                       onChange={event => matchClickHandler(data, repoName, event.target.checked)}/>
+                <input
+                    type={'radio'} name={repoName}
+                    checked={matchList[repoName] && matchList[repoName].id === id}
+                    onChange={event => matchClickHandler(data, repoName, event.target.checked)}/>
             </CustomActionsCellRenderer>
         );
     };
@@ -108,8 +109,9 @@ const TitlesList = ({columnDefs, mergeTitles}) => {
             <NexusGridWithInfiniteScrolling
                 columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
                 setTotalCount={setTotalCount}/>
-            <ActionsBar matchList={matchList}
-                        mergeTitles={() => mergeTitles(matchList, duplicateList)}/>
+            <ActionsBar
+                matchList={matchList}
+                mergeTitles={() => mergeTitles(matchList, duplicateList)}/>
         </React.Fragment>
     );
 };

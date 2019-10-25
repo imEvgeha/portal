@@ -47,6 +47,7 @@ const routes = (
         <Route exact path="/avails/select-rights-planning" component={canRender(SelectRightsPlanning, 'update', 'Avail')}/>
         <Route exact path="/avails/rights/:rightId/title_matching" component={canRender(TitleMatchView, 'update', 'Avail')}/>
         <Route exact path="/avails/rights/:rightId/title-matching" component={canRender(TitleMatchView, 'update', 'Avail')}/>
+        <Route exact path="/avails/rights/:rightId/title_matching/review" component={canRender(TitleMatchReview, 'update', 'Avail')}/>
         <Route exact path="/avails/rights/:rightId/title-matching/review" component={canRender(TitleMatchReview, 'update', 'Avail')}/>
         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
         <Route path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />

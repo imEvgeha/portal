@@ -10,7 +10,7 @@ import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
 import { createColumnDefs as getRightColumns } from '../utils';
-import mappings from '../../../profile/titleMatching_rightMappings';
+import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
