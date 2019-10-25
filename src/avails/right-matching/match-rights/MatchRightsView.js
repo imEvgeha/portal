@@ -17,7 +17,9 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';
+import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
+import useLocalStorage from '../../../util/hooks/useLocalStorage';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -39,6 +41,12 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
+    const [dopCount] = useLocalStorage('rightMatchingDOP');
+
+    // DOP Integration
+    useEffect(() => {
+        DOP.setErrorsCount(dopCount);
+    }, [dopCount]);
 
     useEffect(() => {
         setCombinedSavedFlag({isCombinedRightSaved: false});
@@ -68,7 +76,7 @@ function MatchRightView({
         if(isCombinedRightSaved) {
             const {params} = match || {};
             const {availHistoryIds} = params || {};
-            history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`));
+            history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching`));
         }
     }, [isCombinedRightSaved]);
 
@@ -76,14 +84,14 @@ function MatchRightView({
     const navigateToMatchPreview = () => {
         const {params} = match || {};
         const {availHistoryIds, rightId} = params || {};
-        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
+        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`));
     };
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {
         const {params} = match || {};
         const {rightId, availHistoryIds} = params || {};
-        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`));
+        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`));
     };
 
     const onSaveCombinedRight = () => {
