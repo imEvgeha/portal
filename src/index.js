@@ -1,6 +1,5 @@
 import axios from 'axios';
 import config from 'react-global-configuration';
-import { IntlProvider } from 'react-intl';
 import {createBrowserHistory} from 'history';
 import {defaultConfiguration} from './config';
 import './styles/index.scss';
@@ -42,8 +41,8 @@ import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
-import * as moment from 'moment';
 import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
+import CustomIntlProvider from './layout/CustomIntlProvider';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
@@ -53,18 +52,13 @@ export const store = configureStore({}, history);
 
 const app = (
     <Provider store={store}>
-        <IntlProvider locale="en-US">
+        <CustomIntlProvider>
             <NexusModalProvider>
                 <AppLayout history={history} />
             </NexusModalProvider>
-        </IntlProvider>
+        </CustomIntlProvider>
     </Provider>
 );
-
-const setMomentLocale = () => {
-    let userLocale = window.navigator.language;
-    moment.locale(userLocale);
-};
 
 function init() {
     keycloak.instance = Keycloak(config.get('keycloak'));
@@ -81,7 +75,6 @@ function init() {
                 loadCreateRightState();
                 loadHistoryState();
                 loadDopState();
-                setMomentLocale();
 
                 render(
                     app,
