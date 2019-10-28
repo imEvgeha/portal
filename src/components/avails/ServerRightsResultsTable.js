@@ -79,6 +79,9 @@ class ServerRightsResultsTable extends RightsResultsTable {
         if(this.state.table && this.state.table.api.getDisplayedRowCount() === 0 && !this.props.autoRefresh){
             this.state.table.api.showLoadingOverlay();
         }
+
+        //Could be a problem with calculation page number. The cacheBlockSize, value row blocks by default is 100.
+        //We should have the same as pageSize value.
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.sort)
            .then(response => {this.parseServerResponse(response, params);})
            .catch((error) => {
