@@ -16,7 +16,7 @@ import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import NexusCustomItemizedField from '../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField';
+import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 
 const mapStateToProps = state => {
@@ -324,7 +324,7 @@ class RightDetails extends React.Component {
                 <InlineEdit
                     onConfirm={() => this.update(name, this.cancel)}
                     editView={() => (
-                        <NexusCustomItemizedField
+                        <NexusMultiInstanceField
                             name={name}
                             existingItems={selectedVal}
                             onSubmit={items => addTerritory(items)}

@@ -11,11 +11,11 @@ import {
     TerritoryTag,
 } from '../../containers/avail/custom-form-components/CustomFormComponents';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
-import './NexusCustomItemizedField.scss';
+import './NexusMultiInstanceField.scss';
 
 const PLACEHOLDER = 'Add...';
 
-const NexusCustomItemizedField = ({
+const NexusMultiInstanceField = ({
     schema,
     existingItems,
     onSubmit,
@@ -41,9 +41,8 @@ const NexusCustomItemizedField = ({
                 <Form
                     renderer={renderer}
                     defaultFields={schema}
-                    onRemoveItem={() => {}}
                     value={value || formValue}
-                    onSubmit={submitNewItem}
+                    onSubmit={callback}
                     onChange={value => setFormValue(value)}
                 />
             </>
@@ -77,9 +76,9 @@ const NexusCustomItemizedField = ({
     };
 
     return (
-        <div className="nexus-c-nexus-custom-itemized-field">
-            <div className="nexus-c-nexus-custom-itemized-field__content">
-                <div className="nexus-c-nexus-custom-itemized-field__clickable-text" onClick={() => {addOrEditItem(formValue, submitNewItem);}}>
+        <div className="nexus-c-nexus-multi-instance-field">
+            <div className="nexus-c-nexus-multi-instance-field__content">
+                <div className="nexus-c-nexus-multi-instance-field__clickable-text" onClick={() => {addOrEditItem(formValue, submitNewItem);}}>
                     {!items.length && PLACEHOLDER}
                 </div>
                 {items.map((item, index) => (
@@ -96,7 +95,7 @@ const NexusCustomItemizedField = ({
                     </TerritoryTag>
                 ))}
             </div>
-            <div className="nexus-c-nexus-custom-itemized-field__controls">
+            <div className="nexus-c-nexus-multi-instance-field__controls">
                 <Button onClick={() => addOrEditItem(formValue, submitNewItem)} className="button-fix">
                     <AddIcon />
                 </Button>
@@ -105,16 +104,16 @@ const NexusCustomItemizedField = ({
     );
 };
 
-NexusCustomItemizedField.propTypes = {
+NexusMultiInstanceField.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     schema: PropTypes.arrayOf(PropTypes.object).isRequired,
     existingItems: PropTypes.arrayOf(PropTypes.object),
     initialValue: PropTypes.object,
 };
 
-NexusCustomItemizedField.defaultProps = {
+NexusMultiInstanceField.defaultProps = {
     existingItems: [],
     initialValue: {},
 };
 
-export default NexusCustomItemizedField;
+export default NexusMultiInstanceField;

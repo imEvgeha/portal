@@ -18,7 +18,7 @@ import {URL} from '../../../util/Common';
 
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusTimeWindowPicker from '../../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
-import NexusCustomItemizedField from '../../../ui-elements/nexus-custom-itemized-field/NexusCustomItemizedField';
+import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 
 const mapStateToProps = state => {
@@ -275,7 +275,7 @@ class RightCreate extends React.Component {
                     />,
                 boolean: null,
                 territoryType: (
-                    <NexusCustomItemizedField
+                    <NexusMultiInstanceField
                         existingItems={this.right['territory']}
                         onSubmit={items => this.handleArrayPush(items, 'territory')}
                         schema={RightTerritoryFormSchema(prepData('territory'))}
