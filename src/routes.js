@@ -4,7 +4,7 @@ import RightDashboardContainer  from './containers/avail/dashboard/DashboardCont
 import RightDetails  from './containers/avail/details/RightDetails';
 import RightCreate  from './containers/avail/create/RightCreate';
 import RightDetailsv2  from './containers/avail/details/RightDetailsv2';
-import RightCreatev2  from './containers/avail/create/RightCreatev2';
+import RightCreatev2  from './containers/avail/create/RightCreateV3';
 import RightsCreateFromAttachment  from './containers/avail/create/RightsCreateFromAttachment';
 import SelectRightsPlanning  from './containers/avail/DOP/SelectRightsPlanning';
 import AvailIngestHistoryContainer from './containers/avail/ingest-history/AvailIngestHistoryContainer';
