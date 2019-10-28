@@ -18,7 +18,8 @@ import {URL} from '../../../util/Common';
 
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusTimeWindowPicker from '../../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
-
+import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
+import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 
 const mapStateToProps = state => {
     return {
@@ -227,7 +228,17 @@ class RightCreate extends React.Component {
     };
 
     render() {
-        const fieldMapping = (fieldType, jvName, displayName, required) => {
+        const fieldMapping = (fieldType, jvName, displayName, required, value) => {
+            const prepData = (name) => {
+                const {selectValues = {}} = this.props;
+                const options  = selectValues[name] || [];
+                const alreadySelected = Array.isArray(value) ? value.map((option) => option.country) : [];
+
+                return options
+                    .filter((rec) => (rec.value && !alreadySelected.includes(rec.value)))
+                    .map(rec => ({...rec, label: rec.label || rec.value}));
+            };
+
             const fieldMap = {
                 string: null,
                 integer: null,
@@ -253,17 +264,23 @@ class RightCreate extends React.Component {
                     />
                 ),
                 date: <NexusDateTimePicker
-                        id={jvName}
-                        label={displayName}
-                        value={'2019-10-08T10:00:00.000Z'}
-                        onChange={date => {
-                            /* For testing proposes */
-                            console.warn('NexusSimpleDateTimePicker returned: ', date);
-                        }}
-                        required={required}
-                    />,
+                    id={jvName}
+                    label={displayName}
+                    value={'2019-10-08T10:00:00.000Z'}
+                    onChange={date => {
+                        /* For testing proposes */
+                        console.warn('NexusSimpleDateTimePicker returned: ', date);
+                    }}
+                    required={required}
+                />,
                 boolean: null,
-                territoryType: null,
+                territoryType: (
+                    <NexusMultiInstanceField
+                        existingItems={this.right['territory']}
+                        onSubmit={items => this.handleArrayPush(items, 'territory')}
+                        schema={RightTerritoryFormSchema(prepData('territory'))}
+                    />
+                ),
             };
             return fieldMap[fieldType];
         };
