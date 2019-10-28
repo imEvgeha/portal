@@ -52,7 +52,7 @@
     prop-types "^15.5.10"
     tslib "^1.9.3"
 
-"@atlaskit/analytics-next@^6.1.0":
+"@atlaskit/analytics-next@^6.1.0", "@atlaskit/analytics-next@^6.3.0":
   version "6.3.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.3.0.tgz#3657dd183d569e458ea3d424a9f38563085fb82e"
   integrity sha512-3lXGKhE5adgMS+KKV6VFSflbJ0pbKHWWhTyB3vp/xbujl8umjE5bepXiuoBTA2mguhTG0n0GPtlqa+HhN7XYfA==
@@ -570,6 +570,18 @@
     react-node-resolver "^1.0.1"
     tslib "^1.9.3"
 
+"@atlaskit/inline-dialog@^12.1.1":
+  version "12.1.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-12.1.2.tgz#27579273d87d2661c6e804da64ffa003848152a6"
+  integrity sha512-7p7nRWJJL5zWC8trRg5e47g105zcbCriJi0JtSjVtxcYxljf/7PipJaZHm2PFaArV1eX0VlAyV/lcLPtnmDIxA==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.3.0"
+    "@atlaskit/popper" "^3.1.5"
+    "@atlaskit/theme" "^9.1.6"
+    "@babel/runtime" "^7.0.0"
+    react-node-resolver "^1.0.1"
+    tslib "^1.9.3"
+
 "@atlaskit/inline-dialog@^9.0.14":
   version "9.0.15"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-9.0.15.tgz#e8c5bdd530aecba0226f74ae9169902b8e5cb4d9"
@@ -781,6 +793,15 @@
   version "3.1.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.6.tgz#531804aace01ba482da8d86eb8b2ced2f8d32774"
   integrity sha512-luwyFgayeQslvweki79GiFdAgm1pqyIlGF1gwgFqgTuLcvbMCWFTczc0D+fRTPhxrwLWGqKeYxNQRYcTAIgMqg==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    memoize-one "^5.1.0"
+    react-popper "1.0.2"
+
+"@atlaskit/popper@^3.1.5":
+  version "3.1.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.5.tgz#ddea00140709fcbfa2e7454977ae9d320a44b4cf"
+  integrity sha512-d8OFakk2kUNCWZNpa7HSQv6eQfJQNLPSPxUMc5x/G7eIVP2kVbFS0IyXriuslyDkFxofkr9W1Zn1Ng6aXkMXjQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     memoize-one "^5.1.0"
@@ -1040,6 +1061,16 @@
   dependencies:
     "@atlaskit/analytics-next" "^6.3.1"
     "@atlaskit/theme" "^9.2.4"
+    "@emotion/core" "^10.0.9"
+    tslib "^1.9.3"
+
+"@atlaskit/textfield@^3.1.1":
+  version "3.1.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/textfield/-/textfield-3.1.1.tgz#18143c2744312d61d8558e6be6909dd14c3429ba"
+  integrity sha512-EqDtYkqjBy1xIjIqGcEakZTXwZTgVUKZz2YnF9IZOkJWDjh1ye/uRjDXCU2MXRSsz04gsZ4j5cURQ4xFU26gww==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.3.0"
+    "@atlaskit/theme" "^9.2.2"
     "@emotion/core" "^10.0.9"
     tslib "^1.9.3"
 

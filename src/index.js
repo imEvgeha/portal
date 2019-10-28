@@ -41,6 +41,7 @@ import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
+import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
 import CustomIntlProvider from './layout/CustomIntlProvider';
 
 export const keycloak = {instance: {}};
@@ -52,7 +53,9 @@ export const store = configureStore({}, history);
 const app = (
     <Provider store={store}>
         <CustomIntlProvider>
-            <AppLayout history={history} />
+            <NexusModalProvider>
+                <AppLayout history={history} />
+            </NexusModalProvider>
         </CustomIntlProvider>
     </Provider>
 );
