@@ -10,24 +10,25 @@ const ActionsBar = ({matchList, mergeTitles}) => {
         matchAndCreate: false,
     });
 
-    const onCancel = () => {
-      //future implementation
-    };
-
-    const onMatch = () => {
-      //future implementation (gets the matchList in the props)
-    };
-
-    const onMatchAndCreate = () => {
-        mergeTitles();
-    };
-
     useEffect(() => {
         setButtonStatus({
             match: matchList[NEXUS],
             matchAndCreate: matchList[MOVIDA] || matchList[VZ],
         });
     }, [matchList]);
+
+    const onCancel = () => {
+      //future implementation
+    };
+
+    const onMatch = () => {
+        //addToast here with View title link pointing to id: "matchList[NEXUS]"
+    };
+
+    const onMatchAndCreate = () => {
+        //addtoast here for warning and then onClick of OK: mergeTitles();
+        mergeTitles();
+    };
 
     return (
         <React.Fragment>
