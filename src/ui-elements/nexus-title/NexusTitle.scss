@@ -18,13 +18,12 @@
 }
 
 .nexus-c-right-to-match-view__page-header {
-    display: flex;
-    align-items: center;
-
+    display: inline-block;
     &-title {
         color: map-get($colors, nexus-title-color);
         font-family: $nexus-font;
         font-size: 27px;
+        vertical-align: super;
     }
 }
 
