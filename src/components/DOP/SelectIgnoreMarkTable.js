@@ -79,8 +79,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     cellRenderer: 'selectPlanTerritory',
                     cellEditorFramework: SelectPlanTerritoryEditor,
                     cellEditorParams: {
-                        promotedRights: this.props.promotedRights,
-                        promotedRightsFullData: this.props.promotedRightsFullData,
+                        getPromotedRights: this.getPromotedRights,
+                        getPromotedRightsFullData: this.getPromotedRightsFullData,
                         updatePromotedRights,
                         updatePromotedRightsFullData,
                         selectedTerritories,
@@ -133,7 +133,11 @@ export default function withSelectIgnoreMark(WrappedComponent) {
 
         getPromotedRights = () => {
             return this.props.promotedRights;
-        }
+        };
+
+        getPromotedRightsFullData = () => {
+            return this.props.promotedRightsFullData;
+        };
 
         render() {
             const {colDef, columns} = this.state;
