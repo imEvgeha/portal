@@ -90,4 +90,3 @@ const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITA
 };
 
 export default withEditableColumns;
-

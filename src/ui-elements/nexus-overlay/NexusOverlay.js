@@ -13,8 +13,7 @@ export const NexusOverlayProvider = ({children}) => { // eslint-disable-line
     return (
         <NexusOverlayContext.Provider value={context}>
             {children}
-            {isOverlayActive && <Blanket isTinted={isOverlayActive} />}
+            {isOverlayActive && <Blanket isTinted={true} />}
         </NexusOverlayContext.Provider>
     );
 };
-

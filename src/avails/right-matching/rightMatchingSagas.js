@@ -7,10 +7,18 @@ import {rightsService} from '../../containers/avail/service/RightsService';
 import {switchCase} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
-import {CREATE_NEW_RIGHT_SUCCESS_MESSAGE, CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../ui-elements/nexus-toast-notification/constants';
+import {
+    CREATE_NEW_RIGHT_SUCCESS_MESSAGE, 
+    CREATE_NEW_RIGHT_ERROR_MESSAGE, 
+    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, 
+    SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+    SUCCESS_TITLE,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    ERROR_ICON,
+} from '../../ui-elements/nexus-toast-notification/constants';
 
-
-// TODO - refactor this worker sagra (use select)
+// TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs({payload}) {
     try {
         if (payload && payload.length) {
@@ -234,9 +242,9 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             payload: {focusedRight},
         });
         yield call(payload.addToast, {
-            icon: 'success',
-            title: 'Success',
+            title: SUCCESS_TITLE,
             description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
         });
     } catch (error) {
         yield put({
@@ -245,9 +253,9 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             error: true,
         });
         yield call(payload.addToast, {
-            icon: 'error',
-            title: 'Error',
+            title: ERROR_TITLE,
             description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+            icon: ERROR_ICON,
         });
     }
 }
@@ -310,9 +318,9 @@ export function* createNewRight(requestMethod, {payload}) {
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
         yield call(payload.addToast, {
-            icon: 'success',
-            title: 'Success',
+            title: SUCCESS_TITLE,
             description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
         });
         yield put(goBack());
     } catch (error) {
@@ -322,9 +330,9 @@ export function* createNewRight(requestMethod, {payload}) {
             error: true
         });
         yield call(payload.addToast, {
-            icon: 'error',
-            title: 'Error',
+            title: ERROR_TITLE,
             description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
+            icon: ERROR_ICON,
         });
     }
 }

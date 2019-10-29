@@ -108,7 +108,7 @@ function MatchRightView({
 
     return (
         <div className="nexus-c-match-right-view">
-            <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching/${rightId}`)} className="nexus-c-match-right-view__header" >
+            <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)} className="nexus-c-match-right-view__header" >
                 <div className="nexus-c-match-right-view__header-content">
                     <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
                     <span className="nexus-c-match-right-view__header-title">Right Matching Preview</span>

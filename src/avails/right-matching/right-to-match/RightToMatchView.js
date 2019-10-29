@@ -20,7 +20,7 @@ import DOP from '../../../util/DOP';
 import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
-import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '../../../ui-elements/nexus-toast-notification/constants';
+import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -45,7 +45,7 @@ const RightToMatchView = ({
     const {addToast, removeToast} = useContext(NexusToastNotificationContext);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
-    const previousPageRoute = `/avails/history/${availHistoryIds}/right_matching`;
+    const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
     const [dopCount] = useLocalStorage('rightMatchingDOP');
 
     // DOP Integration
@@ -75,9 +75,9 @@ const RightToMatchView = ({
 
     const onNewRightClick = () => {
         addToast({
-            title: 'Warning',
+            title: WARNING_TITLE,
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-            icon: 'warning',
+            icon: WARNING_ICON,
             actions: [
                 {content:'Cancel', onClick: removeToast},
                 {content:'OK', onClick: onDeclareNewRight}
@@ -114,7 +114,7 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right_matching`)} className="nexus-c-right-to-match-view__header" >
+            <Link to={URL.keepEmbedded(previousPageRoute)} className="nexus-c-right-to-match-view__header" >
                 <div className="nexus-c-right-to-match-view__header-content">
                     <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
                     <span className="nexus-c-right-to-match-view__header-title">Right to Right Matching</span>
