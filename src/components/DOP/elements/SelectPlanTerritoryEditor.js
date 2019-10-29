@@ -6,24 +6,23 @@ import NexusCheckboxSelect from '../../../ui-elements/nexus-checkbox-select/Nexu
 class SelectPlanTerritoryEditor extends Component {
     static propTypes = {
         node: PropTypes.object,
-        promotedRights: PropTypes.array.isRequired,
-        promotedRightsFullData: PropTypes.array.isRequired,
         updatePromotedRights: PropTypes.func,
         updatePromotedRightsFullData: PropTypes.func,
         selectedTerritories: PropTypes.array,
         useSelectedTerritories: PropTypes.bool,
+        getPromotedRights: PropTypes.func.isRequired,
+        getPromotedRightsFullData: PropTypes.array.isRequired,
     };
 
     static defaultProps = {
         node: {},
-        updatePromotedRights: [],
         selectedTerritories: [],
         useSelectedTerritories: false,
     };
 
     constructor(props) {
         super(props);
-        const right = props.promotedRights.find(el => el.rightId === (props.node && props.node.id));
+        const right = props.getPromotedRights().find(el => el.rightId === (props.node && props.node.id));
         const value = (right && right.territories && right.territories
             .map(el => {
                 return {
@@ -59,16 +58,17 @@ class SelectPlanTerritoryEditor extends Component {
     }
 
     onCheckboxSelect = values => {
-        const {updatePromotedRights, promotedRights, updatePromotedRightsFullData, promotedRightsFullData, node = {}} = this.props;
+        const {updatePromotedRights, getPromotedRights, updatePromotedRightsFullData, getPromotedRightsFullData, node = {}} = this.props;
         const {data = {}} = node;
         const rightId = data && data.id;
+
         const territories = this.getTerritoriesWithUserSelected(values);
-        const filteredRights = promotedRights.filter(right => right.rightId !== rightId);
+        const filteredRights = getPromotedRights().filter(right => right.rightId !== rightId);
         const updatedRights = (territories.length > 0 && rightId) 
             ? [...filteredRights, {rightId, territories}] 
             : filteredRights;
 
-        const filteredRightsFullData = promotedRightsFullData.filter(right => right.id !== rightId);
+        const filteredRightsFullData = getPromotedRightsFullData().filter(right => right.id !== rightId);
         const updatedRightsFullData = (territories.length > 0 && rightId)
             ? [...filteredRightsFullData, data]
             : filteredRightsFullData;
