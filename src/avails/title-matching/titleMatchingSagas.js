@@ -1,4 +1,5 @@
 import {call, put, all, takeEvery} from 'redux-saga/effects';
+import {push} from 'connected-react-router';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import { createColumnDefs } from '../utils';
@@ -7,6 +8,11 @@ import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FO
 import Constants from './titleMatchingConstants';
 import {URL} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
+import {
+    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+    SUCCESS_TITLE,
+    SUCCESS_ICON,
+} from '../../ui-elements/nexus-toast-notification/constants';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -61,7 +67,7 @@ function* createTitleMatchingColumnDefs(){
 
 function* mergeAndStoreTitles({payload}){
     try{
-        const {matchList, duplicateList, historyPush} = payload;
+        const {matchList, duplicateList, addToast} = payload;
         let query = '';
         const matches = Object.keys(matchList);
         if(matches.length){
@@ -86,7 +92,13 @@ function* mergeAndStoreTitles({payload}){
             type: actionTypes.STORE_TITLES,
             payload: Object.values(matchList),
         });
-        historyPush(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
+        yield push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
+        yield call(addToast, {
+            title: SUCCESS_TITLE,
+            message: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
+            actions: [{content:'View title', onClick: () => window.open(`/metadata/detail/${response.data.id}`, '_blank')}],
+        });
         //yield call historyPush and then yield call addToast with View title pointing to id: "response.data.id"
     } catch (error) {
         //can cover error handling here

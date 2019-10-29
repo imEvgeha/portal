@@ -1,7 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Constants from '../titleMatchingConstants';
+import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
+import {
+    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+    CREATE_NEW_TITLE_SUCCESS_MESSAGE,
+    WARNING_TITLE,
+    SUCCESS_TITLE,
+    WARNING_ICON,
+    SUCCESS_ICON,
+} from '../../../ui-elements/nexus-toast-notification/constants';
 
 const ActionsBar = ({matchList, mergeTitles}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
@@ -9,6 +18,7 @@ const ActionsBar = ({matchList, mergeTitles}) => {
         match: false,
         matchAndCreate: false,
     });
+    const {addToast, removeToast} = useContext(NexusToastNotificationContext);
 
     useEffect(() => {
         setButtonStatus({
@@ -23,11 +33,26 @@ const ActionsBar = ({matchList, mergeTitles}) => {
 
     const onMatch = () => {
         //addToast here with View title link pointing to id: "matchList[NEXUS]"
+        addToast({
+            title: SUCCESS_TITLE,
+            message: CREATE_NEW_TITLE_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
+            actions: [
+                {content: 'View Title', onClick: () => window.open(`/metadata/detail/${matchList[NEXUS]}`, '_blank')}
+            ],
+        });
     };
 
     const onMatchAndCreate = () => {
-        //addtoast here for warning and then onClick of OK: mergeTitles();
-        mergeTitles();
+        addToast({
+            title: WARNING_TITLE,
+            message: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            icon: WARNING_ICON,
+            actions: [
+                {content:'Cancel', onClick: removeToast},
+                {content: 'Ok', onClick: mergeTitles}
+            ],
+        });
     };
 
     return (

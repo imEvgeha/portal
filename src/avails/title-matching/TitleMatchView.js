@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
@@ -13,11 +13,12 @@ import { createColumnDefs as getRightColumns } from '../utils';
 import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
+import NexusToastNotificationContext from '../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import './TitleMatchView.scss';
 
-const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
+const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, mergeTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
-
+    const {addToast} = useContext(NexusToastNotificationContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -67,7 +68,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
                                 action menu.</p>
                         </SectionMessage>
                         <TitlesList columnDefs={columnDefs}
-                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, history.push)}/>
+                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, addToast)}/>
                     </React.Fragment>
                 )
             }

@@ -77,7 +77,7 @@ const RightToMatchView = ({
         addToast({
             title: WARNING_TITLE,
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-            icon: WARNING_ICON,
+            //icon: WARNING_ICON,
             actions: [
                 {content:'Cancel', onClick: removeToast},
                 {content:'OK', onClick: onDeclareNewRight}

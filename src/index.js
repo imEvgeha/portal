@@ -43,6 +43,7 @@ import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
 import NexusToastNotificationProvider from './ui-elements/nexus-toast-notification/NexusToastNotificationProvider';
 import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
+import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
 
 export const keycloak = {instance: {}};
@@ -54,11 +55,13 @@ export const store = configureStore({}, history);
 const app = (
     <Provider store={store}>
         <CustomIntlProvider>
-            <NexusToastNotificationProvider>
-                <NexusModalProvider>
-                    <AppLayout history={history} />
-                </NexusModalProvider>
-            </NexusToastNotificationProvider>
+            <NexusOverlayProvider>
+                <NexusToastNotificationProvider>
+                    <NexusModalProvider>
+                        <AppLayout history={history} />
+                    </NexusModalProvider>
+                </NexusToastNotificationProvider>
+            </NexusOverlayProvider>
         </CustomIntlProvider>
     </Provider>
 );
