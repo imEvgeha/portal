@@ -109,12 +109,12 @@ const RightToMatchView = ({
         <div className="nexus-c-right-to-match-view">
             <div className='nexus-c-right-to-match-view__navigation-arrow'>
                 <PageHeader>
-                    <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching`)} className="nexus-c-right-to-match-view__link" >
-                        <div className="nexus-c-right-to-match-view__page-header">
-                            <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                        <div className="nexus-c-right-to-match-view__page-header">                            
+                            <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching`)} className="nexus-c-right-to-match-view__link" >
+                                <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'} /> 
+                            </Link>
                             <span className="nexus-c-right-to-match-view__page-header-title">Right to Right Matching</span>
                         </div>
-                    </Link>
                 </PageHeader>
             </div>
             <div className="nexus-c-right-to-match-view__table-header">
