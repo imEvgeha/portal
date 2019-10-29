@@ -1,10 +1,11 @@
 import React, {useState, createContext} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 
-const NexusModalContext = createContext({});
+export const NexusModalContext = createContext({});
 
 export const NexusModalConsumer = NexusModalContext.Consumer;
 
+// eslint-disable-next-line react/prop-types
 export const NexusModalProvider = ({children}) => {
     const [content, setContent] = useState(null);
     const [title, setTitle] = useState('');
@@ -26,7 +27,7 @@ export const NexusModalProvider = ({children}) => {
     };
 
     const context = {
-        setModalContent: setContent,
+        setModalContent,
         setModalTitle: setTitle,
         setModalContentAndTitle,
         setModalActions: setActions,
@@ -40,17 +41,18 @@ export const NexusModalProvider = ({children}) => {
     return (
         <NexusModalContext.Provider value={context}>
             {isOpened &&
-            <ModalTransition>
-                <Modal
-                    actions={actions.length && actions}
-                    heading={title}
-                >
-                    {/* TODO: Change after we decide between styled or sass */}
-                    <div style={{paddingBottom: '20px'}}>
-                        {content}
-                    </div>
-                </Modal>
-            </ModalTransition>
+                <ModalTransition>
+                    <Modal
+                        actions={actions.length && actions}
+                        heading={title}
+                        onClose={close}
+                    >
+                        {/* TODO: Change after we decide between styled or sass */}
+                        <div style={{paddingBottom: '20px'}}>
+                            {content}
+                        </div>
+                    </Modal>
+                </ModalTransition>
             }
             {children}
         </NexusModalContext.Provider>

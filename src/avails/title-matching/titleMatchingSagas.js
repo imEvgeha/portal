@@ -87,6 +87,7 @@ function* mergeAndStoreTitles({payload}){
             payload: Object.values(matchList),
         });
         historyPush(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
+        //yield call historyPush and then yield call addToast with View title pointing to id: "response.data.id"
     } catch (error) {
         //can cover error handling here
     }
