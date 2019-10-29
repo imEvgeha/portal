@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PageHeader from '@atlaskit/page-header';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import './BackNavigationByUrl.scss';
 
 const BackNavigationByUrl = ({title, onNavigationClick}) => (
-    <div className='nexus-navigation-with-arrow' onClick={onNavigationClick}>
-        <PageHeader><ArrowLeftIcon size='large'/> {title}</PageHeader>
+    <div className='nexus-c-right-to-match-view__page-header'>
+        <span className="nexus-c-right-to-match-view__link" onClick={onNavigationClick}>
+            <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/>
+        </span>
+        <span className="nexus-c-right-to-match-view__page-header-title">{title}</span>
     </div>
 );
 
