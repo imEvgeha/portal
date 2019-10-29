@@ -13,6 +13,7 @@ import { createColumnDefs as getRightColumns } from '../utils';
 import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
+import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
 
 const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
@@ -39,6 +40,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
         if (match && match.params.rightId) {
             fetchFocusedRight(match.params.rightId);
         }
+        DOP.setErrorsCount(1);
     }, [match]);
 
     useEffect(() => {
@@ -66,8 +68,10 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
                             <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
                                 action menu.</p>
                         </SectionMessage>
-                        <TitlesList columnDefs={columnDefs}
-                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, history.push)}/>
+                        <TitlesList
+                            rightId={match && match.params.rightId}
+                            columnDefs={columnDefs}
+                            mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, history.push)}/>
                     </React.Fragment>
                 )
             }

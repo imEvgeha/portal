@@ -9,6 +9,7 @@ import {titleService} from '../../../containers/metadata/service/TitleService';
 import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
 import {createColumnDefs} from '../titleMatchingActions';
 import { getRepositoryCell } from '../../utils';
+import DOP from '../../../util/DOP';
 import './TitleMatchReview.scss';
 
 const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
@@ -72,7 +73,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         const matchedTitlesValues = Object.values(matchedTitles);
         if (!matchedTitlesValues.length) {
             const getTitles = [];
-            const titles = URL.getParamIfExists('idsToMerge').split(',');
+            let titles = URL.getParamIfExists('idsToMerge');
+            titles = titles.length ? titles.split(',') : [];
             const combinedTitle = URL.getParamIfExists('combinedTitle');
             titles.forEach(id => {
                 getTitles.push(getTitle(id));
@@ -95,6 +97,20 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             getColumnDefs();
         }
     }, [columnDefs]);
+
+    useEffect(() => {
+        if(mergedTitles && mergedTitles[0] && mergedTitles[0].id){
+            const {params} = match || {};
+            const {rightId} = params || {};
+            DOP.setErrorsCount(0);
+            DOP.setData({
+                match: {
+                    rightId: rightId,
+                    titleId: mergedTitles[0].id
+                }
+            });
+        }
+    }, [mergedTitles]);
 
     return (
         <div className="nexus-c-title-to-match-review">

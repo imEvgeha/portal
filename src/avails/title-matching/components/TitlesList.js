@@ -7,13 +7,13 @@ import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import ActionsBar from './titleMatchingActionsBar.js';
+import ActionsBar from './ActionsBar.js';
 import { getRepositoryName, getRepositoryCell } from '../../utils';
 import Constants from '../titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 
-const TitlesList = ({columnDefs, mergeTitles}) => {
+const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
@@ -110,6 +110,7 @@ const TitlesList = ({columnDefs, mergeTitles}) => {
                 columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
                 setTotalCount={setTotalCount}/>
             <ActionsBar
+                rightId={rightId}
                 matchList={matchList}
                 mergeTitles={() => mergeTitles(matchList, duplicateList)}/>
         </React.Fragment>
@@ -119,6 +120,7 @@ const TitlesList = ({columnDefs, mergeTitles}) => {
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
     mergeTitles: PropTypes.func,
+    rightId: PropTypes.string.isRequired,
 };
 
 TitlesList.defaultProps = {

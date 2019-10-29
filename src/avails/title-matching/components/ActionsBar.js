@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import DOP from '../../../util/DOP';
 import Constants from '../titleMatchingConstants';
 
-const ActionsBar = ({matchList, mergeTitles}) => {
+const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
@@ -22,7 +23,14 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     };
 
     const onMatch = () => {
-        //addToast here with View title link pointing to id: "matchList[NEXUS]"
+        //addToast here with View title link pointing to id: "matchList[NEXUS].id"
+        DOP.setErrorsCount(0);
+        DOP.setData({
+            match: {
+                rightId: rightId,
+                titleId: matchList[NEXUS].id
+            }
+        });
     };
 
     const onMatchAndCreate = () => {
@@ -53,6 +61,7 @@ const ActionsBar = ({matchList, mergeTitles}) => {
 ActionsBar.propTypes = {
     matchList: PropTypes.object,
     mergeTitles: PropTypes.func,
+    rightId: PropTypes.string.isRequired,
 };
 
 ActionsBar.defaultProps = {
