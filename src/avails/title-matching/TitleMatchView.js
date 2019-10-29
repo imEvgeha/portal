@@ -1,11 +1,16 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
+import {ErrorMessage} from '@atlaskit/form/Messages';
+import {Form} from 'react-forms-processor';
+import {FormButton, renderer} from 'react-forms-processor-atlaskit';
+import isEqual from 'lodash.isequal';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -15,6 +20,44 @@ import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingA
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
+// TODO: Move to titleMatchingConstants.js
+const NEW_TITLE_MODAL_TITLE = 'Create New Title';
+const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
+const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
+const newTitleFormSchema = [
+    {
+        name: 'title',
+        id: 'title',
+        label: 'Title',
+        type: 'text',
+        shouldFitContainer: true,
+        required: true,
+    },
+    {
+        name: 'contentType',
+        id: 'contentType',
+        label: 'Content Type',
+        type: 'select',
+        shouldFitContainer: true,
+        required: true,
+        options: [
+            {
+                items: [
+                    {label: 'Movie', value: 'movie'},
+                ],
+            },
+        ],
+    },
+    {
+        name: 'releaseYear',
+        id: 'releaseYear',
+        label: 'Release Year',
+        type: 'text',
+        // shouldFitContainer: true,
+        required: true,
+    },
+];
+
 const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
 
@@ -23,7 +66,11 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button>New Title</Button>
+                <Button
+                    onClick={() => setModalContentAndTitle(newTitleForm, NEW_TITLE_MODAL_TITLE)}
+                >
+                    New Title
+                </Button>
             </CustomActionsCellRenderer>
         );
     };
@@ -34,6 +81,28 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
         headerName: '',
         cellRendererFramework: newTitleCell,
     };
+
+    const [newTitleFormValue, setNewTitleFormValue] = useState({});
+    const newTitleForm = (schema) => (
+        <>
+            <Form
+                renderer={renderer}
+                defaultFields={newTitleFormSchema}
+                value={newTitleFormValue}
+                onSubmit={() => {}}
+                onChange={value => setNewTitleFormValue(value)}
+            />
+            <ErrorMessage>
+                {NEW_TITLE_ERROR_ALREADY_EXISTS}
+            </ErrorMessage>
+            <Button onClick={close}>Cancel</Button>
+            <FormButton label="Match & Create" />
+        </>
+    );
+
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
+
+    useEffect(() => setModalContentAndTitle(newTitleForm, NEW_TITLE_MODAL_TITLE), [newTitleFormValue]);
 
     useEffect(() => {
         if (match && match.params.rightId) {
