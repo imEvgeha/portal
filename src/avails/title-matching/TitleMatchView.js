@@ -1,11 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
-import {ErrorMessage} from '@atlaskit/form/Messages';
-import {Form} from 'react-forms-processor';
-import {FormButton, renderer} from 'react-forms-processor-atlaskit';
 import isEqual from 'lodash.isequal';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
@@ -17,57 +14,39 @@ import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelector
 import { createColumnDefs as getRightColumns } from '../utils';
 import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
+import CreateTitleForm from './components/createTitleForm';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
-// TODO: Move to titleMatchingConstants.js
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
-const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
-const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
-const newTitleFormSchema = [
-    {
-        name: 'title',
-        id: 'title',
-        label: 'Title',
-        type: 'text',
-        shouldFitContainer: true,
-        required: true,
-    },
-    {
-        name: 'contentType',
-        id: 'contentType',
-        label: 'Content Type',
-        type: 'select',
-        shouldFitContainer: true,
-        required: true,
-        options: [
-            {
-                items: [
-                    {label: 'Movie', value: 'movie'},
-                ],
-            },
-        ],
-    },
-    {
-        name: 'releaseYear',
-        id: 'releaseYear',
-        label: 'Release Year',
-        type: 'text',
-        // shouldFitContainer: true,
-        required: true,
-    },
-];
 
-const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, mergeTitles,
-                            focusedRight, columnDefs, searchCriteria}) => {
-
+const TitleMatchView = ({
+    match,
+    fetchFocusedRight,
+    createColumnDefs,
+    history,
+    mergeTitles,
+    focusedRight,
+    columnDefs,
+    searchCriteria
+}) => {
+    const {setModalContentAndTitle, setModalActions, close} = useContext(NexusModalContext);
+    const [modalState, setModalState] = React.useState({});
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
                 <Button
-                    onClick={() => setModalContentAndTitle(newTitleForm, NEW_TITLE_MODAL_TITLE)}
+                    onClick={() => {
+                        setModalContentAndTitle(() =>
+                            <CreateTitleForm
+                                value={modalState}
+                                onChange={setModalState}
+                                close={close}
+                            />,
+                            NEW_TITLE_MODAL_TITLE);
+                    }}
                 >
                     New Title
                 </Button>
@@ -82,27 +61,18 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, history, me
         cellRendererFramework: newTitleCell,
     };
 
-    const [newTitleFormValue, setNewTitleFormValue] = useState({});
-    const newTitleForm = (schema) => (
-        <>
-            <Form
-                renderer={renderer}
-                defaultFields={newTitleFormSchema}
-                value={newTitleFormValue}
-                onSubmit={() => {}}
-                onChange={value => setNewTitleFormValue(value)}
-            />
-            <ErrorMessage>
-                {NEW_TITLE_ERROR_ALREADY_EXISTS}
-            </ErrorMessage>
-            <Button onClick={close}>Cancel</Button>
-            <FormButton label="Match & Create" />
-        </>
-    );
-
-    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
-
-    useEffect(() => setModalContentAndTitle(newTitleForm, NEW_TITLE_MODAL_TITLE), [newTitleFormValue]);
+    useEffect(() => {
+        if (!isEqual(modalState, {})) {
+            setModalContentAndTitle(
+                <CreateTitleForm
+                    value={modalState}
+                    onChange={setModalState}
+                    close={close}
+                />,
+                NEW_TITLE_MODAL_TITLE
+            );
+        }
+    }, [modalState]);
 
     useEffect(() => {
         if (match && match.params.rightId) {
