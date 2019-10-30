@@ -10,8 +10,11 @@ import {URL, getDomainName} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
 import {
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
     SUCCESS_TITLE,
+    ERROR_TITLE,
     SUCCESS_ICON,
+    ERROR_ICON,
 } from '../../ui-elements/nexus-toast-notification/constants';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
@@ -66,8 +69,9 @@ function* createTitleMatchingColumnDefs(){
 }
 
 function* mergeAndStoreTitles({payload}){
+    const {matchList, duplicateList, toastApi} = payload;
+    const {addToast, removeToast} = toastApi || {};
     try{
-        const {matchList, duplicateList, toastApi} = payload;
         let query = '';
         const matches = Object.keys(matchList);
         if(matches.length){
@@ -93,7 +97,6 @@ function* mergeAndStoreTitles({payload}){
             payload: Object.values(matchList),
         });
         yield push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
-        const {addToast, removeToast} = toastApi || {};
         const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
         const onViewTitleClick = () => {
             window.open(url, '_blank');
@@ -101,12 +104,19 @@ function* mergeAndStoreTitles({payload}){
         };
         yield call(addToast, {
             title: SUCCESS_TITLE,
-            message: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+            description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
             actions: [{content:'View title', onClick: onViewTitleClick}],
         });
         //yield call historyPush and then yield call addToast with View title pointing to id: "response.data.id"
     } catch (error) {
+        yield call(addToast, {
+            title: ERROR_TITLE,
+            description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+            icon: ERROR_ICON,
+            isAutoDismiss: true,
+            isWithOverlay: true,
+        });
         //can cover error handling here
     }
 }

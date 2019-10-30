@@ -29,7 +29,7 @@ const NexusToastNotification = ({toasts}) => {
     useEffect(() => {
         const isWithOverlay = toasts.some(toast => toast.isWithOverlay);
         setIsOverlayActive(!!isWithOverlay);
-    }, [toasts.length]);
+    }, [toasts]);
 
     return (
         <FlagGroup onDismissed={removeToast}>

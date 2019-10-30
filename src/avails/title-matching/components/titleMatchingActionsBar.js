@@ -5,7 +5,7 @@ import Constants from '../titleMatchingConstants';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    CREATE_NEW_TITLE_SUCCESS_MESSAGE,
+    TITLE_MATCH_SUCCESS_MESSAGE,
     WARNING_TITLE,
     SUCCESS_TITLE,
     WARNING_ICON,
@@ -33,15 +33,15 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     };
 
     const onMatch = () => {
-        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS]}`;
+        //addToast here with View title link pointing to id: "matchList[NEXUS]"
+        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const onViewTitleClick = () => {
             window.open(url,'_blank');
             removeToast();
         };
-        //addToast here with View title link pointing to id: "matchList[NEXUS]"
         addToast({
             title: SUCCESS_TITLE,
-            message: CREATE_NEW_TITLE_SUCCESS_MESSAGE,
+            description: TITLE_MATCH_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
             actions: [
                 {content: 'View Title', onClick: onViewTitleClick}
@@ -52,7 +52,7 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     const onMatchAndCreate = () => {
         addToast({
             title: WARNING_TITLE,
-            message: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
             icon: WARNING_ICON,
             actions: [
                 {content:'Cancel', onClick: removeToast},
