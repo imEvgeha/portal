@@ -24,6 +24,10 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
         setCharacterName(value);
     };
 
+    const isEmpty = (name) => {
+        return (!name || name.length === 0);
+    };
+
     const handleSubmit = () => {
         if(characterName) {
             if(characterName.length > 0 && characterName.length <= 100) {
@@ -70,7 +74,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
             {isInvalid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
             </ModalBody>
             <ModalFooter>
-                <Button onClick={handleSubmit} appearance={'primary'} isDisabled={characterName && characterName.length > 0 ? false : true}> 
+                <Button onClick={handleSubmit} appearance={'primary'} isDisabled={isEmpty(characterName)}> 
                     OK
                 </Button>
                 <Button onClick={toggle} appearance={'danger'}>
