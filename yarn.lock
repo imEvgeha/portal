@@ -52,7 +52,7 @@
     prop-types "^15.5.10"
     tslib "^1.9.3"
 
-"@atlaskit/analytics-next@^6.1.0", "@atlaskit/analytics-next@^6.3.0":
+"@atlaskit/analytics-next@^6.1.0":
   version "6.3.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.3.0.tgz#3657dd183d569e458ea3d424a9f38563085fb82e"
   integrity sha512-3lXGKhE5adgMS+KKV6VFSflbJ0pbKHWWhTyB3vp/xbujl8umjE5bepXiuoBTA2mguhTG0n0GPtlqa+HhN7XYfA==
@@ -558,18 +558,6 @@
     react-node-resolver "^1.0.1"
     tslib "^1.9.3"
 
-"@atlaskit/inline-dialog@^12.1.1", "@atlaskit/inline-dialog@^12.1.3":
-  version "12.1.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-12.1.3.tgz#9c55d7c109a8d8348929c2b6bb74ab9ab07cc5a3"
-  integrity sha512-DWUSeUGZtF+/RYL/bd0XbEqjs/tghwq7SPcAC6uWi7ohm0XE74B/YU3qAz+jfvwju/s4b5s01MdIoMyKRotItQ==
-  dependencies:
-    "@atlaskit/analytics-next" "^6.3.1"
-    "@atlaskit/popper" "^3.1.6"
-    "@atlaskit/theme" "^9.2.4"
-    "@babel/runtime" "^7.0.0"
-    react-node-resolver "^1.0.1"
-    tslib "^1.9.3"
-
 "@atlaskit/inline-dialog@^12.1.1":
   version "12.1.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-12.1.2.tgz#27579273d87d2661c6e804da64ffa003848152a6"
@@ -578,6 +566,18 @@
     "@atlaskit/analytics-next" "^6.3.0"
     "@atlaskit/popper" "^3.1.5"
     "@atlaskit/theme" "^9.1.6"
+    "@babel/runtime" "^7.0.0"
+    react-node-resolver "^1.0.1"
+    tslib "^1.9.3"
+
+"@atlaskit/inline-dialog@^12.1.3":
+  version "12.1.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-12.1.3.tgz#9c55d7c109a8d8348929c2b6bb74ab9ab07cc5a3"
+  integrity sha512-DWUSeUGZtF+/RYL/bd0XbEqjs/tghwq7SPcAC6uWi7ohm0XE74B/YU3qAz+jfvwju/s4b5s01MdIoMyKRotItQ==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.3.1"
+    "@atlaskit/popper" "^3.1.6"
+    "@atlaskit/theme" "^9.2.4"
     "@babel/runtime" "^7.0.0"
     react-node-resolver "^1.0.1"
     tslib "^1.9.3"
@@ -789,19 +789,19 @@
     memoize-one "^5.1.0"
     react-popper "1.0.2"
 
-"@atlaskit/popper@^3.1.6":
-  version "3.1.6"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.6.tgz#531804aace01ba482da8d86eb8b2ced2f8d32774"
-  integrity sha512-luwyFgayeQslvweki79GiFdAgm1pqyIlGF1gwgFqgTuLcvbMCWFTczc0D+fRTPhxrwLWGqKeYxNQRYcTAIgMqg==
+"@atlaskit/popper@^3.1.5":
+  version "3.1.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.5.tgz#ddea00140709fcbfa2e7454977ae9d320a44b4cf"
+  integrity sha512-d8OFakk2kUNCWZNpa7HSQv6eQfJQNLPSPxUMc5x/G7eIVP2kVbFS0IyXriuslyDkFxofkr9W1Zn1Ng6aXkMXjQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     memoize-one "^5.1.0"
     react-popper "1.0.2"
 
-"@atlaskit/popper@^3.1.5":
-  version "3.1.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.5.tgz#ddea00140709fcbfa2e7454977ae9d320a44b4cf"
-  integrity sha512-d8OFakk2kUNCWZNpa7HSQv6eQfJQNLPSPxUMc5x/G7eIVP2kVbFS0IyXriuslyDkFxofkr9W1Zn1Ng6aXkMXjQ==
+"@atlaskit/popper@^3.1.6":
+  version "3.1.6"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.6.tgz#531804aace01ba482da8d86eb8b2ced2f8d32774"
+  integrity sha512-luwyFgayeQslvweki79GiFdAgm1pqyIlGF1gwgFqgTuLcvbMCWFTczc0D+fRTPhxrwLWGqKeYxNQRYcTAIgMqg==
   dependencies:
     "@babel/runtime" "^7.0.0"
     memoize-one "^5.1.0"
@@ -1053,16 +1053,6 @@
     "@atlaskit/theme" "^9.1.1"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
-
-"@atlaskit/textfield@^3.1.1":
-  version "3.1.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/textfield/-/textfield-3.1.2.tgz#32dae1e5575cc1898a057cea1f1520dae6e100e3"
-  integrity sha512-YAr6hZiMkXfvKPt6CHaN/NhnkFsdW8Ut7vgf11pJiND/TRd2c83el1tn/e3F4FpXhy0xqmEqB6el2qyc5w7T6Q==
-  dependencies:
-    "@atlaskit/analytics-next" "^6.3.1"
-    "@atlaskit/theme" "^9.2.4"
-    "@emotion/core" "^10.0.9"
-    tslib "^1.9.3"
 
 "@atlaskit/textfield@^3.1.1":
   version "3.1.1"
@@ -9071,6 +9061,11 @@ escope@^3.6.0:
     es6-weak-map "^2.0.1"
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
+
+eslint-config-nexus-react-app@^1.0.1:
+  version "1.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.1.tgz#7e8c6c36388980887c22a202ae5f530b807416b9"
+  integrity sha512-VrbMw2gWyn6HERQ8VNIAP7WEXvejlQtN/4o8gBIau93Y+vPqpdI5LkEd+x2W/r7xh4JTY1a4Q9gI8UjOAutAZA==
 
 eslint-config-prettier@3.0.1:
   version "3.0.1"

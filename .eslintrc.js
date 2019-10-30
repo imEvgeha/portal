@@ -4,7 +4,12 @@ module.exports = {
         "browser": true,
         "es6": true
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:react-redux/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-redux/recommended",
+        "nexus-react-app",
+    ],
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
