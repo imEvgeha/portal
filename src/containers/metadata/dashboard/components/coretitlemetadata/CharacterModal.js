@@ -70,7 +70,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
             {isInvalid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
             </ModalBody>
             <ModalFooter>
-                <Button onClick={handleSubmit} appearance={'primary'}>
+                <Button onClick={handleSubmit} appearance={'primary'} isDisabled={characterName && characterName.length > 0 ? false : true}> 
                     OK
                 </Button>
                 <Button onClick={toggle} appearance={'danger'}>
