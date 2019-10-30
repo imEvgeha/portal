@@ -11,6 +11,7 @@ import {
     WARNING_ICON,
     SUCCESS_ICON,
 } from '../../../ui-elements/nexus-toast-notification/constants';
+import {getDomainName} from '../../../util/Common';
 
 const ActionsBar = ({matchList, mergeTitles}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
@@ -32,13 +33,18 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     };
 
     const onMatch = () => {
+        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS]}`;
+        const onViewTitleClick = () => {
+            window.open(url,'_blank');
+            removeToast();
+        };
         //addToast here with View title link pointing to id: "matchList[NEXUS]"
         addToast({
             title: SUCCESS_TITLE,
             message: CREATE_NEW_TITLE_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
             actions: [
-                {content: 'View Title', onClick: () => window.open(`/metadata/detail/${matchList[NEXUS]}`, '_blank')}
+                {content: 'View Title', onClick: onViewTitleClick}
             ],
         });
     };

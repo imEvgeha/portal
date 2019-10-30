@@ -18,7 +18,7 @@ import './TitleMatchView.scss';
 
 const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, mergeTitles,
                             focusedRight, columnDefs, searchCriteria}) => {
-    const {addToast} = useContext(NexusToastNotificationContext);
+    const toastApi = useContext(NexusToastNotificationContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -68,7 +68,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, mergeTitles
                                 action menu.</p>
                         </SectionMessage>
                         <TitlesList columnDefs={columnDefs}
-                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, addToast)}/>
+                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
                     </React.Fragment>
                 )
             }

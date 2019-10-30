@@ -6,7 +6,7 @@ import { createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
-import {URL} from '../../util/Common';
+import {URL, getDomainName} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
 import {
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
@@ -67,7 +67,7 @@ function* createTitleMatchingColumnDefs(){
 
 function* mergeAndStoreTitles({payload}){
     try{
-        const {matchList, duplicateList, addToast} = payload;
+        const {matchList, duplicateList, toastApi} = payload;
         let query = '';
         const matches = Object.keys(matchList);
         if(matches.length){
@@ -93,11 +93,17 @@ function* mergeAndStoreTitles({payload}){
             payload: Object.values(matchList),
         });
         yield push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
+        const {addToast, removeToast} = toastApi || {};
+        const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
+        const onViewTitleClick = () => {
+            window.open(url, '_blank');
+            removeToast();
+        };
         yield call(addToast, {
             title: SUCCESS_TITLE,
             message: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
-            actions: [{content:'View title', onClick: () => window.open(`/metadata/detail/${response.data.id}`, '_blank')}],
+            actions: [{content:'View title', onClick: onViewTitleClick}],
         });
         //yield call historyPush and then yield call addToast with View title pointing to id: "response.data.id"
     } catch (error) {
