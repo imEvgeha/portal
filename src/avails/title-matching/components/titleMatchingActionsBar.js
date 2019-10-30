@@ -33,12 +33,8 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     };
 
     const onMatch = () => {
-        //addToast here with View title link pointing to id: "matchList[NEXUS]"
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
-        const onViewTitleClick = () => {
-            window.open(url,'_blank');
-            removeToast();
-        };
+        const onViewTitleClick = () => window.open(url,'_blank');
         addToast({
             title: SUCCESS_TITLE,
             description: TITLE_MATCH_SUCCESS_MESSAGE,
@@ -58,6 +54,7 @@ const ActionsBar = ({matchList, mergeTitles}) => {
                 {content:'Cancel', onClick: removeToast},
                 {content: 'Ok', onClick: mergeTitles}
             ],
+            isWithOverlay: true,
         });
     };
 

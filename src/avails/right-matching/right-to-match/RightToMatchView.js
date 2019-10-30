@@ -82,6 +82,7 @@ const RightToMatchView = ({
                 {content:'Cancel', onClick: removeToast},
                 {content:'OK', onClick: onDeclareNewRight}
             ],
+            isWithOverlay: true,
         });
     };
 

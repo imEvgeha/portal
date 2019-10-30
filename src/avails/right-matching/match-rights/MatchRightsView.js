@@ -85,13 +85,14 @@ function MatchRightView({
     const onSaveCombinedRight = () => {
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
+        const route = `/avails/history/${availHistoryIds}/right-matching`;
         setSaveButtonDisabled(true);
         // TODO: fix this
         if (editedCombinedRight) {
-            saveCombinedRight(rightId, matchedRightId, editedCombinedRight, addToast);
+            saveCombinedRight(rightId, matchedRightId, editedCombinedRight, addToast, route);
             return;
         }
-        saveCombinedRight(rightId, matchedRightId, combinedRight, addToast);
+        saveCombinedRight(rightId, matchedRightId, combinedRight, addToast, route);
     };
 
     // Sorted by start field. desc

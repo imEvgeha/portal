@@ -70,7 +70,7 @@ function* createTitleMatchingColumnDefs(){
 
 function* mergeAndStoreTitles({payload}){
     const {matchList, duplicateList, toastApi} = payload;
-    const {addToast, removeToast} = toastApi || {};
+    const {addToast} = toastApi || {};
     try{
         let query = '';
         const matches = Object.keys(matchList);
@@ -96,28 +96,22 @@ function* mergeAndStoreTitles({payload}){
             type: actionTypes.STORE_TITLES,
             payload: Object.values(matchList),
         });
-        yield push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
+        yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`)));
         const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
-        const onViewTitleClick = () => {
-            window.open(url, '_blank');
-            removeToast();
-        };
+        const onViewTitleClick = () => window.open(url, '_blank');
         yield call(addToast, {
             title: SUCCESS_TITLE,
             description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
             actions: [{content:'View title', onClick: onViewTitleClick}],
         });
-        //yield call historyPush and then yield call addToast with View title pointing to id: "response.data.id"
     } catch (error) {
         yield call(addToast, {
             title: ERROR_TITLE,
             description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
             icon: ERROR_ICON,
             isAutoDismiss: true,
-            isWithOverlay: true,
         });
-        //can cover error handling here
     }
 }
 

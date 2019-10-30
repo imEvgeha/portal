@@ -1,10 +1,10 @@
 import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-saga/effects';
-import {goBack} from 'connected-react-router';
+import {goBack, push} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {switchCase} from '../../util/Common';
+import {URL, switchCase} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
 import {
@@ -241,10 +241,12 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
+        yield put(push(URL.keepEmbedded(payload.route)));
         yield call(payload.addToast, {
             title: SUCCESS_TITLE,
             description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
+            isAutoDismiss: true, 
         });
     } catch (error) {
         yield put({
@@ -256,6 +258,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             title: ERROR_TITLE,
             description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
             icon: ERROR_ICON,
+            isAutoDismiss: true, 
         });
     }
 }
@@ -317,12 +320,14 @@ export function* createNewRight(requestMethod, {payload}) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
+        // TODO: fix this
+        yield put(goBack());
         yield call(payload.addToast, {
             title: SUCCESS_TITLE,
             description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
+            isAutoDismiss: true,
         });
-        yield put(goBack());
     } catch (error) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_ERROR,
@@ -333,6 +338,7 @@ export function* createNewRight(requestMethod, {payload}) {
             title: ERROR_TITLE,
             description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
             icon: ERROR_ICON,
+            isAutoDismiss: true,
         });
     }
 }
