@@ -77,12 +77,11 @@ const RightToMatchView = ({
         addToast({
             title: WARNING_TITLE,
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-            //icon: WARNING_ICON,
+            icon: WARNING_ICON,
             actions: [
                 {content:'Cancel', onClick: removeToast},
                 {content:'OK', onClick: onDeclareNewRight}
             ],
-            isWithOverlay: true,
         });
     };
 
@@ -114,12 +113,12 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <Link to={URL.keepEmbedded(previousPageRoute)} className="nexus-c-right-to-match-view__header" >
-                <div className="nexus-c-right-to-match-view__header-content">
+            <div className="nexus-c-right-to-match-view__header">
+                <Link to={URL.keepEmbedded(previousPageRoute)}>
                     <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
-                    <span className="nexus-c-right-to-match-view__header-title">Right to Right Matching</span>
-                </div>
-            </Link>
+                </Link>
+                <span className="nexus-c-right-to-match-view__header-title">Right to Right Matching</span>
+            </div>
             <div className="nexus-c-right-to-match-view__table-header">
                 <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
                 <RightToMatchNavigation

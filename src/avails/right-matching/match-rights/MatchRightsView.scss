@@ -9,22 +9,14 @@
 
 .nexus-c-match-right-view__header {
     padding: 20px 0;
-    width: fit-content;
-    font-size: 30px;
-}
-
-.nexus-c-match-right-view__header-content {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
+
 .nexus-c-match-right-view__header-title {
     color: map-get($colors, nexus-title-color);
-
-    &:hover {
-        opacity: 0.7;
-        color: map-get($colors, nexus-title-color);
-    }
+    font-size: 30px;
 }
 
 .nexus-c-match-right-view__matched {
