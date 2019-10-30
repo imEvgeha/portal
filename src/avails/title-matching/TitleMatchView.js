@@ -14,7 +14,7 @@ import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelector
 import { createColumnDefs as getRightColumns } from '../utils';
 import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
-import CreateTitleForm from './components/createTitleForm';
+import CreateTitleForm from './components/CreateTitleForm';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 

@@ -45,12 +45,74 @@ const newTitleFormSchema = [
         ],
     },
     {
+        name: 'seriesTitleName',
+        id: 'titleSeriesName',
+        label: 'Series Title Name',
+        type: 'text',
+        shouldFitContainer: true,
+        required: true,
+        visibleWhen: [
+            {
+                field: 'contentType',
+                is: [
+                    SEASON.apiName,
+                    EPISODE.apiName,
+                    EVENT.apiName,
+                ]
+            }
+        ],
+    },
+    {
+        name: 'seasonNumber',
+        id: 'titleSeasonNumber',
+        label: 'Season',
+        placeholder: 'Enter Season Number',
+        type: 'number',
+        shouldFitContainer: true,
+        required: true,
+        visibleWhen: [
+            {
+                field: 'contentType',
+                is: [
+                    SEASON.apiName,
+                    EPISODE.apiName,
+                    EVENT.apiName,
+                ]
+            }
+        ],
+    },
+    {
+        name: 'episodeNumber',
+        id: 'titleEpisodeNumber',
+        label: 'Episode',
+        type: 'number',
+        shouldFitContainer: true,
+        required: true,
+        visibleWhen: [
+            {
+                field: 'contentType',
+                is: [
+                    EPISODE.apiName,
+                    EVENT.apiName,
+                ]
+            }
+        ],
+    },
+    {
         name: 'releaseYear',
         id: 'releaseYear',
         label: 'Release Year',
         type: 'text',
         shouldFitContainer: true,
         required: true,
+        visibleWhen: [
+            {
+                field: 'contentType',
+                isNot: [
+                    SEASON.apiName,
+                ]
+            }
+        ],
     },
 ];
 
