@@ -22,7 +22,7 @@ import {
     resultPageUpdate
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
-import RightViewHistory from '../../../avails/right-view-history/RightViewHistory';
+import RightViewHistory from '../../../avails/right-history-view/RightHistoryView';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
