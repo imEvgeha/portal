@@ -1,14 +1,11 @@
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
+import MetadataConstants from '../../../../containers/metadata/MetadataConstants';
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';
 const NEW_TITLE_LABEL_CANCEL = 'Cancel';
 const NEW_TITLE_LABEL_SUBMIT = 'Match & Create';
 const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
 const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
-const MAX_TITLE_LENGTH = 2000;
-const MAX_SEASON_LENGTH = 999;
-const MAX_EPISODE_LENGTH = 9999;
-const MAX_RELEASE_YEAR_LENGTH = 9999;
 const NEW_TITLE_FORM_SCHEMA = [
     {
         name: 'title',
@@ -16,12 +13,13 @@ const NEW_TITLE_FORM_SCHEMA = [
         label: 'Title',
         type: 'text',
         shouldFitContainer: true,
+        omitWhenHidden: true,
         placeholder: 'Enter Title',
         required: true,
         validWhen: {
             lengthIsLessThan: {
-                length: MAX_TITLE_LENGTH,
-                message: `Title must have less than ${MAX_TITLE_LENGTH} characters`
+                length: MetadataConstants.MAX_TITLE_LENGTH,
+                message: `Title must have less than ${MetadataConstants.MAX_TITLE_LENGTH} characters`
             },
         },
     },
@@ -31,6 +29,7 @@ const NEW_TITLE_FORM_SCHEMA = [
         label: 'Content Type',
         type: 'select',
         shouldFitContainer: true,
+        omitWhenHidden: true,
         placeholder: 'Select content type',
         required: true,
         options: [
@@ -54,6 +53,7 @@ const NEW_TITLE_FORM_SCHEMA = [
         type: 'text',
         placeholder: 'Enter Series Name',
         shouldFitContainer: true,
+        omitWhenHidden: true,
         requiredWhen: [
             {
                 field: 'contentType',
@@ -82,6 +82,7 @@ const NEW_TITLE_FORM_SCHEMA = [
         placeholder: 'Enter Season Number',
         type: 'text',
         shouldFitContainer: true,
+        omitWhenHidden: true,
         requiredWhen: [
             {
                 field: 'contentType',
@@ -104,8 +105,8 @@ const NEW_TITLE_FORM_SCHEMA = [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MAX_SEASON_LENGTH,
-                message: `Season number can't be higher than ${MAX_SEASON_LENGTH}`
+                max: MetadataConstants.MAX_SEASON_LENGTH,
+                message: `Season number can't be higher than ${MetadataConstants.MAX_SEASON_LENGTH}`
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -120,6 +121,7 @@ const NEW_TITLE_FORM_SCHEMA = [
         type: 'text',
         placeholder: 'Enter Episode Number',
         shouldFitContainer: true,
+        omitWhenHidden: true,
         requiredWhen: [
             {
                 field: 'contentType',
@@ -140,8 +142,8 @@ const NEW_TITLE_FORM_SCHEMA = [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MAX_EPISODE_LENGTH,
-                message: `Episode number can't be higher than ${MAX_EPISODE_LENGTH}`
+                max: MetadataConstants.MAX_EPISODE_LENGTH,
+                message: `Episode number can't be higher than ${MetadataConstants.MAX_EPISODE_LENGTH}`
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -156,6 +158,7 @@ const NEW_TITLE_FORM_SCHEMA = [
         type: 'text',
         placeholder: 'Enter Release Year',
         shouldFitContainer: true,
+        omitWhenHidden: true,
         requiredWhen: [
             {
                 field: 'contentType',
@@ -174,8 +177,8 @@ const NEW_TITLE_FORM_SCHEMA = [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MAX_RELEASE_YEAR_LENGTH,
-                message: `Release Year can't be past year ${MAX_RELEASE_YEAR_LENGTH}`
+                max: MetadataConstants.MAX_RELEASE_YEAR_LENGTH,
+                message: `Release Year can't be past year ${MetadataConstants.MAX_RELEASE_YEAR_LENGTH}`
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -192,8 +195,4 @@ export default {
     NEW_TITLE_LABEL_SUBMIT,
     NEW_TITLE_ERROR_ALREADY_EXISTS,
     NEW_TITLE_ERROR_EMPTY_FIELDS,
-    MAX_TITLE_LENGTH,
-    MAX_SEASON_LENGTH,
-    MAX_EPISODE_LENGTH,
-    MAX_RELEASE_YEAR_LENGTH,
 };
