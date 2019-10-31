@@ -105,7 +105,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             DOP.setErrorsCount(0);
             DOP.setData({
                 match: {
-                    rightId: rightId,
+                    rightId,
                     titleId: mergedTitles[0].id
                 }
             });

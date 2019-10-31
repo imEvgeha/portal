@@ -25,7 +25,7 @@ class DOP extends React.Component {
         if (e.data === 'completeTriggered') {
             const {errorCount, data, onDOPMessage} = DOP.instance.state;
             // Save or Complete clicked
-            if (onDOPMessage === 'function') {
+            if (typeof onDOPMessage === 'function') {
                 onDOPMessage(errorCount, data);
             } else {
                 DOP.sendInfoToDOP(errorCount, data);

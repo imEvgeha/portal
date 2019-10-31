@@ -1,8 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DOP from '../../../util/DOP';
 import Constants from '../titleMatchingConstants';
+import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
+import {
+    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+    TITLE_MATCH_SUCCESS_MESSAGE,
+    WARNING_TITLE,
+    SUCCESS_TITLE,
+    WARNING_ICON,
+    SUCCESS_ICON,
+} from '../../../ui-elements/nexus-toast-notification/constants';
+import {getDomainName} from '../../../util/Common';
 
 const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
@@ -10,6 +20,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
         match: false,
         matchAndCreate: false,
     });
+    const {addToast, removeToast} = useContext(NexusToastNotificationContext);
 
     useEffect(() => {
         setButtonStatus({
@@ -23,19 +34,37 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     };
 
     const onMatch = () => {
-        //addToast here with View title link pointing to id: "matchList[NEXUS].id"
+        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
+        const onViewTitleClick = () => window.open(url,'_blank');
         DOP.setErrorsCount(0);
         DOP.setData({
             match: {
-                rightId: rightId,
+                rightId,
                 titleId: matchList[NEXUS].id
             }
+        });
+        addToast({
+            title: SUCCESS_TITLE,
+            description: TITLE_MATCH_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
+            actions: [
+                {content: 'View Title', onClick: onViewTitleClick}
+            ],
+            isWithOverlay: true,
         });
     };
 
     const onMatchAndCreate = () => {
-        //addtoast here for warning and then onClick of OK: mergeTitles();
-        mergeTitles();
+        addToast({
+            title: WARNING_TITLE,
+            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            icon: WARNING_ICON,
+            actions: [
+                {content:'Cancel', onClick: removeToast},
+                {content: 'Ok', onClick: mergeTitles}
+            ],
+            isWithOverlay: true,
+        });
     };
 
     return (

@@ -207,6 +207,8 @@ class IfEmbedded extends React.Component {
 
 const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? cases[key] : defaultCase;
 
+const getDomainName = () => window && window.location.origin.toString();
+
 export {
     downloadFile, 
     momentToISO, 
@@ -223,4 +225,5 @@ export {
     URL, 
     IfEmbedded,
     switchCase,
+    getDomainName,
 };
