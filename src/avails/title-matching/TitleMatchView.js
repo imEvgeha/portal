@@ -24,7 +24,6 @@ const TitleMatchView = ({
     match,
     fetchFocusedRight,
     createColumnDefs,
-    history,
     mergeTitles,
     focusedRight,
     columnDefs,
@@ -101,14 +100,12 @@ TitleMatchView.propTypes = {
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
-    history: PropTypes.object,
 };
 
 TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
-    history: {},
 };
 
 const createMapStateToProps = () => {
@@ -122,7 +119,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList, historyPush) => dispatch(mergeTitles(matchList, duplicateList, historyPush))
+    mergeTitles: (matchList, duplicateList, toastApi) => dispatch(mergeTitles(matchList, duplicateList, toastApi))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

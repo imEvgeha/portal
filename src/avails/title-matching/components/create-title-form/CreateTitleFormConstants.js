@@ -1,5 +1,6 @@
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
+const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';
 const NEW_TITLE_LABEL_CANCEL = 'Cancel';
 const NEW_TITLE_LABEL_SUBMIT = 'Match & Create';
 const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
@@ -184,6 +185,7 @@ const NEW_TITLE_FORM_SCHEMA = [
     },
 ];
 export default {
+    NEW_TITLE_TOAST_SUCCESS_MESSAGE,
     NEW_TITLE_FORM_SCHEMA,
     NEW_TITLE_MODAL_TITLE,
     NEW_TITLE_LABEL_CANCEL,
