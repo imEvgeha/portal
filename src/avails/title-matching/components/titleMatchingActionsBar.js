@@ -42,6 +42,7 @@ const ActionsBar = ({matchList, mergeTitles}) => {
             actions: [
                 {content: 'View Title', onClick: onViewTitleClick}
             ],
+            isWithOverlay: true,
         });
     };
 
