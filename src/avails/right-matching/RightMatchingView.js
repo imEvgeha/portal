@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
-import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
-import {FlagGroup, AutoDismissFlag} from '@atlaskit/flag';
-import {colors} from '@atlaskit/theme';
 import './RightMatchingView.scss';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -15,7 +12,6 @@ import {
     cleanStoredRightMatchDataWithIds,
     createRightMatchingColumnDefs,
     storeRightMatchDataWithIds,
-    setNewRightSuccessFlag, setCombinedSavedFlag
 } from './rightMatchingActions';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
@@ -34,10 +30,6 @@ const RightMatchingView = ({
         match, 
         storeRightMatchDataWithIds, 
         cleanStoredRightMatchDataWithIds,
-        isNewRightSuccessFlagVisible,
-        isCombinedRightSaved,
-        setStateNewRightSuccessFlag,
-        setCombinedSavedFlag,
     }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [dopCount, setDopCount] = useLocalStorage('rightMatchingDOP', totalCount);
@@ -103,41 +95,6 @@ const RightMatchingView = ({
                 params={{availHistoryIds}}
                 succesDataFetchCallback={storeData}
             />
-            {isNewRightSuccessFlagVisible && (
-                    <FlagGroup onDismissed={() => setStateNewRightSuccessFlag(false)}>
-                        <AutoDismissFlag
-                            appearance="normal"
-                            id="success-flag"
-                            icon={
-                                <SuccessIcon
-                                    label="Success"
-                                    size="medium"
-                                    primaryColor={colors.G300}
-                                />
-                            }
-                            title="Success"
-                            description="You have successfully declared a new right."
-                        />
-                    </FlagGroup>
-            )}
-
-            {isCombinedRightSaved && (
-                <FlagGroup onDismissed={() => setCombinedSavedFlag(false)}>
-                    <AutoDismissFlag
-                        appearance="normal"
-                        id="success-flag"
-                        icon={
-                            <SuccessIcon
-                                label="Success"
-                                size="medium"
-                                primaryColor={colors.G300}
-                            />
-                        }
-                        title="Success"
-                        description="You have successfully matched the rights."
-                    />
-                </FlagGroup>
-            )}
         </div>
     );
 };
@@ -151,10 +108,6 @@ RightMatchingView.propTypes = {
     location: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
-    setStateNewRightSuccessFlag: PropTypes.func,
-    isNewRightSuccessFlagVisible: PropTypes.bool,
-    isCombinedRightSaved: PropTypes.bool,
-    setCombinedSavedFlag: PropTypes.func,
 };
 
 RightMatchingView.defaultProps = {
@@ -170,13 +123,9 @@ RightMatchingView.defaultProps = {
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
-    const isNewRightSuccessFlagVisible = selectors.getSuccessStatusSelector();
-    const isCombinedRightSavedSelector = selectors.createCombinedRightSavedFlagSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
-        isNewRightSuccessFlagVisible: isNewRightSuccessFlagVisible(state, props),
-        isCombinedRightSaved: isCombinedRightSavedSelector(state, props)
     });
 };
 
@@ -184,8 +133,7 @@ const mapDispatchToProps = (dispatch) => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
     cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload)),
-    setStateNewRightSuccessFlag: payload => dispatch(setNewRightSuccessFlag(payload)),
-    setCombinedSavedFlag: payload => dispatch(setCombinedSavedFlag(payload))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line
+
