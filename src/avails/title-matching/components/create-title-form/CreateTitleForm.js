@@ -35,7 +35,7 @@ const CreateTitleForm = ({close}) => {
 
     const submitTitle = (title) => {
         // Delete empty properties before sending
-        Object.keys(title).map(propKey => title[propKey] || delete title[propKey]);
+        Object.keys(title).forEach(propKey => title[propKey] || delete title[propKey]);
         // Delete helper property
         delete title.isFilled;
 
