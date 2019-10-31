@@ -1,15 +1,24 @@
 import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-saga/effects';
-import {goBack} from 'connected-react-router';
+import {goBack, push} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {switchCase} from '../../util/Common';
+import {URL, switchCase} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
-import {setCombinedSavedFlag} from './rightMatchingActions';
 import {createColumnDefs} from '../utils';
+import {
+    CREATE_NEW_RIGHT_SUCCESS_MESSAGE, 
+    CREATE_NEW_RIGHT_ERROR_MESSAGE, 
+    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, 
+    SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+    SUCCESS_TITLE,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    ERROR_ICON,
+} from '../../ui-elements/nexus-toast-notification/constants';
 
-// TODO - refactor this worker sagra (use select)
+// TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs({payload}) {
     try {
         if (payload && payload.length) {
@@ -232,14 +241,24 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
-        yield put(setCombinedSavedFlag({isCombinedRightSaved: true}));
-
+        yield put(push(URL.keepEmbedded(payload.route)));
+        yield call(payload.addToast, {
+            title: SUCCESS_TITLE,
+            description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true, 
+        });
     } catch (error) {
-        yield put(setCombinedSavedFlag({isCombinedRightSaved: false}));
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
             error: true,
+        });
+        yield call(payload.addToast, {
+            title: ERROR_TITLE,
+            description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+            icon: ERROR_ICON,
+            isAutoDismiss: true, 
         });
     }
 }
@@ -296,21 +315,30 @@ export function* createNewRight(requestMethod, {payload}) {
             type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
             payload: {}
         });
-        yield call(requestMethod, payload);
+        yield call(requestMethod, payload.rightId);
         
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
-        yield put({
-            type: actionTypes.SET_NEW_RIGHT_FLAG,
-            payload: {isNewRightSuccessFlagVisible: true}
-        });
+        // TODO: fix this
         yield put(goBack());
+        yield call(payload.addToast, {
+            title: SUCCESS_TITLE,
+            description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_ERROR,
             payload: error,
             error: true
+        });
+        yield call(payload.addToast, {
+            title: ERROR_TITLE,
+            description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
+            icon: ERROR_ICON,
+            isAutoDismiss: true,
         });
     }
 }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@atlaskit/avatar": "^16.0.8",
+    "@atlaskit/blanket": "^10.0.14",
     "@atlaskit/button": "^13.1.1",
     "@atlaskit/checkbox": "^9.0.9",
     "@atlaskit/datetime-picker": "^9.0.1",
@@ -49,6 +50,7 @@
     "connected-react-router": "5.0.1",
     "copy-webpack-plugin": "^4.5.2",
     "eslint": "^5.7.0",
+    "eslint-config-nexus-react-app": "^1.0.1",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-react-redux": "^2.3.0",
@@ -89,7 +91,7 @@
     "redux-saga": "^1.0.5",
     "reselect": "^4.0.0",
     "sass-loader": "^7.1.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
