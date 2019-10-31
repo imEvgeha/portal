@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
-import isEqual from 'lodash.isequal';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -14,11 +13,11 @@ import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelector
 import { createColumnDefs as getRightColumns } from '../utils';
 import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
-import CreateTitleForm from './components/CreateTitleForm';
+import CreateTitleForm from './components/create-title-form/CreateTitleForm';
+import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
 import Constants from './titleMatchingConstants';
 import './TitleMatchView.scss';
 
-const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 
 const TitleMatchView = ({
     match,
@@ -30,23 +29,14 @@ const TitleMatchView = ({
     columnDefs,
     searchCriteria
 }) => {
-    const {setModalContentAndTitle, setModalActions, close} = useContext(NexusModalContext);
-    const [modalState, setModalState] = React.useState({});
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
                 <Button
-                    onClick={() => {
-                        setModalContentAndTitle(() =>
-                            <CreateTitleForm
-                                value={modalState}
-                                onChange={setModalState}
-                                close={close}
-                            />,
-                            NEW_TITLE_MODAL_TITLE);
-                    }}
+                    onClick={() => setModalContentAndTitle(() => <CreateTitleForm close={close} />, NewTitleConstants.NEW_TITLE_MODAL_TITLE)}
                 >
                     New Title
                 </Button>
@@ -60,19 +50,6 @@ const TitleMatchView = ({
         headerName: '',
         cellRendererFramework: newTitleCell,
     };
-
-    useEffect(() => {
-        if (!isEqual(modalState, {})) {
-            setModalContentAndTitle(
-                <CreateTitleForm
-                    value={modalState}
-                    onChange={setModalState}
-                    close={close}
-                />,
-                NEW_TITLE_MODAL_TITLE
-            );
-        }
-    }, [modalState]);
 
     useEffect(() => {
         if (match && match.params.rightId) {
