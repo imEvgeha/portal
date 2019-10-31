@@ -21,13 +21,16 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
     const ComposedComponent = props => {
         const gridApiRef = useRef({});
         const previousParams = usePrevious(props.params);
+        const previousExcludedItems = usePrevious(props.excludedItems);
 
         useEffect(() => {
             const {api} = gridApiRef.current;
-            if (!isEqual(props.params, previousParams) && props.params && api) {
+            if (((!isEqual(props.params, previousParams) && props.params) 
+                || (!isEqual(props.excludedItems, previousExcludedItems) && props.excludedItems)) 
+            && api) {
                 updateData(fetchData, api);
             }
-        }, [props.params]);
+        }, [props.params, props.excludedItems]);
 
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback} = params || {};
@@ -38,8 +41,8 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             }
             fetchData(pageNumber, pageSize, props.params)
                 .then(response => {
-                    const {data = {}} = response || {};
-                    const {page = 0, size = 0, total = 0} = data;
+                    const {excludedItems} = props;
+                    const {page = 0, size = 0, total = 0, data} = getResponseData(response, excludedItems);
                     if (total > 0){
                         let lastRow = -1;
                         if ((page + 1) * size >= total) {
@@ -49,9 +52,11 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                             props.setTotalCount(total);
                         }
 
-                        successCallback(data.data, lastRow);
+                        successCallback(data, lastRow);
+
                         if (typeof props.succesDataFetchCallback === 'function') {
-                            props.succesDataFetchCallback(pageNumber, data);
+                            const preparedData = {page, size, total, data};
+                            props.succesDataFetchCallback(pageNumber, preparedData);
                         }
 
                         gridApi.hideOverlay();
@@ -60,6 +65,24 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                     gridApi.showNoRowsOverlay();
                 })
                 .catch(error => failCallback(error));
+        };
+
+        const getResponseData = (response, criteria) => {
+            const {data = {}} = response || {};
+            const {page = 0, size = 0, total = 0} = data || {};
+            if (Array.isArray(criteria) && total > 0) {
+                const key = !!criteria.length && Object.keys(criteria[0])[0];
+                const items = data.data.filter(el => !criteria.some(item => el.hasOwnProperty(key) && item[key] === el[key]));
+                const totalItems = total - criteria.length;
+                return {
+                    page, 
+                    size, 
+                    total: totalItems, 
+                    data: items,
+                };
+            }
+
+            return data;
         };
 
         const updateData = (fetchData, gridApi) => {
