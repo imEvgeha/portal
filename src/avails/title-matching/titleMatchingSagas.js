@@ -1,12 +1,21 @@
 import {call, put, all, takeEvery} from 'redux-saga/effects';
+import {push} from 'connected-react-router';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import { createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
-import {URL} from '../../util/Common';
+import {URL, getDomainName} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
+import {
+    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    SUCCESS_TITLE,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    ERROR_ICON,
+} from '../../ui-elements/nexus-toast-notification/constants';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -60,8 +69,9 @@ function* createTitleMatchingColumnDefs(){
 }
 
 function* mergeAndStoreTitles({payload}){
+    const {matchList, duplicateList, toastApi} = payload;
+    const {addToast} = toastApi || {};
     try{
-        const {matchList, duplicateList, historyPush} = payload;
         let query = '';
         const matches = Object.keys(matchList);
         if(matches.length){
@@ -86,10 +96,22 @@ function* mergeAndStoreTitles({payload}){
             type: actionTypes.STORE_TITLES,
             payload: Object.values(matchList),
         });
-        historyPush(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`));
-        //yield call historyPush and then yield call addToast with View title pointing to id: "response.data.id"
+        yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`)));
+        const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
+        const onViewTitleClick = () => window.open(url, '_blank');
+        yield call(addToast, {
+            title: SUCCESS_TITLE,
+            description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+            icon: SUCCESS_ICON,
+            actions: [{content:'View title', onClick: onViewTitleClick}],
+        });
     } catch (error) {
-        //can cover error handling here
+        yield call(addToast, {
+            title: ERROR_TITLE,
+            description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+            icon: ERROR_ICON,
+            isAutoDismiss: true,
+        });
     }
 }
 
