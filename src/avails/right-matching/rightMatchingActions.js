@@ -22,12 +22,12 @@ export const fetchMatchedRight = (id) => ({
 
 export const fetchCombinedRight = (focusedRightId, matchedRightId) => ({
     type: actionTypes.FETCH_COMBINED_RIGHT,
-    payload: {focusedRightId, matchedRightId}
+    payload: {focusedRightId, matchedRightId},
 });
 
 export const storeRightMatchDataWithIds = (payload) => ({
     type: actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS,
-    payload
+    payload,
 });
 
 export const cleanStoredRightMatchDataWithIds = () => ({
@@ -36,16 +36,16 @@ export const cleanStoredRightMatchDataWithIds = () => ({
 
 export const fetchRightMatchDataUntilFindId = (payload) => ({
     type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID,
-    payload
+    payload,
 });
 
-export const saveCombinedRight = (focusedRightId, matchedRightId, combinedRight, addToast, route) => ({
+export const saveCombinedRight = (payload) => ({
     type: actionTypes.SAVE_COMBINED_RIGHT,
-    payload: {focusedRightId, matchedRightId, combinedRight, addToast, route}
+    payload,
 });
 
 export const createNewRight = (payload) => ({
     type: actionTypes.CREATE_NEW_RIGHT,
-    payload
+    payload,
 });
 

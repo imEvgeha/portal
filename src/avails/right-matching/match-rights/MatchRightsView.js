@@ -85,14 +85,21 @@ function MatchRightView({
     const onSaveCombinedRight = () => {
         const {params} = match || {};
         const {rightId, matchedRightId} = params || {};
-        const route = `/avails/history/${availHistoryIds}/right-matching`;
+        const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
         setSaveButtonDisabled(true);
+        const payload = {
+            focusedRightId: rightId,
+            matchedRightId,
+            combinedRight, 
+            addToast,
+            redirectPath,
+        };
         // TODO: fix this
         if (editedCombinedRight) {
-            saveCombinedRight(rightId, matchedRightId, editedCombinedRight, addToast, route);
+            saveCombinedRight({...payload, combinedRight: editedCombinedRight});
             return;
         }
-        saveCombinedRight(rightId, matchedRightId, combinedRight, addToast, route);
+        saveCombinedRight(payload);
     };
 
     // Sorted by start field. desc
@@ -208,7 +215,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
-    saveCombinedRight:(focusedRightId, matchedRightId, combinedRight, addToast) => dispatch(saveCombinedRight(focusedRightId, matchedRightId, combinedRight, addToast)),
+    saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
 });
 

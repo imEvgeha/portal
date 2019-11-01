@@ -69,8 +69,8 @@ const RightToMatchView = ({
 
     const onDeclareNewRight = () => {
         removeToast();
-        const {params: {rightId}} = match || {};
-        createNewRight({rightId, addToast});
+        const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
+        createNewRight({rightId, addToast, redirectPath});
     };
 
     const onNewRightClick = () => {
