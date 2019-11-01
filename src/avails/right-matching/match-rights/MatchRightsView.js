@@ -139,6 +139,7 @@ function MatchRightView({
                         columnDefs={columnDefs}
                         rowData={[combinedRight]}
                         onGridEvent={handleGridEvent}
+                        domLayout="autoHeight"
                     />
                 )}
             </div>
