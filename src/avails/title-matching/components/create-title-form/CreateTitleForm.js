@@ -8,7 +8,7 @@ import {titleService} from '../../../../containers/metadata/service/TitleService
 import NexusToastNotificationContext from '../../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {getDomainName} from '../../../../util/Common';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../ui-elements/nexus-toast-notification/constants';
-import {EPISODE, EVENT, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
+import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
 import './CreateTitleForm.scss';
 
@@ -40,19 +40,28 @@ const CreateTitleForm = ({close}) => {
         // Delete helper property
         delete title.isFilled;
 
+        // If a title is of the episodic type group, put together episodic properties in
+        // a single prop called 'episodic'. Then delete the leftovers
         const {contentType} = title || {};
-        const TYPES = [EPISODE.apiName, EVENT.apiName, SEASON.apiName, SPORTS.apiName];
-        if (TYPES.includes(contentType)) {
+        const episodicTypes = [EPISODE.apiName, EVENT.apiName, SEASON.apiName, SPORTS.apiName];
+
+        if (episodicTypes.includes(contentType)) {
             const {seasonNumber, episodeNumber, seriesTitleName} = title || {};
             title.episodic = {
-                seasonNumber, episodeNumber, seriesTitleName
+                seasonNumber,
+                episodeNumber,
+                seriesTitleName
             };
+
             delete title.seasonNumber;
             delete title.episodeNumber;
             delete title.seriesTitleName;
         }
 
+        // Submit the title to back-end
         titleService.createTitle(title).then(res => {
+            // Building a URL where user can check the newly created title
+            // (Opens in new tab)
             const url = `${getDomainName()}/metadata/detail/${res.data.id}`;
             const onViewTitleClick = () => window.open(url, '_blank');
             addToast({

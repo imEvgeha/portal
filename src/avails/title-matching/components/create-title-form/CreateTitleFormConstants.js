@@ -1,5 +1,8 @@
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 import MetadataConstants from '../../../../containers/metadata/MetadataConstants';
+const NEW_TITLE_MAX_NUMBER_OF_SEASONS = 999;
+const NEW_TITLE_MAX_NUMBER_OF_EPISODES = 9999;
+const NEW_TITLE_MAX_RELEASE_YEAR = 9999;
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';
 const NEW_TITLE_LABEL_CANCEL = 'Cancel';
@@ -105,8 +108,8 @@ const NEW_TITLE_FORM_SCHEMA = [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MetadataConstants.MAX_SEASON_LENGTH,
-                message: `Season number can't be higher than ${MetadataConstants.MAX_SEASON_LENGTH}`
+                max: NEW_TITLE_MAX_NUMBER_OF_SEASONS,
+                message: `Season number can't be higher than ${NEW_TITLE_MAX_NUMBER_OF_SEASONS}`
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -142,8 +145,8 @@ const NEW_TITLE_FORM_SCHEMA = [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MetadataConstants.MAX_EPISODE_LENGTH,
-                message: `Episode number can't be higher than ${MetadataConstants.MAX_EPISODE_LENGTH}`
+                max: NEW_TITLE_MAX_NUMBER_OF_EPISODES,
+                message: `Episode number can't be higher than ${NEW_TITLE_MAX_NUMBER_OF_EPISODES}`
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -177,8 +180,8 @@ const NEW_TITLE_FORM_SCHEMA = [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MetadataConstants.MAX_RELEASE_YEAR_LENGTH,
-                message: `Release Year can't be past year ${MetadataConstants.MAX_RELEASE_YEAR_LENGTH}`
+                max: NEW_TITLE_MAX_RELEASE_YEAR,
+                message: `Release Year can't be past year ${NEW_TITLE_MAX_RELEASE_YEAR}`
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
