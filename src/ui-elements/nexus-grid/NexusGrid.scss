@@ -6,8 +6,9 @@
         flex: none;
     }
     
-    &--overflow.ag-theme-balham * {
-        // overflow: overlay;
+    &--overflow {
+        // temporal solution
+        height: 200px;
     }
 };
 
