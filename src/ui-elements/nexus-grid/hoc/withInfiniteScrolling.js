@@ -67,13 +67,13 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                 .catch(error => failCallback(error));
         };
 
-        const getResponseData = (response, criteria) => {
+        const getResponseData = (response, excludedCriteria) => {
             const {data = {}} = response || {};
             const {page = 0, size = 0, total = 0} = data || {};
-            if (Array.isArray(criteria) && total > 0) {
-                const key = !!criteria.length && Object.keys(criteria[0])[0];
-                const items = data.data.filter(el => !criteria.some(item => el.hasOwnProperty(key) && item[key] === el[key]));
-                const totalItems = total - criteria.length;
+            if (Array.isArray(excludedCriteria) && total > 0) {
+                const key = !!excludedCriteria.length && Object.keys(excludedCriteria[0])[0];
+                const items = data.data.filter(el => !excludedCriteria.some(item => el.hasOwnProperty(key) && item[key] === el[key]));
+                const totalItems = total - excludedCriteria.length;
                 return {
                     page, 
                     size, 
