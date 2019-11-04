@@ -7,7 +7,7 @@ import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import './RightToMatchNavigation.scss';
 import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
 import * as selectors from '../../../rightMatchingSelectors';
-import {URL} from '../../../../../util/Common';
+import {URL, minTwoDigits} from '../../../../../util/Common';
 import {RIGHT_PAGE_SIZE} from '../../../../../constants/rightFetching';
 
 const RightToMatchNavigation = ({
@@ -33,7 +33,7 @@ const RightToMatchNavigation = ({
     useEffect(() => {
         if (focusedRightId && focusedRightId !== navigationData.focusedRightId) {
             const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-            const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) + 1: 0;
+            const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) + 1 : 0;
             const updatedNavigationData = getNavigationDataIfExist();
             // TODO: refactor
             if(updatedNavigationData !== null) {
@@ -95,22 +95,18 @@ const RightToMatchNavigation = ({
         }
     };
 
-    const renderNavigationData = () => {
-        if(isSpinnerRunning) {
-            return (<Spinner size='small'/>);
-        }
-        return (
-            `${navigationData.currentPosition < 10 ? '0' : ''}${navigationData.currentPosition} of ${rightMatchPageData.total}`
-        );
-    };
-
     return (
         navigationData && navigationData.currentPosition ? (
             <div className='nexus-c-right-to-match-navigation'>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onPreviousRightClick}>
                     <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
                 </div>
-                <span className="nexus-c-right-to-match-navigation__data">{renderNavigationData()}</span>
+                <span className="nexus-c-right-to-match-navigation__data">
+                    {isSpinnerRunning 
+                        ? <Spinner size="small" />
+                        : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`
+                    }
+                </span>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
                     <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
                 </div>

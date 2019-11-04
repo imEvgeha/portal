@@ -209,6 +209,8 @@ const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? ca
 
 const getDomainName = () => window && window.location.origin.toString();
 
+const minTwoDigits = n => `${n < 10 ? '0' : ''}${n}`;
+
 export {
     downloadFile, 
     momentToISO, 
@@ -226,4 +228,5 @@ export {
     IfEmbedded,
     switchCase,
     getDomainName,
+    minTwoDigits,
 };

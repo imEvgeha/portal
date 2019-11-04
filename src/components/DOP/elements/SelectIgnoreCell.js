@@ -95,7 +95,9 @@ class SelectIgnoreCell extends Component {
 
     render() {
         const {node} = this.props;
-        const isPromotable = this.checkPromotableStatus(node && node.data.territory); 
+        const {data} = node || {};
+        const {territory} = data || {};
+        const isPromotable = this.checkPromotableStatus(territory); 
         return (
             <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 {isPromotable && (

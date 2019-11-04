@@ -33,7 +33,7 @@ const CreateTitleForm = ({close, focusedRight}) => {
         seasonNumber: '',
         episodeNumber: '',
         releaseYear: focusedReleaseYear,
-        isFilled: !!(focusedTitle || focusedContentType || focusedReleaseYear),
+        isFilled: !!(focusedTitle && focusedContentType && focusedReleaseYear),
     });
     const {addToast} = useContext(NexusToastNotificationContext);
 
