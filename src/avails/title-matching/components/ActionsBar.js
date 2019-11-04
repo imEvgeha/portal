@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import DOP from '../../../util/DOP';
 import Constants from '../titleMatchingConstants';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {
@@ -13,7 +14,7 @@ import {
 } from '../../../ui-elements/nexus-toast-notification/constants';
 import {getDomainName} from '../../../util/Common';
 
-const ActionsBar = ({matchList, mergeTitles}) => {
+const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
@@ -35,6 +36,13 @@ const ActionsBar = ({matchList, mergeTitles}) => {
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const onViewTitleClick = () => window.open(url,'_blank');
+        DOP.setErrorsCount(0);
+        DOP.setData({
+            match: {
+                rightId,
+                titleId: matchList[NEXUS].id
+            }
+        });
         addToast({
             title: SUCCESS_TITLE,
             description: TITLE_MATCH_SUCCESS_MESSAGE,
@@ -82,6 +90,7 @@ const ActionsBar = ({matchList, mergeTitles}) => {
 ActionsBar.propTypes = {
     matchList: PropTypes.object,
     mergeTitles: PropTypes.func,
+    rightId: PropTypes.string.isRequired,
 };
 
 ActionsBar.defaultProps = {

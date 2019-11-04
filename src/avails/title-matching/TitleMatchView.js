@@ -17,6 +17,7 @@ import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingA
 import CreateTitleForm from './components/create-title-form/CreateTitleForm';
 import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
 import Constants from './titleMatchingConstants';
+import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
 
 
@@ -56,6 +57,7 @@ const TitleMatchView = ({
         if (match && match.params.rightId) {
             fetchFocusedRight(match.params.rightId);
         }
+        DOP.setErrorsCount(1);
     }, [match]);
 
     useEffect(() => {
@@ -83,8 +85,10 @@ const TitleMatchView = ({
                             <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
                                 action menu.</p>
                         </SectionMessage>
-                        <TitlesList columnDefs={columnDefs}
-                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
+                        <TitlesList
+                            rightId={match && match.params.rightId}
+                            columnDefs={columnDefs}
+                            mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
                     </React.Fragment>
                 )
             }
