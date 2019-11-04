@@ -6,25 +6,44 @@ import Button from '@atlaskit/button';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
+import NexusToastNotificationContext from '../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
 import { createColumnDefs as getRightColumns } from '../utils';
 import mappings from '../../../profile/titleMatchingRightMappings';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
+import CreateTitleForm from './components/create-title-form/CreateTitleForm';
+import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
 import Constants from './titleMatchingConstants';
-import NexusToastNotificationContext from '../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
+import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
 
-const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, mergeTitles,
-                            focusedRight, columnDefs, searchCriteria}) => {
+
+const TitleMatchView = ({
+    match,
+    fetchFocusedRight,
+    createColumnDefs,
+    mergeTitles,
+    focusedRight,
+    columnDefs,
+    searchCriteria
+}) => {
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const toastApi = useContext(NexusToastNotificationContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button>New Title</Button>
+                <Button
+                    onClick={() => setModalContentAndTitle(
+                        () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
+                        NewTitleConstants.NEW_TITLE_MODAL_TITLE)}
+                >
+                    New Title
+                </Button>
             </CustomActionsCellRenderer>
         );
     };
@@ -40,6 +59,7 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, mergeTitles
         if (match && match.params.rightId) {
             fetchFocusedRight(match.params.rightId);
         }
+        DOP.setErrorsCount(1);
     }, [match]);
 
     useEffect(() => {
@@ -67,8 +87,10 @@ const TitleMatchView = ({match, fetchFocusedRight, createColumnDefs, mergeTitles
                             <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
                                 action menu.</p>
                         </SectionMessage>
-                        <TitlesList columnDefs={columnDefs}
-                                    mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
+                        <TitlesList
+                            rightId={match && match.params.rightId}
+                            columnDefs={columnDefs}
+                            mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
                     </React.Fragment>
                 )
             }
@@ -84,14 +106,12 @@ TitleMatchView.propTypes = {
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
-    history: PropTypes.object,
 };
 
 TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
-    history: {},
 };
 
 const createMapStateToProps = () => {
@@ -105,7 +125,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList, historyPush) => dispatch(mergeTitles(matchList, duplicateList, historyPush))
+    mergeTitles: (matchList, duplicateList, toastApi) => dispatch(mergeTitles(matchList, duplicateList, toastApi))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

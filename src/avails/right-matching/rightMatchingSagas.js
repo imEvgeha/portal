@@ -1,5 +1,5 @@
 import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-saga/effects';
-import {goBack, push} from 'connected-react-router';
+import {push} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
@@ -205,13 +205,14 @@ export function* fetchMatchedRight(requestMethod, {payload}) {
 }
 
 export function* fetchCombinedRight(requestMethod, {payload}) {
+    const {focusedRightId, matchedRightId} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
 
-        const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId);
+        const response = yield call(requestMethod, focusedRightId, matchedRightId);
         const combinedRight = response.data;
 
         yield put({
@@ -229,19 +230,22 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
 }
 
 export function* saveCombinedRight(requestMethod, {payload}) {
+    const {focusedRightId, matchedRightId, combinedRight, redirectPath} = payload || {};
     try {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
-        const response = yield call(requestMethod, payload.focusedRightId, payload.matchedRightId, payload.combinedRight);
+        const response = yield call(requestMethod, focusedRightId, matchedRightId, combinedRight);
         const focusedRight = response.data;
 
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
-        yield put(push(URL.keepEmbedded(payload.route)));
+        if (redirectPath) {
+            yield put(push(URL.keepEmbedded(redirectPath)));
+        }
         yield call(payload.addToast, {
             title: SUCCESS_TITLE,
             description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
@@ -252,7 +256,6 @@ export function* saveCombinedRight(requestMethod, {payload}) {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
-            error: true,
         });
         yield call(payload.addToast, {
             title: ERROR_TITLE,
@@ -310,19 +313,21 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
 }
 
 export function* createNewRight(requestMethod, {payload}) {
+    const {rightId, addToast, redirectPath} = payload || {};
     try {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
             payload: {}
         });
-        yield call(requestMethod, payload.rightId);
+        yield call(requestMethod, rightId);
         
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
-        // TODO: fix this
-        yield put(goBack());
-        yield call(payload.addToast, {
+        if (redirectPath) {
+            yield put(push(URL.keepEmbedded(redirectPath)));
+        }
+        yield call(addToast, {
             title: SUCCESS_TITLE,
             description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
@@ -332,9 +337,8 @@ export function* createNewRight(requestMethod, {payload}) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_ERROR,
             payload: error,
-            error: true
         });
-        yield call(payload.addToast, {
+        yield call(addToast, {
             title: ERROR_TITLE,
             description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
             icon: ERROR_ICON,
