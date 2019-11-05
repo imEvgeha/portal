@@ -10,5 +10,5 @@ export const getRightsHistory = (rightIds, showDiffs = true, includeMessageHeade
         rightIds
     };
     
-    return http.post(`${config.post('gateway.url')}${config.get('gateway.service.eventApi')}/history/bulkRequest`, body );
+    return http.post(`${config.post('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`, body );
 };

@@ -5,6 +5,7 @@ export const defaultConfiguration = {
         titleUrl: 'https://titlesapi.dev.vubiquity.com',
         configuration: 'https://configapi.dev.vubiquity.com',
         assetManagementURL: 'https://asset-management-api.dev.vubiquity.com',
+        eventApiUrl: 'https://availsapi.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
             availsParser: '/avails-parser/v1', 
