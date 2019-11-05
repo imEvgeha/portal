@@ -196,7 +196,7 @@ export class EndpointContainer extends Component {
         this.loadEndpointData(this.state.currentPage);
     };
 
-    getLabel(selectedApi, item){
+    getLabel(selectedApi, item, noEmpty = true){
         const result = selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames.reduce((acc, curr) => {
             let result = [...acc];
             if (item[curr]) {
@@ -204,7 +204,7 @@ export class EndpointContainer extends Component {
             }
             return result;
         }, []);
-        return (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
+        return (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || (noEmpty && '[id = ' + item.id + ']');
     }
 
     render() {        
@@ -231,7 +231,7 @@ export class EndpointContainer extends Component {
                 </TextHeader>
                 {this.state.currentRecord &&
                     <DataBody>
-                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label = {this.getLabel(selectedApi, this.state.currentRecord)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label = {this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
                 }
                 <DataBody>
