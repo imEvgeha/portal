@@ -20,6 +20,7 @@ import Constants from './titleMatchingConstants';
 import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
 
+const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
 const TitleMatchView = ({
     match,
@@ -38,6 +39,7 @@ const TitleMatchView = ({
         return (
             <CustomActionsCellRenderer id={id}>
                 <Button
+                    appearance="primary"
                     onClick={() => setModalContentAndTitle(
                         () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
                         NewTitleConstants.NEW_TITLE_MODAL_TITLE)}
@@ -76,7 +78,7 @@ const TitleMatchView = ({
             {
                 !!searchCriteria.title && (
                     <React.Fragment>
-                        <NexusTitle>Incoming Right</NexusTitle>
+                        <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
                                 columnDefs={[newTitleButton, ...rightColumns]}
@@ -84,8 +86,7 @@ const TitleMatchView = ({
                             />
                         </div>
                         <SectionMessage>
-                            <p>Select titles from the repository that match the Incoming right or declare it as a NEW title from the
-                                action menu.</p>
+                            <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
                         </SectionMessage>
                         <TitlesList
                             rightId={match && match.params.rightId}

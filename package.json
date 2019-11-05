@@ -29,6 +29,7 @@
     "@atlaskit/pagination": "^12.0.9",
     "@atlaskit/portal": "^3.0.9",
     "@atlaskit/quick-search": "^7.6.6",
+    "@atlaskit/radio": "^3.1.4",
     "@atlaskit/section-message": "^4.1.1",
     "@atlaskit/select": "^10.0.0",
     "@atlaskit/spinner": "^12.0.9",

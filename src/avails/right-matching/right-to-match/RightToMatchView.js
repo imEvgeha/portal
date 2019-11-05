@@ -114,14 +114,14 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <div className="nexus-c-right-to-match-view__header">
+            <NexusTitle>                
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
-                    <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                    <ArrowLeftIcon size='large' primaryColor={'#42526E'}/>
                 </Link>
-                <span className="nexus-c-right-to-match-view__header-title">Right to Right Matching</span>
-            </div>
+                <span>Right to Right Matching</span>
+            </NexusTitle>
             <div className="nexus-c-right-to-match-view__table-header">
-                <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
+                <NexusTitle isSubTitle isInline>Focused Right</NexusTitle>
                 <RightToMatchNavigation
                     searchParams={{availHistoryIds}}
                     focusedRightId={rightId}
@@ -141,7 +141,7 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
+                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
                 {fieldSearchCriteria && (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}

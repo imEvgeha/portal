@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
+import { Radio } from '@atlaskit/radio';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -45,10 +46,11 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         const repoName = getRepositoryName(id);
         return (
             <CustomActionsCellRenderer id={id} >
-                <input
-                    type={'radio'} name={repoName}
-                    checked={matchList[repoName] && matchList[repoName].id === id}
-                    onChange={event => matchClickHandler(data, repoName, event.target.checked)}/>
+                <Radio
+                    name={repoName}
+                    isChecked={matchList[repoName] && matchList[repoName].id === id}
+                    onChange={event => matchClickHandler(data, repoName, event.target.checked)}
+                />
             </CustomActionsCellRenderer>
         );
     };
@@ -105,7 +107,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
 
     return (
         <React.Fragment>
-            <NexusTitle>Title Repositories ({totalCount})</NexusTitle>
+            <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
                 columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
                 setTotalCount={setTotalCount}/>
