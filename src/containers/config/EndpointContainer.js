@@ -196,6 +196,17 @@ export class EndpointContainer extends Component {
         this.loadEndpointData(this.state.currentPage);
     };
 
+    getLabel(selectedApi, item, noEmpty = true){
+        const result = selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames.reduce((acc, curr) => {
+            let result = [...acc];
+            if (item[curr]) {
+                result = [...acc, item[curr]];
+            }
+            return result;
+        }, []);
+        return (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || (noEmpty && '[id = ' + item.id + ']');
+    }
+
     render() {        
         const {selectedApi} = this.props;
         let canUpdate = can('update', 'ConfigUI');
@@ -220,7 +231,7 @@ export class EndpointContainer extends Component {
                 </TextHeader>
                 {this.state.currentRecord &&
                     <DataBody>
-                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label = {this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
                 }
                 <DataBody>
@@ -236,15 +247,7 @@ export class EndpointContainer extends Component {
                     {!this.state.isLoading && (
                         <ListContainer>
                             {this.state.data.map((item, i) => {
-                                const {selectedApi = {}} = this.props;
-                                const result = selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames.reduce((acc, curr) => {
-                                    let result = [...acc];
-                                    if (item[curr]) {
-                                        result = [...acc, item[curr]];
-                                    }
-                                    return result;
-                                }, []);
-                                const label = (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || '[id = ' + item.id + ']';
+                                const label = this.getLabel(selectedApi, item);
                                 if (i < this.state.pageSize) {
                                     return (
                                         <ListItem key={i}>
