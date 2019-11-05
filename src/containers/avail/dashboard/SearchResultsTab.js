@@ -22,6 +22,7 @@ import {
     resultPageUpdate
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
+import RightViewHistory from '../../../avails/right-history-view/RightHistoryView';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
@@ -250,6 +251,7 @@ class SearchResultsTab extends React.Component {
                                 Results: <Total/>
                             </span>
                             <Selected toggleShowSelected = {this.toggleShowSelected}/>
+                            <RightViewHistory />
                             {this.props.showSelectedAvails &&
                                 <a href={'#'} onClick={this.toggleShowSelected}><span
                                     className={'nx-container-margin table-top-text'}

@@ -5,12 +5,14 @@
     "titleUrl":"https://titlesapi.qa.vubiquity.com",
     "configuration": "https://configapi.qa.vubiquity.com",
     "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
+    "eventApiUrl": "https://availsapi.qa.vubiquity.com",
     "service": {
       "avails": "/avails-api/v1",
       "availsParser": "/avails-parser/v1",
       "title": "/titles-api/v1",
       "configuration": "/configuration-api/v1",
-      "assetManagement": "/api/asset-management/v1"
+      "assetManagement": "/api/asset-management/v1",
+      "eventApi": "/event-api/v1"
     }
   },
   "keycloak": {
