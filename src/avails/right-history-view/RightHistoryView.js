@@ -32,7 +32,11 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
             <div>
                 {rightsEventHistory.map((e, index) =>
                     //Place for audit table integration
-                    <span key={index}>{JSON.stringify(e)}</span>
+
+                    <div key={index}>
+                        <span>{JSON.stringify(e)}</span>
+                        <span>{JSON.stringify(selectedAvails.find(a => a.id === e.eventHistory[0].id))}</span>
+                    </div>
                 )}
             </div>
         );
