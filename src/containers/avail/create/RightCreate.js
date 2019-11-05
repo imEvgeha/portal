@@ -259,6 +259,10 @@ class RightCreate extends React.Component {
     }
 
     confirm() {
+        console.log('isAnyErrors', this.isAnyErrors())
+        console.log('this.mappingErrorMessage', this.mappingErrorMessage)
+        console.log('areMandatoryFieldsEmpty', this.areMandatoryFieldsEmpty())
+        console.log('mardatory f', this.props.availsMapping.mappings.filter(({javaVariableName}) => can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName]))
         if(this.validateFields()) {
             this.setState({errorMessage: 'Not all mandatory fields are filled or not all filled fields are valid'});
             return;
@@ -716,7 +720,10 @@ class RightCreate extends React.Component {
                         id={'right-create-' + name + '-text'}
                         value={value}
                         error={error}
-                        onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
+                        onChange={(date) => {
+                            this.handleDatepickerChange(name, displayName, date);
+                            this.handleInvalidDatePicker(name, false);
+                        }}
                     />
                 </div>
             ));
