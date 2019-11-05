@@ -10,7 +10,8 @@ export const defaultConfiguration = {
             availsParser: '/avails-parser/v1', 
             title: '/titles-api/v1',
             configuration: '/configuration-api/v1',
-            assetManagement: '/api/asset-management/v1'
+            assetManagement: '/api/asset-management/v1',
+            eventApi: '/event-api/v1'
         },
     },
     avails: {

@@ -57,13 +57,18 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
         setOpened(true);
     };
 
-    return (
-        <a href={'#'} onClick={openHistoryModal}>
-            <span className={'nx-container-margin table-top-text'}>
-                View History
-            </span>
-        </a>
-    );
+    if (selectedAvails.length > 0) {
+        return (
+            <a href={'#'} onClick={openHistoryModal}>
+                <span className={'nx-container-margin table-top-text'}>
+                    View History
+                </span>
+            </a>
+        );
+    } else {
+        return '';
+    }
+
 }
 
 RightHistoryView.propTypes = {
