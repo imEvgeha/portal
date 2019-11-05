@@ -25,7 +25,7 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
     };
 
     const isEmpty = (name) => {
-        return (!name || name.length === 0 || name.replace(/\s+/g, '').length === 0);
+        return (!name || name.length === 0 || !name.trim());
     };
 
     const handleSubmit = () => {
