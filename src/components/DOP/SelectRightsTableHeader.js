@@ -26,10 +26,10 @@ class SelectRightsTableHeader extends React.Component {
     };
 
     render() {
-        const {SelectRightHeaderWrappedComponent} = this.props;
+        const {SelectRightHeaderWrappedComponent, hidden} = this.props;
         return (
             <div>
-                <TableHeader table={this.state.table}/>
+                {!hidden && <TableHeader table={this.state.table}/>}
                 <SelectRightHeaderWrappedComponent
                     {...this.props}
                     setTable={this.setTable}

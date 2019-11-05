@@ -80,6 +80,7 @@ class SelectRightsPlanning extends Component {
         )(ResultsTable);
 
         const SelectedRightsResultsTable = compose(
+            withSelectRightHeader,
             withRedux,
             withColumnsReorder,
             withSelectIgnoreMark,
