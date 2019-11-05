@@ -55,16 +55,21 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     };
 
     const onMatchAndCreate = () => {
-        addToast({
-            title: WARNING_TITLE,
-            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-            icon: WARNING_ICON,
-            actions: [
-                {content:'Cancel', onClick: removeToast},
-                {content: 'Ok', onClick: mergeTitles}
-            ],
-            isWithOverlay: true,
-        });
+        if(Object.keys(matchList).length === 1){
+            addToast({
+                title: WARNING_TITLE,
+                description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+                icon: WARNING_ICON,
+                actions: [
+                    {content:'Cancel', onClick: removeToast},
+                    {content: 'Ok', onClick: mergeTitles}
+                ],
+                isWithOverlay: true,
+            });
+        }
+        else{
+            mergeTitles();
+        }
     };
 
     return (
