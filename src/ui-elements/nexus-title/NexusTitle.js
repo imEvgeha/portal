@@ -5,7 +5,7 @@ import './NexusTitle.scss';
 const NexusTitle = ({title, isSubTitle, isInline, className, children}) => { // eslint-disable-line
     return (
         <div className={`nexus-c-title ${className}`}>
-            <p className={`nexus-c-title__${isSubTitle ? 'sub-label' : 'label'} nexus-c-title__${isInline ? 'inline-label' : null}`}>{children}</p>
+            <p className={`nexus-c-title__${isSubTitle ? 'sub-label' : 'label'} nexus-c-title__${isInline ? 'inline-label' : ''}`}>{children}</p>
             {title && (
                 <div className="nexus-c-title__name">{title}</div> 
             )}

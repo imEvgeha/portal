@@ -21,6 +21,7 @@ import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
+import {backArrowColor} from '../../../constants/avails/constants';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -118,7 +119,7 @@ function MatchRightView({
         <div className="nexus-c-match-right-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
-                    <ArrowLeftIcon size='large' primaryColor={'#42526E'}/> 
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/> 
                 </Link>
                 <span>Right Matching Preview</span>
             </NexusTitle>

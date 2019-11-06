@@ -21,6 +21,7 @@ import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
+import {backArrowColor} from '../../../constants/avails/constants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -116,7 +117,7 @@ const RightToMatchView = ({
         <div className="nexus-c-right-to-match-view">
             <NexusTitle>                
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
-                    <ArrowLeftIcon size='large' primaryColor={'#42526E'}/>
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
                 <span>Right to Right Matching</span>
             </NexusTitle>
