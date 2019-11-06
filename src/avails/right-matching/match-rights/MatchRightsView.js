@@ -116,14 +116,14 @@ function MatchRightView({
 
     return (
         <div className="nexus-c-match-right-view">
-            <div className="nexus-c-match-right-view__header">
+            <NexusTitle>
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
-                    <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                    <ArrowLeftIcon size='large' primaryColor={'#42526E'}/> 
                 </Link>
-                <span className="nexus-c-match-right-view__header-title">Right Matching Preview</span>
-            </div>
+                <span>Right Matching Preview</span>
+            </NexusTitle>
             <div className="nexus-c-match-right-view__matched">
-                <NexusTitle className="nexus-c-title--small">Matched Rights</NexusTitle>
+                <NexusTitle isSubTitle>Matched Rights</NexusTitle>
                 {!!columnDefs && (
                     <NexusGrid
                         columnDefs={columnDefs}
@@ -133,7 +133,7 @@ function MatchRightView({
                 )}
             </div>
             <div className="nexus-c-match-right-view__combined">
-                <NexusTitle className="nexus-c-title--small">Combined Rights</NexusTitle>
+                <NexusTitle isSubTitle>Combined Rights</NexusTitle>
                 {!!columnDefs && (
                     <EditableNexusGrid
                         columnDefs={columnDefs}
