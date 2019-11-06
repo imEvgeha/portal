@@ -46,7 +46,7 @@ class TitleEditMode extends Component {
       title,
       contentType,
       releaseYear,
-      boxOffice,
+      usBoxOffice,
       animated,
       duration,
       eventType,
@@ -435,14 +435,14 @@ class TitleEditMode extends Component {
                   />
                 </Col>
                 <Col>
-                  <Label for='titleBoxOffice'>Box Office</Label>
+                  <Label for='titleBoxOffice'>Box Office US</Label>
                   <AvField
                     name='boxOffice'
                     id='titleBoxOffice'
                     type='number'
                     onChange={e => this.props.handleOnChangeEdit(e)}
-                    value={boxOffice ? boxOffice : ''}
-                    placeholder='Enter Box Office'
+                    value={usBoxOffice ? usBoxOffice : ''}
+                    placeholder='Enter Box Office US'
                     validate={{
                       pattern: {
                         value: '^[0-9]+$',

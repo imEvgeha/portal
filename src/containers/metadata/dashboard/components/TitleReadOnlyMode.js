@@ -21,7 +21,7 @@ class TitleReadOnlyMode extends Component {
         const { 
             title,
             releaseYear,
-            boxOffice,
+            usBoxOffice,
             animated,
             totalNumberOfSeasons,
             totalNumberOfEpisodes,
@@ -222,10 +222,10 @@ class TitleReadOnlyMode extends Component {
                                     )
                                 }
                                 {
-                                    boxOffice && (
+                                    usBoxOffice && (
                                         <Col>
                                             <Alert color="light" id="titleBoxOffice">
-                                                <b>Box Office: </b> {'$' + boxOffice}</Alert>
+                                                <b>Box Office US: </b> {usBoxOffice}</Alert>
                                         </Col>
                                     )
                                 }
