@@ -1,0 +1,1886 @@
+{
+  "id": "rght_5TBrT",
+  "type": "right",
+  "createdAt": "2019-10-22T12:56:26.207Z",
+  "updatedAt": "2019-11-04T08:47:30.638Z",
+  "createdBy": "service-account-avails-client",
+  "updatedBy": "dradojkovic",
+  "docType": "rights",
+  "validationErrors": [],
+  "productionStudio": "Lionsgate",
+  "licensor": "",
+  "rightStatus": "Pending",
+  "status": "Pending",
+  "contractId": [
+    "Some"
+  ],
+  "titleStatus": "Pending",
+  "coreTitleId": "Some",
+  "availHistoryIds": [
+    "avih_Ac9Ec"
+  ],
+  "ingestHistoryAttachmentId": null,
+  "licensee": "Vubiquity",
+  "storeLanguage": "en",
+  "ALID": "Some",
+  "CID": "Some",
+  "licenseType": "VOD",
+  "licenseRightsDescription": "DD-Theatrical",
+  "territory": [
+    {
+      "country": "AL",
+      "selected": false,
+      "dateSelected": null,
+      "rightContractStatus": "Pending",
+      "vuContractId": null,
+      "hide": null,
+      "comment": null
+    }
+  ],
+  "territoryExcluded": [],
+  "affiliate": [{
+    "createdAt": "2019-09-06T12:21:15.992",
+    "createdBy": null,
+    "id": "afl_TRngc",
+    "type": "affiliate",
+    "updatedAt": "2019-09-16T09:36:32.955",
+    "updatedBy": null,
+    "value": "Affilate_Test_1"
+  }],
+  "affiliateExclude": [],
+  "region": [
+    "UNITED KINGDOM"
+  ],
+  "regionExcluded": [
+    "PANAMA"
+  ],
+  "assetLanguage": "en",
+  "languageAudioTypes": [],
+  "language": "EN:stereo;ES:dolby 5.1",
+  "localizationType": "Sub",
+  "holdbackLanguage": [
+    "en"
+  ],
+  "allowedLanguages": [
+    "en"
+  ],
+  "requiredFulfillmentLanguages": [
+    "en"
+  ],
+  "contentType": "Movie",
+  "entryType": "Full Extract",
+  "title": "UK_Movie4",
+  "displayTitle": "Some",
+  "episodic": {
+    "seriesTitle": "Some",
+    "seriesDisplayTitle": "Some",
+    "seasonTitle": "Some",
+    "seasonDisplayTitle": "Some",
+    "seasonNumber": 1,
+    "episodeTitle": "Some",
+    "episodeDisplayTitle": "Some",
+    "episodeNumber": 1,
+    "volumeTitle": "Some",
+    "volumeDisplayTitle": "Some",
+    "volumeNumber": 1,
+    "distributionNumber": "1",
+    "volumeDistributionNumber": "1",
+    "episodeCount": 1,
+    "seasonCount": 1
+  },
+  "groupIdentity": "Some",
+  "companyDisplayCredit": "Lionsgate",
+  "castCrew": [
+    {
+      "firstName": null,
+      "middleName": null,
+      "surName": null,
+      "displayName": "Chris Howard Evans (Captain America); Mark David Ruffalo (Hulk); Scarlett Johansson (Black Widow)",
+      "personType": "Actor",
+      "characterName": null
+    },
+    {
+      "firstName": null,
+      "middleName": null,
+      "surName": null,
+      "displayName": "Anthony Marios Russo; Joe Russo",
+      "personType": "Director",
+      "characterName": null
+    }
+  ],
+  "releaseYear": "2001",
+  "releaseHistoryOriginal": "2018-04-30T00:00:00.000Z",
+  "releaseHistoryPhysicalHV": "2018-04-30T00:00:00.000Z",
+  "rating": {
+    "ratingSystem": "Telus CHVRS",
+    "ratingValue": "PG-13",
+    "ratingReason": "N/A"
+  },
+  "captions": {
+    "captionIncluded": true,
+    "captionExemption": 1
+  },
+  "any": "Some",
+  "totalRuntime": "10:10:10",
+  "format": [
+    "HD"
+  ],
+  "hdr": "DV",
+  "wcg": false,
+  "hfr": false,
+  "ngAudio": "Atmos",
+  "availStart": "2018-04-30T00:00:00.000Z",
+  "availEnd": "2019-04-30T00:00:00.000Z",
+  "start": "2018-04-30T00:00:00.000Z",
+  "startLag": "P21D",
+  "end": "2019-04-30T00:00:00.000Z",
+  "windowDuration": "P21D",
+  "pricing": {
+    "priceType": "Tier",
+    "priceValue": "11",
+    "priceCurrency": "USD"
+  },
+  "srp": 9.99,
+  "description": "Some",
+  "bonus": "Some",
+  "download": "Some",
+  "otherTerms": "Some",
+  "otherInstructions": "Some",
+  "suppressionLiftDate": "2018-04-30T00:00:00.000Z",
+  "specialPreOrderFulfillDate": "2018-04-30T00:00:00.000Z",
+  "announceDate": "2018-04-30T00:00:00.000Z",
+  "rentalDuration": 720,
+  "watchDuration": 48,
+  "exclusive": true,
+  "exclusiveAttributes": "Some",
+  "brandingRights": true,
+  "brandingRightsAttributes": "Some",
+  "cmContentIds": {
+    "contentId": "Some",
+    "seriesContentId": "Some",
+    "seasonContentId": "Some",
+    "volumeContentId": "Some",
+    "episodeContentId": "Some"
+  },
+  "eidr": {
+    "titleId": "Some",
+    "seriesId": "Some",
+    "seasonId": "Some",
+    "episodeTitleId": "Some",
+    "volumeId": "Some",
+    "episodeId": "Some",
+    "editId": "Some",
+    "encodeId": "Some"
+  },
+  "altId": "Some",
+  "seriesAltId": "Some",
+  "seasonAltId": "Some",
+  "volumeAltId": "Some",
+  "episodeAltId": "Some",
+  "availId": null,
+  "uvId": "some",
+  "dmaId": "some",
+  "reportingId": "Some",
+  "metadata": "Some",
+  "packageLabel": "Some",
+  "exceptionFlag": true,
+  "serviceProvider": "Some",
+  "bundledALIds": "Some",
+  "retailer": {
+    "retailerId1": [
+      "Some"
+    ],
+    "retailerSeriesId": "Some",
+    "retailerSeasonId": "Some",
+    "retailerVolumeId": "Some",
+    "retailerEpisodeId1": "Some",
+    "retailerSpare1": "Some"
+  },
+  "genres": [
+    "Drama"
+  ],
+  "platformCategory": [],
+  "boxOffice": 1,
+  "usBoxOffice": 123,
+  "boxOfficeComment": "ABC",
+  "daysFromLVR": null,
+  "audioDescription": [
+    "en"
+  ],
+  "imdbLink": "some",
+  "termYear": 2001,
+  "reLicence": true,
+  "reWork": "VOD Library Y5",
+  "contractualCategory": "Some",
+  "productType": "Feature",
+  "subtitles": [
+    "en"
+  ],
+  "startTime": "01:01:01",
+  "materialDeliveryDate": "2018-04-30T00:00:00.000Z",
+  "highlightedFields": [],
+  "temporaryPriceReduction": false,
+  "lastUpdateReceivedAt": null,
+  "originalRightId": "aaa",
+  "sourceRightId": "aaa",
+  "copyright": "aaa",
+  "canconNumber": "A040750",
+  "termYearStart": "2018-04-30T00:00:00.000Z",
+  "termYearEnd": "2019-04-30T00:00:00.000Z",
+  "productionYear": "2010",
+  "rightSelected": true,
+  "originallyReceivedAt": "2019-10-22T12:56:04.424Z",
+  "updatedCatalogReceived": true,
+  "updatedCatalogReceivedAt": "2019-10-24T17:54:16.000Z",
+  "titleLocal": null,
+  "keywords": [],
+  "rulesContext": [
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 52 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "LicenseRightsDescription",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 1 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ALID",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 2 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "CID",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 3 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Affiliate",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 4 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AffiliateExclude",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 5 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AllowedLanguages",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 6 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AltId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 7 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AnnounceDate",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 18 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 8 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Any",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 9 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AssetLanguage",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 10 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AudioDescription",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 12 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AvailEnd",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 14 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 13 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AvailId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 14 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "AvailStart",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 13 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 15 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Bonus",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 16 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "BoxOffice",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 17 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "BoxOfficeComment",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 18 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "BrandingRights",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 19 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "BrandingRightsAttributes",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 20 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "BundledALIds",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 21 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "CaptionExemption",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 22 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "CaptionIncluded",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 23 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "CompanyDisplayCredit",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 24 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ContentType",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 25 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ContractId",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 26 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ContractualCategory",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 27 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "CoreTitleId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 28 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "DaysFromLVR",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 29 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Description",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 30 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "DisplayTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 31 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "DMAId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 32 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Download",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 33 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EditId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 34 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EncodeId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 35 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "End",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 16 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 36 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeAltId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 37 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeContentId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 38 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 39 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeTitleId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 40 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ExceptionFlag",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 41 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Exclusive",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 42 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ExclusiveAttributes",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 43 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Format",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 44 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Genres",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 45 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "GroupIdentity",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 46 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "HDR",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 47 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "HFR",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 48 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "HoldbackLanguage",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 49 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "IMDBLink",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 50 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Language",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 53 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "LicenseType",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 54 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Licensee",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 55 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "LocalizationType",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 56 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "MaterialDeliveryDate",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 57 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Metadata",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 58 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "NGAudio",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 59 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "OtherInstructions",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 60 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "PackageLabel",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 62 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "PriceCurrency",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 63 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "PriceType",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 64 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "PriceValue",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 65 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ProductType",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 66 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RatingValue",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 67 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ReLicence",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 68 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ReWork",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 69 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ReleaseHistoryOriginal",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 70 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ReleaseHistoryPhysicalHV",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 2 ValidateDateStringsDependentFields",
+        "Row 12 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 71 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ReleaseYear",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 72 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RentalDuration",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 73 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ReportingId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 74 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RequiredFulfillmentLanguages",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 75 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RetailerEpisodeId1",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 76 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RetailerId1",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 77 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RetailerSeasonId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 78 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RetailerSeriesId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 79 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RetailerSpare1",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 80 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RetailerVolumeId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 81 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RightStatus",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 82 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonAltId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 83 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonContentId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 84 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 85 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeriesAltId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 86 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeriesContentId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 87 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeriesId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 88 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ServiceProvider",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 89 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SpecialPreOrderFulfillDate",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 90 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SRP",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "ISVALID"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 91 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Start",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 15 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 92 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "StartLag",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 93 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "StartTime",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 94 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Status",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 95 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "StoreLanguage",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 96 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Subtitles",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 97 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SuppressionLiftDate",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 17 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 98 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TermYear",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 99 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TerritoryExcluded",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 100 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Title",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 101 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TitleId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 102 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TitleStatus",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 103 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TotalRuntime",
+      "transformMethodName": [
+        "RunTime"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 104 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "USBoxOffice",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 105 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "UVId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 106 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeAltId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 107 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeContentId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 108 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 109 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "WatchDuration",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 110 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "WCG",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 111 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "WindowDuration",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 112 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "DistributionNumber",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 113 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeCount",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 114 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeDisplayTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 115 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeNumber",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 116 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EpisodeTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 117 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonCount",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 118 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonDisplayTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 119 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonNumber",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 120 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeasonTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 121 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeriesDisplayTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 122 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeDisplayTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 123 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeDistributionNumber",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 124 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeNumber",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 125 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "VolumeTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 126 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Region",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 127 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RegionExcluded",
+      "transformMethodName": [
+        "SemicolonSeperatedStringToList"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 128 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Actor",
+      "transformMethodName": [
+        "CastCrew"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 129 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Director",
+      "transformMethodName": [
+        "CastCrew"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 134 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Licensor",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 135 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ProductionStudio",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 136 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RatingSystem",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 137 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RatingReasoning",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 138 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EntryType",
+      "transformMethodName": [
+        "EntryType"
+      ],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 139 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SeriesTitle",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 140 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "EndLag",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 141 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "OtherTerms",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 142 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ContentId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 143 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "ProductionYear",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 144 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "OriginalRightId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 145 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "CanconNumber",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 146 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Copyright",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 147 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "SourceRightId",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 148 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TermYearStart",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 19 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 149 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "TermYearEnd",
+      "transformMethodName": [],
+      "validateMethodName": [
+        "Row 20 ValidateDateString"
+      ],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 150 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "Country",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    },
+    {
+      "fieldName": null,
+      "templateName": "master_vubiquity_3",
+      "ruleName": "Row 152 Master_UKRightsSpreadsheetTemplate",
+      "originalValue": null,
+      "availColumn": "RightContractStatus",
+      "transformMethodName": [],
+      "validateMethodName": [],
+      "outboundUpdateMethodName": [],
+      "empty": false
+    }
+  ],
+  "availSource": {
+    "fileUri": "https://vbq-cs-dev.s3.us-west-2.amazonaws.com/avails/archive/b618abbc-c2c3-4f41-82c7-aa0097b57a0f/INT_upload_uk.xlsx",
+    "templateName": "master_vubiquity_3",
+    "templateNames": [
+      "master_vubiquity_3"
+    ],
+    "provider": "master_uk_vubiquity",
+    "fileName": "INT_upload_uk.xlsx",
+    "tabName": "MR_upload_uk_test2",
+    "availRow": 5
+  },
+  "mergedRightsIds": null
+}

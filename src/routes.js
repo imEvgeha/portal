@@ -22,8 +22,6 @@ import RightToMatchView from './avails/right-matching/right-to-match/RightToMatc
 import MatchRightView from './avails/right-matching/match-rights/MatchRightsView';
 import TitleMatchView from './avails/title-matching/TitleMatchView';
 import TitleMatchReview from './avails/title-matching/TitleMatchReview/TitleMatchReview';
-import AuditHistoryTable from './components/AuditHistoryTable/AuditHistoryTable';
-import data from './containers/contracts/audit/mockDataHistoryView';
 
 const routes = (
     <Switch>
@@ -59,9 +57,6 @@ const routes = (
         <Route exact path="/contractsearch" component={Contract} />
         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
         <Route exact path="/settings" component={Settings} />
-        <Route exact path="/audit" component={canRender(
-            () => <AuditHistoryTable data={data}/>,
-            'update', 'Metadata')}/>
         <Route component={NotFound} />
     </Switch>
 );
