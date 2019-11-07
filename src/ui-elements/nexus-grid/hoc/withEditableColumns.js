@@ -31,11 +31,19 @@ const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITA
 
         function updateColumnDefs(columnDefs) {
             const getOptions = data => {
-                const result = Array.isArray(data) && data.filter(Boolean).map(({value, id}) => {
+                const result = Array.isArray(data) && data.filter(Boolean).map(item => {
+                    if (isObject(item)) {
+                        const {value, id} = item;
+                        return {
+                            label: value,
+                            value,
+                            key: id,
+                        };
+                    }
                     return {
-                        label: value,
-                        value,
-                        key: id,
+                        label: item,
+                        value: item,
+                        key: item,
                     };
                 });
                 return result;
