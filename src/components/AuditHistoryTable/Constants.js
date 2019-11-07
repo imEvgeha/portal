@@ -12,7 +12,6 @@ export default {
         {
             field: 'updatedBy',
             headerName: 'Author',
-            dataType: dataTypes.DATE,
             noStyles: true
         },
         {

@@ -37,17 +37,20 @@ export const valueFormatter = ({colId, field, dataType}) => {
 
 const valueCompare = (diffValue, currentValue, column) => {
     const {colId, dataType} = column;
-    switch(dataType){
-        case RATING:
-            return diffValue[colId] === currentValue[colId];
-        case FORMAT:
-        case AUDIO:
-            return diffValue[0] === currentValue[0];
-        case AFFILIATE:
-            return currentValue[0] && (diffValue[0].value === currentValue[0].value);
-        default:
-            return diffValue === currentValue;
+    if(currentValue){
+        switch(dataType){
+            case RATING:
+                return diffValue[colId] === currentValue[colId];
+            case FORMAT:
+            case AUDIO:
+                return diffValue[0] === currentValue[0];
+            case AFFILIATE:
+                return currentValue[0] && (diffValue[0].value === currentValue[0].value);
+            default:
+                return diffValue === currentValue;
+        }
     }
+    return false;
 };
 
 export const cellStyling = ({data = {}, value}, focusedRight, column) => {
