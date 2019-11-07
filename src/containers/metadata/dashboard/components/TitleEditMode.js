@@ -435,14 +435,14 @@ class TitleEditMode extends Component {
                   />
                 </Col>
                 <Col>
-                  <Label for='titleBoxOffice'>Box Office US</Label>
+                  <Label for='titleBoxOffice'>US Box Office</Label>
                   <AvField
                     name='boxOffice'
                     id='titleBoxOffice'
                     type='number'
                     onChange={e => this.props.handleOnChangeEdit(e)}
                     value={usBoxOffice ? usBoxOffice : ''}
-                    placeholder='Enter Box Office US'
+                    placeholder='Enter US Box Office'
                     validate={{
                       pattern: {
                         value: '^[0-9]+$',
