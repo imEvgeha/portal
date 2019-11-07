@@ -45,7 +45,6 @@ export const NexusModalProvider = ({children}) => {
             {isOpened &&
                 <ModalTransition>
                     <Modal
-                        width="small"
                         actions={actions.length && actions}
                         heading={title}
                         onClose={close}
