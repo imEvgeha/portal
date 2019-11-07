@@ -20,7 +20,7 @@ export const valueFormatter = ({colId, field, dataType}) => {
         case AUDIO:
             return (params) => {
                 const {data = {}} = params || {};
-                return data[field] && data[field][0].toUpperCase() || '';
+                return data[field] && data[field][0] && data[field][0].toUpperCase() || '';
             };
         case AFFILIATE:
             return (params) => {

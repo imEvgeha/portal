@@ -13,7 +13,7 @@ function* fetchRightsHistory(requestMethod, {payload}) {
         //TODO Update after api will be ready
         let rightsEventHistory = payload.map(() => mockData);
         if (!mockData) {
-            const response = call(requestMethod, payload);
+            const response = yield call(requestMethod, payload);
             rightsEventHistory = response.data;
         }
 
