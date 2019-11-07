@@ -1,7 +1,7 @@
 {
   "eventHistory": [
     {
-      "opetarionType": "Created",
+      "operationType": "Created",
       "id": "rght_5TBrT",
       "type": "right",
       "createdAt": "2019-10-22T12:56:26.207Z",
@@ -9,7 +9,7 @@
       "docType": "rights",
       "validationErrors": [],
       "productionStudio": "Lionsgate",
-      "licensor": "Lionsgate",
+      "licensor": "Lionsgate-1",
       "rightStatus": "Pending",
       "status": "Pending",
       "contractId": [
@@ -240,7 +240,7 @@
       "mergedRightsIds": null
     },
     {
-      "opetarionType": "Updated",
+      "operationType": "Updated",
       "id": "rght_5TBrT",
       "type": "right",
       "createdAt": "2019-10-22T12:56:26.207Z",
@@ -250,7 +250,7 @@
       "docType": "rights",
       "validationErrors": [],
       "productionStudio": "Lionsgate",
-      "licensor": "Lionsgate",
+      "licensor": "Lionsgate-1",
       "rightStatus": "Pending",
       "status": "Pending",
       "contractId": [
@@ -481,7 +481,7 @@
       "mergedRightsIds": null
     },
     {
-      "opetarionType": "Updated",
+      "operationType": "Updated",
       "id": "rght_5TBrT",
       "type": "right",
       "createdAt": "2019-10-22T12:56:26.207Z",
@@ -491,7 +491,7 @@
       "docType": "rights",
       "validationErrors": [],
       "productionStudio": "Lionsgate",
-      "licensor": "Lionsgate",
+      "licensor": "",
       "rightStatus": "Pending",
       "status": "Pending",
       "contractId": [
@@ -722,8 +722,253 @@
       "mergedRightsIds": null
     },
     {
-      "opetarionType": "Deleted",
-      "id": "rght_5TBrT"
+      "operationType": "Updated",
+      "id": "rght_5TBrT",
+      "type": "right",
+      "createdAt": "2019-10-22T12:56:26.207Z",
+      "createdBy": "service-account-avails-client",
+      "updatedAt": "2019-10-23T12:56:26.207Z",
+      "updatedBy": "someone",
+      "docType": "rights",
+      "validationErrors": [],
+      "productionStudio": "Lionsgate",
+      "licensor": "Lionsgate",
+      "rightStatus": "Pending",
+      "status": "Pending",
+      "contractId": [
+        "SomeNew"
+      ],
+      "titleStatus": "Pending",
+      "coreTitleId": "SomeNew",
+      "availHistoryIds": [
+        "avih_Ac9Ec"
+      ],
+      "ingestHistoryAttachmentId": null,
+      "licensee": "Vubiquity",
+      "storeLanguage": "en",
+      "ALID": "Some",
+      "CID": "Some",
+      "licenseType": "VOD",
+      "licenseRightsDescription": "DD-Theatrical",
+      "territory": [
+        {
+          "country": "AS",
+          "selected": true,
+          "dateSelected": "2019-10-25T06:49:27.083Z",
+          "rightContractStatus": "PendingManual",
+          "vuContractId": null,
+          "hide": null,
+          "comment": "test"
+        }
+      ],
+      "territoryExcluded": [],
+      "affiliate": [{
+        "createdAt": "2019-09-06T12:21:15.992",
+        "createdBy": null,
+        "id": "afl_TRngc",
+        "type": "affiliate",
+        "updatedAt": "2019-09-16T09:36:32.955",
+        "updatedBy": null,
+        "value": "Affilate_Test_1"
+      }],
+      "affiliateExclude": [],
+      "region": [
+        "UNITED KINGDOM"
+      ],
+      "regionExcluded": [
+        "PANAMA"
+      ],
+      "assetLanguage": "en",
+      "languageAudioTypes": [],
+      "language": "EN:stereo;ES:dolby 5.1",
+      "localizationType": "Sub",
+      "holdbackLanguage": [
+        "en"
+      ],
+      "allowedLanguages": [
+        "en"
+      ],
+      "requiredFulfillmentLanguages": [
+        "en"
+      ],
+      "contentType": "Movie",
+      "entryType": "Full Extract",
+      "title": "UK_Movie4",
+      "displayTitle": "Some",
+      "episodic": {
+        "seriesTitle": "Some",
+        "seriesDisplayTitle": "Some",
+        "seasonTitle": "Some",
+        "seasonDisplayTitle": "Some",
+        "seasonNumber": 1,
+        "episodeTitle": "Some",
+        "episodeDisplayTitle": "Some",
+        "episodeNumber": 1,
+        "volumeTitle": "Some",
+        "volumeDisplayTitle": "Some",
+        "volumeNumber": 1,
+        "distributionNumber": "1",
+        "volumeDistributionNumber": "1",
+        "episodeCount": 1,
+        "seasonCount": 1
+      },
+      "groupIdentity": "Some",
+      "companyDisplayCredit": "Lionsgate",
+      "castCrew": [
+        {
+          "firstName": null,
+          "middleName": null,
+          "surName": null,
+          "displayName": "Chris Howard Evans (Captain America); Mark David Ruffalo (Hulk); Scarlett Johansson (Black Widow)",
+          "personType": "Actor",
+          "characterName": "Test"
+        },
+        {
+          "firstName": null,
+          "middleName": null,
+          "surName": null,
+          "displayName": "Anthony Marios Russo; Joe Russo",
+          "personType": "Director",
+          "characterName": null
+        }
+      ],
+      "releaseYear": "2001",
+      "releaseHistoryOriginal": "2018-04-30T00:00:00.000Z",
+      "releaseHistoryPhysicalHV": "2018-04-30T00:00:00.000Z",
+      "rating": {
+        "ratingSystem": "Telus CHVRS",
+        "ratingValue": "PG-13",
+        "ratingReason": "N/A"
+      },
+      "captions": {
+        "captionIncluded": true,
+        "captionExemption": 1
+      },
+      "any": "Some",
+      "totalRuntime": "10:10:10",
+      "format": [
+        "HD"
+      ],
+      "hdr": "DV",
+      "wcg": false,
+      "hfr": false,
+      "ngAudio": "Atmos",
+      "availStart": "2018-04-30T00:00:00.000Z",
+      "availEnd": "2019-04-30T00:00:00.000Z",
+      "start": "2018-04-30T00:00:00.000Z",
+      "startLag": "P21D",
+      "end": "2019-04-30T00:00:00.000Z",
+      "windowDuration": "P21D",
+      "pricing": {
+        "priceType": "Tier",
+        "priceValue": "12",
+        "priceCurrency": "USD"
+      },
+      "srp": 9.99,
+      "description": "Some",
+      "bonus": "Some",
+      "download": "Some",
+      "otherTerms": "Some",
+      "otherInstructions": "Some",
+      "suppressionLiftDate": "2018-04-30T00:00:00.000Z",
+      "specialPreOrderFulfillDate": "2018-04-30T00:00:00.000Z",
+      "announceDate": "2018-04-30T00:00:00.000Z",
+      "rentalDuration": 720,
+      "watchDuration": 48,
+      "exclusive": true,
+      "exclusiveAttributes": "Some",
+      "brandingRights": true,
+      "brandingRightsAttributes": "Some",
+      "cmContentIds": {
+        "contentId": "Some",
+        "seriesContentId": "Some",
+        "seasonContentId": "Some",
+        "volumeContentId": "Some",
+        "episodeContentId": "Some"
+      },
+      "eidr": {
+        "titleId": "Some",
+        "seriesId": "Some",
+        "seasonId": "Some",
+        "episodeTitleId": "Some",
+        "volumeId": "Some",
+        "episodeId": "Some",
+        "editId": "Some",
+        "encodeId": "Some"
+      },
+      "altId": "Some",
+      "seriesAltId": "Some",
+      "seasonAltId": "Some",
+      "volumeAltId": "Some",
+      "episodeAltId": "Some",
+      "availId": null,
+      "uvId": "some",
+      "dmaId": "some",
+      "reportingId": "Some",
+      "metadata": "Some",
+      "packageLabel": "Some",
+      "exceptionFlag": true,
+      "serviceProvider": "Some",
+      "bundledALIds": "Some",
+      "retailer": {
+        "retailerId1": [
+          "Some"
+        ],
+        "retailerSeriesId": "Some",
+        "retailerSeasonId": "Some",
+        "retailerVolumeId": "Some",
+        "retailerEpisodeId1": "Some",
+        "retailerSpare1": "Some"
+      },
+      "genres": [
+        "Drama"
+      ],
+      "platformCategory": [],
+      "boxOffice": 1,
+      "usBoxOffice": 123,
+      "boxOfficeComment": "ABC",
+      "daysFromLVR": null,
+      "audioDescription": [
+        "en"
+      ],
+      "imdbLink": "some",
+      "termYear": 2001,
+      "reLicence": true,
+      "reWork": "VOD Library Y5",
+      "contractualCategory": "Some",
+      "productType": "Feature",
+      "subtitles": [
+        "en"
+      ],
+      "startTime": "01:01:01",
+      "materialDeliveryDate": "2018-04-30T00:00:00.000Z",
+      "highlightedFields": [],
+      "temporaryPriceReduction": false,
+      "lastUpdateReceivedAt": null,
+      "originalRightId": "aaa",
+      "sourceRightId": "aaa",
+      "copyright": "aaa",
+      "canconNumber": "A040750",
+      "termYearStart": "2018-04-30T00:00:00.000Z",
+      "termYearEnd": "2019-04-30T00:00:00.000Z",
+      "productionYear": "2010",
+      "rightSelected": true,
+      "originallyReceivedAt": "2019-10-22T12:56:04.424Z",
+      "updatedCatalogReceived": true,
+      "updatedCatalogReceivedAt": "2019-10-24T17:54:16.000Z",
+      "titleLocal": null,
+      "keywords": [],
+      "rulesContext": [],
+      "availSource": {
+        "fileUri": "https://vbq-cs-dev.s3.us-west-2.amazonaws.com/avails/archive/b618abbc-c2c3-4f41-82c7-aa0097b57a0f/INT_upload_uk.xlsx",
+        "templateName": "master_vubiquity_3",
+        "templateNames": null,
+        "provider": "master_uk_vubiquity",
+        "fileName": "INT_upload_uk.xlsx",
+        "tabName": "MR_upload_uk_test2",
+        "availRow": 5
+      },
+      "mergedRightsIds": null
     }
   ],
   "diffs": [
@@ -772,7 +1017,7 @@
       {
         "op": "add",
         "path": "/licensor",
-        "value": "Lionsgate"
+        "value": "Lionsgate-1"
       },
       {
         "op": "add",
@@ -1500,6 +1745,11 @@
         "value": "Updated"
       },
       {
+        "op": "remove",
+        "path": "/licensor",
+        "value": "Lionsgate-1"
+      },
+      {
         "op": "add",
         "path": "/updatedAt",
         "value": "2019-10-23T12:56:26.207Z"
@@ -1513,28 +1763,31 @@
     [
       {
         "op": "replace",
-        "path": "/pricing/priceValue",
-        "value": "12"
+        "path": "/opetarionType",
+        "value": "Updated"
       },
       {
-        "op": "replace",
-        "path": "/castCrew/0/characterName",
-        "value": "Test"
+        "op": "add",
+        "path": "/licensor",
+        "value": "Lionsgate"
       },
       {
-        "op": "replace",
-        "path": "/territory/0/comment",
-        "value": "test"
+        "op": "add",
+        "path": "/updatedBy",
+        "value": "someone"
       },
       {
-        "op": "replace",
-        "path": "/coreTitleId",
-        "value": "SomeNew"
-      },
-      {
-        "op": "replace",
-        "path": "/contractId/0",
-        "value": "SomeNew"
+        "op": "add",
+        "path": "/affiliate",
+        "value": [{
+          "createdAt": "2019-09-06T12:21:15.992",
+          "createdBy": null,
+          "id": "afl_TRngc",
+          "type": "affiliate",
+          "updatedAt": "2019-09-16T09:36:32.955",
+          "updatedBy": null,
+          "value": "Affilate_Test_1"
+        }]
       }
     ]
   ]
