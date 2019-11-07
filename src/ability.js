@@ -10,18 +10,18 @@ const ability = new Ability([]);
  * @param keycloak
  */
 
-const updateAbility = (keycloak) => {
+const updateAbility = (roles) => {
     const { can, rules, cannot } = AbilityBuilder.extract();
 
     // ******** Avail *************
     const edit_only_admin = ['createdAt', 'updatedAt', 'originallyReceivedAt', 'lastUpdateReceivedAt'];
-    if (keycloak.hasRealmRole('avails_viewer')) {
+    if (roles.includes('avails_viewer')) {
         can('read', 'Avail');
     }
-    if (keycloak.hasRealmRole('avails_user')) {
+    if (roles.includes('avails_user')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
     }
-    if (keycloak.hasRealmRole('avails_admin')) {
+    if (roles.includes('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
         cannot('create', 'Avail', edit_only_admin);
     }else{
@@ -29,33 +29,33 @@ const updateAbility = (keycloak) => {
     }
 
     // ******** Asset Management *************
-    if (keycloak.hasRealmRole('asset_management_viewer')) {
+    if (roles.includes('asset_management_viewer')) {
         can('read', 'AssetManagement');
     }
-    if (keycloak.hasRealmRole('asset_management_user')) {
+    if (roles.includes('asset_management_user')) {
         can(['create', 'read', 'update', 'delete'], 'AssetManagement');
     }
-    if (keycloak.hasRealmRole('asset_management_admin')) {
+    if (roles.includes('asset_management_admin')) {
         can(['create', 'read', 'update', 'delete'], 'AssetManagement');
     }
 
     // ******** Config UI  *************
-    if (keycloak.hasRealmRole('configuration_viewer')) {
+    if (roles.includes('configuration_viewer')) {
         can('read', 'ConfigUI');
     }
-    if (keycloak.hasRealmRole('configuration_user')) {        
+    if (roles.includes('configuration_user')) {        
         can(['create', 'read', 'update'], 'ConfigUI');
     }
-    if (keycloak.hasRealmRole('configuration_admin')) {        
+    if (roles.includes('configuration_admin')) {        
         can(['create', 'read', 'update', 'delete'], 'ConfigUI');
     }
 
     // ******** Metadata *************
-    // if (keycloak.hasRealmRole('metadata_viewer')) {
+    // if (roles.includes('metadata_viewer')) {
     //     can('read', 'Metadata');
-    // } else if (keycloak.hasRealmRole('metadata_user')) {
+    // } else if (roles.includes('metadata_user')) {
     //     can(['create', 'read', 'update', 'delete'], 'Metadata');
-    // } else if (keycloak.hasRealmRole('metadata_admin')) {
+    // } else if (roles.includes('metadata_admin')) {
     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // }
 

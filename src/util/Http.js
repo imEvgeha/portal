@@ -52,7 +52,7 @@ const Http = {
 
         http.interceptors.request.use(
             function (config) {
-                const token = keycloak.instance.token;
+                const token = localStorage.getItem('userToken');
                 if (token) config.headers.Authorization = `Bearer ${token}`;
                 return config;
             },
