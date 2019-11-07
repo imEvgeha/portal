@@ -1,7 +1,7 @@
 @import '../../../styles/config.scss';
 
 .nexus-c-match-right-view {
-    padding: 20px 0;
+    padding: 15px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,6 @@
 }
 
 .nexus-c-match-right-view__matched {
-    padding: 20px 0;
     display: flex;
     flex: 1;
     flex-direction: column;

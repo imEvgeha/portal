@@ -21,6 +21,7 @@ import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
+import {backArrowColor} from '../../../constants/avails/constants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -114,14 +115,14 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <div className="nexus-c-right-to-match-view__header">
+            <NexusTitle>                
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
-                    <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/> 
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
-                <span className="nexus-c-right-to-match-view__header-title">Right to Right Matching</span>
-            </div>
+                <span>Right to Right Matching</span>
+            </NexusTitle>
             <div className="nexus-c-right-to-match-view__table-header">
-                <NexusTitle className="nexus-c-title--small">Focused Right</NexusTitle>
+                <NexusTitle isSubTitle isInline>Focused Right</NexusTitle>
                 <RightToMatchNavigation
                     searchParams={{availHistoryIds}}
                     focusedRightId={rightId}
@@ -141,7 +142,7 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle className="nexus-c-title--small">Rights Repository {`(${totalCount})`}</NexusTitle> 
+                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
                 {fieldSearchCriteria && (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
