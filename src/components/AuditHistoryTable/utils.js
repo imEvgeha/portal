@@ -35,10 +35,11 @@ export const valueFormatter = ({colId, field, dataType}) => {
     }
 };
 
-const valueCompare = (diffValue, currentValue, colDef) => {
-    switch(colDef.dataType){
+const valueCompare = (diffValue, currentValue, column) => {
+    const {colId, dataType} = column;
+    switch(dataType){
         case RATING:
-            return diffValue[colDef.colId] === currentValue[colDef.colId];
+            return diffValue[colId] === currentValue[colId];
         case FORMAT:
         case AUDIO:
             return diffValue[0] === currentValue[0];
@@ -49,21 +50,53 @@ const valueCompare = (diffValue, currentValue, colDef) => {
     }
 };
 
-export const cellStyling = ({data = {}, column, value}, focusedRight) => {
+export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     const styling = {};
-    const {colId, colDef} = column || {};
-    if(value && Object.keys(value).length && !data.headerRow && !colDef.noStyles){
-        if(valueCompare(value, focusedRight[colDef.field], colDef)){
+    const {colId, field, noStyles} = column;
+    if(value && Object.keys(value).length && !data.headerRow && !noStyles){
+        if(valueCompare(value, focusedRight[field], column)){
             styling.background = 'LightGreen';
         } else{
             styling.background = 'coral';
         }
     }
-    if (data[`${colId}Deleted`]) {
+    if (data[`${colId || field}Deleted`]) {
         styling.textDecoration = 'line-through';
         if(focusedRight[colId] === ''){
             styling.background = 'LightGreen';
+        } else{
+            styling.background = 'coral';
         }
     }
     return styling;
+};
+
+export const formatData = data => {
+    const { eventHistory, diffs } = data;
+    let tableRows = eventHistory.map((dataObj, index) => {
+        const row = {};
+        diffs[index].forEach(diff => {
+            const {op, path, value} = diff;
+            const field = path.substr(1);
+            switch(op){
+                case 'add':
+                case 'replace':
+                    row[field] = value;
+                    break;
+
+                case 'remove':
+                    row[field] = value;
+                    row[`${field}Deleted`] = true;
+                    break;
+
+                default:
+                    break;
+            }
+        });
+        row.updatedBy = dataObj.updatedBy || dataObj.createdBy;
+        row.lastUpdateReceivedAt = dataObj.lastUpdateReceivedAt;
+        return row;
+    });
+    tableRows = tableRows.reverse();
+    return tableRows;
 };

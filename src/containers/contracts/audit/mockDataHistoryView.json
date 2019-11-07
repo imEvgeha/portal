@@ -9,7 +9,7 @@
       "docType": "rights",
       "validationErrors": [],
       "productionStudio": "Lionsgate",
-      "licensor": "Lionsgate",
+      "licensor": "Lionsgate-1",
       "rightStatus": "Pending",
       "status": "Pending",
       "contractId": [
@@ -250,7 +250,7 @@
       "docType": "rights",
       "validationErrors": [],
       "productionStudio": "Lionsgate",
-      "licensor": "Lionsgate",
+      "licensor": "Lionsgate-1",
       "rightStatus": "Pending",
       "status": "Pending",
       "contractId": [
@@ -491,7 +491,7 @@
       "docType": "rights",
       "validationErrors": [],
       "productionStudio": "Lionsgate",
-      "licensor": "Lionsgate",
+      "licensor": "",
       "rightStatus": "Pending",
       "status": "Pending",
       "contractId": [
@@ -1017,7 +1017,7 @@
       {
         "op": "add",
         "path": "/licensor",
-        "value": "Lionsgate"
+        "value": "Lionsgate-1"
       },
       {
         "op": "add",
@@ -1745,6 +1745,11 @@
         "value": "Updated"
       },
       {
+        "op": "remove",
+        "path": "/licensor",
+        "value": "Lionsgate-1"
+      },
+      {
         "op": "add",
         "path": "/updatedAt",
         "value": "2019-10-23T12:56:26.207Z"
@@ -1762,7 +1767,7 @@
         "value": "Updated"
       },
       {
-        "op": "remove",
+        "op": "add",
         "path": "/licensor",
         "value": "Lionsgate"
       },

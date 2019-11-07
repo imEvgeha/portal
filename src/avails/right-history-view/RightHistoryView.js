@@ -5,6 +5,7 @@ import Spinner from '@atlaskit/spinner';
 import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
 import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import {fetchRightsHistory} from './rightHistoryActions';
+import AuditHistoryTable from '../../components/AuditHistoryTable/AuditHistoryTable';
 
 const SPINNER =
     <div style={{textAlign: 'center'}}>
@@ -30,13 +31,9 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
     const buildContent = () => {
         return (
             <div>
-                {rightsEventHistory.map((e, index) =>
-                    //Place for audit table integration
-
-                    <div key={index}>
-                        <span>{JSON.stringify(e)}</span>
-                        <span>{JSON.stringify(selectedAvails.find(a => a.id === e.eventHistory[0].id))}</span>
-                    </div>
+                {selectedAvails.map((avail, index) => (
+                        <AuditHistoryTable key={avail.id} focusedRight={avail} data={rightsEventHistory[index]} />
+                    )
                 )}
             </div>
         );
