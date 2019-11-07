@@ -10,9 +10,21 @@
     &--small {
         font-size: 20px;
     }
-}
-
-.nexus-c-title__name {
-    display: flex;
-    color: #000;
+    &__label {
+        display: flex;
+        margin-top: 20px;
+        color: map-get($colors, nexus-title-matching-primary-color);
+    }
+    &__sub-label {
+        color: map-get($colors, nexus-title-matching-secondary-color);
+        margin: 20px 0 -10px 0;
+        font-size: 16px;
+    }
+    &__name {
+        display: flex;
+        color: #000;
+    }
+    &__inline-label {
+        margin: 5px 0 -10px 0;
+    }   
 }

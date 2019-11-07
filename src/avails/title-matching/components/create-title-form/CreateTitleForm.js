@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Form} from 'react-forms-processor';
+import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
 import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
@@ -95,10 +95,13 @@ const CreateTitleForm = ({close, focusedRight}) => {
         <div className="nexus-c-create-title-form">
             <Form
                 renderer={renderer}
-                defaultFields={NEW_TITLE_FORM_SCHEMA}
                 value={titleValue}
                 onChange={(value, isFilled) => setTitleValue({...value, isFilled})}
-            />
+            >
+                <div className="nexus-c-create-title-form__fields">
+                    <FormFragment defaultFields={NEW_TITLE_FORM_SCHEMA} />
+                </div>
+            </Form>
             {error &&
                 <ErrorMessage>
                     {error}
