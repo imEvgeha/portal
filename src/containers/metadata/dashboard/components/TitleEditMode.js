@@ -437,7 +437,7 @@ class TitleEditMode extends Component {
                 <Col>
                   <Label for='titleBoxOffice'>US Box Office</Label>
                   <AvField
-                    name='boxOffice'
+                    name='usBoxOffice'
                     id='titleBoxOffice'
                     type='number'
                     onChange={e => this.props.handleOnChangeEdit(e)}
