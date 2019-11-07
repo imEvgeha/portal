@@ -85,6 +85,7 @@ const renderer = (
 export default class CreateEditConfigForm extends React.Component {
 
     static propTypes = {
+        label: PropTypes.string,
         value: PropTypes.any,
         schema: PropTypes.array,
         onCancel: PropTypes.func,
@@ -141,7 +142,7 @@ export default class CreateEditConfigForm extends React.Component {
                 <Modal isOpen={!!this.props.value} toggle={this.props.onCancel} style={{paddingLeft: '30px'}}>
                 <ModalBody>                    
                     <p><b style={{color: '#999', fontSize: '13px'}}>{this.props.displayName}</b></p>
-                    <p style={{marginTop: '-20px'}}><b>{this.props.value && this.props.value.name ? this.props.value.name : <i style={{fontSize: '20px', color: '#666'}}>New {this.props.displayName}</i>}</b></p>
+                    <p style={{marginTop: '-20px'}}><b>{this.props.value && this.props.label ? this.props.label : <i style={{fontSize: '20px', color: '#666'}}>New {this.props.displayName}</i>}</b></p>
                     {Object.entries(this.props.value).length !== 0 && (                        
                         <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>

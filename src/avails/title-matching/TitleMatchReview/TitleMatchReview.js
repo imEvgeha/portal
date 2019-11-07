@@ -121,7 +121,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             {
                 !!titles.length && (
                     <React.Fragment>
-                        <NexusTitle>Matched Titles</NexusTitle>
+                        <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
                             columnDefs={[getRepositoryCell(), ...columnDefs]}
                             rowData={titles}
@@ -132,7 +132,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             {
                 !!mergedTitles[0].id && (
                     <React.Fragment>
-                        <NexusTitle>Combined Title</NexusTitle>
+                        <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
                             columnDefs={[getRepositoryCell(), ...columnDefs]}
                             rowData={mergedTitles}

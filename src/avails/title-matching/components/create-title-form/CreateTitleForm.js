@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Form} from 'react-forms-processor';
+import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
 import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
@@ -10,6 +10,7 @@ import NexusToastNotificationContext from '../../../../ui-elements/nexus-toast-n
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../ui-elements/nexus-toast-notification/constants';
 import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
+import DOP from '../../../../util/DOP';
 import './CreateTitleForm.scss';
 
 const {
@@ -21,16 +22,18 @@ const {
     // NEW_TITLE_ERROR_ALREADY_EXISTS,
 } = constants;
 
-const CreateTitleForm = ({close}) => {
+const CreateTitleForm = ({close, focusedRight}) => {
     // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
+    const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;
     const [titleValue, setTitleValue] = useState({
-        title: '',
-        contentType: '',
+        title: focusedTitle,
+        contentType: focusedContentType && focusedContentType.toUpperCase(),
         seriesTitleName: '',
         seasonNumber: '',
         episodeNumber: '',
-        releaseYear: '',
+        releaseYear: focusedReleaseYear,
+        isFilled: !!(focusedTitle && focusedContentType && focusedReleaseYear),
     });
     const {addToast} = useContext(NexusToastNotificationContext);
 
@@ -64,6 +67,13 @@ const CreateTitleForm = ({close}) => {
             // (Opens in new tab)
             const url = `${getDomainName()}/metadata/detail/${res.data.id}`;
             const onViewTitleClick = () => window.open(url, '_blank');
+            DOP.setErrorsCount(0);
+            DOP.setData({
+                match: {
+                    rightId: focusedId,
+                    titleId: res.data.id
+                }
+            });
             addToast({
                 title: SUCCESS_TITLE,
                 description: NEW_TITLE_TOAST_SUCCESS_MESSAGE,
@@ -85,10 +95,13 @@ const CreateTitleForm = ({close}) => {
         <div className="nexus-c-create-title-form">
             <Form
                 renderer={renderer}
-                defaultFields={NEW_TITLE_FORM_SCHEMA}
                 value={titleValue}
                 onChange={(value, isFilled) => setTitleValue({...value, isFilled})}
-            />
+            >
+                <div className="nexus-c-create-title-form__fields">
+                    <FormFragment defaultFields={NEW_TITLE_FORM_SCHEMA} />
+                </div>
+            </Form>
             {error &&
                 <ErrorMessage>
                     {error}
@@ -112,6 +125,11 @@ const CreateTitleForm = ({close}) => {
 
 CreateTitleForm.propTypes = {
     close: PropTypes.func.isRequired,
+    focusedRight: PropTypes.object,
+};
+
+CreateTitleForm.defaultProps = {
+    focusedRight: {},
 };
 
 export default CreateTitleForm;

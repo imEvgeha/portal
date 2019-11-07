@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import './BackNavigationByUrl.scss';
+import NexusTitle from '../../nexus-title/NexusTitle';
+import {backArrowColor} from '../../../constants/avails/constants';
 
 const BackNavigationByUrl = ({title, onNavigationClick}) => (
-    <div className='nexus-c-right-to-match-view__page-header'>
+    <NexusTitle>
         <span className="nexus-c-right-to-match-view__link" onClick={onNavigationClick}>
-            <ArrowLeftIcon size='xlarge' primaryColor={'#42526E'}/>
+            <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
         </span>
-        <span className="nexus-c-right-to-match-view__page-header-title">{title}</span>
-    </div>
+        <span>{title}</span>
+    </NexusTitle>
 );
 
 BackNavigationByUrl.propTypes = {

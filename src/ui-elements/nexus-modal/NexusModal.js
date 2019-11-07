@@ -11,6 +11,7 @@ export const NexusModalProvider = ({children}) => {
     const [title, setTitle] = useState('');
     const [actions, setActions] = useState([]);
     const [isOpened, setIsOpened] = useState(false);
+    const [style, setStyle] = useState({});
 
     const setModalContent = (content) => {
         setIsOpened(true);
@@ -36,6 +37,7 @@ export const NexusModalProvider = ({children}) => {
         content,
         close,
         open: () => setIsOpened(true),
+        setModalStyle: setStyle
     };
 
     return (
@@ -43,9 +45,11 @@ export const NexusModalProvider = ({children}) => {
             {isOpened &&
                 <ModalTransition>
                     <Modal
+                        width="small"
                         actions={actions.length && actions}
                         heading={title}
                         onClose={close}
+                        width={style.width ? style.width : 'medium'}
                     >
                         {/* TODO: Change after we decide between styled or sass */}
                         <div style={{paddingBottom: '20px'}}>
