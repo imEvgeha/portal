@@ -16,9 +16,8 @@ import {
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
-import DOP from '../../util/DOP';
-import useLocalStorage from '../../util/hooks/useLocalStorage';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import useDOPIntegration from './util/hooks/useDOPIntegration';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
 
@@ -31,18 +30,9 @@ const RightMatchingView = ({
         storeRightMatchDataWithIds, 
         cleanStoredRightMatchDataWithIds,
     }) => {
-    const [totalCount, setTotalCount] = useState(0);
-    const [dopCount, setDopCount] = useLocalStorage('rightMatchingDOP', totalCount);
-
+    const [totalCount, setTotalCount] = useState();
     // DOP integration
-    useEffect(() => {
-        if (totalCount) {
-            if (!dopCount || (dopCount && dopCount !== totalCount)) {
-                DOP.setErrorsCount(totalCount);
-                setDopCount(totalCount);
-            }
-        }
-    }, [totalCount]);
+    useDOPIntegration(totalCount, 'rightMatchingDOP');
 
     // TODO: refactor this
     useEffect(() => {
