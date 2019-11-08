@@ -16,7 +16,7 @@ import {
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import {URL} from '../../../util/Common';
+import {URL, isObjectEmpty} from '../../../util/Common';
 import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import useLocalStorage from '../../../util/hooks/useLocalStorage';
@@ -138,8 +138,9 @@ function MatchRightView({
                 {!!columnDefs && (
                     <EditableNexusGrid
                         columnDefs={columnDefs}
-                        rowData={[combinedRight]}
+                        rowData={isObjectEmpty(combinedRight) ? [] : [combinedRight]}
                         onGridEvent={handleGridEvent}
+                        domLayout="autoHeight"
                     />
                 )}
             </div>
