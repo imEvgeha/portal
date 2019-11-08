@@ -6,7 +6,7 @@
   "readOnly": true,
   "enableSearch": false,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "title",
   "displayName": "Title",
@@ -97,7 +97,7 @@
 }, {
   "javaVariableName": "format",
   "displayName": "Format",
-  "dataType": "select",
+  "dataType": "multiselect",
   "searchDataType": "multiselect",
   "configEndpoint": "/formats",
   "queryParamName": "format",
