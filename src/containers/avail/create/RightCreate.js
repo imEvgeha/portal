@@ -716,7 +716,10 @@ class RightCreate extends React.Component {
                         id={'right-create-' + name + '-text'}
                         value={value}
                         error={error}
-                        onChange={(date) => this.handleDatepickerChange(name, displayName, date)}
+                        onChange={(date) => {
+                            this.handleDatepickerChange(name, displayName, date);
+                            this.handleInvalidDatePicker(name, false);
+                        }}
                     />
                 </div>
             ));

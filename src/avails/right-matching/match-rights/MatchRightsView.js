@@ -16,7 +16,12 @@ import {
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
+<<<<<<< HEAD
 import {URL} from '../../../util/Common';
+=======
+import {URL, isObjectEmpty} from '../../../util/Common';
+import DOP from '../../../util/DOP';
+>>>>>>> 2dc8312a0a7c0bafb4e586748bad1b436d51fb47
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {backArrowColor} from '../../../constants/avails/constants';
@@ -134,8 +139,9 @@ function MatchRightView({
                 {!!columnDefs && (
                     <EditableNexusGrid
                         columnDefs={columnDefs}
-                        rowData={[combinedRight]}
+                        rowData={isObjectEmpty(combinedRight) ? [] : [combinedRight]}
                         onGridEvent={handleGridEvent}
+                        domLayout="autoHeight"
                     />
                 )}
             </div>
