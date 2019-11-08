@@ -4,7 +4,6 @@ import {Provider} from 'react-redux';
 import Keycloak from 'keycloak-js';
 import axios from 'axios';
 import config from 'react-global-configuration';
-import jwtDecode from 'jwt-decode';
 import {createBrowserHistory} from 'history';
 import {defaultConfiguration} from './config';
 import './styles/index.scss';
@@ -85,7 +84,7 @@ const app = (
     </Provider>
 );
 const KEYCLOAK_INIT_OPTIONS = {
-    onLoad: 'login-required',
+    onLoad: 'check-sso',
     promiseType: 'native',
 };
 
@@ -103,13 +102,13 @@ function init() {
             store.runSaga(rootSaga);
             keycloak.loadUserProfile().then(profileInfo => {
                 store.dispatch(storeAuthCredentials({token, refreshToken, profileInfo}));
+                store.dispatch(authRefreshToken());
             });
             loadDashboardState();
             loadCreateRightState();
             loadHistoryState();
             loadDopState();
             updateAbility(roles);
-            // store.dispatch(authRefreshToken());
             render(
                 app,
                 document.querySelector('#app')
