@@ -1,0 +1,72 @@
+@import "../../styles/config";
+
+.nexus-c-tag {
+    height: 2rem;
+    min-width: 80px;
+    padding: 0 10px;
+    margin-right: 5px;
+    border: 1px solid #cccccc60;
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover {
+        border-color: #ccc;
+    }
+
+    background-color: map-get($colors, nexus-tag-default);
+
+    &--is-new {
+        background-color: map-get($colors, nexus-tag-green);
+    }
+
+    &--is-modified{
+        background-color: map-get($colors, nexus-tag-yellow);
+    }
+}
+
+.nexus-c-tag__label {
+    &--is-clickable:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+.nexus-c-tag__remove-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer
+}
+
+.nexus-c-tag__tooltip {
+    color: #000000C0;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.nexus-c-tag__tooltip-list {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.nexus-c-tag__tooltip-prop {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #00000080;
+    }
+}
+
+.nexus-c-tag__tooltip-prop-value {
+    font-weight: bold;
+    color: #000;
+    margin-left: 5px;
+}

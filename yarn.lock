@@ -1053,6 +1053,13 @@
     babel-runtime "^6.26.0"
     react-transition-group "^2.2.1"
 
+"@atlaskit/tag-group@^9.0.5":
+  version "9.0.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tag-group/-/tag-group-9.0.5.tgz#a7163042ed9f66f0db52cf7d26afed149a9b036d"
+  integrity sha512-kpKwE87qNTSQR/7d/V4tJr2Nc97IEzXq4Rj6nq9F7nI9P7wTh2Qdmi2l7+thR8NLZun7Sr7S3h+q4msEVU/B2Q==
+  dependencies:
+    tslib "^1.9.3"
+
 "@atlaskit/tag@^9.0.0":
   version "9.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tag/-/tag-9.0.0.tgz#af59e5b17d84aac0f6653f2a00856f7c2794a1e2"
@@ -1061,6 +1068,18 @@
     "@atlaskit/analytics-next" "^5.1.2"
     "@atlaskit/icon" "^19.0.0"
     "@atlaskit/theme" "^9.1.1"
+    create-error "^0.3.1"
+    debug "^2.2.0"
+    tslib "^1.9.3"
+
+"@atlaskit/tag@^9.0.10":
+  version "9.0.10"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tag/-/tag-9.0.10.tgz#4185be673328e97eddefd61468360a0ea7168508"
+  integrity sha512-0my/kh0PSY5miu7dJIOTpPKKIx9+AAvO50RV6365obTaxipohCgWRazMwrqveoXvxm13v+Alry57Cpxyh6neyA==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.3.1"
+    "@atlaskit/icon" "^19.0.6"
+    "@atlaskit/theme" "^9.2.6"
     create-error "^0.3.1"
     debug "^2.2.0"
     tslib "^1.9.3"
@@ -14391,6 +14410,11 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
   integrity sha1-eeTriMNqgSKvhvhEqpvNhRtfu1U=
+
+lodash.isempty@^4.4.0:
+  version "4.4.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.isempty/-/lodash.isempty-4.4.0.tgz#6f86cbedd8be4ec987be9aaf33c9684db1b31e7e"
+  integrity sha1-b4bL7di+TsmHvpqvM8loTbGzHn4=
 
 lodash.isequal@^4.0.0, lodash.isequal@^4.5.0:
   version "4.5.0"

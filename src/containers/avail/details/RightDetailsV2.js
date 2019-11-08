@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import config from 'react-global-configuration';
-import InlineEdit from '@atlaskit/inline-edit';
 // TODO: move to AtlasKit
 import { Button, Label } from 'reactstrap';
+import moment from 'moment';
 import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -49,8 +48,6 @@ class RightDetails extends React.Component {
         router: PropTypes.object,
     };
 
-    refresh = null;
-
     constructor(props) {
         super(props);
 
@@ -72,16 +69,9 @@ class RightDetails extends React.Component {
         NexusBreadcrumb.push({ name: '', path: '/avails/' });
         profileService.initAvailsMapping();
         this.getRightData();
-        if (this.refresh === null) {
-            this.refresh = setInterval(this.getRightData, config.get('avails.edit.refresh.interval'));
-        }
     }
 
     componentWillUnmount() {
-        if (this.refresh !== null) {
-            clearInterval(this.refresh);
-            this.refresh = null;
-        }
         NexusBreadcrumb.pop();
     }
 
@@ -113,7 +103,7 @@ class RightDetails extends React.Component {
                             } else {
                                 el.name = el.country;
                             }
-                            el.id = index;
+                            // el.id = index;
                             return el;
                         })) || [];
                         // temporally solution for affiliate and affilateExclude
@@ -139,7 +129,7 @@ class RightDetails extends React.Component {
                                 let obj = {};
                                 obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.errors = affiliateErrors[index];
-                                obj.id = el.index;
+                                // obj.id = el.index;
                                 return obj;
                             })
                         ];
@@ -166,7 +156,7 @@ class RightDetails extends React.Component {
                                 let obj = {};
                                 obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 obj.errors = affiliateExcludeErrors[index];
-                                obj.id = error.index;
+                                // obj.id = error.index;
                                 return obj;
                         })];
 
@@ -210,13 +200,28 @@ class RightDetails extends React.Component {
     }
 
     update(name, onError) {
-        const {editedField = {}} = this.state;
-        const value = editedField[name] || null;
+        const {editedField = {}, flatRight = {}} = this.state;
+        const existingField = flatRight[name] || {};
+        const value = editedField[name] || existingField;
 
         if (this.state.flatRight[name] === value) {
             onError();
             return;
         }
+
+        // Remove utility props from territory items
+        if (name === 'territory') {
+            value.forEach((item, index) => {
+                // If date was given, convert it to ISO string for back-end compatibility
+                if (item.dateSelected) {
+                    item.dateSelected = moment(item.dateSelected).toISOString();
+                }
+                item.name  && delete value[index].name;
+                item.id && delete value[index].id;
+                item.state && delete value[index].state;
+            });
+        }
+
         let updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
@@ -257,16 +262,12 @@ class RightDetails extends React.Component {
 
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
-            const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
+            // const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             // TODO: Use AtlasKit icons; Remove inline css
             return (
                 <div key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
-                        backgroundColor: hasValidationError ? '#f2dede' : '#fff',
-                        color: hasValidationError ? '#a94442' : null,
-                        border: 'none',
-                        position: 'relative', display: 'block', padding: '0.75rem 1.25rem', marginBottom: '-1px',
                     }}>
                     <div className="row">
                         <div className="col-4">{displayName}
@@ -287,7 +288,6 @@ class RightDetails extends React.Component {
             let ref;
             if (this.fields[name]) {
                 ref = this.fields[name];
-
             } else {
                 this.fields[name] = ref = React.createRef();
             }
@@ -306,12 +306,6 @@ class RightDetails extends React.Component {
             };
 
             const addTerritory = (items) => {
-                items.map((item, index) => {
-                    item.name  && delete items[index].name;
-                    item.id && delete items[index].id;
-                });
-
-                selectedVal = items;
                 this.setState((prevState) => ({
                     editedField: {
                         ...prevState.editedField,
@@ -321,24 +315,20 @@ class RightDetails extends React.Component {
              };
 
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
-                <InlineEdit
+                <NexusMultiInstanceField
+                    name={name}
+                    schema={RightTerritoryFormSchema(prepData('territory'))}
+                    existingItems={selectedVal}
+                    keyForTagLabel="country"
+                    onSubmit={items => addTerritory(items)}
                     onConfirm={() => this.update(name, this.cancel)}
-                    editView={() => (
-                        <NexusMultiInstanceField
-                            name={name}
-                            existingItems={selectedVal}
-                            onSubmit={items => addTerritory(items)}
-                            schema={RightTerritoryFormSchema(prepData('territory'))}
-                        />
-                    )}
-                    readView={() => <div>Placeholder</div> /* TODO: Use AtlasKit Tags here*/}
-                    readViewFitContainerWidth
-                    defaultValue={[]}
+                    isWithInlineEdit={true}
+                    isReadOnly={readOnly}
                 />
             ));
         };
 
-        const fieldMapping = (fieldType, jvName, displayName, required, value) => {
+        const fieldMapping = (fieldType, jvName, displayName, readOnly, required, value) => {
             const fieldMap = {
                 string: null,
                 integer: null,
@@ -355,6 +345,8 @@ class RightDetails extends React.Component {
                     jvName,
                     displayName,
                     this.state.territory,
+                    null,
+                    readOnly,
                     // Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')),
                     // readOnly,
                     required,
@@ -367,14 +359,15 @@ class RightDetails extends React.Component {
         const {mappings = []} = this.props.availsMapping || {};
 
         const renderFields = mappings.map((mapping) => {
-            if (mapping.enableEdit && !mapping.readOnly) {
-                let required = mapping.required;
-                const value = this.right ? this.right[mapping.javaVariableName] : '';
-                const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
+            const {enableEdit, readOnly, dataType, javaVariableName, displayName} = mapping || {};
+            if (enableEdit && !readOnly) {
+                let required = required;
+                const value = this.right ? this.right[javaVariableName] : '';
+                const cannotCreate = cannot('create', 'Avail', javaVariableName);
                 if (cannotCreate) {
                     return;
                 }
-                return fieldMapping(mapping.dataType, mapping.javaVariableName, mapping.displayName, required, value);
+                return fieldMapping(dataType, javaVariableName, displayName, readOnly, required, value);
             }
         });
 
