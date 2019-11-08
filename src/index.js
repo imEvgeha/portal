@@ -15,7 +15,6 @@ import configureStore from './store';
 import rootSaga from './saga';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
 import AppLayout from './layout/AppLayout';
-import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
 import NexusToastNotificationProvider from './ui-elements/nexus-toast-notification/NexusToastNotificationProvider';
@@ -23,7 +22,8 @@ import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
 import {authRefreshToken, storeAuthCredentials} from './auth/authActions';
-import {getValidAccessToken} from './auth/authService';
+import {getAccessToken, getRefreshToken} from './auth/authService';
+import KeycloakAuth from './auth/authKeycloak';
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -47,6 +47,7 @@ axios.get('/configQA.json').then(response => {
     );
 });
 
+<<<<<<< HEAD
 
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
@@ -63,9 +64,12 @@ import CustomIntlProvider from './layout/CustomIntlProvider';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
+=======
+>>>>>>> add login-required to keycloak
 const history = createBrowserHistory();
 // temporary export -> we should not export store
 export const store = configureStore({}, history);
+export let keycloak = {};
 
 const app = (
     <Provider store={store}>
@@ -80,48 +84,67 @@ const app = (
         </CustomIntlProvider>
     </Provider>
 );
-
-export let keycloak = {};
-const keycloakIntOptions = {
-    onLoad: 'check-sso',
+const KEYCLOAK_INIT_OPTIONS = {
+    onLoad: 'login-required',
     promiseType: 'native',
 };
 
+
 function init() {
-    store.runSaga(rootSaga);
+    // const keycloak = new KeycloakAuth();
     keycloak = new Keycloak(config.get('keycloak'));
-    const token = getValidAccessToken();
-    if (token) {
-        const roles = jwtDecode(token).realm_access.roles;
-        updateAbility(roles);
-        store.dispatch(storeAuthCredentials());
-        store.dispatch(authRefreshToken());
-        render(
-            app,
-            document.querySelector('#app')
-        );
-        return;
-    }
-    keycloak.init(keycloakIntOptions)
-        .then(authenticated => {
-            if (authenticated) {
-                const {realmAccess, token, refreshToken} = keycloak;
-                const {roles} = realmAccess || {};
-                keycloak.loadUserInfo().then(profileInfo => {
-                    store.dispatch(storeAuthCredentials({token, refreshToken, profileInfo}));
-                });
-                loadDashboardState();
-                loadCreateRightState();
-                loadHistoryState();
-                loadDopState();
-                loadManualRightEntryState();
-                updateAbility(roles);
-                store.dispatch(authRefreshToken());
-                render(
-                    app,
-                    document.querySelector('#app')
-                );
-            } 
-            // keycloak.login();
-        });
+    const token = getAccessToken();
+    const refreshToken = getRefreshToken(); 
+    keycloak.init({...KEYCLOAK_INIT_OPTIONS, token, refreshToken}).then(authenticated => {
+        console.log(authenticated)
+        if (authenticated) {
+            const {realmAccess, token, refreshToken} = keycloak;
+            const {roles} = realmAccess || {};
+            store.runSaga(rootSaga);
+            keycloak.loadUserProfile().then(profileInfo => {
+                store.dispatch(storeAuthCredentials({token, refreshToken, profileInfo}));
+            });
+            loadDashboardState();
+            loadCreateRightState();
+            loadHistoryState();
+            loadDopState();
+            updateAbility(roles);
+            // store.dispatch(authRefreshToken());
+            render(
+                app,
+                document.querySelector('#app')
+            );
+        }
+    });
+    // if (token) {
+    //     const roles = jwtDecode(token).realm_access.roles;
+    //     updateAbility(roles);
+    //     store.dispatch(storeAuthCredentials());
+    //     store.dispatch(authRefreshToken());
+    //     render(
+    //         app,
+    //         document.querySelector('#app')
+    //     );
+    //     return;
+    // }
+    //
+    // keycloak.setKeycloakAuth()
+    //     .then(() => {
+    //         const {realmAccess, token, refreshToken} = keycloak.keycloak;
+    //         const {roles} = realmAccess || {};
+    //         keycloak.profileInfo.then(profileInfo => {
+    //             store.dispatch(storeAuthCredentials({token, refreshToken, profileInfo}));
+    //         });
+    //         loadDashboardState();
+    //         loadCreateRightState();
+    //         loadHistoryState();
+    //         loadDopState();
+    //         updateAbility(roles);
+    //         store.dispatch(authRefreshToken());
+    //         render(
+    //             app,
+    //             document.querySelector('#app')
+    //         );
+    //     });
 }
+
