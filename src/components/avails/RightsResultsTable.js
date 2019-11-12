@@ -223,7 +223,7 @@ export default class RightsResultsTable extends React.Component {
                 .map((item, index, arr) => {
                     const style = item.type === 'error' ? {color: 'rgb(169, 68, 66)'} : {};
                     return (
-                        <span key={index} style={style}>{`${item.value}${index < arr.length - 1 ? ', ' : ' '}`}</span>
+                        <span key={index} style={style}>{`${item.value || 'N/A'}${index < arr.length - 1 ? ', ' : ' '}`}</span>
                     );
                 });
 
