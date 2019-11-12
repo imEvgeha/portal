@@ -17,6 +17,11 @@ import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
+import rightConstants from './RightConstants';
+
+const {
+    TERRITORY_TYPE,
+} = rightConstants;
 
 const mapStateToProps = state => {
     return {
@@ -84,7 +89,7 @@ class RightDetails extends React.Component {
                         const regForSubField = /.([A-Za-z]+)$/;
                         const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res.data || {};
                         // temporally solution for territory - all should be refactor
-                        const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
+                        const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes(TERRITORY_TYPE) && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
                                 const matchObj = error.fieldName.match(regForEror);
                                 if (matchObj) {
@@ -210,7 +215,7 @@ class RightDetails extends React.Component {
         }
 
         // Remove utility props from territory items
-        if (name === 'territory') {
+        if (name === TERRITORY_TYPE) {
             value.forEach((item, index) => {
                 // If date was given, convert it to ISO string for back-end compatibility
                 if (item.dateSelected) {
@@ -317,7 +322,7 @@ class RightDetails extends React.Component {
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <NexusMultiInstanceField
                     name={name}
-                    schema={RightTerritoryFormSchema(prepData('territory'))}
+                    schema={RightTerritoryFormSchema(prepData(TERRITORY_TYPE))}
                     existingItems={selectedVal}
                     keyForTagLabel="country"
                     onSubmit={items => addTerritory(items)}

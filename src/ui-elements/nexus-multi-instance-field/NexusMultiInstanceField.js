@@ -90,45 +90,49 @@ const NexusMultiInstanceField = ({
     const MultiInstanceField = (isReadOnly) => (
         <>
             {isReadOnly
-                ? <div className="nexus-c-multi-instance-field__tag-group">
-                    {items.map((item, index) => (
-                            <NexusTag
-                                key={index}
-                                text={item[keyForTagLabel]}
-                                value={item}
-                                tagState={item.state}
-                            />
-                        ))}
-                </div>
-                : <div className="nexus-c-multi-instance-field">
-                    <div className="nexus-c-multi-instance-field__content">
-                        <div className="nexus-c-multi-instance-field__clickable-text" onClick={() => {addOrEditItem(formValue, submitNewItem);}}>
-                            {!items.length && PLACEHOLDER}
-                        </div>
-                        <div className="nexus-c-multi-instance-field__tag-group">
-                            {items.map((item, index) => (
+                ? (
+                    <div className="nexus-c-multi-instance-field__tag-group">
+                        {items.map((item, index) => (
                                 <NexusTag
                                     key={index}
                                     text={item[keyForTagLabel]}
                                     value={item}
                                     tagState={item.state}
-                                    removeButtonText="Remove"
-                                    onClick={() => {setEditIndex(index); addOrEditItem(item, submitEditedItems);}}
-                                    onRemove={() => {
-                                        const newItems = getFilteredItems(items, index);
-                                        onSubmit(newItems);
-                                        setItems(newItems);
-                                    }}
                                 />
                             ))}
+                    </div>
+                )
+                : (
+                    <div className="nexus-c-multi-instance-field">
+                        <div className="nexus-c-multi-instance-field__content">
+                            <div className="nexus-c-multi-instance-field__clickable-text" onClick={() => {addOrEditItem(formValue, submitNewItem);}}>
+                                {!items.length && PLACEHOLDER}
+                            </div>
+                            <div className="nexus-c-multi-instance-field__tag-group">
+                                {items.map((item, index) => (
+                                    <NexusTag
+                                        key={index}
+                                        text={item[keyForTagLabel]}
+                                        value={item}
+                                        tagState={item.state}
+                                        removeButtonText="Remove"
+                                        onClick={() => {setEditIndex(index); addOrEditItem(item, submitEditedItems);}}
+                                        onRemove={() => {
+                                            const newItems = getFilteredItems(items, index);
+                                            onSubmit(newItems);
+                                            setItems(newItems);
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="nexus-c-multi-instance-field__controls">
+                            <Button onClick={() => addOrEditItem(formValue, submitNewItem)} className="button-fix">
+                                <AddIcon />
+                            </Button>
                         </div>
                     </div>
-                    <div className="nexus-c-multi-instance-field__controls">
-                        <Button onClick={() => addOrEditItem(formValue, submitNewItem)} className="button-fix">
-                            <AddIcon />
-                        </Button>
-                    </div>
-                </div>
+                )
             }
         </>
     );
