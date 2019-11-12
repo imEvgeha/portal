@@ -205,6 +205,8 @@ class RightCreate extends React.Component {
         switch (name) {
             case 'start': return 'availStart';
             case 'availStart': return 'start';
+            case 'end': return 'availEnd';
+            case 'availEnd': return 'end';
             default: return '';
         }
     }
