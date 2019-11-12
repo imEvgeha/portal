@@ -15,14 +15,14 @@ export const fetchAndStoreFocusedRight = (payload) => ({
     payload,
 });
 
-export const fetchMatchedRight = (id) => ({
+export const fetchMatchedRights = (ids) => ({
     type: actionTypes.FETCH_MATCHED_RIGHT,
-    payload: id,
+    payload: ids,
 });
 
-export const fetchCombinedRight = (focusedRightId, matchedRightId) => ({
+export const fetchCombinedRight = (focusedRightId, matchedRightIds) => ({
     type: actionTypes.FETCH_COMBINED_RIGHT,
-    payload: {focusedRightId, matchedRightId},
+    payload: {focusedRightId, matchedRightIds},
 });
 
 export const storeRightMatchDataWithIds = (payload) => ({

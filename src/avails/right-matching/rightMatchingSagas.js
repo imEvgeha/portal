@@ -180,19 +180,22 @@ function* fetchAndStoreFocusedRight(action) {
     }
 }
 
-export function* fetchMatchedRight(requestMethod, {payload}) {
+export function* fetchMatchedRights(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.FETCH_MATCHED_RIGHT_REQUEST,
             payload: {}
         });
 
-        const response = yield call(requestMethod, payload);
-        const matchedRight = response.data;
+        let matchedRights = [];
+        for(const id of payload) {
+            let response = yield call(requestMethod, id);
+            matchedRights.push(response.data);
+        }
 
         yield put({
             type: actionTypes.FETCH_MATCHED_RIGHT_SUCCESS,
-            payload: {matchedRight},
+            payload: {matchedRights},
         });
 
     } catch (error) {
@@ -205,14 +208,14 @@ export function* fetchMatchedRight(requestMethod, {payload}) {
 }
 
 export function* fetchCombinedRight(requestMethod, {payload}) {
-    const {focusedRightId, matchedRightId} = payload || {};
+    const {focusedRightId, matchedRightIds} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
 
-        const response = yield call(requestMethod, focusedRightId, matchedRightId);
+        const response = yield call(requestMethod, focusedRightId, matchedRightIds);
         const combinedRight = response.data;
 
         yield put({
@@ -230,13 +233,13 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
 }
 
 export function* saveCombinedRight(requestMethod, {payload}) {
-    const {focusedRightId, matchedRightId, combinedRight, redirectPath} = payload || {};
+    const {focusedRightId, matchedRightIds, combinedRight, redirectPath} = payload || {};
     try {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
-        const response = yield call(requestMethod, focusedRightId, matchedRightId, combinedRight);
+        const response = yield call(requestMethod, focusedRightId, matchedRightIds, combinedRight);
         const focusedRight = response.data;
 
         yield put({
@@ -352,7 +355,7 @@ export function* rightMatchingWatcher() {
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeLatest(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
-        takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRight, rightsService.get),
+        takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
