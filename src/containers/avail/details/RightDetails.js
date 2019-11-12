@@ -1000,7 +1000,7 @@ class RightDetails extends React.Component {
                                             <Popup
                                                 trigger={
                                                     <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
-                                                        {e.country}
+                                                        {e.country || e.value}
                                                     </TerritoryTag>
                                                 }
                                                 position="top center"
