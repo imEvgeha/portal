@@ -57,13 +57,13 @@ class RightDetails extends React.Component {
         super(props);
 
         this.emptyValueText = 'Enter';
-        this.fields = {};
 
         this.state = {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
             isRightTerritoryEditFormOpen: false,
             editedField: {},
+            fields: {},
             territoryIndex: null,
             isEdit: false,
         };
@@ -290,14 +290,8 @@ class RightDetails extends React.Component {
         };
 
         const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
-            let ref;
-            if (this.fields[name]) {
-                ref = this.fields[name];
-            } else {
-                this.fields[name] = ref = React.createRef();
-            }
-
-            let selectedVal = ref.current ? ref.current.state.value : value;
+            const {fields = {}} = this.state;
+            let selectedVal = fields[name] || value;
 
             // TODO: Extract when prepping data for the whole component; To be fixed on RightDetails refactor
             const prepData = (name) => {
@@ -319,7 +313,7 @@ class RightDetails extends React.Component {
                 }));
              };
 
-            return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
+            return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, null, (
                 <NexusMultiInstanceField
                     name={name}
                     schema={RightTerritoryFormSchema(prepData(TERRITORY_TYPE))}

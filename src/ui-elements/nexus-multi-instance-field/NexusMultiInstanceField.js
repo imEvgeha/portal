@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {renderer} from 'react-forms-processor-atlaskit';
 import {Form} from 'react-forms-processor';
 import isEmpty from 'lodash.isempty';
+import {uid} from 'react-uid';
 import Button from '@atlaskit/button';
 import InlineEdit from '@atlaskit/inline-edit';
 import AddIcon from '@atlaskit/icon/glyph/add';
@@ -92,9 +93,9 @@ const NexusMultiInstanceField = ({
             {isReadOnly
                 ? (
                     <div className="nexus-c-multi-instance-field__tag-group">
-                        {items.map((item, index) => (
+                        {items.map((item) => (
                                 <NexusTag
-                                    key={index}
+                                    key={uid(item)}
                                     text={item[keyForTagLabel]}
                                     value={item}
                                     tagState={item.state}
@@ -111,7 +112,7 @@ const NexusMultiInstanceField = ({
                             <div className="nexus-c-multi-instance-field__tag-group">
                                 {items.map((item, index) => (
                                     <NexusTag
-                                        key={index}
+                                        key={uid(item)}
                                         text={item[keyForTagLabel]}
                                         value={item}
                                         tagState={item.state}
@@ -145,9 +146,9 @@ const NexusMultiInstanceField = ({
                     editView={() => MultiInstanceField(false)}
                     readView={() => (
                         <div className="nexus-c-multi-instance-field__tag-group">
-                            {items && items.map((item, index) => {
+                            {existingItems && existingItems.map((item) => {
                                 return (
-                                    <Fragment key={index}>
+                                    <Fragment key={uid(item)}>
                                         {item.state !== 'new' &&
                                             <NexusTag
                                                 text={item[keyForTagLabel]}
