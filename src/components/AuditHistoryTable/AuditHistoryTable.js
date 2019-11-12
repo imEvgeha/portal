@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import Constants from './Constants';
 import {cellStyling, formatData, valueFormatter} from './utils';
+import RulesEngineInfo from './components/RulesEngineInfo';
 import './AuditHistoryTable.scss';
 
 const AuditHistoryTable = ({data, focusedRight}) => {
@@ -11,7 +12,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
     const { columns, SEPARATION_ROW, HEADER_ROW } = Constants;
 
     useEffect(() => {
-        if(data.eventHistory && data.eventHistory.length){
+        if(!auditData && data.eventHistory && data.eventHistory.length){
             const tableRows = formatData(data);
             tableRows.splice(0, 0, {
                 ...focusedRight,
@@ -22,15 +23,22 @@ const AuditHistoryTable = ({data, focusedRight}) => {
     }, [data]);
 
     useEffect( () => {
-        const cols = columns.map(col => ({
-            field: col.field,
-            colId: col.colId || col.field,
-            width: 100,
-            valueFormatter: valueFormatter(col),
-            headerName: col.headerName,
-            cellStyle: params => cellStyling(params, focusedRight, col),
-        }));
-        setColumnDefs(cols);
+        if(columns.length !== columnDefs.length){
+            const cols = columns.map(col => {
+                const { field, colId, headerName} = col;
+                return {
+                    field,
+                    headerName,
+                    colId: colId || field,
+                    width: 100,
+                    valueFormatter: valueFormatter(col),
+                    cellStyle: params => cellStyling(params, focusedRight, col),
+                    tooltipComponent: 'customTooltip',
+                    tooltipValueGetter: params => params.valueFormatted,
+                };
+            });
+            setColumnDefs(cols);
+        }
     }, [columnDefs]);
 
     return (
@@ -39,6 +47,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
                 <NexusGrid
                     columnDefs={columnDefs}
                     rowData={auditData}
+                    frameworkComponents={{ customTooltip: RulesEngineInfo }}
                 />
             </div>
         )
