@@ -7,8 +7,21 @@
     }
     
     &--overflow {
-        // temporal solution
-        height: 200px;
+        .ag-cell { 
+            overflow:visible; 
+        }
+
+        .ag-row {
+            z-index: 0;
+        }
+
+        .ag-row.ag-row-focus {
+            z-index: 1;
+        }
+
+        .ag-root-wrapper {
+            overflow: visible;
+        }
     }
 };
 

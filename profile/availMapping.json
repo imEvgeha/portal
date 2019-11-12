@@ -6,7 +6,7 @@
   "readOnly": true,
   "enableSearch": false,
   "enableEdit": true,
-  "required": true
+  "required": false
 }, {
   "javaVariableName": "title",
   "displayName": "Title",
@@ -44,7 +44,7 @@
   "displayName": "Status",
   "dataType": "select",
   "searchDataType": "multiselect",
-  "options": ["Pending", "Ready", "ReadyNew", "TakeDown"],
+  "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged"],
   "queryParamName": "status",
   "readOnly": false,
   "enableSearch": true,
@@ -97,7 +97,7 @@
 }, {
   "javaVariableName": "format",
   "displayName": "Format",
-  "dataType": "select",
+  "dataType": "multiselect",
   "searchDataType": "multiselect",
   "configEndpoint": "/formats",
   "queryParamName": "format",
@@ -134,7 +134,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true
 }, {
   "javaVariableName": "end",
   "displayName": "End",
@@ -144,7 +144,7 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true
 }, {
   "javaVariableName": "startLag",
   "displayName": "Start Lag",
@@ -169,8 +169,9 @@
 }, {
   "javaVariableName": "platformCategory",
   "displayName": "Platform Category",
-  "dataType": "string",
-  "searchDataType": "string",
+  "dataType": "multiselect",
+  "searchDataType": "multiselect",
+  "options": ["Residential", "Hotel Avails"],
   "queryParamName": "platformCategory",
   "readOnly": false,
   "enableSearch": true,
@@ -1492,6 +1493,16 @@
   "dataType": "localdate",
   "searchDataType": "localdate",
   "queryParamName": "originallyReceivedAt",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},{
+  "javaVariableName": "keywords",
+  "displayName": "Keywords",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "keywords",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
