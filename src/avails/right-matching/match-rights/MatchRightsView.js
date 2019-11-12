@@ -17,11 +17,10 @@ import {
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import {URL, isObjectEmpty} from '../../../util/Common';
-import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {backArrowColor} from '../../../constants/avails/constants';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -42,14 +41,11 @@ function MatchRightView({
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {addToast} = useContext(NexusToastNotificationContext);
-    const [dopCount] = useLocalStorage('rightMatchingDOP');
     const {params} = match || {};
     const {availHistoryIds, rightId} = params || {};
 
     // DOP Integration
-    useEffect(() => {
-        DOP.setErrorsCount(dopCount);
-    }, [dopCount]);
+    useDOPIntegration(null, 'rightMatchingDOP');
 
     useEffect(() => {
         if (!columnDefs.length) {

@@ -16,12 +16,11 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRightToMatchList} from '../rightMatchingService';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import {URL} from '../../../util/Common';
-import DOP from '../../../util/DOP';
-import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
 import {backArrowColor} from '../../../constants/avails/constants';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -47,12 +46,9 @@ const RightToMatchView = ({
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
-    const [dopCount] = useLocalStorage('rightMatchingDOP');
 
     // DOP Integration
-    useEffect(() => {
-        DOP.setErrorsCount(dopCount);
-    }, [dopCount]);
+    useDOPIntegration(null, 'rightMatchingDOP');
 
     useEffect(() => {
         if (!columnDefs.length) {
