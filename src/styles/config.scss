@@ -5,12 +5,15 @@ $app-layout: (
 );
 
 $colors: (
-    primary: #f2f4f6,
+    primary: #f2f2f2,
     nexus-primary-color: #939FB5, // TODO: refactor this
     nexus-secondary-color: #364767,
     nexus-title-color: #42526E,
-    nexus-title-matching-primary-color: #4B5A74,  
-    nexus-title-matching-secondary-color: #666
+    nexus-title-matching-primary-color: #4B5A74,
+    nexus-title-matching-secondary-color: #666,
+    nexus-tag-green: rgb(87, 217, 163),
+    nexus-tag-yellow: rgb(255, 196, 0),
+    nexus-tag-default: rgb(244, 245, 247),
 );
 
 $nexus-font: Arial, Helvetica, sans-serif;
