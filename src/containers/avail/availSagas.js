@@ -73,8 +73,9 @@ export function* fetchAndStoreSelectItems(payload) {
             return call(fetchAvailSelectValuesRequest, profileService.getSelectValues, configEndpoint, javaVariableName);
         })
     );
-    const updatedSelectValues = fetchedSelectedItems.reduce((acc, el) => {
-        const {key, value, configEndpoint} = Object.values(el)[0];
+    const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
+        const values = Object.values(el);
+        const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
         let options;
         switch (configEndpoint) {
             case PRODUCTION_STUDIOS:
@@ -130,14 +131,13 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
             error: true,
             payload: error,
         });
-        return {
-            [key]: {
-                key,
-                value: error,
-                configEndpoint: requestParams,
-
-            }
-        };
+        // return {
+        //     [key]: {
+        //         key,
+        //         value: error,
+        //         configEndpoint: requestParams,
+        //     }
+        // };
     }
 }
 

@@ -49,6 +49,32 @@ export function* createRightMatchingColumnDefs({payload}) {
     }
 }
 
+function getSearchCriteriaForFields(payload, focusedRight, parseFieldNames, parseFieldValue) {
+    const fieldSearchCriteria = payload.reduce((query, list) => {
+        const {fields, operand} = list || [];
+        const result = fields.reduce((object, field) => {
+            const {targetFieldName, fieldName, criteria} = field;
+            const name = targetFieldName || fieldName;
+            const valueField = fieldName;
+            const preparedName = `${name.slice(0, 1).toLowerCase()}${name.slice(1)}`;
+            const fieldValue = focusedRight[`${valueField.slice(0,1).toLowerCase()}${valueField.slice(1)}`];
+            let key = parseFieldNames(criteria, preparedName);
+            let value = parseFieldValue(criteria, fieldValue);
+
+            if (operand === 'NOT_OR') {
+                key = parseFieldNames(['GTE', 'GT'].includes(criteria) ? 'LT' : 'GT', preparedName);
+                value = parseFieldValue(criteria, fieldValue);
+            } 
+            object[key] = value;
+            return object;
+        }, {});
+        return {...query, ...result};
+    }, {});
+
+    return fieldSearchCriteria;
+}
+
+// TODO: remove this from sagas and create separate logic via Promise to get filtered rights for matching 
 function* storeRightMatchingSearchCriteria(payload = []) {
     // get focused right
     const {focusedRight} = yield select(state => state.rightMatching);
@@ -66,10 +92,12 @@ function* storeRightMatchingSearchCriteria(payload = []) {
         return parsedFieldName;
     };
 
-    const parseFieldValue = (criteria, value) => {
+    const parseFieldValue = (criteria, value, subFieldName) => {
+        const parsedSubFieldName = subFieldName && subFieldName.toLowerCase();
+        const subValue = Array.isArray(value) ? value.map(el => el[parsedSubFieldName]).filter(Boolean).join('') : value;
         const fieldValues = {
             EQ: value,
-            SUB: Array.isArray(value) ? value.join('') : value,
+            SUB: subValue,
             GTE: value,
             GT: value,
             LT: value,
@@ -80,16 +108,26 @@ function* storeRightMatchingSearchCriteria(payload = []) {
     };  
 
     try {
-        const fieldSearchCriteria = searchCriteria.reduce((query, field) => {
-            const {targetFieldName, fieldName, criteria} = field;
+        let fieldSearchCriteria = searchCriteria.reduce((query, field) => {
+            const {targetFieldName, fieldName, subFieldName, criteria} = field;
             const name = targetFieldName || fieldName;
             const preparedName = `${name.slice(0, 1).toLowerCase()}${name.slice(1)}`;
             const fieldValue = focusedRight[`${fieldName.slice(0,1).toLowerCase()}${fieldName.slice(1)}`];
             const key = parseFieldNames(criteria, preparedName);
-            const value = parseFieldValue(criteria, fieldValue);
+            const value = parseFieldValue(criteria, fieldValue, subFieldName);
             query[key] = value;
             return query;
         }, {});
+
+        const groups = payload.filter(({type}) => type === 'Group') || [];
+
+        if (groups.length) {
+            fieldSearchCriteria = {
+                ...fieldSearchCriteria,
+                ...getSearchCriteriaForFields(groups, focusedRight, parseFieldNames, parseFieldValue),
+            };
+        }
+
 
         yield put({
             type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
