@@ -1090,7 +1090,7 @@ class RightDetails extends React.Component {
         const renderFields = [];
 
         if (this.state.flatRight && this.props.availsMapping) {
-            this.props.availsMapping.mappings.map((mapping) => {
+            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping) => {
                 if (mapping.enableEdit) {
                     let error = null;
                     // TODO: write this from scratch
