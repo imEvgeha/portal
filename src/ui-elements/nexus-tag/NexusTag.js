@@ -9,14 +9,21 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
     const tooltip = (
         <div className="nexus-c-tag__tooltip">
             <ul className="nexus-c-tag__tooltip-list">
-                {Object.keys(value || {}).map((key, index) => (
-                    <li className="nexus-c-tag__tooltip-prop" key={index}>
-                        {key}:
-                        <span className="nexus-c-tag__tooltip-prop-value">
-                            {value[key] || '-'}
-                        </span>
-                    </li>
-                ))}
+                {Object.keys(value || {}).map((key, index) => {
+                    return (
+                        !Array.isArray(value[key])
+                            && typeof value[key] !== 'object'
+                            && value[key] !== null
+                            && (
+                                <li className="nexus-c-tag__tooltip-prop" key={index}>
+                                    {key}:
+                                    <span className="nexus-c-tag__tooltip-prop-value">
+                                        {value[key] || '-'}
+                                    </span>
+                                </li>
+                            )
+                    );
+                })}
             </ul>
         </div>
     );
