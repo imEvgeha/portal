@@ -8,10 +8,8 @@
       display: flex;
     }
   }
-  .ag-popup{
-    .ag-tooltip-custom{
-      min-width: 0!important;
-      position: absolute;
-    }
+  .ag-tooltip-custom{
+    position: absolute;
+    pointer-events: none;
   }
 }
