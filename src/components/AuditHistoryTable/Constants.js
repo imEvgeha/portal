@@ -106,5 +106,32 @@ export default {
         method: '-',
         lastUpdateReceivedAt: 'History(+/-)',
         headerRow: true,
-    }
+    },
+    SYSTEM: 'service-account-avails-client',
+    RULES_ENGINE_INFO: [
+        {
+            field: 'templateName',
+            displayName: 'Template Name',
+        },
+        {
+            field: 'transformMethod',
+            displayName: 'Transform Method',
+        },
+        {
+            field: 'availColumn',
+            displayName: 'Avail column',
+        },
+        {
+            field: 'availRow',
+            displayName: 'Avail Row',
+        },
+        {
+            field: 'fileName',
+            displayName: 'Filename',
+        },
+        {
+            field: 'sheetName',
+            displayName: 'Sheet Name',
+        },
+    ]
 };
