@@ -60,6 +60,20 @@ const NexusMultiInstanceField = ({
     // Filters out the item at given index
     const getFilteredItems = (arr = [], index) => arr.filter((element, i) => i !== index);
 
+
+    // Handler for clicking on the NexusTag to edit existing/added item
+    const onEditItem = (item, index) => {
+        setEditIndex(index);
+        addOrEditItem(item, submitEditedItems);
+    };
+
+    // Handler for removing an item form the list via NexusTag's remove button
+    const onRemoveItem = (index) => {
+        const newItems = getFilteredItems(items, index);
+        onSubmit(newItems);
+        setItems(newItems);
+    };
+
     const submitEditedItems = () => {
         const itemsClone = items;
         const editedItem = formValue;
@@ -117,12 +131,8 @@ const NexusMultiInstanceField = ({
                                         value={item}
                                         tagState={item.state}
                                         removeButtonText="Remove"
-                                        onClick={() => {setEditIndex(index); addOrEditItem(item, submitEditedItems);}}
-                                        onRemove={() => {
-                                            const newItems = getFilteredItems(items, index);
-                                            onSubmit(newItems);
-                                            setItems(newItems);
-                                        }}
+                                        onClick={() => onEditItem(item, index)}
+                                        onRemove={() => onRemoveItem(index)}
                                     />
                                 ))}
                             </div>
