@@ -51,7 +51,7 @@ export const getRepositoryCell = () => {
     };
 };
 
-export function createCellRenderer(params) {
+export function createLinkableCellRenderer(params) {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;

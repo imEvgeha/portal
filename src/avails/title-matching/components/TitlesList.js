@@ -9,7 +9,7 @@ import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfin
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './ActionsBar.js';
-import {getRepositoryName, getRepositoryCell, createCellRenderer} from '../../utils';
+import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
@@ -104,7 +104,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         cellRendererFramework: duplicateButtonCell,
     }; 
     const handleTitleMatchingRedirect = params => {
-      return createCellRenderer(params);
+      return createLinkableCellRenderer(params);
     };
     let updatedColumnDefs = columnDefs.map(e => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
