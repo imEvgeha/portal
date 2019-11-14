@@ -6,6 +6,7 @@ import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common';
 
 const endpoint = 'rights';
 const http = Http.create();
+const httpNoErrorHandling = Http.create({noDefaultErrorHandling:true});
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
@@ -48,6 +49,6 @@ export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
 
 
 export const createRightById = (id) => {
-    return http.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`); 
+    return httpNoErrorHandling.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
 };
 
