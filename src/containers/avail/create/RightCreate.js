@@ -300,7 +300,7 @@ class RightCreate extends React.Component {
 
     initMappingErrors = (mappings) => {
         let mappingErrorMessage = {};
-        mappings.map((mapping) => {
+        mappings.filter(({dataType}) => dataType).map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 inner: '',
                 date: '',
@@ -746,7 +746,7 @@ class RightCreate extends React.Component {
         const renderFields = [];
 
         if(this.props.availsMapping) {
-            this.props.availsMapping.mappings.map((mapping)=> {
+            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
                 if(mapping.enableEdit && !mapping.readOnly){
                     let required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';

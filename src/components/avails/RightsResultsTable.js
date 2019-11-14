@@ -55,7 +55,7 @@ export default class RightsResultsTable extends React.Component {
                 default: return null;
             }
         };
-        mappings.map(column => colDef[column.javaVariableName] = {
+        mappings.filter(({dataType}) => dataType).map(column => colDef[column.javaVariableName] = {
             field:column.javaVariableName,
             headerName:column.displayName,
             cellRendererFramework: this.loadingRenderer,
