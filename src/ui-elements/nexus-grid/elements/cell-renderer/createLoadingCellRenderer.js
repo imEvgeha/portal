@@ -23,20 +23,22 @@ export default function createLoadingCellRenderer(params) {
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
-        return ` 
-            <div class="nexus-c-create-loading-cell-renderer">
-                <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
-                    ${String(content)}
+        return `
+            <a href=${'/metadata/detail/' + data.id} target="_blank">
+                <div class="nexus-c-create-loading-cell-renderer">
+                    <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
+                        ${String(content)}
+                    </div>
+                    ${highlighted ? `
+                        <span 
+                            title='* fields in bold are original values provided by the studios'
+                            class="nexus-c-create-loading-cell-renderer__highlighted"
+                        >
+                            <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
+                        </span>
+                    ` : ''}
                 </div>
-                ${highlighted ? `
-                    <span 
-                        title='* fields in bold are original values provided by the studios'
-                        class="nexus-c-create-loading-cell-renderer__highlighted"
-                    >
-                        <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
-                    </span>
-                ` : ''}
-            </div>
+            </a>
         `;
     }
     return null;
