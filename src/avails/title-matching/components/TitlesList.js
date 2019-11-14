@@ -9,7 +9,7 @@ import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfin
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './ActionsBar.js';
-import { getRepositoryName, getRepositoryCell, createCellRenderer } from '../../utils';
+import {getRepositoryName, getRepositoryCell, createCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
