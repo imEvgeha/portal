@@ -43,15 +43,16 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                 .then(response => {
                     const {excludedItems} = props;
                     const {page = 0, size = 0, total = 0, data} = getResponseData(response, excludedItems);
+
+                    if (typeof props.setTotalCount === 'function') { 
+                        props.setTotalCount(total);
+                    }
+
                     if (total > 0){
                         let lastRow = -1;
                         if ((page + 1) * size >= total) {
                             lastRow = total;
                         }
-                        if (typeof props.setTotalCount === 'function') { 
-                            props.setTotalCount(total);
-                        }
-
                         successCallback(data, lastRow);
 
                         if (typeof props.succesDataFetchCallback === 'function') {
