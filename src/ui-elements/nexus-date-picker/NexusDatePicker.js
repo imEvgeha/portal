@@ -26,27 +26,25 @@ const NexusDatePicker = ({
     const dateFormat = getDateFormatBasedOnLocale(locale);
 
     const DatePickerComponent = (isReadOnly) => (
-        <div className="nexus-c-date-picker">
+        <>
             {label &&
-            <div className="nexus-c-date-picker__label">
-                {label}
-            </div>
+                <>
+                    {label}
+                </>
             }
             {isReadOnly
                 ? moment(value).format(dateFormat)
                 : (
-                    <div className="nexus-c-date-picker__date">
-                        <DatePicker
-                            id={id}
-                            locale={locale}
-                            onChange={date => onChange(moment(date).toISOString())}
-                            defaultValue={value}
-                            {...restProps}
-                        />
-                    </div>
+                    <DatePicker
+                        id={id}
+                        locale={locale}
+                        onChange={date => onChange(moment(date).toISOString())}
+                        defaultValue={value}
+                        {...restProps}
+                    />
                 )
             }
-        </div>
+        </>
     );
 
     return (
