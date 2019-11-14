@@ -208,14 +208,14 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
 }
 
 export function* fetchCombinedRight(requestMethod, {payload}) {
-    const {focusedRightId, matchedRightIds} = payload || {};
+    const {rightIds} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
 
-        const response = yield call(requestMethod, focusedRightId, matchedRightIds);
+        const response = yield call(requestMethod, rightIds);
         const combinedRight = response.data;
 
         yield put({
@@ -233,13 +233,13 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
 }
 
 export function* saveCombinedRight(requestMethod, {payload}) {
-    const {focusedRightId, matchedRightIds, combinedRight, redirectPath} = payload || {};
+    const {rightIds, combinedRight, redirectPath} = payload || {};
     try {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
-        const response = yield call(requestMethod, focusedRightId, matchedRightIds, combinedRight);
+        const response = yield call(requestMethod, rightIds, combinedRight);
         const focusedRight = response.data;
 
         yield put({

@@ -64,9 +64,10 @@ function MatchRightView({
             if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
-            fetchMatchedRight(matchedRightIds.split(','));
+            const matchedRightList = matchedRightIds.split(',');
+            fetchMatchedRight(matchedRightList);
             // matchedRightId from url should be correct one.
-            // fetchCombinedRight(rightId, matchedRightIds);
+            fetchCombinedRight([rightId, ...matchedRightList]);
         }
     },[match.params.matchedRightIds, match.params.rightId, columnDefs.length]);
 
@@ -89,8 +90,7 @@ function MatchRightView({
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
         setSaveButtonDisabled(true);
         const payload = {
-            focusedRightId: rightId,
-            matchedRightIds,
+            rightIds: [rightId, ...matchedRightIds.split(',')],
             combinedRight, 
             addToast,
             redirectPath,
