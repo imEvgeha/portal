@@ -4,6 +4,7 @@ import Constants from './title-matching/titleMatchingConstants';
 import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getDeepValue, isObject} from '../util/Common';
 import loadingGif from '../img/loading.gif';
+import createLoadingCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 
 export function createColumnDefs(payload) {
     return payload.reduce((columnDefs, column) => {
@@ -12,7 +13,7 @@ export function createColumnDefs(payload) {
             field: javaVariableName,
             headerName: displayName,
             colId: id,
-            cellRenderer: createCellRenderer,
+            cellRenderer: createLoadingCellRenderer,
             valueFormatter: createValueFormatter(column),
             width: 150,
         };
@@ -50,7 +51,7 @@ export const getRepositoryCell = () => {
     };
 };
 
-export function createCellRenderer(params, isLink = false) {
+export function createCellRenderer(params) {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
@@ -71,36 +72,22 @@ export function createCellRenderer(params, isLink = false) {
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
-        return isLink ? 
-         `<a href=${'/metadata/detail/' + data.id} target="_blank" />
-            <div class="nexus-c-create-loading-cell-renderer">
-                <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
-                    ${String(content)}
+        return `
+            <a href=${'/metadata/detail/' + data.id} target="_blank" />
+                <div class="nexus-c-create-loading-cell-renderer">
+                    <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
+                        ${String(content)}
+                    </div>
+                    ${highlighted ? `
+                        <span 
+                            title='* fields in bold are original values provided by the studios'
+                            class="nexus-c-create-loading-cell-renderer__highlighted"
+                        >
+                            <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
+                        </span>
+                    ` : ''}
                 </div>
-                ${highlighted ? `
-                    <span 
-                        title='* fields in bold are original values provided by the studios'
-                        class="nexus-c-create-loading-cell-renderer__highlighted"
-                    >
-                        <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
-                    </span>
-                ` : ''}
-            </div>
-            </a>`
-            :
-            `<div class="nexus-c-create-loading-cell-renderer">
-                <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
-                    ${String(content)}
-                </div>
-                ${highlighted ? `
-                    <span 
-                        title='* fields in bold are original values provided by the studios'
-                        class="nexus-c-create-loading-cell-renderer__highlighted"
-                    >
-                        <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
-                    </span>
-                ` : ''}
-            </div>`;
+            </a>`;
     }
     return null;
 }
