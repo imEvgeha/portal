@@ -339,10 +339,9 @@ export function* createNewRight(requestMethod, {payload}) {
             payload: error,
         });
         const {status, message} = error;
-        const description = status === 400 ? message : CREATE_NEW_RIGHT_ERROR_MESSAGE;
         yield call(addToast, {
+            description: status === 400 ? message : CREATE_NEW_RIGHT_ERROR_MESSAGE,
             title: ERROR_TITLE,
-            description,
             icon: ERROR_ICON,
             isAutoDismiss: true,
         });
