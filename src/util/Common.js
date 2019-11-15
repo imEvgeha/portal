@@ -211,6 +211,9 @@ const getDomainName = () => window && window.location.origin.toString();
 
 const minTwoDigits = n => `${n < 10 ? '0' : ''}${n}`;
 
+// Create date format based on locale
+const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
+
 export {
     downloadFile, 
     momentToISO, 
@@ -229,4 +232,5 @@ export {
     switchCase,
     getDomainName,
     minTwoDigits,
+    getDateFormatBasedOnLocale,
 };
