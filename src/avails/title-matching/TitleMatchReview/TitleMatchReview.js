@@ -8,7 +8,7 @@ import {URL} from '../../../util/Common';
 import {titleService} from '../../../containers/metadata/service/TitleService';
 import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
 import {createColumnDefs} from '../titleMatchingActions';
-import {getRepositoryCell, createLinkableCellRenderer} from '../../utils';
+import {getRepositoryCell} from '../../utils';
 import DOP from '../../../util/DOP';
 import './TitleMatchReview.scss';
 
@@ -111,15 +111,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             });
         }
     }, [mergedTitles]);
-
-    const handleTitleMatchReviewRedirect = params => {
-        return createLinkableCellRenderer(params);
-    };
-    let updatedColumnDefs = columnDefs.map(e => {
-        if(e.cellRenderer) e.cellRenderer = handleTitleMatchReviewRedirect;
-        return e;
-    });
-
+    
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
@@ -131,7 +123,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...updatedColumnDefs]}
+                            columnDefs={[getRepositoryCell(), ...columnDefs]}
                             rowData={titles}
                         />
                     </React.Fragment>
@@ -142,7 +134,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...updatedColumnDefs]}
+                            columnDefs={[getRepositoryCell(), ...columnDefs]}
                             rowData={mergedTitles}
                         />
                     </React.Fragment>

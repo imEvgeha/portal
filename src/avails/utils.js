@@ -51,7 +51,7 @@ export const getRepositoryCell = () => {
     };
 };
 
-export function createLinkableCellRenderer(params, isLink = false) {
+export function createLinkableCellRenderer(params) {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
@@ -72,38 +72,41 @@ export function createLinkableCellRenderer(params, isLink = false) {
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
-        return isLink ? 
-            `
+        let displayValue = `
+        <div class="nexus-c-create-loading-cell-renderer">
+            <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
+                ${String(content)}
+            </div>
+            ${highlighted ? `
+                <span 
+                    title='* fields in bold are original values provided by the studios'
+                    class="nexus-c-create-loading-cell-renderer__highlighted"
+                >
+                    <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
+                </span>
+            ` : ''}
+        </div>`;
+        return `
             <a href=${'/metadata/detail/' + data.id} target="_blank" />
-                <div class="nexus-c-create-loading-cell-renderer">
-                    <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
-                        ${String(content)}
-                    </div>
-                    ${highlighted ? `
-                        <span 
-                            title='* fields in bold are original values provided by the studios'
-                            class="nexus-c-create-loading-cell-renderer__highlighted"
-                        >
-                            <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
-                        </span>
-                    ` : ''}
-                </div>
-            </a>`
-            :
-            `
-            <div class="nexus-c-create-loading-cell-renderer">
-                <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
-                    ${String(content)}
-                </div>
-                ${highlighted ? `
-                    <span 
-                        title='* fields in bold are original values provided by the studios'
-                        class="nexus-c-create-loading-cell-renderer__highlighted"
-                    >
-                        <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
-                    </span>
-                ` : ''}
-            </div>`;
+                ${displayValue}
+            </a>`;
     }
     return null;
+}
+
+export function deepClone(from, to) {
+    if (from == null || typeof from != 'object') return from;
+    if (from.constructor != Object && from.constructor != Array) return from;
+    if (from.constructor == Date || from.constructor == RegExp || from.constructor == Function ||
+        from.constructor == String || from.constructor == Number || from.constructor == Boolean)
+        return new from.constructor(from);
+
+    to = to || new from.constructor();
+
+    for (let name in from)
+    {
+        to[name] = typeof to[name] == 'undefined' ? deepClone(from[name], null) : to[name];
+    }
+
+    return to;
 }
