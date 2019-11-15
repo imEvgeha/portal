@@ -106,7 +106,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     
     const deepCloneColumnDefs = deepClone(columnDefs);
     const handleTitleMatchingRedirect = params => {
-        return createLinkableCellRenderer(params, true);
+        return createLinkableCellRenderer(params);
     };
     let updatedColumnDefs = deepCloneColumnDefs.map(e => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
