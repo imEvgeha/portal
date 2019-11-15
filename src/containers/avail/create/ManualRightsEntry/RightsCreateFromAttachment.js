@@ -145,8 +145,8 @@ class RightsCreateFromAttachment extends React.Component {
                             <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
                                 <a href="#"
                                    onClick = {() => this.getDownloadLink(e)}
-                                   title={this.formatAttachmentName(e.link)}>
-                                    {icon && <i className={icon}/>}
+                                   title={icon && this.formatAttachmentName(e.link)}>
+                                    {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
                                 </a>
                                 <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
                             </div>
@@ -156,7 +156,8 @@ class RightsCreateFromAttachment extends React.Component {
     };
 
     render() {
-        const {historyData: {attachments, ingestType, status, externalId = null} = {},
+        const {historyData: {attachments, ingestType, status, externalId = null,
+            ingestReport: {errorDetails} = {}} = {},
             availHistoryId}  = this.state;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
@@ -183,6 +184,7 @@ class RightsCreateFromAttachment extends React.Component {
                             <label>Status:</label>
                             <StatusIcon status={status} />
                         </section>
+                        {errorDetails && (<section className='nexus-c-manual-rights-entry__error'>{errorDetails}</section>)}
                     </div>
                     <div>
                         <Can I="create" a="Avail">

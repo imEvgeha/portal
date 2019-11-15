@@ -1,12 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
-import Select from '@atlaskit/select';
-import InlineEdit from '@atlaskit/inline-edit';
-import './NexusDateTimePicker.scss';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
+import Select from '@atlaskit/select';
+import InlineEdit from '@atlaskit/inline-edit';
+import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
+import {getDateFormatBasedOnLocale} from '../../util/Common';
+import './NexusDateTimePicker.scss';
 
 // TODO: Move to a separate file for constants
 const RELATIVE_TIME_LABEL = 'Relative';
@@ -32,10 +33,7 @@ const NexusDateTimePicker = ({
     const {locale = 'en-US'} = intl || {};
 
     // Create date format based on locale
-    const dateFormat = moment()
-        .locale(locale)
-        .localeData()
-        .longDateFormat('L')
+    const dateFormat = getDateFormatBasedOnLocale(locale)
         .toUpperCase()
         .concat(displayTimeInReadView ? TIME_FORMAT : '');
 

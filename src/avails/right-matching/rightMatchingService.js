@@ -6,6 +6,7 @@ import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common';
 
 const endpoint = 'rights';
 const http = Http.create();
+const httpNoErrorHandling = Http.create({noDefaultErrorHandling:true});
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
@@ -16,15 +17,15 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
     );
 };
 
-export const getCombinedRight = (rightId, matchedRightId) => {
+export const getCombinedRight = (rightIds) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`
     );
 };
 
-export const putCombinedRight = (rightId, matchedRightId, combinedRight) => {
+export const putCombinedRight = (rightIds, combinedRight) => {
     return http.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
         combinedRight
     );
 };
@@ -48,6 +49,6 @@ export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
 
 
 export const createRightById = (id) => {
-    return http.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`); 
+    return httpNoErrorHandling.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
 };
 

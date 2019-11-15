@@ -6,15 +6,13 @@
   section{
     margin-bottom: 10px;
   }
+  .nexus-c-manual-rights-entry__error{
+    color: #DE350B;
+  }
   .nexus-c-manual-rights-entry__description{
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
-  }
-  .nexus-c-manual-rights-entry__attachment--icon{
-    display: inline-block;
-    width: 32px;
-    box-sizing: border-box;
   }
   .nexus-c-manual-rights-entry__attachment{
     display: flex;
@@ -24,15 +22,20 @@
     }
     a{
       text-decoration: underline;
-      color: #dc3545;
+      text-underline-position: under;
+      color: #DE350B;
     }
     .separator{
       margin-right: 10px;
     }
     .nexus-c-manual-rights-entry__attachment--icon{
+      width: 32px;
+      box-sizing: border-box;
+      display: flex;
+      padding: 0 5px;
       a{
         color: #A9A9A9;
-        font-size: 30px;
+        font-size: 20px;
         vertical-align: middle;
       }
     }
