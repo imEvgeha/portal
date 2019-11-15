@@ -51,7 +51,7 @@ export const getRepositoryCell = () => {
     };
 };
 
-export function createLinkableCellRenderer(params) {
+export function createLinkableCellRenderer(params, isLink = false) {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
@@ -72,7 +72,8 @@ export function createLinkableCellRenderer(params) {
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
-        return `
+        return isLink ? 
+            `
             <a href=${'/metadata/detail/' + data.id} target="_blank" />
                 <div class="nexus-c-create-loading-cell-renderer">
                     <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
@@ -87,7 +88,22 @@ export function createLinkableCellRenderer(params) {
                         </span>
                     ` : ''}
                 </div>
-            </a>`;
+            </a>`
+            :
+            `
+            <div class="nexus-c-create-loading-cell-renderer">
+                <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
+                    ${String(content)}
+                </div>
+                ${highlighted ? `
+                    <span 
+                        title='* fields in bold are original values provided by the studios'
+                        class="nexus-c-create-loading-cell-renderer__highlighted"
+                    >
+                        <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
+                    </span>
+                ` : ''}
+            </div>`;
     }
     return null;
 }

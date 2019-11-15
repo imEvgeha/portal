@@ -104,7 +104,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         cellRendererFramework: duplicateButtonCell,
     }; 
     const handleTitleMatchingRedirect = params => {
-      return createLinkableCellRenderer(params);
+        return createLinkableCellRenderer(params, true);
     };
     let updatedColumnDefs = columnDefs.map(e => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
