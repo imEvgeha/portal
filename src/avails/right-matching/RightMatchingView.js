@@ -18,8 +18,14 @@ import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
+import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
+import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(
+    withSideBar,
+    withFilterableColumns(['id', 'title']), 
+    withInfiniteScrolling(getRightMatchingList), 
+)(NexusGrid);
 
 const RightMatchingView = ({
         createRightMatchingColumnDefs, 

@@ -33,6 +33,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
         }, [props.params, props.excludedItems]);
 
         const getRows = (params, fetchData, gridApi) => {
+            console.log(params, 'params');
             const {startRow, successCallback, failCallback} = params || {};
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
