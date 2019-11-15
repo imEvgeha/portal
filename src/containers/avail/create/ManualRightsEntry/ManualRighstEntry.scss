@@ -1,0 +1,47 @@
+.nexus-c-manual-rights-entry{
+  label{
+    font-weight: bold;
+    margin: 0 10px 0 0;
+  }
+  section{
+    margin-bottom: 10px;
+  }
+  .nexus-c-manual-rights-entry__description{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+  .nexus-c-manual-rights-entry__attachment--icon{
+    display: inline-block;
+    width: 32px;
+    box-sizing: border-box;
+  }
+  .nexus-c-manual-rights-entry__attachment{
+    display: flex;
+    label{
+      margin-right: 10px;
+      font-weight: normal;
+    }
+    a{
+      text-decoration: underline;
+      color: #dc3545;
+    }
+    .separator{
+      margin-right: 10px;
+    }
+    .nexus-c-manual-rights-entry__attachment--icon{
+      a{
+        color: #A9A9A9;
+        font-size: 30px;
+        vertical-align: middle;
+      }
+    }
+  }
+  .nexus-c-manual-rights-entry__actions{
+    display: flex;
+    justify-content: flex-end;
+    .nexus-c-manual-rights-entry__button{
+      vertical-align: bottom;
+    }
+  }
+}

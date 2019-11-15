@@ -30,7 +30,7 @@ import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import {CustomFieldAddText, AddButton} from '../custom-form-components/CustomFormComponents';
 import {isObject} from '../../../util/Common';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import ManualRightsEntryDOPConnector from '../create/ManualRightsEntryDOPConnector';
+import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
 import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 
 const mapStateToProps = state => {
