@@ -5,6 +5,7 @@ import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
+import {getDateFormatBasedOnLocale} from '../../util/Common';
 
 // TODO: Move to a separate file for constants
 const TIME_PLACEHOLDER = 'HH:mm:ss';
@@ -38,11 +39,7 @@ const NexusSimpleDateTimePicker = ({
     };
 
     // Create date placeholder based on locale
-    const datePlaceholder = moment()
-        .locale(locale)
-        .localeData()
-        .longDateFormat('L')
-        .toUpperCase();
+    const datePlaceholder = getDateFormatBasedOnLocale(locale).toUpperCase();
 
     const convertToISO = date => {
         const dateWithStrippedTimezone = moment.utc(date).format(ATLASKIT_DATE_FORMAT);

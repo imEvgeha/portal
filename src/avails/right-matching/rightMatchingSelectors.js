@@ -21,9 +21,9 @@ export const getFocusedRight = (state) => {
     return rightMatching && rightMatching.focusedRight;
 };
 
-export const getMatchedRight = (state) => {
+export const getMatchedRights = (state) => {
     const {rightMatching} = state;
-    return rightMatching && rightMatching.matchedRight;
+    return rightMatching && rightMatching.matchedRights;
 };
 
 export const getCombinedRight = (state) => {
@@ -63,9 +63,9 @@ export const createFocusedRightSelector = () => createSelector(
     focusedRight => focusedRight,
 );
 
-export const createMatchedRightSelector = () => createSelector(
-    getMatchedRight,
-    matchedRight => matchedRight,
+export const createMatchedRightsSelector = () => createSelector(
+    getMatchedRights,
+    matchedRights => matchedRights,
 );
 
 export const createCombinedRightSelector = () => createSelector(

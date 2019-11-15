@@ -6,7 +6,7 @@ const initialState = {
     fieldSearchCriteria: null,
     focusedRight: {},
     rightMatchPageData: {},
-    matchedRight: {},
+    matchedRights: [],
     combinedRight: {},
 };
 
@@ -17,7 +17,7 @@ const rightMatchingReducer = (state = initialState, action) => {
         fieldSearchCriteria, 
         focusedRight, 
         rightMatchPageData,
-        matchedRight,
+        matchedRights,
         combinedRight,
     } = payload || {};
 
@@ -40,7 +40,7 @@ const rightMatchingReducer = (state = initialState, action) => {
         case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
             return {
                 ...state,
-                matchedRight,
+                matchedRights,
             };
         case actionTypes.FETCH_COMBINED_RIGHT_SUCCESS:
             return {
