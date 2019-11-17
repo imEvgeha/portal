@@ -7,5 +7,5 @@ export const FATAL = 'FATAL';
 
 export const tabFilter = new Map([
     [UPDATED, {status: 'Updated'}],
-    [PENDING,  {status: 'PENDING'}],
+    [PENDING,  {status: 'Pending'}],
 ]);

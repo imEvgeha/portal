@@ -12,12 +12,15 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../constants/breadcrumb';
 import { connect } from 'react-redux';
 import ManualRightsEntryDOPConnector from './ManualRightsEntryDOPConnector';
+import ManualRightEntryTableTabs from './ManualRightsEntryTableTabs';
+import {FATAL, tabFilter} from '../../../constants/avails/manualRightsEntryTabs';
 
 const REFRESH_INTERVAL = 5 * 1000; //5 seconds
 
 const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
+        selectedTab: state.manualRightsEntry.session.selectedTab,
     };
 };
 
@@ -27,6 +30,7 @@ class RightsCreateFromAttachment extends React.Component {
         match: t.object,
         location: t.object,
         availsMapping: t.any,
+        selectedTab: t.string
     };
 
     static contextTypes = {
@@ -61,20 +65,25 @@ class RightsCreateFromAttachment extends React.Component {
             return;
         }
 
-        this.getSearchCriteriaFromURL();
+        this.getSearchCriteriaFromURLWithCustomOne();
     }
 
-    getSearchCriteriaFromURL() {
-        rightSearchHelper.advancedSearch({ availHistoryIds: this.state.availHistoryId }, false);
+    getSearchCriteriaFromURLWithCustomOne() {
+        const searchCriteria = this.getCustomSearchCriteria(this.props.selectedTab);
+        rightSearchHelper.advancedSearch(searchCriteria, false);
         this.getHistoryData();
         if (this.refresh === null) {
             this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
         }
     }
 
+    getCustomSearchCriteria = (tab) => {
+        return Object.assign( {}, tabFilter.get(tab), {availHistoryIds: this.state.availHistoryId});
+    };
+
     componentDidUpdate(prevProps) {
-        if (prevProps.availsMapping !== this.props.availsMapping) {
-            this.getSearchCriteriaFromURL();
+        if (prevProps.availsMapping !== this.props.availsMapping || prevProps.selectedTab !== this.props.selectedTab) {
+            this.getSearchCriteriaFromURLWithCustomOne();
         }
     }
 
@@ -180,12 +189,17 @@ class RightsCreateFromAttachment extends React.Component {
                 <hr style={{ color: 'black', backgroundColor: 'black' }} />
                 <div> Rights Created </div>
                 {this.props.availsMapping &&
-                    <RightsResultTable
-                        fromServer={true}
-                        columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
-                        nav={{ back: 'manual-rights-entry', params: { availHistoryId: this.state.availHistoryId } }}
-                        autoload={false}
-                    />
+                    <React.Fragment>
+                        <ManualRightEntryTableTabs getCustomSearchCriteria={this.getCustomSearchCriteria}/>
+                        <RightsResultTable
+                            fromServer={true}
+                            columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
+                            nav={{ back: 'manual-rights-entry', params: { availHistoryId: this.state.availHistoryId } }}
+                            autoload={false}
+                            selectedTab={this.props.selectedTab}
+                            hidden={this.props.selectedTab === FATAL}
+                        />
+                    </React.Fragment>
                 }
             </div>
         );
