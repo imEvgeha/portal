@@ -137,7 +137,7 @@ class RightsCreateFromAttachment extends React.Component {
     };
 
     renderAttachments = (type, icon) => {
-        const {attachments} = this.state.historyData || {};
+        const {attachments = []} = this.state.historyData || {};
         return attachments.filter(({ attachmentType }) => attachmentType === type)
                 .map((e, i, arr) => {
                     return (
