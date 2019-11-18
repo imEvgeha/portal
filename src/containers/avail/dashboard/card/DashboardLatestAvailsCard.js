@@ -43,7 +43,7 @@ export default class DashboardLatestAvailsCard extends React.Component {
 
     statusIcon = (params) => {
         const {value, valueFormatted, data: {errorDetails}} = params;
-        return <StatusIcon status={valueFormatted || value} title={errorDetails} />
+        return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
     };
 
 
