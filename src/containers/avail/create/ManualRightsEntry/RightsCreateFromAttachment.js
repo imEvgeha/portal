@@ -144,8 +144,7 @@ class RightsCreateFromAttachment extends React.Component {
                         <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
                             <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
                                 <a href="#"
-                                   onClick = {() => this.getDownloadLink(e)}
-                                   title={icon && this.formatAttachmentName(e.link)}>
+                                   onClick = {() => this.getDownloadLink(e)}>
                                     {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
                                 </a>
                                 <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
