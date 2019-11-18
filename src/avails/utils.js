@@ -6,11 +6,11 @@ import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-r
 
 export function createColumnDefs(payload) {
     return payload.reduce((columnDefs, column) => {
-        const {javaVariableName, displayName, id} = column;
+        const {javaVariableName, displayName} = column;
         const columnDef = {
             field: javaVariableName,
             headerName: displayName,
-            colId: id,
+            colId: javaVariableName,
             cellRenderer: createLoadingCellRenderer,
             valueFormatter: createValueFormatter(column),
             width: 150,

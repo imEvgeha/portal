@@ -8,12 +8,19 @@ import {switchCase} from '../../../util/Common';
 
 const FILTERABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
 
-const DEFAULT_FILTER_OPTIONS = ['equals'];
+const DEFAULT_FILTER_PARAMS = {
+    filterOptions: ['equals'],
+    suppressAndOrCondition: true,
+    debounceMs: 1000,
+};
 
 const FILTER_TYPE = {
     string: 'agTextColumnFilter',
     number: 'agNumberColumnFilter',
+    select: 'agSetColumnFilter',
+    multiSelect: 'agSetColumnFilter',
 };
+
 
 const withFilterableColumns = filterableColumns => WrappedComponent => {
     const ComposedComponent = props => {
@@ -35,14 +42,18 @@ const withFilterableColumns = filterableColumns => WrappedComponent => {
         function updateColumnDefs(columnDefs) {
             const filterableColumnDefs = columnDefs.map(columnDef => {
                 let copiedColumnDef = {...columnDef};
-                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
+                const {dataType, options} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType) && 
                     (filterableColumns ? filterableColumns.includes(copiedColumnDef.field) : true);
                 if (isFilterable) {
-                    copiedColumnDef.filterParams = {
-                        filterOptions: DEFAULT_FILTER_OPTIONS,
+                    const FILTER_PARAMS = {
+                        string: DEFAULT_FILTER_PARAMS,
+                        number: DEFAULT_FILTER_PARAMS,
+                        select: {...DEFAULT_FILTER_PARAMS, values: options},
+                        multiSelect: {...DEFAULT_FILTER_PARAMS, values: options},
                     };
                     copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
+                    copiedColumnDef.filterParams = switchCase(FILTER_PARAMS)(DEFAULT_FILTER_PARAMS)(dataType);
                 }
 
                 return copiedColumnDef;

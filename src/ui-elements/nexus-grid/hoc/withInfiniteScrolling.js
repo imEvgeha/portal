@@ -1,6 +1,8 @@
 import React, {useRef, useEffect} from 'react';
 import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import usePrevious from '../../../util/hooks/usePrevious';
+import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;
@@ -33,14 +35,22 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
         }, [props.params, props.excludedItems]);
 
         const getRows = (params, fetchData, gridApi) => {
-            console.log(params, 'params');
-            const {startRow, successCallback, failCallback} = params || {};
+            const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
+            const filterParams = filterBy(filterModel);
+            const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();
             }
-            fetchData(pageNumber, pageSize, props.params)
+
+            const preparedParams = {
+                ...props.params,
+                ...filterParams,
+                ...sortParams,
+            };
+
+            fetchData(pageNumber, pageSize, preparedParams)
                 .then(response => {
                     const {excludedItems} = props;
                     const {page = 0, size = 0, total = 0, data} = getResponseData(response, excludedItems);
@@ -85,6 +95,30 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             }
 
             return data;
+        };
+
+        const filterBy = filterObject => {
+            const ALLOWED_TYPES = ['equals'];
+            const FILTER_TYPES = ['set'];
+            if (!isEmpty(filterObject)) {
+                const filteredEqualsType = Object.keys(filterObject)
+                    .filter(key => ALLOWED_TYPES.includes(filterObject[key].type) || filterObject[key].filterType === 'set')
+                    .reduce((obj, key) => {
+                        obj[key] = filterObject[key];
+                        return obj;
+                      }, {});
+                const filterParams = Object.keys(filteredEqualsType).reduce((object, name) => {
+                    const {filter, values, filterType} = filteredEqualsType[name] || {};
+                    object[name] = FILTER_TYPES.includes(filterType) ? Array.isArray(values) && values.join(', ') : filter;
+                    return object;
+                }, {});
+                return parseAdvancedFilter(filterParams);
+            }
+            return {};
+        };
+
+        const sortBy = sortModel => {
+            return sortModel;
         };
 
         const updateData = (fetchData, gridApi) => {

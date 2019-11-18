@@ -1,10 +1,31 @@
 import React from 'react';
 
-const DEAFULT_TOOL_PANELS = ['columns', 'filters'];
+const DEAFULT_TOOL_PANELS = [
+    {
+        id: 'columns',
+        labelDefault: 'Columns',
+        labelKey: 'columns',
+        iconKey: 'columns',
+        toolPanel: 'agColumnsToolPanel',
+        toolPanelParams: {
+            suppressRowGroups: true,
+            suppressValues: true,
+            suppressPivots: true,
+            suppressPivotMode: true,
+        },
+    },
+    {
+        id: 'filters',
+        labelKey: 'filters',
+        labelDefault: 'Filters',
+        iconKey: 'menu',
+        toolPanel: 'agFiltersToolPanel',
+    },
+];
 
 const defaultSideBar = {toolPanels: DEAFULT_TOOL_PANELS};
 
-const withSideBar = (WrappedComponent, sideBar = defaultSideBar) => {
+const withSideBar = (sideBar = defaultSideBar) => WrappedComponent =>{
     const ComposedComponent = props => {
         return (
             <WrappedComponent
