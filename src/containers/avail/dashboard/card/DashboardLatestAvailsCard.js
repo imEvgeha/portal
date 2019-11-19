@@ -2,13 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
 import {Link} from 'react-router-dom';
+import StatusIcon from '../../components/StatusIcon';
 
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
 
 import './DashboardLatestAvailsCard.scss';
-
-import LoadingElipsis from '../../../../img/ajax-loader.gif';
 
 const REFRESH_INTERVAL = 5*1000; //5 seconds
 
@@ -28,7 +27,12 @@ export default class DashboardLatestAvailsCard extends React.Component {
                           else return '';
                       }, width:120},
                     {headerName: 'Provider', field: 'provider', width:90},
-                    {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIconRender, width:55},
+                    {
+                        headerName: 'Status',
+                        field: 'status',
+                        cellRendererFramework: this.statusIcon,
+                        width:55
+                    },
                     {headerName: 'Ingest Method', field: 'ingestType', width:105},
                     {headerName: 'Filename', tooltipValueGetter: this.showFileNames, valueFormatter: this.showFileNames, width:180}
             ]
@@ -36,6 +40,12 @@ export default class DashboardLatestAvailsCard extends React.Component {
 
         this.refresh = null;
     }
+
+    statusIcon = (params) => {
+        const {value, valueFormatted, data: {errorDetails}} = params;
+        return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
+    };
+
 
     componentDidMount() {
         this.getData();
@@ -48,29 +58,6 @@ export default class DashboardLatestAvailsCard extends React.Component {
         if(this.refresh !== null){
             clearInterval(this.refresh);
             this.refresh = null;
-        }
-    }
-
-    statusIconRender(params){
-        const content = params.valueFormatted || params.value;
-        if (params.value !== undefined) {
-            if (content) {
-                switch (content) {
-                     case 'COMPLETED':
-                        return <span style={{ color: 'green'}}><i className="fas fa-check-circle"></i></span>;
-                     case 'FAILED':
-                        return <span title={params.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
-                    case 'MANUAL':
-                        return <span style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
-                     case 'PENDING':
-                        return <img style={{width:'22px'}} src={LoadingElipsis}/>;
-                     default:
-                        return content;
-                 }
-            }
-            else return '';
-        } else {
-            return '';
         }
     }
 

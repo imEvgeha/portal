@@ -17,15 +17,15 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
     );
 };
 
-export const getCombinedRight = (rightId, matchedRightId) => {
+export const getCombinedRight = (rightIds) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`
     );
 };
 
-export const putCombinedRight = (rightId, matchedRightId, combinedRight) => {
+export const putCombinedRight = (rightIds, combinedRight) => {
     return http.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
         combinedRight
     );
 };

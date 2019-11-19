@@ -1,21 +1,26 @@
 import React from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
-import RightsResultTable from '../dashboard/components/RightsResultTable';
-import { profileService } from '../service/ProfileService';
-import { historyService } from '../service/HistoryService';
-import { rightSearchHelper } from '../dashboard/RightSearchHelper';
-import { URL } from '../../../util/Common';
-import { Can } from '../../../ability';
-import DashboardDropableCard from '../dashboard/card/DashboardDropableCard';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import { RIGHTS_CREATE_FROM_PDF } from '../../../constants/breadcrumb';
+import RightsResultTable from '../../dashboard/components/RightsResultTable';
+import { profileService } from '../../service/ProfileService';
+import { historyService } from '../../service/HistoryService';
+import { rightSearchHelper } from '../../dashboard/RightSearchHelper';
+import { URL } from '../../../../util/Common';
+import { Can } from '../../../../ability';
+import DashboardDropableCard from '../../dashboard/card/DashboardDropableCard';
+import NexusBreadcrumb from '../../../NexusBreadcrumb';
+import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
+import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
+import StatusIcon from '../../components/StatusIcon';
+import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
+import Constants from './Constants.js';
+import './ManualRighstEntry.scss';
 import ManualRightsEntryDOPConnector from './ManualRightsEntryDOPConnector';
 import ManualRightEntryTableTabs from './ManualRightsEntryTableTabs';
 import {FATAL, tabFilter} from '../../../constants/avails/manualRightsEntryTabs';
 
-const REFRESH_INTERVAL = 5 * 1000; //5 seconds
+const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
 const mapStateToProps = state => {
     return {
@@ -35,7 +40,7 @@ class RightsCreateFromAttachment extends React.Component {
 
     static contextTypes = {
         router: t.object
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -132,61 +137,77 @@ class RightsCreateFromAttachment extends React.Component {
             })
             .catch(() => {
                 this.setState({
-                    errorMessage: 'Download Failed. Url not available.'
+                    errorMessage: ERROR_MESSAGE
                 });
             });
     }
 
     formatAttachmentName = (link) => {
         return link.split(/(\\|\/)/g).pop();
-    }
+    };
 
     renderAttachments = (type, icon) => {
-        return this.state.historyData &&
-            this.state.historyData.attachments &&
-            this.state.historyData.attachments
-                .filter(({ attachmentType }) => attachmentType === type)
+        const {attachments = []} = this.state.historyData || {};
+        return attachments.filter(({ attachmentType }) => attachmentType === type)
                 .map((e, i, arr) => {
-                    if(icon) {
-                        return (
-                            <div key={i} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}>
-                                    <a href="#" onClick = {() => this.getDownloadLink(e)} title={this.formatAttachmentName(e.link)} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={icon}></i></a>
-                                </div>
-                        );
-                    } else {
-                        return (
-                            <div key={i} style={{ display: 'inline-block' }}>
-                                <a href="#" className={'text-danger'} onClick={() => this.getDownloadLink(e)}>{this.formatAttachmentName(e.link)}</a>{arr.length - 1 === i ? '' : ','}&nbsp;&nbsp;&nbsp;
-                                </div>
-                        );
-                    }
+                    return (
+                        <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
+                            <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
+                                <a href="#"
+                                   onClick = {() => this.getDownloadLink(e)}>
+                                    {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
+                                </a>
+                                <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
+                            </div>
+                        </NexusTooltip>
+                    );
                 });
-    }
+    };
 
     render() {
+        const {historyData: {attachments, ingestType, status, externalId = null,
+            ingestReport: {errorDetails} = {}} = {},
+            availHistoryId}  = this.state;
         return (
-            <div className={'mx-2'}>
+            <div className='mx-2 nexus-c-manual-rights-entry'>
                 <ManualRightsEntryDOPConnector/>
-                <div className={'d-flex justify-content-between'}>
+                <div className='nexus-c-manual-rights-entry__description'>
                     <div>
-                        <div><h3>Manual Rights Entry </h3></div>
-                        {this.state.historyData && this.state.historyData.attachments && ( 
-                            <React.Fragment>
-                                <div> Studio: {this.state.historyData.provider} &nbsp; {this.renderAttachments('Email', 'far fa-envelope')}</div>
-                                <div> PDF Attachments: &nbsp; {this.renderAttachments('PDF')}</div>
-                                <div> Upload Attachments: &nbsp; {this.renderAttachments('Excel')}</div>
-                            </React.Fragment>)}
-                        <Button className={'align-bottom mt-5'} id="right-create" onClick={this.createRight}>Create Right</Button>
+                        <div><h3>Manual Rights Entry</h3></div>
+                        {
+                            attachments && (
+                                ATTACHMENTS.map(({label, type, icon, content}) => (
+                                    <section className='nexus-c-manual-rights-entry__attachment' key={label}>
+                                        <label>{label}:</label>
+                                        {this.state.historyData[content]}
+                                        {this.renderAttachments(type, icon)}
+                                    </section>
+                                ))
+                            )
+                        }
+                        <section>
+                            <label>Received By:</label>
+                            <span>{ingestType}</span>
+                        </section>
+                        <section>
+                            <label>Status:</label>
+                            <StatusIcon status={status} />
+                        </section>
+                        {errorDetails && (<section className='nexus-c-manual-rights-entry__error'>{errorDetails}</section>)}
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <DashboardDropableCard
-                                externalId={this.state.historyData ? this.state.historyData.externalId : null}
-                            />
+                            <DashboardDropableCard externalId={externalId}/>
                         </Can>
                     </div>
                 </div>
-                <hr style={{ color: 'black', backgroundColor: 'black' }} />
+                <div className='nexus-c-manual-rights-entry__actions'>
+                    <Button className='nexus-c-manual-rights-entry__button'
+                            id="right-create"
+                            onClick={this.createRight}>
+                        Create Right
+                    </Button>
+                </div>
                 <div> Rights Created </div>
                 {this.props.availsMapping &&
                     <React.Fragment>
@@ -194,7 +215,7 @@ class RightsCreateFromAttachment extends React.Component {
                         <RightsResultTable
                             fromServer={true}
                             columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
-                            nav={{ back: 'manual-rights-entry', params: { availHistoryId: this.state.availHistoryId } }}
+                            nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
                             autoload={false}
                             selectedTab={this.props.selectedTab}
                             hidden={this.props.selectedTab === FATAL}
