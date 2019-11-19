@@ -6,6 +6,8 @@ export const ERRORS = 'ERRORS';
 export const FATAL = 'FATAL';
 
 export const tabFilter = new Map([
-    [UPDATED, {status: 'Updated'}],
-    [PENDING,  {status: 'Pending'}],
+    [CREATED, {status: 'Ready'}],
+    [UPDATED, {status: 'ReadyNew'}],
+    [PENDING, {status: 'Pending'}],
+    [ERRORS, {status: 'Error'}],
 ]);

@@ -16,9 +16,8 @@ import StatusIcon from '../../components/StatusIcon';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
-import ManualRightsEntryDOPConnector from './ManualRightsEntryDOPConnector';
-import ManualRightEntryTableTabs from './ManualRightsEntryTableTabs';
-import {FATAL, tabFilter} from '../../../constants/avails/manualRightsEntryTabs';
+import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
+import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
@@ -166,7 +165,7 @@ class RightsCreateFromAttachment extends React.Component {
 
     render() {
         const {historyData: {attachments, ingestType, status, externalId = null,
-            ingestReport: {errorDetails} = {}} = {},
+            ingestReport: {errorDetails, fatal} = {}} = {},
             availHistoryId}  = this.state;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
@@ -201,17 +200,18 @@ class RightsCreateFromAttachment extends React.Component {
                         </Can>
                     </div>
                 </div>
-                <div className='nexus-c-manual-rights-entry__actions'>
-                    <Button className='nexus-c-manual-rights-entry__button'
-                            id="right-create"
-                            onClick={this.createRight}>
-                        Create Right
-                    </Button>
-                </div>
-                <div> Rights Created </div>
                 {this.props.availsMapping &&
                     <React.Fragment>
-                        <ManualRightEntryTableTabs getCustomSearchCriteria={this.getCustomSearchCriteria}/>
+                        <div className='nexus-c-manual-rights-entry__table_header'>
+                            <ManualRightEntryTableTabs getCustomSearchCriteria={this.getCustomSearchCriteria} fatalCount={fatal}/>
+                            <div className='nexus-c-manual-rights-entry__actions'>
+                                <Button className='nexus-c-manual-rights-entry__button'
+                                        id="right-create"
+                                        onClick={this.createRight}>
+                                    Create Right
+                                </Button>
+                            </div>
+                        </div>
                         <RightsResultTable
                             fromServer={true}
                             columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}

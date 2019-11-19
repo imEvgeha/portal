@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
-import {ManualRightEntryTab, TabContainer} from '../../../ui-elements/nexus-table-tab/TableTab';
+import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexus-table-tab/TableTab';
 
 import {
     CREATED,
@@ -10,18 +10,17 @@ import {
     PENDING,
     TOTAL_RIGHTS,
     UPDATED
-} from '../../../constants/avails/manualRightsEntryTabs';
-import {updateManualRightEntrySelectedTab} from '../../../stores/actions/avail/manualRightEntry';
-import {rightsService} from '../service/RightsService';
+} from '../../../../../constants/avails/manualRightsEntryTabs';
+import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
+import {rightsService} from '../../../service/RightsService';
 
-function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria}) {
+function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria, fatalCount}) {
 
     const [totalRightsCount, setTotalRightsCount] = useState();
     const [createdCount, setCreatedCount] = useState();
     const [updatedCount, setUpdatedCount] = useState();
     const [pendingCount, setPendingCount] = useState();
     const [errorsCount, setErrorsCount] = useState();
-    const [fatalCount, setFatalCount] = useState();
 
     useEffect(() => {
         rightsService.advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
@@ -34,24 +33,28 @@ function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedT
             .then(response => setPendingCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
             .then(response => setErrorsCount(response.data.total));
-        rightsService.advancedSearch(getCustomSearchCriteria(FATAL), 0, 1)
-            .then(response => setFatalCount(response.data.total));
     }, []);
 
     return (
         <TabContainer>
             <ManualRightEntryTab isActive={selectedTab === TOTAL_RIGHTS}
-                 onClick={() => updateManualRightEntrySelectedTab(TOTAL_RIGHTS)}>Total Rights ({totalRightsCount})</ManualRightEntryTab>
+                                 onClick={() => updateManualRightEntrySelectedTab(TOTAL_RIGHTS)}>Total Rights
+                ({totalRightsCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === CREATED}
-                 onClick={() => updateManualRightEntrySelectedTab(CREATED)}>Created ({createdCount})</ManualRightEntryTab>
+                                 onClick={() => updateManualRightEntrySelectedTab(CREATED)}>Created
+                ({createdCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === UPDATED}
-                 onClick={() => updateManualRightEntrySelectedTab(UPDATED)}>Updated ({updatedCount})</ManualRightEntryTab>
+                                 onClick={() => updateManualRightEntrySelectedTab(UPDATED)}>Updated
+                ({updatedCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === PENDING}
-                 onClick={() => updateManualRightEntrySelectedTab(PENDING)}>Pending ({pendingCount})</ManualRightEntryTab>
+                                 onClick={() => updateManualRightEntrySelectedTab(PENDING)}>Pending
+                ({pendingCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === ERRORS}
-                 onClick={() => updateManualRightEntrySelectedTab(ERRORS)}>Errors ({errorsCount})</ManualRightEntryTab>
+                                 onClick={() => updateManualRightEntrySelectedTab(ERRORS)}>Errors
+                ({errorsCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === FATAL}
-                 onClick={() => updateManualRightEntrySelectedTab(FATAL)}>Fatal ({fatalCount})</ManualRightEntryTab>
+                                 onClick={() => updateManualRightEntrySelectedTab(FATAL)}>Fatal
+                ({fatalCount})</ManualRightEntryTab>
         </TabContainer>
     );
 }
@@ -60,7 +63,8 @@ ManualRightEntryTableTabs.propTypes = {
     selectedTab: PropTypes.string,
     updateManualRightEntrySelectedTab: PropTypes.func,
     promotedRightsCount: PropTypes.number,
-    getCustomSearchCriteria: PropTypes.func.isRequired
+    getCustomSearchCriteria: PropTypes.func.isRequired,
+    fatalCount: PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => {
