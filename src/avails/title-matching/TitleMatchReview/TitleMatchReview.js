@@ -112,8 +112,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         }
     }, [mergedTitles]);
 
-    const deepCloneColumnDefs = deepClone(columnDefs);
-    
+    const deepCloneMatchedTitlesColumnDefs = deepClone(columnDefs);
+    const deepCloneCombinedTitleColumnDefs = deepClone(columnDefs);
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
@@ -125,7 +125,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...deepCloneColumnDefs]}
+                            columnDefs={[getRepositoryCell(), ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
                     </React.Fragment>
@@ -136,7 +136,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...deepCloneColumnDefs]}
+                            columnDefs={[getRepositoryCell(), ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />
                     </React.Fragment>
