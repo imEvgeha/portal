@@ -26,6 +26,7 @@ import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import { CustomFieldAddText, AddButton } from '../custom-form-components/CustomFormComponents';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
+import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
 
 
 const mapStateToProps = state => {
@@ -723,13 +724,13 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, required, value) => {
+        const renderDatepickerField = (name, displayName, required, value, useTime) => {
             const errors = this.mappingErrorMessage[name];
             const {date, text, range, pair} = errors || {};
             const error = date || text || range || pair || '';
 
-            return renderFieldTemplate(name, displayName, required, null, (
-                <div>
+            const component = useTime
+                ? (
                     <NexusDateTimePicker
                         id={'right-create-' + name + '-text'}
                         value={value}
@@ -739,8 +740,20 @@ class RightCreate extends React.Component {
                             this.handleInvalidDatePicker(name, false);
                         }}
                     />
-                </div>
-            ));
+                )
+                : (
+                    <NexusDatePicker
+                        id={'right-create-' + name + '-text'}
+                        value={value}
+                        error={error}
+                        onChange={(date) => {
+                            this.handleDatepickerChange(name, displayName, date);
+                            this.handleInvalidDatePicker(name, false);
+                        }}
+                    />
+                );
+
+            return renderFieldTemplate(name, displayName, required, null, component);
         };
 
         const renderFields = [];
@@ -772,11 +785,13 @@ class RightCreate extends React.Component {
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'localdate' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'localdate' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
                             break;
-                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value ? value.toString().substr(0, 10) : value));
+                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
                              break;
-                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'datetime' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true));
+                            break;
+                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;

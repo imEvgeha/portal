@@ -7,7 +7,7 @@ import RangeDuration from './RangeDuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
-import NexusTimeWindowPicker from '../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
+import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 
 
 const mapStateToProps = state => {
@@ -242,7 +242,7 @@ class SelectableInput extends Component {
                 />);
         };
 
-        const renderRangeDatepicker = () => {
+        const renderRangeDatepicker = (selected, displayName, showTime) => {
             const {value, id, dataType, onChange} = this.props;
             let {
                 from = '',
@@ -253,7 +253,8 @@ class SelectableInput extends Component {
             to = dataType === 'localdate' ? to.slice(0, -1) : to;
 
             return (
-                <NexusTimeWindowPicker
+                <NexusDateTimeWindowPicker
+                    name={displayName}
                     onChange={(timeWindow) => {
                         const {
                             startDate: from = '',
@@ -261,6 +262,7 @@ class SelectableInput extends Component {
                         } = timeWindow || {};
                         onChange({...value, from, to});
                     }}
+                    isUsingTime={showTime}
                     startDateTimePickerProps={{
                         id: `${id}-datepicker-start`,
                         defaultValue: from,
@@ -348,8 +350,9 @@ class SelectableInput extends Component {
                 case 'multiselect' : return renderSelect(selected, displayName);
                 case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
-                case 'date' : return renderRangeDatepicker(selected, displayName);
-                case 'localdate' : return renderRangeDatepicker(selected, displayName);
+                case 'date' : return renderRangeDatepicker(selected, displayName, false);
+                case 'datetime' : return renderRangeDatepicker(selected, displayName, true);
+                case 'localdate' : return renderRangeDatepicker(selected, displayName, false);
                 case 'boolean' : return renderBooleanField(selected, displayName);
                 default:
                     console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);

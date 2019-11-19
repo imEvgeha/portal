@@ -393,6 +393,7 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
                                 case 'date' : return renderCloseableDateBtn(key, schema.displayName);
+                                case 'datetime' : return renderCloseableDateBtn(key, schema.displayName);
                                 case 'localdate' : return renderCloseableLocalDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
                                 default:
