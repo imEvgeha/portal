@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import NexusTooltip from '../../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from '../Constants';
 import './IngestReport.scss';
 
 const IngestReport = params => {
-    const {ingestReport = {}, valueFormatted} = params.value || {};
-    return (
+    const {valueFormatted, data: {ingestReport}} = params;
+    const content = (
         <div className='nexus-c-ingest-report'>
             <div>{valueFormatted}</div>
             <div className='nexus-c-ingest-report__counters'>
@@ -22,14 +22,11 @@ const IngestReport = params => {
             </div>
         </div>
     );
-};
-
-IngestReport.propTypes = {
-    params: PropTypes.object,
-};
-
-IngestReport.defaultProps = {
-    params: {},
+    return (
+        <NexusTooltip content={content}>
+            <div>{valueFormatted}</div>
+        </NexusTooltip>
+    );
 };
 
 export default IngestReport;

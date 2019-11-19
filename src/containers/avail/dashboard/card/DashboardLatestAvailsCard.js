@@ -44,10 +44,7 @@ class DashboardLatestAvailsCard extends React.PureComponent {
         {headerName: 'Ingest Method', field: 'ingestType', width:105},
         {
             headerName: 'Filename',
-            tooltipComponent: 'customToolTip',
-            tooltipValueGetter: params => ({
-                valueFormatted: params.valueFormatted,
-                ingestReport: params.data.ingestReport}),
+            cellRendererFramework: IngestReport,
             valueFormatter: this.showFileNames,
             width:180,
         }
@@ -126,7 +123,6 @@ class DashboardLatestAvailsCard extends React.PureComponent {
                         suppressMovableColumns = {true}
                         rowSelection='single'
                         onSelectionChanged={this.onSelectionChanged}
-                        frameworkComponents={{customToolTip: IngestReport}}
                     />
                 </div>
              </div>
