@@ -52,6 +52,7 @@ const NexusDateTimePicker = ({
                             <NexusSimpleDateTimePicker
                                 id={id}
                                 onChange={onChange}
+                                value={value}
                                 isUTC={isUTC}
                                 defaultValue={isUTC ? value : moment(value).local().format(dateFormat)}
                                 {...restProps}
@@ -83,9 +84,14 @@ const NexusDateTimePicker = ({
                 ? (
                     <InlineEdit
                         readView={() => (
-                            `${moment(value).utc(!isUTC).format(dateFormat)}
-                            ${isUTC && displayTimeInReadView ? ' (UTC)' : ''}`
-                            || `Enter ${label}`
+                            <div className="nexus-c-date-time-picker__read-view-container">
+                                {moment(value).isValid()
+                                ?`${moment(value).utc(!isUTC).format(dateFormat)}
+                                 ${isUTC && displayTimeInReadView ? ' (UTC)' : ''}`
+                                : <div className="read-view-container__placeholder">
+                                        Enter date
+                                </div>}
+                            </div>
                         )}
                         editView={() => DatePicker(false)}
                         defaultValue={value}
