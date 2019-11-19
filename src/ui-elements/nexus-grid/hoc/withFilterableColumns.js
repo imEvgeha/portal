@@ -66,6 +66,7 @@ const withFilterableColumns = filterableColumns => WrappedComponent => {
             <WrappedComponent 
                 {...props}
                 columnDefs={filterableColumnDefs}
+                floatingFilter={true}
             />
         );
     };

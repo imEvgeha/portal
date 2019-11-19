@@ -98,11 +98,11 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
         };
 
         const filterBy = filterObject => {
-            const ALLOWED_TYPES = ['equals'];
+            const ALLOWED_TYPES_OPERAND = ['equals'];
             const FILTER_TYPES = ['set'];
             if (!isEmpty(filterObject)) {
                 const filteredEqualsType = Object.keys(filterObject)
-                    .filter(key => ALLOWED_TYPES.includes(filterObject[key].type) || filterObject[key].filterType === 'set')
+                    .filter(key => ALLOWED_TYPES_OPERAND.includes(filterObject[key].type) || FILTER_TYPES.includes(filterObject[key].filterType))
                     .reduce((obj, key) => {
                         obj[key] = filterObject[key];
                         return obj;

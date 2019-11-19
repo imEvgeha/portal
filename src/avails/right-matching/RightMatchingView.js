@@ -21,7 +21,7 @@ import useDOPIntegration from './util/hooks/useDOPIntegration';
 import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 
-const FILTERABLE_COLUMNS = ['id', 'title', 'rightStatus', 'status'];
+const FILTERABLE_COLUMNS = ['id', 'title', 'rightStatus'];
 
 const NexusGridWithInfiniteScrolling = compose(
     withFilterableColumns(FILTERABLE_COLUMNS), 
