@@ -5,8 +5,8 @@ import { AgGridReact } from 'ag-grid-react';
 import {Link} from 'react-router-dom';
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
+import StatusIcon from '../../components/StatusIcon';
 import './DashboardLatestAvailsCard.scss';
-import LoadingElipsis from '../../../../img/ajax-loader.gif';
 import IngestReport from './components/IngestReport';
 import Constants from './Constants';
 
@@ -30,12 +30,17 @@ class DashboardLatestAvailsCard extends React.PureComponent {
     table = null;
     refresh = null;
 
+    statusIcon = (params) => {
+        const {value, valueFormatted, data: {errorDetails}} = params;
+        return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
+    };
+
     columns = [{headerName: 'Date', field: 'received', valueFormatter: function(params) {
             if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
             else return '';
         }, width:120},
         {headerName: 'Provider', field: 'provider', width:90},
-        {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIconRender, width:55},
+        {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIcon, width:55},
         {headerName: 'Ingest Method', field: 'ingestType', width:105},
         {
             headerName: 'Filename',
@@ -47,29 +52,6 @@ class DashboardLatestAvailsCard extends React.PureComponent {
             width:180,
         }
     ];
-
-    statusIconRender(params){
-        const content = params.valueFormatted || params.value;
-        if (params.value !== undefined) {
-            if (content) {
-                switch (content) {
-                     case 'COMPLETED':
-                        return <span style={{ color: 'green'}}><i className="fas fa-check-circle"></i></span>;
-                     case 'FAILED':
-                        return <span title={params.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
-                    case 'MANUAL':
-                        return <span style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
-                     case 'PENDING':
-                        return <img style={{width:'22px'}} src={LoadingElipsis}/>;
-                     default:
-                        return content;
-                 }
-            }
-            else return '';
-        } else {
-            return '';
-        }
-    }
 
     showFileNames(params){
         let toReturn='';
