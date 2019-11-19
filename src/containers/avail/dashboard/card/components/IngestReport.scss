@@ -3,24 +3,24 @@
   flex-direction: column;
   align-items: flex-start;
   font-size: 12px;
-  .nexus-c-ingest-report__counters{
+  &__counters{
     display: flex;
     margin-top: 5px;
-    .nexus-c-ingest-report__counters-section {
-      margin-right: 10px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      label {
-        font-size: 16px;
-        margin-bottom: 0;
-      }
-      .nexus-c-ingest-report__counters-section--value {
-        font-size: 20px;
-        font-weight: bold;
-      }
+  }
+  &__counters-section {
+    margin-right: 10px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    label {
+      font-size: 16px;
+      margin-bottom: 0;
     }
+  }
+  &__counters-section--value {
+    font-size: 20px;
+    font-weight: bold;
   }
 }
 .Tooltip{

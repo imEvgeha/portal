@@ -95,7 +95,7 @@ class DashboardLatestAvailsCard extends React.PureComponent {
 
     onSelectionChanged = ({api}) => {
         const historyId = api.getSelectedRows()[0].id;
-        this.props.push(`${window.location.pathname}/history/${historyId}`);
+        this.props.push(`avails/history/${historyId}`);
     };
 
     render() {
