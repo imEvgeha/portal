@@ -45,4 +45,13 @@
             padding: 0 5px;
         }
     }
+
+    .ag-row{
+        cursor: pointer;
+    }
+    .ag-tooltip-custom{
+        position: absolute;
+        pointer-events: none;
+        margin: 20px;
+    }
 }
