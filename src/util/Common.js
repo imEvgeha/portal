@@ -248,9 +248,6 @@ export {
     switchCase,
     getDomainName,
     minTwoDigits,
-<<<<<<< HEAD
-    deepClone
-=======
+    deepClone,
     getDateFormatBasedOnLocale,
->>>>>>> 694813c390a75601f826996bb2ea95cd0f0150a8
 };
