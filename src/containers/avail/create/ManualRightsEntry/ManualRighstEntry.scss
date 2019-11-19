@@ -1,0 +1,50 @@
+.nexus-c-manual-rights-entry{
+  label{
+    font-weight: bold;
+    margin: 0 10px 0 0;
+  }
+  section{
+    margin-bottom: 10px;
+  }
+  .nexus-c-manual-rights-entry__error{
+    color: #DE350B;
+  }
+  .nexus-c-manual-rights-entry__description{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+  .nexus-c-manual-rights-entry__attachment{
+    display: flex;
+    label{
+      margin-right: 10px;
+      font-weight: normal;
+    }
+    a{
+      text-decoration: underline;
+      text-underline-position: under;
+      color: #DE350B;
+    }
+    .separator{
+      margin-right: 10px;
+    }
+    .nexus-c-manual-rights-entry__attachment--icon{
+      width: 32px;
+      box-sizing: border-box;
+      display: flex;
+      padding: 0 5px;
+      a{
+        color: #A9A9A9;
+        font-size: 20px;
+        vertical-align: middle;
+      }
+    }
+  }
+  .nexus-c-manual-rights-entry__actions{
+    display: flex;
+    justify-content: flex-end;
+    .nexus-c-manual-rights-entry__button{
+      vertical-align: bottom;
+    }
+  }
+}

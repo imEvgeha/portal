@@ -227,6 +227,8 @@ function deepClone(from, to) {
 
     return to;
 }
+// Create date format based on locale
+const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
 
 export {
     downloadFile, 
@@ -246,5 +248,9 @@ export {
     switchCase,
     getDomainName,
     minTwoDigits,
+<<<<<<< HEAD
     deepClone
+=======
+    getDateFormatBasedOnLocale,
+>>>>>>> 694813c390a75601f826996bb2ea95cd0f0150a8
 };
