@@ -16,6 +16,7 @@ import StatusIcon from '../../components/StatusIcon';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
+import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
@@ -199,6 +200,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </Button>
                 </div>
                 <div> Rights Created </div>
+                <ManualRightEntryFatalView attachments={attachments}/>
                 {this.props.availsMapping &&
                     <RightsResultTable
                         fromServer={true}
