@@ -1026,7 +1026,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, priorityError, readOnly, required, highlighted, isLocalDate) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted, isLocalDate) => {
             let ref;
 
             const {flatRight} = this.state;
@@ -1053,51 +1053,34 @@ class RightDetails extends React.Component {
 
             const error = priorityError || validate(value);
 
+            const props = {
+                id: displayName,
+                onChange: (date) => {
+                    // Keep a separate state for edited values
+                    this.setState((prevState) => ({
+                        editedRight: {...prevState.editedRight, [name]: date}
+                    }));
+                },
+                onConfirm: (value) => (
+                    !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()
+                ),
+                defaultValue: value,
+                value,
+                error,
+                required,
+                isWithInlineEdit: true,
+            };
+
             const component = showTime
-                ? (
-                    <NexusDateTimePicker
-                        id={displayName}
-                        onChange={(date) => {
-                            // Keep a separate state for edited values
-                            this.setState((prevState) => ({
-                                editedRight: {...prevState.editedRight, [name]: date}
-                            })
-                        );}}
-                        // TODO: Awful. To be removed when refactoring RightDetails
-                        onConfirm={(value) => !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()}
-                        defaultValue={value}
-                        displayTimeInReadView={showTime}
-                        value={value}
-                        error={error}
-                        required={required}
-                        isWithInlineEdit={true}
-                        isReadOnly={readOnly}
-                        isLocalDate={isLocalDate}
-                    />)
-                : (
-                    <NexusDatePicker
-                        id={displayName}
-                        onChange={(date) => {
-                            // Keep a separate state for edited values
-                            this.setState((prevState) => ({
-                                    editedRight: {...prevState.editedRight, [name]: date}
-                                })
-                            );}}
-                        onConfirm={(value) => !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()}
-                        defaultValue={value}
-                        value={value}
-                        error={error}
-                        required={required}
-                        isWithInlineEdit={true}
-                        isReadOnly={readOnly}
-                    />);
+                ? <NexusDateTimePicker {...props} displayTimeInReadView={showTime} isLocalDate={isLocalDate} />
+                : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(
                 name,
                 displayName,
                 value,
                 error,
-                readOnly,
+                isReadOnly,
                 required,
                 highlighted,
                 null,

@@ -729,29 +729,19 @@ class RightCreate extends React.Component {
             const {date, text, range, pair} = errors || {};
             const error = date || text || range || pair || '';
 
+            const props = {
+                id: `right-create-${name}-text`,
+                value,
+                error,
+                onChange: (date) => {
+                    this.handleDatepickerChange(name, displayName, date);
+                    this.handleInvalidDatePicker(name, false);
+                }
+            };
+
             const component = useTime
-                ? (
-                    <NexusDateTimePicker
-                        id={'right-create-' + name + '-text'}
-                        value={value}
-                        error={error}
-                        onChange={(date) => {
-                            this.handleDatepickerChange(name, displayName, date);
-                            this.handleInvalidDatePicker(name, false);
-                        }}
-                    />
-                )
-                : (
-                    <NexusDatePicker
-                        id={'right-create-' + name + '-text'}
-                        value={value}
-                        error={error}
-                        onChange={(date) => {
-                            this.handleDatepickerChange(name, displayName, date);
-                            this.handleInvalidDatePicker(name, false);
-                        }}
-                    />
-                );
+                ? <NexusDateTimePicker {...props} />
+                : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(name, displayName, required, null, component);
         };
