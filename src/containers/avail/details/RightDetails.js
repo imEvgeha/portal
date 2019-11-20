@@ -6,8 +6,8 @@ import moment from 'moment';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replace by new NexusSelectCheckbox
 import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
-import Popup from 'reactjs-popup'; // remove thuis package too, add our component set by atalskit
 import config from 'react-global-configuration';
+import {uid} from 'react-uid';
 import { Button, Label } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 import './RightDetails.scss';
@@ -27,10 +27,11 @@ import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import { confirmModal } from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import {CustomFieldAddText, TerritoryTag, RemovableButton, TerritoryTooltip, AddButton} from '../custom-form-components/CustomFormComponents';
+import {CustomFieldAddText, AddButton} from '../custom-form-components/CustomFormComponents';
 import {isObject} from '../../../util/Common';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import ManualRightsEntryDOPConnector from '../create/ManualRightsEntryDOPConnector';
+import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
+import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 
 const mapStateToProps = state => {
     return {
@@ -992,28 +993,23 @@ class RightDetails extends React.Component {
                     onCancel={onCancel}
                     showError={false}
                     helperComponent={
-                        <div>
-                            {selectedVal && selectedVal.length > 0 ?
-                            selectedVal.map((e, i) => {
-                                return (
-                                        <div key={i}>
-                                            <Popup
-                                                trigger={
-                                                    <TerritoryTag isEdit isValid={e.isValid} onClick={() => this.toggleRightTerritoryForm(i)}>
-                                                        {e.country}
-                                                    </TerritoryTag>
-                                                }
-                                                position="top center"
-                                                on="hover"
-                                            >
-                                                {TerritoryTooltip(e)}
-                                            </Popup>
-                                            <RemovableButton isEdit onClick={() => deleteTerritory(e)}>x</RemovableButton>
-                                        </div>);
-                                    })
+                        <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
+                            {selectedVal && selectedVal.length > 0
+                                ? selectedVal.map((e, i) => (
+                                    <NexusTag
+                                        key={uid(e)}
+                                        text={e.country || e.value}
+                                        value={e}
+                                        removeButtonText="Remove"
+                                        onClick={() => this.toggleRightTerritoryForm(i)}
+                                        onRemove={() => deleteTerritory(e)}
+                                    />
+                                ))
                                 : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
                             }
-                            <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                            <div style={{position: 'absolute', right: '10px'}}>
+                                <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                            </div>
                             <RightTerritoryForm
                                 onSubmit={(e) => addTerritory(e)}
                                 isOpen={this.state.isRightTerritoryFormOpen}
@@ -1094,7 +1090,7 @@ class RightDetails extends React.Component {
         const renderFields = [];
 
         if (this.state.flatRight && this.props.availsMapping) {
-            this.props.availsMapping.mappings.map((mapping) => {
+            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping) => {
                 if (mapping.enableEdit) {
                     let error = null;
                     // TODO: write this from scratch

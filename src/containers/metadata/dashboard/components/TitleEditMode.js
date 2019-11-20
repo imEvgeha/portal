@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   Row,
   Col,
@@ -9,7 +9,7 @@ import {
   FormGroup,
   Input
 } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
+import {AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
 import {connect} from 'react-redux';

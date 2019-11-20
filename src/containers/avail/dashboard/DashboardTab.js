@@ -1,13 +1,12 @@
-import './DashboardContainer.scss';
-
 import React from 'react';
-import DashboardDropableCard from './card/DashboardDropableCard';
+import DashboardDropableCard from './card/components/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
-import DashboardCard from './card/DashboardCard';
+import DashboardCard from './card/components/DashboardCard';
 import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {Can} from '../../../../src/ability';
+import './DashboardContainer.scss';
 
 const mapStateToProps = state => {
     return {
@@ -59,7 +58,7 @@ class DashboardTab extends React.Component {
                         <DashboardCard title="Create New Edit Version" action={this.createRight} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-right'}/>
                     </Can>
                     {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
-                    {<DashboardLatestAvailsCard/>}
+                    {<DashboardLatestAvailsCard push={this.context.router.history.push}/>}
                 </div>
                 <div className="row">
 

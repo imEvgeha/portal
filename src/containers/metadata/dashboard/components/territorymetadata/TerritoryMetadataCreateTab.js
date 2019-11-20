@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { Row, Col, Container } from 'reactstrap';
-import { AvField } from 'availity-reactstrap-validation';
+import React, {Component} from 'react';
+import {Row, Col, Container} from 'reactstrap';
+import {AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { configFields } from '../../../service/ConfigService';
-import { formatTypeFirstLetter } from '../../../../../constants/metadata/format';
-import { COUNTRY, REGION } from '../../../../../constants/metadata/constant-variables';
+import {connect} from 'react-redux';
+import {configFields} from '../../../service/ConfigService';
+import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
 import NexusDateTimePicker from '../../../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 // TODO: Convert to functional component
@@ -16,13 +15,7 @@ class TerritoryMetadataCreateTab extends Component {
 
     renderLocale = () => {
         let type = null;
-        if (this.props.territories.territoryType === COUNTRY) {
-            type = configFields.LOCALE;
-        } else if (this.props.territories.territoryType === REGION) {
-            type = configFields.REGIONS;
-        } else {
-            type = null;
-        }
+        if (this.props.territories.territoryType === COUNTRY) type = configFields.LOCALE;
         const locale = this.props.configLocale && this.props.configLocale.find(e => e.key === type);
         return (
             <AvField type="select"
@@ -32,11 +25,11 @@ class TerritoryMetadataCreateTab extends Component {
                 required={this.props.isRequired}
                 onChange={this.props.handleChange}
                 errorMessage="Field cannot be empty!">
-                <option value={''}>Select {formatTypeFirstLetter(this.props.territories.territoryType)}</option>
+                <option value={''}>Select Country</option>
                 {
                     locale && locale.value.map((e, index) => {
                         if(e.countryName !== null) {
-                            return <option key={index} value={this.props.territories.territoryType === COUNTRY ? e.countryCode : e.regionCode}>{this.props.territories.territoryType === 'country' ? e.countryName : e.regionName}</option>;
+                            return <option key={index} value={e.countryCode}>{e.countryName}</option>;
                         }
                     })
                 }
@@ -48,19 +41,6 @@ class TerritoryMetadataCreateTab extends Component {
         return (
             <div id="territoryMetadataCreate">
                 <Container>
-                    <Row style={{ padding: '15px' }}>
-                        <Col>
-                            <AvField type="select"
-                                name="territoryType"
-                                label='Territory Type'
-                                id="territoryType"
-                                value={this.props.territories.territoryType}
-                                onChange={this.props.handleChange}>
-                                <option value={COUNTRY}>Country</option>
-                                <option value={REGION}>Region</option>
-                            </AvField>
-                        </Col>
-                    </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
                             {

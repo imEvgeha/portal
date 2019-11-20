@@ -11,17 +11,16 @@ import {
     createRightMatchingColumnDefs,
     fetchAndStoreFocusedRight,
     fetchCombinedRight,
-    fetchMatchedRight,
+    fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import {URL, isObjectEmpty} from '../../../util/Common';
-import DOP from '../../../util/DOP';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import useLocalStorage from '../../../util/hooks/useLocalStorage';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {backArrowColor} from '../../../constants/avails/constants';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
 
 const EditableNexusGrid = withEditableColumns(NexusGrid);
 
@@ -29,7 +28,7 @@ function MatchRightView({
     history,
     match,
     focusedRight,
-    matchedRight,
+    matchedRights,
     combinedRight,
     fetchFocusedRight,
     fetchMatchedRight,
@@ -42,14 +41,11 @@ function MatchRightView({
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {addToast} = useContext(NexusToastNotificationContext);
-    const [dopCount] = useLocalStorage('rightMatchingDOP');
     const {params} = match || {};
     const {availHistoryIds, rightId} = params || {};
 
     // DOP Integration
-    useEffect(() => {
-        DOP.setErrorsCount(dopCount);
-    }, [dopCount]);
+    useDOPIntegration(null, 'rightMatchingDOP');
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -59,16 +55,17 @@ function MatchRightView({
 
     useEffect(() => {
         const {params} = match || {};
-        const {rightId, matchedRightId} = params || {};
-        if (rightId && matchedRightId && columnDefs.length) {
+        const {rightId, matchedRightIds} = params || {};
+        if (rightId && matchedRightIds && columnDefs.length) {
             if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
-            fetchMatchedRight(matchedRightId);
+            const matchedRightList = matchedRightIds.split(',');
+            fetchMatchedRight(matchedRightList);
             // matchedRightId from url should be correct one.
-            fetchCombinedRight(rightId, matchedRightId);
+            fetchCombinedRight([rightId, ...matchedRightList]);
         }
-    },[match.params.matchedRightId, match.params.rightId, columnDefs.length]);
+    },[match.params.matchedRightIds, match.params.rightId, columnDefs.length]);
 
     useEffect(() => {
         if (combinedRight) {
@@ -85,12 +82,11 @@ function MatchRightView({
 
     const onSaveCombinedRight = () => {
         const {params} = match || {};
-        const {rightId, matchedRightId} = params || {};
+        const {rightId, matchedRightIds} = params || {};
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
         setSaveButtonDisabled(true);
         const payload = {
-            focusedRightId: rightId,
-            matchedRightId,
+            rightIds: [rightId, ...matchedRightIds.split(',')],
             combinedRight, 
             addToast,
             redirectPath,
@@ -104,7 +100,7 @@ function MatchRightView({
     };
 
     // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, matchedRight].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
+    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
 
     const handleGridEvent = ({type, api}) => {
         let result = [];
@@ -156,7 +152,7 @@ function MatchRightView({
                         className="nexus-c-button"
                         appearance="primary"
                         onClick={onSaveCombinedRight}
-                        isDisabled={saveButtonDisabled || !focusedRight.id || !matchedRight.id || !combinedRight.id}
+                        isDisabled={saveButtonDisabled || !focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
                     >
                         Save
                     </Button>
@@ -170,7 +166,7 @@ MatchRightView.propTypes = {
     history: PropTypes.object,
     match: PropTypes.object,
     focusedRight: PropTypes.object,
-    matchedRight: PropTypes.object,
+    matchedRights: PropTypes.array,
     combinedRight: PropTypes.object,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
@@ -185,7 +181,7 @@ MatchRightView.defaultProps = {
     history: null,
     match: null,
     focusedRight: null,
-    matchedRight: null,
+    matchedRights: [],
     combinedRight: null,
     columnDefs: [],
     mapping: null,
@@ -198,14 +194,14 @@ MatchRightView.defaultProps = {
 
 const createMapStateToProps = () => {
     const focusedRightSelector = selectors.createFocusedRightSelector();
-    const matchedRightSelector = selectors.createMatchedRightSelector();
+    const matchedRightsSelector = selectors.createMatchedRightsSelector();
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
 
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
-        matchedRight: matchedRightSelector(state, props),
+        matchedRights: matchedRightsSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -214,8 +210,8 @@ const createMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
-    fetchMatchedRight: payload => dispatch(fetchMatchedRight(payload)),
-    fetchCombinedRight: (focusedRightId, matchedRightId) => dispatch(fetchCombinedRight(focusedRightId, matchedRightId)),
+    fetchMatchedRight: payload => dispatch(fetchMatchedRights(payload)),
+    fetchCombinedRight: (focusedRightId, matchedRightIds) => dispatch(fetchCombinedRight(focusedRightId, matchedRightIds)),
     saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
 });

@@ -3,8 +3,7 @@ import { Button } from 'reactstrap';
 import t from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import {isObject} from '../../../util/Common';
-import Popup from 'reactjs-popup';
-import { TerritoryTooltip, TerritoryTag } from '../../../containers/avail/custom-form-components/CustomFormComponents';
+import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 
 class EditableBaseComponent extends Component {
 
@@ -148,17 +147,12 @@ class EditableBaseComponent extends Component {
                 style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
                 className={this.props.disabled ? 'disabled' : ''}>
                 {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
-                    <Popup
+                    <NexusTag
                         key={i}
-                        trigger={
-                            <TerritoryTag isValid={e.isValid} isCreate>{e.country || e.value}</TerritoryTag>
-                        }
-                        position="top center"
-                        on="hover"
-                    >
-                        {TerritoryTooltip(e)}
-                    </Popup>
-                )) : setSimpleArrayWithError(value) : '' : value}
+                        text={e.country || e.value}
+                        value={e}
+                    />
+                    )) : setSimpleArrayWithError(value) : '' : value}
             </span>);
         };
 

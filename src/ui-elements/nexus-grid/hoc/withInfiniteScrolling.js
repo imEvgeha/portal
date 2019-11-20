@@ -116,3 +116,4 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
 };
 
 export default withInfiniteScrolling;
+

@@ -2,6 +2,7 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import moment from 'moment';
+import {uid} from 'react-uid';
 
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -22,8 +23,9 @@ import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import { TerritoryTag, CustomFieldAddText, RemovableButton, AddButton } from '../custom-form-components/CustomFormComponents';
+import { CustomFieldAddText, AddButton } from '../custom-form-components/CustomFormComponents';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 
 
 const mapStateToProps = state => {
@@ -205,6 +207,8 @@ class RightCreate extends React.Component {
         switch (name) {
             case 'start': return 'availStart';
             case 'availStart': return 'start';
+            case 'end': return 'availEnd';
+            case 'availEnd': return 'end';
             default: return '';
         }
     }
@@ -296,7 +300,7 @@ class RightCreate extends React.Component {
 
     initMappingErrors = (mappings) => {
         let mappingErrorMessage = {};
-        mappings.map((mapping) => {
+        mappings.filter(({dataType}) => dataType).map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 inner: '',
                 date: '',
@@ -683,17 +687,31 @@ class RightCreate extends React.Component {
                 }
             }
             return renderFieldTemplate(name, displayName, required, null, (
-                <div>
-                    {this.right.territory && this.right.territory.length > 0 ?                    
-                        this.right.territory.map((e, i)=> (
-                        <TerritoryTag isCreate key={i}>
-                            {e.country} <RemovableButton onClick={() => this.handleDeleteObjectFromArray(e.country, 'territory', 'country')}>x</RemovableButton>
-                        </TerritoryTag>))
-                    : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText> 
+                <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
+                    {this.right.territory && this.right.territory.length > 0
+                        ? (
+                            this.right.territory.map((e)=> (
+                                <NexusTag
+                                    key={uid(e)}
+                                    text={e.country}
+                                    value={e}
+                                    removeButtonText="Remove"
+                                    onRemove={() => this.handleDeleteObjectFromArray(e.country, 'territory', 'country')}
+                                />
+                            ))
+                        )
+                        : (
+                            <CustomFieldAddText
+                                onClick={this.toggleRightTerritoryForm}
+                                id={'right-create-' + name + '-button'}
+                            >
+                                Add...
+                            </CustomFieldAddText>
+                        )
                     }
-                    <div style={{float: 'right'}}>
+                    <div style={{position: 'absolute', right: '10px'}}>
                         <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
-                    </div>                    
+                    </div>
                     <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
                     <br />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
@@ -728,7 +746,7 @@ class RightCreate extends React.Component {
         const renderFields = [];
 
         if(this.props.availsMapping) {
-            this.props.availsMapping.mappings.map((mapping)=> {
+            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
                 if(mapping.enableEdit && !mapping.readOnly){
                     let required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';

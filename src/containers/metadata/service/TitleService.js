@@ -3,6 +3,7 @@ import config from 'react-global-configuration';
 import {prepareSortMatrixParamTitles} from '../../../util/Common';
 
 const http = Http.create();
+const httpNoErrorModal = Http.create({noDefaultErrorHandling:true});
 
 export const titleService = {
 
@@ -27,6 +28,9 @@ export const titleService = {
 
     createTitle: (title) => {
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
+    },
+    createTitleWithoutErrorModal: (title) => {
+        return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
     },
     updateTitle: (title) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title);

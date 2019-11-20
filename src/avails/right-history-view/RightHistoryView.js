@@ -54,18 +54,16 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
         setOpened(true);
     };
 
-    if (selectedAvails.length > 0) {
-        return (
+    return (
+        //remove 'false' when audit history API is built and integrated
+        (selectedAvails.length > 0) && false && (
             <a href={'#'} onClick={openHistoryModal}>
-                <span className={'nx-container-margin table-top-text'}>
+                <span className='nx-container-margin table-top-text'>
                     View History
                 </span>
             </a>
-        );
-    } else {
-        return '';
-    }
-
+        )
+    );
 }
 
 RightHistoryView.propTypes = {

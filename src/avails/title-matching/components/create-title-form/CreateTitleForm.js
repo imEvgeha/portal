@@ -62,7 +62,7 @@ const CreateTitleForm = ({close, focusedRight}) => {
         }
 
         // Submit the title to back-end
-        titleService.createTitle(title).then(res => {
+        titleService.createTitleWithoutErrorModal(title).then(res => {
             // Building a URL where user can check the newly created title
             // (Opens in new tab)
             const url = `${getDomainName()}/metadata/detail/${res.data.id}`;
@@ -86,8 +86,8 @@ const CreateTitleForm = ({close, focusedRight}) => {
                 ]
             });
             close();
-        }).catch(() => {
-            // TODO: Error handling
+        }).catch((error) => {
+            setError(error.response.data.description);
         });
     };
 
@@ -103,9 +103,11 @@ const CreateTitleForm = ({close, focusedRight}) => {
                 </div>
             </Form>
             {error &&
-                <ErrorMessage>
-                    {error}
-                </ErrorMessage>
+                <div className="nexus-c-create-title-form__error-message">
+                    <ErrorMessage>
+                        {error}
+                    </ErrorMessage>
+                </div>
             }
             <div className="nexus-c-create-title-form__action-buttons">
                 <Button onClick={close}>

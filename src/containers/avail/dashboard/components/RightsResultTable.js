@@ -247,7 +247,7 @@ class RightsResultTable extends React.Component {
             }
         };
         if(this.props.availsMapping){
-            this.props.availsMapping.mappings.map(column => colDef[column.javaVariableName] = {
+            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(column => colDef[column.javaVariableName] = {
                 field:column.javaVariableName,
                 headerName:column.displayName,
                 cellRendererFramework: this.loadingRenderer,
@@ -491,7 +491,7 @@ class RightsResultTable extends React.Component {
         });
         let cols = this.props.columns || this.props.columnsOrder;
         if(!cols){
-            cols = this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName);
+            cols = this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName);
             this.props.resultPageUpdateColumnsOrder(cols);
         }
         if(cols){

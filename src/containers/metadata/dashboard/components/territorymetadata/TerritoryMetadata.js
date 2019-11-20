@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Row, Col, Container, TabContent, TabPane, Alert, Tooltip } from 'reactstrap';
+import React, {Component, Fragment} from 'react';
+import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstrap';
 import './MetadataTerritoryTab.scss';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
@@ -7,13 +7,12 @@ import TerritoryMetadataTab from './TerritoryMetadataTab';
 import TerritoryMetadataCreateTab from './TerritoryMetadataCreateTab';
 import TerritoryMetadataEditMode from './TerritoryMetadataEditMode';
 import { configFields } from '../../../service/ConfigService';
-import { connect } from 'react-redux';
-import { REGION } from '../../../../../constants/metadata/constant-variables';
+import {connect} from 'react-redux';
+import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
 const mapStateToProps = state => {
     return {
-        configCountry: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
-        configRegion: state.titleReducer.configData.find(e => e.key === configFields.REGIONS)
+        configCountry: state.titleReducer.configData.find(e => e.key === configFields.LOCALE)
     };
 };
 
@@ -27,20 +26,13 @@ class TerritoryMetadata extends Component {
     }
 
     getLanguageByCode = (code, type) => {
-        if(type === REGION) {
-            if (this.props.configRegion) {
-                let found = this.props.configRegion.value.find(e => e.regionCode === code);
-                if (found) {
-                    return found.regionName;
-                }
-            }
-        } else {
+        if(type === COUNTRY) {
             if (this.props.configCountry) {
                 let found = this.props.configCountry.value.find(e => e.countryCode === code);
                 if (found) {
                     return found.countryName;
                 }
-            }            
+            }
         }
         return code;
     };
@@ -73,7 +65,7 @@ class TerritoryMetadata extends Component {
                     }
                     {
                         this.props.territory && this.props.territory.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{this.getLanguageByCode(item.locale, item.territoryType)}</b></span>;
+                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{this.getLanguageByCode(item.locale, COUNTRY)}</b></span>;
                         })
                     }
                 </div>
@@ -157,8 +149,7 @@ TerritoryMetadata.propTypes = {
     handleEditChange: PropTypes.func,
     handleEditChangeDate: PropTypes.func,
     territories: PropTypes.object,
-    configCountry: PropTypes.object,
-    configRegion: PropTypes.object
+    configCountry: PropTypes.object
 };
 
 
