@@ -49,36 +49,16 @@ export function* createRightMatchingColumnDefs({payload}) {
     }
 }
 
-function getSearchCriteriaForFields(payload, focusedRight, parseFieldNames, parseFieldValue) {
-    const fieldSearchCriteria = payload.reduce((query, list) => {
-        const {fields, operand} = list || [];
-        const result = fields.reduce((object, field) => {
-            const {targetFieldName, fieldName, criteria} = field;
-            const name = targetFieldName || fieldName;
-            const valueField = fieldName;
-            const preparedName = `${name.slice(0, 1).toLowerCase()}${name.slice(1)}`;
-            const fieldValue = focusedRight[`${valueField.slice(0,1).toLowerCase()}${valueField.slice(1)}`];
-            let key = parseFieldNames(criteria, preparedName);
-            let value = parseFieldValue(criteria, fieldValue);
-
-            if (operand === 'NOT_OR') {
-                key = parseFieldNames(['GTE', 'GT'].includes(criteria) ? 'LT' : 'GT', preparedName);
-                value = parseFieldValue(criteria, fieldValue);
-            } 
-            object[key] = value;
-            return object;
-        }, {});
-        return {...query, ...result};
-    }, {});
-
-    return fieldSearchCriteria;
-}
-
 // TODO: remove this from sagas and create separate logic via Promise to get filtered rights for matching 
-function* storeRightMatchingSearchCriteria(payload = []) {
+function* storeRightMatchingSearchCriteria(payload = [], id) {
     // get focused right
     const {focusedRight} = yield select(state => state.rightMatching);
-    const searchCriteria = payload.filter(({type}) => (!type || type === 'Field'));
+    const fieldTypeSearchCriteria = payload.filter(({type}) => (!type || type === 'Field'));
+    const groupTypeSearchCriteria = payload
+        .filter(({type, operand, fields}) => type === 'Group' && operand === 'AND' && fields)
+        .map(({fields}) => fields)
+        .flat();
+    const searchCriteria = [...fieldTypeSearchCriteria, ...groupTypeSearchCriteria].filter(Boolean);
     const parseFieldNames = (criteria, name) => {
         const fieldNames = {
             EQ: name,
@@ -118,16 +98,9 @@ function* storeRightMatchingSearchCriteria(payload = []) {
             query[key] = value;
             return query;
         }, {});
-
-        const groups = payload.filter(({type}) => type === 'Group') || [];
-
-        if (groups.length) {
-            fieldSearchCriteria = {
-                ...fieldSearchCriteria,
-                ...getSearchCriteriaForFields(groups, focusedRight, parseFieldNames, parseFieldValue),
-            };
-        }
-
+        // temporal solution 
+        const prop = 'excludedItems';
+        fieldSearchCriteria[prop] = [id];
 
         yield put({
             type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
@@ -143,7 +116,7 @@ function* storeRightMatchingSearchCriteria(payload = []) {
 
 function* fetchRightMatchingFieldSearchCriteria(requestMethod, payload) {
     const error = 'Provider is undefined';
-    const {provider, templateName} = payload;
+    const {provider, templateName, id} = payload;
     try {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_REQUEST,
@@ -159,7 +132,7 @@ function* fetchRightMatchingFieldSearchCriteria(requestMethod, payload) {
             payload: fieldSearchCriteria,
         });
         // move this to separate saga worker
-        yield call(storeRightMatchingSearchCriteria, fieldSearchCriteria);
+        yield call(storeRightMatchingSearchCriteria, fieldSearchCriteria, id);
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_ERROR,
@@ -172,10 +145,10 @@ function* fetchAndStoreRightMatchingSearchCriteria() {
     // wait to store update with focused right
     const focusedRightActionResult = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS); 
     const {payload = {}} = focusedRightActionResult || {};
-    const {availSource = {}} = payload || {};
+    const {availSource = {}, id} = payload || {};
     const {provider, templateName} = availSource || {};
 
-    yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, {provider, templateName});
+    yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, {provider, templateName, id});
 }
 
 function* fetchFocusedRight(action) {
