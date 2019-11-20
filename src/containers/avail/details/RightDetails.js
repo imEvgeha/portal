@@ -1072,7 +1072,7 @@ class RightDetails extends React.Component {
             };
 
             const component = showTime
-                ? <NexusDateTimePicker {...props} displayTimeInReadView={showTime} isLocalDate={isLocalDate} />
+                ? <NexusDateTimePicker {...props} isLocalDate={isLocalDate} />
                 : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(
