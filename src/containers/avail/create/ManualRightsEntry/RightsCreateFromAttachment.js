@@ -7,7 +7,7 @@ import { historyService } from '../../service/HistoryService';
 import { rightSearchHelper } from '../../dashboard/RightSearchHelper';
 import { URL } from '../../../../util/Common';
 import { Can } from '../../../../ability';
-import DashboardDropableCard from '../../dashboard/card/DashboardDropableCard';
+import DashboardDropableCard from '../../dashboard/card/components/DashboardDropableCard';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';

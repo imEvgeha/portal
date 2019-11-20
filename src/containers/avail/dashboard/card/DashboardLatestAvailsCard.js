@@ -1,52 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
 import {Link} from 'react-router-dom';
-import StatusIcon from '../../components/StatusIcon';
-
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
-
+import StatusIcon from '../../components/StatusIcon';
 import './DashboardLatestAvailsCard.scss';
+import IngestReport from './components/IngestReport';
+import Constants from './Constants';
 
-const REFRESH_INTERVAL = 5*1000; //5 seconds
+const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
-export default class DashboardLatestAvailsCard extends React.Component {
-
-    table = null;
-
-    constructor(props) {
-        super(props);
-
-        this.getData = this.getData.bind(this);
-
-        this.state = {
-            pageSize: 6,
-            cols:[{headerName: 'Date', field: 'received', valueFormatter: function(params) {
-                          if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
-                          else return '';
-                      }, width:120},
-                    {headerName: 'Provider', field: 'provider', width:90},
-                    {
-                        headerName: 'Status',
-                        field: 'status',
-                        cellRendererFramework: this.statusIcon,
-                        width:55
-                    },
-                    {headerName: 'Ingest Method', field: 'ingestType', width:105},
-                    {headerName: 'Filename', tooltipValueGetter: this.showFileNames, valueFormatter: this.showFileNames, width:180}
-            ]
-        };
-
-        this.refresh = null;
-    }
-
-    statusIcon = (params) => {
-        const {value, valueFormatted, data: {errorDetails}} = params;
-        return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
-    };
-
-
+class DashboardLatestAvailsCard extends React.PureComponent {
     componentDidMount() {
         this.getData();
         if(this.refresh === null){
@@ -60,6 +26,29 @@ export default class DashboardLatestAvailsCard extends React.Component {
             this.refresh = null;
         }
     }
+
+    table = null;
+    refresh = null;
+
+    statusIcon = (params) => {
+        const {value, valueFormatted, data: {errorDetails}} = params;
+        return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
+    };
+
+    columns = [{headerName: 'Date', field: 'received', valueFormatter: function(params) {
+            if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
+            else return '';
+        }, width:120},
+        {headerName: 'Provider', field: 'provider', width:90},
+        {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIcon, width:55},
+        {headerName: 'Ingest Method', field: 'ingestType', width:105},
+        {
+            headerName: 'Filename',
+            cellRendererFramework: IngestReport,
+            valueFormatter: this.showFileNames,
+            width:180,
+        }
+    ];
 
     showFileNames(params){
         let toReturn='';
@@ -81,9 +70,8 @@ export default class DashboardLatestAvailsCard extends React.Component {
     }
 
     getData() {
-        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
+        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, PAGE_SIZE, [{id: 'received', desc:true}])
                 .then(response => {
-                    //console.log(response);
                     if(this.table){
                         if(response.data.total > 0){
                             this.table.api.setRowData(response.data.data);
@@ -105,6 +93,11 @@ export default class DashboardLatestAvailsCard extends React.Component {
         }
     };
 
+    onSelectionChanged = ({api}) => {
+        const historyId = api.getSelectedRows()[0].id;
+        this.props.push(`avails/history/${historyId}`);
+    };
+
     render() {
         return (
             <div className="dashboard-card-container no-padding" style={{width:'555px', height:'200px'}}>
@@ -122,17 +115,27 @@ export default class DashboardLatestAvailsCard extends React.Component {
                     >
                     <AgGridReact
                         ref={this.setTable}
-                        columnDefs= {this.state.cols}
+                        columnDefs= {this.columns}
                         headerHeight= '30'
                         rowHeight= '23'
                         suppressDragLeaveHidesColumns= {true}
                         suppressHorizontalScroll= {true}
                         suppressMovableColumns = {true}
-                        suppressRowClickSelection = {true}
-                        suppressCellSelection = {true}
+                        rowSelection='single'
+                        onSelectionChanged={this.onSelectionChanged}
                     />
                 </div>
              </div>
         );
     }
 }
+
+DashboardLatestAvailsCard.propTypes = {
+    push: PropTypes.func,
+};
+
+DashboardLatestAvailsCard.defaultProps = {
+    push: () => null,
+};
+
+export default DashboardLatestAvailsCard;
