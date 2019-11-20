@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import InlineEdit from '@atlaskit/inline-edit';
 import {DatePicker} from '@atlaskit/datetime-picker';
+import {ErrorMessage} from '@atlaskit/form/Messages';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import {getDateFormatBasedOnLocale} from '../../util/Common';
@@ -15,9 +16,14 @@ const NexusDatePicker = ({
     onChange,
     onConfirm,
     value,
+    error,
     label,
     ...restProps,
 }) => {
+    const [date, setDate] = useState(value || '');
+
+    useEffect(() => setDate(value || ''), [value]);
+
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
@@ -38,11 +44,21 @@ const NexusDatePicker = ({
                     <DatePicker
                         id={id}
                         locale={locale}
-                        onChange={date => onChange(moment(date).toISOString())}
-                        defaultValue={value}
+                        placeholder={dateFormat}
+                        onChange={date => {
+                            setDate(date);
+                            onChange(moment(date).toISOString());
+                        }}
+                        defaultValue={moment(value).isValid() ? value : ''}
+                        value={date}
                         {...restProps}
                     />
                 )
+            }
+            {error &&
+                <ErrorMessage>
+                    {error}
+                </ErrorMessage>
             }
         </>
     );
@@ -55,11 +71,13 @@ const NexusDatePicker = ({
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
                                 {(moment(value).isValid() && moment(value).format(dateFormat))
-                                    || 'Enter date'}
+                                || <div className="read-view-container__placeholder">
+                                    Enter date
+                                </div>}
                             </div>
                         )}
                         editView={() => DatePickerComponent(false)}
-                        defaultValue={value}
+                        defaultValue={moment(value).isValid() ? value : ''}
                         onConfirm={onConfirm}
                         readViewFitContainerWidth
                         {...restProps}
@@ -74,6 +92,7 @@ const NexusDatePicker = ({
 NexusDatePicker.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
+    error: PropTypes.string,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     onConfirm: PropTypes.func,
@@ -84,6 +103,7 @@ NexusDatePicker.propTypes = {
 NexusDatePicker.defaultProps = {
     label: '',
     value: '',
+    error: '',
     isWithInlineEdit: false,
     isReadOnly: false,
     onConfirm: () => null,

@@ -88,6 +88,11 @@ const NexusSimpleDateTimePicker = ({
                         onChange={date => date && onChange(convertToISO(date))}
                         datePickerProps={{
                             placeholder: datePlaceholder,
+                            onChange: (newValue) => {
+                                !moment(value).isValid()
+                                    ? onChange(convertToISO(newValue))
+                                    : onChange(convertToISO(newValue + date.slice(10)));
+                            }
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
