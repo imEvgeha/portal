@@ -53,6 +53,12 @@ const NexusGrid = ({
         }
     };
 
+    const onFirstDataRendered = data => {
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
+        }
+    };
+
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
     const isOverflowVisible = (count, constant = OVERFLOW_VISIBLE_NUMBER) => count && (count <= constant);
@@ -71,6 +77,7 @@ const NexusGrid = ({
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={onSelectionChanged}
                 onCellValueChanged={onCellValueChanged}
+                onFirstDataRendered={onFirstDataRendered}
                 {...restProps}
             >
             </AgGridReact> 

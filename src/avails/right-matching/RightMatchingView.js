@@ -24,7 +24,7 @@ import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterab
 const FILTERABLE_COLUMNS = ['id', 'title', 'rightStatus'];
 
 const NexusGridWithInfiniteScrolling = compose(
-    withFilterableColumns(FILTERABLE_COLUMNS), 
+    withFilterableColumns(FILTERABLE_COLUMNS, {rightStatus: 'Pending,Confirmed'}), 
     withSideBar(),
     withInfiniteScrolling(getRightMatchingList), 
 )(NexusGrid);

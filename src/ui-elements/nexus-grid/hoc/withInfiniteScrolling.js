@@ -3,6 +3,7 @@ import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
+import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;
@@ -141,7 +142,8 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
         };
 
         const onGridEvent = data => {
-            if (data.type === 'gridReady') {
+            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED]; 
+            if (events.includes(data.type)) {
                 if (typeof props.onGridEvent === 'function') {
                     props.onGridEvent(data);
                 }

@@ -21,10 +21,19 @@ import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-noti
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
+import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightToMatchList)(NexusGrid));
+const FILTERABLE_COLUMNS = ['id', 'title', 'rightStatus'];
+
+const NexusGridEditable = compose(
+    withFilterableColumns(FILTERABLE_COLUMNS), 
+    withSideBar()
+)(NexusGrid);
+
+const RightRepositoryNexusGrid = compose(withInfiniteScrolling(getRightToMatchList))(NexusGrid);
 
 const RightToMatchView = ({
     match, 
@@ -128,7 +137,7 @@ const RightToMatchView = ({
                 />
             </div>
             <div className="nexus-c-right-to-match-view__focused-right">
-                <NexusGrid
+                <NexusGridEditable
                     columnDefs={updatedFocusedRightColumnDefs}
                     rowData={updatedFocusedRight}
                     domLayout="autoHeight"
@@ -140,7 +149,7 @@ const RightToMatchView = ({
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
                 {fieldSearchCriteria && (
-                    <NexusGridWithInfiniteScrolling
+                    <RightRepositoryNexusGrid
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
                         params={fieldSearchCriteria}
