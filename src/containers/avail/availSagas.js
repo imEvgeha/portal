@@ -13,7 +13,7 @@ export function* fetchAvailMapping(requestMethod) {
     try {
         yield put({
             type: actionTypes.FETCH_AVAIL_MAPPING_REQUEST,
-            paylaod: {},
+            payload: {},
         });
         const response = yield call(requestMethod);
         const {data} = response;
@@ -111,12 +111,12 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
     try {
         yield put({
             type: actionTypes.FETCH_AVAIL_SELECT_VALUES_REQUEST,
-            paylaod: {},
+            payload: {},
         });
         const response = yield call(requestMethod, requestParams);
         yield put({
             type: actionTypes.FETCH_AVAIL_SELECT_VALUES_SUCCESS,
-            paylaod: response,
+            payload: response,
         });
         return {
             [key]: {
@@ -131,13 +131,6 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
             error: true,
             payload: error,
         });
-        // return {
-        //     [key]: {
-        //         key,
-        //         value: error,
-        //         configEndpoint: requestParams,
-        //     }
-        // };
     }
 }
 
@@ -145,18 +138,18 @@ export function* fetchAvailConfiguration(requestMethod) {
     try {
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_REQUEST,
-            paylaod: {},
+            payload: {},
         });
         const response = yield call(requestMethod);
         const {data} = response;
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_SUCCESS,
-            paylaod: data,
+            payload: data,
         });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_ERROR,
-            paylaod: error,
+            payload: error,
             error: true,
         });
     }
