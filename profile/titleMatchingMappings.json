@@ -34,6 +34,28 @@
     "required": true
   },
   {
+    "javaVariableName": "episodic.seasonNumber",
+    "displayName": "-",
+    "dataType": "integer",
+    "searchDataType": "integer",
+    "queryParamName": "seasonNumber",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
+    "javaVariableName": "episodic.episodeNumber",
+    "displayName": "-",
+    "dataType": "integer",
+    "searchDataType": "integer",
+    "queryParamName": "episodeNumber",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": false
+  },
+  {
     "javaVariableName": "licensor",
     "displayName": "Licensor",
     "dataType": "select",
