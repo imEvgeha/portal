@@ -30,8 +30,11 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
         const previousColumnDefs = usePrevious(columnDefs);
         const [filterableColumnDefs, setFilterableColumnDefs] = useState((columnDefs && columnDefs.length) ? updateColumnDefs(columnDefs) : []);
         const [gridApi, setGridApi] = useState();
+        const columns = props.filterableColumns || filterableColumns;
+        const filters = props.filters || initialFilter;
+
         useEffect(() => {
-            if (!columnDefs || columnDefs.length === 0) {
+            if (!columnDefs || (Array.isArray(columnDefs) && columnDefs.length === 0)) {
                 createRightMatchingColumnDefs(mapping);
             }
         }, [mapping, columnDefs]);
@@ -44,13 +47,22 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
         // apply initail filter
         useEffect(() => {
-            if (gridApi && !isEmpty(initialFilter) && mapping.length) {
-                Object.keys(initialFilter).forEach(key => {
+            if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
+                Object.keys(filters).forEach(key => {
                     const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === key))) || {};
+                    const filterInstance = gridApi.getFilterInstance(key);
                     if (dataType === 'select' || dataType === 'multiSelect') {
-                        const filterValues = initialFilter[key].split(',').map(el => el.trim()); 
-                        applySetFilter(gridApi.getFilterInstance(key), filterValues);
+                        const filterValues = filters[key].split(',').map(el => el.trim()); 
+                        applySetFilter(filterInstance, filterValues);
+                    } else {
+                        filterInstance.setModel({
+                            type: 'equals',
+                            filter: filters[key],
+                        });
+                        // APPLY THE MODEL
+                        filterInstance.applyModel();
                     }
+                    gridApi.onFilterChanged();
                 });
             } 
         }, [gridApi, mapping]);
@@ -60,7 +72,7 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
                 let copiedColumnDef = {...columnDef};
                 const {dataType, options} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType) && 
-                    (filterableColumns ? filterableColumns.includes(copiedColumnDef.field) : true);
+                    (columns ? columns.includes(copiedColumnDef.field) : true);
                 if (isFilterable) {
                     const FILTER_PARAMS = {
                         string: DEFAULT_FILTER_PARAMS,
