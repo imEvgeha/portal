@@ -4,7 +4,7 @@ import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {URL, switchCase} from '../../util/Common';
+import {URL, switchCase, isObject} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
 import {
@@ -73,11 +73,10 @@ function* storeRightMatchingSearchCriteria(payload = [], id) {
     };
 
     const parseFieldValue = (criteria, value, subFieldName) => {
-        const parsedSubFieldName = subFieldName && subFieldName.toLowerCase();
-        const subValue = Array.isArray(value) ? value.map(el => el[parsedSubFieldName]).filter(Boolean).join('') : value;
+        const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join('') : value;
         const fieldValues = {
             EQ: value,
-            SUB: subValue,
+            SUB: subsetValue,
             GTE: value,
             GT: value,
             LT: value,
