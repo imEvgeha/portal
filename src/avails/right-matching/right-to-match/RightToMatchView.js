@@ -33,7 +33,11 @@ const NexusGridEditable = compose(
     withSideBar()
 )(NexusGrid);
 
-const RightRepositoryNexusGrid = compose(withInfiniteScrolling(getRightToMatchList))(NexusGrid);
+const RightRepositoryNexusGrid = compose(
+    withFilterableColumns(), 
+    withSideBar(),
+    withInfiniteScrolling(getRightToMatchList)
+)(NexusGrid);
 
 const RightToMatchView = ({
     match, 
@@ -153,6 +157,8 @@ const RightToMatchView = ({
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
                         params={fieldSearchCriteria}
+                        filters={fieldSearchCriteria}
+                        filterableColumns={Object.keys(fieldSearchCriteria)}
                         excludedItems={[{id: rightId}]}
                         handleSelectionChange={handleSelectionChange}
                         rowSelection="multiple"

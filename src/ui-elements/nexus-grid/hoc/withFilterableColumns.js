@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
+import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../../../avails/right-matching/rightMatchingActions'; // this should be generic action not specifix one
 import usePrevious from '../../../util/hooks/usePrevious';
-import {switchCase} from '../../../util/Common';
+import {switchCase, isObject} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
 
 const FILTERABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
@@ -26,8 +27,9 @@ const FILTER_TYPE = {
 
 const withFilterableColumns = (filterableColumns, initialFilter = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, mapping, createRightMatchingColumnDefs} = props;
+        const {columnDefs, selectValues, mapping, createRightMatchingColumnDefs} = props;
         const previousColumnDefs = usePrevious(columnDefs);
+        const previousSelectValues = usePrevious(selectValues);
         const [filterableColumnDefs, setFilterableColumnDefs] = useState((columnDefs && columnDefs.length) ? updateColumnDefs(columnDefs) : []);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
@@ -40,10 +42,10 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
         }, [mapping, columnDefs]);
 
         useEffect(() => {
-            if (!isEqual(previousColumnDefs, columnDefs)) {
+            if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
                setFilterableColumnDefs(updateColumnDefs(columnDefs)); 
             }
-        }, [columnDefs]);
+        }, [selectValues, columnDefs]);
 
         // apply initail filter
         useEffect(() => {
@@ -62,8 +64,8 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
                         // APPLY THE MODEL
                         filterInstance.applyModel();
                     }
-                    gridApi.onFilterChanged();
                 });
+                gridApi.onFilterChanged();
             } 
         }, [gridApi, mapping]);
 
@@ -71,14 +73,17 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
             const filterableColumnDefs = columnDefs.map(columnDef => {
                 let copiedColumnDef = {...columnDef};
                 const {dataType, options} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
+                const getOptions = (options) => {
+                    return options.map(el => isObject(el) ? el.value : el);
+                };
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType) && 
                     (columns ? columns.includes(copiedColumnDef.field) : true);
                 if (isFilterable) {
                     const FILTER_PARAMS = {
                         string: DEFAULT_FILTER_PARAMS,
                         number: DEFAULT_FILTER_PARAMS,
-                        select: {...DEFAULT_FILTER_PARAMS, values: options},
-                        multiSelect: {...DEFAULT_FILTER_PARAMS, values: options},
+                        select: {...DEFAULT_FILTER_PARAMS, values: getOptions(options)},
+                        multiSelect: {...DEFAULT_FILTER_PARAMS, values: getOptions(options)},
                     };
                     copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     copiedColumnDef.filterParams = switchCase(FILTER_PARAMS)(DEFAULT_FILTER_PARAMS)(dataType);
@@ -92,7 +97,7 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
         const onGridEvent = ({type, api}) => {
             if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
-                setGridApi(api);
+                setTimeout(() => setGridApi(api), 2000);
             }
         };
 
@@ -117,8 +122,10 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
     const createMapStateToProps = () => {
         const availsMappingSelector = createAvailsMappingSelector();
+        const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => ({
             mapping: availsMappingSelector(state, props),
+            selectValues: availSelectValuesSelector(state, props),
         });
     };
 
