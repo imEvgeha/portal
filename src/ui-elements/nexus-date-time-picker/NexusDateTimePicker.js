@@ -19,7 +19,6 @@ const NexusDateTimePicker = ({
     isWithInlineEdit,
     isReadOnly,
     isLocalDate,
-    displayTimeInReadView,
     onChange,
     onConfirm,
     value,
@@ -35,7 +34,7 @@ const NexusDateTimePicker = ({
     // Create date format based on locale
     const dateFormat = getDateFormatBasedOnLocale(locale)
         .toUpperCase()
-        .concat(displayTimeInReadView ? TIME_FORMAT : '');
+        .concat(TIME_FORMAT);
 
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
@@ -87,9 +86,9 @@ const NexusDateTimePicker = ({
                             <div className="nexus-c-date-time-picker__read-view-container">
                                 {moment(value).isValid()
                                 ?`${moment(value).utc(!isUTC).format(dateFormat)}
-                                 ${isUTC && displayTimeInReadView ? ' (UTC)' : ''}`
+                                 ${isUTC ? ' (UTC)' : ''}`
                                 : <div className="read-view-container__placeholder">
-                                        Enter date
+                                        {`Enter ${name}`}
                                 </div>}
                             </div>
                         )}
@@ -112,7 +111,6 @@ NexusDateTimePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isLocalDate: PropTypes.bool,
-    displayTimeInReadView: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -121,7 +119,6 @@ NexusDateTimePicker.propTypes = {
 NexusDateTimePicker.defaultProps = {
     label: '',
     value: '',
-    displayTimeInReadView: false,
     isWithInlineEdit: false,
     isReadOnly: false,
     isLocalDate: false,

@@ -144,7 +144,6 @@ const RightToMatchView = ({
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
                         params={fieldSearchCriteria}
-                        excludedItems={[{id: rightId}]}
                         handleSelectionChange={handleSelectionChange}
                         rowSelection="multiple"
                     />
