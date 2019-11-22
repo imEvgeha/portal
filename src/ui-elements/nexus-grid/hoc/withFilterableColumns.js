@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
-import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../../../avails/right-matching/rightMatchingActions'; // this should be generic action not specifix one
 import usePrevious from '../../../util/hooks/usePrevious';
-import {switchCase, isObject} from '../../../util/Common';
+import {switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
+import {profileService} from '../../../containers/avail/service/ProfileService';
 
 const FILTERABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
 
@@ -21,16 +21,15 @@ const FILTER_TYPE = {
     string: 'agTextColumnFilter',
     number: 'agNumberColumnFilter',
     select: 'agSetColumnFilter',
-    multiSelect: 'agSetColumnFilter',
+    multiselect: 'agSetColumnFilter',
 };
 
 
 const withFilterableColumns = (filterableColumns, initialFilter = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, selectValues, mapping, createRightMatchingColumnDefs} = props;
+        const {columnDefs, mapping, createRightMatchingColumnDefs} = props;
         const previousColumnDefs = usePrevious(columnDefs);
-        const previousSelectValues = usePrevious(selectValues);
-        const [filterableColumnDefs, setFilterableColumnDefs] = useState((columnDefs && columnDefs.length) ? updateColumnDefs(columnDefs) : []);
+        const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
         const filters = props.filters || initialFilter;
@@ -42,48 +41,64 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
         }, [mapping, columnDefs]);
 
         useEffect(() => {
-            if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
+            if (!isEqual(previousColumnDefs, columnDefs)) {
                setFilterableColumnDefs(updateColumnDefs(columnDefs)); 
             }
-        }, [selectValues, columnDefs]);
+        }, [columnDefs]);
 
-        // apply initail filter
+        // apply initial filter
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
                 Object.keys(filters).forEach(key => {
                     const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === key))) || {};
                     const filterInstance = gridApi.getFilterInstance(key);
-                    if (dataType === 'select' || dataType === 'multiSelect') {
-                        const filterValues = filters[key].split(',').map(el => el.trim()); 
-                        applySetFilter(filterInstance, filterValues);
-                    } else {
-                        filterInstance.setModel({
-                            type: 'equals',
-                            filter: filters[key],
-                        });
-                        // APPLY THE MODEL
-                        filterInstance.applyModel();
+                    if (filterInstance) {
+                        if (dataType === 'select' || dataType === 'multiselect') {
+                            const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
+                            applySetFilter(filterInstance, filterValues.map(el => el.trim()));
+                        } else {
+                            filterInstance.setModel({
+                                type: 'equals',
+                                filter: filters[key],
+                            });
+                            // APPLY THE MODEL
+                            filterInstance.applyModel();
+                        }
                     }
                 });
                 gridApi.onFilterChanged();
             } 
         }, [gridApi, mapping]);
 
+
         function updateColumnDefs(columnDefs) {
             const filterableColumnDefs = columnDefs.map(columnDef => {
                 let copiedColumnDef = {...columnDef};
-                const {dataType, options} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
-                const getOptions = (options) => {
-                    return options.map(el => isObject(el) ? el.value : el);
-                };
+                const {dataType, configEndpoint, options = []} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType) && 
                     (columns ? columns.includes(copiedColumnDef.field) : true);
                 if (isFilterable) {
                     const FILTER_PARAMS = {
                         string: DEFAULT_FILTER_PARAMS,
                         number: DEFAULT_FILTER_PARAMS,
-                        select: {...DEFAULT_FILTER_PARAMS, values: getOptions(options)},
-                        multiSelect: {...DEFAULT_FILTER_PARAMS, values: getOptions(options)},
+                        select: {
+                            ...DEFAULT_FILTER_PARAMS, 
+                            values: params => {
+                                if (configEndpoint) {
+                                    getFilterAsyncOptions(configEndpoint).then(payload => params.success(payload));
+                                } 
+                                params.success(options);
+                            }
+                        },
+                        multiselect: {
+                            ...DEFAULT_FILTER_PARAMS, 
+                            values: params => {
+                                if (configEndpoint) {
+                                    getFilterAsyncOptions(configEndpoint).then(payload => params.success(payload));
+                                } 
+                                params.success(options);
+                            }
+                        }
                     };
                     copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     copiedColumnDef.filterParams = switchCase(FILTER_PARAMS)(DEFAULT_FILTER_PARAMS)(dataType);
@@ -97,10 +112,12 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
         const onGridEvent = ({type, api}) => {
             if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
-                setTimeout(() => setGridApi(api), 2000);
+                // TODO: happens 
+                setGridApi(api);
             }
         };
 
+        // TODO: create separate file for filter API methods
         const applySetFilter = (field, values = []) => {
             // clear filter 
             field.selectNothing();
@@ -110,6 +127,14 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
             field.applyModel();
         };
 
+        const getFilterAsyncOptions = (endpoint) => {
+            return profileService.getSelectValues(endpoint)
+            .then(response => {
+                const {data} = response || {};
+                const options = data.data.map(el => el.value);
+                return options;
+            });
+        };
         return (
             <WrappedComponent 
                 {...props}
@@ -122,10 +147,8 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
     const createMapStateToProps = () => {
         const availsMappingSelector = createAvailsMappingSelector();
-        const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => ({
             mapping: availsMappingSelector(state, props),
-            selectValues: availSelectValuesSelector(state, props),
         });
     };
 

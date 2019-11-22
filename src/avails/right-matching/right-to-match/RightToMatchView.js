@@ -26,13 +26,6 @@ import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilte
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
-const FILTERABLE_COLUMNS = ['id', 'title', 'rightStatus'];
-
-const NexusGridEditable = compose(
-    withFilterableColumns(FILTERABLE_COLUMNS), 
-    withSideBar()
-)(NexusGrid);
-
 const RightRepositoryNexusGrid = compose(
     withFilterableColumns(), 
     withSideBar(),
@@ -141,7 +134,7 @@ const RightToMatchView = ({
                 />
             </div>
             <div className="nexus-c-right-to-match-view__focused-right">
-                <NexusGridEditable
+                <NexusGrid
                     columnDefs={updatedFocusedRightColumnDefs}
                     rowData={updatedFocusedRight}
                     domLayout="autoHeight"
