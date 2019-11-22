@@ -105,14 +105,25 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         cellRendererFramework: duplicateButtonCell,
     }; 
     
-    const deepCloneColumnDefs = deepClone(columnDefs);
+    let deepCloneColumnDefs = deepClone(columnDefs);
     const handleTitleMatchingRedirect = params => {
+        deepCloneColumnDefs.filter(e => {
+            if(params.value === 'EPISODE') {
+                return e.field !== 'episodic.seasonNumber';
+            } else if(params.value === 'SEASON') {
+                return e.field !== 'episodic.episodeNumber';
+            } else {
+                return e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber';
+            }
+        });
         return createLinkableCellRenderer(params);
     };
     let updatedColumnDefs = deepCloneColumnDefs.map(e => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
         return e;
     });
+    
+    console.log('updatedColumnDefs', updatedColumnDefs);
     const repository = getRepositoryCell();
     return (
         <React.Fragment>
