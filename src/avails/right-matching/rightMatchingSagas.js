@@ -73,7 +73,7 @@ function* storeRightMatchingSearchCriteria(payload = [], id) {
     };
 
     const parseFieldValue = (criteria, value, subFieldName) => {
-        const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join('') : value;
+        const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',') : value;
         const fieldValues = {
             EQ: value,
             SUB: subsetValue,
