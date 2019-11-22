@@ -6,7 +6,7 @@ import { Button, Label } from 'reactstrap';
 import moment from 'moment';
 import './RightDetails.scss';
 import {store} from '../../../index';
-import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import {profileService} from '../service/ProfileService';
@@ -206,13 +206,10 @@ class RightDetails extends React.Component {
     }
 
     update(name, onError) {
-        const {editedRight = {}, flatRight = {}} = this.state;
-        const existingField = flatRight[name] || {};
-        const value = editedRight[name];
+        const {editedRight = {}} = this.state;
+        const value = editedRight[name] || {};
 
-        console.error('pre', existingField, value);
-        if (isEqual(existingField, value)) {
-            console.error(existingField, value);
+        if (isEmpty(value)) {
             onError();
             return;
         }
@@ -265,11 +262,10 @@ class RightDetails extends React.Component {
     }
 
     cancel = () => {
-        this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
+        this.context.router.history.push(window.location.pathname);
     };
 
     handleChange = (fieldName, value) => {
-        console.log('Setting state: ', fieldName, value);
         this.setState((prevState) => ({
             editedRight: {
                 ...prevState.editedRight,
