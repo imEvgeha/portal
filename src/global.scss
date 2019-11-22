@@ -80,6 +80,12 @@
   color: rgba(40,40,40,0.3);
 }
 
+//PORT-1024 fix safari text colors for disabled text fields
+input[disabled] {
+  -webkit-text-fill-color:#A5ADBA; /* Override iOS / Android font color change */
+  opacity: 1; /* Override iOS opacity change affecting text & background color */
+}
+
 .css-vj8t7z, .css-2o5izw, .css-1r4vtzz, .css-48ayfv {
   border-radius: 24px!important;
   background-color: rgba(255,255,255,0.4)!important;
