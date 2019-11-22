@@ -22,12 +22,17 @@ function ManualRightEntryFatalView({attachments, hidden}) {
             const {errorReports = []} = attachment;
             errorReports.forEach(report => {
                 const {availSource = {}, validationErrors = []} = report;
+                let message = 'System could not process row: ' + availSource.availRow + '.';
+                let areFatalErrorsAppear = false;
                 validationErrors.forEach(error => {
                     if (error.severityType === SEVERITY_TYPE_FATAL) {
-                        const message = 'System could not process row: ' + availSource.availRow + '. ' + 'Field: ' + error.fieldName + ', has error - ' + error.message;
-                        errorList.push(message);
+                        areFatalErrorsAppear = true;
+                        message += ' The field \'' + error.fieldName + '\' has error - ' + error.message + '.';
                     }
                 });
+                if (areFatalErrorsAppear) {
+                    errorList.push(message);
+                }
             });
         });
         return errorList;
