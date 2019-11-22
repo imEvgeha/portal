@@ -45,7 +45,7 @@ const NexusDateTimeWindowPicker = ({
     // (i.e. If start date is after end date and vice versa)
     const validateStartDate = (date) => {
         (date && endDate) && (
-            moment(date).isSameOrAfter(endDate)
+            moment(date).isAfter(endDate)
                 ? setStartDateError(START_DATE_ERROR)
                 : setStartDateError('')
         );
@@ -53,7 +53,7 @@ const NexusDateTimeWindowPicker = ({
 
     const validateEndDate = (date) => {
         (date && startDate) && (
-            moment(date).isSameOrBefore(startDate)
+            moment(date).isBefore(startDate)
                 ? setEndDateError(END_DATE_ERROR)
                 : setEndDateError('')
         );

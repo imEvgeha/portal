@@ -6,6 +6,7 @@ import { Button, Label } from 'reactstrap';
 import moment from 'moment';
 import './RightDetails.scss';
 import {store} from '../../../index';
+import isEqual from 'lodash.isequal';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import {profileService} from '../service/ProfileService';
@@ -62,8 +63,8 @@ class RightDetails extends React.Component {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
             isRightTerritoryEditFormOpen: false,
-            editedField: {},
-            fields: {},
+            editedRight: {},
+            flatRight: {},
             territoryIndex: null,
             isEdit: false,
         };
@@ -205,11 +206,13 @@ class RightDetails extends React.Component {
     }
 
     update(name, onError) {
-        const {editedField = {}, flatRight = {}} = this.state;
+        const {editedRight = {}, flatRight = {}} = this.state;
         const existingField = flatRight[name] || {};
-        const value = editedField[name] || existingField;
+        const value = editedRight[name];
 
-        if (this.state.flatRight[name] === value) {
+        console.error('pre', existingField, value);
+        if (isEqual(existingField, value)) {
+            console.error(existingField, value);
             onError();
             return;
         }
@@ -265,6 +268,16 @@ class RightDetails extends React.Component {
         this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
     };
 
+    handleChange = (fieldName, value) => {
+        console.log('Setting state: ', fieldName, value);
+        this.setState((prevState) => ({
+            editedRight: {
+                ...prevState.editedRight,
+                [fieldName]: value,
+            }
+        }));
+    };
+
     render() {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
             // const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
@@ -290,8 +303,8 @@ class RightDetails extends React.Component {
         };
 
         const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
-            const {fields = {}} = this.state;
-            let selectedVal = fields[name] || value;
+            const {flatRight = {}} = this.state;
+            let selectedVal = flatRight[name] || value;
 
             // TODO: Extract when prepping data for the whole component; To be fixed on RightDetails refactor
             const prepData = (name) => {
@@ -304,22 +317,13 @@ class RightDetails extends React.Component {
                     .map(rec => ({...rec, label: rec.label || rec.value}));
             };
 
-            const addTerritory = (items) => {
-                this.setState((prevState) => ({
-                    editedField: {
-                        ...prevState.editedField,
-                        [name]: items
-                    }
-                }));
-             };
-
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, null, (
                 <NexusMultiInstanceField
                     name={name}
                     schema={RightTerritoryFormSchema(prepData(TERRITORY_TYPE))}
                     existingItems={selectedVal}
                     keyForTagLabel="country"
-                    onSubmit={items => addTerritory(items)}
+                    onSubmit={items => this.handleChange(name, items)}
                     onConfirm={() => this.update(name, this.cancel)}
                     isWithInlineEdit={true}
                     isReadOnly={readOnly}
@@ -343,13 +347,13 @@ class RightDetails extends React.Component {
                 territoryType: renderTerritoryField(
                     jvName,
                     displayName,
-                    this.state.territory,
+                    value,
                     null,
                     readOnly,
                     // Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')),
                     // readOnly,
                     required,
-                    value,
+                    null,
                 ),
             };
             return fieldMap[fieldType];
@@ -358,10 +362,11 @@ class RightDetails extends React.Component {
         const {mappings = []} = this.props.availsMapping || {};
 
         const renderFields = mappings.map((mapping) => {
-            const {enableEdit, readOnly, dataType, javaVariableName, displayName} = mapping || {};
+            const {enableEdit, readOnly, required, dataType, javaVariableName, displayName} = mapping || {};
+            const {flatRight = {}} = this.state;
+            const value = flatRight[javaVariableName] || '';
+
             if (enableEdit && !readOnly) {
-                let required = required;
-                const value = this.right ? this.right[javaVariableName] : '';
                 const cannotCreate = cannot('create', 'Avail', javaVariableName);
                 if (cannotCreate) {
                     return;
