@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
-import {getDeepValue} from '../../util/Common';
+import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import LoadingGif from '../../img/loading.gif';
 import {isObject} from '../../util/Common';
@@ -22,6 +22,7 @@ export default class RightsResultsTable extends React.Component {
 
     parseColumnsSchema(mappings){
         const colDef = {};
+        const dateFormat = `${getDateFormatBasedOnLocale('en')} HH:mm`;
         let formatter = (column) => {
             switch (column.dataType) {
                 case 'localdate' : return function(params){
@@ -35,6 +36,10 @@ export default class RightsResultsTable extends React.Component {
                         return moment(params.data[column.javaVariableName].toString().substr(0, 10)).format('L');
                     }
                     return;
+                };
+                case 'datetime' : return ({data = {}}) => {
+                    const {[column.javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
                 case 'string' : if(column.javaVariableName === 'castCrew') return function(params){
                     if(params.data && params.data[column.javaVariableName]){
