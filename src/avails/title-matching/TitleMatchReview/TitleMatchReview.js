@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
-import {URL} from '../../../util/Common';
+import {URL, deepClone} from '../../../util/Common';
 import {titleService} from '../../../containers/metadata/service/TitleService';
 import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
 import {createColumnDefs} from '../titleMatchingActions';
-import { getRepositoryCell } from '../../utils';
+import {getRepositoryCell} from '../../utils';
 import DOP from '../../../util/DOP';
 import './TitleMatchReview.scss';
 
@@ -112,6 +112,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         }
     }, [mergedTitles]);
 
+    const deepCloneMatchedTitlesColumnDefs = deepClone(columnDefs);
+    const deepCloneCombinedTitleColumnDefs = deepClone(columnDefs);
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
@@ -123,7 +125,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...columnDefs]}
+                            columnDefs={[getRepositoryCell(), ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
                     </React.Fragment>
@@ -134,7 +136,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...columnDefs]}
+                            columnDefs={[getRepositoryCell(), ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />
                     </React.Fragment>

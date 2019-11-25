@@ -1,4 +1,4 @@
-.nexus-c-time-window-picker {
+.nexus-c-date-time-window-picker {
     display: grid;
     grid-template-columns: 7fr 7fr 4fr;
     grid-template-rows: minmax(0, auto) 1fr;
@@ -10,7 +10,7 @@
     }
 }
 
-.nexus-c-time-window-picker__label {
+.nexus-c-date-time-window-picker__label {
     grid-row: 1;
     grid-column: 1/-1;
 }

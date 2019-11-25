@@ -4,7 +4,7 @@ import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../containers/avail/availActionTypes';
 import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import {URL, switchCase} from '../../util/Common';
+import {URL, switchCase, isObject} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
 import {
@@ -49,10 +49,16 @@ export function* createRightMatchingColumnDefs({payload}) {
     }
 }
 
-function* storeRightMatchingSearchCriteria(payload = []) {
+// TODO: remove this from sagas and create separate logic via Promise to get filtered rights for matching 
+function* storeRightMatchingSearchCriteria(payload = [], id) {
     // get focused right
     const {focusedRight} = yield select(state => state.rightMatching);
-    const searchCriteria = payload.filter(({type}) => (!type || type === 'Field'));
+    const fieldTypeSearchCriteria = payload.filter(({type}) => (!type || type === 'Field'));
+    const groupTypeSearchCriteria = payload
+        .filter(({type, operand, fields}) => type === 'Group' && operand === 'AND' && fields)
+        .map(({fields}) => fields)
+        .flat();
+    const searchCriteria = [...fieldTypeSearchCriteria, ...groupTypeSearchCriteria].filter(Boolean);
     const parseFieldNames = (criteria, name) => {
         const fieldNames = {
             EQ: name,
@@ -66,10 +72,11 @@ function* storeRightMatchingSearchCriteria(payload = []) {
         return parsedFieldName;
     };
 
-    const parseFieldValue = (criteria, value) => {
+    const parseFieldValue = (criteria, value, subFieldName) => {
+        const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',') : value;
         const fieldValues = {
             EQ: value,
-            SUB: Array.isArray(value) ? value.join('') : value,
+            SUB: subsetValue,
             GTE: value,
             GT: value,
             LT: value,
@@ -80,16 +87,19 @@ function* storeRightMatchingSearchCriteria(payload = []) {
     };  
 
     try {
-        const fieldSearchCriteria = searchCriteria.reduce((query, field) => {
-            const {targetFieldName, fieldName, criteria} = field;
+        let fieldSearchCriteria = searchCriteria.reduce((query, field) => {
+            const {targetFieldName, fieldName, subFieldName, criteria} = field;
             const name = targetFieldName || fieldName;
             const preparedName = `${name.slice(0, 1).toLowerCase()}${name.slice(1)}`;
             const fieldValue = focusedRight[`${fieldName.slice(0,1).toLowerCase()}${fieldName.slice(1)}`];
             const key = parseFieldNames(criteria, preparedName);
-            const value = parseFieldValue(criteria, fieldValue);
+            const value = parseFieldValue(criteria, fieldValue, subFieldName);
             query[key] = value;
             return query;
         }, {});
+        // temporal solution 
+        const prop = 'excludedItems';
+        fieldSearchCriteria[prop] = [id];
 
         yield put({
             type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
@@ -105,7 +115,7 @@ function* storeRightMatchingSearchCriteria(payload = []) {
 
 function* fetchRightMatchingFieldSearchCriteria(requestMethod, payload) {
     const error = 'Provider is undefined';
-    const {provider, templateName} = payload;
+    const {provider, templateName, id} = payload;
     try {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_REQUEST,
@@ -121,7 +131,7 @@ function* fetchRightMatchingFieldSearchCriteria(requestMethod, payload) {
             payload: fieldSearchCriteria,
         });
         // move this to separate saga worker
-        yield call(storeRightMatchingSearchCriteria, fieldSearchCriteria);
+        yield call(storeRightMatchingSearchCriteria, fieldSearchCriteria, id);
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_ERROR,
@@ -134,10 +144,10 @@ function* fetchAndStoreRightMatchingSearchCriteria() {
     // wait to store update with focused right
     const focusedRightActionResult = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS); 
     const {payload = {}} = focusedRightActionResult || {};
-    const {availSource = {}} = payload || {};
+    const {availSource = {}, id} = payload || {};
     const {provider, templateName} = availSource || {};
 
-    yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, {provider, templateName});
+    yield call(fetchRightMatchingFieldSearchCriteria, getRightMatchingFieldSearchCriteria, {provider, templateName, id});
 }
 
 function* fetchFocusedRight(action) {

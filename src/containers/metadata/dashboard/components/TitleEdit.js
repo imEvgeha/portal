@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import t from 'prop-types';
 import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
@@ -10,9 +10,9 @@ import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
-import { titleService } from '../../service/TitleService';
-import { Button, Col, Row } from 'reactstrap';
-import { AvForm } from 'availity-reactstrap-validation';
+import {titleService} from '../../service/TitleService';
+import {Button, Col, Row} from 'reactstrap';
+import {AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
@@ -21,10 +21,10 @@ import {
     EDITORIAL_METADATA_SYNOPSIS,
     EDITORIAL_METADATA_TITLE
 } from '../../../../constants/metadata/metadataComponent';
-import { configService } from '../../service/ConfigService';
+import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
-import { CAST, getFilteredCrewList, getFilteredCastList } from '../../../../constants/metadata/configAPI';
+import {CAST, getFilteredCrewList, getFilteredCastList} from '../../../../constants/metadata/configAPI';
 
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const CURRENT_TAB = 0;

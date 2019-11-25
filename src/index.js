@@ -35,7 +35,7 @@ import { Provider } from 'react-redux';
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
 import rootSaga from './saga';
-import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
+import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
 
 import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
@@ -81,6 +81,7 @@ function init() {
                 loadCreateRightState();
                 loadHistoryState();
                 loadDopState();
+                loadManualRightEntryState();
 
                 render(
                     app,

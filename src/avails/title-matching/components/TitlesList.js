@@ -9,8 +9,9 @@ import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfin
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './ActionsBar.js';
-import { getRepositoryName, getRepositoryCell } from '../../utils';
+import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
+import {deepClone} from '../../../util/Common';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
 
@@ -102,14 +103,22 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         headerName: 'Duplicate',
         cellRendererParams: duplicateList,
         cellRendererFramework: duplicateButtonCell,
+    }; 
+    
+    const deepCloneColumnDefs = deepClone(columnDefs);
+    const handleTitleMatchingRedirect = params => {
+        return createLinkableCellRenderer(params);
     };
+    let updatedColumnDefs = deepCloneColumnDefs.map(e => {
+        if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
+        return e;
+    });
     const repository = getRepositoryCell();
-
     return (
         <React.Fragment>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
-                columnDefs={[matchButton, duplicateButton, repository, ...columnDefs]}
+                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}/>
             <ActionsBar
                 rightId={rightId}
