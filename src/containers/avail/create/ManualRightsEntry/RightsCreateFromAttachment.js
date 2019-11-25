@@ -18,14 +18,16 @@ import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
+import * as selectors from './manualRightEntrySelector';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
-const mapStateToProps = state => {
-    return {
+const mapStateToProps = () => {
+    const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
+    return (state, props) => ({
         availsMapping: state.root.availsMapping,
-        selectedTab: state.manualRightsEntry.session.selectedTab,
-    };
+        selectedTab: manualRightsEntrySelectedTabSelector(state, props),
+    });
 };
 
 class RightsCreateFromAttachment extends React.Component {
