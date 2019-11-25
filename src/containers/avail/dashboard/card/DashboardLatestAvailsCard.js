@@ -14,7 +14,7 @@ import Constants from './Constants';
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
 class DashboardLatestAvailsCard extends React.PureComponent {
-    rowIds = [];
+    tableData = [];
     table = null;
     refresh = null;
 
@@ -77,10 +77,9 @@ class DashboardLatestAvailsCard extends React.PureComponent {
                     const {data: {data = []} = {}} = response;
                     if(this.table){
                         if(data.length > 0){
-                            const rows = data.map(row => row.id);
-                            if(!isEqual(this.rowIds, rows)){
+                            if(!isEqual(this.tableData, data)){
                                 this.table.api.setRowData(data);
-                                this.rowIds = rows;
+                                this.tableData = data;
                                 this.table.api.hideOverlay();
                             }
                         }else{
