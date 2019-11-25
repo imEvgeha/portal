@@ -19,6 +19,7 @@ import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
+import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
@@ -222,7 +223,7 @@ class RightsCreateFromAttachment extends React.Component {
                             selectedTab={this.props.selectedTab}
                             hidden={this.props.selectedTab === FATAL}
                         />
-                        <ManualRightEntryFatalView attachments={attachments}/>
+                        <ManualRightEntryFatalView attachments={attachments} hidden={this.props.selectedTab !== FATAL}/>
                     </React.Fragment>
                 }
             </div>

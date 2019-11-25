@@ -3,7 +3,7 @@
 .nexus-c-manual-rights-entry__fatal_view {
   display: flex;
   flex-direction: column;
-  background: map-get($colors, nexus-white);;
+  background: map-get($colors, nexus-white);
   overflow: auto;
 }
 

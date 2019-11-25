@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
 import './ManualRightEntryFatalView.scss';
@@ -8,13 +8,22 @@ const SEVERITY_TYPE_FATAL = 'Fatal';
 function ManualRightEntryFatalView({attachments, hidden}) {
 
     const [errorList, setErrorList] = useState([]);
+    const [viewHeight, setViewHeight] = useState();
+
+    const containerRef = useRef();
 
     useEffect(() => {
-        if(attachments) {
-            console.log('ManualRightEntryFatalView', attachments)
+        if(containerRef.current) {
+            const offsetTop = containerRef.current.getBoundingClientRect().top;
+            setViewHeight(window.innerHeight - offsetTop - 10);
+        }
+    }, [containerRef.current]);
+
+    useEffect(() => {
+        if (attachments) {
             setErrorList(getListOfFatalErrors());
         }
-    },[attachments]);
+    }, [attachments]);
 
     const getListOfFatalErrors = () => {
         let errorList = [];
@@ -47,7 +56,7 @@ function ManualRightEntryFatalView({attachments, hidden}) {
     return (
         <React.Fragment>
             {!hidden &&
-            <div className='nexus-c-manual-rights-entry__fatal_view'>
+            <div ref={containerRef} style={{height: viewHeight}} className='nexus-c-manual-rights-entry__fatal_view'>
                 {getRows()}
             </div>
             }
