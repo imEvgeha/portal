@@ -22,7 +22,7 @@ const StatusIcon = ({status, title}) => {
                     <i className="fas fa-circle"> </i>
                 </span>);
             case PENDING:
-                return <img className='status-img' alt='status' src={LoadingEllipsis}/>;
+                return <img className='status-img' alt='Pending' src={LoadingEllipsis}/>;
             default:
                 return status;
         }
