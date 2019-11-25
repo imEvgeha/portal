@@ -30,8 +30,9 @@ import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import {CustomFieldAddText, AddButton} from '../custom-form-components/CustomFormComponents';
 import {isObject} from '../../../util/Common';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import ManualRightsEntryDOPConnector from '../create/ManualRightsEntryDOPConnector';
+import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
 import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
+import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
 
 const mapStateToProps = state => {
     return {
@@ -1025,7 +1026,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, priorityError, readOnly, required, highlighted) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted, isLocalDate) => {
             let ref;
 
             const {flatRight} = this.state;
@@ -1052,33 +1053,34 @@ class RightDetails extends React.Component {
 
             const error = priorityError || validate(value);
 
-            const component = (
-                <NexusDateTimePicker
-                    id={displayName}
-                    onChange={(date) => {
-                        // Keep a separate state for edited values
-                        this.setState((prevState) => ({
-                            editedRight: {...prevState.editedRight, [name]: date}
-                        })
-                    );}}
-                    // TODO: Awful. To be removed when refactoring RightDetails
-                    onConfirm={(value) => !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()}
-                    defaultValue={value}
-                    displayTimeInReadView={showTime}
-                    value={value}
-                    error={error}
-                    required={required}
-                    isWithInlineEdit={true}
-                    isReadOnly={readOnly}
-                    isLocalDate={showTime}
-                />
-            );
+            const props = {
+                id: displayName,
+                onChange: (date) => {
+                    // Keep a separate state for edited values
+                    this.setState((prevState) => ({
+                        editedRight: {...prevState.editedRight, [name]: date}
+                    }));
+                },
+                onConfirm: (value) => (
+                    !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()
+                ),
+                defaultValue: value,
+                value,
+                error,
+                required,
+                isWithInlineEdit: true,
+            };
+
+            const component = showTime
+                ? <NexusDateTimePicker {...props} isLocalDate={isLocalDate} />
+                : <NexusDatePicker {...props} />;
+
             return renderFieldTemplate(
                 name,
                 displayName,
                 value,
                 error,
-                readOnly,
+                isReadOnly,
                 required,
                 highlighted,
                 null,
@@ -1190,9 +1192,11 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
                              break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
+                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
+                            break;
+                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, true));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;

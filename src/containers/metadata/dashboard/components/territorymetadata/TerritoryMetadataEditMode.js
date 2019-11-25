@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { Row, Col, Container } from 'reactstrap';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
+import React, {Component} from 'react';
+import {Row, Col, Container} from 'reactstrap';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { formatTypeFirstLetter } from '../.././../../../constants/metadata/format';
 import NexusDateTimePicker from '../../../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import {DATE_FORMAT} from '../../../../../constants/metadata/constant-variables';
+import {DATE_FORMAT, COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
 class TerritoryMetadataEditMode extends Component {
 
@@ -28,20 +27,8 @@ class TerritoryMetadataEditMode extends Component {
                     <AvForm onValidSubmit={this.props.validSubmit}>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <span>Territory Type</span><br />
-                                {this.props.data.territoryType ? <b>{formatTypeFirstLetter(this.props.data.territoryType)}</b> : <span style={{ color: '#999' }}>Empty</span>}
-                            </Col>
-                            <Col>
-                                <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
-                                    validate={{
-                                        pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
-                                    }} />
-                            </Col>
-                        </Row>
-                        <Row style={{ padding: '15px' }}>
-                            <Col>
                                 <span>Locale</span><br />
-                                {this.props.data.locale ? <b>{this.props.getLanguageByCode(this.props.data.locale, this.props.data.territoryType)}</b> : <span style={{ color: '#999' }}>Empty</span>}
+                                {this.props.data.locale ? <b>{this.props.getLanguageByCode(this.props.data.locale, COUNTRY)}</b> : <span style={{ color: '#999' }}>Empty</span>}
                             </Col>
                             <Col>
                                 <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}

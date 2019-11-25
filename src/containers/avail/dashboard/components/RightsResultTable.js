@@ -74,7 +74,8 @@ class RightsResultTable extends React.Component {
         hidden: t.bool,
         nav: t.object,
         autoRefresh: t.number,
-        mode: t.string
+        mode: t.string,
+        selectedTab: t.string
     };
 
     static defaultProps = {
@@ -184,7 +185,10 @@ class RightsResultTable extends React.Component {
 
         this.refreshSort();
 
-        if(this.props.fromServer && this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true && this.table != null) {
+        const isLoading = this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true;
+        const isNewTab = prevProps.selectedTab !== this.props.selectedTab;
+        const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab);
+        if(shouldRefetch) {
             this.table.api.setDatasource(this.dataSource);
         }
 
@@ -405,7 +409,6 @@ class RightsResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
-                       //console.log(response);
                         if(response && response.data.total > 0){
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.

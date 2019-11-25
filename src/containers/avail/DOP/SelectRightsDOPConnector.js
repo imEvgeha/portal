@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 // import Button from '@atlaskit/button';
-
 import DOP from '../../../util/DOP';
 import {rightsService} from '../service/RightsService';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
+import {NexusModalContext} from '../../../ui-elements/nexus-modal/NexusModal';
 
+const DOP_POP_UP_TITLE = 'Select rights planning';
+const DOP_POP_UP_MESSAGE = 'No rights selected';
 
 class SelectRightsDOPConnector extends Component {
     static propTypes = {
@@ -15,30 +17,45 @@ class SelectRightsDOPConnector extends Component {
         updatePromotedRights: PropTypes.func
     };
 
+    static contextType = NexusModalContext;
+
     constructor(props) {
         super(props);
         this.state = {
             isConfirmOpen: false,
             isSendingData: false
         };
-
-        this.showConfirmDialog = this.showConfirmDialog.bind(this);
-        this.onModalApply = this.onModalApply.bind(this);
-        this.onModalCancel = this.onModalCancel.bind(this);
     }
 
     componentDidMount() {
         DOP.setDOPMessageCallback(this.showConfirmDialog);
     }
 
-    showConfirmDialog(){
+    openDOPPopUp = () => {
+        const handlePopUpClick = () => {
+            DOP.sendInfoToDOP(1, null);
+            this.context.close();
+        };
+        this.context.setModalContentAndTitle(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE);
+        this.context.setModalActions([
+            {
+                text: 'OK',
+                onClick: handlePopUpClick,
+                appearance: 'primary',
+            }
+        ]);
+    };
+
+    showConfirmDialog = () => {
         const { promotedRights } = this.props;
         if(promotedRights.length > 0){
             this.setState({isConfirmOpen : true});
+        } else{
+            this.openDOPPopUp();
         }
-    }
+    };
 
-    onModalApply(){
+    onModalApply = () => {
         this.setState({isSendingData : true});
         const { promotedRights, updatePromotedRights } = this.props;
         // send flag changes to server
@@ -72,12 +89,12 @@ class SelectRightsDOPConnector extends Component {
             console.error('Unexpected error');
             console.error(e);
         });
-    }
+    };
 
-    onModalCancel(){
+    onModalCancel = () => {
         this.setState({isConfirmOpen : false});
         DOP.sendInfoToDOP(1, null);
-    }
+    };
 
     render(){
         const { isConfirmOpen, isSendingData } = this.state;

@@ -24,16 +24,13 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
     const ComposedComponent = props => {
         const gridApiRef = useRef({});
         const previousParams = usePrevious(props.params);
-        const previousExcludedItems = usePrevious(props.excludedItems);
 
         useEffect(() => {
             const {api} = gridApiRef.current;
-            if (((!isEqual(props.params, previousParams) && props.params) 
-                || (!isEqual(props.excludedItems, previousExcludedItems) && props.excludedItems)) 
-            && api) {
+            if ((!isEqual(props.params, previousParams) && props.params) && api) {
                 updateData(fetchData, api);
             }
-        }, [props.params, props.excludedItems]);
+        }, [props.params]);
 
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
@@ -59,8 +56,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
 
             fetchData(pageNumber, pageSize, preparedParams)
                 .then(response => {
-                    const {excludedItems} = props;
-                    const {page = 0, size = 0, total = 0, data} = getResponseData(response, excludedItems);
+                    const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
 
                     if (typeof props.setTotalCount === 'function') { 
                         props.setTotalCount(total);
@@ -84,24 +80,6 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                     gridApi.showNoRowsOverlay();
                 })
                 .catch(error => failCallback(error));
-        };
-
-        const getResponseData = (response, excludedCriteria) => {
-            const {data = {}} = response || {};
-            const {page = 0, size = 0, total = 0} = data || {};
-            if (Array.isArray(excludedCriteria) && total > 0) {
-                const key = !!excludedCriteria.length && Object.keys(excludedCriteria[0])[0];
-                const items = data.data.filter(el => !excludedCriteria.some(item => el.hasOwnProperty(key) && item[key] === el[key]));
-                const totalItems = total - excludedCriteria.length;
-                return {
-                    page, 
-                    size, 
-                    total: totalItems, 
-                    data: items,
-                };
-            }
-
-            return data;
         };
 
         const filterBy = filterObject => {
@@ -177,7 +155,9 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             />
         );
     };
+
     return ComposedComponent;
 };
 
 export default withInfiniteScrolling;
+

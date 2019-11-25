@@ -1,42 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import styled, {css} from 'styled-components';
 import PropTypes from 'prop-types';
 import {updateSelectedTerritoriesTab} from '../../../../stores/actions/DOP';
 import connect from 'react-redux/es/connect/connect';
 import {ALL_RIGHTS, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
 import {rightServiceManager} from '../../../../containers/avail/service/RightServiceManager';
 import {tabFilter} from '../../../../constants/DOP/tabFilter';
-
-const TabContainer = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const Tab = styled.div`
-    display: inline-block;
-    border-right: 1px solid #000;
-    font-size: 14px;
-    width: 130px;
-    padding: 0 10px 0 10px;
-    text-align: center;
-    color: #999;
-    &:hover {
-        color: #666;
-        cursor: pointer;
-    }
-    &:last-child {
-        border-right: none;
-        width: 200px;
-    }
-    ${props => props.isActive && css`
-        font-weight: bold;
-        font-size: 15px;
-        color: #000;
-    `}
-    ${props => props.isDisabled && css`
-        pointer-events: none;
-    `}
-`;
+import {SelectRightsTab, TabContainer} from '../../../../ui-elements/nexus-table-tab/TableTab';
 
 function Tabs(props) {
 
@@ -55,15 +24,15 @@ function Tabs(props) {
 
     return (
         <TabContainer>
-            <Tab isActive={props.selectedTerritoriesTab === ALL_RIGHTS}
-                 onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHTS)}>All Right ({allRightCount})</Tab>
-            <Tab isActive={props.selectedTerritoriesTab === INCOMING}
-                 onClick={() => props.updateFilterSelectedTerritories(INCOMING)}>Incoming ({incomingCount})</Tab>
-            <Tab isActive={props.selectedTerritoriesTab === SELECTED}
-                 onClick={() => props.updateFilterSelectedTerritories(SELECTED)}>Selected ({selectedCount})</Tab>
-            <Tab isActive={props.selectedTerritoriesTab === PENDING_SELECTION}
-                 isDisabled={props.promotedRightsCount === 0}
-                 onClick={() => props.updateFilterSelectedTerritories(PENDING_SELECTION)}>Pending selection ({props.promotedRightsCount})</Tab>
+            <SelectRightsTab isActive={props.selectedTerritoriesTab === ALL_RIGHTS}
+                             onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHTS)}>All Right ({allRightCount})</SelectRightsTab>
+            <SelectRightsTab isActive={props.selectedTerritoriesTab === INCOMING}
+                             onClick={() => props.updateFilterSelectedTerritories(INCOMING)}>Incoming ({incomingCount})</SelectRightsTab>
+            <SelectRightsTab isActive={props.selectedTerritoriesTab === SELECTED}
+                             onClick={() => props.updateFilterSelectedTerritories(SELECTED)}>Selected ({selectedCount})</SelectRightsTab>
+            <SelectRightsTab isActive={props.selectedTerritoriesTab === PENDING_SELECTION}
+                             isDisabled={props.promotedRightsCount === 0}
+                             onClick={() => props.updateFilterSelectedTerritories(PENDING_SELECTION)}>Pending selection ({props.promotedRightsCount})</SelectRightsTab>
         </TabContainer>
     );
 }

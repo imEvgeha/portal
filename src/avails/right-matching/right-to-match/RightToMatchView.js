@@ -152,7 +152,6 @@ const RightToMatchView = ({
                         params={fieldSearchCriteria}
                         filters={fieldSearchCriteria}
                         filterableColumns={Object.keys(fieldSearchCriteria)}
-                        excludedItems={[{id: rightId}]}
                         handleSelectionChange={handleSelectionChange}
                         rowSelection="multiple"
                     />
