@@ -16,13 +16,18 @@ import StatusIcon from '../../components/StatusIcon';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
+import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
+import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
+import * as selectors from './manualRightEntrySelector';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
-const mapStateToProps = state => {
-    return {
+const mapStateToProps = () => {
+    const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
+    return (state, props) => ({
         availsMapping: state.root.availsMapping,
-    };
+        selectedTab: manualRightsEntrySelectedTabSelector(state, props),
+    });
 };
 
 class RightsCreateFromAttachment extends React.Component {
@@ -31,6 +36,7 @@ class RightsCreateFromAttachment extends React.Component {
         match: t.object,
         location: t.object,
         availsMapping: t.any,
+        selectedTab: t.string
     };
 
     static contextTypes = {
@@ -65,20 +71,25 @@ class RightsCreateFromAttachment extends React.Component {
             return;
         }
 
-        this.getSearchCriteriaFromURL();
+        this.getSearchCriteriaFromURLWithCustomOne();
     }
 
-    getSearchCriteriaFromURL() {
-        rightSearchHelper.advancedSearch({ availHistoryIds: this.state.availHistoryId }, false);
+    getSearchCriteriaFromURLWithCustomOne() {
+        const searchCriteria = this.getCustomSearchCriteria(this.props.selectedTab);
+        rightSearchHelper.advancedSearch(searchCriteria, false);
         this.getHistoryData();
         if (this.refresh === null) {
             this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
         }
     }
 
+    getCustomSearchCriteria = (tab) => {
+        return Object.assign( {}, tabFilter.get(tab), {availHistoryIds: this.state.availHistoryId});
+    };
+
     componentDidUpdate(prevProps) {
-        if (prevProps.availsMapping !== this.props.availsMapping) {
-            this.getSearchCriteriaFromURL();
+        if (prevProps.availsMapping !== this.props.availsMapping || prevProps.selectedTab !== this.props.selectedTab) {
+            this.getSearchCriteriaFromURLWithCustomOne();
         }
     }
 
@@ -156,7 +167,7 @@ class RightsCreateFromAttachment extends React.Component {
 
     render() {
         const {historyData: {attachments, ingestType, status, externalId = null,
-            ingestReport: {errorDetails} = {}} = {},
+            ingestReport: {errorDetails, fatal} = {}} = {},
             availHistoryId}  = this.state;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
@@ -191,21 +202,27 @@ class RightsCreateFromAttachment extends React.Component {
                         </Can>
                     </div>
                 </div>
-                <div className='nexus-c-manual-rights-entry__actions'>
-                    <Button className='nexus-c-manual-rights-entry__button'
-                            id="right-create"
-                            onClick={this.createRight}>
-                        Create Right
-                    </Button>
-                </div>
-                <div> Rights Created </div>
                 {this.props.availsMapping &&
-                    <RightsResultTable
-                        fromServer={true}
-                        columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
-                        nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
-                        autoload={false}
-                    />
+                    <React.Fragment>
+                        <div className='nexus-c-manual-rights-entry__table_header'>
+                            <ManualRightEntryTableTabs getCustomSearchCriteria={this.getCustomSearchCriteria} fatalCount={fatal}/>
+                            <div className='nexus-c-manual-rights-entry__actions'>
+                                <Button className='nexus-c-manual-rights-entry__button'
+                                        id="right-create"
+                                        onClick={this.createRight}>
+                                    Create Right
+                                </Button>
+                            </div>
+                        </div>
+                        <RightsResultTable
+                            fromServer={true}
+                            columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
+                            nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
+                            autoload={false}
+                            selectedTab={this.props.selectedTab}
+                            hidden={this.props.selectedTab === FATAL}
+                        />
+                    </React.Fragment>
                 }
             </div>
         );
