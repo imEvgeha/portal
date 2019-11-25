@@ -18,18 +18,8 @@ import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
-import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
-import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-
-const FILTERABLE_COLUMNS = ['id', 'title', 'rightStatus'];
-const INITIAL_FILTER = {
-    rightStatus: 'Pending,Confirmed',
-    title: 'Tes',
-};
 
 const NexusGridWithInfiniteScrolling = compose(
-    withFilterableColumns(FILTERABLE_COLUMNS, INITIAL_FILTER),
-    withSideBar(),
     withInfiniteScrolling(getRightMatchingList), 
 )(NexusGrid);
 

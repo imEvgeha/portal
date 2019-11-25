@@ -46,6 +46,7 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
             }
         }, [columnDefs]);
 
+
         // apply initial filter
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
@@ -61,15 +62,12 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
                                 type: 'equals',
                                 filter: filters[key],
                             });
-                            // APPLY THE MODEL
-                            filterInstance.applyModel();
                         }
                     }
                 });
                 gridApi.onFilterChanged();
             } 
         }, [gridApi, mapping]);
-
 
         function updateColumnDefs(columnDefs) {
             const filterableColumnDefs = columnDefs.map(columnDef => {
@@ -113,7 +111,7 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
         const onGridEvent = ({type, api}) => {
             if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
                 // TODO: happens 
-                setGridApi(api);
+                setTimeout(() => setGridApi(api), 100);
             }
         };
 
