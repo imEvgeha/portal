@@ -114,6 +114,18 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
 
     const deepCloneMatchedTitlesColumnDefs = deepClone(columnDefs);
     const deepCloneCombinedTitleColumnDefs = deepClone(columnDefs);
+
+    const renderEpisodeAndSeasonNumber = params => {
+        const {data: {contentType, episodic: {episodeNumber, seasonNumber}}} = params;
+        if(contentType === 'EPISODE') return episodeNumber;
+        else if(contentType === 'SEASON') return seasonNumber;
+        else return null;
+    };
+
+    const numOfEpisodeAndSeasonField = {
+        headerName: '-',
+        valueFormatter: renderEpisodeAndSeasonNumber,
+    };
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
@@ -125,7 +137,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...deepCloneMatchedTitlesColumnDefs]}
+                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
                     </React.Fragment>
@@ -136,7 +148,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...deepCloneCombinedTitleColumnDefs]}
+                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />
                     </React.Fragment>

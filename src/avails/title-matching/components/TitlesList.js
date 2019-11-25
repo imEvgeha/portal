@@ -105,6 +105,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         cellRendererFramework: duplicateButtonCell,
     }; 
     
+    
     let deepCloneColumnDefs = deepClone(columnDefs);
     const handleTitleMatchingRedirect = params => {
         deepCloneColumnDefs.filter(e => {
@@ -122,14 +123,25 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
         return e;
     });
+
+    const renderEpisodeAndSeasonNumber = params => {
+        const {data: {contentType, episodic: {episodeNumber, seasonNumber}}} = params;
+        if(contentType === 'EPISODE') return episodeNumber;
+        else if(contentType === 'SEASON') return seasonNumber;
+        else return null;
+    };
+
+    const numOfEpisodeAndSeasonField = {
+        headerName: '-',
+        valueFormatter: renderEpisodeAndSeasonNumber,
+    };
     
-    console.log('updatedColumnDefs', updatedColumnDefs);
     const repository = getRepositoryCell();
     return (
         <React.Fragment>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
-                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
+                columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}/>
             <ActionsBar
                 rightId={rightId}
