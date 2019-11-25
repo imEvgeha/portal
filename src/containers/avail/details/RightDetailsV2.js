@@ -15,7 +15,6 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
-import RightsURL from '../util/RightsURL';
 import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 import rightConstants from './RightConstants';
