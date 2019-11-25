@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import isEqual from 'lodash.isequal';
 import { AgGridReact } from 'ag-grid-react';
 import {Link} from 'react-router-dom';
 import {historyService} from '../../service/HistoryService';
@@ -13,6 +14,10 @@ import Constants from './Constants';
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
 class DashboardLatestAvailsCard extends React.PureComponent {
+    rowIds = [];
+    table = null;
+    refresh = null;
+
     componentDidMount() {
         this.getData();
         if(this.refresh === null){
@@ -26,9 +31,6 @@ class DashboardLatestAvailsCard extends React.PureComponent {
             this.refresh = null;
         }
     }
-
-    table = null;
-    refresh = null;
 
     statusIcon = (params) => {
         const {value, valueFormatted, data: {errorDetails}} = params;
@@ -69,13 +71,18 @@ class DashboardLatestAvailsCard extends React.PureComponent {
         return toReturn;
     }
 
-    getData() {
+    getData = () => {
         historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, PAGE_SIZE, [{id: 'received', desc:true}])
                 .then(response => {
+                    const {data: {data = []} = {}} = response;
                     if(this.table){
-                        if(response.data.total > 0){
-                            this.table.api.setRowData(response.data.data);
-                            this.table.api.hideOverlay();
+                        if(data.length > 0){
+                            const rows = data.map(row => row.id);
+                            if(!isEqual(this.rowIds, rows)){
+                                this.table.api.setRowData(data);
+                                this.rowIds = rows;
+                                this.table.api.hideOverlay();
+                            }
                         }else{
                             this.table.api.showNoRowsOverlay();
                         }
@@ -84,7 +91,7 @@ class DashboardLatestAvailsCard extends React.PureComponent {
                    console.error('Unexpected error');
                    console.error(error);
                });
-    }
+    };
 
     setTable = element => {
         this.table = element;
