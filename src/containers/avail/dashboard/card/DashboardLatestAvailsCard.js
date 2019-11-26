@@ -1,41 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
+import isEqual from 'lodash.isequal';
 import { AgGridReact } from 'ag-grid-react';
 import {Link} from 'react-router-dom';
-
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
-
+import StatusIcon from '../../components/StatusIcon';
 import './DashboardLatestAvailsCard.scss';
+import IngestReport from './components/IngestReport';
+import Constants from './Constants';
 
-import LoadingElipsis from '../../../../img/ajax-loader.gif';
+const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
-const REFRESH_INTERVAL = 5*1000; //5 seconds
-
-export default class DashboardLatestAvailsCard extends React.Component {
-
+class DashboardLatestAvailsCard extends React.PureComponent {
+    tableData = [];
     table = null;
-
-    constructor(props) {
-        super(props);
-
-        this.getData = this.getData.bind(this);
-
-        this.state = {
-            pageSize: 6,
-            cols:[{headerName: 'Date', field: 'received', valueFormatter: function(params) {
-                          if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
-                          else return '';
-                      }, width:120},
-                    {headerName: 'Provider', field: 'provider', width:90},
-                    {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIconRender, width:55},
-                    {headerName: 'Ingest Method', field: 'ingestType', width:105},
-                    {headerName: 'Filename', tooltipValueGetter: this.showFileNames, valueFormatter: this.showFileNames, width:180}
-            ]
-        };
-
-        this.refresh = null;
-    }
+    refresh = null;
 
     componentDidMount() {
         this.getData();
@@ -51,28 +32,25 @@ export default class DashboardLatestAvailsCard extends React.Component {
         }
     }
 
-    statusIconRender(params){
-        const content = params.valueFormatted || params.value;
-        if (params.value !== undefined) {
-            if (content) {
-                switch (content) {
-                     case 'COMPLETED':
-                        return <span style={{ color: 'green'}}><i className="fas fa-check-circle"></i></span>;
-                     case 'FAILED':
-                        return <span title={params.data.errorDetails} style={{ color: 'red'}}><i className="fas fa-exclamation-circle"></i></span>;
-                    case 'MANUAL':
-                        return <span style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
-                     case 'PENDING':
-                        return <img style={{width:'22px'}} src={LoadingElipsis}/>;
-                     default:
-                        return content;
-                 }
-            }
+    statusIcon = (params) => {
+        const {value, valueFormatted, data: {errorDetails}} = params;
+        return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
+    };
+
+    columns = [{headerName: 'Date', field: 'received', valueFormatter: function(params) {
+            if(params.data && params.data.received) return moment(params.data.received).format('L') + ' ' + moment(params.data.received).format('HH:mm');
             else return '';
-        } else {
-            return '';
+        }, width:120},
+        {headerName: 'Provider', field: 'provider', width:90},
+        {headerName: 'Status', field: 'status', cellRendererFramework: this.statusIcon, width:55},
+        {headerName: 'Ingest Method', field: 'ingestType', width:105},
+        {
+            headerName: 'Filename',
+            cellRendererFramework: IngestReport,
+            valueFormatter: this.showFileNames,
+            width:180,
         }
-    }
+    ];
 
     showFileNames(params){
         let toReturn='';
@@ -93,14 +71,17 @@ export default class DashboardLatestAvailsCard extends React.Component {
         return toReturn;
     }
 
-    getData() {
-        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, this.state.pageSize, [{id: 'received', desc:true}])
+    getData = () => {
+        historyService.advancedSearch(advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}), 0, PAGE_SIZE, [{id: 'received', desc:true}])
                 .then(response => {
-                    //console.log(response);
+                    const {data: {data = []} = {}} = response;
                     if(this.table){
-                        if(response.data.total > 0){
-                            this.table.api.setRowData(response.data.data);
-                            this.table.api.hideOverlay();
+                        if(data.length > 0){
+                            if(!isEqual(this.tableData, data)){
+                                this.table.api.setRowData(data);
+                                this.tableData = data;
+                                this.table.api.hideOverlay();
+                            }
                         }else{
                             this.table.api.showNoRowsOverlay();
                         }
@@ -109,13 +90,18 @@ export default class DashboardLatestAvailsCard extends React.Component {
                    console.error('Unexpected error');
                    console.error(error);
                });
-    }
+    };
 
     setTable = element => {
         this.table = element;
         if(this.table){
            this.table.api.showLoadingOverlay();
         }
+    };
+
+    onSelectionChanged = ({api}) => {
+        const historyId = api.getSelectedRows()[0].id;
+        this.props.push(`avails/history/${historyId}`);
     };
 
     render() {
@@ -135,17 +121,27 @@ export default class DashboardLatestAvailsCard extends React.Component {
                     >
                     <AgGridReact
                         ref={this.setTable}
-                        columnDefs= {this.state.cols}
+                        columnDefs= {this.columns}
                         headerHeight= '30'
                         rowHeight= '23'
                         suppressDragLeaveHidesColumns= {true}
                         suppressHorizontalScroll= {true}
                         suppressMovableColumns = {true}
-                        suppressRowClickSelection = {true}
-                        suppressCellSelection = {true}
+                        rowSelection='single'
+                        onSelectionChanged={this.onSelectionChanged}
                     />
                 </div>
              </div>
         );
     }
 }
+
+DashboardLatestAvailsCard.propTypes = {
+    push: PropTypes.func,
+};
+
+DashboardLatestAvailsCard.defaultProps = {
+    push: () => null,
+};
+
+export default DashboardLatestAvailsCard;

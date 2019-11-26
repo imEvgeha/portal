@@ -31,13 +31,14 @@ function* fetchFocusedRight(requestMethod, {payload}) {
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: focusedRight,
         });
-        const { title, releaseYear } = focusedRight;
-        const {searchParameters: { TITLE, RELEASE_YEAR}} = Constants;
+        const { title, releaseYear, contentType } = focusedRight;
+        const {searchParameters: {TITLE, RELEASE_YEAR, CONTENT_TYPE}} = Constants;
         yield put({
             type: METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
             payload: {
                 [TITLE]: title,
                 [RELEASE_YEAR]: releaseYear,
+                [CONTENT_TYPE]: contentType.toString().toUpperCase()
             },
         });
         yield put({

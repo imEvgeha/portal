@@ -12,6 +12,7 @@ import rightMatching from './avails/right-matching/rightMatchingReducer';
 import titleMatching from './avails/title-matching/titleMatchingReducer';
 import localeReducer from './stores/reducers/localization/localeReducer';
 import rightHistory from './avails/right-history-view/rightHistoryReducer';
+import manualRightsEntry from './stores/reducers/avail/manualRightsEntry';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -26,7 +27,8 @@ const createRootReducer = routerHistory => combineReducers({
     rightMatching,
     titleMatching,
     localeReducer,
-    rightHistory
+    rightHistory,
+    manualRightsEntry
 });
 
 export default createRootReducer;

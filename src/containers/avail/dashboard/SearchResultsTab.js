@@ -75,7 +75,7 @@ class SearchResultsTab extends React.Component {
     }
 
     selectColumns() {
-        this.props.availsMapping.mappings.forEach(column => {
+        this.props.availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
             if (column.javaVariableName === 'title') return '';
             let checked = store.getState().dashboard.session.columns.indexOf(column.javaVariableName) > -1;
             const data = {
@@ -141,7 +141,7 @@ class SearchResultsTab extends React.Component {
 
     toggleSelectAll(e){
         let currentValue = e.target.checked;
-        this.props.availsMapping.mappings.forEach(column => {
+        this.props.availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
             if(column.javaVariableName === 'title') return '';
             this.hideShowColumns[column.javaVariableName].checked = () => currentValue;
             this.hideShowColumns[column.javaVariableName].refresh();

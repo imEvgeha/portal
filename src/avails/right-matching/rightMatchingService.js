@@ -6,6 +6,7 @@ import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common';
 
 const endpoint = 'rights';
 const http = Http.create();
+const httpNoErrorHandling = Http.create({noDefaultErrorHandling:true});
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
@@ -16,26 +17,46 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
     );
 };
 
-export const getCombinedRight = (rightId, matchedRightId) => {
+export const getCombinedRight = (rightIds) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`
     );
 };
 
-export const putCombinedRight = (rightId, matchedRightId, combinedRight) => {
+export const putCombinedRight = (rightIds, combinedRight) => {
     return http.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${matchedRightId}/match/${rightId}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
         combinedRight
     );
 };
 
 export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParams) => {
-    const queryParams = pickBy(searchCriteria, identity) || {};
+    const {excludedItems} = searchCriteria;
+    const prop = 'excludedItems';
+    const filteredSearchCriteria = Object.keys(searchCriteria)
+        .reduce((object, key) => {
+            if (key !== prop) {
+                object[key] = searchCriteria[key];
+            }
+            return object;
+        }, {});
+    const queryParams = pickBy(filteredSearchCriteria, identity) || {};
     const params = {...queryParams, page, size};
     return http.get(
         `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`, 
         {paramsSerializer : encodedSerialize, params}
-    ); 
+    ).then(response => {
+        // temporal FE handling of not equal query params
+        const updatedResponse = {
+            ...response,
+            data: {
+                ...response.data,
+                data: response.data.data.filter(el => Array.isArray(excludedItems) && excludedItems.every(item => item.id !== el.id)),
+                total: response.data.total - excludedItems.length,
+            }
+        };
+        return updatedResponse;
+    });
 };
 
 export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
@@ -48,6 +69,6 @@ export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
 
 
 export const createRightById = (id) => {
-    return http.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`); 
+    return httpNoErrorHandling.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
 };
 

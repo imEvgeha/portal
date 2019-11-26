@@ -103,9 +103,9 @@ const RightToMatchView = ({
     };
 
     const handleMatchClick = () => {
-        if (Array.isArray(selectedRows) && selectedRows.length) {
-            const firstRow = selectedRows[0];
-            history.push(URL.keepEmbedded(`${location.pathname}/match/${firstRow.id}`));
+        if (Array.isArray(selectedRows) && selectedRows.length > 0) {
+            const matchedRightIds = selectedRows.map(el => el.id).join();
+            history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds}`));
         }
     };
 
@@ -144,8 +144,8 @@ const RightToMatchView = ({
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
                         params={fieldSearchCriteria}
-                        excludedItems={[{id: rightId}]}
                         handleSelectionChange={handleSelectionChange}
+                        rowSelection="multiple"
                     />
                 )}
             </div>

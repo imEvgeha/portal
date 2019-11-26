@@ -13,7 +13,7 @@ export function* fetchAvailMapping(requestMethod) {
     try {
         yield put({
             type: actionTypes.FETCH_AVAIL_MAPPING_REQUEST,
-            paylaod: {},
+            payload: {},
         });
         const response = yield call(requestMethod);
         const {data} = response;
@@ -41,7 +41,7 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
         ]);
         if (!fetchMappingResult.error) {
             const {payload} = fetchMappingResult;
-            const mappings = (payload.mappings && payload.mappings.filter(el => el.displayName)) || [];
+            const mappings = (payload.mappings && payload.mappings.filter(el => el.dataType).filter(el => el.displayName)) || [];
             yield put({
                 type: actionTypes.STORE_AVAIL_MAPPING,
                 payload: {mappings},
@@ -73,8 +73,9 @@ export function* fetchAndStoreSelectItems(payload) {
             return call(fetchAvailSelectValuesRequest, profileService.getSelectValues, configEndpoint, javaVariableName);
         })
     );
-    const updatedSelectValues = fetchedSelectedItems.reduce((acc, el) => {
-        const {key, value, configEndpoint} = Object.values(el)[0];
+    const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
+        const values = Object.values(el);
+        const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
         let options;
         switch (configEndpoint) {
             case PRODUCTION_STUDIOS:
@@ -110,12 +111,12 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
     try {
         yield put({
             type: actionTypes.FETCH_AVAIL_SELECT_VALUES_REQUEST,
-            paylaod: {},
+            payload: {},
         });
         const response = yield call(requestMethod, requestParams);
         yield put({
             type: actionTypes.FETCH_AVAIL_SELECT_VALUES_SUCCESS,
-            paylaod: response,
+            payload: response,
         });
         return {
             [key]: {
@@ -130,14 +131,6 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
             error: true,
             payload: error,
         });
-        return {
-            [key]: {
-                key,
-                value: error,
-                configEndpoint: requestParams,
-
-            }
-        };
     }
 }
 
@@ -145,18 +138,18 @@ export function* fetchAvailConfiguration(requestMethod) {
     try {
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_REQUEST,
-            paylaod: {},
+            payload: {},
         });
         const response = yield call(requestMethod);
         const {data} = response;
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_SUCCESS,
-            paylaod: data,
+            payload: data,
         });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_ERROR,
-            paylaod: error,
+            payload: error,
             error: true,
         });
     }

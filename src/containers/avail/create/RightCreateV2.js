@@ -17,7 +17,7 @@ import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusTimeWindowPicker from '../../../ui-elements/nexus-time-window-picker/NexusTimeWindowPicker';
+import NexusDateTimeWindowPicker from '../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 
@@ -249,11 +249,11 @@ class RightCreate extends React.Component {
                 localdate: null,
                 time: null,
                 duration: (
-                    <NexusTimeWindowPicker
+                    <NexusDateTimeWindowPicker
                         label={displayName}
                         onChange={timeWindow => {
                             /* For testing purposes */
-                            console.warn('NexusTimeWindowPicker returned: ', timeWindow);
+                            console.warn('NexusDateTimeWindowPicker returned: ', timeWindow);
                         }}
                         startDateTimePickerProps={{
                             id: `${jvName}Start`,
@@ -279,6 +279,7 @@ class RightCreate extends React.Component {
                         existingItems={this.right['territory']}
                         onSubmit={items => this.handleArrayPush(items, 'territory')}
                         schema={RightTerritoryFormSchema(prepData('territory'))}
+                        keyForTagLabel="country"
                     />
                 ),
             };

@@ -1,12 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
-import Select from '@atlaskit/select';
-import InlineEdit from '@atlaskit/inline-edit';
-import './NexusDateTimePicker.scss';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
+import Select from '@atlaskit/select';
+import InlineEdit from '@atlaskit/inline-edit';
+import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
+import {getDateFormatBasedOnLocale} from '../../util/Common';
+import './NexusDateTimePicker.scss';
 
 // TODO: Move to a separate file for constants
 const RELATIVE_TIME_LABEL = 'Relative';
@@ -18,7 +19,6 @@ const NexusDateTimePicker = ({
     isWithInlineEdit,
     isReadOnly,
     isLocalDate,
-    displayTimeInReadView,
     onChange,
     onConfirm,
     value,
@@ -32,12 +32,9 @@ const NexusDateTimePicker = ({
     const {locale = 'en-US'} = intl || {};
 
     // Create date format based on locale
-    const dateFormat = moment()
-        .locale(locale)
-        .localeData()
-        .longDateFormat('L')
+    const dateFormat = getDateFormatBasedOnLocale(locale)
         .toUpperCase()
-        .concat(displayTimeInReadView ? TIME_FORMAT : '');
+        .concat(TIME_FORMAT);
 
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
@@ -54,6 +51,7 @@ const NexusDateTimePicker = ({
                             <NexusSimpleDateTimePicker
                                 id={id}
                                 onChange={onChange}
+                                value={value}
                                 isUTC={isUTC}
                                 defaultValue={isUTC ? value : moment(value).local().format(dateFormat)}
                                 {...restProps}
@@ -85,9 +83,14 @@ const NexusDateTimePicker = ({
                 ? (
                     <InlineEdit
                         readView={() => (
-                            `${moment(value).utc(!isUTC).format(dateFormat)}
-                            ${isUTC && displayTimeInReadView ? ' (UTC)' : ''}`
-                            || `Enter ${label}`
+                            <div className="nexus-c-date-time-picker__read-view-container">
+                                {moment(value).isValid()
+                                ?`${moment(value).utc(!isUTC).format(dateFormat)}
+                                 ${isUTC ? ' (UTC)' : ''}`
+                                : <div className="read-view-container__placeholder">
+                                        {`Enter ${name}`}
+                                </div>}
+                            </div>
                         )}
                         editView={() => DatePicker(false)}
                         defaultValue={value}
@@ -108,7 +111,6 @@ NexusDateTimePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isLocalDate: PropTypes.bool,
-    displayTimeInReadView: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -117,7 +119,6 @@ NexusDateTimePicker.propTypes = {
 NexusDateTimePicker.defaultProps = {
     label: '',
     value: '',
-    displayTimeInReadView: false,
     isWithInlineEdit: false,
     isReadOnly: false,
     isLocalDate: false,

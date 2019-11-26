@@ -192,7 +192,7 @@ class AdvancedSearchPanel extends React.Component {
     bulkExport(exportAll) {
         let exportColumns = this.props.columns.slice(0);
         if(exportAll){
-            exportColumns = exportColumns.concat(this.props.availsMapping.mappings.map(({javaVariableName}) => javaVariableName).filter(javaVariableName => !exportColumns.includes(javaVariableName)));
+            exportColumns = exportColumns.concat(this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName).filter(javaVariableName => !exportColumns.includes(javaVariableName)));
         }
         exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), exportColumns, this.props.availTabPageSort)
         .then(function (response) {
@@ -393,6 +393,7 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
                                 case 'date' : return renderCloseableDateBtn(key, schema.displayName);
+                                case 'datetime' : return renderCloseableDateBtn(key, schema.displayName);
                                 case 'localdate' : return renderCloseableLocalDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
                                 default:
