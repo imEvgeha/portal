@@ -19,7 +19,7 @@ import './RightsResultTable.scss';
 import connect from 'react-redux/es/connect/connect';
 import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
 import {rightServiceManager} from '../../service/RightServiceManager';
-import {getDeepValue, equalOrIncluded} from '../../../../util/Common';
+import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -218,27 +218,35 @@ class RightsResultTable extends React.Component {
             return;
         }
         let formatter = (column) => {
-            switch (column.dataType) {
-                case 'localdate' : return function(params){
-                    if(params.data && params.data[column.javaVariableName]) return moment(params.data[column.javaVariableName]).format('L') + ' ' + moment(params.data[column.javaVariableName]).format('HH:mm');
-                    else return undefined;
+            const {
+                dataType,
+                javaVariableName,
+            } = column || {};
+
+            const dateFormat = `${getDateFormatBasedOnLocale('en')} HH:mm`;
+
+            switch (dataType) {
+                case 'localdate' :
+                case 'datetime' : return ({data = {}}) => {
+                    const {[column.javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
-                case 'date' : return function(params){
-                    if((params.data && params.data[column.javaVariableName]) && moment(params.data[column.javaVariableName].toString().substr(0, 10)).isValid()) {
-                        return moment(params.data[column.javaVariableName].toString().substr(0, 10)).format('L');
+                case 'date' : return function({data = {}}){
+                    if((data && data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
+                        return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
                     }
                     else return undefined;
                 };
-                case 'string' : if(column.javaVariableName === 'castCrew') return function(params){
-                    if(params.data && params.data[column.javaVariableName]){
-                        let data = params.data[column.javaVariableName];
+                case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
+                    if(data && data[javaVariableName]){
+                        let data = data[javaVariableName];
                         data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
                         return data;
                     } else return undefined;
                 }; else return null;
-                case 'territoryType' : return function(params){
-                    if(params.data && params.data[column.javaVariableName]) {
-                        let cellValue = params.data[column.javaVariableName].map(e => String(e.country)).join(', ');
+                case 'territoryType' : return function({data = {}}){
+                    if(data && data[javaVariableName]) {
+                        let cellValue = data[javaVariableName].map(e => String(e.country)).join(', ');
                         return cellValue ? cellValue : undefined;
                     }
                     else return undefined;

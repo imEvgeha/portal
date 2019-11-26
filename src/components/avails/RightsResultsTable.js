@@ -23,35 +23,36 @@ export default class RightsResultsTable extends React.Component {
     parseColumnsSchema(mappings){
         const colDef = {};
         const dateFormat = `${getDateFormatBasedOnLocale('en')} HH:mm`;
+
         let formatter = (column) => {
-            switch (column.dataType) {
-                case 'localdate' : return function(params){
-                    if(params.data && params.data[column.javaVariableName]) {
-                        return moment(params.data[column.javaVariableName]).format('L') + ' ' + moment(params.data[column.javaVariableName]).format('HH:mm');
-                    }
-                    return;
-                };
-                case 'date' : return function(params){
-                    if((params.data && params.data[column.javaVariableName]) && moment(String(params.data[column.javaVariableName]).substr(0, 10)).isValid()) {
-                        return moment(params.data[column.javaVariableName].toString().substr(0, 10)).format('L');
-                    }
-                    return;
-                };
+            const {
+                dataType,
+                javaVariableName,
+            } = column || {};
+
+            switch (dataType) {
+                case 'localdate' :
                 case 'datetime' : return ({data = {}}) => {
-                    const {[column.javaVariableName]: date = ''} = data || {};
+                    const {[javaVariableName]: date = ''} = data || {};
                     return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
-                case 'string' : if(column.javaVariableName === 'castCrew') return function(params){
-                    if(params.data && params.data[column.javaVariableName]){
-                        let data = params.data[column.javaVariableName];
+                case 'date' : return function(params){
+                    if((params.data && params.data[javaVariableName]) && moment(String(params.data[javaVariableName]).substr(0, 10)).isValid()) {
+                        return moment(params.data[javaVariableName].toString().substr(0, 10)).format('L');
+                    }
+                    return;
+                };
+                case 'string' : if(javaVariableName === 'castCrew') return function(params){
+                    if(params.data && params.data[javaVariableName]){
+                        let data = params.data[javaVariableName];
                         data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
                         return data;
                     }
                     return;
                 }; else return null;
                 case 'territoryType' : return function(params){
-                    if(params.data && params.data[column.javaVariableName]) {
-                        const cellValue = params.data[column.javaVariableName]
+                    if(params.data && params.data[javaVariableName]) {
+                        const cellValue = params.data[javaVariableName]
                         .map(e => String(e.country)).join(', ');
                         return cellValue;
                     }
