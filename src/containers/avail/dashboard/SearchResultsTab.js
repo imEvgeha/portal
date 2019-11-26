@@ -23,6 +23,7 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 import {exportService} from '../service/ExportService';
 import RightViewHistory from '../../../avails/right-history-view/RightHistoryView';
+import TableColumnCustomization from '../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
@@ -241,6 +242,11 @@ class SearchResultsTab extends React.Component {
         configurationService.changeReport(reportName);
     }
 
+    updateColumnsOrder = (cols) => {
+        this.props.resultPageUpdateColumnsOrder(cols);
+        store.dispatch(resultPageLoading(true)); //force refresh
+    }
+
     render() {
         return (
             <div id="dashboard-result-table">
@@ -270,7 +276,12 @@ class SearchResultsTab extends React.Component {
                                 </div>
                                 <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
                             </IfEmbedded>
-                            <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
+                            <TableColumnCustomization
+                                availsMapping={this.props.availsMapping}
+                                columns={store.getState().dashboard.session.columns}
+                                updateColumnsOrder={this.updateColumnsOrder}
+                            />
+                            {/*<i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>*/}
                         </div>
                     </div>
                     <div>
