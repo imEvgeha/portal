@@ -65,7 +65,8 @@ function ManualRightEntryFatalView({attachments, hidden}) {
 }
 
 ManualRightEntryFatalView.defaultProps = {
-    hidden: false
+    hidden: false,
+    attachments: []
 };
 
 ManualRightEntryFatalView.propTypes = {
