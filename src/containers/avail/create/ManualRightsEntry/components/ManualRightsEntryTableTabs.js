@@ -5,49 +5,54 @@ import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexu
 
 import {
     FATAL,
-    TOTAL_RIGHTS
+    TOTAL_RIGHTS,
+    PENDING,
+    ERRORS,
+    SUCCESS
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
-function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria, fatalCount}) {
+function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria, createdCount, updatedCount, fatalCount}) {
 
     const [totalRightsCount, setTotalRightsCount] = useState();
-    // const [createdCount, setCreatedCount] = useState();
-    // const [updatedCount, setUpdatedCount] = useState();
-    // const [pendingCount, setPendingCount] = useState();
-    // const [errorsCount, setErrorsCount] = useState();
+    const [successCount, setSuccessCount] = useState();
+    const [pendingCount, setPendingCount] = useState();
+    const [errorsCount, setErrorsCount] = useState();
 
     useEffect(() => {
         rightsService.advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
             .then(response => setTotalRightsCount(response.data.total));
-        // rightsService.advancedSearch(getCustomSearchCriteria(CREATED), 0, 1)
-        //     .then(response => setCreatedCount(response.data.total));
-        // rightsService.advancedSearch(getCustomSearchCriteria(UPDATED), 0, 1)
-        //     .then(response => setUpdatedCount(response.data.total));
-        // rightsService.advancedSearch(getCustomSearchCriteria(PENDING), 0, 1)
-        //     .then(response => setPendingCount(response.data.total));
-        // rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
-        //     .then(response => setErrorsCount(response.data.total));
+        rightsService.advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
+            .then(response => setSuccessCount(response.data.total));
+        rightsService.advancedSearch(getCustomSearchCriteria(PENDING), 0, 1)
+            .then(response => setPendingCount(response.data.total));
+        rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
+            .then(response => setErrorsCount(response.data.total));
     }, []);
+
+    const getCustomTotalCount = () => {
+        if(totalRightsCount && fatalCount) {
+            return `${totalRightsCount}/${totalRightsCount + fatalCount}`;
+        }
+    };
 
     return (
         <TabContainer>
             <ManualRightEntryTab isActive={selectedTab === TOTAL_RIGHTS}
                                  onClick={() => updateManualRightEntrySelectedTab(TOTAL_RIGHTS)}>Total Rights
-                ({totalRightsCount})</ManualRightEntryTab>
-            {/*<ManualRightEntryTab isActive={selectedTab === CREATED}*/}
-            {/*                     onClick={() => updateManualRightEntrySelectedTab(CREATED)}>Created*/}
-            {/*    ({createdCount})</ManualRightEntryTab>*/}
-            {/*<ManualRightEntryTab isActive={selectedTab === UPDATED}*/}
-            {/*                     onClick={() => updateManualRightEntrySelectedTab(UPDATED)}>Updated*/}
-            {/*    ({updatedCount})</ManualRightEntryTab>*/}
-            {/*<ManualRightEntryTab isActive={selectedTab === PENDING}*/}
-            {/*                     onClick={() => updateManualRightEntrySelectedTab(PENDING)}>Pending*/}
-            {/*    ({pendingCount})</ManualRightEntryTab>*/}
-            {/*<ManualRightEntryTab isActive={selectedTab === ERRORS}*/}
-            {/*                     onClick={() => updateManualRightEntrySelectedTab(ERRORS)}>Errors*/}
-            {/*    ({errorsCount})</ManualRightEntryTab>*/}
+                ({getCustomTotalCount()})</ManualRightEntryTab>
+            <ManualRightEntryTab isNotClickable={true}>Created ({createdCount})</ManualRightEntryTab>
+            <ManualRightEntryTab isNotClickable={true}>Updated ({updatedCount})</ManualRightEntryTab>
+            <ManualRightEntryTab isActive={selectedTab === SUCCESS}
+                                 onClick={() => updateManualRightEntrySelectedTab(SUCCESS)}>Success
+                ({successCount})</ManualRightEntryTab>
+            <ManualRightEntryTab isActive={selectedTab === PENDING}
+                                 onClick={() => updateManualRightEntrySelectedTab(PENDING)}>Unmatched
+                ({pendingCount})</ManualRightEntryTab>
+            <ManualRightEntryTab isActive={selectedTab === ERRORS}
+                                 onClick={() => updateManualRightEntrySelectedTab(ERRORS)}>Errors
+                ({errorsCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === FATAL}
                                  onClick={() => updateManualRightEntrySelectedTab(FATAL)}>Fatal
                 ({fatalCount})</ManualRightEntryTab>
@@ -60,7 +65,9 @@ ManualRightEntryTableTabs.propTypes = {
     updateManualRightEntrySelectedTab: PropTypes.func,
     promotedRightsCount: PropTypes.number,
     getCustomSearchCriteria: PropTypes.func.isRequired,
-    fatalCount: PropTypes.number.isRequired
+    fatalCount: PropTypes.number.isRequired,
+    createdCount: PropTypes.number,
+    updatedCount: PropTypes.number
 };
 
 const mapStateToProps = state => {
