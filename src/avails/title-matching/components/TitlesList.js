@@ -108,15 +108,6 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     
     let deepCloneColumnDefs = deepClone(columnDefs);
     const handleTitleMatchingRedirect = params => {
-        deepCloneColumnDefs.filter(e => {
-            if(params.value === 'EPISODE') {
-                return e.field !== 'episodic.seasonNumber';
-            } else if(params.value === 'SEASON') {
-                return e.field !== 'episodic.episodeNumber';
-            } else {
-                return e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber';
-            }
-        });
         return createLinkableCellRenderer(params);
     };
     let updatedColumnDefs = deepCloneColumnDefs.map(e => {
@@ -136,6 +127,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         field: 'episodeAndSeasonNumber',
         headerName: '-',
         valueFormatter: renderEpisodeAndSeasonNumber,
+        cellRenderer: handleTitleMatchingRedirect,
         width: 100
         
     };
