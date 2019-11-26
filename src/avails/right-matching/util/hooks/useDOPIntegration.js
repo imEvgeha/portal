@@ -18,6 +18,8 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
             }
             if (totalCount > 0) {
                 DOP.setDOPMessageCallback(() => openDOPPopUp(totalCount));
+            } else {
+                DOP.setDOPMessageCallback(null);
             }
         }
     }, [totalCount]);
@@ -28,6 +30,8 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
             DOP.setErrorsCount(dopCount);
             if (dopCount > 0) {
                 DOP.setDOPMessageCallback(() => openDOPPopUp(dopCount));
+            } else {
+                DOP.setDOPMessageCallback(null);
             }
         }
     }, [dopCount]);
