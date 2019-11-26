@@ -25,7 +25,8 @@ const withRightsResultsTable = BaseComponent => {
             const formatter = (column) => {
                 const {dataType, javaVariableName} = column;
                 switch (dataType) {
-                    case 'localdate': 
+                    case 'localdate':
+                    case 'datetime':
                         return (params) => {
                         const {data} = params;
                         if (data && data[javaVariableName]) {
