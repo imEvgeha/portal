@@ -60,7 +60,7 @@ ManualRightEntryTableTabs.propTypes = {
     updateManualRightEntrySelectedTab: PropTypes.func,
     promotedRightsCount: PropTypes.number,
     getCustomSearchCriteria: PropTypes.func.isRequired,
-    fatalCount: PropTypes.number.isRequired
+    fatalCount: PropTypes.number
 };
 
 const mapStateToProps = state => {
