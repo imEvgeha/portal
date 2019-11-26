@@ -168,7 +168,7 @@ class RightsCreateFromAttachment extends React.Component {
 
     render() {
         const {historyData: {attachments, ingestType, status, externalId = null,
-            ingestReport: {errorDetails, fatal} = {}} = {},
+            ingestReport: {errorDetails, created, updated, fatal} = {}} = {},
             availHistoryId}  = this.state;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
@@ -206,7 +206,11 @@ class RightsCreateFromAttachment extends React.Component {
                 {this.props.availsMapping &&
                     <React.Fragment>
                         <div className='nexus-c-manual-rights-entry__table_header'>
-                            <ManualRightEntryTableTabs getCustomSearchCriteria={this.getCustomSearchCriteria} fatalCount={fatal}/>
+                            <ManualRightEntryTableTabs
+                                getCustomSearchCriteria={this.getCustomSearchCriteria}
+                                createdCount={created}
+                                updatedCount={updated}
+                                fatalCount={fatal}/>
                             <div className='nexus-c-manual-rights-entry__actions'>
                                 <Button className='nexus-c-manual-rights-entry__button'
                                         id="right-create"
