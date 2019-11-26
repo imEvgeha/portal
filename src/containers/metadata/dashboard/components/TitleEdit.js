@@ -532,11 +532,11 @@ class TitleEdit extends Component {
         this.state.updatedTerritories.forEach(t => {
             const dataFormatted = {
                 ...t,
-                theatricalReleaseDate: t.theatricalReleaseDate ? moment(t.theatricalReleaseDate).format(DATE_FORMAT) : null,
-                homeVideoReleaseDate: t.homeVideoReleaseDate ? moment(t.homeVideoReleaseDate).format(DATE_FORMAT) : null,
-                availAnnounceDate: t.availAnnounceDate ? moment(t.availAnnounceDate).format(DATE_FORMAT) : null,
-                originalAirDate: t.originalAirDate ? moment(t.originalAirDate).format(DATE_FORMAT) : null,
-                estReleaseDate: t.estReleaseDate ? moment(t.estReleaseDate).format(DATE_FORMAT) : null,
+                theatricalReleaseDate: t.theatricalReleaseDate ? moment(t.theatricalReleaseDate).toISOString() : null,
+                homeVideoReleaseDate: t.homeVideoReleaseDate ? moment(t.homeVideoReleaseDate).toISOString() : null,
+                availAnnounceDate: t.availAnnounceDate ? moment(t.availAnnounceDate).toISOString() : null,
+                originalAirDate: t.originalAirDate ? moment(t.originalAirDate).toISOString() : null,
+                estReleaseDate: t.estReleaseDate ? moment(t.estReleaseDate).toISOString() : null,
             };
             titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
                 let list = [].concat(this.state.territory);
@@ -554,13 +554,22 @@ class TitleEdit extends Component {
         });
 
         if (this.state.territories.locale) {
+            const {territories = {}} = this.state || {};
+            const {
+                theatricalReleaseDate,
+                homeVideoReleaseDate,
+                availAnnounceDate,
+                originalAirDate,
+                estReleaseDate,
+            } = territories || {};
+
             const newTerritory = {
                 ...this.state.territories,
-                theatricalReleaseDate: this.state.territories.theatricalReleaseDate ? moment(this.state.territories.theatricalReleaseDate).format(DATE_FORMAT) : null,
-                homeVideoReleaseDate: this.state.territories.homeVideoReleaseDate ? moment(this.state.territories.homeVideoReleaseDate).format(DATE_FORMAT) : null,
-                availAnnounceDate: this.state.territories.availAnnounceDate ? moment(this.state.territories.availAnnounceDate).format(DATE_FORMAT) : null,
-                originalAirDate: this.state.territories.originalAirDate ? moment(this.state.territories.originalAirDate).format(DATE_FORMAT) : null,
-                estReleaseDate: this.state.territories.estReleaseDate ? moment(this.state.territories.estReleaseDate).format(DATE_FORMAT) : null,
+                theatricalReleaseDate: theatricalReleaseDate ? moment(theatricalReleaseDate).toISOString() : null,
+                homeVideoReleaseDate: homeVideoReleaseDate ? moment(homeVideoReleaseDate).toISOString() : null,
+                availAnnounceDate: availAnnounceDate ? moment(availAnnounceDate).toISOString() : null,
+                originalAirDate: originalAirDate ? moment(originalAirDate).toISOString() : null,
+                estReleaseDate: estReleaseDate ? moment(estReleaseDate).toISOString() : null,
                 parentId: this.props.match.params.id
             };
 
