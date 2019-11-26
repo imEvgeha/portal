@@ -132,15 +132,26 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     };
 
     const numOfEpisodeAndSeasonField = {
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
         headerName: '-',
         valueFormatter: renderEpisodeAndSeasonNumber,
+        width: 100
+        
     };
+
+    const onGridReady = (params) => {
+        const {columnApi} = params;
+        columnApi.moveColumn('episodeAndSeasonNumber', 6);
+    };
+
     
     const repository = getRepositoryCell();
     return (
         <React.Fragment>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
+                onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}/>
             <ActionsBar

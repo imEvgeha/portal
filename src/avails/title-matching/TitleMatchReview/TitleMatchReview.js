@@ -116,15 +116,23 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const deepCloneCombinedTitleColumnDefs = deepClone(columnDefs);
 
     const renderEpisodeAndSeasonNumber = params => {
-        const {data: {contentType, episodic: {episodeNumber, seasonNumber}}} = params;
-        if(contentType === 'EPISODE') return episodeNumber;
-        else if(contentType === 'SEASON') return seasonNumber;
+        if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;
+        else if(params.data.contentType === 'SEASON') return params.data.episodic.seasonNumber;
         else return null;
     };
 
     const numOfEpisodeAndSeasonField = {
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
         headerName: '-',
         valueFormatter: renderEpisodeAndSeasonNumber,
+        width: 100
+        
+    };
+
+    const onGridReady = (params) => {
+        const {columnApi} = params;
+        columnApi.moveColumn('episodeAndSeasonNumber', 4);
     };
     return (
         <div className="nexus-c-title-to-match-review">
@@ -137,6 +145,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
+                            onGridEvent={onGridReady}
                             columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
@@ -148,6 +157,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
+                            onGridEvent={onGridReady}
                             columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />

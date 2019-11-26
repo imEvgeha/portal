@@ -72,17 +72,11 @@ const TitleMatchView = ({
     let deepCloneRightColumnDefs = deepClone(rightColumns);
     let updatedRightColumnDefs;
     if(focusedRight && focusedRight.contentType === 'Episode') {
-        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => {
-            return e.field !== 'episodic.seasonNumber';
-        });
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
     } else if(focusedRight && focusedRight.contentType === 'Season'){
-        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => {
-            return e.field !== 'episodic.episodeNumber';
-        });
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber');
     } else {
-        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => {
-            return e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber';
-        });
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber');
     }
     return (
         <div className="nexus-c-title-to-match">
