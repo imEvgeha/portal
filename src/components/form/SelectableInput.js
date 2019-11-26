@@ -352,7 +352,7 @@ class SelectableInput extends Component {
                 case 'time' : return renderTimeField(selected, displayName);
                 case 'date' : return renderRangeDatepicker(selected, displayName, false);
                 case 'datetime' : return renderRangeDatepicker(selected, displayName, true);
-                case 'localdate' : return renderRangeDatepicker(selected, displayName, false);
+                case 'localdate' : return renderRangeDatepicker(selected, displayName, true);
                 case 'boolean' : return renderBooleanField(selected, displayName);
                 default:
                     console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
