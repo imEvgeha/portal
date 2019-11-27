@@ -13,7 +13,6 @@ export default function TableColumnCustomization({availsMapping, columns, update
 
     useEffect(() => {
         if(hideShowColumns) {
-            setModalContent(buildModalContent(hideShowColumns));
             setModalActions([{
                 text: 'Save',
                 onClick: () => {
@@ -22,8 +21,9 @@ export default function TableColumnCustomization({availsMapping, columns, update
                 }
             }, {
                 text: 'Cancel',
-                onClick: close()
+                onClick: close
             }]);
+            setModalContent(buildModalContent(hideShowColumns));
         }
     }, [hideShowColumns]);
 

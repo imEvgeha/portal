@@ -20,16 +20,25 @@ import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
+import TableColumnCustomization from '../../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
+import {updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
+
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
 const mapStateToProps = () => {
     const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
+    const manualRightsEntryColumnsSelector = selectors.createManualRightsEntryColumnsSelector();
     return (state, props) => ({
         availsMapping: state.root.availsMapping,
         selectedTab: manualRightsEntrySelectedTabSelector(state, props),
+        columns: manualRightsEntryColumnsSelector(state, props)
     });
 };
+
+const mapDispatchToProps = (dispatch) => ({
+    updateManualRightsEntryColumns: payload => dispatch(updateManualRightsEntryColumns(payload))
+});
 
 class RightsCreateFromAttachment extends React.Component {
 
@@ -37,7 +46,9 @@ class RightsCreateFromAttachment extends React.Component {
         match: t.object,
         location: t.object,
         availsMapping: t.any,
-        selectedTab: t.string
+        selectedTab: t.string,
+        updateManualRightsEntryColumns: t.func,
+        columns: t.array
     };
 
     static contextTypes = {
@@ -170,6 +181,7 @@ class RightsCreateFromAttachment extends React.Component {
         const {historyData: {attachments, ingestType, status, externalId = null,
             ingestReport: {errorDetails, created, updated, fatal} = {}} = {},
             availHistoryId}  = this.state;
+        const {availsMapping, selectedTab, columns, updateManualRightsEntryColumns} = this.props;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
                 <ManualRightsEntryDOPConnector/>
@@ -203,7 +215,7 @@ class RightsCreateFromAttachment extends React.Component {
                         </Can>
                     </div>
                 </div>
-                {this.props.availsMapping &&
+                {availsMapping &&
                     <React.Fragment>
                         <div className='nexus-c-manual-rights-entry__table_header'>
                             <ManualRightEntryTableTabs
@@ -217,17 +229,22 @@ class RightsCreateFromAttachment extends React.Component {
                                         onClick={this.createRight}>
                                     Create Right
                                 </Button>
+                                <TableColumnCustomization
+                                    availsMapping={availsMapping}
+                                    updateColumnsOrder={updateManualRightsEntryColumns}
+                                    columns={columns}
+                                />
                             </div>
                         </div>
                         <RightsResultTable
                             fromServer={true}
-                            columns={['title', 'productionStudio', 'territory', 'genres', 'start', 'end']}
+                            columns={columns}
                             nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
                             autoload={false}
-                            selectedTab={this.props.selectedTab}
-                            hidden={this.props.selectedTab === FATAL}
+                            selectedTab={selectedTab}
+                            hidden={selectedTab === FATAL}
                         />
-                        <ManualRightEntryFatalView attachments={attachments} hidden={this.props.selectedTab !== FATAL}/>
+                        <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
                     </React.Fragment>
                 }
             </div>
@@ -235,4 +252,4 @@ class RightsCreateFromAttachment extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, null)(RightsCreateFromAttachment);
+export default connect(mapStateToProps, mapDispatchToProps)(RightsCreateFromAttachment);

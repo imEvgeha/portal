@@ -1,10 +1,15 @@
 import {TOTAL_RIGHTS} from '../../../constants/avails/manualRightsEntryTabs';
-import {LOAD_MANUAL_RIGHT_ENTRY_SESSION, MANUAL_RIGHT_ENTRY__SET_SELECTED_TAB} from '../../../constants/action-types';
+import {
+    LOAD_MANUAL_RIGHT_ENTRY_SESSION,
+    MANUAL_RIGHT_ENTRY__SET_SELECTED_TAB,
+    MANUAL_RIGHT_ENTRY__UPDATE_COLUMNS
+} from '../../../constants/action-types';
 import {saveManualRightEntryState} from '../../index';
 
 const initialState = {
     session:{
-        selectedTab: TOTAL_RIGHTS
+        selectedTab: TOTAL_RIGHTS,
+        columns: ['title', 'productionStudio', 'territory', 'genres', 'start', 'end']
     }
 };
 
@@ -15,6 +20,9 @@ const manualRightsEntry = (state = initialState, action) => {
         case MANUAL_RIGHT_ENTRY__SET_SELECTED_TAB:
             saveManualRightEntryState();
             return {...state, session: {...state.session, selectedTab: action.payload}};
+        case MANUAL_RIGHT_ENTRY__UPDATE_COLUMNS:
+            saveManualRightEntryState();
+            return {...state, session: {...state.session, columns: action.payload}};
         default:
             return state;
     }
