@@ -9,30 +9,21 @@ const DOP_POP_UP_MESSAGE = 'Please, keep in mind not all rights have been matche
 const useDOPIntegration = (totalCount, localStorageItem) => {
     const [dopCount, setDopCount] = useLocalStorage(localStorageItem, totalCount);
     const {setModalContentAndTitle, setModalActions, close} = useContext(NexusModalContext);
-    // DOP integration
+
     useEffect(() => {
         if (totalCount || totalCount === 0) {
             if (!dopCount || (dopCount && dopCount !== totalCount)) {
                 DOP.setErrorsCount(totalCount);
                 setDopCount(totalCount);
             }
-            if (totalCount > 0) {
-                DOP.setDOPMessageCallback(() => openDOPPopUp(totalCount));
-            } else {
-                DOP.setDOPMessageCallback(null);
-            }
+            DOP.setDOPMessageCallback(totalCount > 0 ? () => openDOPPopUp(totalCount) : null);
         }
     }, [totalCount]);
 
-    // DOP Integration
     useEffect(() => {
         if ((dopCount || dopCount === 0) && totalCount === null) {
             DOP.setErrorsCount(dopCount);
-            if (dopCount > 0) {
-                DOP.setDOPMessageCallback(() => openDOPPopUp(dopCount));
-            } else {
-                DOP.setDOPMessageCallback(null);
-            }
+            DOP.setDOPMessageCallback(dopCount > 0 ? () => openDOPPopUp(dopCount) : null);
         }
     }, [dopCount]);
 
@@ -43,11 +34,11 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
         };
         setModalContentAndTitle(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE);
         setModalActions([
-                        {
-            text: 'OK', 
-            onClick: handlePopUpClick, 
-            appearance: 'primary', 
-        }
+            {
+                text: 'OK', 
+                onClick: handlePopUpClick, 
+                appearance: 'primary', 
+            }
         ]);
     };
 
