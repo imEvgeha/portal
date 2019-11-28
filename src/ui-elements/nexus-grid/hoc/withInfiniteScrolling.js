@@ -19,13 +19,17 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
     } = infiniteProps;
 
     const ComposedComponent = props => {
-        const gridApiRef = useRef({});
+        const gridApiRef = useRef();
+        const hasBeenCalledRef = useRef();
         const previousParams = usePrevious(props.params);
 
         useEffect(() => {
-            const {api} = gridApiRef.current;
-            if ((!isEqual(props.params, previousParams) && props.params) && api) {
-                updateData(fetchData, api);
+            const gridApi = gridApiRef.current;
+            if ((!isEqual(props.params, previousParams) && props.params) 
+                && gridApi 
+                && !hasBeenCalledRef.current
+               ) {
+                updateData(fetchData, gridApi);
             }
         }, [props.params]);
 
@@ -33,9 +37,11 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             const {startRow, successCallback, failCallback} = params || {};
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
+
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();
             }
+
             fetchData(pageNumber, pageSize, props.params)
                 .then(response => {
                     const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
@@ -59,12 +65,15 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                         gridApi.hideOverlay();
                         return;
                     } 
+
                     gridApi.showNoRowsOverlay();
                 })
-                .catch(error => failCallback(error));
+                .catch(error => failCallback(error))
+                .finally(() => hasBeenCalledRef.current = false);
         };
 
         const updateData = (fetchData, gridApi) => {
+            hasBeenCalledRef.current = true;
             const dataSource = {
                 rowCount: null,
                 getRows: params => getRows(params, fetchData, gridApi),
@@ -72,19 +81,14 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             gridApi.setDatasource(dataSource);
         };
 
-        const handleGridReady = gridApi => {
-            const {api} = gridApiRef.current;
-            if (typeof props.handleGridReady === 'function') {
-                props.handleGridReady(gridApi);
-            }
-            if (!api) {
-                gridApiRef.current = {api: gridApi};
-            }
-            updateData(fetchData, gridApi);
-        };
-
         const onGridEvent = data => {
-            if (data.type === 'gridReady') {
+            const {api, type} = data || {};
+            if (type === 'gridReady') {
+                const gridApi = gridApiRef.current;
+                if (!gridApi) {
+                    updateData(fetchData, api);
+                    gridApiRef.current = api;
+                }
                 if (typeof props.onGridEvent === 'function') {
                     props.onGridEvent(data);
                 }
@@ -93,7 +97,6 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
 
         const mergedProps = {
             ...props,
-            handleGridReady,
             onGridEvent,
             rowBuffer,
             rowModelType,
@@ -112,6 +115,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             />
         );
     };
+
     return ComposedComponent;
 };
 

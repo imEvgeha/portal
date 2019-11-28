@@ -58,7 +58,9 @@ const RightToMatchView = ({
 
     useEffect(() => {
         fetchFocusedRight(rightId);
-        fetchRightMatchingFieldSearchCriteria(availHistoryIds);
+        if (!fieldSearchCriteria || (rightId !== fieldSearchCriteria.id)) {
+            fetchRightMatchingFieldSearchCriteria(availHistoryIds);
+        }
     }, [rightId]);
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -111,7 +113,7 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <NexusTitle>                
+            <NexusTitle>
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
                     <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
@@ -139,11 +141,11 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {fieldSearchCriteria && (
+                {fieldSearchCriteria && fieldSearchCriteria.id === rightId && (
                     <NexusGridWithInfiniteScrolling
                         columnDefs={updatedColumnDefs}
                         setTotalCount={setTotalCount}
-                        params={fieldSearchCriteria}
+                        params={fieldSearchCriteria.params}
                         handleSelectionChange={handleSelectionChange}
                         rowSelection="multiple"
                     />
