@@ -115,7 +115,7 @@ class SelectableInput extends Component {
         const {value = {}} = this.props;
         const {from = '', to = '', options} = value || {};
 
-        if (moment(from).isSameOrAfter(to)) return false;
+        if (moment(from).isAfter(to)) return false;
 
         return from || to || (value.value  && value.value.trim() || (options && options.length));
     };
