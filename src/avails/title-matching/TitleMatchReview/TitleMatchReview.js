@@ -132,7 +132,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
 
     const onGridReady = (params) => {
         const {columnApi} = params;
-        columnApi.moveColumn('episodeAndSeasonNumber', 4);
+        const contentTypeIndex = deepCloneMatchedTitlesColumnDefs.findIndex(e => e.field === 'contentType');
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 2); // +1 indicates 1 column pinned on the left side
     };
     return (
         <div className="nexus-c-title-to-match-review">

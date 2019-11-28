@@ -134,7 +134,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
 
     const onGridReady = (params) => {
         const {columnApi} = params;
-        columnApi.moveColumn('episodeAndSeasonNumber', 6);
+        const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 4); // +3 indicates pinned columns on the left side
     };
 
     
