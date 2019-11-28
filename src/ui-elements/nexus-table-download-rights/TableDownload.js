@@ -5,7 +5,7 @@ import {confirmModal} from '../../components/modal/ConfirmModal';
 import {CUSTOM_HEADER_LIST} from '../../constants/customColumnHeaders';
 import {exportService} from '../../containers/avail/service/ExportService';
 import {downloadFile} from '../../util/Common';
-import {FATAL} from "../../constants/avails/manualRightsEntryTabs";
+import {FATAL} from '../../constants/avails/manualRightsEntryTabs';
 
 export default function TableDownloadRights({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) {
 
