@@ -103,18 +103,37 @@ export default class CreateEditConfigForm extends React.Component {
         this.optionsHandler = this.optionsHandler.bind(this);
     }
 
+    convertDataToOption = (dataSource, schema) => {
+        let label, value;
+        const {displayValueDelimiter = ' / '} = schema;
+        if(Array.isArray(schema.label) && schema.label.length > 1){
+            label = schema.label.map(fieldName => dataSource[fieldName]).join(displayValueDelimiter);
+        }else{
+            label = dataSource[schema.label];
+        }
+        if(Array.isArray(schema.value) && schema.value.length > 1){
+            value = schema.value.reduce(function(result, item){
+                result[item] = dataSource[item];
+                return result;
+            }, {});
+        }else{
+            value = dataSource[schema.value];
+        }
+        return {label, value};
+
+    }
+
     optionsHandler(fieldId, fields) {
         let field = fields.find(({id}) => id === fieldId);
         if(field){
             if((field.type === 'select' || field.type === 'multiselect') && field.source){
                 if(cache[field.source.url]) {
-                    const items = cache[field.source.url].map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
+                    const items = cache[field.source.url].map(rec => this.convertDataToOption(rec, field.source));
                     return [{items}];
                 }
                 return getConfigApiValues(field.source.url, 0, 1000).then(response => {
                     cache[field.source.url] = response.data.data;
-
-                    const items = response.data.data.map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
+                    const items = response.data.data.map(rec => this.convertDataToOption(rec, field.source));
                     return [{items}];
                 });
             }else{
