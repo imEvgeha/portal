@@ -247,6 +247,14 @@ class SearchResultsTab extends React.Component {
         store.dispatch(resultPageLoading(true)); //force refresh
     }
 
+    getSelected = () => {
+        return store.getState().dashboard.session.availTabPageSelection.selected;
+    }
+
+    getColumns = () => {
+        return store.getState().dashboard.session.columns;
+    }
+
     render() {
         return (
             <div id="dashboard-result-table">
@@ -274,7 +282,11 @@ class SearchResultsTab extends React.Component {
                                         reportName={this.props.reportName}
                                     />
                                 </div>
-                                <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
+                                <TableDownloadRights
+                                    getSelected={this.getSelected}
+                                    getColumns={this.getColumns}
+                                />
+                                {/*<i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>*/}
                             </IfEmbedded>
                             <TableColumnCustomization
                                 availsMapping={this.props.availsMapping}
@@ -309,6 +321,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 import {Component} from 'react';
 import {compose} from 'redux';
 import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
+import TableDownloadRights from "../../../ui-elements/nexus-table-download-rights/TableDownload";
 
 //--------------------------------------
 

@@ -4,7 +4,6 @@ import t from 'prop-types';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import { profileService } from '../../service/ProfileService';
 import { historyService } from '../../service/HistoryService';
-import { rightSearchHelper } from '../../dashboard/RightSearchHelper';
 import { URL } from '../../../../util/Common';
 import { Can } from '../../../../ability';
 import DashboardDropableCard from '../../dashboard/card/components/DashboardDropableCard';
@@ -21,8 +20,11 @@ import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTa
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 import TableColumnCustomization from '../../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
-import {updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
-
+import {
+    manualRightsResultPageLoading,
+    updateManualRightsEntryColumns
+} from '../../../../stores/actions/avail/manualRightEntry';
+import TableDownloadRights from '../../../../ui-elements/nexus-table-download-rights/TableDownload';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
@@ -37,7 +39,8 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    updateManualRightsEntryColumns: payload => dispatch(updateManualRightsEntryColumns(payload))
+    updateManualRightsEntryColumns: payload => dispatch(updateManualRightsEntryColumns(payload)),
+    manualRightsResultPageLoading: payload => dispatch(manualRightsResultPageLoading(payload))
 });
 
 class RightsCreateFromAttachment extends React.Component {
@@ -48,6 +51,7 @@ class RightsCreateFromAttachment extends React.Component {
         availsMapping: t.any,
         selectedTab: t.string,
         updateManualRightsEntryColumns: t.func,
+        manualRightsResultPageLoading: t.func,
         columns: t.array
     };
 
@@ -62,7 +66,8 @@ class RightsCreateFromAttachment extends React.Component {
         this.refresh = null;
         this.state = {
             availHistoryId: this.props.match.params.availHistoryIds,
-            historyData: {}
+            historyData: {},
+            table: null
         };
     }
 
@@ -83,17 +88,17 @@ class RightsCreateFromAttachment extends React.Component {
             return;
         }
 
-        this.getSearchCriteriaFromURLWithCustomOne();
+        // this.getSearchCriteriaFromURLWithCustomOne();
     }
 
-    getSearchCriteriaFromURLWithCustomOne() {
-        const searchCriteria = this.getCustomSearchCriteria(this.props.selectedTab);
-        rightSearchHelper.advancedSearch(searchCriteria, false);
-        this.getHistoryData();
-        if (this.refresh === null) {
-            this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
-        }
-    }
+    // getSearchCriteriaFromURLWithCustomOne() {
+    //     const searchCriteria = this.getCustomSearchCriteria(this.props.selectedTab);
+    //     rightSearchHelper.advancedSearch(searchCriteria, false);
+    //     this.getHistoryData();
+    //     if (this.refresh === null) {
+    //         this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
+    //     }
+    // }
 
     getCustomSearchCriteria = (tab) => {
         return Object.assign( {}, tabFilter.get(tab), {availHistoryIds: this.state.availHistoryId});
@@ -101,7 +106,11 @@ class RightsCreateFromAttachment extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping || prevProps.selectedTab !== this.props.selectedTab) {
-            this.getSearchCriteriaFromURLWithCustomOne();
+            // this.getSearchCriteriaFromURLWithCustomOne();
+            this.getHistoryData();
+            if (this.refresh === null) {
+                this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
+            }
         }
     }
 
@@ -177,11 +186,24 @@ class RightsCreateFromAttachment extends React.Component {
                 });
     };
 
+    updateColumnsOrder = (cols) => {
+        this.props.updateManualRightsEntryColumns(cols);
+        manualRightsResultPageLoading(true); //force refresh
+    };
+
+    onTableLoaded = (table) => {
+        this.setState({ table });
+    };
+
+    getSelectedBasedOnTab = () => {
+        
+    };
+
     render() {
         const {historyData: {attachments, ingestType, status, externalId = null,
             ingestReport: {errorDetails, created, updated, fatal} = {}} = {},
             availHistoryId}  = this.state;
-        const {availsMapping, selectedTab, columns, updateManualRightsEntryColumns} = this.props;
+        const {availsMapping, selectedTab, columns} = this.props;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
                 <ManualRightsEntryDOPConnector/>
@@ -231,8 +253,15 @@ class RightsCreateFromAttachment extends React.Component {
                                 </Button>
                                 <TableColumnCustomization
                                     availsMapping={availsMapping}
-                                    updateColumnsOrder={updateManualRightsEntryColumns}
+                                    updateColumnsOrder={this.updateColumnsOrder}
                                     columns={columns}
+                                />
+                                <TableDownloadRights
+                                    getColumns={() => columns}
+                                    allowDownloadFullTab={true}
+                                    exportCriteria={this.getCustomSearchCriteria(selectedTab)}
+                                    selectedTab={selectedTab}
+                                    getSelected={this.getSelectedBasedOnTab}
                                 />
                             </div>
                         </div>
@@ -243,6 +272,8 @@ class RightsCreateFromAttachment extends React.Component {
                             autoload={false}
                             selectedTab={selectedTab}
                             hidden={selectedTab === FATAL}
+                            searchCriteria={this.getCustomSearchCriteria(selectedTab)}
+                            onTableLoaded={this.onTableLoaded}
                         />
                         <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
                     </React.Fragment>
