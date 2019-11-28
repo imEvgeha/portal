@@ -5,6 +5,7 @@ import {confirmModal} from '../../components/modal/ConfirmModal';
 import {CUSTOM_HEADER_LIST} from '../../constants/customColumnHeaders';
 import {exportService} from '../../containers/avail/service/ExportService';
 import {downloadFile} from '../../util/Common';
+import {FATAL} from "../../constants/avails/manualRightsEntryTabs";
 
 export default function TableDownloadRights({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) {
 
@@ -22,23 +23,29 @@ export default function TableDownloadRights({getColumns, getSelected, allowDownl
         }, {description: 'Please select at least one right'});
     };
 
+    const prettyTabName = () => {
+        return `${selectedTab[0]}${selectedTab.slice(1).toLowerCase()}`.replace('_', ' ');
+    };
+
     const exportAvails = () => {
-        if (getSelected().length === 0) {
-            if (allowDownloadFullTab) {
+        if (selectedTab !== FATAL) {
+            if (getSelected().length === 0) {
+                if (allowDownloadFullTab) {
+                    confirmModal.open('Confirm download',
+                        exportAvailsCriteria,
+                        () => {
+                        },
+                        {description: `You have select ${prettyTabName()} tab for download.`});
+                } else {
+                    noAvailSelectedAlert();
+                }
+            } else {
                 confirmModal.open('Confirm download',
-                    exportAvailsCriteria,
+                    exportAvailsByIds,
                     () => {
                     },
-                    {description: `You have ${selectedTab[0]}${selectedTab.slice(1).toLowerCase()} tab for download.`});
-            } else {
-                noAvailSelectedAlert();
+                    {description: `You have selected ${getSelected().length} avails for download.`});
             }
-        } else {
-            confirmModal.open('Confirm download',
-                exportAvailsByIds,
-                () => {
-                },
-                {description: `You have selected ${getSelected().length} avails for download.`});
         }
     };
 
@@ -70,6 +77,5 @@ TableDownloadRights.propTypes = {
 };
 
 TableDownloadRights.defaultProps = {
-    allowDownloadFullTab: false,
-    selectedTab: 'None'
+    allowDownloadFullTab: false
 };

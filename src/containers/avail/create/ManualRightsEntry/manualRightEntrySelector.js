@@ -10,6 +10,11 @@ const getColumns = (state) => {
     return manualRightsEntry && manualRightsEntry.session.columns;
 };
 
+const getSelectedRights = (state) => {
+    const {manualRightsEntry} = state;
+    return manualRightsEntry && manualRightsEntry.session.tabPageSelection.selected;
+};
+
 export const createManualRightsEntrySelectedTabSelector = () => createSelector(
     getSelectedTab,
     selectedTab => selectedTab,
@@ -18,4 +23,9 @@ export const createManualRightsEntrySelectedTabSelector = () => createSelector(
 export const createManualRightsEntryColumnsSelector = () => createSelector(
     getColumns,
     columns => columns,
+);
+
+export const createSelectedRightsSelector = () => createSelector(
+    getSelectedRights,
+    selected => selected,
 );

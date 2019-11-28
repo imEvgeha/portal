@@ -124,7 +124,6 @@ class RightsResultTable extends React.Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
         this.dataSource = {
             rowCount: null, // behave as infinite scroll
             getRows: this.getRows

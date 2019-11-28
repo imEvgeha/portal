@@ -31,10 +31,12 @@ const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Const
 const mapStateToProps = () => {
     const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
     const manualRightsEntryColumnsSelector = selectors.createManualRightsEntryColumnsSelector();
+    const manualRightSelectedSelector = selectors.createSelectedRightsSelector();
     return (state, props) => ({
         availsMapping: state.root.availsMapping,
         selectedTab: manualRightsEntrySelectedTabSelector(state, props),
-        columns: manualRightsEntryColumnsSelector(state, props)
+        columns: manualRightsEntryColumnsSelector(state, props),
+        selected: manualRightSelectedSelector(state,props)
     });
 };
 
@@ -52,7 +54,8 @@ class RightsCreateFromAttachment extends React.Component {
         selectedTab: t.string,
         updateManualRightsEntryColumns: t.func,
         manualRightsResultPageLoading: t.func,
-        columns: t.array
+        columns: t.array,
+        selected: t.array
     };
 
     static contextTypes = {
@@ -87,18 +90,7 @@ class RightsCreateFromAttachment extends React.Component {
             profileService.initAvailsMapping();
             return;
         }
-
-        // this.getSearchCriteriaFromURLWithCustomOne();
     }
-
-    // getSearchCriteriaFromURLWithCustomOne() {
-    //     const searchCriteria = this.getCustomSearchCriteria(this.props.selectedTab);
-    //     rightSearchHelper.advancedSearch(searchCriteria, false);
-    //     this.getHistoryData();
-    //     if (this.refresh === null) {
-    //         this.refresh = setInterval(this.getHistoryData, REFRESH_INTERVAL);
-    //     }
-    // }
 
     getCustomSearchCriteria = (tab) => {
         return Object.assign( {}, tabFilter.get(tab), {availHistoryIds: this.state.availHistoryId});
@@ -196,7 +188,17 @@ class RightsCreateFromAttachment extends React.Component {
     };
 
     getSelectedBasedOnTab = () => {
-        
+        const {selected} = this.props || [];
+        const {table} = this.state || {};
+        const selectedOnTab = [];
+        if(table.api) {
+            table.api.forEachNode(rowNode => {
+                if (rowNode.data && selected.filter(sel => (sel.id === rowNode.data.id)).length > 0) {
+                    selectedOnTab.push(rowNode.data);
+                }
+            });
+        }
+        return selectedOnTab;
     };
 
     render() {
