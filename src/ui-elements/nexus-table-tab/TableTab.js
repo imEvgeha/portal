@@ -13,10 +13,6 @@ const BasicTab = styled.div`
     padding: 0 10px 0 10px;
     text-align: center;
     color: #999;
-    &:hover {
-        color: #666;
-        cursor: pointer;
-    }
     ${props => props.isActive && css`
         font-weight: bold;
         font-size: 15px;
@@ -32,6 +28,10 @@ export const SelectRightsTab = styled(BasicTab)`
         border-right: none;
         width: 200px;
     }
+    &:hover {
+        color: #666;
+        cursor: pointer;
+    }
 `;
 
 export const ManualRightEntryTab = styled(BasicTab)`
@@ -43,4 +43,10 @@ export const ManualRightEntryTab = styled(BasicTab)`
         border-right: none;
         width: 150px;
     }
+    ${props => !props.isNotClickable && css`
+     &:hover {
+        color: #666;
+        cursor: pointer;
+    }
+    `}
 `;
