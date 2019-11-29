@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
+import omit from 'lodash.omit';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
-import {createRightMatchingColumnDefs} from '../../../avails/right-matching/rightMatchingActions'; // this should be generic action not specifix one
+import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import usePrevious from '../../../util/hooks/usePrevious';
-import {switchCase} from '../../../util/Common';
+import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
-import {profileService} from '../../../containers/avail/service/ProfileService';
 
 const FILTERABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
 
@@ -24,28 +24,25 @@ const FILTER_TYPE = {
     multiselect: 'agSetColumnFilter',
 };
 
-
-const withFilterableColumns = (filterableColumns, initialFilter = {}) => WrappedComponent => {
+const withFilterableColumns = ({
+    hocProps = [], 
+    filterableColumns = null, 
+    initialFilter = {}, 
+    excludedColumns = []
+} = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, mapping, createRightMatchingColumnDefs} = props;
+        const {columnDefs, mapping, selectValues} = props;
         const previousColumnDefs = usePrevious(columnDefs);
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
-        const columns = props.filterableColumns || filterableColumns;
-        const filters = props.filters || initialFilter;
-
-        useEffect(() => {
-            if (!columnDefs || (Array.isArray(columnDefs) && columnDefs.length === 0)) {
-                createRightMatchingColumnDefs(mapping);
-            }
-        }, [mapping, columnDefs]);
+        const columns = props.filterableColumns || filterableColumns || Object.keys(props.initialFilter || initialFilter);
+        const filters = props.initialFilter || initialFilter;
 
         useEffect(() => {
             if (!isEqual(previousColumnDefs, columnDefs)) {
                setFilterableColumnDefs(updateColumnDefs(columnDefs)); 
             }
         }, [columnDefs]);
-
 
         // apply initial filter
         useEffect(() => {
@@ -72,34 +69,12 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
         function updateColumnDefs(columnDefs) {
             const filterableColumnDefs = columnDefs.map(columnDef => {
                 let copiedColumnDef = {...columnDef};
-                const {dataType, configEndpoint, options = []} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
+                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType) && 
-                    (columns ? columns.includes(copiedColumnDef.field) : true);
+                    (columns ? columns.includes(copiedColumnDef.field) : true) && !excludedColumns.includes(copiedColumnDef.field);
                 if (isFilterable) {
-                    const FILTER_PARAMS = {
-                        string: DEFAULT_FILTER_PARAMS,
-                        number: DEFAULT_FILTER_PARAMS,
-                        select: {
-                            ...DEFAULT_FILTER_PARAMS, 
-                            values: params => {
-                                if (configEndpoint) {
-                                    getFilterAsyncOptions(configEndpoint).then(payload => params.success(payload));
-                                } 
-                                params.success(options);
-                            }
-                        },
-                        multiselect: {
-                            ...DEFAULT_FILTER_PARAMS, 
-                            values: params => {
-                                if (configEndpoint) {
-                                    getFilterAsyncOptions(configEndpoint).then(payload => params.success(payload));
-                                } 
-                                params.success(options);
-                            }
-                        }
-                    };
                     copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
-                    copiedColumnDef.filterParams = switchCase(FILTER_PARAMS)(DEFAULT_FILTER_PARAMS)(dataType);
+                    copiedColumnDef.filterParams = setFilterParams(dataType, copiedColumnDef.field);
                 }
 
                 return copiedColumnDef;
@@ -110,8 +85,7 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
         const onGridEvent = ({type, api}) => {
             if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
-                // TODO: happens 
-                setTimeout(() => setGridApi(api), 100);
+                setGridApi(api);
             }
         };
 
@@ -125,17 +99,38 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
             field.applyModel();
         };
 
-        const getFilterAsyncOptions = (endpoint) => {
-            return profileService.getSelectValues(endpoint)
-            .then(response => {
-                const {data} = response || {};
-                const options = data.data.map(el => el.value);
-                return options;
-            });
+        const setFilterParams = (dataType, field) => {
+            switch (dataType) {
+                case 'string':
+                case 'number': 
+                    return DEFAULT_FILTER_PARAMS;
+                case 'select': 
+                case 'multiselect': 
+                    return {
+                        ...DEFAULT_FILTER_PARAMS, 
+                        values: getFilterOptions(field),
+                    };
+                default:
+                    return DEFAULT_FILTER_PARAMS;
+            }
         };
+
+        const getFilterOptions = (field) => {
+            const options = selectValues ? selectValues[field] : [];
+            const parsedselectValues = options.map(option => {
+                if (isObject(option)) {
+                    return option.value;
+                }
+                return option;
+            });
+            return parsedselectValues;
+        };
+
+        const propsWithoutHocProps = omit(props, hocProps);
+
         return (
             <WrappedComponent 
-                {...props}
+                {...propsWithoutHocProps}
                 columnDefs={filterableColumnDefs}
                 floatingFilter={true}
                 onGridEvent={onGridEvent}
@@ -145,16 +140,14 @@ const withFilterableColumns = (filterableColumns, initialFilter = {}) => Wrapped
 
     const createMapStateToProps = () => {
         const availsMappingSelector = createAvailsMappingSelector();
+        const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => ({
             mapping: availsMappingSelector(state, props),
+            selectValues: availSelectValuesSelector(state, props),
         });
     };
 
-    const mapDispatchToProps = (dispatch) => ({
-        createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
-    });
-
-    return connect(createMapStateToProps, mapDispatchToProps)(ComposedComponent); // eslint-disable-line
+    return connect(createMapStateToProps)(ComposedComponent); // eslint-disable-line
 };
 
 export default withFilterableColumns;

@@ -36,7 +36,6 @@ function MatchRightView({
     saveCombinedRight,
     createRightMatchingColumnDefs, 
     columnDefs, 
-    mapping,
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
@@ -49,9 +48,9 @@ function MatchRightView({
 
     useEffect(() => {
         if (!columnDefs.length) {
-            createRightMatchingColumnDefs(mapping);
+            createRightMatchingColumnDefs();
         }
-    }, [columnDefs, mapping]);
+    }, [columnDefs]);
 
     useEffect(() => {
         const {params} = match || {};
@@ -197,14 +196,12 @@ const createMapStateToProps = () => {
     const matchedRightsSelector = selectors.createMatchedRightsSelector();
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
-    const availsMappingSelector = selectors.createAvailsMappingSelector();
 
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
         matchedRights: matchedRightsSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: availsMappingSelector(state, props),
     });
 };
 
