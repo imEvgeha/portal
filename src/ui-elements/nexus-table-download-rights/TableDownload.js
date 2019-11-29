@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import {alertModal} from '../../components/modal/AlertModal';
 import {confirmModal} from '../../components/modal/ConfirmModal';
 import {CUSTOM_HEADER_LIST} from '../../constants/customColumnHeaders';
 import {exportService} from '../../containers/avail/service/ExportService';
 import {downloadFile} from '../../util/Common';
 import {FATAL} from '../../constants/avails/manualRightsEntryTabs';
+import './TableDownload.scss';
 
 export default function TableDownloadRights({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) {
 
@@ -34,6 +36,7 @@ export default function TableDownloadRights({getColumns, getSelected, allowDownl
                     confirmModal.open('Confirm download',
                         exportAvailsCriteria,
                         () => {
+                            //Empty because of design confirmModal. The modal will just close on cancel button press.
                         },
                         {description: `You have select ${prettyTabName()} tab for download.`});
                 } else {
@@ -43,6 +46,7 @@ export default function TableDownloadRights({getColumns, getSelected, allowDownl
                 confirmModal.open('Confirm download',
                     exportAvailsByIds,
                     () => {
+                        //Empty because of design confirmModal. The modal will just close on cancel button press.
                     },
                     {description: `You have selected ${getSelected().length} avails for download.`});
             }
@@ -64,7 +68,7 @@ export default function TableDownloadRights({getColumns, getSelected, allowDownl
     };
 
     return (
-        <i className={'fas fa-download table-top-icon float-right'} onClick={exportAvails}> </i>
+        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large'/></div>
     );
 }
 
@@ -77,5 +81,8 @@ TableDownloadRights.propTypes = {
 };
 
 TableDownloadRights.defaultProps = {
-    allowDownloadFullTab: false
+    allowDownloadFullTab: false,
+    selectedTab: 'None',
+    getSelected: () => [],
+    exportCriteria: {}
 };

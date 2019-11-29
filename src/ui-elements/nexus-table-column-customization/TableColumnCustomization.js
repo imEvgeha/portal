@@ -2,9 +2,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {Checkbox} from '@atlaskit/checkbox';
+import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
+import './TableColumnCustomization.scss';
 
-const selectAll = 'selectAll';
-const selectAllDisplayName = 'Select All';
+const SELECT_ALL = 'selectAll';
+const SELECT_ALL_DISPLAY_NAME = 'Select All';
 
 export default function TableColumnCustomization({availsMapping, columns, updateColumnsOrder}) {
 
@@ -40,8 +42,8 @@ export default function TableColumnCustomization({availsMapping, columns, update
             };
         });
 
-        config[selectAll] = {
-            label: selectAllDisplayName,
+        config[SELECT_ALL] = {
+            label: SELECT_ALL_DISPLAY_NAME,
             checked: isAllSelected(config),
         };
 
@@ -51,7 +53,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
     const isAllSelected = (config) => {
         let allSelected = true;
         for (let key in config) {
-            if (key === selectAll) continue;
+            if (key === SELECT_ALL) continue;
             allSelected = allSelected && config[key].checked;
         }
         return allSelected;
@@ -60,7 +62,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
     const toggleColumn = (id) => {
         let newHideShowColumns = {...hideShowColumns};
         newHideShowColumns[id].checked = !newHideShowColumns[id].checked;
-        newHideShowColumns[selectAll].checked = isAllSelected(newHideShowColumns);
+        newHideShowColumns[SELECT_ALL].checked = isAllSelected(newHideShowColumns);
         setHideShowColumns(newHideShowColumns);
     };
 
@@ -101,9 +103,9 @@ export default function TableColumnCustomization({availsMapping, columns, update
     };
 
     const buildModalContent = (config) => {
-        const options = [buildCheckBox(selectAll, toggleSelectAll)];
+        const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
         for (let key in config) {
-            if (key === selectAll) continue;
+            if (key === SELECT_ALL) continue;
             options.push(buildCheckBox(key, toggleColumn));
         }
 
@@ -129,7 +131,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
         setModalStyle({width: 'small'});
     };
 
-    return (<i className={'fas fa-th table-top-icon float-right'} onClick={buildConfigAndOpenModal}> </i>);
+    return (<div className='nexus-column-customization__icon-button' onClick={buildConfigAndOpenModal}><AppSwitcherIcon size='large'/></div>);
 }
 
 TableColumnCustomization.propTypes = {
