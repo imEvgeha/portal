@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
-import NexusDateTimePicker from '../../../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDatePicker from '../../../../../ui-elements/nexus-date-picker/NexusDatePicker';
 
 // TODO: Convert to functional component
 class TerritoryMetadataCreateTab extends Component {
@@ -65,7 +65,7 @@ class TerritoryMetadataCreateTab extends Component {
                             />
                         </Col>
                         <Col>
-                            <NexusDateTimePicker
+                            <NexusDatePicker
                                 label="Original Air Date"
                                 id="territoryOriginalAirDate"
                                 onChange={date => this.props.handleChangeDate('originalAirDate', date)}
@@ -74,14 +74,14 @@ class TerritoryMetadataCreateTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <NexusDateTimePicker
+                            <NexusDatePicker
                                 label="Home Video Release Date"
                                 id="territoryHomeVideoReleaseDate"
                                 onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', date)}
                             />
                         </Col>
                         <Col>
-                            <NexusDateTimePicker
+                            <NexusDatePicker
                                 label="Avail Announce Date"
                                 id="territoryAvailAnnounceDate"
                                 onChange={date => this.props.handleChangeDate('availAnnounceDate', date)}
@@ -90,14 +90,14 @@ class TerritoryMetadataCreateTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col>
-                            <NexusDateTimePicker
+                            <NexusDatePicker
                                 label="Theatrical Release Date"
                                 id="territoryTheatricalReleaseDate"
                                 onChange={date => this.props.handleChangeDate('theatricalReleaseDate', date)}
                             />
                         </Col>
                         <Col>
-                            <NexusDateTimePicker
+                            <NexusDatePicker
                                 label="EST Release Date"
                                 id="territoryESTReleaseDate"
                                 onChange={date => this.props.handleChangeDate('estReleaseDate', date)}

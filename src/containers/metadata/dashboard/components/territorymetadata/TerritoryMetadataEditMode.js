@@ -3,7 +3,7 @@ import {Row, Col, Container} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import NexusDateTimePicker from '../../../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDatePicker from '../../../../../ui-elements/nexus-date-picker/NexusDatePicker';
 import {DATE_FORMAT, COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
 class TerritoryMetadataEditMode extends Component {
@@ -46,7 +46,7 @@ class TerritoryMetadataEditMode extends Component {
                                     }} />
                             </Col>
                             <Col>
-                                <NexusDateTimePicker
+                                <NexusDatePicker
                                     label="Original Air Date"
                                     id="territoryOriginalAirDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
@@ -56,7 +56,7 @@ class TerritoryMetadataEditMode extends Component {
                         </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <NexusDateTimePicker
+                                <NexusDatePicker
                                     label="Home Video Release Date"
                                     id="territoryHomeVideoReleaseDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
@@ -64,7 +64,7 @@ class TerritoryMetadataEditMode extends Component {
                                 />
                             </Col>
                             <Col>
-                                <NexusDateTimePicker
+                                <NexusDatePicker
                                     label="Avail Announce Date"
                                     id="territoryAvailAnnounceDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
@@ -74,7 +74,7 @@ class TerritoryMetadataEditMode extends Component {
                         </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <NexusDateTimePicker
+                                <NexusDatePicker
                                     label="Theatrical Release Date"
                                     id="territoryTheatricalReleaseDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
@@ -82,7 +82,7 @@ class TerritoryMetadataEditMode extends Component {
                                 />
                             </Col>
                             <Col>
-                                <NexusDateTimePicker
+                                <NexusDatePicker
                                     label="EST Release Date"
                                     id="territoryESTReleaseDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}

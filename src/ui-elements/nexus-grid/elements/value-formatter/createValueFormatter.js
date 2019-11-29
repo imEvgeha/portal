@@ -2,7 +2,8 @@ import moment from 'moment';
 
 const createValueFormatter = ({dataType, javaVariableName}) => {
     switch (dataType) {
-        case 'localdate': 
+        case 'localdate':
+        case 'datetime':
             return (params) => {
             const {data = {}} = params || {};
             if (data[javaVariableName]) {
