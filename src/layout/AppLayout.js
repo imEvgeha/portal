@@ -4,20 +4,32 @@ import {ConnectedRouter} from 'connected-react-router';
 import './AppLayout.scss';
 import {IfEmbedded} from './../util/Common';
 import Navbar from '../containers/Navbar';
+import Navigation from '../navigation/Navigation';
 import DOP from '../util/DOP';
 import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import routes from '../routes';
 
 const AppLayout = ({history}) => (
     <ConnectedRouter history={history} >
-        <div className="nexus-c-app-layout">
+        <div className={`nexus-c-app-layout ${history.location.pathname.endsWith('/v2') ? 'nexus-navigation' : ''}`}>
             <IfEmbedded>
                 <DOP />
             </IfEmbedded>
-            <IfEmbedded value={false}>
-                <Navbar />
-            </IfEmbedded>
-            <NexusBreadcrumb />
+            {history.location.pathname.endsWith('/v2')
+                ? (
+                    <IfEmbedded value={false}>
+                        <Navigation />
+                    </IfEmbedded>
+                )
+                : (
+                    <>
+                        <IfEmbedded value={false}>
+                            <Navbar />
+                        </IfEmbedded>
+                        <NexusBreadcrumb />
+                    </>
+                )
+            }
             <div className="nexus-c-app-layout__main">
                 {routes}
             </div>
