@@ -23,7 +23,6 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -45,7 +44,6 @@ const RightToMatchView = ({
     history,
     location,
     createNewRight,
-    selectValues,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
@@ -215,14 +213,12 @@ const createMapStateToProps = () => {
     const availsMappingSelector = selectors.createAvailsMappingSelector();
     const fieldSearchCriteriaSelector = selectors.createFieldSearchCriteriaSelector();
     const focusedRightSelector = selectors.createFocusedRightSelector();
-    const availSelectValuesSelector = createAvailSelectValuesSelector();
 
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         fieldSearchCriteria: fieldSearchCriteriaSelector(state, props),
         focusedRight: focusedRightSelector(state, props), 
-        selectValues: availSelectValuesSelector(state, props),
     });
 };
 
