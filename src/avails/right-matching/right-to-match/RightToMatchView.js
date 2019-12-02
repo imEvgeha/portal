@@ -27,17 +27,17 @@ import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilte
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
 const RightRepositoryNexusGrid = compose(
-    withFilterableColumns({hocProps: ['mapping', 'initialFilter', 'selectValues']}), 
+    withFilterableColumns(),
     withSideBar(),
     withInfiniteScrolling(getRightToMatchList)
 )(NexusGrid);
 
 const RightToMatchView = ({
-    match, 
-    columnDefs, 
-    mapping, 
-    createRightMatchingColumnDefs, 
-    fetchRightMatchingFieldSearchCriteria, 
+    match,
+    columnDefs,
+    mapping,
+    createRightMatchingColumnDefs,
+    fetchRightMatchingFieldSearchCriteria,
     fetchFocusedRight,
     fieldSearchCriteria,
     focusedRight,
@@ -218,7 +218,7 @@ const createMapStateToProps = () => {
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         fieldSearchCriteria: fieldSearchCriteriaSelector(state, props),
-        focusedRight: focusedRightSelector(state, props), 
+        focusedRight: focusedRightSelector(state, props),
     });
 };
 
