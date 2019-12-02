@@ -6,6 +6,9 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './NexusGrid.scss';
 
+import {LicenseManager} from 'ag-grid-enterprise';
+LicenseManager.setLicenseKey('QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074');
+
 const OVERFLOW_VISIBLE_NUMBER = 2;
 
 const NexusGrid = ({
