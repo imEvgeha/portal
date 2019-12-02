@@ -63,11 +63,17 @@ const Http = {
         http.interceptors.response.use(
             response => {
                 if(successToast){
+                    const actions = successToast.actions ? (
+                        successToast.actions.map(action => ({
+                            ...action,
+                            onClick: action.onClick ? () => action.onClick(response) : () => {}
+                        }))) : [];
                     store.dispatch(addToast({
                         title: SUCCESS_TITLE,
                         icon: SUCCESS_ICON,
                         isAutoDismiss: true,
                         ...successToast,
+                        actions,
                     }));
                 }
                 return response;

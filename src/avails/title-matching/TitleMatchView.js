@@ -99,7 +99,7 @@ const TitleMatchView = ({
                         <TitlesList
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
-                            mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
+                            mergeTitles={mergeTitles}/>
                     </React.Fragment>
                 )
             }
@@ -134,7 +134,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList, toastApi) => dispatch(mergeTitles(matchList, duplicateList, toastApi))
+    mergeTitles: (matchList, duplicateList) => dispatch(mergeTitles(matchList, duplicateList))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line
