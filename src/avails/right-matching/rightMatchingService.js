@@ -51,8 +51,8 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
             ...response,
             data: {
                 ...response.data,
-                data: response.data.data.filter(el => Array.isArray(excludedItems) && !excludedItems.includes(el.id)),
-                total: response.data.total - excludedItems.length,
+                data: response.data && response.data.data ? response.data.data.filter(el => Array.isArray(excludedItems) && !excludedItems.includes(el.id)) : [],
+                total: response.data.total > 0 ? response.data.total - excludedItems.length : 0,
             }
         };
         return updatedResponse;
