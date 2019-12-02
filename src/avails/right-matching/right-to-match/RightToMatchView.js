@@ -147,7 +147,7 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {fieldSearchCriteria && !!Object.keys(selectValues).length && (
+                {fieldSearchCriteria && (
                     <RightRepositoryNexusGrid
                         columnDefs={updatedColumnDefs}
                         mapping={mapping}

@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
 import omit from 'lodash.omit';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
-import usePrevious from '../../../util/hooks/usePrevious';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
 
@@ -32,14 +30,13 @@ const withFilterableColumns = ({
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues} = props;
-        const previousColumnDefs = usePrevious(columnDefs);
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns || Object.keys(props.initialFilter || initialFilter);
         const filters = props.initialFilter || initialFilter;
 
         useEffect(() => {
-            if (!isEqual(previousColumnDefs, columnDefs)) {
+            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
                setFilterableColumnDefs(updateColumnDefs(columnDefs)); 
             }
         }, [columnDefs]);
@@ -129,12 +126,14 @@ const withFilterableColumns = ({
         const propsWithoutHocProps = omit(props, hocProps);
 
         return (
-            <WrappedComponent 
-                {...propsWithoutHocProps}
-                columnDefs={filterableColumnDefs}
-                floatingFilter={true}
-                onGridEvent={onGridEvent}
-            />
+            !!filterableColumnDefs.length && (
+                <WrappedComponent 
+                    {...propsWithoutHocProps}
+                    columnDefs={filterableColumnDefs}
+                    floatingFilter={true}
+                    onGridEvent={onGridEvent}
+                />
+            )
         );
     };
 
