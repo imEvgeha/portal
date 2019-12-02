@@ -1,7 +1,7 @@
 import config from 'react-global-configuration';
 import Http from '../util/Http';
 
-const http = Http.create({noDefaultErrorHandling: true});
+const http = Http.create({defaultErrorHandling: false});
 
 export const getConfigApiValues = (configUrl, page, size, sortBy, field, searchValue) => {
     let sortPath = sortBy ? ';'+ sortBy +'=ASC' : '';

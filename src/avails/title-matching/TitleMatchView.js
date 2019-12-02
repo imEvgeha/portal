@@ -7,7 +7,6 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
-import NexusToastNotificationContext from '../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -33,7 +32,6 @@ const TitleMatchView = ({
     searchCriteria
 }) => {
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
-    const toastApi = useContext(NexusToastNotificationContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
