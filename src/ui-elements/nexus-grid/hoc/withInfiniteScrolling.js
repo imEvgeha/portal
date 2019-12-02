@@ -34,7 +34,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
 
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
-            const parsedParams = Object.keys(props.params)
+            const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
                     object[key] = props.params[key];
@@ -54,7 +54,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                 ...sortParams,
             };
 
-            fetchData(pageNumber, pageSize, preparedParams)
+            fetchData(pageNumber, pageSize, !isEmpty(preparedParams) && preparedParams)
                 .then(response => {
                     const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
 
