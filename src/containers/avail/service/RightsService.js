@@ -101,7 +101,7 @@ const parseAdvancedFilter = function (searchCriteria) {
 
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-            let map = mappings.find(({queryParamName}) => queryParamName === key);
+            const map = mappings.find(({queryParamName}) => queryParamName === key);
             let value = searchCriteria[key];
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
