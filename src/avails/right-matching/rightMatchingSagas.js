@@ -9,10 +9,12 @@ import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightByI
 import {createColumnDefs} from '../utils';
 
 // TODO - refactor this worker saga (use select)
-export function* createRightMatchingColumnDefs({payload}) {
+export function* createRightMatchingColumnDefs() {
+    const {availsMapping} = yield select(state => state.root);
     try {
-        if (payload && payload.length) {
-            const columnDefs = yield call(createColumnDefs, payload);
+        const {mappings = []} = availsMapping || {};
+        if (mappings.length) {
+            const columnDefs = yield call(createColumnDefs, mappings);
             yield put({
                 type: actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS,
                 payload: {columnDefs},

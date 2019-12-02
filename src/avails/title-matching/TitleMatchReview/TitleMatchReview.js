@@ -114,6 +114,27 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
 
     const deepCloneMatchedTitlesColumnDefs = deepClone(columnDefs);
     const deepCloneCombinedTitleColumnDefs = deepClone(columnDefs);
+
+    const renderEpisodeAndSeasonNumber = params => {
+        if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;
+        else if(params.data.contentType === 'SEASON') return params.data.episodic.seasonNumber;
+        else return null;
+    };
+
+    const numOfEpisodeAndSeasonField = {
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
+        headerName: '-',
+        valueFormatter: renderEpisodeAndSeasonNumber,
+        width: 100
+        
+    };
+
+    const onGridReady = (params) => {
+        const {columnApi} = params;
+        const contentTypeIndex = deepCloneMatchedTitlesColumnDefs.findIndex(e => e.field === 'contentType');
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 2); // +1 indicates 1 column pinned on the left side
+    };
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
@@ -125,7 +146,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...deepCloneMatchedTitlesColumnDefs]}
+                            onGridEvent={onGridReady}
+                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
                     </React.Fragment>
@@ -136,7 +158,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                     <React.Fragment>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
-                            columnDefs={[getRepositoryCell(), ...deepCloneCombinedTitleColumnDefs]}
+                            onGridEvent={onGridReady}
+                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />
                     </React.Fragment>

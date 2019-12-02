@@ -105,7 +105,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         cellRendererFramework: duplicateButtonCell,
     }; 
     
-    const deepCloneColumnDefs = deepClone(columnDefs);
+    
+    let deepCloneColumnDefs = deepClone(columnDefs);
     const handleTitleMatchingRedirect = params => {
         return createLinkableCellRenderer(params);
     };
@@ -113,12 +114,38 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
         return e;
     });
+
+    const renderEpisodeAndSeasonNumber = params => {
+        const {data: {contentType, episodic: {episodeNumber, seasonNumber}}} = params;
+        if(contentType === 'EPISODE') return episodeNumber;
+        else if(contentType === 'SEASON') return seasonNumber;
+        else return null;
+    };
+
+    const numOfEpisodeAndSeasonField = {
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
+        headerName: '-',
+        valueFormatter: renderEpisodeAndSeasonNumber,
+        cellRenderer: handleTitleMatchingRedirect,
+        width: 100
+        
+    };
+
+    const onGridReady = (params) => {
+        const {columnApi} = params;
+        const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 4); // +3 indicates pinned columns on the left side
+    };
+
+    
     const repository = getRepositoryCell();
     return (
         <React.Fragment>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
-                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
+                onGridEvent={onGridReady}
+                columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}/>
             <ActionsBar
                 rightId={rightId}

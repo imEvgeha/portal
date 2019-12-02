@@ -19,6 +19,7 @@ import NewTitleConstants from './components/create-title-form/CreateTitleFormCon
 import Constants from './titleMatchingConstants';
 import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
+import { deepClone } from '../../util/Common';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
@@ -68,7 +69,15 @@ const TitleMatchView = ({
             createColumnDefs();
         }
     }, [columnDefs]);
-
+    let deepCloneRightColumnDefs = deepClone(rightColumns);
+    let updatedRightColumnDefs;
+    if(focusedRight && focusedRight.contentType === 'Episode') {
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
+    } else if(focusedRight && focusedRight.contentType === 'Season'){
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber');
+    } else {
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber');
+    }
     return (
         <div className="nexus-c-title-to-match">
             <div className="nexus-c-title-to-match__header">
@@ -80,7 +89,7 @@ const TitleMatchView = ({
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
-                                columnDefs={[newTitleButton, ...rightColumns]}
+                                columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
                                 rowData={[focusedRight]}
                             />
                         </div>

@@ -6,7 +6,7 @@ import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexu
 import {
     FATAL,
     TOTAL_RIGHTS,
-    PENDING,
+    UNMATCHED,
     ERRORS,
     SUCCESS
 } from '../../../../../constants/avails/manualRightsEntryTabs';
@@ -25,7 +25,7 @@ function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedT
             .then(response => setTotalRightsCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
             .then(response => setSuccessCount(response.data.total));
-        rightsService.advancedSearch(getCustomSearchCriteria(PENDING), 0, 1)
+        rightsService.advancedSearch(getCustomSearchCriteria(UNMATCHED), 0, 1)
             .then(response => setPendingCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
             .then(response => setErrorsCount(response.data.total));
@@ -47,8 +47,8 @@ function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedT
             <ManualRightEntryTab isActive={selectedTab === SUCCESS}
                                  onClick={() => updateManualRightEntrySelectedTab(SUCCESS)}>Success
                 ({successCount})</ManualRightEntryTab>
-            <ManualRightEntryTab isActive={selectedTab === PENDING}
-                                 onClick={() => updateManualRightEntrySelectedTab(PENDING)}>Unmatched
+            <ManualRightEntryTab isActive={selectedTab === UNMATCHED}
+                                 onClick={() => updateManualRightEntrySelectedTab(UNMATCHED)}>Unmatched
                 ({pendingCount})</ManualRightEntryTab>
             <ManualRightEntryTab isActive={selectedTab === ERRORS}
                                  onClick={() => updateManualRightEntrySelectedTab(ERRORS)}>Errors

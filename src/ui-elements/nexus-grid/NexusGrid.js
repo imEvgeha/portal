@@ -1,9 +1,13 @@
 import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
+import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './NexusGrid.scss';
+
+import {LicenseManager} from 'ag-grid-enterprise';
+LicenseManager.setLicenseKey('QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074');
 
 const OVERFLOW_VISIBLE_NUMBER = 2;
 
@@ -52,6 +56,12 @@ const NexusGrid = ({
         }
     };
 
+    const onFirstDataRendered = data => {
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
+        }
+    };
+
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
     const isOverflowVisible = (count, constant = OVERFLOW_VISIBLE_NUMBER) => count && (count <= constant);
@@ -70,6 +80,7 @@ const NexusGrid = ({
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={onSelectionChanged}
                 onCellValueChanged={onCellValueChanged}
+                onFirstDataRendered={onFirstDataRendered}
                 {...restProps}
             >
             </AgGridReact> 

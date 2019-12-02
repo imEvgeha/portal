@@ -19,11 +19,12 @@ import {URL} from '../../util/Common';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightMatchingList)(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(
+    withInfiniteScrolling(getRightMatchingList), 
+)(NexusGrid);
 
 const RightMatchingView = ({
         createRightMatchingColumnDefs, 
-        mapping, 
         columnDefs, 
         history, 
         match, 
@@ -41,9 +42,9 @@ const RightMatchingView = ({
 
     useEffect(() => {
         if (!columnDefs.length) {
-            createRightMatchingColumnDefs(mapping);
+            createRightMatchingColumnDefs();
         }
-    }, [mapping, columnDefs]);
+    }, [columnDefs]);
 
     const onFocusButtonClick = (rightId) => {
         history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
@@ -92,7 +93,6 @@ const RightMatchingView = ({
 RightMatchingView.propTypes = {
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
-    mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
     location: PropTypes.object,
@@ -102,7 +102,6 @@ RightMatchingView.propTypes = {
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
-    mapping: [],
     match: {},
     history: {},
     location: {},
@@ -112,10 +111,8 @@ RightMatchingView.defaultProps = {
 
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
-    const availsMappingSelector = selectors.createAvailsMappingSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: availsMappingSelector(state, props),
     });
 };
 
