@@ -17,7 +17,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './RightsResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
-import {resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder} from '../../../../stores/actions/avail/dashboard';
+import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRightsResultPageLoading, manualRightsResultPageSort, updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
 
@@ -35,61 +35,64 @@ export const selectRightMode = 'selectRightMode';
 
 let mapStateToProps = state => {
     return {
-        availTabPage: state.dashboard.availTabPage,
-        availTabPageSort: state.dashboard.session.availTabPageSort,
-        availTabPageSelection: state.dashboard.session.availTabPageSelection,
-        availTabPageLoading: state.dashboard.availTabPageLoading,
+        tabPage: state.manualRightsEntry.tabPage,
+        tabPageSort: state.manualRightsEntry.session.tabPageSort,
+        tabPageSelection: state.manualRightsEntry.session.tabPageSelection,
+        tabPageLoading: state.manualRightsEntry.tabPageLoading,
         availsMapping: state.root.availsMapping,
-        columnsOrder: state.dashboard.session.columns,
-        columnsSize: state.dashboard.session.columnsSize,
+        columnsOrder: state.manualRightsEntry.session.columns,
+        columnsSize: state.manualRightsEntry.session.columnsSize,
         showSelectedAvails: state.dashboard.showSelectedAvails,
     };
 };
 
 let mapDispatchToProps = {
-    resultPageUpdate,
-    resultPageSort,
-    resultPageSelect,
-    resultPageLoading,
-    resultPageUpdateColumnsOrder
+    manualRightsResultPageUpdate,
+    manualRightsResultPageSort,
+    manualRightsResultPageSelect,
+    manualRightsResultPageLoading,
+    updateManualRightsEntryColumns
 };
 
 class RightsResultTable extends React.Component {
     static propTypes = {
         availsMapping: t.any,
-        availTabPage: t.object,
-        availTabPageSort: t.array,
-        availTabPageSelection: t.object,
-        availTabPageLoading: t.bool,
-        resultPageUpdate: t.func,
-        resultPageSort: t.func,
-        resultPageSelect: t.func,
-        resultPageLoading: t.func,
+        tabPage: t.object,
+        tabPageSort: t.array,
+        tabPageSelection: t.object,
+        tabPageLoading: t.bool,
+        manualRightsResultPageUpdate: t.func,
+        manualRightsResultPageSort: t.func,
+        manualRightsResultPageSelect: t.func,
+        manualRightsResultPageLoading: t.func,
         columnsOrder: t.array,
         columns:t.array,
         columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func,
+        updateManualRightsEntryColumns: t.func,
         showSelectedAvails: t.bool,
         fromServer: t.bool,
         hidden: t.bool,
         nav: t.object,
         autoRefresh: t.number,
         mode: t.string,
-        selectedTab: t.string
+        selectedTab: t.string,
+        searchCriteria: t.object,
+        onTableLoaded: t.func,
     };
 
     static defaultProps = {
         autoload: true,
         autoRefresh: 0,
-        mode: defaultMode
-    }
+        mode: defaultMode,
+        searchCriteria: {}
+    };
 
     table = null;
 
     constructor(props) {
         super(props);
         this.state = {
-            originalData: this.props.availTabPageSelection.selected.slice(0),
+            originalData: this.props.tabPageSelection.selected.slice(0),
             pageSize: config.get('avails.page.size'),
             cols:[],
             defaultColDef: {
@@ -147,6 +150,8 @@ class RightsResultTable extends React.Component {
         if(this.props.autoRefresh && this.refresh === null){
             this.refresh = setInterval(this.reload, this.props.autoRefresh);
         }
+        this.table.api.setDatasource(this.dataSource);
+        this.props.onTableLoaded(this.table);
     }
 
     componentWillUnmount() {
@@ -185,21 +190,21 @@ class RightsResultTable extends React.Component {
 
         this.refreshSort();
 
-        const isLoading = this.props.availTabPageLoading !== prevProps.availTabPageLoading && this.props.availTabPageLoading === true;
+        const isLoading = this.props.tabPageLoading !== prevProps.tabPageLoading && this.props.tabPageLoading === true;
         const isNewTab = prevProps.selectedTab !== this.props.selectedTab;
         const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab);
         if(shouldRefetch) {
             this.table.api.setDatasource(this.dataSource);
         }
 
-        if(prevProps.availTabPageSelection !== this.props.availTabPageSelection){
+        if(prevProps.tabPageSelection !== this.props.tabPageSelection){
             if(this.props.fromServer){
                 if(this.props.showSelectedAvails){
                     this.refreshSelected();
                 }
             }else{
                 if(!this.props.showSelectedAvails) {
-                    this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
+                    this.setState({originalData: this.props.tabPageSelection.selected.slice(0)});
                     setTimeout(() => {this.refreshSelected();}, 1);
                 }
             }
@@ -207,7 +212,7 @@ class RightsResultTable extends React.Component {
 
         //when we go out of 'See selected avails'
         if(prevProps.showSelectedAvails !== this.props.showSelectedAvails && this.props.showSelectedAvails === false && !this.props.fromServer){
-            this.setState({originalData: this.props.availTabPageSelection.selected.slice(0)});
+            this.setState({originalData: this.props.tabPageSelection.selected.slice(0)});
             setTimeout(() => {this.table.api.selectAll();}, 1);
         }
         if(prevProps.hidden !== this.props.hidden && !this.props.hidden){
@@ -272,7 +277,7 @@ class RightsResultTable extends React.Component {
     refreshSort(){
         if(!this.table) return;
         let sortModel=[];
-        this.props.availTabPageSort.map(sortCriteria=>{
+        this.props.tabPageSort.map(sortCriteria=>{
             sortModel.push({colId:this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === sortCriteria.id).javaVariableName, sort:sortCriteria.desc ? 'desc' : 'asc'});
         });
 
@@ -299,7 +304,7 @@ class RightsResultTable extends React.Component {
                 newSort.push({id : this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === criteria.colId).queryParamName , desc: criteria.sort === 'desc'});
             });
         }
-        this.props.resultPageSort(newSort);
+        this.props.manualRightsResultPageSort(newSort);
     }
 
     onSelectionChanged(){
@@ -312,8 +317,8 @@ class RightsResultTable extends React.Component {
     onScroll(){
         const allVisibleSelected = this.areAllVisibleSelected();
         const oneVisibleSelected = this.isOneVisibleSelected();
-        if(allVisibleSelected !== this.props.availTabPageSelection.selectAll || oneVisibleSelected === this.props.availTabPageSelection.selectNone) {
-            this.props.resultPageSelect({selected: this.props.availTabPageSelection.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
+        if(allVisibleSelected !== this.props.tabPageSelection.selectAll || oneVisibleSelected === this.props.tabPageSelection.selectNone) {
+            this.props.manualRightsResultPageSelect({selected: this.props.tabPageSelection.selected, selectAll: allVisibleSelected, selectNone: !oneVisibleSelected});
         }
     }
 
@@ -321,7 +326,7 @@ class RightsResultTable extends React.Component {
         if(!this.table) return;
         this.table.api.deselectAll();
         this.table.api.forEachNode(rowNode => {
-            if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
+            if(rowNode.data && this.props.tabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
                 rowNode.setSelected(true);
             }
         });
@@ -342,24 +347,24 @@ class RightsResultTable extends React.Component {
         let selected = this.table.api.getSelectedRows().slice(0);
 
         if(this.table.api.getDisplayedRowCount() > 0){
-            this.props.availTabPageSelection.selected.map(sel => {
+            this.props.tabPageSelection.selected.map(sel => {
                 if(selected.filter(rec => (sel.id === rec.id)).length === 0 && this.table.api.getRowNode(sel.id) === null) {
                     selected.push(sel);
                 }
             });
         } else {
-            if(this.props.availTabPageSelection.selected && this.props.availTabPageSelection.selected.length > 0)
-                selected = selected.concat(this.props.availTabPageSelection.selected);
+            if(this.props.tabPageSelection.selected && this.props.tabPageSelection.selected.length > 0)
+                selected = selected.concat(this.props.tabPageSelection.selected);
         }
 
         let nodesToUpdate = selected
-            .filter(x => !this.props.availTabPageSelection.selected.includes(x))
-            .concat(this.props.availTabPageSelection.selected.filter(x => !selected.includes(x)))
+            .filter(x => !this.props.tabPageSelection.selected.includes(x))
+            .concat(this.props.tabPageSelection.selected.filter(x => !selected.includes(x)))
             .map(i => this.table.api.getRowNode(i.id));
 
         this.table.api.redrawRows({rowNodes: nodesToUpdate});
 
-        this.props.resultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
+        this.props.manualRightsResultPageSelect({selected: selected, selectNone: !this.isOneVisibleSelected(), selectAll: this.areAllVisibleSelected()});
     }
 
     isOneVisibleSelected(){
@@ -382,7 +387,7 @@ class RightsResultTable extends React.Component {
     }
 
     editAvail(newAvail) {
-        let copiedAvails = this.props.availTabPage.avails.slice();
+        let copiedAvails = this.props.tabPage.avails.slice();
         let avail = copiedAvails.find(b => b.id === newAvail.id);
         if (avail) {
             for(let availField in newAvail) avail[availField] = newAvail[availField];
@@ -393,11 +398,11 @@ class RightsResultTable extends React.Component {
     onEdit(avail) {
         this.table.api.getRowNode(avail.id).setData(avail);
         this.table.api.redrawRows({rowNodes: [this.table.api.getRowNode(avail.id)]});
-        this.props.resultPageUpdate({
-            pages: this.props.availTabPage.pages,
+        this.props.manualRightsResultPageUpdate({
+            pages: this.props.tabPage.pages,
             avails: this.editAvail(avail),
-            pageSize: this.props.availTabPage.pageSize,
-            total: this.props.availTabPage.total
+            pageSize: this.props.tabPage.pageSize,
+            total: this.props.tabPage.total
         });
     }
 
@@ -408,14 +413,14 @@ class RightsResultTable extends React.Component {
     }
 
     doSearch(page, pageSize, sortedParams) {
-        return rightServiceManager.doSearch(page, pageSize, sortedParams);
+        return rightServiceManager.callPlanningSearch(this.props.searchCriteria, page, pageSize, sortedParams);
     }
 
     getRows(params){
         if(this.table && this.table.api.getDisplayedRowCount() === 0 && !this.props.autoRefresh){
             this.table.api.showLoadingOverlay();
         }
-        this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
+        this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.tabPageSort)
                    .then(response => {
                         if(response && response.data.total > 0){
                             this.addLoadedItems(response.data);
@@ -427,9 +432,9 @@ class RightsResultTable extends React.Component {
 
                             if(this.table){
                                 params.successCallback(response.data.data, lastRow);
-                                if(this.props.availTabPageSelection.selected.length > 0){
+                                if(this.props.tabPageSelection.selected.length > 0){
                                     this.table.api.forEachNode(rowNode => {
-                                        if(rowNode.data && this.props.availTabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
+                                        if(rowNode.data && this.props.tabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){
                                             rowNode.setSelected(true);
                                         }
                                     });
@@ -457,10 +462,10 @@ class RightsResultTable extends React.Component {
     addLoadedItems(data) {
         let items = data.data;
         if (items.length > 0) {
-            this.props.resultPageUpdate({
-                pages: this.props.availTabPage.pages + 1,
-                avails: this.props.availTabPage.avails.concat(items),
-                pageSize: this.props.availTabPage.pageSize + items.length,
+            this.props.manualRightsResultPageUpdate({
+                pages: this.props.tabPage.pages + 1,
+                avails: this.props.tabPage.avails.concat(items),
+                pageSize: this.props.tabPage.pageSize + items.length,
                 total: data.total
             });
         }
@@ -471,7 +476,7 @@ class RightsResultTable extends React.Component {
         e.columnApi.getAllGridColumns().map(column => {
             if(column.colDef.headerName !== '') cols.push(column.colDef.field);
         });
-        this.props.resultPageUpdateColumnsOrder(cols);
+        this.props.updateManualRightsEntryColumns(cols);
     }
 
     onColumnResized(e) {
@@ -503,7 +508,7 @@ class RightsResultTable extends React.Component {
         let cols = this.props.columns || this.props.columnsOrder;
         if(!cols){
             cols = this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName);
-            this.props.resultPageUpdateColumnsOrder(cols);
+            this.props.updateManualRightsEntryColumns(cols);
         }
         if(cols){
             cols.map(acc => {
@@ -669,13 +674,13 @@ import {Component} from 'react';
 
 mapStateToProps = state => {
     return {
-        availTabPageSelection: state.dashboard.session.availTabPageSelection
+        tabPageSelection: state.manualRightsEntry.session.tabPageSelection
     };
 };
 
 class CheckBoxHeaderInternal extends Component {
     static propTypes = {
-        availTabPageSelection: t.object,
+        tabPageSelection: t.object,
         api: t.object,
     };
 
@@ -691,7 +696,7 @@ class CheckBoxHeaderInternal extends Component {
         const bottomOffset = 0.7 + (this.props.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
         const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
 
-        if(!this.props.availTabPageSelection.selectAll) {
+        if(!this.props.tabPageSelection.selectAll) {
             const notSelectedNodes = visibleNodes.filter(({selected}) => !selected);
             notSelectedNodes.forEach(node => {
                 node.setSelected(true);
@@ -706,8 +711,8 @@ class CheckBoxHeaderInternal extends Component {
     }
 
     render() {
-        const allVisibleSelected = this.props.availTabPageSelection.selectAll;
-        const atLeastOneVisibleSelected = !this.props.availTabPageSelection.selectNone;
+        const allVisibleSelected = this.props.tabPageSelection.selectAll;
+        const atLeastOneVisibleSelected = !this.props.tabPageSelection.selectNone;
 
         return (
             <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
