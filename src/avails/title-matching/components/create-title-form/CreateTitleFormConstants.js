@@ -32,6 +32,11 @@ const NEW_TITLE_FORM_SCHEMA = [
         omitWhenHidden: true,
         placeholder: 'Select content type',
         required: true,
+        disabledWhen: [
+            {
+              field: 'contentType'
+            }
+        ],
         options: [
             {
                 items: [
