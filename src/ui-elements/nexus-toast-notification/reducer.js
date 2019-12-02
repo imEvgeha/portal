@@ -6,6 +6,7 @@ const initialState = {
 
 const toastReducer = (state = initialState, action) => {
     const {type, payload} = action;
+    let filteredToasts;
     switch(type){
         case ADD_TOAST:
             return {
@@ -14,7 +15,7 @@ const toastReducer = (state = initialState, action) => {
             };
 
         case REMOVE_TOAST:
-            const filteredToasts = state.toasts.slice();
+            filteredToasts = state.toasts.slice();
             filteredToasts.splice((payload || 0), 1);
             return {
                 ...state,

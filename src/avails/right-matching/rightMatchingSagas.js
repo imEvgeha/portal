@@ -7,16 +7,6 @@ import {rightsService} from '../../containers/avail/service/RightsService';
 import {URL, switchCase, isObject} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
-import {
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE, 
-    CREATE_NEW_RIGHT_ERROR_MESSAGE, 
-    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, 
-    SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-    SUCCESS_TITLE,
-    ERROR_TITLE,
-    SUCCESS_ICON,
-    ERROR_ICON,
-} from '../../ui-elements/nexus-toast-notification/constants';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs({payload}) {
@@ -259,22 +249,10 @@ export function* saveCombinedRight(requestMethod, {payload}) {
         if (redirectPath) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
-        yield call(payload.addToast, {
-            title: SUCCESS_TITLE,
-            description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true, 
-        });
     } catch (error) {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
             payload: error,
-        });
-        yield call(payload.addToast, {
-            title: ERROR_TITLE,
-            description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-            icon: ERROR_ICON,
-            isAutoDismiss: true, 
         });
     }
 }
@@ -326,7 +304,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
 }
 
 export function* createNewRight(requestMethod, {payload}) {
-    const {rightId, addToast, redirectPath} = payload || {};
+    const {rightId, redirectPath} = payload || {};
     try {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
@@ -340,23 +318,10 @@ export function* createNewRight(requestMethod, {payload}) {
         if (redirectPath) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
-        yield call(addToast, {
-            title: SUCCESS_TITLE,
-            description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-        });
     } catch (error) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_ERROR,
             payload: error,
-        });
-        const {status, message} = error;
-        yield call(addToast, {
-            description: status === 400 ? message : CREATE_NEW_RIGHT_ERROR_MESSAGE,
-            title: ERROR_TITLE,
-            icon: ERROR_ICON,
-            isAutoDismiss: true,
         });
     }
 }
