@@ -105,7 +105,7 @@ function* storeRightMatchingSearchCriteria(payload = [], id) {
 
         yield put({
             type: actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
-            payload: {fieldSearchCriteria},
+            payload: {fieldSearchCriteria: {id: focusedRight.id, params: fieldSearchCriteria}},
         });
     } catch (error) {
         yield put({
