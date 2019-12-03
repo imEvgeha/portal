@@ -3,23 +3,30 @@ import ReactDOM from 'react-dom';
 import t from 'prop-types';
 
 import config from 'react-global-configuration';
-
 // image import
 import LoadingGif from '../../../../img/loading.gif';
 
-import { AgGridReact } from 'ag-grid-react';
+import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TitleResultTable.scss';
 
 
 import connect from 'react-redux/es/connect/connect';
-import { resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder } from '../../../../stores/actions/metadata/index';
-import { titleServiceManager } from '../../service/TitleServiceManager';
-import { Link } from 'react-router-dom';
-import { titleMapping } from '../../service/Profile';
-import { titleSearchHelper } from '../TitleSearchHelper';
-import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import {
+    resultPageLoading,
+    resultPageSelect,
+    resultPageSort,
+    resultPageUpdate,
+    resultPageUpdateColumnsOrder
+} from '../../../../stores/actions/metadata/index';
+import {titleServiceManager} from '../../service/TitleServiceManager';
+import {Link} from 'react-router-dom';
+import {titleMapping} from '../../service/Profile';
+import {titleSearchHelper} from '../TitleSearchHelper';
+import {SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import {titleService} from '../../service/TitleService';
+import {formatNumberTwoDigits} from '../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -253,25 +260,15 @@ class TitleResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow / this.state.pageSize), this.state.pageSize, this.props.titleTabPageSort)
             .then(response => {
-                if (response.data.total > 0) {
-                    this.addLoadedItems(response.data);
-                    // if on or after the last page, work out the last row.
-                    let lastRow = -1;
-                    if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                        lastRow = response.data.total;
+                const {data} = response;
+                if (data.total > 0) {
+                    this.addLoadedItems(data);
+                    const ids = this.getParentTitleIds(data.data);
+                    if(ids.length > 0) {
+                        this.addUpdatedItemToTable(data, ids, params);
+                    } else {
+                        this.addItemToTable(data, params);
                     }
-                    params.successCallback(response.data.data, lastRow);
-
-                    if (this.props.titleTabPageSelection.selected.length > 0) {
-                        this.table.api.forEachNode(rowNode => {
-                            if (rowNode.data && this.props.titleTabPageSelection.selected.indexOf(rowNode.data.id) > -1) {
-                                rowNode.setSelected(true);
-                            }
-                        });
-                    }
-
-                    this.table.api.hideOverlay();
-                    this.onSelectionChanged(this.table);
                 } else {
                     this.table.api.showNoRowsOverlay();
                 }
@@ -281,6 +278,75 @@ class TitleResultTable extends React.Component {
                 params.failCallback();
             });
     }
+
+    addUpdatedItemToTable = (request, ids, params) => {
+        const titleRequest = Object.assign({}, request);
+        titleService.bulkGetTitles(ids).then(res => {
+            const parents = res.data;
+            titleRequest.data = titleRequest.data.map(title => {
+                if(title.contentType.toLowerCase() === SEASON.apiName.toLowerCase()) {
+                    title.title = this.getFormatSeasonTitle(parents, title);
+                }
+                return title;
+            });
+            this.addItemToTable(titleRequest, params);
+        });
+    }
+
+    getFormatSeasonTitle = (parents, item) => {
+        const parentId = this.getSeriesParentId(item);
+        if(parentId) {
+            const filtered = parents.filter(t => t.id === parentId);
+            if(filtered.length === 1) {
+                const {title} = filtered[0] || {};
+                const {episodic} = item || {};
+                const {seasonNumber} = episodic || {};
+                return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}]`;
+            }
+        }
+        return item.title;
+    };
+
+    addItemToTable = (data, params) => {
+        // if on or after the last page, work out the last row.
+        let lastRow = -1;
+        if ((data.page + 1) * data.size >= data.total) {
+            lastRow = data.total;
+        }
+        params.successCallback(data.data, lastRow);
+
+        if (this.props.titleTabPageSelection.selected.length > 0) {
+            this.table.api.forEachNode(rowNode => {
+                if (rowNode.data && this.props.titleTabPageSelection.selected.indexOf(rowNode.data.id) > -1) {
+                    rowNode.setSelected(true);
+                }
+            });
+        }
+
+        this.table.api.hideOverlay();
+        this.onSelectionChanged(this.table);
+    };
+
+    getParentTitleIds = (items) => {
+        return items.filter(item => item.contentType.toLowerCase() === SEASON.apiName.toLowerCase() && item.parentIds).map(t => {
+            const id = this.getSeriesParentId(t);
+            if(id) {
+                return {id};
+            }
+            return {};
+        });
+    };
+
+    getSeriesParentId = (title) => {
+        const {parentIds} = title;
+        if(parentIds) {
+            const ids = parentIds.filter(el => el.contentType.toLowerCase() === SERIES.apiName.toLowerCase());
+            if(ids.length === 1) {
+                return ids[0].id;
+            }
+        }
+        return null;
+    };
 
     addLoadedItems(data) {
         let items = data.data.map(e => e.contentType = toPrettyContentTypeIfExist(e.contentType));
