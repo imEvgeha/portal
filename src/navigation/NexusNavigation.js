@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -30,6 +30,8 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 
 const NexusNavigation = ({history, profileInfo}) => {
     const [selectedItem, setSelectedItem] = useState('');
+
+    useEffect(() => setSelectedItem(history.pathname.split('/')[0]), []);
 
     const handleClick = (destination) => {
         history.push(`/${destination}`);
@@ -102,12 +104,13 @@ const NexusNavigation = ({history, profileInfo}) => {
 };
 
 NexusNavigation.propTypes = {
-    profileInfo: PropTypes.any,
+    profileInfo: PropTypes.object,
     history: PropTypes.object,
 };
 
 NexusNavigation.defaultProps = {
     profileInfo: {},
+    history: {pathname: ''},
 };
 
 const mapStateToProps = state => {
