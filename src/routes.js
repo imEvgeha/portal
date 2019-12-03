@@ -51,12 +51,8 @@ const routes = (
         <Route exact path="/contractsearch" component={Contract} />
         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
         <Route exact path="/settings" component={Settings} />
-        {/*TEMPORARY ROUTES FOR DISPLAYING THE NEW NAVIGATION*/}
+        {/*TEMPORARY ROUTE FOR DISPLAYING THE NEW NAVIGATION*/}
         <Route exact path="/v2" component={Welcome}/>
-        <Route exact path="/avails/v2" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
-        <Route exact path="/metadata/v2" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
-        <Route exact path="/Media/v2" component={canRender(Media, 'read', 'AssetManagement')} />
-        <Route exact path="/settings/v2" component={Settings} />
         <Route component={NotFound} />
     </Switch>
 );

@@ -14,7 +14,7 @@ module.exports = {
         publicPath: '/'
     },
     entry: {
-        main: ["@babel/polyfill", './src/index.js']
+        main: ['@babel/polyfill', './src/index.js']
     },
     devtool: 'source-map',
     module: {
