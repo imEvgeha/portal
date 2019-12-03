@@ -28,8 +28,8 @@ const NexusDateTimePicker = ({
     const [isUTC, setIsUTC] = useState(!isLocalDate);
 
     // Get locale provided by intl
-    const intl = useIntl();
-    const {locale = 'en-US'} = intl || {};
+    // const intl = useIntl();
+    const {locale = 'en-US'} = {};
 
     // Create date format based on locale
     const dateFormat = getDateFormatBasedOnLocale(locale)
