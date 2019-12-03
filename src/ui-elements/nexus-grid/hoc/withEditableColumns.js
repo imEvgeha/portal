@@ -3,20 +3,23 @@ import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
+import DateCellEditor from '../elements/cell-editor/DateCellEditor';
+import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
 import {isObject} from '../../../util/Common';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../../../avails/right-matching/rightMatchingActions'; // this should be generic action not specifix one
 import usePrevious from '../../../util/hooks/usePrevious';
 
-const DEFAULT_EDITABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
+const DEFAULT_EDITABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect', 'date', 'datetime', 'localdate'];
 
-const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES) => {
+const withEditableColumns = ({editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES} = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues, createRightMatchingColumnDefs} = props;
         const previousSelectValues = usePrevious(selectValues);
         const previousColumnDefs = usePrevious(columnDefs);
         const [editableColumnDefs, setEditableColumnDefs] = useState((columnDefs && columnDefs.length) ? updateColumnDefs(columnDefs) : []);
+
         useEffect(() => {
             if (!columnDefs || columnDefs.length === 0) {
                 createRightMatchingColumnDefs(mapping);
@@ -54,26 +57,38 @@ const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITA
                 const isEditable = editableDataTypes.includes(dataType);
                 if (enableEdit && isEditable) {
                     copiedColumnDef.editable = true; 
-                    if (dataType === 'select') {
-                        const options = (isObject(selectValues) && Array.isArray(selectValues[copiedColumnDef.field]) && selectValues[copiedColumnDef.field]) || [];
-                        copiedColumnDef.cellEditorFramework = SelectCellEditor;
-                        copiedColumnDef.cellEditorParams = {
-                            options: getOptions(options),
-                        };
-                    } else if (dataType === 'multiselect') {
-                        const options = (isObject(selectValues) && Array.isArray(selectValues[copiedColumnDef.field]) && selectValues[copiedColumnDef.field]) || [];
-                        copiedColumnDef.cellEditorFramework = MultiSelectCellEditor;
-                        copiedColumnDef.cellEditorParams = {
-                            options: getOptions(options),
-                        };
-                    } else if (dataType === 'boolean') {
-                        const options = [{label: 'Yes', value: true}, {label: 'No', value: false}];
-                        copiedColumnDef.cellEditorFramework = SelectCellEditor;
-                        copiedColumnDef.cellEditorParams = {
-                            options,
-                        };
-                        // TODO: doesn't work try to find solution
-                        // columnDef.cellEditorFramework = CheckboxCellEditor;
+                    let options;
+                    switch (dataType) {
+                        case 'select':
+                            options = (isObject(selectValues) && Array.isArray(selectValues[copiedColumnDef.field]) && selectValues[copiedColumnDef.field]) || [];
+                            copiedColumnDef.cellEditorFramework = SelectCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options: getOptions(options),
+                            };
+                            break;
+                        case 'multiselect':
+                            options = (isObject(selectValues) && Array.isArray(selectValues[copiedColumnDef.field]) && selectValues[copiedColumnDef.field]) || [];
+                            copiedColumnDef.cellEditorFramework = MultiSelectCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options: getOptions(options),
+                            };
+                            break;
+                        case 'boolean':
+                            options = [{label: 'Yes', value: true}, {label: 'No', value: false}];
+                            copiedColumnDef.cellEditorFramework = SelectCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options,
+                            };
+                            // TODO: doesn't work try to find solution
+                            // columnDef.cellEditorFramework = CheckboxCellEditor;
+                            break;
+                        case 'date':
+                            copiedColumnDef.cellEditorFramework = DateCellEditor;
+                            break;
+                        case 'datetime':
+                        case 'localdate':
+                            copiedColumnDef.cellEditorFramework = DateTimeCellEditor;
+                            break;
                     }
                 }
 

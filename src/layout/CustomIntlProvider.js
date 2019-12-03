@@ -6,7 +6,9 @@ import {IntlProvider} from 'react-intl';
 const CustomIntlProvider = ({children, getLocale}) => {
     return (
         <IntlProvider locale={getLocale.locale}>
-            {children}
+            <React.Fragment>
+                {children}
+            </React.Fragment>
         </IntlProvider>
     );
 };
@@ -16,8 +18,13 @@ CustomIntlProvider.propTypes = {
     getLocale: PropTypes.object    
 };
 
+CustomIntlProvider.defaultProps = {
+    getLocale: null,
+};
+
 const mapStateToProps = state => {
     return { getLocale: state.localeReducer };
 };
 
 export default connect(mapStateToProps)(CustomIntlProvider);
+

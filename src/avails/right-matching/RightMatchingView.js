@@ -18,9 +18,11 @@ import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
+import withEditableColumns from '../../ui-elements/nexus-grid/hoc/withEditableColumns';
 
 const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling(getRightMatchingList), 
+    withEditableColumns(),
 )(NexusGrid);
 
 const RightMatchingView = ({

@@ -35,11 +35,6 @@ class SelectCellEditor extends Component {
         return false;
     }
 
-    getValue = () => {
-        const {value} = this.state.value;
-        return value;
-    }
-
     handleChange = (value) => {
         this.setState({
             value,

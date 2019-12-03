@@ -12,6 +12,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
         };
         case 'date':
             return (params) => {
+            console.log(params, 'params')
             const {data = {}} = params || {};
             if ((data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
                 return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
