@@ -13,6 +13,7 @@ import titleMatching from './avails/title-matching/titleMatchingReducer';
 import localeReducer from './stores/reducers/localization/localeReducer';
 import rightHistory from './avails/right-history-view/rightHistoryReducer';
 import manualRightsEntry from './stores/reducers/avail/manualRightsEntry';
+import toastReducer from './ui-elements/nexus-toast-notification/reducer';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -28,7 +29,8 @@ const createRootReducer = routerHistory => combineReducers({
     titleMatching,
     localeReducer,
     rightHistory,
-    manualRightsEntry
+    manualRightsEntry,
+    toastReducer,
 });
 
 export default createRootReducer;

@@ -6,9 +6,7 @@ import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {resultPageUpdateColumnsOrder, resultPageSort} from '../../../stores/actions/avail/dashboard';
 
-const httpWithoutErrorHandling = Http.create({noDefaultErrorHandling: false});
 const http = Http.create();
-
 
 const loadReportToStore = (report) => {
     store.dispatch(setReportName(report.name));
@@ -54,6 +52,7 @@ const readReportFromStore = () => {
 };
 
 const getConfiguration = () => {
+    const httpWithoutErrorHandling = Http.create({defaultErrorHandling: false});
     return httpWithoutErrorHandling.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
 };
 

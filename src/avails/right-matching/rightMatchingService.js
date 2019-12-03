@@ -3,10 +3,12 @@ import pickBy from 'lodash.pickby';
 import identity from 'lodash.identity';
 import Http from '../../util/Http';
 import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common';
+import {
+    CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+} from '../../ui-elements/nexus-toast-notification/constants';
 
 const endpoint = 'rights';
 const http = Http.create();
-const httpNoErrorHandling = Http.create({noDefaultErrorHandling:true});
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
@@ -24,7 +26,11 @@ export const getCombinedRight = (rightIds) => {
 };
 
 export const putCombinedRight = (rightIds, combinedRight) => {
-    return http.put(
+    const httpReq = Http.create({
+        errorToast: {
+            description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+        }});
+    return httpReq.put(
         `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
         combinedRight
     );
@@ -69,6 +75,17 @@ export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
 
 
 export const createRightById = (id) => {
-    return httpNoErrorHandling.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
+    const httpReq = Http.create({
+        errorCodesToast: [{
+            status: 400,
+        }],
+        errorToast: {
+            description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
+        },
+        successToast: {
+            description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+        }
+    });
+    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
 };
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -18,7 +18,6 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import {URL, isObjectEmpty} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 
@@ -39,7 +38,6 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
-    const {addToast} = useContext(NexusToastNotificationContext);
     const {params} = match || {};
     const {availHistoryIds, rightId} = params || {};
 
@@ -86,8 +84,7 @@ function MatchRightView({
         setSaveButtonDisabled(true);
         const payload = {
             rightIds: [rightId, ...matchedRightIds.split(',')],
-            combinedRight, 
-            addToast,
+            combinedRight,
             redirectPath,
         };
         // TODO: fix this

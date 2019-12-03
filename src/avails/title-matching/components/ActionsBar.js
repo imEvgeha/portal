@@ -54,6 +54,11 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
         });
     };
 
+    const mergeSingle = () => {
+        removeToast();
+        mergeTitles();
+    };
+
     const onMatchAndCreate = () => {
         if(Object.keys(matchList).length === 1){
             addToast({
@@ -62,7 +67,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
                 icon: WARNING_ICON,
                 actions: [
                     {content:'Cancel', onClick: removeToast},
-                    {content: 'Ok', onClick: mergeTitles}
+                    {content: 'Ok', onClick: mergeSingle}
                 ],
                 isWithOverlay: true,
             });

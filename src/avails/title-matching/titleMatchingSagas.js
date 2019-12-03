@@ -6,16 +6,8 @@ import { createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
-import {URL, getDomainName} from '../../util/Common';
+import {URL} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
-import {
-    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-    SUCCESS_TITLE,
-    ERROR_TITLE,
-    SUCCESS_ICON,
-    ERROR_ICON,
-} from '../../ui-elements/nexus-toast-notification/constants';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -70,8 +62,7 @@ function* createTitleMatchingColumnDefs(){
 }
 
 function* mergeAndStoreTitles({payload}){
-    const {matchList, duplicateList, toastApi} = payload;
-    const {addToast} = toastApi || {};
+    const {matchList, duplicateList} = payload;
     try{
         let query = '';
         const matches = Object.keys(matchList);
@@ -98,21 +89,8 @@ function* mergeAndStoreTitles({payload}){
             payload: Object.values(matchList),
         });
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`)));
-        const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
-        const onViewTitleClick = () => window.open(url, '_blank');
-        yield call(addToast, {
-            title: SUCCESS_TITLE,
-            description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
-            icon: SUCCESS_ICON,
-            actions: [{content:'View title', onClick: onViewTitleClick}],
-        });
-    } catch (error) {
-        yield call(addToast, {
-            title: ERROR_TITLE,
-            description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-            icon: ERROR_ICON,
-            isAutoDismiss: true,
-        });
+    } catch (e) {
+        //errors other than API failures
     }
 }
 

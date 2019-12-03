@@ -9,7 +9,7 @@ export const createColumnDefs = () => ({
     type: actionTypes.CREATE_COLUMN_DEFS,
 });
 
-export const mergeTitles = (matchList, duplicateList, toastApi) => ({
+export const mergeTitles = (matchList, duplicateList) => ({
     type: actionTypes.MERGE_TITLES,
-    payload : { matchList, duplicateList, toastApi },
+    payload : { matchList, duplicateList },
 });

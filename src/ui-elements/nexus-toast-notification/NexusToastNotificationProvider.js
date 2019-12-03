@@ -1,16 +1,11 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
 import NexusToastNotificationContext from './NexusToastNotificationContext';
 import NexusToastNotification from './NexusToastNotification';
+import {getToasts} from './selectors';
+import {addToast, removeToast} from './actions';
 
-const NexusToastNotificationProvider = ({children}) => { // eslint-disable-line
-    const [toasts, setToasts] = useState([]);
-    const addToast = (toast) => setToasts([toast, ...toasts]);
-    const removeToast = position => {
-        const filteredToasts = position 
-            ? toasts.filter((toast, index) => index !== position) 
-            : toasts.slice(1);
-        setToasts(filteredToasts);
-    };
+const NexusToastNotificationProvider = ({children, toasts, addToast, removeToast}) => { // eslint-disable-line
 
     const context = {
         addToast,
@@ -26,5 +21,14 @@ const NexusToastNotificationProvider = ({children}) => { // eslint-disable-line
     );
 };
 
-export default NexusToastNotificationProvider;
+const mapStateToProps = state => ({
+    toasts: getToasts(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    addToast: payload => dispatch(addToast(payload)),
+    removeToast: payload => dispatch(removeToast(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NexusToastNotificationProvider);
 

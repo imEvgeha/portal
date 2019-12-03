@@ -15,7 +15,7 @@ export const configFields = {
     GENRE: 'genres'
 };
 
-const http = Http.create({noDefaultErrorHandling: true});
+const http = Http.create({defaultErrorHandling: false});
 
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
     let displayNamePath = '?';

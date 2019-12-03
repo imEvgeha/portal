@@ -1,9 +1,20 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
-import {prepareSortMatrixParamTitles} from '../../../util/Common';
+import {getDomainName, prepareSortMatrixParamTitles} from '../../../util/Common';
+import {
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
+} from '../../../ui-elements/nexus-toast-notification/constants';
+import constants from '../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 
 const http = Http.create();
-const httpNoErrorModal = Http.create({noDefaultErrorHandling:true});
+
+// Building a URL where user can check the newly created title
+// (Opens in new tab)
+const onViewTitleClick = (response) => {
+    const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
+    window.open(url, '_blank');
+};
 
 export const titleService = {
 
@@ -30,6 +41,13 @@ export const titleService = {
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
     },
     createTitleWithoutErrorModal: (title) => {
+        const httpNoErrorModal = Http.create({
+            defaultErrorHandling: false,
+            successToast: {
+                description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                actions: [{ content: 'View title', onClick: onViewTitleClick }]
+            }
+        });
         return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
     },
     updateTitle: (title) => {
@@ -61,7 +79,17 @@ export const titleService = {
     updateEditorialMetadata: (editedEditorialMetadata) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
     },
+
     mergeTitles: (query) => {
-        return http.post(`${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`);
+        const httpReq = Http.create({
+            errorToast: {
+                description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+            },
+            successToast: {
+                description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+                actions: [{content:'View title', onClick: onViewTitleClick}],
+            }
+        });
+        return httpReq.post(`${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`);
     },
 };
