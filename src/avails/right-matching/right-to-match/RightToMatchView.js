@@ -15,7 +15,7 @@ import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfin
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getRightToMatchList} from '../rightMatchingService';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
-import {URL, isObject} from '../../../util/Common';
+import {URL} from '../../../util/Common';
 import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
