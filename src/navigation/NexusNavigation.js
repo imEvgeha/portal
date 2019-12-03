@@ -31,7 +31,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 const NexusNavigation = ({history, profileInfo}) => {
     const [selectedItem, setSelectedItem] = useState('');
 
-    useEffect(() => setSelectedItem(history.pathname.split('/')[0]), []);
+    useEffect(() => setSelectedItem(history.location.pathname.split('/')[1]), []);
 
     const handleClick = (destination) => {
         history.push(`/${destination}`);
@@ -110,7 +110,7 @@ NexusNavigation.propTypes = {
 
 NexusNavigation.defaultProps = {
     profileInfo: {},
-    history: {pathname: ''},
+    history: {location: {pathname: ''}},
 };
 
 const mapStateToProps = state => {
