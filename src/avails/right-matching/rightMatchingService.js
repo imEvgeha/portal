@@ -4,8 +4,7 @@ import identity from 'lodash.identity';
 import Http from '../../util/Http';
 import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common';
 import {
-    CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-    SAVE_COMBINED_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+    CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '../../ui-elements/nexus-toast-notification/constants';
 
 const endpoint = 'rights';
@@ -30,9 +29,6 @@ export const putCombinedRight = (rightIds, combinedRight) => {
     const httpReq = Http.create({
         errorToast: {
             description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-        },
-        successToast: {
-            description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
         }});
     return httpReq.put(
         `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,

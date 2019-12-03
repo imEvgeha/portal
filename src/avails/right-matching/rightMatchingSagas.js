@@ -7,6 +7,10 @@ import {rightsService} from '../../containers/avail/service/RightsService';
 import {URL, switchCase, isObject} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
+import {
+    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, SUCCESS_ICON, SUCCESS_TITLE
+} from '../../ui-elements/nexus-toast-notification/constants';
+import { ADD_TOAST } from '../../ui-elements/nexus-toast-notification/actionTypes';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -251,6 +255,15 @@ export function* saveCombinedRight(requestMethod, {payload}) {
         if (redirectPath) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+            }
+        });
     } catch (error) {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_ERROR,
