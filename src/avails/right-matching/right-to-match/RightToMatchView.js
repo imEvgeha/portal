@@ -64,7 +64,9 @@ const RightToMatchView = ({
 
     useEffect(() => {
         fetchFocusedRight(rightId);
-        fetchRightMatchingFieldSearchCriteria(availHistoryIds);
+        if (!fieldSearchCriteria || (rightId !== fieldSearchCriteria.id)) {
+            fetchRightMatchingFieldSearchCriteria(availHistoryIds);
+        }
     }, [rightId]);
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -145,16 +147,18 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {fieldSearchCriteria && (
-                    <RightRepositoryNexusGrid
-                        columnDefs={updatedColumnDefs}
-                        mapping={mapping}
-                        setTotalCount={setTotalCount}
-                        params={fieldSearchCriteria}
-                        initialFilter={fieldSearchCriteria}
-                        handleSelectionChange={handleSelectionChange}
-                        rowSelection="multiple"
-                    />
+                {fieldSearchCriteria 
+                    && fieldSearchCriteria.id === rightId 
+                    && (
+                        <RightRepositoryNexusGrid
+                            columnDefs={updatedColumnDefs}
+                            mapping={mapping}
+                            setTotalCount={setTotalCount}
+                            params={fieldSearchCriteria.params}
+                            initialFilter={fieldSearchCriteria.params}
+                            handleSelectionChange={handleSelectionChange}
+                            rowSelection="multiple"
+                        />
                 )}
             </div>
             <div className="nexus-c-right-to-match-view__buttons">
@@ -185,7 +189,6 @@ RightToMatchView.propTypes = {
     location: PropTypes.object,
     fieldSearchCriteria: PropTypes.object,
     focusedRight: PropTypes.object,
-    selectValues: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
@@ -205,7 +208,6 @@ RightToMatchView.defaultProps = {
     createNewRight: null,
     columnDefs: [],
     mapping: [],
-    selectValues: {},
 };
 
 const createMapStateToProps = () => {
