@@ -116,9 +116,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     });
 
     const renderEpisodeAndSeasonNumber = params => {
-        const {data: {contentType, episodic: {episodeNumber, seasonNumber}}} = params;
-        if(contentType === 'EPISODE') return episodeNumber;
-        else if(contentType === 'SEASON') return seasonNumber;
+        if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;
+        else if(params.data.contentType === 'SEASON') return params.data.episodic.seasonNumber;
         else return null;
     };
 
