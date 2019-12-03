@@ -15,7 +15,6 @@ import {
     searchFormSetAdvancedSearchCriteria
 } from '../../../stores/actions/metadata/index';
 import DashboardTab from './DashboardTab';
-import SearchResultsTab from './SearchResultsTab';
 import t from 'prop-types';
 import {titleSearchHelper} from '../dashboard/TitleSearchHelper';
 import { 
@@ -26,6 +25,7 @@ import {
 import moment from 'moment';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {configService} from '../service/ConfigService';
+import TitleResultTable from './components/TitleResultTable';
 
 const mapStateToProps = state => {
     return {
@@ -188,7 +188,12 @@ class DashboardContainer extends React.Component {
                 </div>
                 {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleTitleAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
                 <DashboardTab/>
-                <SearchResultsTab/>
+                <div id="dashboard-result-table">
+                    <div className={'container-fluid'}>
+                        Title Records
+                        <TitleResultTable/>
+                    </div>
+                </div>
             </div>
         );
     }
