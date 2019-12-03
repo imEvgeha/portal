@@ -1,15 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
 import omit from 'lodash.omit';
-import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
-import usePrevious from '../../../util/hooks/usePrevious';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
 
-const FILTERABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
+const DEFAULT_HOC_PROPS = [
+    'initialFilter',
+    'filterableColumns',
+    'notFilterableColumns',
+    'mapping',
+    'selectValues'
+];
+
+const FILTERABLE_DATA_TYPES = [
+    'string',
+    'number',
+    'boolean',
+    'select',
+    'multiselect'
+];
+
+const NOT_FILTERABLE_COLUMNS = ['id'];
 
 const DEFAULT_FILTER_PARAMS = {
     filterOptions: ['equals'],
@@ -25,24 +38,24 @@ const FILTER_TYPE = {
 };
 
 const withFilterableColumns = ({
-    hocProps = [], 
-    filterableColumns = null, 
-    initialFilter = {}, 
-    excludedColumns = []
+    hocProps = [],
+    filterableColumns = null,
+    initialFilter = {},
+    notFilterableColumns = NOT_FILTERABLE_COLUMNS,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues} = props;
-        const previousColumnDefs = usePrevious(columnDefs);
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
-        const columns = props.filterableColumns || filterableColumns || Object.keys(props.initialFilter || initialFilter);
+        const columns = props.filterableColumns || filterableColumns;
         const filters = props.initialFilter || initialFilter;
+        const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
 
         useEffect(() => {
-            if (!isEqual(previousColumnDefs, columnDefs)) {
-               setFilterableColumnDefs(updateColumnDefs(columnDefs)); 
+            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+               setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
-        }, [columnDefs]);
+        }, [columnDefs, selectValues]);
 
         // apply initial filter
         useEffect(() => {
@@ -70,8 +83,9 @@ const withFilterableColumns = ({
             const filterableColumnDefs = columnDefs.map(columnDef => {
                 let copiedColumnDef = {...columnDef};
                 const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
-                const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType) && 
-                    (columns ? columns.includes(copiedColumnDef.field) : true) && !excludedColumns.includes(copiedColumnDef.field);
+                const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType)
+                    && (columns ? columns.includes(copiedColumnDef.field) : true)
+                    && !excludedFilterColumns.includes(copiedColumnDef.field);
                 if (isFilterable) {
                     copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     copiedColumnDef.filterParams = setFilterParams(dataType, copiedColumnDef.field);
@@ -126,23 +140,23 @@ const withFilterableColumns = ({
             return parsedselectValues;
         };
 
-        const propsWithoutHocProps = omit(props, hocProps);
+        const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
 
         return (
-            <WrappedComponent 
-                {...propsWithoutHocProps}
-                columnDefs={filterableColumnDefs}
-                floatingFilter={true}
-                onGridEvent={onGridEvent}
-            />
+            filterableColumnDefs.length ? (
+                <WrappedComponent 
+                    {...propsWithoutHocProps}
+                    columnDefs={filterableColumnDefs}
+                    floatingFilter={true}
+                    onGridEvent={onGridEvent}
+                />
+            ) : null
         );
     };
 
     const createMapStateToProps = () => {
-        const availsMappingSelector = createAvailsMappingSelector();
         const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => ({
-            mapping: availsMappingSelector(state, props),
             selectValues: availSelectValuesSelector(state, props),
         });
     };
