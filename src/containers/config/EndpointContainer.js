@@ -99,20 +99,26 @@ export class EndpointContainer extends Component {
         this.keyInputTimeout = 0;
         this.editRecord = this.editRecord.bind(this);
         this.onNewRecord = this.onNewRecord.bind(this);
-
-        getConfigApiValues(props.selectedApi && props.selectedApi.urls && props.selectedApi.urls['CRUD'], 0, 1000).then(response => {
-            cache[props.selectedApi.urls['CRUD']] = response.data.data;
-        });
     }
 
     componentDidMount() {
-        const {selectedApi} = this.props;
+        const {selectedApi, visible} = this.props;
         this.calculatePageSize();
-        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || []; 
-        this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', this.state.searchValue);
+        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || [];
+        if(visible) {
+            this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', this.state.searchValue);
+        }
         window.addEventListener('resize', function () {
             this.calculatePageSize();
         }.bind(this));
+    }
+
+    componentDidUpdate(prevProps) {
+        const {selectedApi, visible} = this.props;
+        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || [];
+        if(visible && visible !== prevProps.visible){
+            this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', this.state.searchValue);
+        }
     }
 
     calculatePageSize = () => {
