@@ -1,13 +1,10 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
 import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import {titleService} from '../../../../containers/metadata/service/TitleService';
-import {getDomainName} from '../../../../util/Common';
-import NexusToastNotificationContext from '../../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../ui-elements/nexus-toast-notification/constants';
 import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
 import DOP from '../../../../util/DOP';
@@ -17,9 +14,6 @@ const {
     NEW_TITLE_FORM_SCHEMA,
     NEW_TITLE_LABEL_CANCEL,
     NEW_TITLE_LABEL_SUBMIT,
-    NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-    // NEW_TITLE_ERROR_EMPTY_FIELDS,
-    // NEW_TITLE_ERROR_ALREADY_EXISTS,
 } = constants;
 
 const CreateTitleForm = ({close, focusedRight}) => {
@@ -35,7 +29,6 @@ const CreateTitleForm = ({close, focusedRight}) => {
         releaseYear: focusedReleaseYear,
         isFilled: !!(focusedTitle && focusedContentType && focusedReleaseYear),
     });
-    const {addToast} = useContext(NexusToastNotificationContext);
 
     const submitTitle = (title) => {
         // Delete empty properties before sending
@@ -63,10 +56,6 @@ const CreateTitleForm = ({close, focusedRight}) => {
 
         // Submit the title to back-end
         titleService.createTitleWithoutErrorModal(title).then(res => {
-            // Building a URL where user can check the newly created title
-            // (Opens in new tab)
-            const url = `${getDomainName()}/metadata/detail/${res.data.id}`;
-            const onViewTitleClick = () => window.open(url, '_blank');
             DOP.setErrorsCount(0);
             DOP.setData({
                 match: {
@@ -74,20 +63,10 @@ const CreateTitleForm = ({close, focusedRight}) => {
                     titleId: res.data.id
                 }
             });
-            addToast({
-                title: SUCCESS_TITLE,
-                description: NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                icon: SUCCESS_ICON,
-                actions: [
-                    {
-                        content: 'View title',
-                        onClick: onViewTitleClick,
-                    }
-                ]
-            });
             close();
         }).catch((error) => {
-            setError(error.response.data.description);
+            const {response: {data: {description, message} = {}} = {}}  = error;
+            setError(description || message);
         });
     };
 

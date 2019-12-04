@@ -230,6 +230,17 @@ function deepClone(from, to) {
 // Create date format based on locale
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
 
+const formatNumberTwoDigits = (number) => {
+    const n = parseInt(number);
+    if(n) {
+        if(n > 0 && n < 10) {
+            return `0${n}`;
+        }
+        return n;
+    }
+    return '';
+};
+
 export {
     downloadFile, 
     momentToISO, 
@@ -250,4 +261,5 @@ export {
     minTwoDigits,
     deepClone,
     getDateFormatBasedOnLocale,
+    formatNumberTwoDigits
 };
