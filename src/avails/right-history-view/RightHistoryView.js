@@ -23,7 +23,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
     }, []);
 
     useEffect(() => {
-        if (opened && rightsEventHistory.length > 0) {
+        if (opened) {
             setModalContent(buildContent());
         }
     }, [rightsEventHistory]);
@@ -55,8 +55,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
     };
 
     return (
-        //remove 'false' when audit history API is built and integrated
-        (selectedAvails.length > 0) && false && (
+        (selectedAvails.length > 0) && (
             <a href={'#'} onClick={openHistoryModal}>
                 <span className='nx-container-margin table-top-text'>
                     View History

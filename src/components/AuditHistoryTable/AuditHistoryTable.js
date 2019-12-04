@@ -7,12 +7,13 @@ import RulesEngineInfo from './components/RulesEngineInfo';
 import './AuditHistoryTable.scss';
 
 const AuditHistoryTable = ({data, focusedRight}) => {
-    const [auditData, setAuditData] = useState(false);
+    const [auditData, setAuditData] = useState([]);
     const [columnDefs, setColumnDefs] = useState([]);
     const { columns, SEPARATION_ROW, HEADER_ROW } = Constants;
 
     useEffect(() => {
-        if(!auditData && data.eventHistory && data.eventHistory.length){
+        const {eventHistory = []} = data || {};
+        if(!auditData.length && eventHistory.length){
             const tableRows = formatData(data);
             tableRows.splice(0, 0, {
                 ...focusedRight,
@@ -42,15 +43,13 @@ const AuditHistoryTable = ({data, focusedRight}) => {
     }, [columnDefs]);
 
     return (
-        auditData && (
-            <div className='nexus-c-audit-history-table'>
-                <NexusGrid
-                    columnDefs={columnDefs}
-                    rowData={auditData}
-                    frameworkComponents={{ customTooltip: RulesEngineInfo }}
-                />
-            </div>
-        )
+        <div className='nexus-c-audit-history-table'>
+            <NexusGrid
+                columnDefs={columnDefs}
+                rowData={auditData}
+                frameworkComponents={{ customTooltip: RulesEngineInfo }}
+            />
+        </div>
     );
 };
 
