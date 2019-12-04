@@ -20,13 +20,17 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
             .filter((f) => {
                 return f[param] && isCastEditorialPersonType(f, param, isConfig);
             })
-            .forEach((e) => {
+            .forEach((cast) => {
                 if(isConfig) {
-                    e[param].forEach((p) => {
-                        createNewEditorialCast(e, p, configCastList);
+                    cast[param].forEach((personType) => {
+                        if(isCastTypeEditorial(personType)) {
+                            createNewEditorialCast(cast, personType, configCastList);
+                        }
                     });
                 } else {
-                    createNewEditorialCast(e, e[param], configCastList);
+                    if(isCastTypeEditorial()) {
+                        createNewEditorialCast(cast, cast[param], configCastList);
+                    }
                 }
             });
     } else {
@@ -37,7 +41,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
             delete newCastCrew['personTypes'];
             configCastList.push(newCastCrew);
         });
-    }    
+    }
     return configCastList;
 };
 
@@ -54,33 +58,33 @@ const isCastPersonType =(item, isConfig) => {
 const isCastEditorialPersonType = (item, param, isConfig) => {
     if(isConfig) {
         return item[param].filter(t => {
-            return ((t.toLowerCase() === ANIMATED_CHARACTER.toLowerCase()
-                || t.toLowerCase() === ACTOR.toLowerCase()
-                || t.toLowerCase() === RECORDING_ARTIST.toLowerCase()
-                || t.toLowerCase() === AWARD.toLowerCase()
-                || t.toLowerCase() === VOICE_TALENT.toLowerCase()));
+            return (isCastTypeEditorial(t));
         }).length > 0;
     } else {
-        return item[param].toLowerCase() === ANIMATED_CHARACTER.toLowerCase()
-            || item[param].toLowerCase() === ACTOR.toLowerCase()
-            || item[param].toLowerCase() === RECORDING_ARTIST.toLowerCase()
-            || item[param].toLowerCase() === AWARD.toLowerCase()
-            || item[param].toLowerCase() === VOICE_TALENT.toLowerCase();
+        return isCastTypeEditorial(item[param]);
     }
+};
+
+const isCastTypeEditorial = (personType) => {
+    return personType.toLowerCase() === ANIMATED_CHARACTER.toLowerCase()
+        || personType.toLowerCase() === ACTOR.toLowerCase()
+        || personType.toLowerCase() === RECORDING_ARTIST.toLowerCase()
+        || personType.toLowerCase() === AWARD.toLowerCase()
+        || personType.toLowerCase() === VOICE_TALENT.toLowerCase();
 };
 
 const isCrewPersonType = (item, param, isConfig) => {
     if(isConfig) {
-        return item[param].filter(t => {
-            return ((t.toLowerCase() === DIRECTOR.toLowerCase()
-                || t.toLowerCase() === WRITER.toLowerCase()
-                || t.toLowerCase() === PRODUCER.toLowerCase()));
-        }).length > 0;
+        return item[param].filter(t => { return isCrewType(t);}).length > 0;
     } else {
-        return item[param].toLowerCase() === DIRECTOR.toLowerCase()
-            || item[param].toLowerCase() === WRITER.toLowerCase()
-            || item[param].toLowerCase() === PRODUCER.toLowerCase();
+        return isCrewType(item[param]);
     }
+};
+
+const isCrewType = (personType) => {
+    return personType.toLowerCase() === DIRECTOR.toLowerCase()
+    || personType.toLowerCase() === WRITER.toLowerCase()
+    || personType.toLowerCase() === PRODUCER.toLowerCase();
 };
 
 const createNewCrew = (item, type, configCrewList) => {
@@ -108,15 +112,20 @@ export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
         .filter((f) => {
             return f[param] && isCrewPersonType(f, param, isConfig);
         })
-        .forEach((e) => {
+        .forEach((crew) => {
             if(isConfig) {
-                e[param].forEach((p) => {
-                    createNewCrew(e, p, configCrewList);
+                crew[param].forEach((paramValue) => {
+                    if(isCrewType(paramValue)) {
+                        createNewCrew(crew, paramValue, configCrewList);
+                    }
                 });
             } else {
-                createNewCrew(e, e[param], configCrewList);
+                if(isCrewType(crew[param])) {
+                    createNewCrew(crew, crew[param], configCrewList);
+                }
             }
         });
+
     return configCrewList;
 };
 

@@ -21,6 +21,7 @@ import {
     CustomDeleteButton, 
     CustomDragButton } 
 from './CustomComponents';
+import {uid} from 'react-uid';
 
 
 class PersonList extends React.Component {
@@ -134,15 +135,16 @@ class PersonList extends React.Component {
 
                                 <Droppable droppableId="droppable">
                                     {(provided, snapshot) => (
-                                        <DroppableContent
-                                            {...provided.droppableProps}
+                                        <div
                                             ref={provided.innerRef}
+                                            {...provided.droppableProps}>
+                                        <DroppableContent
                                             isDragging={snapshot.isDraggingOver}
                                         >
                                             {this.props.persons &&
                                                 this.props.persons.map((person, i) => {
                                                     return (
-                                                        <Draggable key={person.id} draggableId={person.id} index={i}>
+                                                        <Draggable key={uid(person.id, i)} draggableId={person.id} index={i}>
                                                             {(provided, snapshot) => (
                                                                 <div                                       
                                                                     ref={provided.innerRef}
@@ -193,6 +195,7 @@ class PersonList extends React.Component {
                                                 })}
                                             {provided.placeholder}
                                         </DroppableContent>
+                                        </div>
                                     )}
                                 </Droppable>
                             </DragDropContext>
@@ -215,7 +218,6 @@ class PersonList extends React.Component {
 }
 
 PersonList.propTypes = {
-    filterPersonList: PropTypes.func,
     persons: PropTypes.array,
     removePerson: PropTypes.func,
     loadOptionsPerson: PropTypes.any,
