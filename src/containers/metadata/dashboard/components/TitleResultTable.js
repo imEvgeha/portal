@@ -285,9 +285,9 @@ class TitleResultTable extends React.Component {
             const parents = res.data;
             titleRequest.data = titleRequest.data.map(title => {
                 if(title.contentType.toLowerCase() === SEASON.apiName.toLowerCase()) {
-                    title.title = this.getFormatSeasonTitle(parents, title);
+                    title.title = this.getFormatEpisodeSeasonTitle(parents, title, false);
                 } else if(title.contentType.toLowerCase() === EPISODE.apiName.toLowerCase()) {
-                    title.title = this.getFormatEpisodeTitle(parents, title, EPISODE.apiName);
+                    title.title = this.getFormatEpisodeSeasonTitle(parents, title, true);
                 }
                 return title;
             });
@@ -295,7 +295,7 @@ class TitleResultTable extends React.Component {
         });
     }
 
-    getFormatEpisodeTitle = (parents, item, type = SEASON.apiName) => {
+    getFormatEpisodeSeasonTitle = (parents, item, isEpisode) => {
         const parentId = this.getSeriesParentId(item);
         if(parentId) {
             const filtered = parents.filter(t => t.id === parentId);
@@ -303,22 +303,8 @@ class TitleResultTable extends React.Component {
                 const {title} = filtered[0] || {};
                 const {episodic, title: episodeTitle} = item || {};
                 const {seasonNumber, episodeNumber} = episodic || {};
-                //Fix here
-                return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}]${type === SEASON.apiName ? `E[${formatNumberTwoDigits(episodeNumber)}]: ${episodeTitle}` : null}`;
-            }
-        }
-        return item.title;
-    };
-
-    getFormatSeasonTitle = (parents, item) => {
-        const parentId = this.getSeriesParentId(item);
-        if(parentId) {
-            const filtered = parents.filter(t => t.id === parentId);
-            if(filtered.length === 1) {
-                const {title} = filtered[0] || {};
-                const {episodic} = item || {};
-                const {seasonNumber} = episodic || {};
-                return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}]`;
+                if(isEpisode) return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}], E[${formatNumberTwoDigits(episodeNumber)}]: ${episodeTitle}`;
+                else return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}]`;
             }
         }
         return item.title;
