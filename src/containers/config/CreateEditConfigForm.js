@@ -39,7 +39,6 @@ const renderer = (
 
     switch (type) {
         case 'array':
-        case 'repeating':
             Comp = dynamic === true ? ObjectKey : (singleField ? RepeatingField : RepeatingFormField);
             return (
                 <Comp
@@ -48,7 +47,7 @@ const renderer = (
                     defaultValue={value || defaultValue || []}
                     label={label}
                     onChange={value => {
-                        let val = singleField ?
+                        let val = singleField && Array.isArray(value)?
                             value.map((v) => isObject(v)?v[idAttribute]:v)
                             : value;
                         onChange(id, val);
@@ -120,8 +119,7 @@ export default class CreateEditConfigForm extends React.Component {
             value = dataSource[schema.value];
         }
         return {label, value};
-
-    }
+    };
 
     optionsHandler(fieldId, fields) {
         let field = fields.find(({id}) => id === fieldId);
