@@ -21,8 +21,8 @@ import useDOPIntegration from './util/hooks/useDOPIntegration';
 import withEditableColumns from '../../ui-elements/nexus-grid/hoc/withEditableColumns';
 
 const NexusGridWithInfiniteScrolling = compose(
-    withInfiniteScrolling(getRightMatchingList), 
     withEditableColumns(),
+    withInfiniteScrolling(getRightMatchingList), 
 )(NexusGrid);
 
 const RightMatchingView = ({
@@ -32,6 +32,7 @@ const RightMatchingView = ({
         match, 
         storeRightMatchDataWithIds, 
         cleanStoredRightMatchDataWithIds,
+        mapping,
     }) => {
     const [totalCount, setTotalCount] = useState();
     // DOP integration
@@ -72,7 +73,7 @@ const RightMatchingView = ({
     };
 
     const focusButtonColumnDef = defineActionButtonColumn('buttons', createCellRenderer);
-    const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs]: columnDefs;
+    const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs] : columnDefs;
 
     const {params = {}} = match;
     const {availHistoryIds} = params || {};
@@ -84,6 +85,7 @@ const RightMatchingView = ({
             </NexusTitle> 
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}
+                mapping={mapping}
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
                 succesDataFetchCallback={storeData}
@@ -93,28 +95,33 @@ const RightMatchingView = ({
 };
 
 RightMatchingView.propTypes = {
-    createRightMatchingColumnDefs: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
+    mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
     location: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
+    createRightMatchingColumnDefs: PropTypes.func,
 };
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
+    mapping: [],
     match: {},
     history: {},
     location: {},
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
+    createRightMatchingColumnDefs: null,
 };
 
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
+    const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
+        mapping: rightMatchingMappingSelector(state, props),
     });
 };
 

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './DateTimeCellEditor.scss';
 import NexusDateTimePicker from '../../../nexus-date-time-picker/NexusDateTimePicker';
+import CustomIntlProvider from '../../../../layout/CustomIntlProvider';
 
 class DateTimeCellEditor extends Component {
     static propTypes = {
@@ -33,13 +34,15 @@ class DateTimeCellEditor extends Component {
         const {value} = this.state;
 
         return (
-            <div className="nexus-c-date-time-cell-editor">
-                <NexusDateTimePicker
-                    id={value}
-                    value={value}
-                    onChange={this.handleChange}
-                />
-            </div>
+            <CustomIntlProvider>
+                <div className="nexus-c-date-time-cell-editor">
+                    <NexusDateTimePicker
+                        id={value}
+                        value={value}
+                        onChange={this.handleChange}
+                    />
+                </div>
+            </CustomIntlProvider>
         );
     }
 }

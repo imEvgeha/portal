@@ -25,10 +25,8 @@ const NexusDatePicker = ({
     useEffect(() => setDate(value || ''), [value]);
 
     // Get locale provided by intl
-    // const intl = useIntl();
-    // We are gettings error: [React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.</IntlProvider>
-    // const {locale = 'en-US'} = intl || {};
-    const {locale = 'en-US'} = {};
+    const intl = useIntl();
+    const {locale = 'en-US'} = intl || {};
 
     // Create date placeholder based on locale
     const dateFormat = getDateFormatBasedOnLocale(locale);

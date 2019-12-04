@@ -24,8 +24,8 @@ const NexusSimpleDateTimePicker = ({
     const [date, setDate] = useState(value);
 
     // Get locale provided by intl
-    // const intl = useIntl();
-    const {locale = 'en-US'} = {};
+    const intl = useIntl();
+    const {locale = 'en-US'} = intl || {};
 
     useEffect(() => setDateBasedOnTimezone(date), [isUTC]);
     useEffect(() => setDateBasedOnTimezone(value), [value]);
