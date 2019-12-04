@@ -1,7 +1,6 @@
 import {put, call, takeEvery} from '@redux-saga/core/effects';
 import * as actionTypes from './rightHistoryActionTypes';
 import {getRightsHistory} from './rightHistoryService';
-import mockData from '../../containers/contracts/audit/mockDataHistoryView';
 
 function* fetchRightsHistory(requestMethod, {payload}) {
     try {
@@ -10,16 +9,14 @@ function* fetchRightsHistory(requestMethod, {payload}) {
             payload: {}
         });
 
-        //TODO Update after api will be ready
-        let rightsEventHistory = payload.map(() => mockData);
-        if (!mockData) {
-            const response = yield call(requestMethod, payload);
-            rightsEventHistory = response.data;
-        }
+        const response = yield call(requestMethod, payload);
 
         yield put({
             type: actionTypes.FETCH_RIGHT_HISTORY_SUCCESS,
-            payload: {rightsEventHistory}
+            payload: {
+                rightsEventHistory: response.data,
+                rightIds: payload
+            }
         });
 
     } catch (error) {

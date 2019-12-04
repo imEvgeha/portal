@@ -1,11 +1,8 @@
 import {createSelector} from 'reselect';
 
-const getRightsEventHistory = (state) => {
-    const {rightHistory} = state;
-    return rightHistory && rightHistory.rightsEventHistory;
-};
+const getRightHistoryReducer = (state) => state.rightHistory;
 
 export const getRightsEventHistorySelector = () => createSelector(
-    getRightsEventHistory,
-    rightsEventHistory => rightsEventHistory
+    getRightHistoryReducer,
+    rightHistory => rightHistory.rightsEventHistory
 );

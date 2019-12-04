@@ -3,12 +3,12 @@ import Http from '../../util/Http';
 
 const http = Http.create();
 
-export const getRightsHistory = (rightIds, showDiffs = true, includeMessageHeader = false) => {
+export const getRightsHistory = (contextIds, showDiffs = true, includeMessageHeader = false) => {
     const body = {
         showDiffs,
         includeMessageHeader,
-        rightIds
+        contextIds,
     };
     
-    return http.post(`${config.post('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`, body );
+    return http.post(`${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`, body );
 };
