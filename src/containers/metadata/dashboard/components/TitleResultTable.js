@@ -300,11 +300,11 @@ class TitleResultTable extends React.Component {
         if(parentId) {
             const filtered = parents.filter(t => t.id === parentId);
             if(filtered.length === 1) {
-                const {title} = filtered[0] || {};
+                const {title: seriesTitle} = filtered[0] || {};
                 const {episodic, title: episodeTitle} = item || {};
                 const {seasonNumber, episodeNumber} = episodic || {};
-                if(isEpisode) return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}], E[${formatNumberTwoDigits(episodeNumber)}]: ${episodeTitle}`;
-                else return `[${title}]: S[${formatNumberTwoDigits(seasonNumber)}]`;
+                if(isEpisode) return `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
+                else return `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}`;
             }
         }
         return item.title;
