@@ -981,10 +981,31 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+            const removeTerritoryNotOriginalFields = (list = []) => {
+                const {mappings} = this.props.availsMapping || [];
+                const originalFieldNames = mappings.filter(el => el.javaVariableName.startsWith('territory.'))
+                    .map(mapping => mapping.javaVariableName.split('.')[1]);
+
+                let formattedList = [];
+                list.forEach(el => {
+                    let territory = Object.assign({}, el);
+                    Object.keys(territory).forEach(key => {
+                        if(originalFieldNames.findIndex(name => name === key) < 0) {
+                            delete territory[key];
+                        }
+                    });
+                    formattedList.push(territory);
+                });
+                return formattedList;
+            };
+
+            const territoriesWithOriginalFields = removeTerritoryNotOriginalFields(selectedVal);
+
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
+                    originalFieldList={territoriesWithOriginalFields}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -995,8 +1016,8 @@ class RightDetails extends React.Component {
                     showError={false}
                     helperComponent={
                         <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
-                            {selectedVal && selectedVal.length > 0
-                                ? selectedVal.map((e, i) => (
+                            {territoriesWithOriginalFields && territoriesWithOriginalFields.length > 0
+                                ? territoriesWithOriginalFields.map((e, i) => (
                                     <NexusTag
                                         key={uid(e)}
                                         text={e.country || e.value}
