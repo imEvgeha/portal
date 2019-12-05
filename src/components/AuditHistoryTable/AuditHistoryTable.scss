@@ -4,8 +4,10 @@
     height: 250px;
     .ag-cell{
       padding: 0;
-      justify-content: center;
-      display: flex;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      text-align: center;
     }
   }
   .ag-tooltip-custom{

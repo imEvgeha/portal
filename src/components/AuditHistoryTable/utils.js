@@ -1,15 +1,20 @@
 import moment from 'moment';
 import Constants from './Constants';
+import isEqual from 'lodash.isequal';
+import jsonpatch from 'fast-json-patch';
 
-const { DATE, AUDIO, AFFILIATE, RATING, FORMAT } = Constants.dataTypes;
+const { dataTypes: {DATE, AUDIO, RATING}, colors: {CURRENT_VALUE, STALE_VALUE} } = Constants;
+
+const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
 export const valueFormatter = ({colId, field, dataType}) => {
     switch (dataType) {
         case DATE:
             return (params) => {
                 const {data = {}} = params || {};
-                if ((data[field]) && moment(data[field].toString().substr(0, 10)).isValid()) {
-                    return moment(data[field].toString().substr(0, 10)).format('L');
+                if ((data[field])) {
+                    const date = new Date(data[field]);
+                    return isNaN(date.getTime()) ? data[field] : moment(date).format('L');
                 }
             };
         case RATING:
@@ -20,12 +25,8 @@ export const valueFormatter = ({colId, field, dataType}) => {
         case AUDIO:
             return (params) => {
                 const {data = {}} = params || {};
-                return data[field] && data[field][0] && data[field][0].toUpperCase() || '';
-            };
-        case AFFILIATE:
-            return (params) => {
-                const {data = {}} = params || {};
-                return (data[field] && data[field][0]) ? data[field][0].value : '';
+                const languages = data[field] && languageMapper(data[field]);
+                return languages && languages.join(', ').toUpperCase() || '';
             };
         default:
             return (params) => {
@@ -41,13 +42,10 @@ const valueCompare = (diffValue, currentValue, column) => {
         switch(dataType){
             case RATING:
                 return diffValue[colId] === currentValue[colId];
-            case FORMAT:
             case AUDIO:
-                return diffValue[0] === currentValue[0];
-            case AFFILIATE:
-                return currentValue[0] && (diffValue[0].value === currentValue[0].value);
+                return isEqual(languageMapper(diffValue), languageMapper(currentValue));
             default:
-                return diffValue === currentValue;
+                return isEqual(diffValue, currentValue);
         }
     }
     return false;
@@ -58,17 +56,17 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     const {colId, field, noStyles} = column;
     if(value && Object.keys(value).length && !data.headerRow && !noStyles){
         if(valueCompare(value, focusedRight[field], column)){
-            styling.background = 'LightGreen';
+            styling.background = CURRENT_VALUE;
         } else{
-            styling.background = 'coral';
+            styling.background = STALE_VALUE;
         }
     }
     if (data[`${colId || field}Deleted`]) {
         styling.textDecoration = 'line-through';
         if(focusedRight[colId] === ''){
-            styling.background = 'LightGreen';
+            styling.background = CURRENT_VALUE;
         } else{
-            styling.background = 'coral';
+            styling.background = STALE_VALUE;
         }
     }
     return styling;
@@ -77,27 +75,16 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
 export const formatData = data => {
     const { eventHistory, diffs } = data;
     let tableRows = eventHistory.map((dataObj, index) => {
+        const result = jsonpatch.applyPatch(dataObj, diffs[index]).newDocument.message;
+        const {message : {updatedBy, createdBy, lastUpdateReceivedAt}} = dataObj;
         const row = {};
         diffs[index].forEach(diff => {
-            const {op, path, value} = diff;
-            const field = path.substr(1);
-            switch(op){
-                case 'add':
-                case 'replace':
-                    row[field] = value;
-                    break;
-
-                case 'remove':
-                    row[field] = value;
-                    row[`${field}Deleted`] = true;
-                    break;
-
-                default:
-                    break;
-            }
+            const {path} = diff;
+            const field = path.split('/')[2];   //as path is always like '/message/field/sub-field'
+            row[field] = Array.isArray(result[field]) ? [...new Set(result[field])] : result[field];
         });
-        row.updatedBy = dataObj.updatedBy || dataObj.createdBy;
-        row.lastUpdateReceivedAt = dataObj.lastUpdateReceivedAt;
+        row.updatedBy = updatedBy || createdBy;
+        row.lastUpdateReceivedAt = lastUpdateReceivedAt;
         return row;
     });
     tableRows = tableRows.reverse();

@@ -3,11 +3,11 @@ import Http from '../../util/Http';
 
 const http = Http.create();
 
-export const getRightsHistory = (contextIds, showDiffs = true, includeMessageHeader = false) => {
+export const getRightsHistory = (searchIds) => {
     const body = {
-        showDiffs,
-        includeMessageHeader,
-        contextIds,
+        excludes: ['header'],
+        searchIdType:'CORRELATION_ID',
+        searchIds,
     };
     
     return http.post(`${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`, body );
