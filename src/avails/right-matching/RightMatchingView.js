@@ -18,10 +18,8 @@ import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
-import withEditableColumns from '../../ui-elements/nexus-grid/hoc/withEditableColumns';
 
 const NexusGridWithInfiniteScrolling = compose(
-    withEditableColumns(),
     withInfiniteScrolling(getRightMatchingList), 
 )(NexusGrid);
 
@@ -32,7 +30,6 @@ const RightMatchingView = ({
         match, 
         storeRightMatchDataWithIds, 
         cleanStoredRightMatchDataWithIds,
-        mapping,
     }) => {
     const [totalCount, setTotalCount] = useState();
     // DOP integration
@@ -85,7 +82,6 @@ const RightMatchingView = ({
             </NexusTitle> 
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}
-                mapping={mapping}
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
                 succesDataFetchCallback={storeData}
@@ -96,7 +92,6 @@ const RightMatchingView = ({
 
 RightMatchingView.propTypes = {
     columnDefs: PropTypes.array,
-    mapping: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
     location: PropTypes.object,
@@ -118,10 +113,8 @@ RightMatchingView.defaultProps = {
 
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
-    const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: rightMatchingMappingSelector(state, props),
     });
 };
 

@@ -6,9 +6,7 @@ import {IntlProvider} from 'react-intl';
 const CustomIntlProvider = ({children, getLocale}) => {
     return (
         <IntlProvider locale={getLocale.locale}>
-            <React.Fragment>
-                {children}
-            </React.Fragment>
+            {children}
         </IntlProvider>
     );
 };
