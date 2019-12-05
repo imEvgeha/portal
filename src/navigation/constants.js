@@ -1,5 +1,4 @@
-export const AVAILS = 'avails';
-export const METADATA = 'metadata';
-export const MEDIA = 'media';
-export const SETTINGS = 'settings';
-
+export const AVAILS = 'Avails';
+export const METADATA = 'Metadata';
+export const MEDIA = 'Media';
+export const SETTINGS = 'Settings';

@@ -5,14 +5,11 @@ import PropTypes from 'prop-types';
 import {DropdownItemGroup, DropdownItem} from '@atlaskit/dropdown-menu';
 import {GlobalNav, GlobalItem} from '@atlaskit/navigation-next';
 import Avatar from '@atlaskit/avatar';
-import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
-import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
-import TrayIcon from '@atlaskit/icon/glyph/tray';
-import GlobalItemWithDropdown from './elements/GlobalItemWithDropdown';
-import NexusNavIcon from './elements/NexusNavIcon';
+import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
+import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
-import {AVAILS, METADATA, MEDIA, SETTINGS} from './constants';
+import {SETTINGS} from './constants';
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     if (DropdownItems) {
@@ -34,7 +31,7 @@ const NexusNavigation = ({history, profileInfo}) => {
     useEffect(() => setSelectedItem(history.location.pathname.split('/')[1]), []);
 
     const handleClick = (destination) => {
-        history.push(`/${destination}`);
+        history.push(`/${destination.toLowerCase()}`);
         setSelectedItem(destination);
     };
 
@@ -49,33 +46,7 @@ const NexusNavigation = ({history, profileInfo}) => {
     return (
         <GlobalNav
             itemComponent={ItemComponent}
-            primaryItems={[
-                {
-                    component: () => <NexusNavIcon/>,
-                    id: 'logo',
-                },
-                {
-                    icon: TrayIcon,
-                    id: AVAILS,
-                    tooltip: AVAILS,
-                    isSelected: (selectedItem === AVAILS),
-                    onClick: () => handleClick(AVAILS),
-                },
-                {
-                    icon: EditorMediaWrapLeftIcon,
-                    id: METADATA,
-                    tooltip: METADATA,
-                    isSelected: (selectedItem === METADATA),
-                    onClick: () => handleClick(METADATA),
-                },
-                {
-                    icon: EditorSearchIcon,
-                    id: MEDIA,
-                    tooltip: 'Media Search',
-                    isSelected: (selectedItem === MEDIA),
-                    onClick: () => handleClick(MEDIA),
-                },
-            ]}
+            primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
             secondaryItems={[
                 {
                     icon: EditorSettingsIcon,
