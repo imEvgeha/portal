@@ -35,10 +35,7 @@ class SelectCellEditor extends Component {
         return false;
     }
 
-    getValue = () => {
-        const {value} = this.state.value;
-        return value;
-    }
+    getValue = () => this.state.value.value;
 
     handleChange = (value) => {
         this.setState({
@@ -51,15 +48,15 @@ class SelectCellEditor extends Component {
         const {value} = this.state;
 
         return (
-                <div className="nexus-c-select-cell-editor">
-                    <Select
-                        options={options}
-                        placeholder="Select"
-                        onChange={this.handleChange}
-                        value={value}
-                        defaultValue={value}
-                    />
-                </div>
+            <div className="nexus-c-select-cell-editor">
+                <Select
+                    options={options}
+                    placeholder="Select"
+                    onChange={this.handleChange}
+                    value={value}
+                    defaultValue={value}
+                />
+            </div>
         );
     }
 }
