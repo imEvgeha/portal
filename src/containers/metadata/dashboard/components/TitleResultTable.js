@@ -27,6 +27,7 @@ import {titleSearchHelper} from '../TitleSearchHelper';
 import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 import {titleService} from '../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../util/Common';
+import uniqBy from 'lodash/uniqby';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -307,7 +308,7 @@ class TitleResultTable extends React.Component {
             case EPISODE.apiName:
                 return parent ?
                     `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
-                    : `E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
+                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
         }
 
         return item.title;
@@ -342,13 +343,15 @@ class TitleResultTable extends React.Component {
     };
 
     getParentTitleIds = (items) => {
-        return items.filter(item => item.contentType.toUpperCase() === SEASON.apiName || item.contentType.toUpperCase() === EPISODE.apiName && item.parentIds).map(t => {
-            const id = this.getSeriesParentId(t);
-            if(id) {
-                return {id};
-            }
-            return {};
-        });
+        const parents = items.filter(item => item.contentType.toUpperCase() === SEASON.apiName || item.contentType.toUpperCase() === EPISODE.apiName && item.parentIds)
+            .map(t => {
+                const id = this.getSeriesParentId(t);
+                if (id) {
+                    return {id};
+                }
+                return {};
+            });
+        return uniqBy(parents, 'id');
     };
 
     getSeriesParentId = (title) => {
