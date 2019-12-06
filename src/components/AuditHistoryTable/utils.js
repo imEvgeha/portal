@@ -3,7 +3,7 @@ import Constants from './Constants';
 import isEqual from 'lodash.isequal';
 import jsonpatch from 'fast-json-patch';
 
-const { dataTypes: {DATE, AUDIO, RATING}, colors: {CURRENT_VALUE, STALE_VALUE} } = Constants;
+const { dataTypes: {DATE, AUDIO, RATING}, colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD } = Constants;
 
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
@@ -20,7 +20,7 @@ export const valueFormatter = ({colId, field, dataType}) => {
         case RATING:
             return (params) => {
                 const {data = {}} = params || {};
-                return data[field] && data[field][colId] || '';
+                return data[field] && data[field][RATING_SUBFIELD] && data[field][RATING_SUBFIELD][colId] || '';
             };
         case AUDIO:
             return (params) => {
@@ -41,7 +41,9 @@ const valueCompare = (diffValue, currentValue, column) => {
     if(currentValue){
         switch(dataType){
             case RATING:
-                return diffValue[colId] === currentValue[colId];
+                return diffValue[RATING_SUBFIELD] && currentValue[RATING_SUBFIELD] &&
+                    diffValue[RATING_SUBFIELD][colId] &&       //returns null value to prevent coloring
+                    (diffValue[RATING_SUBFIELD][colId] === currentValue[RATING_SUBFIELD][colId]);
             case AUDIO:
                 return isEqual(languageMapper(diffValue), languageMapper(currentValue));
             default:
@@ -53,19 +55,12 @@ const valueCompare = (diffValue, currentValue, column) => {
 
 export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     const styling = {};
-    const {colId, field, noStyles} = column;
+    const {field, noStyles} = column;
     if(value && Object.keys(value).length && !data.headerRow && !noStyles){
-        if(valueCompare(value, focusedRight[field], column)){
+        const equalityCheck = valueCompare(value, focusedRight[field], column);
+        if(equalityCheck){
             styling.background = CURRENT_VALUE;
-        } else{
-            styling.background = STALE_VALUE;
-        }
-    }
-    if (data[`${colId || field}Deleted`]) {
-        styling.textDecoration = 'line-through';
-        if(focusedRight[colId] === ''){
-            styling.background = CURRENT_VALUE;
-        } else{
+        } else if(equalityCheck === false){     //for null valued rating field we dont need to color the cell
             styling.background = STALE_VALUE;
         }
     }
@@ -87,6 +82,7 @@ export const formatData = data => {
         row.lastUpdateReceivedAt = lastUpdateReceivedAt;
         return row;
     });
+    tableRows[0] = eventHistory[0].message;
     tableRows = tableRows.reverse();
     return tableRows;
 };

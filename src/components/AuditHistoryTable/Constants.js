@@ -135,5 +135,6 @@ export default {
     colors: {
         CURRENT_VALUE: 'LightGreen',
         STALE_VALUE: 'coral',
-    }
+    },
+    RATING_SUBFIELD: 'com.vubiquity.messaging.rights.Rating'
 };
