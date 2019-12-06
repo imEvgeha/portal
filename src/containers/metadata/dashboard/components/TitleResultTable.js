@@ -24,7 +24,7 @@ import {titleServiceManager} from '../../service/TitleServiceManager';
 import {Link} from 'react-router-dom';
 import {titleMapping} from '../../service/Profile';
 import {titleSearchHelper} from '../TitleSearchHelper';
-import {SEASON, SERIES, toPrettyContentTypeIfExist, EPISODE} from '../../../../constants/metadata/contentType';
+import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 import {titleService} from '../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../util/Common';
 
@@ -284,30 +284,41 @@ class TitleResultTable extends React.Component {
         titleService.bulkGetTitles(ids).then(res => {
             const parents = res.data;
             titleRequest.data = titleRequest.data.map(title => {
-                if(title.contentType.toLowerCase() === SEASON.apiName.toLowerCase()) {
-                    title.title = this.getFormatEpisodeSeasonTitle(parents, title, false);
-                } else if(title.contentType.toLowerCase() === EPISODE.apiName.toLowerCase()) {
-                    title.title = this.getFormatEpisodeSeasonTitle(parents, title, true);
+                if(title.contentType.toUpperCase() === SEASON.apiName) {
+                    title.title = this.getFormatTitle(parents, title, SEASON.apiName);
+                } else if(title.contentType.toUpperCase() === EPISODE.apiName) {
+                    title.title = this.getFormatTitle(parents, title, EPISODE.apiName);
                 }
                 return title;
             });
             this.addItemToTable(titleRequest, params);
         });
-    }
+    };
 
-    getFormatEpisodeSeasonTitle = (parents, item, isEpisode) => {
-        const parentId = this.getSeriesParentId(item);
-        if(parentId) {
-            const filtered = parents.filter(t => t.id === parentId);
-            if(filtered.length === 1) {
-                const {title: seriesTitle} = filtered[0] || {};
-                const {episodic, title: episodeTitle} = item || {};
-                const {seasonNumber, episodeNumber} = episodic || {};
-                if(isEpisode) return `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
-                else return `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}`;
-            }
+    getFormatTitle = (parents, item, contentType) => {
+        const parent = this.getSeriesParent(item, parents);
+        const {title: seriesTitle} = parent || {};
+        const {episodic, title: episodeTitle} = item || {};
+        const {seasonNumber, episodeNumber} = episodic || {};
+
+        switch (contentType) {
+            case SEASON.apiName:
+                return parent ? `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
+            case EPISODE.apiName:
+                return parent ?
+                    `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
+                    : `E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
         }
+
         return item.title;
+    };
+
+    getSeriesParent = (item, parents) => {
+        const parentId = this.getSeriesParentId(item);
+        if (parentId) {
+            return parents.find(t => t.id === parentId);
+        }
+        return null;
     };
 
     addItemToTable = (data, params) => {
@@ -331,7 +342,7 @@ class TitleResultTable extends React.Component {
     };
 
     getParentTitleIds = (items) => {
-        return items.filter(item => item.contentType.toLowerCase() === SEASON.apiName.toLowerCase() || item.contentType.toLowerCase() === EPISODE.apiName.toLowerCase() && item.parentIds).map(t => {
+        return items.filter(item => item.contentType.toUpperCase() === SEASON.apiName || item.contentType.toUpperCase() === EPISODE.apiName && item.parentIds).map(t => {
             const id = this.getSeriesParentId(t);
             if(id) {
                 return {id};
@@ -343,9 +354,9 @@ class TitleResultTable extends React.Component {
     getSeriesParentId = (title) => {
         const {parentIds} = title;
         if(parentIds) {
-            const ids = parentIds.filter(el => el.contentType.toLowerCase() === SERIES.apiName.toLowerCase());
-            if(ids.length === 1) {
-                return ids[0].id;
+            const parent = parentIds.find(el => el.contentType.toUpperCase() === SERIES.apiName);
+            if(parent) {
+                return parent.id;
             }
         }
         return null;
