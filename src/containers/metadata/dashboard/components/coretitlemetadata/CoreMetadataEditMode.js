@@ -96,7 +96,6 @@ class CoreMetadataEditMode extends Component {
               personHeader={CAST_HEADER}
               type={CAST}
               persons={getFilteredCastList(this.props.editedTitle.castCrew, false)}
-              filterPersonList={getFilteredCastList}
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
@@ -114,7 +113,6 @@ class CoreMetadataEditMode extends Component {
               personHeader={CREW_HEADER}
               type={CREW}
               persons={getFilteredCrewList(this.props.editedTitle.castCrew, false)}
-              filterPersonList={getFilteredCrewList}
               removePerson={this.props.removeCastCrew}
               loadOptionsPerson={this.loadOptionsPerson}
               addPerson={this.props.addCastCrew}
