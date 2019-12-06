@@ -12,6 +12,9 @@ export const VOICE_TALENT = 'Voice Talent';
 
 export const PERSONS_PER_REQUEST = 1000;
 
+const allowedCoreCrewTypes = [DIRECTOR.toLowerCase(), WRITER.toLowerCase(), PRODUCER.toLowerCase()];
+const allowedEditorialCastTypes = [ANIMATED_CHARACTER.toLowerCase(), ACTOR.toLowerCase(), RECORDING_ARTIST.toLowerCase(), AWARD.toLowerCase(), VOICE_TALENT.toLowerCase()];
+
 export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCastType = false) => {
     let configCastList = [];
     if(isMultiCastType) {
@@ -57,34 +60,26 @@ const isCastPersonType =(item, isConfig) => {
 
 const isCastEditorialPersonType = (item, param, isConfig) => {
     if(isConfig) {
-        return item[param].filter(t => {
-            return (isCastTypeEditorial(t));
-        }).length > 0;
+        return item[param].some(t => isCastTypeEditorial(t));
     } else {
         return isCastTypeEditorial(item[param]);
     }
 };
 
 const isCastTypeEditorial = (personType) => {
-    return personType.toLowerCase() === ANIMATED_CHARACTER.toLowerCase()
-        || personType.toLowerCase() === ACTOR.toLowerCase()
-        || personType.toLowerCase() === RECORDING_ARTIST.toLowerCase()
-        || personType.toLowerCase() === AWARD.toLowerCase()
-        || personType.toLowerCase() === VOICE_TALENT.toLowerCase();
+    return allowedEditorialCastTypes.includes(personType.toLowerCase());
 };
 
 const isCrewPersonType = (item, param, isConfig) => {
     if(isConfig) {
-        return item[param].filter(t => { return isCrewType(t);}).length > 0;
+        return item[param].some(t => isCrewType(t));
     } else {
         return isCrewType(item[param]);
     }
 };
 
 const isCrewType = (personType) => {
-    return personType.toLowerCase() === DIRECTOR.toLowerCase()
-    || personType.toLowerCase() === WRITER.toLowerCase()
-    || personType.toLowerCase() === PRODUCER.toLowerCase();
+    return allowedCoreCrewTypes.includes(personType.toLowerCase());
 };
 
 const createNewCrew = (item, type, configCrewList) => {
