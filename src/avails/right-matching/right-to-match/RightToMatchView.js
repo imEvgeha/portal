@@ -29,7 +29,7 @@ const SECTION_MESSAGE = 'Select rights from the repository that match the focuse
 const RightRepositoryNexusGrid = compose(
     withFilterableColumns(),
     withSideBar(),
-    withInfiniteScrolling(getRightToMatchList)
+    withInfiniteScrolling({apiCall: getRightToMatchList})
 )(NexusGrid);
 
 const RightToMatchView = ({

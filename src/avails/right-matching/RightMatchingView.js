@@ -20,8 +20,8 @@ import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/co
 import useDOPIntegration from './util/hooks/useDOPIntegration';
 
 const NexusGridWithInfiniteScrolling = compose(
-    withInfiniteScrolling(getRightMatchingList), 
-)(NexusGrid);
+    withInfiniteScrolling({hocProps: ['successDataFetchCallback'], apiCall: getRightMatchingList}), 
+)(NexusGrid)
 
 const RightMatchingView = ({
         createRightMatchingColumnDefs, 
@@ -125,4 +125,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line
-

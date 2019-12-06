@@ -13,7 +13,7 @@ import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '
 import Constants from '../titleMatchingConstants';
 import {deepClone} from '../../../util/Common';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({apiCall: titleServiceManager.doSearch})(NexusGrid));
 
 const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     const [totalCount, setTotalCount] = useState(0);
@@ -145,11 +145,13 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
             <NexusGridWithInfiniteScrolling
                 onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
-                setTotalCount={setTotalCount}/>
+                setTotalCount={setTotalCount}
+            />
             <ActionsBar
                 rightId={rightId}
                 matchList={matchList}
-                mergeTitles={() => mergeTitles(matchList, duplicateList)}/>
+                mergeTitles={() => mergeTitles(matchList, duplicateList)}
+            />
         </React.Fragment>
     );
 };
