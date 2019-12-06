@@ -49,7 +49,13 @@ export default function withServerSorting(WrappedComponent){
             let newSort = [];
             if(sortParams.length > 0){
                 sortParams.map(criteria =>{
-                    newSort.push({id : this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === criteria.colId).queryParamName , desc: criteria.sort === 'desc'});
+                    const availMapping =  this.props.availsMapping.mappings.find(({javaVariableName}) =>
+                        javaVariableName === criteria.colId);
+                    newSort.push(
+                        {
+                            id : availMapping.sortParamName || availMapping.queryParamName,
+                            desc: criteria.sort === 'desc'
+                        });
                 });
             }
             this.setState({sort:newSort});

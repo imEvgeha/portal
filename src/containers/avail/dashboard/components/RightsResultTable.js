@@ -96,7 +96,6 @@ class RightsResultTable extends React.Component {
             pageSize: config.get('avails.page.size'),
             cols:[],
             defaultColDef: {
-                sortable: true,
                 resizable: true,
                 cellStyle: this.cellStyle
             }
