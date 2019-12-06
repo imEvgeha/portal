@@ -27,7 +27,7 @@ import {titleSearchHelper} from '../TitleSearchHelper';
 import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 import {titleService} from '../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../util/Common';
-import uniqBy from 'lodash/uniqby';
+import uniqBy from 'lodash.uniqby';
 
 const colDef = [];
 let registeredOnSelect = false;
