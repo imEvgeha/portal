@@ -3,7 +3,6 @@ const dataTypes = {
     AUDIO: 'audio',
     FORMAT: 'format',
     RATING: 'rating',
-    AFFILIATE: 'affiliate',
 };
 
 export default {
@@ -49,14 +48,13 @@ export default {
             headerName: 'Licensor',
         },
         {
-            field: 'audioDescription',
+            field: 'languageAudioTypes',
             headerName: 'Audio Language',
             dataType: dataTypes.AUDIO,
         },
         {
             field: 'affiliate',
             headerName: 'Affiliate',
-            dataType: dataTypes.AFFILIATE,
         },
         {
             field: 'contentType',
@@ -133,5 +131,10 @@ export default {
             field: 'sheetName',
             displayName: 'Sheet Name',
         },
-    ]
+    ],
+    colors: {
+        CURRENT_VALUE: 'LightGreen',
+        STALE_VALUE: 'coral',
+    },
+    RATING_SUBFIELD: 'com.vubiquity.messaging.rights.Rating'
 };
