@@ -1,40 +1,59 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
+import omit from 'lodash.omit';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+
+const DEFAULT_HOC_PROPS = [
+    'params',
+    'setTotalCount',
+    'isDatasourceEnabled',
+    'successDataFetchCallback',
+];
 
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;
 const CACHE_OVERFLOW_SIZE = 2;
 const MAX_CONCURRENT_DATASOURCE_REQUEST = 1;
 const MAX_BLOCKS_IN_CACHE = 100;
+const ROW_MODEL_TYPE = 'infinite';
 
-const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent => {
-    const {
-        rowBuffer = ROW_BUFFER,
-        paginationPageSize = PAGINATION_PAGE_SIZE,
-        cacheOverflowSize = CACHE_OVERFLOW_SIZE,
-        rowModelType = 'infinite',
-        maxConcurrentDatasourceRequests = MAX_CONCURRENT_DATASOURCE_REQUEST,
-        maxBlocksInCache = MAX_BLOCKS_IN_CACHE,
-    } = infiniteProps;
-
+const withInfiniteScrolling = ({
+    hocProps = DEFAULT_HOC_PROPS, 
+    fetchData, 
+    rowBuffer = ROW_BUFFER,
+    paginationPageSize = PAGINATION_PAGE_SIZE,
+    cacheOverflowSize = CACHE_OVERFLOW_SIZE,
+    maxConcurrentDatasourceRequests = MAX_CONCURRENT_DATASOURCE_REQUEST,
+    maxBlocksInCache = MAX_BLOCKS_IN_CACHE,
+} = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const gridApiRef = useRef();
         const hasBeenCalledRef = useRef();
         const previousParams = usePrevious(props.params);
+        const [gridApi, setGridApi] = useState();
 
+        // params
         useEffect(() => {
-            const gridApi = gridApiRef.current;
-            if ((!isEqual(props.params, previousParams) && props.params) 
+            const {params, isDatasourceEnabled} = props;
+            if ((!isEqual(params, previousParams) && params) 
                 && gridApi 
                 && !hasBeenCalledRef.current
+                && isDatasourceEnabled
                ) {
                 updateData(fetchData, gridApi);
             }
         }, [props.params]);
+
+        //  update data when datasource is enabled
+        useEffect(() => {
+            const {isDatasourceEnabled} = props;
+            if (gridApi && isDatasourceEnabled) {
+                updateData(fetchData, gridApi);
+            }
+        }, [gridApi, props.isDatasourceEnabled]);
 
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
@@ -89,6 +108,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
                 .finally(() => hasBeenCalledRef.current = false);
         };
 
+        // filtering 
         const filterBy = filterObject => {
             const ALLOWED_TYPES_OPERAND = ['equals'];
             const FILTER_TYPES = ['set'];
@@ -109,6 +129,7 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
             return {};
         };
 
+        // sorting
         const sortBy = sortModel => {
             return sortModel;
         };
@@ -123,23 +144,25 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
         };
 
         const onGridEvent = data => {
+            const {onGridEvent} = props;
             const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED]; 
             const {api, type} = data || {};
-            if (type === GRID_EVENTS.READY && !gridApiRef.current) {
-                updateData(fetchData, api);
-                gridApiRef.current = api;
+            if (type === GRID_EVENTS.READY && !gridApi) {
+                setGridApi(api);
             }
 
-            if (events.includes(data.type) && typeof props.onGridEvent === 'function') {
-                props.onGridEvent(data);
+            if (events.includes(data.type) && typeof onGridEvent === 'function') {
+                onGridEvent(data);
             }
         };
 
+        const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
+
         const mergedProps = {
-            ...props,
+            ...propsWithoutHocProps,
             onGridEvent,
             rowBuffer,
-            rowModelType,
+            rowModelType: ROW_MODEL_TYPE,
             paginationPageSize,
             cacheOverflowSize,
             maxConcurrentDatasourceRequests,
@@ -150,14 +173,31 @@ const withInfiniteScrolling = (fetchData, infiniteProps = {}) => BaseComponent =
         };
 
         return (
-            <BaseComponent
+            <WrappedComponent
                 {...mergedProps}
             />
         );
+    };
+
+    ComposedComponent.propTypes = {
+        ...WrappedComponent.propTypes,
+        onGridEvent: PropTypes.func,
+        setTotalCount: PropTypes.func,
+        succesDataFetchCallback: PropTypes.func,
+        params: PropTypes.object,
+        isDatasourceEnabled: PropTypes.bool,
+    };
+
+    ComposedComponent.defaultProps = {
+        ...WrappedComponent.defaultProps,
+        onGridEvent: null,
+        setTotalCount: null,
+        succesDataFetchCallback: null,
+        params: null,
+        isDatasourceEnabled: true,
     };
 
     return ComposedComponent;
 };
 
 export default withInfiniteScrolling;
-
