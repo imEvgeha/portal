@@ -20,7 +20,7 @@ import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/co
 import useDOPIntegration from './util/hooks/useDOPIntegration';
 
 const NexusGridWithInfiniteScrolling = compose(
-    withInfiniteScrolling({hocProps: ['successDataFetchCallback'], apiCall: getRightMatchingList}), 
+    withInfiniteScrolling({fetchData: getRightMatchingList}),
 )(NexusGrid);
 
 const RightMatchingView = ({

@@ -7,7 +7,12 @@ import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 
-const DEFAULT_HOC_PROPS = ['params', 'setTotalCount', 'isDatasourceEnabled'];
+const DEFAULT_HOC_PROPS = [
+    'params',
+    'setTotalCount',
+    'isDatasourceEnabled',
+    'successDataFetchCallback',
+];
 
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;
@@ -18,7 +23,7 @@ const ROW_MODEL_TYPE = 'infinite';
 
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS, 
-    apiCall, 
+    fetchData, 
     rowBuffer = ROW_BUFFER,
     paginationPageSize = PAGINATION_PAGE_SIZE,
     cacheOverflowSize = CACHE_OVERFLOW_SIZE,
@@ -38,7 +43,7 @@ const withInfiniteScrolling = ({
                 && !hasBeenCalledRef.current
                 && isDatasourceEnabled
                ) {
-                updateData(apiCall, gridApi);
+                updateData(fetchData, gridApi);
             }
         }, [props.params]);
 
@@ -46,12 +51,11 @@ const withInfiniteScrolling = ({
         useEffect(() => {
             const {isDatasourceEnabled} = props;
             if (gridApi && isDatasourceEnabled) {
-                updateData(apiCall, gridApi);
+                updateData(fetchData, gridApi);
             }
-            
         }, [gridApi, props.isDatasourceEnabled]);
 
-        const getRows = (params, apiCall, gridApi) => {
+        const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
@@ -74,7 +78,7 @@ const withInfiniteScrolling = ({
                 ...sortParams,
             };
 
-            apiCall(pageNumber, pageSize, !isEmpty(preparedParams) && preparedParams)
+            fetchData(pageNumber, pageSize, !isEmpty(preparedParams) && preparedParams)
                 .then(response => {
                     const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
 
@@ -130,11 +134,11 @@ const withInfiniteScrolling = ({
             return sortModel;
         };
 
-        const updateData = (apiCall, gridApi) => {
+        const updateData = (fetchData, gridApi) => {
             hasBeenCalledRef.current = true;
             const dataSource = {
                 rowCount: null,
-                getRows: params => getRows(params, apiCall, gridApi),
+                getRows: params => getRows(params, fetchData, gridApi),
             };
             gridApi.setDatasource(dataSource);
         };
