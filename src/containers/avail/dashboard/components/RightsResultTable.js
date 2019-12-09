@@ -96,7 +96,6 @@ class RightsResultTable extends React.Component {
             pageSize: config.get('avails.page.size'),
             cols:[],
             defaultColDef: {
-                sortable: true,
                 resizable: true,
                 cellStyle: this.cellStyle
             }
@@ -269,7 +268,8 @@ class RightsResultTable extends React.Component {
                 headerName:column.displayName,
                 cellRendererFramework: this.loadingRenderer,
                 valueFormatter: formatter(column),
-                width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250
+                width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250,
+                sortable: !!column.queryParamName,
             });
         }
     }
@@ -278,7 +278,12 @@ class RightsResultTable extends React.Component {
         if(!this.table) return;
         let sortModel=[];
         this.props.tabPageSort.map(sortCriteria=>{
-            sortModel.push({colId:this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === sortCriteria.id).javaVariableName, sort:sortCriteria.desc ? 'desc' : 'asc'});
+            const availMapping =  this.props.availsMapping.mappings.find(({sortParamName, queryParamName}) =>
+                sortCriteria.id === (sortParamName || queryParamName));
+            sortModel.push({
+                colId : availMapping.javaVariableName,
+                sort: sortCriteria.desc ? 'desc' : 'asc'
+            });
         });
 
         let currentSortModel=this.table.api.getSortModel();
@@ -301,7 +306,13 @@ class RightsResultTable extends React.Component {
         let newSort = [];
         if(sortParams.length > 0){
             sortParams.map(criteria =>{
-                newSort.push({id : this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === criteria.colId).queryParamName , desc: criteria.sort === 'desc'});
+                const availMapping =  this.props.availsMapping.mappings.find(({javaVariableName}) =>
+                    javaVariableName === criteria.colId);
+                newSort.push(
+                    {
+                        id : availMapping.sortParamName || availMapping.queryParamName,
+                        desc: criteria.sort === 'desc'
+                    });
             });
         }
         this.props.manualRightsResultPageSort(newSort);
