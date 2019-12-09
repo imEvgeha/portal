@@ -18,7 +18,8 @@ const createFormForItem = (
 ) => {
     const mappedFields = fieldsForForm.map(field => ({
         ...field,
-        id: `${field.id}_${targetIndex}_FIELDS`
+        id: `${field.id}_${targetIndex}_FIELDS`,
+        defaultValue: fieldsForForm.length > 1 ? item[field.name]:item
     }));
     return (
         <FormContext.Consumer>
@@ -175,9 +176,10 @@ export default class ObjectKey extends Component {
                 <div
                     key={`exp_${item.id}`}
                 >
+                    <i className="fas fa-times-circle" onClick={() => this.removeSubItem(parentId, item.id)} style={{float:'right'}}/>
                     {form}
                 </div>
-            )
+            );
         }
     }
 

@@ -17,6 +17,33 @@ import DynamicObjectType from './custom-types/DynamicObjectType';
 import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 
+const DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
+    if(field.options && Array.isArray(field.options) && field.options.length > 0 && field.options[0] && field.options[0].items && !field.options[0].items.includes(field.value)){
+        const val = field.options[0].items.find(option => JSON.stringify(option.value) === JSON.stringify(field.value));
+        //find object with same values inside as field.value, replace reference in value with new one from options.
+        //this is necessary because select uses '===' on.value of each options to determine the current one. works ok with primitives (because it checks values)
+        //doesn't work with nonprimitives where operator '===' checks references, thats why we need this trick.
+        if(val){
+            field.value=val.value;
+        }
+    }
+    return (<div>
+        {
+            field.options && field.options.length > 0 ?
+            akRenderer(field, onChange, onFieldFocus, onFieldBlur)
+            :
+            'Loading...'
+        }
+    </div>);
+};
+
+DelayedOptions.propTypes = {
+    field: PropTypes.object.isRequired,
+    onChange: PropTypes.func,
+    onFieldFocus: PropTypes.func,
+    onFieldBlur: PropTypes.func
+};
+
 const renderer = (
     field,
     onChange,
@@ -76,6 +103,9 @@ const renderer = (
                     idAttribute={idAttribute}
                 />
             );
+        case 'select':
+        case 'multiselect':
+            return <DelayedOptions key={id} field={field} onChange={onChange} onFieldFocus={onFieldFocus} onFieldBlur={onFieldBlur}/>;
         default:
             return akRenderer(field, onChange, onFieldFocus, onFieldBlur);
     }
@@ -121,19 +151,30 @@ export default class CreateEditConfigForm extends React.Component {
         return {label, value};
     };
 
+    processOptions = (rawOptions, field) => {
+        const items = rawOptions.map(rec => this.convertDataToOption(rec, field.source));
+        return [{items}];
+    };
+
     optionsHandler(fieldId, fields) {
         let field = fields.find(({id}) => id === fieldId);
         if(field){
             if((field.type === 'select' || field.type === 'multiselect') && field.source){
-                if(cache[field.source.url]) {
-                    const items = cache[field.source.url].map(rec => this.convertDataToOption(rec, field.source));
-                    return [{items}];
+                if(cache[field.source.url] === undefined){
+                    const promise = getConfigApiValues(field.source.url, 0, 1000).then(response => {
+                        cache[field.source.url] = response.data.data;
+                        return this.processOptions(response.data.data, field);
+                    });
+                    cache[field.source.url] = promise;
+                    return promise;
+                }else if(cache[field.source.url]){
+                    if(cache[field.source.url] instanceof Promise){
+                        return cache[field.source.url];
+                    }
+                    return this.processOptions(cache[field.source.url], field);
+                }else{
+                    console.error('Cannot load dropdown values from: ', field.source.url);
                 }
-                return getConfigApiValues(field.source.url, 0, 1000).then(response => {
-                    cache[field.source.url] = response.data.data;
-                    const items = response.data.data.map(rec => this.convertDataToOption(rec, field.source));
-                    return [{items}];
-                });
             }else{
                 if (field.type === 'array' || field.type === 'object'){
                     field.misc.fields.forEach(subfield => this.optionsHandler(subfield.id, field.misc.fields));

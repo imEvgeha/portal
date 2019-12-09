@@ -295,9 +295,11 @@ export class EndpointContainer extends Component {
 EndpointContainer.propTypes = {
     urlBase: PropTypes.string,
     selectedApi: PropTypes.object,
+    visible: PropTypes.bool,
 };
 
 EndpointContainer.defaultProps = {
     urlBase: null,
     selectedApi: {},
+    visible: false
 };
