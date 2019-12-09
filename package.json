@@ -120,7 +120,7 @@
     "nwb-sass": "0.8.x",
     "popper.js": "^1.14.3",
     "react-redux": "^5.0.7",
-    "reactstrap": "^6.3.1",
+    "reactstrap": "^8.2.0",
     "redux": "^4.0.0",
     "uuid": "^3.3.2",
     "webpack": "^4.19.1",
