@@ -21,7 +21,7 @@ import useDOPIntegration from './util/hooks/useDOPIntegration';
 
 const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({hocProps: ['successDataFetchCallback'], apiCall: getRightMatchingList}), 
-)(NexusGrid)
+)(NexusGrid);
 
 const RightMatchingView = ({
         createRightMatchingColumnDefs, 
