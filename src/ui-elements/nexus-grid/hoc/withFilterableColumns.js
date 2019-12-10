@@ -52,6 +52,7 @@ const withFilterableColumns = ({
         const columns = props.filterableColumns || filterableColumns;
         const filters = props.initialFilter || initialFilter;
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
+        const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
 
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
@@ -78,6 +79,7 @@ const withFilterableColumns = ({
                     }
                 });
                 gridApi.onFilterChanged();
+                setIsDatasourceEnabled(true);
             } 
         }, [gridApi, mapping]);
 
@@ -100,7 +102,7 @@ const withFilterableColumns = ({
         }
 
         const onGridEvent = ({type, api}) => {
-            if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
+            if (type === GRID_EVENTS.READY) {
                 setGridApi(api);
             }
         };
@@ -134,14 +136,14 @@ const withFilterableColumns = ({
 
         const getFilterOptions = (field) => {
             const options = selectValues ? selectValues[field] : [];
-            const parsedselectValues = options.map(option => {
+            const parsedSelectValues = options.map(option => {
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution
                     return option.value || option.countryCode;
                 }
                 return option;
             });
-            return parsedselectValues;
+            return parsedSelectValues;
         };
 
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
@@ -153,6 +155,7 @@ const withFilterableColumns = ({
                     columnDefs={filterableColumnDefs}
                     floatingFilter={true}
                     onGridEvent={onGridEvent}
+                    isDatasourceEnabled={isDatasourceEnabled}
                 />
             ) : null
         );
@@ -169,4 +172,3 @@ const withFilterableColumns = ({
 };
 
 export default withFilterableColumns;
-

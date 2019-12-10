@@ -18,7 +18,8 @@ const createFormForItem = (
 ) => {
     const mappedFields = fieldsForForm.map(field => ({
         ...field,
-        id: `${field.id}_${targetIndex}_FIELDS`
+        id: `${field.id}_${targetIndex}_FIELDS`,
+        defaultValue: fieldsForForm.length > 1 ? item[field.name]:item
     }));
     return (
         <FormContext.Consumer>
@@ -113,10 +114,10 @@ export default class ObjectKey extends Component {
         this.updateItemState(items);
     }
 
-    createSubFormChangeHandler(index, index2) {
+    createSubFormChangeHandler(index, index2, fields) {
         return (value) => {
             const { items } = this.state;
-            items[index].data[index2].data = value;
+            items[index].data[index2].data = fields.length === 1 ? value[fields[0].name]: value;
             this.updateItemState(items);
         };
     }
@@ -158,17 +159,28 @@ export default class ObjectKey extends Component {
             fields,
             formChangeHandler
         );
-        return (
-            <Expander
-                key={`exp_${item.id}`}
-                label={item.data[fieldName]}
-                remove={() => {
-                    this.removeSubItem(parentId, item.id);
-                }}
-            >
-                {form}
-            </Expander>
-        );
+        if(fields.length> 1) {
+            return (
+                <Expander
+                    key={`exp_${item.id}`}
+                    label={item.data[fieldName]}
+                    remove={() => {
+                        this.removeSubItem(parentId, item.id);
+                    }}
+                >
+                    {form}
+                </Expander>
+            );
+        }else{
+            return (
+                <div
+                    key={`exp_${item.id}`}
+                >
+                    <i className="fas fa-times-circle" onClick={() => this.removeSubItem(parentId, item.id)} style={{float:'right'}}/>
+                    {form}
+                </div>
+            );
+        }
     }
 
     checkKeyName(item, value){
@@ -216,7 +228,7 @@ export default class ObjectKey extends Component {
                                     >
                                         {
                                             item.data.map( (data, index2) => {
-                                                const formChangeHandler = this.createSubFormChangeHandler(index, index2);
+                                                const formChangeHandler = this.createSubFormChangeHandler(index, index2, fields);
                                                 return this.getForm(data, index2, fields, formChangeHandler, idAttribute, item.id);
                                             })
                                         }

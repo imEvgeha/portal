@@ -14,10 +14,14 @@ module.exports = {
         publicPath: '/'
     },
     entry: {
-        main: ["@babel/polyfill", './src/index.js']
+        main: ['@babel/polyfill', './src/index.js']
     },
     module: {
         rules: [
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack'],
+            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -27,7 +31,7 @@ module.exports = {
                 test: /\.(scss|css)/,
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             }, {
-                test: /\.(gif|png|jpe?g|svg)$/i,
+                test: /\.(gif|png|jpe?g)$/i,
                 use: [
                     'file-loader',
                     {
@@ -38,7 +42,7 @@ module.exports = {
                         },
                     },
                 ],
-            }
+            },
         ],
     },
     optimization: {
