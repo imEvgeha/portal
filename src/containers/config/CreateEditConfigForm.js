@@ -18,13 +18,13 @@ import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 
 const DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
-    if(field.options && Array.isArray(field.options) && field.options.length > 0 && field.options[0] && field.options[0].items && !field.options[0].items.includes(field.value)){
+    if(field.options && Array.isArray(field.options) && field.options.length && field.options[0] && field.options[0].items && !field.options[0].items.includes(field.value)){
         const val = field.options[0].items.find(option => JSON.stringify(option.value) === JSON.stringify(field.value));
         //find object with same values inside as field.value, replace reference in value with new one from options.
         //this is necessary because select uses '===' on.value of each options to determine the current one. works ok with primitives (because it checks values)
         //doesn't work with nonprimitives where operator '===' checks references, thats why we need this trick.
         if(val){
-            field.value=val.value;
+            field.value = val.value;
         }
     }
     return (<div>
@@ -138,7 +138,7 @@ export default class CreateEditConfigForm extends React.Component {
         if(Array.isArray(schema.label) && schema.label.length > 1){
             label = schema.label.map(fieldName => dataSource[fieldName]).join(displayValueDelimiter);
         }else{
-            label = dataSource[schema.label];
+            label = dataSource[schema.label || schema.value];
         }
         if(Array.isArray(schema.value) && schema.value.length > 1){
             value = schema.value.reduce(function(result, item){
@@ -169,7 +169,7 @@ export default class CreateEditConfigForm extends React.Component {
                     return promise;
                 }else if(cache[field.source.url]){
                     if(cache[field.source.url] instanceof Promise){
-                        return cache[field.source.url];
+                        return cache[field.source.url].then(()=> {});
                     }
                     return this.processOptions(cache[field.source.url], field);
                 }else{
