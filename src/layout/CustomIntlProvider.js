@@ -16,8 +16,13 @@ CustomIntlProvider.propTypes = {
     getLocale: PropTypes.object    
 };
 
+CustomIntlProvider.defaultProps = {
+    getLocale: null,
+};
+
 const mapStateToProps = state => {
     return { getLocale: state.localeReducer };
 };
 
 export default connect(mapStateToProps)(CustomIntlProvider);
+

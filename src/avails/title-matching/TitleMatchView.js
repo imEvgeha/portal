@@ -7,7 +7,6 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
-import NexusToastNotificationContext from '../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -19,6 +18,7 @@ import NewTitleConstants from './components/create-title-form/CreateTitleFormCon
 import Constants from './titleMatchingConstants';
 import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
+import { deepClone } from '../../util/Common';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
@@ -32,7 +32,6 @@ const TitleMatchView = ({
     searchCriteria
 }) => {
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
-    const toastApi = useContext(NexusToastNotificationContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -68,7 +67,15 @@ const TitleMatchView = ({
             createColumnDefs();
         }
     }, [columnDefs]);
-
+    let deepCloneRightColumnDefs = deepClone(rightColumns);
+    let updatedRightColumnDefs;
+    if(focusedRight && focusedRight.contentType === 'Episode') {
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
+    } else if(focusedRight && focusedRight.contentType === 'Season'){
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber');
+    } else {
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber');
+    }
     return (
         <div className="nexus-c-title-to-match">
             <div className="nexus-c-title-to-match__header">
@@ -80,7 +87,7 @@ const TitleMatchView = ({
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
-                                columnDefs={[newTitleButton, ...rightColumns]}
+                                columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
                                 rowData={[focusedRight]}
                             />
                         </div>
@@ -90,7 +97,7 @@ const TitleMatchView = ({
                         <TitlesList
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
-                            mergeTitles={(matchList, duplicateList) => mergeTitles(matchList, duplicateList, toastApi)}/>
+                            mergeTitles={mergeTitles}/>
                     </React.Fragment>
                 )
             }
@@ -125,7 +132,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList, toastApi) => dispatch(mergeTitles(matchList, duplicateList, toastApi))
+    mergeTitles: (matchList, duplicateList) => dispatch(mergeTitles(matchList, duplicateList))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

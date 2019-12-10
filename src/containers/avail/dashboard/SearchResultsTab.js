@@ -1,12 +1,10 @@
 import './DashboardContainer.scss';
 
 import React from 'react';
-import {alertModal} from '../../../components/modal/AlertModal';
-import {confirmModal} from '../../../components/modal/ConfirmModal';
 import t from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {configurationService} from '../service/ConfigurationService';
-import {downloadFile, IfEmbedded} from '../../../util/Common';
+import {IfEmbedded} from '../../../util/Common';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';
@@ -21,8 +19,9 @@ import {
     resultPageLoading,
     resultPageUpdate
 } from '../../../stores/actions/avail/dashboard';
-import {exportService} from '../service/ExportService';
 import RightViewHistory from '../../../avails/right-history-view/RightHistoryView';
+import TableColumnCustomization from '../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
+import TableDownloadRights from '../../../ui-elements/nexus-table-download-rights/TableDownload';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
@@ -57,133 +56,13 @@ class SearchResultsTab extends React.Component {
         avails: t.array
     };
 
-    hideShowColumns={};
-
     constructor(props) {
         super(props);
         this.state = {
             reportsName:configurationService.getReportsNames(),
         };
-        this.requestFile = this.requestFile.bind(this);
-        this.toggleColumn = this.toggleColumn.bind(this);
-        this.toggleSelectAll = this.toggleSelectAll.bind(this);
-        this.selectColumns = this.selectColumns.bind(this);
-        this.saveColumns = this.saveColumns.bind(this);
-        this.cancelColumns = this.cancelColumns.bind(this);
         this.toggleShowSelected = this.toggleShowSelected.bind(this);
         this.handleChangeReport = this.handleChangeReport.bind(this);
-    }
-
-    selectColumns() {
-        this.props.availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
-            if (column.javaVariableName === 'title') return '';
-            let checked = store.getState().dashboard.session.columns.indexOf(column.javaVariableName) > -1;
-            const data = {
-                source: column,
-                hideShowColumns: this.hideShowColumns,
-                onChange: () => {
-                    this.toggleColumn(column.javaVariableName);
-                },
-                saveRefresh: (refresh) =>{
-                    this.hideShowColumns[column.javaVariableName].refresh = refresh;
-                }
-            };
-
-            this.hideShowColumns[column.javaVariableName] = {
-                data: data,
-                checked: () => checked,
-                refresh: () => {},
-                checkbox: <SpecialCheckbox key={column.javaVariableName} data={data}/>
-            };
-        });
-
-        const dataSelectAll={
-            source:{
-                javaVariableName: 'selectAll',
-                displayName:'Select All'
-            },
-            hideShowColumns: this.hideShowColumns,
-            onChange: (e) => {
-                this.toggleSelectAll(e);
-            },
-            saveRefresh: (refresh) =>{
-                this.hideShowColumns[dataSelectAll.source.javaVariableName].refresh = refresh;
-            }
-        };
-
-        this.hideShowColumns[dataSelectAll.source.javaVariableName] = {
-            data: dataSelectAll,
-            checked: () => {
-                let allSelected = true;
-                let hideShowColumns = this.hideShowColumns;
-                for (let key in hideShowColumns) {
-                    if (key === dataSelectAll.source.javaVariableName) continue;
-                    allSelected = allSelected && hideShowColumns[key].checked();
-                }
-                return allSelected;
-            },
-            refresh: () => {},
-            checkbox: <SpecialCheckbox key={dataSelectAll.source.javaVariableName} data={dataSelectAll}/>
-        };
-
-        const options = [this.hideShowColumns['selectAll'].checkbox];
-        for (let key in this.hideShowColumns) {
-            if(key === 'selectAll') continue;
-            options.push(this.hideShowColumns[key].checkbox);
-        }
-
-        confirmModal.open('Select Visible Columns',
-            this.saveColumns,
-            this.cancelColumns,
-            {confirmLabel: 'OK', description: options, scrollable:true}
-        );
-    }
-
-    toggleSelectAll(e){
-        let currentValue = e.target.checked;
-        this.props.availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
-            if(column.javaVariableName === 'title') return '';
-            this.hideShowColumns[column.javaVariableName].checked = () => currentValue;
-            this.hideShowColumns[column.javaVariableName].refresh();
-        });
-    }
-
-    toggleColumn(id){
-        const checkRec = this.hideShowColumns[id];
-        const currentValue = checkRec.checked();
-        checkRec.checked = () => !currentValue;
-        this.hideShowColumns['selectAll'].refresh();
-    }
-
-    saveColumns() {
-        let cols = store.getState().dashboard.session.columns.slice();
-        //remove all hidden columns
-        Object.keys(this.hideShowColumns).map(key => {
-            if(this.hideShowColumns[key].checked() === false){
-                let position = cols.indexOf(key);
-                if(position>-1){
-                    cols.splice(position, 1);
-                }
-            }
-        });
-        //add new visible columns
-        Object.keys(this.hideShowColumns).map(key => {
-            if(this.hideShowColumns[key].checked() === true){
-                let position = cols.indexOf(key);
-                if(position===-1){
-                    cols.push(key);
-                }
-            }
-        });
-
-        this.hideShowColumns={};
-        this.props.resultPageUpdateColumnsOrder(cols);
-
-        store.dispatch(resultPageLoading(true)); //force refresh
-    }
-
-    cancelColumns() {
-        this.hideShowColumns={};
     }
 
     storeData = (response) => {
@@ -209,28 +88,6 @@ class SearchResultsTab extends React.Component {
         store.dispatch(resultPageUpdate(updatedResult));
     }
 
-    exportAvails = () => {
-
-        if (store.getState().dashboard.session.availTabPageSelection.selected.length === 0) {
-            alertModal.open('Action required', () => {
-            }, {description: 'Please select at least one right'});
-        } else {
-            confirmModal.open('Confirm download',
-                this.requestFile,
-                () => {
-                },
-                {description: `You have selected ${store.getState().dashboard.session.availTabPageSelection.selected.length} avails for download.`});
-        }
-    };
-
-    requestFile() {
-        const filteredColumns = store.getState().dashboard.session.columns.filter(el => !CUSTOM_HEADER_LIST.includes(el));
-        exportService.exportAvails(store.getState().dashboard.session.availTabPageSelection.selected.map(({id}) => id), filteredColumns)
-        .then(function (response) {
-            downloadFile(response.data);
-        });
-    }
-
     toggleShowSelected(){
         this.props.resultPageShowSelected(!this.props.showSelectedAvails);
     }
@@ -239,6 +96,19 @@ class SearchResultsTab extends React.Component {
         this.props.resultPageShowSelected(false);
         const reportName = event.target.value;
         configurationService.changeReport(reportName);
+    }
+
+    updateColumnsOrder = (cols) => {
+        this.props.resultPageUpdateColumnsOrder(cols);
+        store.dispatch(resultPageLoading(true)); //force refresh
+    }
+
+    getSelected = () => {
+        return store.getState().dashboard.session.availTabPageSelection.selected;
+    }
+
+    getColumns = () => {
+        return store.getState().dashboard.session.columns;
     }
 
     render() {
@@ -268,9 +138,16 @@ class SearchResultsTab extends React.Component {
                                         reportName={this.props.reportName}
                                     />
                                 </div>
-                                <i className={'fas fa-download table-top-icon float-right'} onClick={this.exportAvails}> </i>
+                                <TableDownloadRights
+                                    getSelected={this.getSelected}
+                                    getColumns={this.getColumns}
+                                />
                             </IfEmbedded>
-                            <i className={'fas fa-th table-top-icon float-right'} onClick={this.selectColumns}> </i>
+                            <TableColumnCustomization
+                                availsMapping={this.props.availsMapping}
+                                columns={store.getState().dashboard.session.columns}
+                                updateColumnsOrder={this.updateColumnsOrder}
+                            />
                         </div>
                     </div>
                     <div>
@@ -297,7 +174,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
 import {Component} from 'react';
 import {compose} from 'redux';
-import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
 
 //--------------------------------------
 
@@ -407,41 +283,3 @@ class ClearInternal extends Component {
     }
 }
 let Clear = connect(mapStateToProps, null)(ClearInternal);
-
-//--------------------------------------
-
-class SpecialCheckbox extends Component {
-
-    static propTypes = {
-        data: t.object
-    };
-
-    constructor(props) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-        this.refresh = this.refresh.bind(this);
-        this.props.data.saveRefresh(this.refresh);
-    }
-
-    refresh(){
-        this.setState({});
-    }
-
-    onChange(e){
-        if(this.props.data.onChange){
-            this.props.data.onChange(e);
-        }
-        this.refresh();
-    }
-
-    render(){
-        const def = this.props.data.source;
-        const id= def.javaVariableName;
-        const dataRec = this.props.data.hideShowColumns[id];
-        return(
-            <div>
-                <input type='checkbox' name={id} style={{marginRight: '8px'}} onChange={this.onChange} checked={dataRec.checked()} />{def.displayName}<br/>
-            </div>
-        );
-    }
-}

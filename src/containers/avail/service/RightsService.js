@@ -5,9 +5,8 @@ import {store} from '../../../index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
 
 const http = Http.create();
-const httpNoError = Http.create({noDefaultErrorHandling:true});
 
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId'];
+const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId', 'originalRightIds'];
 const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
 const ARRAY_OF_OBJETS = ['territory'];
 
@@ -101,7 +100,7 @@ const parseAdvancedFilter = function (searchCriteria) {
 
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-            let map = mappings.find(({queryParamName}) => queryParamName === key);
+            const map = mappings.find(({queryParamName}) => queryParamName === key);
             let value = searchCriteria[key];
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
@@ -137,6 +136,7 @@ export const rightsService = {
     },
 
     get: (id) => {
+        const httpNoError = Http.create({defaultErrorHandling: false});
         return httpNoError.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id);
     },
 

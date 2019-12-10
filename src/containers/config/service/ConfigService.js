@@ -1,7 +1,7 @@
 import config from 'react-global-configuration';
 import Http from '../../../util/Http';
 
-const http = Http.create({noDefaultErrorHandling: true});
+const http = Http.create({defaultErrorHandling: false});
 
 export const loadConfigAPIEndPoints = () => {
     return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/endpoints');

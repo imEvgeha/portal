@@ -3,23 +3,31 @@ import ReactDOM from 'react-dom';
 import t from 'prop-types';
 
 import config from 'react-global-configuration';
-
 // image import
 import LoadingGif from '../../../../img/loading.gif';
 
-import { AgGridReact } from 'ag-grid-react';
+import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TitleResultTable.scss';
 
 
 import connect from 'react-redux/es/connect/connect';
-import { resultPageUpdate, resultPageSort, resultPageSelect, resultPageLoading, resultPageUpdateColumnsOrder } from '../../../../stores/actions/metadata/index';
-import { titleServiceManager } from '../../service/TitleServiceManager';
-import { Link } from 'react-router-dom';
-import { titleMapping } from '../../service/Profile';
-import { titleSearchHelper } from '../TitleSearchHelper';
-import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import {
+    resultPageLoading,
+    resultPageSelect,
+    resultPageSort,
+    resultPageUpdate,
+    resultPageUpdateColumnsOrder
+} from '../../../../stores/actions/metadata/index';
+import {titleServiceManager} from '../../service/TitleServiceManager';
+import {Link} from 'react-router-dom';
+import {titleMapping} from '../../service/Profile';
+import {titleSearchHelper} from '../TitleSearchHelper';
+import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import {titleService} from '../../service/TitleService';
+import {formatNumberTwoDigits} from '../../../../util/Common';
+import uniqBy from 'lodash.uniqby';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -253,25 +261,15 @@ class TitleResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow / this.state.pageSize), this.state.pageSize, this.props.titleTabPageSort)
             .then(response => {
-                if (response.data.total > 0) {
-                    this.addLoadedItems(response.data);
-                    // if on or after the last page, work out the last row.
-                    let lastRow = -1;
-                    if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                        lastRow = response.data.total;
+                const {data} = response;
+                if (data.total > 0) {
+                    this.addLoadedItems(data);
+                    const ids = this.getParentTitleIds(data.data);
+                    if(ids.length > 0) {
+                        this.addUpdatedItemToTable(data, ids, params);
+                    } else {
+                        this.addItemToTable(data, params);
                     }
-                    params.successCallback(response.data.data, lastRow);
-
-                    if (this.props.titleTabPageSelection.selected.length > 0) {
-                        this.table.api.forEachNode(rowNode => {
-                            if (rowNode.data && this.props.titleTabPageSelection.selected.indexOf(rowNode.data.id) > -1) {
-                                rowNode.setSelected(true);
-                            }
-                        });
-                    }
-
-                    this.table.api.hideOverlay();
-                    this.onSelectionChanged(this.table);
                 } else {
                     this.table.api.showNoRowsOverlay();
                 }
@@ -281,6 +279,91 @@ class TitleResultTable extends React.Component {
                 params.failCallback();
             });
     }
+
+    addUpdatedItemToTable = (request, ids, params) => {
+        const titleRequest = Object.assign({}, request);
+        titleService.bulkGetTitles(ids).then(res => {
+            const parents = res.data;
+            titleRequest.data = titleRequest.data.map(title => {
+                if(title.contentType.toUpperCase() === SEASON.apiName) {
+                    title.title = this.getFormatTitle(parents, title, SEASON.apiName);
+                } else if(title.contentType.toUpperCase() === EPISODE.apiName) {
+                    title.title = this.getFormatTitle(parents, title, EPISODE.apiName);
+                }
+                return title;
+            });
+            this.addItemToTable(titleRequest, params);
+        });
+    };
+
+    getFormatTitle = (parents, item, contentType) => {
+        const parent = this.getSeriesParent(item, parents);
+        const {title: seriesTitle} = parent || {};
+        const {episodic, title: episodeTitle} = item || {};
+        const {seasonNumber, episodeNumber} = episodic || {};
+
+        switch (contentType) {
+            case SEASON.apiName:
+                return parent ? `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
+            case EPISODE.apiName:
+                return parent ?
+                    `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
+                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
+        }
+
+        return item.title;
+    };
+
+    getSeriesParent = (item, parents) => {
+        const parentId = this.getSeriesParentId(item);
+        if (parentId) {
+            return parents.find(t => t.id === parentId);
+        }
+        return null;
+    };
+
+    addItemToTable = (data, params) => {
+        // if on or after the last page, work out the last row.
+        let lastRow = -1;
+        if ((data.page + 1) * data.size >= data.total) {
+            lastRow = data.total;
+        }
+        params.successCallback(data.data, lastRow);
+
+        if (this.props.titleTabPageSelection.selected.length > 0) {
+            this.table.api.forEachNode(rowNode => {
+                if (rowNode.data && this.props.titleTabPageSelection.selected.indexOf(rowNode.data.id) > -1) {
+                    rowNode.setSelected(true);
+                }
+            });
+        }
+
+        this.table.api.hideOverlay();
+        this.onSelectionChanged(this.table);
+    };
+
+    getParentTitleIds = (items) => {
+        const parents = items.filter(item => item.contentType.toUpperCase() === SEASON.apiName || item.contentType.toUpperCase() === EPISODE.apiName && item.parentIds)
+            .map(t => {
+                const id = this.getSeriesParentId(t);
+                if (id) {
+                    return {id};
+                }
+                return {};
+            });
+        return uniqBy(parents, 'id');
+    };
+
+    getSeriesParentId = (title) => {
+        const {parentIds} = title;
+        if(parentIds) {
+            const parent = parentIds.find(el => el.contentType.toUpperCase() === SERIES.apiName);
+            if(parent) {
+                return parent.id;
+            }
+        }
+        return null;
+    };
 
     addLoadedItems(data) {
         let items = data.data.map(e => e.contentType = toPrettyContentTypeIfExist(e.contentType));

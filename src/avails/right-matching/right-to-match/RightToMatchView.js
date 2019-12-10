@@ -21,23 +21,29 @@ import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-noti
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
+import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(getRightToMatchList)(NexusGrid));
+const RightRepositoryNexusGrid = compose(
+    withFilterableColumns(),
+    withSideBar(),
+    withInfiniteScrolling({fetchData: getRightToMatchList})
+)(NexusGrid);
 
 const RightToMatchView = ({
-    match, 
-    columnDefs, 
-    mapping, 
-    createRightMatchingColumnDefs, 
-    fetchRightMatchingFieldSearchCriteria, 
+    match,
+    columnDefs,
+    mapping,
+    createRightMatchingColumnDefs,
+    fetchRightMatchingFieldSearchCriteria,
     fetchFocusedRight,
     fieldSearchCriteria,
     focusedRight,
     history,
     location,
-    createNewRight
+    createNewRight,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
@@ -52,13 +58,15 @@ const RightToMatchView = ({
 
     useEffect(() => {
         if (!columnDefs.length) {
-            createRightMatchingColumnDefs(mapping);
+            createRightMatchingColumnDefs();
         }
-    }, [mapping, columnDefs]);
+    }, [columnDefs]);
 
     useEffect(() => {
         fetchFocusedRight(rightId);
-        fetchRightMatchingFieldSearchCriteria(availHistoryIds);
+        if (!fieldSearchCriteria || (rightId !== fieldSearchCriteria.id)) {
+            fetchRightMatchingFieldSearchCriteria(availHistoryIds);
+        }
     }, [rightId]);
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -67,7 +75,7 @@ const RightToMatchView = ({
     const onDeclareNewRight = () => {
         removeToast();
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
-        createNewRight({rightId, addToast, redirectPath});
+        createNewRight({rightId, redirectPath});
     };
 
     const onNewRightClick = () => {
@@ -111,7 +119,7 @@ const RightToMatchView = ({
 
     return (
         <div className="nexus-c-right-to-match-view">
-            <NexusTitle>                
+            <NexusTitle>
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
                     <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
@@ -139,14 +147,18 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
-                {fieldSearchCriteria && (
-                    <NexusGridWithInfiniteScrolling
-                        columnDefs={updatedColumnDefs}
-                        setTotalCount={setTotalCount}
-                        params={fieldSearchCriteria}
-                        handleSelectionChange={handleSelectionChange}
-                        rowSelection="multiple"
-                    />
+                {fieldSearchCriteria 
+                    && fieldSearchCriteria.id === rightId 
+                    && (
+                        <RightRepositoryNexusGrid
+                            columnDefs={updatedColumnDefs}
+                            mapping={mapping}
+                            setTotalCount={setTotalCount}
+                            params={fieldSearchCriteria.params}
+                            initialFilter={fieldSearchCriteria.params}
+                            handleSelectionChange={handleSelectionChange}
+                            rowSelection="multiple"
+                        />
                 )}
             </div>
             <div className="nexus-c-right-to-match-view__buttons">
@@ -208,7 +220,7 @@ const createMapStateToProps = () => {
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         fieldSearchCriteria: fieldSearchCriteriaSelector(state, props),
-        focusedRight: focusedRightSelector(state, props), 
+        focusedRight: focusedRightSelector(state, props),
     });
 };
 

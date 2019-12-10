@@ -10,7 +10,7 @@ const LANGUAGES = '/languages';
 const COUNTRIES = '/countries';
 const SORT_TYPE = 'label';
 
-const http = Http.create({ noDefaultErrorHandling: true });
+const http = Http.create({ defaultErrorHandling: false });
 
 const getAvailsMapping = () => {
     return http.get('/availMapping.json');

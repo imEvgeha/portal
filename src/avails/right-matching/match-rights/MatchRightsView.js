@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -18,11 +18,10 @@ import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import {URL, isObjectEmpty} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 
-const EditableNexusGrid = withEditableColumns(NexusGrid);
+const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
 function MatchRightView({
     history,
@@ -40,7 +39,6 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
-    const {addToast} = useContext(NexusToastNotificationContext);
     const {params} = match || {};
     const {availHistoryIds, rightId} = params || {};
 
@@ -49,9 +47,9 @@ function MatchRightView({
 
     useEffect(() => {
         if (!columnDefs.length) {
-            createRightMatchingColumnDefs(mapping);
+            createRightMatchingColumnDefs();
         }
-    }, [columnDefs, mapping]);
+    }, [columnDefs]);
 
     useEffect(() => {
         const {params} = match || {};
@@ -87,8 +85,7 @@ function MatchRightView({
         setSaveButtonDisabled(true);
         const payload = {
             rightIds: [rightId, ...matchedRightIds.split(',')],
-            combinedRight, 
-            addToast,
+            combinedRight,
             redirectPath,
         };
         // TODO: fix this
@@ -136,6 +133,7 @@ function MatchRightView({
                         columnDefs={columnDefs}
                         rowData={isObjectEmpty(combinedRight) ? [] : [combinedRight]}
                         onGridEvent={handleGridEvent}
+                        mapping={mapping}
                         domLayout="autoHeight"
                     />
                 )}
@@ -197,14 +195,14 @@ const createMapStateToProps = () => {
     const matchedRightsSelector = selectors.createMatchedRightsSelector();
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
-    const availsMappingSelector = selectors.createAvailsMappingSelector();
+    const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
 
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
         matchedRights: matchedRightsSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: availsMappingSelector(state, props),
+        mapping: rightMatchingMappingSelector(state, props),
     });
 };
 

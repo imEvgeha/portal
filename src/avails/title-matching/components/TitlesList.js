@@ -13,7 +13,7 @@ import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '
 import Constants from '../titleMatchingConstants';
 import {deepClone} from '../../../util/Common';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling(titleServiceManager.doSearch)(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleServiceManager.doSearch})(NexusGrid));
 
 const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     const [totalCount, setTotalCount] = useState(0);
@@ -105,7 +105,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         cellRendererFramework: duplicateButtonCell,
     }; 
     
-    const deepCloneColumnDefs = deepClone(columnDefs);
+    
+    let deepCloneColumnDefs = deepClone(columnDefs);
     const handleTitleMatchingRedirect = params => {
         return createLinkableCellRenderer(params);
     };
@@ -113,17 +114,44 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
         return e;
     });
+
+    const renderEpisodeAndSeasonNumber = params => {
+        if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;
+        else if(params.data.contentType === 'SEASON') return params.data.episodic.seasonNumber;
+        else return null;
+    };
+
+    const numOfEpisodeAndSeasonField = {
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
+        headerName: '-',
+        valueFormatter: renderEpisodeAndSeasonNumber,
+        cellRenderer: handleTitleMatchingRedirect,
+        width: 100
+        
+    };
+
+    const onGridReady = (params) => {
+        const {columnApi} = params;
+        const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 4); // +3 indicates pinned columns on the left side
+    };
+
+    
     const repository = getRepositoryCell();
     return (
         <React.Fragment>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
-                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
-                setTotalCount={setTotalCount}/>
+                onGridEvent={onGridReady}
+                columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
+                setTotalCount={setTotalCount}
+            />
             <ActionsBar
                 rightId={rightId}
                 matchList={matchList}
-                mergeTitles={() => mergeTitles(matchList, duplicateList)}/>
+                mergeTitles={() => mergeTitles(matchList, duplicateList)}
+            />
         </React.Fragment>
     );
 };

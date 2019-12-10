@@ -82,7 +82,8 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": true,
+  "sortParamName": "territoryCountry"
 }, {
   "javaVariableName": "territory.country",
   "displayName": "Territory Country",
@@ -1483,11 +1484,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "originalRightId",
-  "displayName": "Original Right Id",
+  "javaVariableName": "originalRightIds",
+  "displayName": "Original Right Ids",
   "dataType": "string",
   "searchDataType": "string",
-  "queryParamName": "originalRightId",
+  "queryParamName": "originalRightIds",
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
