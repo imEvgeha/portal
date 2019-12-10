@@ -69,10 +69,10 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     }
     if (data[`${colId || field}Deleted`]) {
         styling.textDecoration = 'line-through';
-        if(focusedRight[colId] === ''){
-            styling.background = CURRENT_VALUE;
-        } else{
+        if(focusedRight[colId || field].length){
             styling.background = STALE_VALUE;
+        } else{
+            styling.background = CURRENT_VALUE;
         }
     }
     return styling;
