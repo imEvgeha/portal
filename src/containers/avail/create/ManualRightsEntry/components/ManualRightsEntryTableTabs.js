@@ -13,7 +13,7 @@ import {
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
-function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria, createdCount, updatedCount, fatalCount}) {
+function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria, createdCount, updatedCount, fatalCount, historyData}) {
 
     const [totalRightsCount, setTotalRightsCount] = useState();
     const [successCount, setSuccessCount] = useState();
@@ -29,7 +29,7 @@ function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedT
             .then(response => setPendingCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
             .then(response => setErrorsCount(response.data.total));
-    }, []);
+    }, [historyData]);
 
     const getCustomTotalCount = () => {
         if(!isNaN(totalRightsCount) && !isNaN(fatalCount)) {
@@ -67,7 +67,8 @@ ManualRightEntryTableTabs.propTypes = {
     getCustomSearchCriteria: PropTypes.func.isRequired,
     fatalCount: PropTypes.number,
     createdCount: PropTypes.number,
-    updatedCount: PropTypes.number
+    updatedCount: PropTypes.number,
+    historyData: PropTypes.object
 };
 
 const mapStateToProps = state => {

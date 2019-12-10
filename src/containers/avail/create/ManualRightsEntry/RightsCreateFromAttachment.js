@@ -246,6 +246,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 getCustomSearchCriteria={this.getCustomSearchCriteria}
                                 createdCount={created}
                                 updatedCount={updated}
+                                historyData={this.state.historyData}
                                 fatalCount={fatal}/>
                             <div className='nexus-c-manual-rights-entry__actions'>
                                 <Button className='nexus-c-manual-rights-entry__button'
@@ -273,6 +274,7 @@ class RightsCreateFromAttachment extends React.Component {
                             nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
                             autoload={false}
                             selectedTab={selectedTab}
+                            historyData={this.state.historyData}
                             hidden={selectedTab === FATAL}
                             searchCriteria={this.getCustomSearchCriteria(selectedTab)}
                             onTableLoaded={this.onTableLoaded}

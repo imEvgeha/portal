@@ -85,14 +85,13 @@ export default class DashboardDropableCard extends React.Component {
         return this.state.fileUploadedPercentage;
     }
 
-    setUploadingProcessingStatus = (status) => {
-        if(status === 'PENDING') return 'Processing';
-        else if(this.state.fileUploadedPercentage === 100)  return 'Uploading finished';       
+    getProcessStatus = (status) => {
+        if(status === 'PENDING') return 'Processing';      
     }
 
     render() {
         const renderUploadingInfo = (file) => (
-            file ? file.name : this.setUploadingProcessingStatus(this.props.status)
+            file ? 'Uploading: ' + file.name : this.props.status ? this.getProcessStatus(this.props.status) : 'Uploading finished'
         );
 
         const renderUploadingError = (error, file) => (

@@ -20,6 +20,7 @@ import connect from 'react-redux/es/connect/connect';
 import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRightsResultPageLoading, manualRightsResultPageSort, updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
+import isEqual from 'lodash.isequal';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -78,6 +79,7 @@ class RightsResultTable extends React.Component {
         selectedTab: t.string,
         searchCriteria: t.object,
         onTableLoaded: t.func,
+        historyData: t.object
     };
 
     static defaultProps = {
@@ -176,6 +178,7 @@ class RightsResultTable extends React.Component {
 
     componentDidUpdate(prevProps) {
         if(!this.table) return;
+
         if(this.props.availsMapping !== prevProps.availsMapping){
             this.parseColumnsSchema();
         }
@@ -187,11 +190,16 @@ class RightsResultTable extends React.Component {
             },1);
         }
 
+        const {attachments = []} = this.props.historyData || {};
+        const {attachments: prevAttachments = [] } = prevProps.historyData || {};
+        const isNewAttachmentAdded = prevAttachments.length > 0 && !isEqual(attachments.length, prevAttachments.length);
+
         this.refreshSort();
 
         const isLoading = this.props.tabPageLoading !== prevProps.tabPageLoading && this.props.tabPageLoading === true;
         const isNewTab = prevProps.selectedTab !== this.props.selectedTab;
-        const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab);
+        const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab) || isNewAttachmentAdded;
+
         if(shouldRefetch) {
             this.table.api.setDatasource(this.dataSource);
         }
