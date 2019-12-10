@@ -1,6 +1,7 @@
 import moment from 'moment';
 import Constants from './Constants';
 import isEqual from 'lodash.isequal';
+import get from 'lodash.get';
 import jsonpatch from 'fast-json-patch';
 
 const { dataTypes: {DATE, AUDIO, RATING}, colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD } = Constants;
@@ -20,7 +21,7 @@ export const valueFormatter = ({colId, field, dataType}) => {
         case RATING:
             return (params) => {
                 const {data = {}} = params || {};
-                return data[field] && data[field][RATING_SUBFIELD] && data[field][RATING_SUBFIELD][colId] || '';
+                return get(data, [field, RATING_SUBFIELD, colId]) || get(data, [field, colId]) || '';
             };
         case AUDIO:
             return (params) => {
@@ -38,12 +39,14 @@ export const valueFormatter = ({colId, field, dataType}) => {
 
 const valueCompare = (diffValue, currentValue, column) => {
     const {colId, dataType} = column;
+    let diff, current;
     if(currentValue){
         switch(dataType){
             case RATING:
-                return diffValue[RATING_SUBFIELD] && currentValue[RATING_SUBFIELD] &&
-                    diffValue[RATING_SUBFIELD][colId] &&       //returns null value to prevent coloring
-                    (diffValue[RATING_SUBFIELD][colId] === currentValue[RATING_SUBFIELD][colId]);
+                diff = get(diffValue, [RATING_SUBFIELD, colId], null);
+                current = get(currentValue, [RATING_SUBFIELD, colId], null);
+                return diff &&       //returns null value to prevent coloring
+                    (diff === current);
             case AUDIO:
                 return isEqual(languageMapper(diffValue), languageMapper(currentValue));
             default:
@@ -55,7 +58,7 @@ const valueCompare = (diffValue, currentValue, column) => {
 
 export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     const styling = {};
-    const {field, noStyles} = column;
+    const {field, noStyles, colId} = column;
     if(value && Object.keys(value).length && !data.headerRow && !noStyles){
         const equalityCheck = valueCompare(value, focusedRight[field], column);
         if(equalityCheck){
@@ -64,19 +67,34 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
             styling.background = STALE_VALUE;
         }
     }
+    if (data[`${colId || field}Deleted`]) {
+        styling.textDecoration = 'line-through';
+        if(focusedRight[colId || field].length){
+            styling.background = STALE_VALUE;
+        } else{
+            styling.background = CURRENT_VALUE;
+        }
+    }
     return styling;
 };
+
+
 
 export const formatData = data => {
     const { eventHistory, diffs } = data;
     let tableRows = eventHistory.map((dataObj, index) => {
-        const result = jsonpatch.applyPatch(dataObj, diffs[index]).newDocument.message;
+        const result = jsonpatch.applyPatch(dataObj, diffs[index], false, false).newDocument.message;
         const {message : {updatedBy, createdBy, lastUpdateReceivedAt}} = dataObj;
         const row = {};
         diffs[index].forEach(diff => {
-            const {path} = diff;
+            const {path, op} = diff;
             const field = path.split('/')[2];   //as path is always like '/message/field/sub-field'
-            row[field] = Array.isArray(result[field]) ? [...new Set(result[field])] : result[field];
+            if(op === 'remove'){
+                row[field] = get(eventHistory[index-1], ['message', field], '');
+                row[`${field}Deleted`] = true;
+            }else{
+                row[field] = Array.isArray(result[field]) ? [...new Set(result[field])] : result[field];
+            }
         });
         row.updatedBy = updatedBy || createdBy;
         row.lastUpdateReceivedAt = lastUpdateReceivedAt;

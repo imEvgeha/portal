@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
 import DynamicObjectType from './custom-types/DynamicObjectType';
 import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
+import DelayedOptions from './custom-types/DelayedOptions';
 
 const renderer = (
     field,
@@ -39,7 +40,6 @@ const renderer = (
 
     switch (type) {
         case 'array':
-        case 'repeating':
             Comp = dynamic === true ? ObjectKey : (singleField ? RepeatingField : RepeatingFormField);
             return (
                 <Comp
@@ -48,7 +48,7 @@ const renderer = (
                     defaultValue={value || defaultValue || []}
                     label={label}
                     onChange={value => {
-                        let val = singleField ?
+                        let val = singleField && Array.isArray(value)?
                             value.map((v) => isObject(v)?v[idAttribute]:v)
                             : value;
                         onChange(id, val);
@@ -77,6 +77,9 @@ const renderer = (
                     idAttribute={idAttribute}
                 />
             );
+        case 'select':
+        case 'multiselect':
+            return <DelayedOptions key={id} field={field} onChange={onChange} onFieldFocus={onFieldFocus} onFieldBlur={onFieldBlur}/>;
         default:
             return akRenderer(field, onChange, onFieldFocus, onFieldBlur);
     }
@@ -103,20 +106,49 @@ export default class CreateEditConfigForm extends React.Component {
         this.optionsHandler = this.optionsHandler.bind(this);
     }
 
+    convertDataToOption = (dataSource, schema) => {
+        let label, value;
+        const {displayValueDelimiter = ' / '} = schema;
+        if(Array.isArray(schema.label) && schema.label.length > 1){
+            label = schema.label.map(fieldName => dataSource[fieldName]).join(displayValueDelimiter);
+        }else{
+            label = dataSource[schema.label || schema.value];
+        }
+        if(Array.isArray(schema.value) && schema.value.length > 1){
+            value = schema.value.reduce(function(result, item){
+                result[item] = dataSource[item];
+                return result;
+            }, {});
+        }else{
+            value = dataSource[schema.value];
+        }
+        return {label, value};
+    };
+
+    processOptions = (rawOptions, field) => {
+        const items = rawOptions.map(rec => this.convertDataToOption(rec, field.source));
+        return [{items}];
+    };
+
     optionsHandler(fieldId, fields) {
         let field = fields.find(({id}) => id === fieldId);
         if(field){
             if((field.type === 'select' || field.type === 'multiselect') && field.source){
-                if(cache[field.source.url]) {
-                    const items = cache[field.source.url].map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
-                    return [{items}];
+                if(cache[field.source.url] === undefined){
+                    const promise = getConfigApiValues(field.source.url, 0, 1000).then(response => {
+                        cache[field.source.url] = response.data.data;
+                        return this.processOptions(response.data.data, field);
+                    });
+                    cache[field.source.url] = promise;
+                    return promise;
+                }else if(cache[field.source.url]){
+                    if(cache[field.source.url] instanceof Promise){
+                        return cache[field.source.url].then(()=> {});
+                    }
+                    return this.processOptions(cache[field.source.url], field);
+                }else{
+                    console.error('Cannot load dropdown values from: ', field.source.url);
                 }
-                return getConfigApiValues(field.source.url, 0, 1000).then(response => {
-                    cache[field.source.url] = response.data.data;
-
-                    const items = response.data.data.map(rec => {return {value: rec[field.source.value], label: rec[field.source.label]};});
-                    return [{items}];
-                });
             }else{
                 if (field.type === 'array' || field.type === 'object'){
                     field.misc.fields.forEach(subfield => this.optionsHandler(subfield.id, field.misc.fields));
