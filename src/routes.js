@@ -22,7 +22,7 @@ import RightToMatchView from './avails/right-matching/right-to-match/RightToMatc
 import MatchRightView from './avails/right-matching/match-rights/MatchRightsView';
 import TitleMatchView from './avails/title-matching/TitleMatchView';
 import TitleMatchReview from './avails/title-matching/TitleMatchReview/TitleMatchReview';
-import AvailsView from './avails';
+import AvailsView from './avails/AvailsView';
 
 const routes = (
     <Switch>
@@ -54,7 +54,7 @@ const routes = (
         <Route exact path="/settings" component={Settings} />
         {/*TEMPORARY ROUTE FOR DISPLAYING THE NEW NAVIGATION*/}
         <Route exact path="/v2" component={Welcome}/>
-        <Route exact path="/avails_v2" component={AvailsView}/>
+        <Route exact path="/avails/v2" component={AvailsView}/>
         <Route component={NotFound} />
     </Switch>
 );
