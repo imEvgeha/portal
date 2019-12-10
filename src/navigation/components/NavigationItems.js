@@ -33,10 +33,10 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
     },
     {
         icon: TrayIcon,
-        id: `${AVAILS}_v2`,
-        tooltip: `${AVAILS}_v2`,
-        isSelected: (selectedItem === `${AVAILS}_v2`),
-        onClick: () => handleClick(`${AVAILS}_v2`),
+        id: `${AVAILS}/v2`,
+        tooltip: `${AVAILS}/v2`,
+        isSelected: (selectedItem === `${AVAILS}/v2`),
+        onClick: () => handleClick(`${AVAILS}/v2`),
     },
 ];
 
