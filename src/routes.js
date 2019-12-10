@@ -22,29 +22,30 @@ import RightToMatchView from './avails/right-matching/right-to-match/RightToMatc
 import MatchRightView from './avails/right-matching/match-rights/MatchRightsView';
 import TitleMatchView from './avails/title-matching/TitleMatchView';
 import TitleMatchReview from './avails/title-matching/TitleMatchReview/TitleMatchReview';
+import AvailsView from './avails';
 
 const routes = (
     <Switch>
         <Route exact path="/" component={Welcome}/>
         <Route exact path="/avails" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/rights" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
+        <Route exact path="/avails/rights/" component={canRender(RightDetails, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
         <Route exact path="/avails/rights/:id" component={canRender(RightDetails, 'read', 'Avail')}/>
         <Route exact path="/avails/rights/create/v2" component={canRender(RightCreateV2, 'create', 'Avail')}/>
         <Route exact path="/avails/rights/:id/v2" component={canRender(RightDetailsV2, 'update', 'Avail')}/>
-        <Route exact path="/avails/rights/" component={canRender(RightDetails, 'read', 'Avail')}/>
+        <Route exact path="/avails/rights/:rightId/title-matching" component={canRender(TitleMatchView, 'update', 'Metadata')}/>
+        <Route exact path="/avails/rights/:rightId/title-matching/review" component={canRender(TitleMatchReview, 'update', 'Metadata')}/>
+        <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history/manual-rights-entry" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/:valid(errors)" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/manual-rights-entry" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
-        <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/right-matching" component={canRender(RightMatchingView, 'update', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/right-matching/:rightId" component={canRender(RightToMatchView, 'update', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds" component={canRender(MatchRightView, 'update', 'Avail')}/>
         <Route exact path="/avails/select-rights-planning" component={canRender(SelectRightsPlanning, 'update', 'Avail')}/>
-        <Route exact path="/avails/rights/:rightId/title-matching" component={canRender(TitleMatchView, 'update', 'Metadata')}/>
-        <Route exact path="/avails/rights/:rightId/title-matching/review" component={canRender(TitleMatchReview, 'update', 'Metadata')}/>
         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
         <Route path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
         <Route exact path="/contractprofile" component={ContractProfile} />
@@ -53,6 +54,7 @@ const routes = (
         <Route exact path="/settings" component={Settings} />
         {/*TEMPORARY ROUTE FOR DISPLAYING THE NEW NAVIGATION*/}
         <Route exact path="/v2" component={Welcome}/>
+        <Route exact path="/avails_v2" component={AvailsView}/>
         <Route component={NotFound} />
     </Switch>
 );

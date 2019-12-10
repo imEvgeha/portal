@@ -31,5 +31,12 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
         isSelected: (selectedItem === MEDIA),
         onClick: () => handleClick(MEDIA),
     },
+    {
+        icon: TrayIcon,
+        id: `${AVAILS}_v2`,
+        tooltip: `${AVAILS}_v2`,
+        isSelected: (selectedItem === `${AVAILS}_v2`),
+        onClick: () => handleClick(`${AVAILS}_v2`),
+    },
 ];
 
