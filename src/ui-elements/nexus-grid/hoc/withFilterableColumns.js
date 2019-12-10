@@ -19,7 +19,8 @@ const FILTERABLE_DATA_TYPES = [
     'number',
     'boolean',
     'select',
-    'multiselect'
+    'multiselect',
+    'territoryType',
 ];
 
 const NOT_FILTERABLE_COLUMNS = ['id'];
@@ -35,6 +36,7 @@ const FILTER_TYPE = {
     number: 'agNumberColumnFilter',
     select: 'agSetColumnFilter',
     multiselect: 'agSetColumnFilter',
+    territoryType: 'agSetColumnFilter',
 };
 
 const withFilterableColumns = ({
@@ -64,7 +66,7 @@ const withFilterableColumns = ({
                     const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === key))) || {};
                     const filterInstance = gridApi.getFilterInstance(key);
                     if (filterInstance) {
-                        if (dataType === 'select' || dataType === 'multiselect') {
+                        if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
                         } else {
@@ -118,8 +120,9 @@ const withFilterableColumns = ({
                 case 'string':
                 case 'number': 
                     return DEFAULT_FILTER_PARAMS;
-                case 'select': 
-                case 'multiselect': 
+                case 'select':
+                case 'territoryType':
+                case 'multiselect':
                     return {
                         ...DEFAULT_FILTER_PARAMS, 
                         values: getFilterOptions(field),
@@ -133,7 +136,8 @@ const withFilterableColumns = ({
             const options = selectValues ? selectValues[field] : [];
             const parsedselectValues = options.map(option => {
                 if (isObject(option)) {
-                    return option.value;
+                    //TODO: This is just a temporary solution
+                    return option.value || option.countryCode;
                 }
                 return option;
             });
