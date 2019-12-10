@@ -1,45 +1,87 @@
 import moment from 'moment';
+import {DIRECTOR, isCastPersonType} from '../../../../constants/metadata/configAPI';
 
 const createValueFormatter = ({dataType, javaVariableName}) => {
     switch (dataType) {
         case 'localdate':
         case 'datetime':
             return (params) => {
-            const {data = {}} = params || {};
-            if (data[javaVariableName]) {
-                return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format('HH:mm')}`;
-            }
-        };
-        case 'date':
-            return (params) => {
-            const {data = {}} = params || {};
-            if ((data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
-                return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
-            }
-        };
-        case 'territoryType':
-            return (params) => {
-            const {data = {}} = params || {};
-            if (data && data[javaVariableName]) {
-                return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
-            }
-        };
-        case 'string': 
-            if (javaVariableName === 'castCrew') {
-            return (params) => {
                 const {data = {}} = params || {};
                 if (data[javaVariableName]) {
-                    const result = data[javaVariableName]
-                    .map(({personType, displayName}) => `${personType}: ${displayName}`)
-                    .join('; ');
-                    return result;
+                    return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format('HH:mm')}`;
                 }
             };
-        }
-        return;
-        default: return null;
+        case 'date':
+            return (params) => {
+                const {data = {}} = params || {};
+                if ((data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
+                    return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
+                }
+            };
+        case 'territoryType':
+            return (params) => {
+                const {data = {}} = params || {};
+                if (data && data[javaVariableName]) {
+                    return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
+                }
+            };
+        case 'string':
+            if (javaVariableName && javaVariableName.startsWith('castCrew.')) {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    const key = javaVariableName.split('.')[1];
+                    if (data['castCrew']) {
+                        if (key === 'director') {
+                            return data['castCrew']
+                                .filter(({personType}) => personType.toLowerCase() === DIRECTOR.toLowerCase())
+                                .map(({displayName}) => displayName)
+                                .join(', ');
+                        } else if (key === 'cast') {
+                            return data['castCrew']
+                                .filter(castCrew => isCastPersonType(castCrew, false))
+                                .map(({personType, displayName}) => `${personType}: ${displayName}`)
+                                .join('; ');
+                        }
+                    }
+                };
+            } else if (javaVariableName === 'ratings') {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    if (data[javaVariableName]) {
+                        return data[javaVariableName]
+                            .map(({ratingSystem, rating}) => `${ratingSystem ? ratingSystem : 'Empty'} ${rating ? rating : 'Empty'}`)
+                            .join(', ');
+                    }
+                };
+            } else if (javaVariableName && javaVariableName.startsWith('externalIds')) {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    const {externalIds} = data || {};
+                    const key = javaVariableName.split('.')[1];
+                    if (externalIds[key]) {
+                        return externalIds[key];
+                    }
+                };
+            } else if (javaVariableName === 'system') {
+                return (params) => {
+                    const {data: {id, legacyIds: {movida, vz} = {}} = {}} = params || {};
+                    const {movidaTitleId} = movida || {};
+                    const {vzTitleId} = vz || {};
+                    if (movidaTitleId && vzTitleId) {
+                        return `Movida Title ID: ${movidaTitleId}, VZ Title ID: ${vzTitleId}`;
+                    } else if (movidaTitleId) {
+                        return `Movida Title ID: ${movidaTitleId}`;
+                    } else if (vzTitleId) {
+                        return `VZ Title ID: ${vzTitleId}`;
+                    } else
+                        return `Nexus Title ID: ${id}`;
+                };
+            }
+            return;
+        default:
+            return null;
     }
-}; 
+};
 
 export default createValueFormatter;
 
