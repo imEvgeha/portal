@@ -7,6 +7,10 @@
     min-height: 100%;
     width: 100%;
     height: 100%;
+
+    &.nexus-navigation {
+        flex-direction: row;
+    }
 }
 
 .nexus-c-app-layout__main {
