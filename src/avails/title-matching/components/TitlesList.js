@@ -12,6 +12,7 @@ import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
 import {deepClone} from '../../../util/Common';
+import {titleService} from '../../../containers/metadata/service/TitleService';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleServiceManager.doSearch})(NexusGrid));
 
@@ -137,13 +138,25 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
         columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 4); // +3 indicates pinned columns on the left side
     };
 
-    
+    const addGenresToTitle = (titles, successCallback) => {
+        titles.forEach(title => {
+            titleService.getEditorialMetadataByTitleId(title.id).then(({data}) => {
+                const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
+                if(founded) {
+                    title['editorialGenres'] = founded.genres;
+                    successCallback(titles);
+                }
+            });
+        });
+    };
+
     const repository = getRepositoryCell();
     return (
         <React.Fragment>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <NexusGridWithInfiniteScrolling
                 onGridEvent={onGridReady}
+                onAddAdditionalField={addGenresToTitle}
                 columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}
             />

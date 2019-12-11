@@ -68,7 +68,7 @@
     "required": true
   },
   {
-    "javaVariableName": "genres",
+    "javaVariableName": "editorialGenres",
     "displayName": "Genres",
     "dataType": "string",
     "searchDataType": "string",

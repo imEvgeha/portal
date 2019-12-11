@@ -56,15 +56,16 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName && javaVariableName.startsWith('externalIds')) {
                 return (params) => {
                     const {data = {}} = params || {};
-                    const {externalIds} = data || {};
+                    const {externalIds} = data;
                     const key = javaVariableName.split('.')[1];
-                    if (externalIds[key]) {
+                    if (externalIds && externalIds[key]) {
                         return externalIds[key];
                     }
                 };
             } else if (javaVariableName === 'system') {
                 return (params) => {
-                    const {data: {id, legacyIds: {movida, vz} = {}} = {}} = params || {};
+                    const {data: {id, legacyIds = {}} = {}} = params || {};
+                    const {movida, vz} = legacyIds || {};
                     const {movidaTitleId} = movida || {};
                     const {vzTitleId} = vz || {};
                     if (movidaTitleId && vzTitleId) {
@@ -75,6 +76,15 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                         return `VZ Title ID: ${vzTitleId}`;
                     } else
                         return `Nexus Title ID: ${id}`;
+                };
+            } else if (javaVariableName === 'editorialGenres') {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    if (data[javaVariableName]) {
+                        return data[javaVariableName]
+                            .map(({genre}) => genre)
+                            .join(', ');
+                    }
                 };
             }
             return;
