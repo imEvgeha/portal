@@ -124,7 +124,7 @@ const withFilterableColumns = ({
                     return DEFAULT_FILTER_PARAMS;
                 case 'select':
                 case 'territoryType':
-                case 'multiselect':
+                case 'multiselect': 
                     return {
                         ...DEFAULT_FILTER_PARAMS, 
                         values: getFilterOptions(field),
@@ -138,7 +138,7 @@ const withFilterableColumns = ({
             const options = selectValues ? selectValues[field] : [];
             const parsedSelectValues = options.map(option => {
                 if (isObject(option)) {
-                    //TODO: This is just a temporary solution
+                    //TODO: This is just a temporary solution for territory fields
                     return option.value || option.countryCode;
                 }
                 return option;
