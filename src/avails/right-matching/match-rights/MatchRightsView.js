@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
+import isEqual from 'lodash.isequal';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import './MatchRightsView.scss';
@@ -20,6 +21,8 @@ import {URL, isObjectEmpty} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import {defineCheckboxSelectionColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import usePrevious from '../../../util/hooks/usePrevious';
 
 const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
@@ -39,8 +42,10 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
+    const previousMatchedRights = usePrevious(matchedRights);
     const {params} = match || {};
-    const {availHistoryIds, rightId} = params || {};
+    const {availHistoryIds, rightId, matchedRightIds} = params || {};
+    const [matchedRightList, setMatchedRightList] = useState(matchedRightIds.split(','));
 
     // DOP Integration
     useDOPIntegration(null, 'rightMatchingDOP');
@@ -52,18 +57,21 @@ function MatchRightView({
     }, [columnDefs]);
 
     useEffect(() => {
-        const {params} = match || {};
-        const {rightId, matchedRightIds} = params || {};
         if (rightId && matchedRightIds && columnDefs.length) {
             if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
-            const matchedRightList = matchedRightIds.split(',');
             fetchMatchedRight(matchedRightList);
+        }
+    },[matchedRightIds, rightId, columnDefs.length]);
+
+    // fetch combined rights
+    useEffect(() => {
+        if (!isEqual(previousMatchedRights, matchedRights) || matchedRightList) {
             // matchedRightId from url should be correct one.
             fetchCombinedRight([rightId, ...matchedRightList]);
         }
-    },[match.params.matchedRightIds, match.params.rightId, columnDefs.length]);
+    }, [matchedRightIds, rightId, matchedRights, matchedRightList]);
 
     useEffect(() => {
         if (combinedRight) {
@@ -108,6 +116,20 @@ function MatchRightView({
         }
     };
 
+    const onMatchRightGridEvent = ({type, api}) => {
+        if (type === 'firstDataRendered') {
+            api.selectAll();
+        } else if (type === 'selectionChanged') {
+            const selectedRows = api.getSelectedRows();
+             if (selectedRows.length && (selectedRows.length !== matchedRightList.length + 1)) {
+                 setMatchedRightList(selectedRows.map(el => el.id));
+             }
+        }
+    };
+
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+    const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+
     return (
         <div className="nexus-c-match-right-view">
             <NexusTitle>
@@ -120,9 +142,12 @@ function MatchRightView({
                 <NexusTitle isSubTitle>Matched Rights</NexusTitle>
                 {!!columnDefs && (
                     <NexusGrid
-                        columnDefs={columnDefs}
-                        rowData={matchedRightRowData}
+                        columnDefs={matchedRightColumnDefs}
+                        rowData={matchedRightIds.split(',').length === matchedRights.length ?  matchedRightRowData : []}
                         domLayout="autoHeight"
+                        rowSelection="multiple"
+                        suppressRowClickSelection={true}
+                        onGridEvent={onMatchRightGridEvent}
                     />
                 )}
             </div>

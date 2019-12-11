@@ -40,7 +40,7 @@ const FILTER_TYPE = {
 const withFilterableColumns = ({
     hocProps = [],
     filterableColumns = null,
-    initialFilter = {},
+    initialFilter = null,
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
