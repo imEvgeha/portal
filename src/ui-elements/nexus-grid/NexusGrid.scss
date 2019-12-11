@@ -23,5 +23,20 @@
             overflow: visible;
         }
     }
+
+    &.ag-theme-balham {
+        .ag-ltr .ag-cell-focus {
+            border-color: #d9dcde;;
+        }
+
+        .ag-row {
+            background-color: #f5f7f7;
+        }
+
+        .ag-row-selected {
+            background-color: #fff;
+            border-color: #d9dcde;;
+        }
+    }
 };
 
