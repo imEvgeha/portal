@@ -288,7 +288,7 @@ module.exports = {
         }],
 
         // Checks rules of Hooks
-        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/rules-of-hooks': 'off',
 
         // Checks effect dependencies
         'react-hooks/exhaustive-deps': 'off',

@@ -29,28 +29,6 @@ module.exports = {
         "react-redux"
     ],
     "rules": {
-        "template-curly-spacing": "off",
-        // "indent": [
-        //     "error",
-        //     4
-        // ],
-        "indent": "off",
-        // "linebreak-style": [
-        //     "error",
-        //     "unix"
-        // ],
-        "no-var": "error",
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-console": ["error", { allow: ["warn", "error"]}],
-        "react/no-find-dom-node": 0,
-        "react/display-name": [0, { "ignoreTranspilerName": true }],
         "react-redux/prefer-separate-component-file": 0
     }
 };

@@ -239,7 +239,7 @@ module.exports = {
         'prefer-promise-reject-errors': ['off', {allowEmptyReject: true}],
 
         // require use of the second argument for parseInt()
-        'radix': 'error',
+        'radix': 'off',
 
         // disallow async functions which have no await expression
         'require-await': 'off',
@@ -635,7 +635,7 @@ module.exports = {
 
 
         // require or disallow initialization in variable declarations
-        'init-declarations': ['off', 'always', { 'ignoreForLoopInit': true }],
+        'init-declarations': 'off',
 
         // disallow catch clause parameters from shadowing variables in the outer scope
         'no-catch-shadow': 'off',
