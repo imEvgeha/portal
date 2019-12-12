@@ -312,7 +312,7 @@ module.exports = {
         ],
 
         // require let or const instead of var
-        'no-var': 'off',
+        'no-var': 'error',
 
         // require or disallow method and property shorthand syntax for object literals
         'object-shorthand': 'off',
@@ -535,7 +535,7 @@ module.exports = {
         'no-cond-assign': ['off', 'except-parens'],
 
         // disallow the use of console
-        'no-console': 'off',
+        'no-console': ['error', {allow: ['warn', 'error']}],
 
         // disallow constant expressions in conditions
         'no-constant-condition': 'off',
@@ -984,13 +984,13 @@ module.exports = {
         'quote-props': ['off', 'consistent'],
 
         // enforce the consistent use of either backticks, double, or single quotes
-        'quotes': ['warn', 'single', {allowTemplateLiterals: true}],
+        'quotes': ['error', 'single'],
 
         // require JSDoc comments
         'require-jsdoc': 'off',
 
         // require or disallow semicolons instead of ASI
-        'semi': ['off', 'always'],
+        'semi': ['error', 'always'],
 
         // enforce consistent spacing before and after semicolons
         'semi-spacing': 'off',
