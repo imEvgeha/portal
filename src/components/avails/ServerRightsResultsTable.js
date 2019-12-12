@@ -4,6 +4,7 @@ import config from 'react-global-configuration';
 
 import RightsResultsTable from './RightsResultsTable';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
+import {getLocale} from '../../stores/selectors/localization/localeSelector';
 
 export default function withRights(WrappedComponent) {
     return (props) => <ServerRightsResultsTableConnected WrappedComponent={WrappedComponent} {...props} />;
@@ -143,7 +144,7 @@ class ServerRightsResultsTable extends RightsResultsTable {
 }
 
 const mapStateToProps = state => ({
-    locale: state.localeReducer.locale,
+    locale: getLocale(state),
 });
 
 const ServerRightsResultsTableConnected = connect(mapStateToProps)(ServerRightsResultsTable);
