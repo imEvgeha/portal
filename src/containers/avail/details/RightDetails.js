@@ -1001,8 +1001,11 @@ class RightDetails extends React.Component {
 
             const territories = removeTerritoryNotOriginalFields(selectedVal)
                 .map(territory => {
+                    const {vuContractId} = territory;
                     let mappedTerritory = Object.assign({}, territory);
-                    mappedTerritory.vuContractId = territory.vuContractId.join(', ');
+                    if(Array.isArray(vuContractId) && vuContractId.length > 0) {
+                        mappedTerritory.vuContractId = vuContractId.join(', ');
+                    }
                     return mappedTerritory;
                 });
 
