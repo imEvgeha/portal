@@ -144,8 +144,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
                 const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
                 if(founded) {
                     title['editorialGenres'] = founded.genres;
-                    successCallback(titles);
                 }
+                successCallback(titles);
             });
         });
     };
