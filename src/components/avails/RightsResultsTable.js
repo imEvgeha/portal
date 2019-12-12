@@ -20,9 +20,9 @@ export default class RightsResultsTable extends React.Component {
         columns: null,
     };
 
-    parseColumnsSchema(mappings){
+    parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
-        const dateFormat = `${getDateFormatBasedOnLocale('en')} HH:mm`;
+        const dateFormat = `${getDateFormatBasedOnLocale(locale)} HH:mm`;
 
         let formatter = (column) => {
             const {
