@@ -31,7 +31,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
                         }
                     });
                 } else {
-                    if(isCastTypeEditorial()) {
+                    if(isCastTypeEditorial(cast[param])) {
                         createNewEditorialCast(cast, cast[param], configCastList);
                     }
                 }
@@ -126,15 +126,15 @@ export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
 
 export const getFormatTypeName = (personType) => {
     if(personType) {
-        switch (personType) {
-            case DIRECTOR: return 'Directed by:';
-            case PRODUCER: return 'Produced by:';
-            case WRITER: return 'Written by:';
-            case ACTOR: return 'Actor:';
-            case ANIMATED_CHARACTER: return 'Animated Character:';
-            case RECORDING_ARTIST: return 'Recording Artist:';
-            case AWARD: return 'Award:';
-            case VOICE_TALENT: return 'Voice Talent:';
+        switch (personType.toLowerCase()) {
+            case DIRECTOR.toLowerCase(): return 'Directed by:';
+            case PRODUCER.toLowerCase(): return 'Produced by:';
+            case WRITER.toLowerCase(): return 'Written by:';
+            case ACTOR.toLowerCase(): return 'Actor:';
+            case ANIMATED_CHARACTER.toLowerCase(): return 'Animated Character:';
+            case RECORDING_ARTIST.toLowerCase(): return 'Recording Artist:';
+            case AWARD.toLowerCase(): return 'Award:';
+            case VOICE_TALENT.toLowerCase(): return 'Voice Talent:';
             default: return 'Unknown';
         }
     }
