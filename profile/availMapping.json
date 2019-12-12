@@ -82,7 +82,8 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "required": true,
+  "sortParamName": "territoryCountry"
 }, {
   "javaVariableName": "territory.country",
   "displayName": "Territory Country",

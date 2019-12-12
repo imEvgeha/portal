@@ -20,7 +20,7 @@ import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/co
 import useDOPIntegration from './util/hooks/useDOPIntegration';
 
 const NexusGridWithInfiniteScrolling = compose(
-    withInfiniteScrolling(getRightMatchingList), 
+    withInfiniteScrolling({fetchData: getRightMatchingList}),
 )(NexusGrid);
 
 const RightMatchingView = ({
@@ -70,7 +70,7 @@ const RightMatchingView = ({
     };
 
     const focusButtonColumnDef = defineActionButtonColumn('buttons', createCellRenderer);
-    const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs]: columnDefs;
+    const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs] : columnDefs;
 
     const {params = {}} = match;
     const {availHistoryIds} = params || {};
@@ -91,22 +91,24 @@ const RightMatchingView = ({
 };
 
 RightMatchingView.propTypes = {
-    createRightMatchingColumnDefs: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     history: PropTypes.object,
     match: PropTypes.object,
     location: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
+    createRightMatchingColumnDefs: PropTypes.func,
 };
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
+    mapping: [],
     match: {},
     history: {},
     location: {},
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
+    createRightMatchingColumnDefs: null,
 };
 
 const createMapStateToProps = () => {
@@ -123,4 +125,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line
-

@@ -1,79 +1,90 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
+import omit from 'lodash.omit';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
+import DateCellEditor from '../elements/cell-editor/DateCellEditor';
+import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
 import {isObject} from '../../../util/Common';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
-import {createAvailsMappingSelector} from '../../../avails/right-matching/rightMatchingSelectors';
-import {createRightMatchingColumnDefs} from '../../../avails/right-matching/rightMatchingActions'; // this should be generic action not specifix one
 import usePrevious from '../../../util/hooks/usePrevious';
 
-const DEFAULT_EDITABLE_DATA_TYPES = ['string', 'number','boolean', 'select', 'multiselect'];
+const DEFAULT_HOC_PROPS = [
+    'notEditableColumns',
+    'mapping',
+    'selectValues',
+];
+const DEFAULT_EDITABLE_DATA_TYPES = [
+    'string',
+    'number',
+    'boolean',
+    'select',
+    'multiselect',
+    'date',
+    'datetime',
+    'localdate'
+];
+const DEFAULT_NOT_EDITABLE_COLUMNS = ['id'];
 
-const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES) => {
+const withEditableColumns = ({
+    hocProps = DEFAULT_HOC_PROPS,
+    editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES,
+    notEditableColumns = DEFAULT_NOT_EDITABLE_COLUMNS,
+} = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, mapping, selectValues, createRightMatchingColumnDefs} = props;
+        const {columnDefs, mapping, selectValues} = props;
         const previousSelectValues = usePrevious(selectValues);
         const previousColumnDefs = usePrevious(columnDefs);
-        const [editableColumnDefs, setEditableColumnDefs] = useState((columnDefs && columnDefs.length) ? updateColumnDefs(columnDefs) : []);
-        useEffect(() => {
-            if (!columnDefs || columnDefs.length === 0) {
-                createRightMatchingColumnDefs(mapping);
-            }
-        }, [mapping, columnDefs]);
+        const [editableColumnDefs, setEditableColumnDefs] = useState(columnDefs);
+        const excludedColumns = props.notEditableColumns || notEditableColumns;
 
         useEffect(() => {
             if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
-               setEditableColumnDefs(updateColumnDefs(columnDefs)); 
+               const updatedColumnDefs = updateColumnDefs(columnDefs);
+               setEditableColumnDefs(updatedColumnDefs);
             }
         }, [columnDefs, selectValues]);
 
-        function updateColumnDefs(columnDefs) {
-            const getOptions = data => {
-                const result = Array.isArray(data) && data.filter(Boolean).map(item => {
-                    if (isObject(item)) {
-                        const {value, id} = item;
-                        return {
-                            label: value,
-                            value,
-                            key: id,
-                        };
-                    }
-                    return {
-                        label: item,
-                        value: item,
-                        key: item,
-                    };
-                });
-                return result;
-            };
+        const updateColumnDefs = columnDefs => {
             const editableColumnDefs = columnDefs.map(columnDef => {
-                let copiedColumnDef = {...columnDef};
-                const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
-                const isEditable = editableDataTypes.includes(dataType);
+                const copiedColumnDef = {...columnDef};
+                const {field} = copiedColumnDef || {};
+                const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
+                const isEditable = editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
                 if (enableEdit && isEditable) {
                     copiedColumnDef.editable = true; 
-                    if (dataType === 'select') {
-                        const options = (isObject(selectValues) && Array.isArray(selectValues[copiedColumnDef.field]) && selectValues[copiedColumnDef.field]) || [];
-                        copiedColumnDef.cellEditorFramework = SelectCellEditor;
-                        copiedColumnDef.cellEditorParams = {
-                            options: getOptions(options),
-                        };
-                    } else if (dataType === 'multiselect') {
-                        const options = (isObject(selectValues) && Array.isArray(selectValues[copiedColumnDef.field]) && selectValues[copiedColumnDef.field]) || [];
-                        copiedColumnDef.cellEditorFramework = MultiSelectCellEditor;
-                        copiedColumnDef.cellEditorParams = {
-                            options: getOptions(options),
-                        };
-                    } else if (dataType === 'boolean') {
-                        const options = [{label: 'Yes', value: true}, {label: 'No', value: false}];
-                        copiedColumnDef.cellEditorFramework = SelectCellEditor;
-                        copiedColumnDef.cellEditorParams = {
-                            options,
-                        };
-                        // TODO: doesn't work try to find solution
-                        // columnDef.cellEditorFramework = CheckboxCellEditor;
+                    switch (dataType) {
+                        case 'select':
+                            copiedColumnDef.cellEditorFramework = SelectCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options: getOptions(field),
+                            };
+                            break;
+                        case 'multiselect':
+                            copiedColumnDef.cellEditorFramework = MultiSelectCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options: getOptions(field),
+                            };
+                            break;
+                        case 'boolean':
+                            copiedColumnDef.cellEditorFramework = SelectCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options: [ 
+                                    {label: 'Yes', value: true},
+                                    {label: 'No', value: false},
+                                ],
+                            };
+                            // TODO: doesn't work try to find solution
+                            // columnDef.cellEditorFramework = CheckboxCellEditor;
+                            break;
+                        case 'date':
+                            copiedColumnDef.cellEditorFramework = DateCellEditor;
+                            break;
+                        case 'datetime':
+                        case 'localdate':
+                            copiedColumnDef.cellEditorFramework = DateTimeCellEditor;
+                            break;
                     }
                 }
 
@@ -81,30 +92,48 @@ const withEditableColumns = (WrappedComponent, editableDataTypes = DEFAULT_EDITA
             });
 
             return editableColumnDefs;
-        }
+        };
+
+        const getOptions = (field) => {
+            const options = (isObject(selectValues) && selectValues[field]) || [];
+            const parsedOptions = options.filter(Boolean).map(item => {
+                if (isObject(item)) {
+                    const {value, id} = item;
+                    return {
+                        label: value,
+                        value,
+                        key: id,
+                    };
+                }
+                return {
+                    label: item,
+                    value: item,
+                    key: item,
+                };
+            });
+            return parsedOptions;
+        };
+
+        const propsWithoutHocProps = omit(props, hocProps);
 
         return (
-            <WrappedComponent 
-                {...props}
+            <WrappedComponent
+                {...propsWithoutHocProps}
+                singleClickEdit={true}
                 columnDefs={editableColumnDefs}
             />
         );
     };
 
     const createMapStateToProps = () => {
-        const availsMappingSelector = createAvailsMappingSelector();
         const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => ({
-            mapping: availsMappingSelector(state, props),
             selectValues: availSelectValuesSelector(state, props),
         });
     };
 
-    const mapDispatchToProps = (dispatch) => ({
-        createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
-    });
-
-    return connect(createMapStateToProps, mapDispatchToProps)(ComposedComponent); // eslint-disable-line
+    return connect(createMapStateToProps)(ComposedComponent); // eslint-disable-line
 };
 
 export default withEditableColumns;
+

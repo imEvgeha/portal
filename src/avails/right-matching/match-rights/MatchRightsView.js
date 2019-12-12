@@ -21,7 +21,7 @@ import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditabl
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 
-const EditableNexusGrid = withEditableColumns(NexusGrid);
+const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
 function MatchRightView({
     history,
@@ -35,6 +35,7 @@ function MatchRightView({
     saveCombinedRight,
     createRightMatchingColumnDefs, 
     columnDefs, 
+    mapping,
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
@@ -132,6 +133,7 @@ function MatchRightView({
                         columnDefs={columnDefs}
                         rowData={isObjectEmpty(combinedRight) ? [] : [combinedRight]}
                         onGridEvent={handleGridEvent}
+                        mapping={mapping}
                         domLayout="autoHeight"
                     />
                 )}
@@ -193,12 +195,14 @@ const createMapStateToProps = () => {
     const matchedRightsSelector = selectors.createMatchedRightsSelector();
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
+    const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
 
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
         matchedRights: matchedRightsSelector(state, props),
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
+        mapping: rightMatchingMappingSelector(state, props),
     });
 };
 
