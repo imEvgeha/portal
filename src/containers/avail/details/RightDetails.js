@@ -999,13 +999,18 @@ class RightDetails extends React.Component {
                 return formattedList;
             };
 
-            const territoriesWithOriginalFields = removeTerritoryNotOriginalFields(selectedVal);
+            const territories = removeTerritoryNotOriginalFields(selectedVal)
+                .map(territory => {
+                    let mappedTerritory = Object.assign({}, territory);
+                    mappedTerritory.vuContractId = territory.vuContractId.join(', ');
+                    return mappedTerritory;
+                });
 
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
-                    originalFieldList={territoriesWithOriginalFields}
+                    originalFieldList={territories}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -1016,8 +1021,8 @@ class RightDetails extends React.Component {
                     showError={false}
                     helperComponent={
                         <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
-                            {territoriesWithOriginalFields && territoriesWithOriginalFields.length > 0
-                                ? territoriesWithOriginalFields.map((e, i) => (
+                            {territories && territories.length > 0
+                                ? territories.map((e, i) => (
                                     <NexusTag
                                         key={uid(e)}
                                         text={e.country || e.value}
