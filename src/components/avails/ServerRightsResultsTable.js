@@ -1,11 +1,12 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import config from 'react-global-configuration';
 
 import RightsResultsTable from './RightsResultsTable';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
 
 export default function withRights(WrappedComponent) {
-    return (props) => <ServerRightsResultsTable WrappedComponent={WrappedComponent} {...props} />;
+    return (props) => <ServerRightsResultsTableConnected WrappedComponent={WrappedComponent} {...props} />;
 }
 
 class ServerRightsResultsTable extends RightsResultsTable {
@@ -13,8 +14,9 @@ class ServerRightsResultsTable extends RightsResultsTable {
 
     static defaultProps = {
         autoload: true,
-        autoRefresh: 0
-    }
+        autoRefresh: 0,
+        locale: 'en-us',
+    };
 
     constructor(props) {
         super(props);
@@ -25,10 +27,16 @@ class ServerRightsResultsTable extends RightsResultsTable {
         this.setTable = this.setTable.bind(this);
         this.parseServerResponse = this.parseServerResponse.bind(this);
 
-        let originalColDef = this.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
+        const {
+            availsMapping = {},
+            locale,
+            defaultColDef,
+        } = this.props || {};
+
+        let originalColDef = this.parseColumnsSchema(availsMapping.mappings || [], locale);
 
         let rowsProps = {defaultColDef: {
-            ...this.props.defaultColDef,
+            ...defaultColDef,
             cellStyle: this.cellStyle
         }};
 
@@ -133,3 +141,9 @@ class ServerRightsResultsTable extends RightsResultsTable {
         />;
     }
 }
+
+const mapStateToProps = state => ({
+    locale: state.localeReducer.locale,
+});
+
+const ServerRightsResultsTableConnected = connect(mapStateToProps)(ServerRightsResultsTable);
