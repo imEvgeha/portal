@@ -26,6 +26,8 @@ import usePrevious from '../../../util/hooks/usePrevious';
 
 const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
+const UNSELECTED_STATUSES = ['Pending', 'Error'];
+
 function MatchRightView({
     history,
     match,
@@ -45,7 +47,7 @@ function MatchRightView({
     const previousMatchedRights = usePrevious(matchedRights);
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
-    const [matchedRightList, setMatchedRightList] = useState(matchedRightIds.split(','));
+    const [selectedMatchedRightIds, setSelectedMatchedRighIds] = useState([rightId, ...matchedRightIds.split(',')]);
 
     // DOP Integration
     useDOPIntegration(null, 'rightMatchingDOP');
@@ -61,17 +63,17 @@ function MatchRightView({
             if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
-            fetchMatchedRight(matchedRightList);
+            fetchMatchedRight(matchedRightIds.split(','));
         }
     },[matchedRightIds, rightId, columnDefs.length]);
 
     // fetch combined rights
     useEffect(() => {
-        if (!isEqual(previousMatchedRights, matchedRights) || matchedRightList) {
+        if (!isEqual(previousMatchedRights, matchedRights) || selectedMatchedRightIds) {
             // matchedRightId from url should be correct one.
-            fetchCombinedRight([rightId, ...matchedRightList]);
+            fetchCombinedRight(selectedMatchedRightIds);
         }
-    }, [matchedRightIds, rightId, matchedRights, matchedRightList]);
+    }, [matchedRightIds, rightId, matchedRights, selectedMatchedRightIds]);
 
     useEffect(() => {
         if (combinedRight) {
@@ -121,14 +123,29 @@ function MatchRightView({
             api.selectAll();
         } else if (type === 'selectionChanged') {
             const selectedRows = api.getSelectedRows();
-             if (selectedRows.length && (selectedRows.length !== matchedRightList.length + 1)) {
-                 setMatchedRightList(selectedRows.map(el => el.id));
+            const selectedIds = selectedRows.map(el => el.id);
+             if (selectedRows.length && !isEqual(selectedIds, selectedMatchedRightIds)) {
+                 setSelectedMatchedRighIds(selectedIds);
              }
+             // TODO: it would be better to apply via refreshCell, but it isn't working
+             api.redrawRows();
         }
     };
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+
+    // rule for adding strike through
+    const applyStrikeThroughRule = (params ={}) => {
+        const {node, data} = params || {};
+        if (node.selected 
+            && UNSELECTED_STATUSES.includes(data.status) 
+            && selectedMatchedRightIds[selectedMatchedRightIds.length - 1] !== data.id
+            && selectedMatchedRightIds[0] !== data.id
+        ) {
+            return 'nexus-c-nexus-grid__unselected';
+        }
+    };
 
     return (
         <div className="nexus-c-match-right-view">
@@ -148,6 +165,7 @@ function MatchRightView({
                         rowSelection="multiple"
                         suppressRowClickSelection={true}
                         onGridEvent={onMatchRightGridEvent}
+                        getRowClass={applyStrikeThroughRule}
                     />
                 )}
             </div>
