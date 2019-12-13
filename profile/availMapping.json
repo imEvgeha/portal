@@ -113,11 +113,11 @@
   "enableEdit": false,
   "required": false
 },{
-  "javaVariableName": "territory.rightsContractStatus",
-  "displayName": "Territory Rights Contract Status",
+  "javaVariableName": "territory.rightContractStatus",
+  "displayName": "Territory Right Contract Status",
   "searchDataType": "multiselect",
   "options": ["Pending", "Pending Manual", "Matched Once"],
-  "queryParamName": "territoryRightsContractStatus",
+  "queryParamName": "territoryRightContractStatus",
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": false,

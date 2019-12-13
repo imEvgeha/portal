@@ -40,6 +40,14 @@
           border: 0;
         }
       }
+      & > input {
+        width: 135px;
+        height: 40px;
+        background: #EBEDF0;
+        border: 0;
+        color: #42526E;
+        padding: 0 10px;
+      }
     }
     &__row1{
       display: flex;

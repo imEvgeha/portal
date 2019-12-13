@@ -13,7 +13,7 @@ const Ingest = () => {
 
     const initialState = {
         status: Constants.STATUS_LIST[0],
-        provider: Constants.STATUS_LIST[0]
+        provider: ''
     };
 
     const [showFilters, setShowFilters] = useState(false);
@@ -67,10 +67,10 @@ const Ingest = () => {
                         <div className='ingest-filters__row1'>
                             <div className='ingest-filters__section'>
                                 Provider
-                                <Select
-                                    options={Constants.STATUS_LIST}
+                                <input
+                                    placeholder='Enter Provider'
                                     value={filters.provider}
-                                    onChange={value => onFilterChange('provider', value)}/>
+                                    onChange={e => onFilterChange('provider', e.target.value)}/>
                             </div>
                             <div className='ingest-filters__section'>
                                 Avail Status
