@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
 
@@ -57,29 +57,30 @@ let mapDispatchToProps = {
 
 class RightsResultTable extends React.Component {
     static propTypes = {
-        availsMapping: t.any,
-        tabPage: t.object,
-        tabPageSort: t.array,
-        tabPageSelection: t.object,
-        tabPageLoading: t.bool,
-        manualRightsResultPageUpdate: t.func,
-        manualRightsResultPageSort: t.func,
-        manualRightsResultPageSelect: t.func,
-        manualRightsResultPageLoading: t.func,
-        columnsOrder: t.array,
-        columns:t.array,
-        columnsSize: t.object,
-        updateManualRightsEntryColumns: t.func,
-        showSelectedAvails: t.bool,
-        fromServer: t.bool,
-        hidden: t.bool,
-        nav: t.object,
-        autoRefresh: t.number,
-        mode: t.string,
-        selectedTab: t.string,
-        searchCriteria: t.object,
-        onTableLoaded: t.func,
-        historyData: t.object
+        availsMapping: PropTypes.any,
+        tabPage: PropTypes.object,
+        tabPageSort: PropTypes.array,
+        tabPageSelection: PropTypes.object,
+        tabPageLoading: PropTypes.bool,
+        manualRightsResultPageUpdate: PropTypes.func,
+        manualRightsResultPageSort: PropTypes.func,
+        manualRightsResultPageSelect: PropTypes.func,
+        manualRightsResultPageLoading: PropTypes.func,
+        columnsOrder: PropTypes.array,
+        columns: PropTypes.array,
+        columnsSize: PropTypes.object,
+        updateManualRightsEntryColumns: PropTypes.func,
+        showSelectedAvails: PropTypes.bool,
+        fromServer: PropTypes.bool,
+        hidden: PropTypes.bool,
+        nav: PropTypes.object,
+        autoRefresh: PropTypes.number,
+        mode: PropTypes.string,
+        selectedTab: PropTypes.string,
+        searchCriteria: PropTypes.object,
+        onTableLoaded: PropTypes.func,
+        historyData: PropTypes.object,
+        status: PropTypes.string
     };
 
     static defaultProps = {
@@ -190,20 +191,14 @@ class RightsResultTable extends React.Component {
             },1);
         }
 
-        const {attachments = []} = this.props.historyData || {};
-        const {attachments: prevAttachments = [] } = prevProps.historyData || {};
-        const isNewAttachmentAdded = prevAttachments.length > 0 && !isEqual(attachments.length, prevAttachments.length);
-
         this.refreshSort();
-
+        let isNewFileUploaded = prevProps.status === 'PENDING' && this.props.status === 'COMPLETED';
         const isLoading = this.props.tabPageLoading !== prevProps.tabPageLoading && this.props.tabPageLoading === true;
         const isNewTab = prevProps.selectedTab !== this.props.selectedTab;
-        const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab) || isNewAttachmentAdded;
+        const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab) || isNewFileUploaded;
 
         if(shouldRefetch) {
-            setTimeout(() => {
-                this.table.api.setDatasource(this.dataSource);
-            }, 5000);
+            this.table.api.setDatasource(this.dataSource);
         }
 
         if(prevProps.tabPageSelection !== this.props.tabPageSelection){
@@ -701,8 +696,8 @@ mapStateToProps = state => {
 
 class CheckBoxHeaderInternal extends Component {
     static propTypes = {
-        tabPageSelection: t.object,
-        api: t.object,
+        tabPageSelection: PropTypes.object,
+        api: PropTypes.object
     };
 
     constructor(props) {

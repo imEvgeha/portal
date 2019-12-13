@@ -273,6 +273,7 @@ class RightsCreateFromAttachment extends React.Component {
                             columns={columns}
                             nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
                             autoload={false}
+                            status={status}
                             selectedTab={selectedTab}
                             historyData={this.state.historyData}
                             hidden={selectedTab === FATAL}
