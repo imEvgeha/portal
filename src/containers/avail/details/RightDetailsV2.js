@@ -88,7 +88,7 @@ class RightDetails extends React.Component {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
                         const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res.data || {};
-                        // temporally solution for territory - all should be refactor
+                        // temporary solution for territory - all should be refactor
                         const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes(TERRITORY_TYPE) && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
                                 const matchObj = error.fieldName.match(regForEror);
@@ -111,7 +111,7 @@ class RightDetails extends React.Component {
                             // el.id = index;
                             return el;
                         })) || [];
-                        // temporally solution for affiliate and affilateExclude
+                        // temporary solution for affiliate and affilateExclude
                         const affiliateErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
                         .map(error => {
                             const matchObj = error.fieldName.match(regForEror);
