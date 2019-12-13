@@ -2,7 +2,6 @@ import * as actionTypes from './rightMatchingActionTypes';
 
 const initialState = {
     columnDefs: [],
-    rowData: [],
     fieldSearchCriteria: null,
     focusedRight: {},
     rightMatchPageData: {},
@@ -27,7 +26,7 @@ const rightMatchingReducer = (state = initialState, action) => {
             ...state,
             columnDefs,
         };
-        case actionTypes.STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA:
+        case actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_SUCCESS:
             return {
                 ...state,
                 fieldSearchCriteria,
