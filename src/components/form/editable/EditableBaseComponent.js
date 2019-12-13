@@ -18,6 +18,7 @@ class EditableBaseComponent extends Component {
         showError: t.bool,
         isArrayOfObject: t.bool,
         onCancel: t.func,
+        originalFieldList: t.array
     };
 
     static defaultProps = {
@@ -25,6 +26,7 @@ class EditableBaseComponent extends Component {
         showError: true,
         isArrayOfObject: false,
         onCancel: null,
+        originalFieldList: []
     }
 
     constructor(props) {
@@ -119,7 +121,7 @@ class EditableBaseComponent extends Component {
     }
 
     render() {
-        const {displayName} = this.props;
+        const {displayName, originalFieldList} = this.props;
         const displayFunc = (value) => {
             const getComplexFieldValue = (name, element) => {
                 switch (name) {
@@ -142,11 +144,13 @@ class EditableBaseComponent extends Component {
                 return updatedArr;
             };
 
+            const valueToUse = displayName === 'Territory' ? originalFieldList : value;
+
             return (<span
                 onClick={this.handleShowHelperComponent}
                 style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
                 className={this.props.disabled ? 'disabled' : ''}>
-                {Array.isArray(value) ? value.length > 0 ? this.props.isArrayOfObject ? value.map((e, i) => (
+                {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
                     <NexusTag
                         key={i}
                         text={e.country || e.value}

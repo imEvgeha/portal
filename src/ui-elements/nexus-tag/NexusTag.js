@@ -6,6 +6,14 @@ import './NexusTag.scss';
 
 
 const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
+
+    const getValidValue = (value) => {
+        if(typeof value !== 'undefined') {
+            return value.toString();
+        }
+        return '-';
+    };
+
     const tooltip = (
         <div className="nexus-c-tag__tooltip">
             <ul className="nexus-c-tag__tooltip-list">
@@ -18,7 +26,7 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
                                 <li className="nexus-c-tag__tooltip-prop" key={index}>
                                     {key}:
                                     <span className="nexus-c-tag__tooltip-prop-value">
-                                        {value[key] || '-'}
+                                        { getValidValue(value[key]) }
                                     </span>
                                 </li>
                             )
