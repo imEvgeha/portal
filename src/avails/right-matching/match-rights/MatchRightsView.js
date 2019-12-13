@@ -22,7 +22,7 @@ import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditabl
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {defineCheckboxSelectionColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import usePrevious from '../../../util/hooks/usePrevious';
+import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 
 const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
@@ -44,7 +44,6 @@ function MatchRightView({
 }) {
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
-    const previousMatchedRights = usePrevious(matchedRights);
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const [selectedMatchedRightIds, setSelectedMatchedRighIds] = useState([rightId, ...matchedRightIds.split(',')]);
@@ -65,15 +64,15 @@ function MatchRightView({
             }
             fetchMatchedRight(matchedRightIds.split(','));
         }
-    },[matchedRightIds, rightId, columnDefs.length]);
+    }, [matchedRightIds, rightId, columnDefs.length]);
 
     // fetch combined rights
     useEffect(() => {
-        if (!isEqual(previousMatchedRights, matchedRights) || selectedMatchedRightIds) {
+        if (matchedRights.length) {
             // matchedRightId from url should be correct one.
             fetchCombinedRight(selectedMatchedRightIds);
         }
-    }, [matchedRightIds, rightId, matchedRights, selectedMatchedRightIds]);
+    }, [matchedRights, selectedMatchedRightIds]);
 
     useEffect(() => {
         if (combinedRight) {
@@ -111,22 +110,21 @@ function MatchRightView({
 
     const handleGridEvent = ({type, api}) => {
         let result = [];
-        // TODO: add all grid event to constant
-        if (type === 'cellValueChanged') {
+        if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);
         }
     };
 
     const onMatchRightGridEvent = ({type, api}) => {
-        if (type === 'firstDataRendered') {
+        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
             api.selectAll();
-        } else if (type === 'selectionChanged') {
-            const selectedRows = api.getSelectedRows();
+        } else if (type === GRID_EVENTS.SELECTION_CHANGED) {
+            const selectedRows = api.getSelectedRows() || [];
             const selectedIds = selectedRows.map(el => el.id);
-             if (selectedRows.length && !isEqual(selectedIds, selectedMatchedRightIds)) {
-                 setSelectedMatchedRighIds(selectedIds);
-             }
+            if (!isEqual(selectedIds, selectedMatchedRightIds)) {
+                setSelectedMatchedRighIds(selectedIds);
+            }
              // TODO: it would be better to apply via refreshCell, but it isn't working
              api.redrawRows();
         }
@@ -160,7 +158,7 @@ function MatchRightView({
                 {!!columnDefs && (
                     <NexusGrid
                         columnDefs={matchedRightColumnDefs}
-                        rowData={matchedRightIds.split(',').length === matchedRights.length ?  matchedRightRowData : []}
+                        rowData={matchedRightIds.split(',').length === matchedRights.length ? matchedRightRowData : []}
                         domLayout="autoHeight"
                         rowSelection="multiple"
                         suppressRowClickSelection={true}
@@ -174,7 +172,13 @@ function MatchRightView({
                 {!!columnDefs && (
                     <EditableNexusGrid
                         columnDefs={columnDefs}
-                        rowData={isObjectEmpty(combinedRight) ? [] : [combinedRight]}
+                        rowData={
+                            !isObjectEmpty(combinedRight)
+                            && matchedRights.length
+                            && selectedMatchedRightIds.length > 1
+                                ? [combinedRight]
+                                : []
+                        }
                         onGridEvent={handleGridEvent}
                         mapping={mapping}
                         domLayout="autoHeight"
