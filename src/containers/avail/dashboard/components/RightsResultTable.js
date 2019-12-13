@@ -201,7 +201,9 @@ class RightsResultTable extends React.Component {
         const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab) || isNewAttachmentAdded;
 
         if(shouldRefetch) {
-            this.table.api.setDatasource(this.dataSource);
+            setTimeout(() => {
+                this.table.api.setDatasource(this.dataSource);
+            }, 5000);
         }
 
         if(prevProps.tabPageSelection !== this.props.tabPageSelection){

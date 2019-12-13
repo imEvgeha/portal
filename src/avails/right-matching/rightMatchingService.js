@@ -2,13 +2,15 @@ import config from 'react-global-configuration'; // config returns error for gat
 import pickBy from 'lodash.pickby';
 import identity from 'lodash.identity';
 import Http from '../../util/Http';
-import {prepareSortMatrixParam, encodedSerialize} from '../../util/Common';
+import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '../../util/Common';
 import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '../../ui-elements/nexus-toast-notification/constants';
 
 const endpoint = 'rights';
 const http = Http.create();
+
+const TEMPORAL_PROP = 'excludedItems';
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
@@ -38,10 +40,9 @@ export const putCombinedRight = (rightIds, combinedRight) => {
 
 export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParams) => {
     const {excludedItems} = searchCriteria;
-    const prop = 'excludedItems';
     const filteredSearchCriteria = Object.keys(searchCriteria)
         .reduce((object, key) => {
-            if (key !== prop) {
+            if (key !== TEMPORAL_PROP) {
                 object[key] = searchCriteria[key];
             }
             return object;
@@ -65,12 +66,74 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
     });
 };
 
-export const getRightMatchingFieldSearchCriteria = (provider, templateName) => {
+export const getRightMatchingFieldSearchCriteria = (payload) => {
+    const {availSource = {}, id} = payload || {};
+    const {provider, templateName} = availSource || {};
     const params = {templateName};
     return http.get(
         `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria`,
         {paramsSerializer: encodedSerialize, params}
-    );
+    ).then(({data}) => {
+        const {fieldSearchCriteria} = data || {};
+        // temporal FE handling for createing query params
+        const fieldTypeSearchCriteria = fieldSearchCriteria.filter(({type}) => (!type || type === 'Field'));
+        const groupTypeSearchCriteria = fieldSearchCriteria
+            .filter(({type, operand, fields}) => type === 'Group' && operand === 'AND' && fields)
+            .map(({fields}) => fields)
+            .flat();
+        const searchCriteria = [...fieldTypeSearchCriteria, ...groupTypeSearchCriteria].filter(Boolean);
+        const parseFieldNames = (criteria, name) => {
+            const fieldNames = {
+                EQ: name,
+                SUB: name,
+                GTE: `${name}From`,
+                GT: `${name}From`,
+                LT: `${name}To`,
+                LTE: `${name}To`,
+            };
+            const parsedFieldName = switchCase(fieldNames)(name)(criteria);
+            return parsedFieldName;
+        };
+
+        const parseFieldValue = (criteria, value, subFieldName) => {
+            const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',') : value;
+            const fieldValues = {
+                EQ: value,
+                SUB: subsetValue,
+                GTE: value,
+                GT: value,
+                LT: value,
+                LTE: value,
+            };
+            const parsedValue = switchCase(fieldValues)(value)(criteria);
+            return parsedValue;
+        };
+
+        let result = searchCriteria.reduce((query, field) => {
+            const {targetFieldName, fieldName, subFieldName, criteria} = field;
+            const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
+            const fieldValue = targetFieldName || fieldName;
+            const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];
+            const key = parseFieldNames(criteria, preparedName);
+            const value = parseFieldValue(criteria, preparedFieldValue, subFieldName);
+            query[key] = value;
+            return query;
+        }, {});
+        // temporal solution
+        result[TEMPORAL_PROP] = [id];
+        return {
+            data: {
+                fieldSearchCriteria: {
+                    id,
+                    params: result,
+                }
+            },
+            status: 200,
+        };
+    })
+    .catch(error => {
+        throw {error};
+    });
 };
 
 

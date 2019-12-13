@@ -115,7 +115,7 @@ class Settings extends Component {
                                     key={i} 
                                     tabId={endpoint}
                                 >
-                                    <EndpointContainer selectedApi={endpoint}/>
+                                    <EndpointContainer selectedApi={endpoint} visible={selectedApi === endpoint}/>
                                 </TabPane>
                             ))}                        
                         </TabContent>

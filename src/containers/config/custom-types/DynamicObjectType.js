@@ -17,7 +17,8 @@ const createFormForItem = (
 ) => {
     const mappedFields = fieldsForForm.map(field => ({
         ...field,
-        id: `${field.id}_${targetIndex}_FIELDS`
+        id: `${field.id}_${targetIndex}_FIELDS`,
+        defaultValue: fieldsForForm.length > 1 ? item[field.name]:item
     }));
     return (
         <FormContext.Consumer>
