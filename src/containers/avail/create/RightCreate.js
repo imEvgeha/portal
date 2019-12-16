@@ -24,6 +24,7 @@ import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryFiels';
+import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 
 const mapStateToProps = state => {
@@ -690,8 +691,12 @@ class RightCreate extends React.Component {
                     name={name}
                     onRemoveClick={ (terr) => this.handleDeleteObjectFromArray(terr.country, 'territory', 'country')}
                     onAddClick={this.toggleRightTerritoryForm}
-                    onPlusClick={this.toggleRightTerritoryForm}
-                    renderChildren={() => <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />}
+                    renderChildren={() => <React.Fragment>
+                        <div style={{position: 'absolute', right: '10px'}}>
+                            <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
+                        </div>
+                        <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />
+                    </React.Fragment>}
                     mappingErrorMessage={this.mappingErrorMessage}
                 />
             ));

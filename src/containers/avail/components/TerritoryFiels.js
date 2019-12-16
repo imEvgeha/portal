@@ -5,7 +5,7 @@ import {uid} from 'react-uid';
 import {AddButton, CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './TerritoryField.scss';
 
-function TerritoryField({name, territory, onRemoveClick, onAddClick, onPlusClick, onTagClick, renderChildren, mappingErrorMessage}) {
+function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage}) {
 
     const remove = (terr) => {
         console.log('remove', terr);
@@ -36,9 +36,6 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onPlusClick
                     </CustomFieldAddText>
                 )
             }
-            <div style={{position: 'absolute', right: '10px'}}>
-                <AddButton onClick={onPlusClick}>+</AddButton>
-            </div>
             {renderChildren()}
             <br/>
             {mappingErrorMessage[name] && mappingErrorMessage[name].text &&
@@ -64,7 +61,6 @@ TerritoryField.propTypes = {
     name: PropTypes.string.isRequired,
     onAddClick: PropTypes.func.isRequired,
     onRemoveClick: PropTypes.func.isRequired,
-    onPlusClick: PropTypes.func.isRequired,
     onTagClick: PropTypes.func,
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref 
+import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -29,6 +29,7 @@ import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/Nex
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryFiels';
+import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
     return {
@@ -1023,19 +1024,23 @@ class RightDetails extends React.Component {
                             territory={territories}
                             name={name}
                             onRemoveClick={(territory) => deleteTerritory(territory)}
-                            onAddClick={this.toggleRightTerritoryForm}
-                            onPlusClick={this.toggleAddRightTerritoryForm}
+                            onAddClick={this.toggleAddRightTerritoryForm}
                             onTagClick={(i) => this.toggleRightTerritoryForm(i)}
                             renderChildren={() =>
-                                <RightTerritoryForm
-                                    onSubmit={(e) => addTerritory(e)}
-                                    isOpen={this.state.isRightTerritoryFormOpen}
-                                    onClose={this.toggleRightTerritoryForm}
-                                    existingTerritoryList={selectedVal}
-                                    territoryIndex={this.state.territoryIndex}
-                                    isEdit={this.state.isEdit}
-                                    options={options}
-                                />}
+                                <React.Fragment>
+                                    <div style={{position: 'absolute', right: '10px'}}>
+                                        <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                                    </div>
+                                    <RightTerritoryForm
+                                        onSubmit={(e) => addTerritory(e)}
+                                        isOpen={this.state.isRightTerritoryFormOpen}
+                                        onClose={this.toggleRightTerritoryForm}
+                                        existingTerritoryList={selectedVal}
+                                        territoryIndex={this.state.territoryIndex}
+                                        isEdit={this.state.isEdit}
+                                        options={options}
+                                    />
+                                </React.Fragment>}
                         />
 
 
