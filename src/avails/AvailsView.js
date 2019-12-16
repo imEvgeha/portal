@@ -1,7 +1,7 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {compose} from 'redux';
 import connect from 'react-redux/lib/connect/connect';
-import {cloneDeep} from 'lodash.clonedeep';
+import cloneDeep from 'lodash.clonedeep';
 import PageHeader from '@atlaskit/page-header';
 import AvailsHistory from './history/AvailsHistory';
 import './AvailsView.scss';
