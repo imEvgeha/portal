@@ -1,6 +1,7 @@
 import React, {Fragment, useEffect} from 'react';
 import {compose} from 'redux';
 import connect from 'react-redux/lib/connect/connect';
+import {cloneDeep} from 'lodash.clonedeep';
 import PageHeader from '@atlaskit/page-header';
 import AvailsHistory from './history/AvailsHistory';
 import './AvailsView.scss';
@@ -13,7 +14,6 @@ import * as selectors from './right-matching/rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
 } from './right-matching/rightMatchingActions';
-import {deepClone} from '../util/Common';
 import {createLinkableCellRenderer} from './utils';
 
 const NexusGridWithInfiniteScrolling = compose(
@@ -31,7 +31,7 @@ const AvailsView = ({columnDefs, createRightMatchingColumnDefs, mapping}) => {
         }
     }, [columnDefs, createRightMatchingColumnDefs]);
 
-    const deepCloneColumnDefs = deepClone(columnDefs);
+    const deepCloneColumnDefs = cloneDeep(columnDefs);
 
     const handleTitleMatchingRedirect = params => {
         return createLinkableCellRenderer(params);
