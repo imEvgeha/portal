@@ -15,7 +15,7 @@ const NexusGrid = ({
     // rowHeight,
     handleSelectionChange,
     onGridEvent,
-    ...restProps,
+    ...restProps
 }) => {
     const onGridReady = params => {
         if (typeof onGridEvent === 'function') {
