@@ -2,7 +2,6 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import moment from 'moment';
-import {uid} from 'react-uid';
 
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -10,24 +9,21 @@ import BlockUi from 'react-block-ui';
 import {Button, Input, Label} from 'reactstrap';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
-import {rangeValidation, oneOfValidation} from '../../../util/Validation';
+import {oneOfValidation, rangeValidation} from '../../../util/Validation';
 import {rightsService} from '../service/RightsService';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
-import {momentToISO, safeTrim} from '../../../util/Common';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {momentToISO, safeTrim, URL} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
-import {URL} from '../../../util/Common';
 
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import { CustomFieldAddText, AddButton } from '../custom-form-components/CustomFormComponents';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
-import TerritoryField from "../components/TerritoryFiels";
+import TerritoryField from '../components/TerritoryFiels';
 
 
 const mapStateToProps = state => {

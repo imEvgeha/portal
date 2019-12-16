@@ -7,33 +7,28 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replac
 import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
 import config from 'react-global-configuration';
-import {uid} from 'react-uid';
-import { Button, Label } from 'reactstrap';
+import {Button, Label} from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
-import { oneOfValidation, rangeValidation } from '../../../util/Validation';
-import { profileService } from '../service/ProfileService';
-import { cannot } from '../../../ability';
+import {oneOfValidation, rangeValidation} from '../../../util/Validation';
+import {profileService} from '../service/ProfileService';
+import {cannot} from '../../../ability';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
-import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
-import { momentToISO } from '../../../util/Common';
+import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {equalOrIncluded, getDeepValue, isObject, momentToISO, safeTrim} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import { confirmModal } from '../../../components/modal/ConfirmModal';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import {CustomFieldAddText, AddButton} from '../custom-form-components/CustomFormComponents';
-import {isObject} from '../../../util/Common';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
-import TerritoryField from "../components/TerritoryFiels";
+import TerritoryField from '../components/TerritoryFiels';
 
 const mapStateToProps = state => {
     return {
