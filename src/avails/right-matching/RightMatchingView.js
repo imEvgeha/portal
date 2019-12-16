@@ -84,7 +84,7 @@ const RightMatchingView = ({
                 columnDefs={updatedColumnDefs}
                 setTotalCount={setTotalCount}
                 params={{availHistoryIds}}
-                succesDataFetchCallback={storeData}
+                successDataFetchCallback={storeData}
             />
         </div>
     );
