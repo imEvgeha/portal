@@ -33,6 +33,7 @@ import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/Nex
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
 import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import TerritoryField from "../components/TerritoryFiels";
 
 const mapStateToProps = state => {
     return {
@@ -974,7 +975,7 @@ class RightDetails extends React.Component {
              };
 
             let deleteTerritory = (territory) => {
-                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id);
+                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id && e.country !== territory.country);
                 ref.current.handleChange(newArray);
                 setTimeout(() => {
                     this.setState({});
@@ -1023,33 +1024,26 @@ class RightDetails extends React.Component {
                     onCancel={onCancel}
                     showError={false}
                     helperComponent={
-                        <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
-                            {territories && territories.length > 0
-                                ? territories.map((e, i) => (
-                                    <NexusTag
-                                        key={uid(e)}
-                                        text={e.country || e.value}
-                                        value={e}
-                                        removeButtonText="Remove"
-                                        onClick={() => this.toggleRightTerritoryForm(i)}
-                                        onRemove={() => deleteTerritory(e)}
-                                    />
-                                ))
-                                : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
-                            }
-                            <div style={{position: 'absolute', right: '10px'}}>
-                                <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
-                            </div>
-                            <RightTerritoryForm
-                                onSubmit={(e) => addTerritory(e)}
-                                isOpen={this.state.isRightTerritoryFormOpen}
-                                onClose={this.toggleRightTerritoryForm}
-                                existingTerritoryList={selectedVal}
-                                territoryIndex={this.state.territoryIndex}
-                                isEdit={this.state.isEdit}
-                                options={options} 
-                            />
-                        </div>
+                        <TerritoryField
+                            territory={territories}
+                            name={name}
+                            onRemoveClick={(territory) => deleteTerritory(territory)}
+                            onAddClick={this.toggleRightTerritoryForm}
+                            onPlusClick={this.toggleAddRightTerritoryForm}
+                            onTagClick={(i) => this.toggleRightTerritoryForm(i)}
+                            renderChildren={() =>
+                                <RightTerritoryForm
+                                    onSubmit={(e) => addTerritory(e)}
+                                    isOpen={this.state.isRightTerritoryFormOpen}
+                                    onClose={this.toggleRightTerritoryForm}
+                                    existingTerritoryList={selectedVal}
+                                    territoryIndex={this.state.territoryIndex}
+                                    isEdit={this.state.isEdit}
+                                    options={options}
+                                />}
+                        />
+
+
                     } />
 
             ));
