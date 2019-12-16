@@ -9,6 +9,7 @@ import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
 import {isObject} from '../../../util/Common';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import usePrevious from '../../../util/hooks/usePrevious';
+import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',
@@ -23,7 +24,8 @@ const DEFAULT_EDITABLE_DATA_TYPES = [
     'multiselect',
     'date',
     'datetime',
-    'localdate'
+    'localdate',
+    'territoryType'
 ];
 const DEFAULT_NOT_EDITABLE_COLUMNS = ['id'];
 
@@ -52,8 +54,9 @@ const withEditableColumns = ({
                 const {field} = copiedColumnDef || {};
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                 const isEditable = editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
+                console.log('dataType isEditable', dataType, isEditable)
                 if (enableEdit && isEditable) {
-                    copiedColumnDef.editable = true; 
+                    copiedColumnDef.editable = true;
                     switch (dataType) {
                         case 'select':
                             copiedColumnDef.cellEditorFramework = SelectCellEditor;
@@ -84,6 +87,10 @@ const withEditableColumns = ({
                         case 'datetime':
                         case 'localdate':
                             copiedColumnDef.cellEditorFramework = DateTimeCellEditor;
+                            break;
+                        case 'territoryType':
+                            console.log('set cellEditorFramework')
+                            copiedColumnDef.cellEditorFramework = TerritoryCellEditor;
                             break;
                     }
                 }

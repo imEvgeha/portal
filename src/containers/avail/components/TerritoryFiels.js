@@ -9,7 +9,7 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onPlusClick
 
     const remove = (terr) => {
         console.log('remove', terr);
-        onRemoveClick(terr, id);
+        onRemoveClick(terr);
     }
 
     return (
@@ -50,10 +50,12 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onPlusClick
     );
 }
 
+const defaultFunction = () => {};
+
 TerritoryField.defaultProps = {
     territory: [],
-    renderChildren: () => {},
-    onTagClick: () => {},
+    renderChildren: defaultFunction,
+    onTagClick: defaultFunction,
     mappingErrorMessage: {}
 };
 
