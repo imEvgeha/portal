@@ -106,7 +106,7 @@ function MatchRightView({
     };
 
     // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
+    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt)));
 
     const handleGridEvent = ({type, api}) => {
         let result = [];
@@ -125,25 +125,32 @@ function MatchRightView({
             if (!isEqual(selectedIds, selectedMatchedRightIds)) {
                 setSelectedMatchedRighIds(selectedIds);
             }
-             // TODO: it would be better to apply via refreshCell, but it isn't working
-             api.redrawRows();
+            // TODO: it would be better to apply via refreshCell, but it isn't working
+            api.redrawRows();
         }
     };
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
-    const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+    const getSelectedRows = api => {
+        const selectedRows = api.getSelectedRows() || [];
+        return selectedRows;
+    };
 
     // rule for adding strike through
     const applyStrikeThroughRule = (params ={}) => {
-        const {node, data} = params || {};
+        const {node, data, api} = params || {};
+        const selectedIds = getSelectedRows(api).map(el => el.id);
         if (node.selected 
             && UNSELECTED_STATUSES.includes(data.status) 
-            && selectedMatchedRightIds[selectedMatchedRightIds.length - 1] !== data.id
-            && selectedMatchedRightIds[0] !== data.id
-        ) {
-            return 'nexus-c-nexus-grid__unselected';
-        }
+        && selectedIds[selectedIds.length - 1] !== data.id
+        && selectedIds[0] !== data.id
+           ) {
+               return 'nexus-c-nexus-grid__unselected';
+           }
     };
+
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+
+    const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
 
     return (
         <div className="nexus-c-match-right-view">
