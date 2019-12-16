@@ -22,7 +22,6 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
 )(NexusGrid);
 
-//NOTE: This is just a skeleton component, feel free to edit as you wish. None of this has to stay
 const AvailsView = ({columnDefs, createRightMatchingColumnDefs, mapping}) => {
 
     useEffect(() => {
@@ -31,29 +30,33 @@ const AvailsView = ({columnDefs, createRightMatchingColumnDefs, mapping}) => {
         }
     }, [columnDefs, createRightMatchingColumnDefs]);
 
-    const deepCloneColumnDefs = cloneDeep(columnDefs);
+    const columnDefsClone = cloneDeep(columnDefs);
 
-    const handleTitleMatchingRedirect = params => {
-        return createLinkableCellRenderer(params);
+    const handleRightRedirect = params => {
+        return createLinkableCellRenderer(params, '/avails/rights/');
     };
 
-    const updatedColumnDefs = deepCloneColumnDefs.map(e => {
-        if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
-        return e;
+    const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
+        if(columnDef.cellRenderer) {
+            columnDef.cellRenderer = handleRightRedirect;
+        }
+        return columnDef;
     });
 
-    return (<div className="nexus-c-avails-view">
-        <AvailsHistory/>
-        <div className="nexus-c-avails-view__avails-table">
-            <PageHeader>
-                AVAILS
-            </PageHeader>
-            <NexusGridWithInfiniteScrolling
-                columnDefs={updatedColumnDefs}
-                mapping={mapping}
-            />
+    return (
+        <div className="nexus-c-avails-view">
+            <AvailsHistory/>
+            <div className="nexus-c-avails-view__avails-table">
+                <PageHeader>
+                    AVAILS
+                </PageHeader>
+                <NexusGridWithInfiniteScrolling
+                    columnDefs={columnDefsWithRedirect}
+                    mapping={mapping}
+                />
+            </div>
         </div>
-    </div>);
+    );
 };
 
 const createMapStateToProps = () => {
