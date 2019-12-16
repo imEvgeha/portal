@@ -11,13 +11,13 @@ import './Ingest.scss';
 
 const Ingest = () => {
 
-    const initialState = {
+    const initialFilters = {
         status: Constants.STATUS_LIST[0],
         provider: ''
     };
 
     const [showFilters, setShowFilters] = useState(false);
-    const [filters, setFilters] = useState(initialState);
+    const [filters, setFilters] = useState(initialFilters);
     const [isApplyActive, setIsApplyActive] = useState(false);
 
     const toggleFilters = () => {
@@ -35,7 +35,7 @@ const Ingest = () => {
     };
 
     const clearFilters = () => {
-        setFilters(initialState);
+        setFilters(initialFilters);
         setIsApplyActive(false);
     };
 
