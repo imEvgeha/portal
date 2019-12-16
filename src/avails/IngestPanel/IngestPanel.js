@@ -7,9 +7,9 @@ import FilterSolidIcon from '../../assets/filter-solid.svg';
 import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import Select from '@atlaskit/select';
 import Constants from './Constants';
-import './Ingest.scss';
+import './IngestPanel.scss';
 
-const Ingest = () => {
+const IngestPanel = () => {
 
     const initialFilters = {
         status: Constants.STATUS_LIST[0],
@@ -44,15 +44,15 @@ const Ingest = () => {
     };
 
     return (
-        <div className='ingest-wrapper'>
-            <div className='ingest-header'>
-                <div className='ingest-header__title'>
+        <div className='ingest-panel'>
+            <div className='ingest-panel__ingest-header'>
+                <div className='ingest-panel__ingest-header__title'>
                     <AvailsIcon />
                     <div>Avails Ingest</div>
                 </div>
-                <div className='ingest-header__actions'>
+                <div className='ingest-panel__ingest-header__actions'>
                     <PopOutIcon
-                        className='ingest-header__actions--pop'
+                        className='ingest-panel__ingest-header__actions--pop'
                         disabled={true}/>
                     <div onClick={toggleFilters}>
                         {
@@ -63,16 +63,16 @@ const Ingest = () => {
             </div>
             {
                 showFilters && (
-                    <div className='ingest-filters'>
-                        <div className='ingest-filters__row1'>
-                            <div className='ingest-filters__section'>
+                    <div className='ingest-panel__ingest-filters'>
+                        <div className='ingest-panel__ingest-filters__row1'>
+                            <div className='ingest-panel__ingest-filters__section'>
                                 Provider
                                 <input
                                     placeholder='Enter Provider'
                                     value={filters.provider}
                                     onChange={e => onFilterChange('provider', e.target.value)}/>
                             </div>
-                            <div className='ingest-filters__section'>
+                            <div className='ingest-panel__ingest-filters__section'>
                                 Avail Status
                                 <Select
                                     options={Constants.STATUS_LIST}
@@ -80,7 +80,7 @@ const Ingest = () => {
                                     onChange={value => onFilterChange('status', value)}/>
                             </div>
                         </div>
-                        <div className='ingest-filters__row2'>
+                        <div className='ingest-panel__ingest-filters__row2'>
                             <NexusDateTimeWindowPicker
                                 isUsingTime={false}
                                 startDateTimePickerProps={{
@@ -92,10 +92,10 @@ const Ingest = () => {
                                 onChange={onDateChange}
                                 labels={Constants.DATEPICKER_LABELS}/>
                         </div>
-                        <div className='ingest-filters__actions'>
+                        <div className='ingest-panel__ingest-filters__actions'>
                             <Button onClick={clearFilters}>Clear All</Button>
                             <Button
-                                className={isApplyActive ? 'ingest-filters__actions--active' : ''}
+                                className={isApplyActive ? 'ingest-panel__ingest-filters__actions--active' : ''}
                                 onClick={applyFilters}>
                                 Apply Filter
                             </Button>
@@ -107,4 +107,4 @@ const Ingest = () => {
     );
 };
 
-export default Ingest;
+export default IngestPanel;

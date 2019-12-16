@@ -1,9 +1,9 @@
-.ingest-wrapper {
+.ingest-panel {
   border-right: 1px solid #737E91;
   padding: 48px 24px;
   margin-right: 10px;
   color: #42526E;
-  .ingest-header {
+  &__ingest-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,16 +19,16 @@
     &__actions {
       display: flex;
       align-items: center;
-      &--pop {
-        margin-right: 20px;
-        fill: #A5ADBA;
-      }
       svg {
         cursor: pointer;
       }
     }
+    .ingest-panel__ingest-header__actions--pop {
+      margin-right: 20px;
+      fill: #A5ADBA;
+    }
   }
-  .ingest-filters{
+  &__ingest-filters{
     font-size: 16px;
     color: #42526E;
     &__section {
@@ -83,7 +83,8 @@
         width: 135px;
         background: #EBEDF0;
         color: #42526E;
-        &.ingest-filters__actions--active {
+        justify-content: center;
+        &.ingest-panel__ingest-filters__actions--active {
           background: #42526E;
           color: #FFFFFF!important;
         }
