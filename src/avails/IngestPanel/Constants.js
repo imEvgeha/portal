@@ -6,5 +6,13 @@ export default {
         { value: 'COMPLETED', label: 'COMPLETED' },
         { value: 'FAILED', label: 'FAILED' },
     ],
-    DATEPICKER_LABELS: ['From', 'To']
+    DATEPICKER_LABELS: ['From', 'To'],
+    REPORT: {
+        total: 'Rights',
+        created: 'Created',
+        updated: 'Updated',
+        pending: 'Pending',
+        errors: 'Error',
+        fatal: 'Fatal'
+    }
 };
