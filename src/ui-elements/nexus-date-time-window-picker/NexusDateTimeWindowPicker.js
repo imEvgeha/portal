@@ -14,6 +14,7 @@ const END_DATE_ERROR = 'End date must be after Start date';
 
 const NexusDateTimeWindowPicker = ({
     label,
+    labels,
     isLocalDate,
     isUsingTime,
     onChange,
@@ -70,6 +71,13 @@ const NexusDateTimeWindowPicker = ({
                 </div>
             }
             <div className="nexus-c-date-time-window-picker__start-date">
+                {
+                    !!labels.length && (
+                        <div className="nexus-c-date-time-window-picker__label">
+                            {labels[0]}
+                        </div>
+                    )
+                }
                 {isUsingTime
                     ? (
                         <NexusSimpleDateTimePicker
@@ -91,6 +99,13 @@ const NexusDateTimeWindowPicker = ({
                 }
             </div>
             <div className="nexus-c-date-time-window-picker__end-date">
+                {
+                    !!labels.length && (
+                        <div className="nexus-c-date-time-window-picker__label">
+                            {labels[1]}
+                        </div>
+                    )
+                }
                 {isUsingTime
                     ? (
                         <NexusSimpleDateTimePicker
@@ -136,6 +151,7 @@ const NexusDateTimeWindowPicker = ({
 
 NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
+    labels: PropTypes.array,    //example: ['From', 'To']
     islocalDate: PropTypes.bool,
     isUsingTime: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -149,6 +165,7 @@ NexusDateTimeWindowPicker.propTypes = {
 
 NexusDateTimeWindowPicker.defaultProps = {
     label: '',
+    labels: [],
     isLocalDate: false,
 };
 

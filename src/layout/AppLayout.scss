@@ -15,7 +15,7 @@
 
 .nexus-c-app-layout__main {
     width: 100%;
-    padding: 0 map-get($app-layout, content-padding-horizontal);
+    padding: 0;
     background-color: map-get($colors, primary);
     height: 100%;
 }

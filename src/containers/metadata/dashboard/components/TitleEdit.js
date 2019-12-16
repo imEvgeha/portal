@@ -136,7 +136,7 @@ class TitleEdit extends Component {
     }
 
     loadEditorialMetadata(titleId) {
-        titleService.getEditorialMetadataById(titleId).then((response) => {
+        titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
             const editorialMetadata = response.data;
             this.setState({
                 editorialMetadata: editorialMetadata
