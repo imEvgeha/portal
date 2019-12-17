@@ -17,6 +17,7 @@ import DynamicObjectType from './custom-types/DynamicObjectType';
 import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 import DelayedOptions from './custom-types/DelayedOptions';
+import {Can} from '../../ability';
 
 const renderer = (
     field,
@@ -175,7 +176,8 @@ export default class CreateEditConfigForm extends React.Component {
                 <ModalBody>                    
                     <p><b style={{color: '#999', fontSize: '13px'}}>{this.props.displayName}</b></p>
                     <p style={{marginTop: '-20px'}}><b>{this.props.value && this.props.label ? this.props.label : <i style={{fontSize: '20px', color: '#666'}}>New {this.props.displayName}</i>}</b></p>
-                    {Object.entries(this.props.value).length !== 0 && (                        
+                    <Can I="delete" a="ConfigUI">
+                    {Object.entries(this.props.value).length !== 0 && (
                         <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                             <DropdownToggle color="light">
@@ -187,6 +189,7 @@ export default class CreateEditConfigForm extends React.Component {
                         </Dropdown>
                         </div>
                     )}
+                    </Can>
                     <Form 
                         renderer = {renderer}
                         defaultFields={this.props.schema}
