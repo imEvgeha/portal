@@ -22,11 +22,12 @@ import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
-import {defineCheckboxSelectionColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {defineCheckboxSelectionColumn, updateColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
+const FIELDS_WITHOUT_ERRORS = ['id', 'status'];
 
 const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
@@ -102,9 +103,6 @@ function MatchRightView({
         saveCombinedRight(payload);
     };
 
-    // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt))) || [];
-
     const handleGridEvent = ({type, api}) => {
         let result = [];
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
@@ -133,7 +131,7 @@ function MatchRightView({
     };
 
     // rule for row (disable unselect, add strike through line)
-    const applyRowRule = (params ={}) => {
+    const applyRowRule = (params = {}) => {
         const {node, data, api} = params || {};
         const selectedIds = getSelectedRows(api).map(el => el.id);
         if (node.selected) {
@@ -153,8 +151,46 @@ function MatchRightView({
         }
     };
 
+    // rule for column coloring
+    // TODO: move this to separate file
+    const applyColumnRule = ({node, data, colDef, api, value}) => {
+        const selectedIds = getSelectedRows(api).map(el => el.id);
+        if (selectedIds.includes(data.id)
+            && !FIELDS_WITHOUT_ERRORS.includes(colDef.field)
+            && !(UNSELECTED_STATUSES.includes(data.status)
+                && (selectedIds[selectedIds.length - 1] !== data.id && selectedIds[0] !== data.id)
+            )
+        ) {
+            const columnValuesCounter = getSelectedRows(api)
+                .map(el => el[colDef.field])
+                .filter(Boolean)
+                .reduce((object, value) => {
+                    const val = JSON.stringify(value);
+                    object[val] = (object[val] || 0) + 1;
+                    return object;
+                }, {});
+
+            const sortByOccurance = Object.keys(columnValuesCounter).sort((a, b) => {
+                return columnValuesCounter[a] < columnValuesCounter[b];
+            });
+            console.log(sortByOccurance, 'occuranvae')
+
+            if (!sortByOccurance.length || sortByOccurance.length === 1) {
+                return;
+            // } else if ()
+            } else if (!isEqual(JSON.stringify(value), sortByOccurance[0])) {
+                return {
+                    backgroundColor: 'pink',
+                };
+            }
+        }
+    };
+
+    // Sorted by start field. desc
+    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt))) || [];
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
-    const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+    const updatedColumnDefs = updateColumnDefs(columnDefs, {cellStyle: applyColumnRule});
+    const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...updatedColumnDefs] : columnDefs;
 
     return (
         <div className="nexus-c-match-right-view">
