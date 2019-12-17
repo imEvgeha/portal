@@ -7,7 +7,7 @@ import AvailsHistory from './ingest/Ingest';
 import './AvailsView.scss';
 import NexusGrid from '../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import {getRightMatchingList} from './right-matching/rightMatchingService';
+import {rightServiceManager} from '../containers/avail/service/RightServiceManager';
 import withFilterableColumns from '../ui-elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../ui-elements/nexus-grid/hoc/withSideBar';
 import * as selectors from './right-matching/rightMatchingSelectors';
@@ -19,7 +19,7 @@ import {createLinkableCellRenderer} from './utils';
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: getRightMatchingList}),
+    withInfiniteScrolling({fetchData: rightServiceManager.doSearch}),
 )(NexusGrid);
 
 const AvailsView = ({columnDefs, createRightMatchingColumnDefs, mapping}) => {
