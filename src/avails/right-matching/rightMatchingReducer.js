@@ -46,6 +46,11 @@ const rightMatchingReducer = (state = initialState, action) => {
                 ...state,
                 combinedRight,
             };
+        case actionTypes.FETCH_COMBINED_RIGHT_ERROR:
+            return {
+                ...state,
+                combinedRight,
+            };
         case actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS:
             return {
                 ...state,
