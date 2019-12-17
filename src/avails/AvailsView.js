@@ -3,7 +3,7 @@ import {compose} from 'redux';
 import connect from 'react-redux/lib/connect/connect';
 import cloneDeep from 'lodash.clonedeep';
 import PageHeader from '@atlaskit/page-header';
-import AvailsHistory from './history/AvailsHistory';
+import AvailsHistory from './ingest/Ingest';
 import './AvailsView.scss';
 import NexusGrid from '../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
