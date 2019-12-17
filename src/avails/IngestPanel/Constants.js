@@ -14,5 +14,9 @@ export default {
         pending: 'Pending',
         errors: 'Error',
         fatal: 'Fatal'
+    },
+    ingestTypes: {
+        EMAIL: 'Email',
+        UPLOAD: 'Upload'
     }
 };
