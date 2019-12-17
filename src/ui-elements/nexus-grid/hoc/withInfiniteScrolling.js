@@ -91,11 +91,15 @@ const withInfiniteScrolling = ({
                         if ((page + 1) * size >= total) {
                             lastRow = total;
                         }
-                        successCallback(data, lastRow);
+                        if(typeof props.onAddAdditionalField === 'function') {
+                            props.onAddAdditionalField(data, (updatedData) => successCallback(updatedData, lastRow));
+                        } else {
+                            successCallback(data, lastRow);
+                        }
 
-                        if (typeof props.succesDataFetchCallback === 'function') {
+                        if (typeof props.successDataFetchCallback === 'function') {
                             const preparedData = {page, size, total, data};
-                            props.succesDataFetchCallback(pageNumber, preparedData);
+                            props.successDataFetchCallback(pageNumber, preparedData);
                         }
 
                         gridApi.hideOverlay();
@@ -183,7 +187,8 @@ const withInfiniteScrolling = ({
         ...WrappedComponent.propTypes,
         onGridEvent: PropTypes.func,
         setTotalCount: PropTypes.func,
-        succesDataFetchCallback: PropTypes.func,
+        successDataFetchCallback: PropTypes.func,
+        onAddAdditionalField: PropTypes.func,
         params: PropTypes.object,
         isDatasourceEnabled: PropTypes.bool,
     };
@@ -192,7 +197,8 @@ const withInfiniteScrolling = ({
         ...WrappedComponent.defaultProps,
         onGridEvent: null,
         setTotalCount: null,
-        succesDataFetchCallback: null,
+        successDataFetchCallback: null,
+        onAddAdditionalField: null,
         params: null,
         isDatasourceEnabled: true,
     };

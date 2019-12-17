@@ -1,5 +1,16 @@
 [
   {
+    "javaVariableName": "system",
+    "displayName": "System",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "displayName",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
     "javaVariableName": "title",
     "displayName": "Title",
     "dataType": "string",
@@ -34,6 +45,17 @@
     "required": true
   },
   {
+    "javaVariableName": "castCrew.director",
+    "displayName": "Director",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "displayName",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
     "javaVariableName": "licensor",
     "displayName": "Licensor",
     "dataType": "select",
@@ -46,30 +68,7 @@
     "required": true
   },
   {
-    "javaVariableName": "rating.ratingValue",
-    "displayName": "Rating Value",
-    "dataType": "select",
-    "searchDataType": "multiselect",
-    "configEndpoint": "/ratings",
-    "queryParamName": "ratingValue",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": false
-  },
-  {
-    "javaVariableName": "eidr.titleId",
-    "displayName": "EIDR Title ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "eidrTitleId",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": false
-  },
-  {
-    "javaVariableName": "genres",
+    "javaVariableName": "editorialGenres",
     "displayName": "Genres",
     "dataType": "string",
     "searchDataType": "string",
@@ -80,8 +79,41 @@
     "required": false
   },
   {
-    "javaVariableName": "castCrew",
-    "displayName": "Cast Crew",
+    "javaVariableName": "ratings",
+    "displayName": "Rating",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "ratings",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
+    "javaVariableName": "externalIds.eidrLevel1",
+    "displayName": "EIDR 1",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "displayName",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
+    "javaVariableName": "externalIds.eidrLevel2",
+    "displayName": "EIDR 2",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "displayName",
+    "readOnly": false,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
+    "javaVariableName": "castCrew.cast",
+    "displayName": "Cast",
     "dataType": "string",
     "searchDataType": "string",
     "queryParamName": "displayName",

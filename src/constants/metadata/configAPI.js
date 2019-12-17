@@ -49,7 +49,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
 };
 
 
-const isCastPersonType =(item, isConfig) => {
+export const isCastPersonType =(item, isConfig) => {
     let param = isConfig ? 'personTypes' : 'personType';
     if(isConfig) {
         return item[param] && item[param].filter(t => t.toLowerCase() === ACTOR.toLowerCase()).length > 0;
