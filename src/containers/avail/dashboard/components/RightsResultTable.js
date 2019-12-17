@@ -192,7 +192,7 @@ class RightsResultTable extends React.Component {
         }
 
         this.refreshSort();
-        let isNewFileUploaded = prevProps.status === 'PENDING' && this.props.status === 'COMPLETED';
+        let isNewFileUploaded = prevProps.status === 'PENDING' && this.props.status !== 'PENDING';
         const isLoading = this.props.tabPageLoading !== prevProps.tabPageLoading && this.props.tabPageLoading === true;
         const isNewTab = prevProps.selectedTab !== this.props.selectedTab;
         const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab) || isNewFileUploaded;
