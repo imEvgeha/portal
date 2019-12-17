@@ -54,7 +54,6 @@ const withEditableColumns = ({
                 const {field} = copiedColumnDef || {};
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                 const isEditable = editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
-                console.log('dataType isEditable', dataType, isEditable)
                 if (enableEdit && isEditable) {
                     copiedColumnDef.editable = true;
                     switch (dataType) {
@@ -89,7 +88,6 @@ const withEditableColumns = ({
                             copiedColumnDef.cellEditorFramework = DateTimeCellEditor;
                             break;
                         case 'territoryType':
-                            console.log('set cellEditorFramework')
                             copiedColumnDef.cellEditorFramework = TerritoryCellEditor;
                             break;
                     }

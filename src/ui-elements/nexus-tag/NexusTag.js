@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
@@ -6,6 +6,29 @@ import './NexusTag.scss';
 
 
 const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
+
+    const [defaultTooltipContent, setDefaultContent] = useState();
+
+    useEffect(()=> {
+        if(value) {
+            const defaultTooltipContent = Object.keys(value || {}).map((key, index) => {
+                return (
+                    !Array.isArray(value[key])
+                    && typeof value[key] !== 'object'
+                    && value[key] !== null
+                    && (
+                        <li className="nexus-c-tag__tooltip-prop" key={index}>
+                            {key}:
+                            <span className="nexus-c-tag__tooltip-prop-value">
+                                        { getValidValue(value[key]) }
+                                    </span>
+                        </li>
+                    )
+                );
+            });
+            setDefaultContent(defaultTooltipContent);
+        }
+    }, [value]);
 
     const getValidValue = (value) => {
         if(typeof value !== 'undefined') {
@@ -17,31 +40,23 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
     const tooltip = (
         <div className="nexus-c-tag__tooltip">
             <ul className="nexus-c-tag__tooltip-list">
-                {Object.keys(value || {}).map((key, index) => {
-                    return (
-                        !Array.isArray(value[key])
-                            && typeof value[key] !== 'object'
-                            && value[key] !== null
-                            && (
-                                <li className="nexus-c-tag__tooltip-prop" key={index}>
-                                    {key}:
-                                    <span className="nexus-c-tag__tooltip-prop-value">
-                                        { getValidValue(value[key]) }
-                                    </span>
-                                </li>
-                            )
-                    );
-                })}
+                {defaultTooltipContent}
             </ul>
         </div>
     );
 
+    const onToolTipClick = () => {
+        if(typeof onClick === 'function') {
+            onClick();
+        }
+    };
+
     return (
-        <NexusTooltip content={tooltip}>
+        <NexusTooltip content={tooltip} >
             <span className={`nexus-c-tag ${(tagState && `nexus-c-tag--is-${tagState}`) || ''}`}>
                 <div
                     className={`nexus-c-tag__label ${onClick && 'nexus-c-tag__label--is-clickable'}`}
-                    onClick={onClick || (() => null)}
+                    onClick={onToolTipClick}
                 >
                     {text}
                 </div>

@@ -2,40 +2,39 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 import {uid} from 'react-uid';
-import {AddButton, CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
+import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './TerritoryField.scss';
 
-function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage}) {
+function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) {
 
-    const remove = (terr) => {
-        console.log('remove', terr);
-        onRemoveClick(terr);
-    }
+    const getTerritories = () => {
+        return territory.map((terr, i) => (
+            <NexusTag
+                key={uid(terr)}
+                text={terr.country}
+                value={terr}
+                removeButtonText='Remove'
+                onRemove={() => onRemoveClick(terr)}
+                onClick={() => onTagClick(i)}
+            />
+        ));
+    };
+
+    const getAddButton = () => {
+        return (
+            <CustomFieldAddText
+                onClick={onAddClick}
+                id={'right-create-' + name + '-button'}
+            >
+                Add...
+            </CustomFieldAddText>
+        );
+    };
 
     return (
         <div className='nexus-territory-field'>
-            {territory && territory.length > 0
-                ? (
-                    territory.map((terr, i) => (
-                        <NexusTag
-                            key={uid(terr)}
-                            text={terr.country}
-                            value={terr}
-                            removeButtonText='Remove'
-                            onRemove={() => remove(terr)}
-                            onClick={() => onTagClick(i)}
-                        />
-                    ))
-                )
-                : (
-                    <CustomFieldAddText
-                        onClick={onAddClick}
-                        id={'right-create-' + name + '-button'}
-                    >
-                        Add...
-                    </CustomFieldAddText>
-                )
-            }
+            {isTableMode && getAddButton()}
+            {territory && territory.length > 0 ? getTerritories() : !isTableMode && getAddButton()}
             {renderChildren()}
             <br/>
             {mappingErrorMessage[name] && mappingErrorMessage[name].text &&
@@ -47,13 +46,15 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
     );
 }
 
-const defaultFunction = () => {};
+const defaultFunction = () => {
+};
 
 TerritoryField.defaultProps = {
     territory: [],
     renderChildren: defaultFunction,
     onTagClick: defaultFunction,
-    mappingErrorMessage: {}
+    mappingErrorMessage: {},
+    isTableMode: false
 };
 
 TerritoryField.propTypes = {
@@ -64,6 +65,7 @@ TerritoryField.propTypes = {
     onTagClick: PropTypes.func,
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,
+    isTableMode: PropTypes.bool
 };
 
 export default TerritoryField;
