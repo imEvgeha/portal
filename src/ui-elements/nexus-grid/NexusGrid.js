@@ -54,12 +54,6 @@ const NexusGrid = ({
         }
     };
 
-    const onComponeentStateChanged = data => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
     const onRowDataChanged = data => {
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
@@ -70,8 +64,8 @@ const NexusGrid = ({
 
     return (
         <div className={
-            `ag-theme-balham 
-            nexus-c-nexus-grid 
+            `ag-theme-balham
+            nexus-c-nexus-grid
             nexus-c-nexus-grid--overflow
             ${isAutoHeight(restProps) ? 'nexus-c-nexus-grid--auto-height' : ''}
         `}>
@@ -83,7 +77,6 @@ const NexusGrid = ({
                 onSelectionChanged={onSelectionChanged}
                 onCellValueChanged={onCellValueChanged}
                 onFirstDataRendered={onFirstDataRendered}
-                onComponeentStateChanged={onComponeentStateChanged}
                 onRowDataChanged={onRowDataChanged}
                 {...restProps}
             >

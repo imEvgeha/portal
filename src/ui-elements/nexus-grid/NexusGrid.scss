@@ -43,6 +43,13 @@
                 text-decoration: line-through;
             }
         }
+        .nexus-c-nexus-grid__selected {
+            &--disabled {
+                .ag-icon-checkbox-checked {
+                    pointer-events: none;
+                }
+            }
+        }
     }
 };
 

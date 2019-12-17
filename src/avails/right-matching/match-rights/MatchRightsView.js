@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
 import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import './MatchRightsView.scss';
@@ -17,7 +18,7 @@ import {
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import {URL, isObjectEmpty} from '../../../util/Common';
+import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
@@ -27,6 +28,8 @@ import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
+
+const MIN_SELECTED_ROWS = 2;
 
 function MatchRightView({
     history,
@@ -136,16 +139,21 @@ function MatchRightView({
     };
 
     // rule for adding strike through
-    const applyStrikeThroughRule = (params ={}) => {
+    const applyRowRule = (params ={}) => {
         const {node, data, api} = params || {};
         const selectedIds = getSelectedRows(api).map(el => el.id);
+        let rowClass = '';
         if (node.selected 
             && UNSELECTED_STATUSES.includes(data.status) 
-        && selectedIds[selectedIds.length - 1] !== data.id
-        && selectedIds[0] !== data.id
-           ) {
-               return 'nexus-c-nexus-grid__unselected';
-           }
+            && selectedIds[selectedIds.length - 1] !== data.id
+            && selectedIds[0] !== data.id
+        ) {
+            rowClass = `${rowClass} nexus-c-nexus-grid__unselected`;
+        }
+        if (node.selected && selectedIds.length <= MIN_SELECTED_ROWS) {
+            rowClass = `${rowClass} nexus-c-nexus-grid__selected--disabled`;
+        }
+        return rowClass;
     };
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -170,7 +178,7 @@ function MatchRightView({
                         rowSelection="multiple"
                         suppressRowClickSelection={true}
                         onGridEvent={onMatchRightGridEvent}
-                        getRowClass={applyStrikeThroughRule}
+                        getRowClass={applyRowRule}
                     />
                 )}
             </div>
@@ -180,7 +188,7 @@ function MatchRightView({
                     <EditableNexusGrid
                         columnDefs={columnDefs}
                         rowData={
-                            !isObjectEmpty(combinedRight)
+                            !isEmpty(combinedRight)
                             && matchedRights.length
                             && selectedMatchedRightIds.length > 1
                                 ? [combinedRight]
