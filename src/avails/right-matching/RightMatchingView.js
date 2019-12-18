@@ -24,11 +24,11 @@ const NexusGridWithInfiniteScrolling = compose(
 )(NexusGrid);
 
 const RightMatchingView = ({
-        createRightMatchingColumnDefs, 
-        columnDefs, 
-        history, 
-        match, 
-        storeRightMatchDataWithIds, 
+        createRightMatchingColumnDefs,
+        columnDefs,
+        history,
+        match,
+        storeRightMatchDataWithIds,
         cleanStoredRightMatchDataWithIds,
     }) => {
     const [totalCount, setTotalCount] = useState();
@@ -65,7 +65,7 @@ const RightMatchingView = ({
             let pages = {};
             pages[page] = data.data.map(e => e.id);
             const rightMatchPageData = {pages, total: data.total};
-            storeRightMatchDataWithIds({ rightMatchPageData });
+            storeRightMatchDataWithIds({rightMatchPageData});
         }
     };
 
@@ -79,7 +79,7 @@ const RightMatchingView = ({
         <div className="nexus-c-right-matching-view">
             <NexusTitle>
                 Right Matching {!!totalCount && `(${totalCount})`}
-            </NexusTitle> 
+            </NexusTitle>
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}
                 setTotalCount={setTotalCount}

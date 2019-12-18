@@ -59,3 +59,12 @@
   color:#FE6633;
 }
 
+.dashboard-card {
+  &__label-error {
+    font-size: 14px;
+    color: red;
+  }
+  &__label-info {
+    font-size: 14px;
+  }
+}
