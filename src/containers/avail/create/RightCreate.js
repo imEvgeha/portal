@@ -23,7 +23,7 @@ import {can, cannot} from '../../../ability';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
-import TerritoryField from '../components/TerritoryFiels';
+import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 

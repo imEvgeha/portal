@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import './TerritoryCellEditor.scss';
-import TerritoryField from '../../../../containers/avail/components/TerritoryFiels';
+import TerritoryField from '../../../../containers/avail/components/TerritoryField';
 import RightTerritoryFields from '../../../../components/form/RightTerritoryFields';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import Form from '@atlaskit/form';

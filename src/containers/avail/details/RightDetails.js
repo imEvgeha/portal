@@ -28,7 +28,7 @@ import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
-import TerritoryField from '../components/TerritoryFiels';
+import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
