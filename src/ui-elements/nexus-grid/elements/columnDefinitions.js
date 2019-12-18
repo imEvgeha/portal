@@ -1,4 +1,4 @@
-import {deepClone} from '../../../util/Common';
+import cloneDeep from 'lodash.clonedeep';
 
 // TODO:  create ES for column definition
 export const defineCheckboxSelectionColumn = (field = 'checkbox') => {
@@ -36,7 +36,7 @@ export const defineActionButtonColumn = (field = 'buttons', cellRendererFramewor
 };
 
 export const updateColumnDefs = (columnDefs, objectFields) => {
-    const clonedColumnDefs = deepClone(columnDefs);
+    const clonedColumnDefs = cloneDeep(columnDefs);
     const updateColumnDefs = clonedColumnDefs.map(def => {
         Object.keys(objectFields).forEach(key => def[key] = objectFields[key]);
         return def;
