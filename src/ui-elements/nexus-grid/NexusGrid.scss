@@ -23,5 +23,33 @@
             overflow: visible;
         }
     }
+
+    &.ag-theme-balham {
+        // .ag-ltr .ag-cell-focus {
+        //     border-color: #d9dcde;;
+        // }
+        //
+        // .ag-row {
+        //     background-color: #f5f7f7;
+        // }
+        //
+        // .ag-row-selected {
+        //     background-color: #fff;
+        //     border-color: #d9dcde;;
+        // }
+
+        .nexus-c-nexus-grid__unselected {
+            .ag-cell {
+                text-decoration: line-through;
+            }
+        }
+        .nexus-c-nexus-grid__selected {
+            &--disabled {
+                .ag-icon-checkbox-checked {
+                    pointer-events: none;
+                }
+            }
+        }
+    }
 };
 

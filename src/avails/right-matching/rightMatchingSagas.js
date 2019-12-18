@@ -161,7 +161,7 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_ERROR,
-            payload: error,
+            payload: {combinedRight: []},
             error: true,
         });
     }

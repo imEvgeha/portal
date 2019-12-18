@@ -10,7 +10,7 @@ import {
 const endpoint = 'rights';
 const http = Http.create();
 
-const TEMPORAL_PROP = 'excludedItems';
+const TEMPORARY_PROP = 'excludedItems';
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
@@ -42,7 +42,7 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
     const {excludedItems} = searchCriteria;
     const filteredSearchCriteria = Object.keys(searchCriteria)
         .reduce((object, key) => {
-            if (key !== TEMPORAL_PROP) {
+            if (key !== TEMPORARY_PROP) {
                 object[key] = searchCriteria[key];
             }
             return object;
@@ -53,7 +53,7 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
         `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`, 
         {paramsSerializer : encodedSerialize, params}
     ).then(response => {
-        // temporal FE handling of not equal query params
+        // temporary FE handling of not equal query params
         const updatedResponse = {
             ...response,
             data: {
@@ -75,7 +75,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
         {paramsSerializer: encodedSerialize, params}
     ).then(({data}) => {
         const {fieldSearchCriteria} = data || {};
-        // temporal FE handling for createing query params
+        // temporary FE handling for createing query params
         const fieldTypeSearchCriteria = fieldSearchCriteria.filter(({type}) => (!type || type === 'Field'));
         const groupTypeSearchCriteria = fieldSearchCriteria
             .filter(({type, operand, fields}) => type === 'Group' && operand === 'AND' && fields)
@@ -119,8 +119,8 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             query[key] = value;
             return query;
         }, {});
-        // temporal solution
-        result[TEMPORAL_PROP] = [id];
+        // temporary solution
+        result[TEMPORARY_PROP] = [id];
         return {
             data: {
                 fieldSearchCriteria: {

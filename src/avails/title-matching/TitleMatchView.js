@@ -1,6 +1,7 @@
 import React, {useEffect, useContext} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import cloneDeep from 'lodash.clonedeep';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
@@ -18,7 +19,6 @@ import NewTitleConstants from './components/create-title-form/CreateTitleFormCon
 import Constants from './titleMatchingConstants';
 import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
-import { deepClone } from '../../util/Common';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
@@ -67,7 +67,7 @@ const TitleMatchView = ({
             createColumnDefs();
         }
     }, [columnDefs]);
-    let deepCloneRightColumnDefs = deepClone(rightColumns);
+    let deepCloneRightColumnDefs = cloneDeep(rightColumns);
     let updatedRightColumnDefs;
     if(focusedRight && focusedRight.contentType === 'Episode') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
