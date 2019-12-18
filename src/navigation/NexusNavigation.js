@@ -9,20 +9,33 @@ import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
-import {SETTINGS} from './constants';
+import {AVAILS, MEDIA, METADATA, SETTINGS} from './constants';
+import {Can} from '../ability';
+
+const idToAbilityNameMap = {
+    [AVAILS]: 'Avail',
+    [METADATA]: 'Metadata',
+    [MEDIA]: 'AssetManagement',
+};
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     if (DropdownItems) {
         return (
-            <GlobalItemWithDropdown
-                trigger={({isOpen}) => (
-                    <GlobalItem isSelected={isOpen} {...itemProps} />
-                )}
-                items={<DropdownItems />}
-            />
+            <Can do="read" on={idToAbilityNameMap[itemProps.id]}>
+                <GlobalItemWithDropdown
+                    trigger={({isOpen}) => (
+                        <GlobalItem isSelected={isOpen} {...itemProps} />
+                    )}
+                    items={<DropdownItems />}
+                />
+            </Can>
         );
     }
-    return <GlobalItem {...itemProps} />;
+    return (
+        <Can do="read" on={idToAbilityNameMap[itemProps.id]}>
+            <GlobalItem {...itemProps} />
+        </Can>
+    );
 };
 
 const NexusNavigation = ({history, profileInfo}) => {
