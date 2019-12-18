@@ -12,7 +12,7 @@ import './WeAre138.scss'; // TODO: file name ???
 import './global.scss'; // TODO; refactor this
 import configureStore from './store';
 import rootSaga from './saga';
-import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from './stores/index';
+import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
 import AppLayout from './layout/AppLayout';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
@@ -22,13 +22,14 @@ import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
 import {authRefreshToken, storeAuthCredentials} from './auth/authActions';
 import {getAccessToken, getRefreshToken} from './auth/authService';
+import {loadProfileInfo} from './stores/actions';
 import KeycloakAuth from './auth/authKeycloak';
 
 config.set(defaultConfiguration, {freeze: false});
 
 // set environment variables
-axios.get('/configQA.json').then(response => {
-// axios.get('/config.json').then(response => {
+// axios.get('/configQA.json').then(response => {
+axios.get('/config.json').then(response => {
     if (isObject(response.data)) {
         config.set(mergeDeep(JSON.parse(config.serialize()), response.data), {freeze: true});
     } else {
@@ -46,25 +47,7 @@ axios.get('/configQA.json').then(response => {
     );
 });
 
-<<<<<<< HEAD
-
-import Keycloak from './vendor/keycloak';
-import configureStore from './store';
-import rootSaga from './saga';
-import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
-import AppLayout from './layout/AppLayout';
-import {loadProfileInfo} from './stores/actions';
-import {isObject, mergeDeep} from './util/Common';
-import {updateAbility} from './ability';
-import NexusToastNotificationProvider from './ui-elements/nexus-toast-notification/NexusToastNotificationProvider';
-import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
-import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
-import CustomIntlProvider from './layout/CustomIntlProvider';
-
-export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
-=======
->>>>>>> add login-required to keycloak
 const history = createBrowserHistory();
 // temporary export -> we should not export store
 export const store = configureStore({}, history);
@@ -84,7 +67,7 @@ const app = (
     </Provider>
 );
 const KEYCLOAK_INIT_OPTIONS = {
-    onLoad: 'check-sso',
+    onLoad: 'login-required',
     promiseType: 'native',
 };
 
@@ -95,7 +78,6 @@ function init() {
     const token = getAccessToken();
     const refreshToken = getRefreshToken(); 
     keycloak.init({...KEYCLOAK_INIT_OPTIONS, token, refreshToken}).then(authenticated => {
-        console.log(authenticated)
         if (authenticated) {
             const {realmAccess, token, refreshToken} = keycloak;
             const {roles} = realmAccess || {};
