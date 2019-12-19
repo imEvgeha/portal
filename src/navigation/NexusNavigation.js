@@ -10,13 +10,13 @@ import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
-import {SETTINGS} from './constants';
+import {SETTINGS, backgroundColor} from './constants';
 
 
 const customThemeMode = modeGenerator({
     product: {
         text: colors.N0,
-        background: '#424242',
+        background: backgroundColor,
     },
 });
 
