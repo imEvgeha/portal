@@ -20,21 +20,32 @@ const idToAbilityNameMap = {
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     if (DropdownItems) {
+        const ItemWithDropdown = () => (
+            <GlobalItemWithDropdown
+                trigger={({isOpen}) => (
+                    <GlobalItem isSelected={isOpen} {...itemProps} />
+                )}
+                items={<DropdownItems />}
+            />
+        );
         return (
-            <Can do="read" on={idToAbilityNameMap[itemProps.id]}>
-                <GlobalItemWithDropdown
-                    trigger={({isOpen}) => (
-                        <GlobalItem isSelected={isOpen} {...itemProps} />
-                    )}
-                    items={<DropdownItems />}
-                />
-            </Can>
+            idToAbilityNameMap[itemProps.id]
+                ? (
+                    <Can do="read" on={idToAbilityNameMap[itemProps.id]}>
+                        <ItemWithDropdown />
+                    </Can>
+                )
+                : <ItemWithDropdown />
         );
     }
     return (
-        <Can do="read" on={idToAbilityNameMap[itemProps.id]}>
-            <GlobalItem {...itemProps} />
-        </Can>
+        idToAbilityNameMap[itemProps.id]
+            ? (
+                <Can do="read" on={idToAbilityNameMap[itemProps.id] || null}>
+                    <GlobalItem {...itemProps} />
+                </Can>
+            )
+            : <GlobalItem {...itemProps} />
     );
 };
 
