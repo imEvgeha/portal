@@ -6,7 +6,10 @@ import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './NexusGrid.scss';
-LicenseManager.setLicenseKey('QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074');
+
+// TODO: it should be inside env file when we create it
+const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
+LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
 const NexusGrid = ({
     columnDefs,
@@ -15,7 +18,7 @@ const NexusGrid = ({
     // rowHeight,
     handleSelectionChange,
     onGridEvent,
-    ...restProps,
+    ...restProps
 }) => {
     const onGridReady = params => {
         if (typeof onGridEvent === 'function') {
@@ -51,12 +54,18 @@ const NexusGrid = ({
         }
     };
 
+    const onRowDataChanged = data => {
+        if (typeof onGridEvent === 'function') {
+            onGridEvent(data);
+        }
+    };
+
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
     return (
         <div className={
-            `nexus-c-nexus-grid 
-            ag-theme-balham 
+            `ag-theme-balham
+            nexus-c-nexus-grid
             nexus-c-nexus-grid--overflow
             ${isAutoHeight(restProps) ? 'nexus-c-nexus-grid--auto-height' : ''}
         `}>
@@ -68,6 +77,7 @@ const NexusGrid = ({
                 onSelectionChanged={onSelectionChanged}
                 onCellValueChanged={onCellValueChanged}
                 onFirstDataRendered={onFirstDataRendered}
+                onRowDataChanged={onRowDataChanged}
                 {...restProps}
             >
             </AgGridReact> 

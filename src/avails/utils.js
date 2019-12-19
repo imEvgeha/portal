@@ -51,7 +51,7 @@ export const getRepositoryCell = () => {
     };
 };
 
-export function createLinkableCellRenderer(params) {
+export function createLinkableCellRenderer(params, location = '/metadata/detail/') {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
@@ -87,7 +87,7 @@ export function createLinkableCellRenderer(params) {
             ` : ''}
         </div>`;
         return `
-            <a href=${'/metadata/detail/' + data.id} target="_blank" />
+            <a href=${location + data.id} target="_blank" />
                 ${displayValue}
             </a>`;
     }
