@@ -21,6 +21,9 @@ const customThemeMode = modeGenerator({
 });
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
+    const {id} = itemProps;
+    const abilityLocationName = idToAbilityNameMap[id];
+
     if (DropdownItems) {
         const ItemWithDropdown = () => (
             <GlobalItemWithDropdown
@@ -31,9 +34,9 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
             />
         );
         return (
-            idToAbilityNameMap[itemProps.id]
+            abilityLocationName
                 ? (
-                    <Can do="read" on={idToAbilityNameMap[itemProps.id]}>
+                    <Can do="read" on={abilityLocationName}>
                         <ItemWithDropdown />
                     </Can>
                 )
@@ -41,9 +44,9 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
         );
     }
     return (
-        idToAbilityNameMap[itemProps.id]
+        abilityLocationName
             ? (
-                <Can do="read" on={idToAbilityNameMap[itemProps.id] || null}>
+                <Can do="read" on={abilityLocationName}>
                     <GlobalItem {...itemProps} />
                 </Can>
             )
