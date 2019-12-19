@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
+import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import './MatchRightsView.scss';
@@ -16,10 +18,15 @@ import {
 } from '../rightMatchingActions';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import {URL, isObjectEmpty} from '../../../util/Common';
+import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import {defineCheckboxSelectionColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+
+const UNSELECTED_STATUSES = ['Pending', 'Error'];
+const MIN_SELECTED_ROWS = 2;
 
 const EditableNexusGrid = withEditableColumns()(NexusGrid);
 
@@ -40,7 +47,8 @@ function MatchRightView({
     const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
-    const {availHistoryIds, rightId} = params || {};
+    const {availHistoryIds, rightId, matchedRightIds} = params || {};
+    const [selectedMatchedRightIds, setSelectedMatchedRightIds] = useState([rightId, ...matchedRightIds.split(',')]);
 
     // DOP Integration
     useDOPIntegration(null, 'rightMatchingDOP');
@@ -52,18 +60,21 @@ function MatchRightView({
     }, [columnDefs]);
 
     useEffect(() => {
-        const {params} = match || {};
-        const {rightId, matchedRightIds} = params || {};
         if (rightId && matchedRightIds && columnDefs.length) {
             if (!focusedRight || (focusedRight.id !== rightId)) {
                 fetchFocusedRight(rightId);
             }
-            const matchedRightList = matchedRightIds.split(',');
-            fetchMatchedRight(matchedRightList);
-            // matchedRightId from url should be correct one.
-            fetchCombinedRight([rightId, ...matchedRightList]);
+            fetchMatchedRight(matchedRightIds.split(','));
         }
-    },[match.params.matchedRightIds, match.params.rightId, columnDefs.length]);
+    }, [matchedRightIds, rightId, columnDefs.length]);
+
+    // fetch combined rights
+    useEffect(() => {
+        if (matchedRights.length) {
+            // matchedRightId from url should be correct one.
+            fetchCombinedRight(selectedMatchedRightIds);
+        }
+    }, [matchedRights, selectedMatchedRightIds]);
 
     useEffect(() => {
         if (combinedRight) {
@@ -84,35 +95,72 @@ function MatchRightView({
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
         setSaveButtonDisabled(true);
         const payload = {
-            rightIds: [rightId, ...matchedRightIds.split(',')],
-            combinedRight,
+            rightIds: selectedMatchedRightIds,
+            combinedRight: editedCombinedRight ? editedCombinedRight : combinedRight,
             redirectPath,
         };
-        // TODO: fix this
-        if (editedCombinedRight) {
-            saveCombinedRight({...payload, combinedRight: editedCombinedRight});
-            return;
-        }
         saveCombinedRight(payload);
     };
 
     // Sorted by start field. desc
-    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(b.originallyReceivedAt).diff(moment.utc(a.originallyReceivedAt)));
+    const matchedRightRowData = [focusedRight, ...matchedRights].sort((a,b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt))) || [];
 
     const handleGridEvent = ({type, api}) => {
         let result = [];
-        // TODO: add all grid event to constant
-        if (type === 'cellValueChanged') {
+        if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);
         }
     };
 
+    const onMatchRightGridEvent = ({type, api}) => {
+        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
+            api.selectAll();
+        } else if (type === GRID_EVENTS.SELECTION_CHANGED) {
+            const selectedRows = api.getSelectedRows() || [];
+            const selectedIds = selectedRows.map(el => el.id);
+            if (!isEqual(selectedIds, selectedMatchedRightIds)) {
+                setSelectedMatchedRightIds(selectedIds);
+            }
+            // TODO: it would be better to apply via refreshCell, but it isn't working
+            api.redrawRows();
+        }
+    };
+
+    const getSelectedRows = api => {
+        const selectedRows = api.getSelectedRows() || [];
+        return selectedRows;
+    };
+
+    // rule for row (disable unselect, add strike through line)
+    const applyRowRule = (params ={}) => {
+        const {node, data, api} = params || {};
+        const selectedIds = getSelectedRows(api).map(el => el.id);
+        if (node.selected) {
+            let rowClass = '';
+            if (UNSELECTED_STATUSES.includes(data.status)
+                && selectedIds[selectedIds.length - 1] !== data.id
+                && selectedIds[0] !== data.id
+            ) {
+                rowClass = `${rowClass} nexus-c-nexus-grid__unselected`;
+            }
+
+            if (selectedIds.length <= MIN_SELECTED_ROWS) {
+                rowClass = `${rowClass} nexus-c-nexus-grid__selected--disabled`;
+            }
+
+            return rowClass;
+        }
+    };
+
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+    const matchedRightColumnDefs = columnDefs.length  && matchedRightRowData.length > 1 ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+
     return (
         <div className="nexus-c-match-right-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/> 
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
                 <span>Right Matching Preview</span>
             </NexusTitle>
@@ -120,9 +168,13 @@ function MatchRightView({
                 <NexusTitle isSubTitle>Matched Rights</NexusTitle>
                 {!!columnDefs && (
                     <NexusGrid
-                        columnDefs={columnDefs}
-                        rowData={matchedRightRowData}
+                        columnDefs={matchedRightColumnDefs}
+                        rowData={matchedRightIds.split(',').length === matchedRights.length ? matchedRightRowData : []}
                         domLayout="autoHeight"
+                        rowSelection="multiple"
+                        suppressRowClickSelection={true}
+                        onGridEvent={onMatchRightGridEvent}
+                        getRowClass={applyRowRule}
                     />
                 )}
             </div>
@@ -131,7 +183,11 @@ function MatchRightView({
                 {!!columnDefs && (
                     <EditableNexusGrid
                         columnDefs={columnDefs}
-                        rowData={isObjectEmpty(combinedRight) ? [] : [combinedRight]}
+                        rowData={
+                            !isEmpty(combinedRight) && matchedRights.length === matchedRightIds.split(',').length
+                                ? [combinedRight]
+                                : []
+                        }
                         onGridEvent={handleGridEvent}
                         mapping={mapping}
                         domLayout="autoHeight"
@@ -140,7 +196,7 @@ function MatchRightView({
             </div>
             <div className="nexus-c-match-right-view__buttons">
                 <ButtonGroup>
-                    <Button 
+                    <Button
                         onClick={onCancel}
                         className="nexus-c-button"
                     >

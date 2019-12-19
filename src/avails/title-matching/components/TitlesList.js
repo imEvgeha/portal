@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
+import cloneDeep from 'lodash.clonedeep';
 import {Checkbox} from '@atlaskit/checkbox';
 import { Radio } from '@atlaskit/radio';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
@@ -11,7 +12,6 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
-import {deepClone} from '../../../util/Common';
 import {titleService} from '../../../containers/metadata/service/TitleService';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleServiceManager.doSearch})(NexusGrid));
@@ -107,7 +107,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     }; 
     
     
-    let deepCloneColumnDefs = deepClone(columnDefs);
+    let deepCloneColumnDefs = cloneDeep(columnDefs);
     const handleTitleMatchingRedirect = params => {
         return createLinkableCellRenderer(params);
     };

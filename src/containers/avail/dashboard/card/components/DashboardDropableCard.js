@@ -1,4 +1,4 @@
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import './DashboardCard.scss';
 import Dropzone from 'react-dropzone';
@@ -8,11 +8,16 @@ import config from 'react-global-configuration';
 
 
 export default class DashboardDropableCard extends React.Component {
+    static defaultProps = {
+        status: null
+    };
+
     static propTypes = {
-        loading: t.bool,
-        bsStyle: t.string,
-        type: t.string,
-        externalId:t.string
+        loading: PropTypes.bool,
+        bsStyle: PropTypes.string,
+        type: PropTypes.string,
+        externalId: PropTypes.string,
+        status: PropTypes.string
     };
 
     DELAY_AFTER_LOADED = 3000;
@@ -24,7 +29,8 @@ export default class DashboardDropableCard extends React.Component {
             error: '',
             files: [],
             file: null,
-            total: 0
+            total: 0,
+            fileUploadedPercentage: 0
 
         };
         this.handleUpload = this.handleUpload.bind(this);
@@ -45,13 +51,19 @@ export default class DashboardDropableCard extends React.Component {
             this.sentUploadedFile(currentFile, files);
         } else {
             this.setState({file: null});
-            this.uploadFinished();
+            setTimeout(() => {
+                this.uploadFinished();
+            }, 3000);
             // console.log('Send next file, finished');
         }
     }
 
+    updateFileUploadedPercentage = (percentage) => {
+        this.setState({fileUploadedPercentage: percentage});
+    }
+
     sentUploadedFile(currentFile, files) {
-        uploadService.uploadAvail(currentFile, this.props.externalId).then(() => {
+        uploadService.uploadAvail(currentFile, this.props.externalId, this.updateFileUploadedPercentage).then(() => {
             // console.log(res);
             setTimeout(() => this.uploadFiles(files), 1000);
         }).catch((e) => {
@@ -69,9 +81,17 @@ export default class DashboardDropableCard extends React.Component {
         setTimeout(() => this.setState({uploading: false}), this.DELAY_AFTER_LOADED);
     }
 
+    getUploadedPercentage = () => {
+        return this.state.fileUploadedPercentage;
+    }
+
+    getProcessStatus = (status) => {
+        if(status === 'PENDING') return 'Processing';      
+    }
+
     render() {
         const renderUploadingInfo = (file) => (
-            file ? 'Uploading: ' + file.name : 'Upload finished'
+            file ? 'Uploading: ' + file.name : this.props.status ? this.getProcessStatus(this.props.status) : 'Uploading finished'
         );
 
         const renderUploadingError = (error, file) => (
@@ -81,6 +101,7 @@ export default class DashboardDropableCard extends React.Component {
 
         return (
             <Dropzone
+                disabled={this.state.uploading}
                 className="dashboard-card-container"
                 accept={config.get('avails.upload.extensions')}
                 disableClick={true}
@@ -91,10 +112,17 @@ export default class DashboardDropableCard extends React.Component {
                 </div>
                 <div className="dashboard-card-title">
                     { !this.state.uploading && 'Drag files to upload or'}
-                    { this.state.uploading && ( this.state.error ? renderUploadingError(this.state.error, this.state.file) : renderUploadingInfo(this.state.file))}
                 </div>
-                { this.state.uploading && <Progress animated={!!this.state.file} value={100 - this.state.files.length * 100 / this.state.total} />}
-                { !this.state.uploading && <button className="btn btn-primary dashboard-card-btn" id={'avails-dashboard-upload-btn'} onClick={() => this.dropZoneRef.open()}>Browse files</button>}
+                { this.state.uploading && (
+                    <React.Fragment>
+                        <div className="text-center">{this.getUploadedPercentage()}%</div>
+                        <Progress value={this.getUploadedPercentage()} />
+                    </React.Fragment>
+                )}
+                { !this.state.uploading && <button className="btn btn-primary dashboard-card-btn" id={'avails-dashboard-upload-btn'} onClick={() => this.dropZoneRef.open()}>Browse files</button>}                
+                { this.state.uploading && ( this.state.error ? 
+                    <span className="dashboard-card__label-error">{renderUploadingError(this.state.error, this.state.file)}</span> : 
+                    <span className="dashboard-card__label-info">{renderUploadingInfo(this.state.file)}</span>)}
             </Dropzone>
         );
     }

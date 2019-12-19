@@ -3,13 +3,14 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {DropdownItemGroup, DropdownItem} from '@atlaskit/dropdown-menu';
-import {GlobalNav, GlobalItem} from '@atlaskit/navigation-next';
+import {GlobalNav, GlobalItem, ThemeProvider, modeGenerator} from '@atlaskit/navigation-next';
 import Avatar from '@atlaskit/avatar';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
+import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
-import {AVAILS, MEDIA, METADATA, SETTINGS} from './constants';
+import {AVAILS, MEDIA, METADATA, SETTINGS, backgroundColor} from './constants';
 import {Can} from '../ability';
 
 const idToAbilityNameMap = {
@@ -17,6 +18,13 @@ const idToAbilityNameMap = {
     [METADATA]: 'Metadata',
     [MEDIA]: 'AssetManagement',
 };
+
+const customThemeMode = modeGenerator({
+    product: {
+        text: colors.N0,
+        background: backgroundColor,
+    },
+});
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     if (DropdownItems) {
@@ -68,33 +76,38 @@ const NexusNavigation = ({history, profileInfo}) => {
     );
 
     return (
-        <GlobalNav
-            itemComponent={ItemComponent}
-            primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
-            secondaryItems={[
-                {
-                    icon: EditorSettingsIcon,
-                    id: SETTINGS,
-                    tooltip: SETTINGS,
-                    isSelected: (selectedItem === SETTINGS),
-                    onClick: () => handleClick(SETTINGS),
-                },
-                {
-                    // eslint-disable-next-line react/prop-types
-                    component: ({onClick}) => (
-                        <Avatar
-                            borderColor="transparent"
-                            size="medium"
-                            name={profileInfo.name}
-                            onClick={onClick}
-                        />
-                    ),
-                    dropdownItems: AccountDropdownItems,
-                    id: 'profile',
-                    icon: null,
-                },
-            ]}
-        />
+        <ThemeProvider theme={theme => ({
+            ...theme,
+            mode: customThemeMode
+        })}>
+            <GlobalNav
+                itemComponent={ItemComponent}
+                primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
+                secondaryItems={[
+                    {
+                        icon: EditorSettingsIcon,
+                        id: SETTINGS,
+                        tooltip: SETTINGS,
+                        isSelected: (selectedItem === SETTINGS),
+                        onClick: () => handleClick(SETTINGS),
+                    },
+                    {
+                        // eslint-disable-next-line react/prop-types
+                        component: ({onClick}) => (
+                            <Avatar
+                                borderColor="transparent"
+                                size="medium"
+                                name={profileInfo.name}
+                                onClick={onClick}
+                            />
+                        ),
+                        dropdownItems: AccountDropdownItems,
+                        id: 'profile',
+                        icon: null,
+                    },
+                ]}
+            />
+        </ThemeProvider>
     );
 };
 
