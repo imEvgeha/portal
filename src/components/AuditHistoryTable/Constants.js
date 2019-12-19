@@ -78,20 +78,8 @@ export default {
             headerName: 'License Type',
         },
         {
-            field: 'licenseCategory',
-            headerName: 'License Category',
-        },
-        {
             field: 'format',
             headerName: 'Format',
-        },
-        {
-            field: 'wsp',
-            headerName: 'WSP',
-        },
-        {
-            field: 'licenseStatus',
-            headerName: 'License Status',
         },
     ],
     HEADER_ROW: {
