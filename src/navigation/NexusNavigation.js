@@ -10,14 +10,8 @@ import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
-import {AVAILS, MEDIA, METADATA, SETTINGS, backgroundColor} from './constants';
-import {Can} from '../ability';
-
-const idToAbilityNameMap = {
-    [AVAILS]: 'Avail',
-    [METADATA]: 'Metadata',
-    [MEDIA]: 'AssetManagement',
-};
+import {SETTINGS, backgroundColor} from './constants';
+import {Can, idToAbilityNameMap} from '../ability';
 
 const customThemeMode = modeGenerator({
     product: {
