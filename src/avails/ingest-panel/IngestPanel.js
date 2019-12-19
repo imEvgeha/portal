@@ -48,7 +48,7 @@ const IngestPanel = () => {
             <div className='ingest-panel__ingest-header'>
                 <div className='ingest-panel__ingest-header__title'>
                     <AvailsIcon />
-                    <div>Avails Ingest</div>
+                    <div>Avails</div>
                 </div>
                 <div className='ingest-panel__ingest-header__actions'>
                     <PopOutIcon

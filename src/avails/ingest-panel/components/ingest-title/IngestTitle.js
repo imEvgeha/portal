@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Constants from '../../Constants';
 import Email from '../../../../assets/email.svg';
 import File from '../../../../assets/file.svg';
-import FilterSolid from '../../../../assets/filter-solid.svg';
+import StatusInfo from '../../../../assets/status-info.svg';
 import './IngestTitle.scss';
 
 const IngestTitle = ({provider, link, ingestType}) => {
@@ -23,7 +23,7 @@ const IngestTitle = ({provider, link, ingestType}) => {
                 }
                 <span className='ingest-title--filename'>{fileName}</span>
             </span>
-            <FilterSolid/>
+            <StatusInfo/>
         </div>
     );
 };

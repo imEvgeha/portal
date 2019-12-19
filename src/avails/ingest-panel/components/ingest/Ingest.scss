@@ -1,0 +1,30 @@
+.avail-ingest {
+  padding: 12px;
+  border: 1px solid #737E91;
+  &__details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    svg {
+      width: 15px;
+      height: 15px;
+      fill: #A5ADBA;
+    }
+    &--open {
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+  &__error-message{
+    font-size: 11px;
+    color: #DE350B;
+    margin-top: 10px;
+  }
+  .ingest-report {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+}
