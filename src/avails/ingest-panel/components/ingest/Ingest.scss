@@ -1,0 +1,38 @@
+.avail-ingest {
+  padding: 12px;
+  border: 1px solid #737E91;
+  background: #FFFFFF;
+  &.selected {
+    background: #E0ECF7;
+    &:hover {
+      background: #E0ECF7;
+    }
+  }
+  &:hover {
+    background: #FAFAFA;
+  }
+  &__details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    svg {
+      width: 15px;
+      height: 15px;
+      fill: #A5ADBA;
+      cursor: pointer;
+    }
+    &--open {
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+  .ingest-report{
+    width: 100%;
+    margin-top: 15px;
+    &__fields {
+      justify-content: space-between;
+    }
+  }
+}
