@@ -8,6 +8,9 @@ import Button from '@atlaskit/button/dist/cjs/components/Button';
 import Form from '@atlaskit/form';
 import {getProperTerritoryFormValues} from '../../../../components/form/utils';
 import {connect} from 'react-redux';
+import RightTerritoryFormSchema from '../../../../components/form/RightTerritoryFormSchema';
+import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
+import {NexusModalContext} from '../../../../ui-elements/nexus-modal/NexusModal';
 
 class TerritoryCellEditor extends Component {
     static propTypes = {
@@ -22,6 +25,8 @@ class TerritoryCellEditor extends Component {
         isOpen: false
     };
 
+    static contextType = NexusModalContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -35,63 +40,8 @@ class TerritoryCellEditor extends Component {
 
     getValue = () => this.state.value;
 
-    // handleChange = (value) => {
-    //     this.setState({value});
-    // };
-
-    onRemove = (territory) => {
-        const value = this.state.value.filter(t => !isEqual(t, territory));
+    handleChange = (value) => {
         this.setState({value});
-    };
-
-    onClick = (territoryIndex) => {
-        this.setState({territoryIndex});
-    };
-
-    onAddClick = () => {
-        this.setState({territoryIndex: -1});
-    };
-
-    onSubmitForm = (territory, index) => {
-        let newTerritories = this.state.value.slice(0);
-        const isEdit = !isNaN(index) && index > -1;
-        const formattedTerritory = getProperTerritoryFormValues(territory, isEdit, this.state.value, index);
-        if(isEdit) {
-            newTerritories[index] = formattedTerritory;
-        } else {
-            newTerritories.push(territory);
-        }
-        this.setState({value: newTerritories});
-        this.hideTerritoryForm();
-    };
-
-    hideTerritoryForm = () => {
-        this.setState({territoryIndex: null});
-    };
-
-    renderTerritoryCreateEditFrom = (index, isEdit = false,) => {
-        return (
-            <Form id={'find-me'} onSubmit={(territory) => this.onSubmitForm(territory, index)}>
-                {({formProps}) => (
-                    <form {...formProps}>
-                        <RightTerritoryFields
-                            options={this.getOptions()}
-                            isEdit={isEdit}
-                            existingTerritoryList={this.getValue()}
-                            territoryIndex={index}
-                            />
-                        <Button appearance="default" onClick={() => {
-                            this.hideTerritoryForm();
-                        }}>
-                            Cancel
-                        </Button>
-                        <Button appearance="primary" type="submit">
-                            {isEdit ? 'Update' : 'Create'}
-                        </Button>
-                    </form>
-                )}
-            </Form>
-        );
     };
 
     getOptions = () => {
@@ -110,15 +60,13 @@ class TerritoryCellEditor extends Component {
 
         return (
             <div className="nexus-c-territory-cell-editor">
-                <TerritoryField
-                    territory={value}
-                    name={'territory-cell'}
-                    onRemoveClick={(terr) => this.onRemove(terr)}
-                    onAddClick={this.onAddClick}
-                    onTagClick={this.onClick}
-                    isTableMode={true}
+                <NexusMultiInstanceField
+                    existingItems={value}
+                    onSubmit={this.handleChange}
+                    schema={RightTerritoryFormSchema(this.getOptions())}
+                    keyForTagLabel="country"
+                    useModal={false}
                 />
-                {territoryIndex !== null && this.renderTerritoryCreateEditFrom(territoryIndex, territoryIndex > -1)}
             </div>
         );
     }

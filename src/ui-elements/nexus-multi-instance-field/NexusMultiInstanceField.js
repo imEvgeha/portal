@@ -22,10 +22,12 @@ const NexusMultiInstanceField = ({
     isReadOnly,
     onSubmit,
     onConfirm,
+    useModal
 }) => {
     const [items, setItems] = useState(existingItems);
     const [editIndex, setEditIndex] = useState(-1);
     const [formValue, setFormValue] = useState({});
+    const [inlineEdit, setInlineEdit] = useState(null);
     const {setModalContent, setModalActions, close}= useContext(NexusModalContext);
 
     useEffect(() => setItems(existingItems), [existingItems]);
@@ -50,11 +52,21 @@ const NexusMultiInstanceField = ({
             </>
         );
 
-        setModalActions([
-            {text: 'Cancel', onClick: () => {setEditIndex(-1); setFormValue({}); close();}},
-            {text: 'Submit', onClick: callback}
-        ]);
-        setModalContent(content);
+        if(useModal) {
+            setModalActions([
+                {
+                    text: 'Cancel', onClick: () => {
+                        setEditIndex(-1);
+                        setFormValue({});
+                        close();
+                    }
+                },
+                {text: 'Submit', onClick: callback}
+            ]);
+            setModalContent(content);
+        }else{
+            setInlineEdit(content);
+        }
     };
 
     // Filters out the item at given index
@@ -86,7 +98,12 @@ const NexusMultiInstanceField = ({
         setItems(itemsClone);
         setEditIndex(-1);
         setFormValue({});
-        close();
+
+        if(useModal){
+            close();
+        }else{
+            setInlineEdit(null);
+        }
     };
 
     const submitNewItem = () => {
@@ -99,7 +116,11 @@ const NexusMultiInstanceField = ({
 
         setItems(combinedItems);
         setFormValue({});
-        close();
+        if(useModal){
+            close();
+        }else{
+            setInlineEdit(null);
+        }
     };
 
     const MultiInstanceField = (isReadOnly) => (
@@ -175,6 +196,7 @@ const NexusMultiInstanceField = ({
                 />)
                 : MultiInstanceField(isReadOnly)
             }
+            {inlineEdit}
         </>
     );
 };
@@ -187,6 +209,7 @@ NexusMultiInstanceField.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     onConfirm: PropTypes.func,
+    useModal: PropTypes.bool
 };
 
 NexusMultiInstanceField.defaultProps = {
@@ -194,6 +217,7 @@ NexusMultiInstanceField.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     onConfirm: () => null,
+    useModal: true
 };
 
 export default NexusMultiInstanceField;
