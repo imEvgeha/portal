@@ -1,4 +1,4 @@
-import React from 'react';
+import cloneDeep from 'lodash.clonedeep';
 import createValueFormatter from '../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import Constants from './title-matching/titleMatchingConstants';
 import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -94,65 +94,38 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
     return null;
 }
 
-// rule for row (disable unselect, add strike through line) on matching rights
-const applyRowRule = (params = {}, constants) => {
-    const {UNSELECTED_STATUSES, MIN_SELECTED_ROWS} = constants;
-    const {node, data, api} = params || {};
-    const selectedRows = api.getselectedrows() || [];
-    const selectedIds = selectedRows.map(el => el.id);
+export const createSchemaForColoring = (rightList, columnDefs) => {
+    const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
+        const values = rightList.map(el => el[field]);
+        const occurence = values.reduce((o, v) => {
+            const value = JSON.stringify(v);
+            o[value] = (o[value] || 0) + 1;
+            return o;
+        }, {});
 
-    if (node.selected) {
-        let rowClass = '';
-
-        if (UNSELECTED_STATUSES.includes(data.status)
-            && selectedIds[selectedIds.length - 1] !== data.id
-            && selectedIds[0] !== data.id
-        ) {
-            rowClass = `${rowClass} nexus-c-nexus-grid__unselected`;
-        }
-
-        if (selectedIds.length <= MIN_SELECTED_ROWS) {
-            rowClass = `${rowClass} nexus-c-nexus-grid__selected--disabled`;
-        }
-
-        return rowClass;
-    }
-};
-
-// rule for column coloring
-const applyColumnRule = ({node, data, colDef, api, value}, rightList, ref, constants) => {
-    const {FIELDS_WITHOUT_COLOURING, UNSELECTED_STATUSES} = constants;
-    const selectedRows = api.getselectedrows() || [];
-    const selectedIds = selectedRows.map(el => el.id);
-
-    if (selectedIds.includes(data.id)
-        && !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
-        && !(UNSELECTED_STATUSES.includes(data.status)
-            && (selectedIds[selectedIds.length - 1] !== data.id && selectedIds[0] !== data.id)
-        )
-    ) {
-        const columnValuesCounter = rightList
-            .map(el => el[colDef.field])
-            .filter(Boolean)
-            .reduce((object, value) => {
-                const val = JSON.stringify(value);
-                object[val] = (object[val] || 0) + 1;
-                return object;
-            }, {});
-
-        const sortByOccurrence = Object.keys(columnValuesCounter).sort((a, b) => {
-            return columnValuesCounter[a] < columnValuesCounter[b];
+        const sortByOccurrence = Object.keys(occurence).sort((a, b) => {
+            return occurence[a] < occurence[b];
         }) || [];
 
-        const numberOfMaxValues = Object.values(columnValuesCounter)
-            .filter(el => sortByOccurrence && el === columnValuesCounter[sortByOccurrence[0]]) || [];
+        const sortedValues = sortByOccurrence.reduce((o, v) => {
+            o[v] = occurence[v];
+            return o;
+        }, {});
 
-        if (!sortByOccurrence.length || sortByOccurrence.length === 1) {
-            return;
-        } else if (!isEqual(JSON.stringify(value), sortByOccurrence[0]) || numberOfMaxValues.length > 1) {
-            ref.current = [...ref.current, colDef.field];
-            return 'nexus-c-match-right-view__grid-column--highlighted';
+        // additonal rules
+        if (Object.values(sortedValues).length > 1 
+            && Object.values(sortedValues).filter((el, i, arr) => el === arr[0]).length > 1
+        ) {
+            acc[field] = {
+                field,
+                occurence: sortedValues,
+            };
         }
-    }
+
+        return acc;
+
+    }, {});
+
+    return schema;
 };
 

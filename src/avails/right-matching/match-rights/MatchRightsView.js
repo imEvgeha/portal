@@ -27,6 +27,7 @@ import {
     updateColumnDefs
 } from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+// import {createSchemaForColoring} from '../../utils';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -187,6 +188,25 @@ function MatchRightView({
             }
         }
     };
+
+    // TODO: tets this before apply
+    // const schema = !isEmpty(focusedRight) 
+    //     && !isEmpty(matchedRights) 
+    //     && createSchemaForColoring([focusedRight, ...matchedRights], columnDefs);
+    //
+    // const applyColumnRule1 = ({data, colDef, api, value}) => {
+    //     const selectedIds = getSelectedRows(api).map(el => el.id);
+    //     if (selectedIds.includes(data.id)
+    //         && !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
+    //     && !(UNSELECTED_STATUSES.includes(data.status)
+    //          && (selectedIds[selectedIds.length - 1] !== data.id && selectedIds[0] !== data.id)
+    //         )
+    //     ) {
+    //         if (schema[colDef.field] && !isEqual(Object.keys(schema[colDef.field].occurence)[0], JSON.stringify(value))) {
+    //             return 'nexus-c-match-right-view__grid-column--highlighted';
+    //         };
+    //     }
+    // };
 
     // Sorted by start field. desc
     const matchedRightRowData = [focusedRight, ...matchedRights]

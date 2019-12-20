@@ -23,7 +23,7 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
 
 export const getCombinedRight = (rightIds) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`
     );
 };
 
