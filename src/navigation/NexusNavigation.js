@@ -11,7 +11,7 @@ import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
 import {SETTINGS, backgroundColor} from './constants';
-
+import {Can, idToAbilityNameMap} from '../ability';
 
 const customThemeMode = modeGenerator({
     product: {
@@ -21,8 +21,11 @@ const customThemeMode = modeGenerator({
 });
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
+    const {id} = itemProps;
+    const abilityLocationName = idToAbilityNameMap[id];
+
     if (DropdownItems) {
-        return (
+        const ItemWithDropdown = () => (
             <GlobalItemWithDropdown
                 trigger={({isOpen}) => (
                     <GlobalItem isSelected={isOpen} {...itemProps} />
@@ -30,8 +33,25 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
                 items={<DropdownItems />}
             />
         );
+        return (
+            abilityLocationName
+                ? (
+                    <Can do="read" on={abilityLocationName}>
+                        <ItemWithDropdown />
+                    </Can>
+                )
+                : <ItemWithDropdown />
+        );
     }
-    return <GlobalItem {...itemProps} />;
+    return (
+        abilityLocationName
+            ? (
+                <Can do="read" on={abilityLocationName}>
+                    <GlobalItem {...itemProps} />
+                </Can>
+            )
+            : <GlobalItem {...itemProps} />
+    );
 };
 
 const NexusNavigation = ({history, profileInfo}) => {
