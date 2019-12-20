@@ -11,15 +11,15 @@ import {connect} from 'react-redux';
 
 class TerritoryCellEditor extends Component {
     static propTypes = {
+        options: PropTypes.array,
         value: PropTypes.array,
-        isOpen: PropTypes.bool,
-        selectValues: PropTypes.object,
+        isOpen: PropTypes.bool
     };
 
     static defaultProps = {
+        options: [],
         value: null,
-        isOpen: false,
-        selectValues: null,
+        isOpen: false
     };
 
     constructor(props) {
@@ -30,6 +30,8 @@ class TerritoryCellEditor extends Component {
             territoryIndex: null
         };
     }
+
+    isPopup = () => true;
 
     getValue = () => this.state.value;
 
@@ -93,22 +95,15 @@ class TerritoryCellEditor extends Component {
     };
 
     getOptions = () => {
-        let options = [];
-        if (this.props.selectValues && this.props.selectValues['territory']) {
-            options = this.props.selectValues['territory'];
-        }
-
-        //We fetch options from state.root.selectValues. the same as in RightDetails, but the objects are different (formatted).
-        options = options.filter((rec) => (rec.value)).map(rec => {
+        let {options} = this.props;
+        options = options.filter((rec) => (rec.countryCode)).map(rec => {
             return {
-                ...rec,
-                label: rec.label || rec.value,
-                aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                    label: rec.countryName,
+                    value: rec.countryCode
             };
         });
-
         return options;
-    };
+};
 
     render() {
         const {value, territoryIndex} = this.state;
@@ -129,11 +124,5 @@ class TerritoryCellEditor extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        selectValues: state.root.selectValues
-    };
-};
-
-export default connect(mapStateToProps)(TerritoryCellEditor);
+export default TerritoryCellEditor;
 

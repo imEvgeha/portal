@@ -89,6 +89,9 @@ const withEditableColumns = ({
                             break;
                         case 'territoryType':
                             copiedColumnDef.cellEditorFramework = TerritoryCellEditor;
+                            copiedColumnDef.cellEditorParams = {
+                                options: getOptions('territory', false),
+                            };
                             break;
                     }
                 }
@@ -99,23 +102,26 @@ const withEditableColumns = ({
             return editableColumnDefs;
         };
 
-        const getOptions = (field) => {
+        const getOptions = (field, parse = true) => {
             const options = (isObject(selectValues) && selectValues[field]) || [];
-            const parsedOptions = options.filter(Boolean).map(item => {
-                if (isObject(item)) {
-                    const {value, id} = item;
+            let parsedOptions = options;
+            if(parse){
+                parsedOptions = parsedOptions.filter(Boolean).map(item => {
+                    if (isObject(item)) {
+                        const {value, id} = item;
+                        return {
+                            label: value,
+                            value,
+                            key: id,
+                        };
+                    }
                     return {
-                        label: value,
-                        value,
-                        key: id,
+                        label: item,
+                        value: item,
+                        key: item,
                     };
-                }
-                return {
-                    label: item,
-                    value: item,
-                    key: item,
-                };
-            });
+                });
+            };
             return parsedOptions;
         };
 
