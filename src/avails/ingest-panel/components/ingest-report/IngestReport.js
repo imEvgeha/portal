@@ -13,7 +13,7 @@ const IngestReport = ({report, showErrorMessage = true}) => {
                     Object.keys(reportFields).map(key => (
                         <div className='ingest-report__field' key={key}>
                             <span className='ingest-report__field--label'>{reportFields[key]}</span>
-                            <span className='ingest-report__field--value'>{reportValues[key] || 0}</span>
+                            <span className='ingest-report__field--value'>{reportValues[key] || ''}</span>
                         </div>
                     ))
                 }
