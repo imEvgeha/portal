@@ -1,6 +1,16 @@
 .avail-ingest {
   padding: 12px;
   border: 1px solid #737E91;
+  background: #FFFFFF;
+  &.selected {
+    background: #E0ECF7;
+    &:hover {
+      background: #E0ECF7;
+    }
+  }
+  &:hover {
+    background: #FAFAFA;
+  }
   &__details {
     display: flex;
     justify-content: space-between;
@@ -17,14 +27,11 @@
       }
     }
   }
-  &__error-message{
-    font-size: 11px;
-    color: #DE350B;
-    margin-top: 10px;
-  }
-  .ingest-report {
+  .ingest-report{
     width: 100%;
-    justify-content: space-between;
     margin-top: 15px;
+    &__fields {
+      justify-content: space-between;
+    }
   }
 }

@@ -3,29 +3,40 @@ import PropTypes from 'prop-types';
 import Constants from '../../Constants';
 import './IngestReport.scss';
 
-const IngestReport = ({report}) => {
+const IngestReport = ({report, showErrorMessage = true}) => {
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
     return (
         <div className='ingest-report'>
+            <div className='ingest-report__fields'>
+                {
+                    Object.keys(reportFields).map(key => (
+                        <div className='ingest-report__field' key={key}>
+                            <span className='ingest-report__field--label'>{reportFields[key]}</span>
+                            <span className='ingest-report__field--value'>{reportValues[key] || 0}</span>
+                        </div>
+                    ))
+                }
+            </div>
             {
-                Object.keys(reportFields).map(key => (
-                    <div className='ingest-report__field' key={key}>
-                        <span className='ingest-report__field--label'>{reportFields[key]}</span>
-                        <span className='ingest-report__field--value'>{reportValues[key] || 0}</span>
-                    </div>
-                ))
+                showErrorMessage && report.errorDetails && (
+                    <span className='ingest-report__error-message'>
+                        {report.errorDetails}
+                    </span>
+                )
             }
         </div>
     );
 };
 
 IngestReport.propTypes = {
-    report: PropTypes.object
+    report: PropTypes.object,
+    showErrorMessage: PropTypes.bool,
 };
 
 IngestReport.defaultProps = {
-    report: {}
+    report: {},
+    showErrorMessage: true
 };
 
 export default IngestReport;

@@ -6,11 +6,11 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestReport from '../ingest-report/IngestReport';
 import './Ingest.scss';
 
-const Ingest = ({ingestType, received, provider, attachment}) => {
+const Ingest = ({ingestType, received, provider, attachment, selected}) => {
     const { link, status, ingestReport = {} } = attachment;
     const [showReport, setShowReport] =useState(false);
     return (
-        <div className='avail-ingest'>
+        <div className={`avail-ingest ${selected ? 'selected' : ''}`}>
             <IngestTitle provider={provider} link={link} ingestType={ingestType} />
             <div className='avail-ingest__details'>
                 <span
@@ -23,13 +23,6 @@ const Ingest = ({ingestType, received, provider, attachment}) => {
             {
                 showReport && <IngestReport report={ingestReport} />
             }
-            {
-                ingestReport.errorDetails && (
-                    <div className='avail-ingest__error-message'>
-                        {ingestReport.errorDetails}
-                    </div>
-                )
-            }
         </div>
     );
 };
@@ -39,6 +32,7 @@ Ingest.propTypes = {
     received: PropTypes.string,
     provider: PropTypes.string,
     attachment: PropTypes.object,
+    selected: PropTypes.bool,
 };
 
 Ingest.defaultProps = {
@@ -46,6 +40,7 @@ Ingest.defaultProps = {
     received: '',
     provider: '',
     attachment: {},
+    selected: false
 };
 
 export default Ingest;
