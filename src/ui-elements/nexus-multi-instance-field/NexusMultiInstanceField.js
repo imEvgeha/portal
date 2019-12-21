@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useContext, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {renderer} from 'react-forms-processor-atlaskit';
+import {renderer, FormButton} from 'react-forms-processor-atlaskit';
 import {Form} from 'react-forms-processor';
 import isEmpty from 'lodash.isempty';
 import {uid} from 'react-uid';
@@ -48,7 +48,19 @@ const NexusMultiInstanceField = ({
                     value={value || formValue}
                     onSubmit={callback}
                     onChange={value => setFormValue(value)}
-                />
+                >
+                {!useModal &&
+                                    <>
+                                        <FormButton label='Cancel' onClick={() => {
+                                                                        setEditIndex(-1);
+                                                                        setFormValue({});
+                                                                        setInlineEdit(null);
+                                                                        }
+                                                                        }/>
+                                        <FormButton label='Submit' onClick={callback}/>
+                                    </>
+                                }
+                </Form>
             </>
         );
 
