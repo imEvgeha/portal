@@ -28,24 +28,28 @@ const NexusMultiInstanceField = ({
     const [editIndex, setEditIndex] = useState(-1);
     const [formValue, setFormValue] = useState({});
     const [inlineEdit, setInlineEdit] = useState(null);
+    const [formKey, setFormKey] = useState(Math.random());
     const {setModalContent, setModalActions, close}= useContext(NexusModalContext);
 
     useEffect(() => setItems(existingItems), [existingItems]);
+    useEffect(() => setFormKey(Math.random()), [editIndex]);
     useEffect(() => {
         if (!isEmpty(formValue)) {
             const callback = editIndex < 0 ? submitNewItem : submitEditedItems;
-            addOrEditItem(formValue, callback);
+            addOrEditItem(formValue, callback, editIndex < 0);
         }
     }, [formValue]);
 
-    const addOrEditItem = (value, callback) => {
+    const addOrEditItem = (value, callback, isNew = false) => {
         value && setFormValue(value);
+        const OKLabel = isNew ? 'Create' : 'Save';
         const content = (
             <>
                 <Form
+                    key={formKey}
                     renderer={renderer}
                     defaultFields={schema}
-                    value={value || formValue}
+                    value={value}
                     onSubmit={callback}
                     onChange={value => setFormValue(value)}
                 >
@@ -57,7 +61,7 @@ const NexusMultiInstanceField = ({
                                                                         setInlineEdit(null);
                                                                         }
                                                                         }/>
-                                        <FormButton label='Submit' onClick={callback}/>
+                                        <FormButton label={OKLabel} onClick={callback}/>
                                     </>
                                 }
                 </Form>
@@ -84,6 +88,11 @@ const NexusMultiInstanceField = ({
     // Filters out the item at given index
     const getFilteredItems = (arr = [], index) => arr.filter((element, i) => i !== index);
 
+    // Handler for clicking on Add Item
+    const onAddItem = () => {
+        setEditIndex(-1);
+        addOrEditItem({create:true}, submitNewItem, true);
+    };
 
     // Handler for clicking on the NexusTag to edit existing/added item
     const onEditItem = (item, index) => {
@@ -153,7 +162,7 @@ const NexusMultiInstanceField = ({
                 : (
                     <div className="nexus-c-multi-instance-field">
                         <div className="nexus-c-multi-instance-field__content">
-                            <div className="nexus-c-multi-instance-field__clickable-text" onClick={() => {addOrEditItem(formValue, submitNewItem);}}>
+                            <div className="nexus-c-multi-instance-field__clickable-text" onClick={() => {onAddItem();}}>
                                 {!items.length && PLACEHOLDER}
                             </div>
                             <div className="nexus-c-multi-instance-field__tag-group">
@@ -171,7 +180,7 @@ const NexusMultiInstanceField = ({
                             </div>
                         </div>
                         <div className="nexus-c-multi-instance-field__controls">
-                            <Button onClick={() => addOrEditItem(formValue, submitNewItem)} className="button-fix">
+                            <Button onClick={() => {onAddItem();}} className="button-fix">
                                 <AddIcon />
                             </Button>
                         </div>

@@ -1,11 +1,27 @@
 export default (countryItems) => ([
     {
+        id: 'create',
+        name: 'create',
+        type: 'checkbox',
+        visible: false,
+        omitWhenHidden: true,
+        defaultValue: false
+    },
+    {
         id: 'country',
         label: 'COUNTRY',
         name: 'country',
         type: 'select',
         shouldFitContainer: true,
         required: true,
+        disabledWhen: [
+            {
+                field: 'create',
+                is: [
+                    {value: false}
+                ]
+            }
+        ],
         options: [
             {
                 items: countryItems
