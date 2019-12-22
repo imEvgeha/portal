@@ -69,7 +69,7 @@ export default (countryItems) => ([
         id: 'vuContractId',
         label: 'VU CONTRACT ID',
         name: 'vuContractId',
-        type: 'select',
+        type: 'multiselect',
         shouldFitContainer: true,
     },
     {
