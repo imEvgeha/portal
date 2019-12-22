@@ -11,7 +11,7 @@ import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
-import StatusIcon from '../../components/StatusIcon';
+import StatusIcon from '../../../../ui-elements/nexus-status-icon/StatusIcon';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
@@ -235,7 +235,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <DashboardDropableCard externalId={externalId}/>
+                            <DashboardDropableCard externalId={externalId} status={status}/>
                         </Can>
                     </div>
                 </div>
@@ -246,6 +246,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 getCustomSearchCriteria={this.getCustomSearchCriteria}
                                 createdCount={created}
                                 updatedCount={updated}
+                                historyData={this.state.historyData}
                                 fatalCount={fatal}/>
                             <div className='nexus-c-manual-rights-entry__actions'>
                                 <Button className='nexus-c-manual-rights-entry__button'
@@ -272,7 +273,9 @@ class RightsCreateFromAttachment extends React.Component {
                             columns={columns}
                             nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
                             autoload={false}
+                            status={status}
                             selectedTab={selectedTab}
+                            historyData={this.state.historyData}
                             hidden={selectedTab === FATAL}
                             searchCriteria={this.getCustomSearchCriteria(selectedTab)}
                             onTableLoaded={this.onTableLoaded}

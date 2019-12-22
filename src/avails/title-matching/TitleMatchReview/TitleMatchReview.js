@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import cloneDeep from 'lodash.clonedeep';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import BackNavigationByUrl from '../../../ui-elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
-import {URL, deepClone} from '../../../util/Common';
+import {URL} from '../../../util/Common';
 import {titleService} from '../../../containers/metadata/service/TitleService';
 import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
 import {createColumnDefs} from '../titleMatchingActions';
@@ -25,7 +26,14 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const getTitle = id => {
         return new Promise((resolve, reject) => {
             return titleService.getTitleById(id).then((response) => {
-                resolve(response.data);
+                let title = response.data;
+                titleService.getEditorialMetadataByTitleId(id).then(({data}) => {
+                    const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
+                    if(founded) {
+                        title['editorialGenres'] = founded.genres;
+                    }
+                    resolve(title);
+                });
             }).catch(() => {
                 reject('Unable to load Title Data');
             });
@@ -112,8 +120,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         }
     }, [mergedTitles]);
 
-    const deepCloneMatchedTitlesColumnDefs = deepClone(columnDefs);
-    const deepCloneCombinedTitleColumnDefs = deepClone(columnDefs);
+    const deepCloneMatchedTitlesColumnDefs = cloneDeep(columnDefs);
+    const deepCloneCombinedTitleColumnDefs = cloneDeep(columnDefs);
 
     const renderEpisodeAndSeasonNumber = params => {
         if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;

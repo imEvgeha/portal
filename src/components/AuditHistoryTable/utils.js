@@ -4,7 +4,9 @@ import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
 import jsonpatch from 'fast-json-patch';
 
-const { dataTypes: {DATE, AUDIO, RATING}, colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD } = Constants;
+const { dataTypes: {DATE, AUDIO, RATING, METHOD},
+    colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD,
+    method: {MANUAL, INGEST}} = Constants;
 
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
@@ -29,6 +31,11 @@ export const valueFormatter = ({colId, field, dataType}) => {
                 const languages = data[field] && languageMapper(data[field]);
                 return languages && languages.join(', ').toUpperCase() || '';
             };
+        case METHOD:
+            return (params) => {
+                const {data, data: {availHistoryId, headerRow} = {}} = params || {};
+                return headerRow ? data[field] : (availHistoryId ? INGEST : MANUAL);
+            };
         default:
             return (params) => {
                 const {data = {}} = params || {};
@@ -44,7 +51,7 @@ const valueCompare = (diffValue, currentValue, column) => {
         switch(dataType){
             case RATING:
                 diff = get(diffValue, [RATING_SUBFIELD, colId], null);
-                current = get(currentValue, [RATING_SUBFIELD, colId], null);
+                current = get(currentValue, [colId], null);
                 return diff &&       //returns null value to prevent coloring
                     (diff === current);
             case AUDIO:
@@ -69,7 +76,8 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     }
     if (data[`${colId || field}Deleted`]) {
         styling.textDecoration = 'line-through';
-        if(focusedRight[colId || field].length){
+        const path = field === RATING ? [field, colId] : [field];
+        if(get(focusedRight, path, '').length){
             styling.background = STALE_VALUE;
         } else{
             styling.background = CURRENT_VALUE;
@@ -94,6 +102,19 @@ export const formatData = data => {
                 row[`${field}Deleted`] = true;
             }else{
                 row[field] = Array.isArray(result[field]) ? [...new Set(result[field])] : result[field];
+            }
+            if(field === RATING){
+                const subField = path.split('/')[4];
+                if(subField){
+                    row[field] = {
+                        [RATING_SUBFIELD]: {
+                            [subField]: get(row, [field, RATING_SUBFIELD, subField], '')
+                        }
+                    };
+                    if(op === 'remove'){
+                        row[`${subField}Deleted`] = true;
+                    }
+                }
             }
         });
         row.updatedBy = updatedBy || createdBy;
