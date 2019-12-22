@@ -22,7 +22,8 @@ const NexusMultiInstanceField = ({
     isReadOnly,
     onSubmit,
     onConfirm,
-    useModal
+    useModal,
+    specialCreate
 }) => {
     const [items, setItems] = useState(existingItems);
     const [editIndex, setEditIndex] = useState(-1);
@@ -41,8 +42,12 @@ const NexusMultiInstanceField = ({
     }, [formValue]);
 
     const addOrEditItem = (value, callback, isNew = false) => {
+        let OKLabel = 'Save';
         value && setFormValue(value);
-        const OKLabel = isNew ? 'Create' : 'Save';
+        if(specialCreate && isNew){
+            OKLabel = 'Create';
+            value = {...value, create:true};
+        }
         const content = (
             <>
                 <Form
@@ -91,7 +96,8 @@ const NexusMultiInstanceField = ({
     // Handler for clicking on Add Item
     const onAddItem = () => {
         setEditIndex(-1);
-        addOrEditItem({create:true}, submitNewItem, true);
+        setFormValue({});
+        addOrEditItem({}, submitNewItem, true);
     };
 
     // Handler for clicking on the NexusTag to edit existing/added item
@@ -230,7 +236,8 @@ NexusMultiInstanceField.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     onConfirm: PropTypes.func,
-    useModal: PropTypes.bool
+    useModal: PropTypes.bool,
+    specialCreate: PropTypes.bool
 };
 
 NexusMultiInstanceField.defaultProps = {
@@ -238,7 +245,8 @@ NexusMultiInstanceField.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     onConfirm: () => null,
-    useModal: true
+    useModal: true,
+    specialCreate: false
 };
 
 export default NexusMultiInstanceField;

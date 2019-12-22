@@ -32,7 +32,15 @@ export default (countryItems) => ([
         id: 'selected',
         label: 'SELECTED',
         name: 'selected',
-        type: 'checkbox',
+        type: 'select',
+        options: [
+            {
+                items: [
+                    { label: 'Yes', value: true },
+                    { label: 'No', value: false },
+                ],
+            }
+        ],
     },
     {
         id: 'dateSelected',
@@ -62,6 +70,27 @@ export default (countryItems) => ([
         label: 'VU CONTRACT ID',
         name: 'vuContractId',
         type: 'select',
+        shouldFitContainer: true,
+    },
+    {
+        id: 'hide',
+        label: 'Hide',
+        name: 'hide',
+        type: 'select',
+        options: [
+            {
+                items: [
+                    { label: 'Yes', value: true },
+                    { label: 'No', value: false },
+                ],
+            }
+        ],
+    },
+    {
+        id: 'comment',
+        label: 'Comment',
+        name: 'comment',
+        type: 'text',
         shouldFitContainer: true,
     },
 ]);

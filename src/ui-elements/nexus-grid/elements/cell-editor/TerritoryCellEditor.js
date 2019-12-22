@@ -66,6 +66,7 @@ class TerritoryCellEditor extends Component {
                     schema={RightTerritoryFormSchema(this.getOptions())}
                     keyForTagLabel="country"
                     useModal={false}
+                    specialCreate={true}
                 />
             </div>
         );
