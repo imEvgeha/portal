@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import AvailsIcon from '../../assets/Avails.svg';
-import PopOutIcon from '../../assets/action-shortcut.svg';
-import FilterIcon from '../../assets/filter.svg';
-import FilterSolidIcon from '../../assets/filter-solid.svg';
 import IngestFilters from './components/ingest-filters/IngestFilters';
 import {getAvails} from '../availsSelectors';
 import {updateFilters} from '../availsActions';
+import PanelHeader from './components/panel-header/PanelHeader';
 import './IngestPanel.scss';
 
 class IngestPanel extends React.Component {
@@ -31,31 +28,14 @@ class IngestPanel extends React.Component {
     render () {
         return (
             <div className='ingest-panel'>
-                <div className='ingest-panel__ingest-header'>
-                    <div className='ingest-panel__ingest-header__title'>
-                        <AvailsIcon />
-                        <div>Avails</div>
-                    </div>
-                    <div className='ingest-panel__ingest-header__actions'>
-                        <PopOutIcon
-                            className='ingest-panel__ingest-header__actions--pop'
-                            disabled={true}/>
-                        <div onClick={this.toggleFilters}>
-                            {
-                                this.state.showFilters ? <FilterSolidIcon/> : <FilterIcon/>
-                            }
-                        </div>
-                    </div>
-                </div>
-                {
-                    this.state.showFilters && (
-                        <IngestFilters onFiltersChange={this.props.onFiltersChange} />
-                    )
-                }
+                <PanelHeader
+                    showFilters={this.state.showFilters}
+                    toggleFilters={this.toggleFilters}
+                    onFiltersChange={this.props.onFiltersChange}/>
             </div>
         );
     }
-};
+}
 
 const mapStateToProps = () => {
     return (state) => ({
