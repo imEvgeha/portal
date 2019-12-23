@@ -3,17 +3,29 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {DropdownItemGroup, DropdownItem} from '@atlaskit/dropdown-menu';
-import {GlobalNav, GlobalItem} from '@atlaskit/navigation-next';
+import {GlobalNav, GlobalItem, ThemeProvider, modeGenerator} from '@atlaskit/navigation-next';
 import Avatar from '@atlaskit/avatar';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
+import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
-import {SETTINGS} from './constants';
+import {SETTINGS, backgroundColor} from './constants';
+import {Can, idToAbilityNameMap} from '../ability';
+
+const customThemeMode = modeGenerator({
+    product: {
+        text: colors.N0,
+        background: backgroundColor,
+    },
+});
 
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
+    const {id} = itemProps;
+    const abilityLocationName = idToAbilityNameMap[id];
+
     if (DropdownItems) {
-        return (
+        const ItemWithDropdown = () => (
             <GlobalItemWithDropdown
                 trigger={({isOpen}) => (
                     <GlobalItem isSelected={isOpen} {...itemProps} />
@@ -21,8 +33,25 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
                 items={<DropdownItems />}
             />
         );
+        return (
+            abilityLocationName
+                ? (
+                    <Can do="read" on={abilityLocationName}>
+                        <ItemWithDropdown />
+                    </Can>
+                )
+                : <ItemWithDropdown />
+        );
     }
-    return <GlobalItem {...itemProps} />;
+    return (
+        abilityLocationName
+            ? (
+                <Can do="read" on={abilityLocationName}>
+                    <GlobalItem {...itemProps} />
+                </Can>
+            )
+            : <GlobalItem {...itemProps} />
+    );
 };
 
 const NexusNavigation = ({history, profileInfo}) => {
@@ -44,33 +73,38 @@ const NexusNavigation = ({history, profileInfo}) => {
     );
 
     return (
-        <GlobalNav
-            itemComponent={ItemComponent}
-            primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
-            secondaryItems={[
-                {
-                    icon: EditorSettingsIcon,
-                    id: SETTINGS,
-                    tooltip: SETTINGS,
-                    isSelected: (selectedItem === SETTINGS),
-                    onClick: () => handleClick(SETTINGS),
-                },
-                {
-                    // eslint-disable-next-line react/prop-types
-                    component: ({onClick}) => (
-                        <Avatar
-                            borderColor="transparent"
-                            size="medium"
-                            name={profileInfo.name}
-                            onClick={onClick}
-                        />
-                    ),
-                    dropdownItems: AccountDropdownItems,
-                    id: 'profile',
-                    icon: null,
-                },
-            ]}
-        />
+        <ThemeProvider theme={theme => ({
+            ...theme,
+            mode: customThemeMode
+        })}>
+            <GlobalNav
+                itemComponent={ItemComponent}
+                primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
+                secondaryItems={[
+                    {
+                        icon: EditorSettingsIcon,
+                        id: SETTINGS,
+                        tooltip: SETTINGS,
+                        isSelected: (selectedItem === SETTINGS),
+                        onClick: () => handleClick(SETTINGS),
+                    },
+                    {
+                        // eslint-disable-next-line react/prop-types
+                        component: ({onClick}) => (
+                            <Avatar
+                                borderColor="transparent"
+                                size="medium"
+                                name={profileInfo.name}
+                                onClick={onClick}
+                            />
+                        ),
+                        dropdownItems: AccountDropdownItems,
+                        id: 'profile',
+                        icon: null,
+                    },
+                ]}
+            />
+        </ThemeProvider>
     );
 };
 

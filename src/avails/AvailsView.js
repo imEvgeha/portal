@@ -3,7 +3,7 @@ import {compose} from 'redux';
 import connect from 'react-redux/lib/connect/connect';
 import cloneDeep from 'lodash.clonedeep';
 import PageHeader from '@atlaskit/page-header';
-import AvailsHistory from './ingest/Ingest';
+import IngestPanel from './ingest-panel/IngestPanel';
 import './AvailsView.scss';
 import NexusGrid from '../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -45,11 +45,9 @@ const AvailsView = ({columnDefs, createRightMatchingColumnDefs, mapping}) => {
 
     return (
         <div className="nexus-c-avails-view">
-            <AvailsHistory/>
+            <IngestPanel/>
             <div className="nexus-c-avails-view__avails-table">
-                <PageHeader>
-                    AVAILS
-                </PageHeader>
+                <div className='nexus-c-avails-view__avails-table--title'>Rights</div>
                 <NexusGridWithInfiniteScrolling
                     columnDefs={columnDefsWithRedirect}
                     mapping={mapping}
