@@ -4,6 +4,7 @@ import {settingsWatcher} from './containers/settings/settingsSagas';
 import {rightMatchingWatcher} from './avails/right-matching/rightMatchingSagas';
 import {titleMatchingWatcher} from './avails/title-matching/titleMatchingSagas';
 import rightHistoryWatcher from './avails/right-history-view/rightHistorySagas';
+import availsWatcher from './avails/availsSagas';
 
 export default function* rootSaga() {
     yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga() {
         fork(rightMatchingWatcher),
         fork(titleMatchingWatcher),
         fork(rightHistoryWatcher),
+        fork(availsWatcher)
     ]);
 }

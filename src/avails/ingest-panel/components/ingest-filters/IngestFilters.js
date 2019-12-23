@@ -4,16 +4,23 @@ import Select from '@atlaskit/select/Select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import NexusDateTimeWindowPicker from '../../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import Constants from '../../Constants';
+import {getFiltersToSend} from '../../utils';
+import {URL} from '../../../../util/Common';
 import './IngestFilters.scss';
 
 const IngestFilters = ({onFiltersChange}) => {
-
-    const initialFilters = {
-        status: Constants.STATUS_LIST[0],
-        provider: ''
+    const {filterKeys: {PROVIDER, RECEIVED_TO, RECEIVED_FROM, STATUS}, STATUS_LIST} = Constants;
+    const getInitialFilters = () => {
+        const status = URL.getParamIfExists(STATUS);
+        return {
+            status: status ? { value: status, label: status} : STATUS_LIST[0],
+            provider: URL.getParamIfExists(PROVIDER) || '',
+            startDate: URL.getParamIfExists(RECEIVED_FROM) || '',
+            endDate: URL.getParamIfExists(RECEIVED_TO) || '',
+        };
     };
 
-    const [filters, setFilters] = useState(initialFilters);
+    const [filters, setFilters] = useState(getInitialFilters());
     const [isApplyActive, setIsApplyActive] = useState(false);
 
     const onFilterChange = (name, value) => {
@@ -27,13 +34,13 @@ const IngestFilters = ({onFiltersChange}) => {
     };
 
     const clearFilters = () => {
-        setFilters(initialFilters);
+        setFilters(getInitialFilters());
         setIsApplyActive(false);
+        onFiltersChange({});
     };
 
     const applyFilters = () => {
-        filters.status = filters.status.value;
-        onFiltersChange(filters);
+        onFiltersChange(getFiltersToSend(filters));
     };
 
     return (
@@ -44,14 +51,14 @@ const IngestFilters = ({onFiltersChange}) => {
                     <input
                         placeholder='Enter Provider'
                         value={filters.provider}
-                        onChange={e => onFilterChange('provider', e.target.value)}/>
+                        onChange={e => onFilterChange(PROVIDER, e.target.value)}/>
                 </div>
                 <div className='ingest-filters__section'>
                     Avail Status
                     <Select
                         options={Constants.STATUS_LIST}
                         value={filters.status}
-                        onChange={value => onFilterChange('status', value)}/>
+                        onChange={value => onFilterChange(STATUS, value)}/>
                 </div>
             </div>
             <div className='ingest-filters__row2'>
@@ -69,7 +76,7 @@ const IngestFilters = ({onFiltersChange}) => {
             <div className='ingest-filters__actions'>
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
-                    className={isApplyActive ? 'ingest-filters__actions--active' : ''}
+                    className={`ingest-filters__actions--apply ${isApplyActive ? 'ingest-filters__actions--active' : ''}`}
                     onClick={applyFilters}>
                     Apply Filter
                 </Button>
