@@ -1,12 +1,20 @@
 .ingest-panel {
-  width: 325px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   border-right: 1px solid #737E91;
-  padding: 48px 0;
+  padding: 48px 0 0;
   margin-right: 10px;
   color: #42526E;
   svg {
     width: 20px;
     height: 20px;
     fill: #42526E;
+  }
+  &__avails-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 }

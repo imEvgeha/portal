@@ -2,8 +2,11 @@
   font-size: 16px;
   color: #42526E;
   padding: 0 22px;
+  margin-bottom: 20px;
   &__section {
     color: #A5ADBA;
+    display: flex;
+    flex-direction: column;
     & > div {
       width: 135px;
       > div {

@@ -18,7 +18,7 @@ function* updateFilters({payload}) {
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
         yield put({
             type: actionTypes.FETCH_AVAILS_SUCCESS,
-            payload: response.data,
+            payload: response.data.data,
         });
     } catch (error) {
         yield put({

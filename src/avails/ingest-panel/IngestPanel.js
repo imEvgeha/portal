@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
-import IngestFilters from './components/ingest-filters/IngestFilters';
 import {getAvails} from '../availsSelectors';
 import {updateFilters} from '../availsActions';
 import PanelHeader from './components/panel-header/PanelHeader';
+import Ingest from './components/ingest/Ingest';
 import './IngestPanel.scss';
 
 class IngestPanel extends React.Component {
@@ -31,7 +31,22 @@ class IngestPanel extends React.Component {
                 <PanelHeader
                     showFilters={this.state.showFilters}
                     toggleFilters={this.toggleFilters}
-                    onFiltersChange={this.props.onFiltersChange}/>
+                    onFiltersChange={this.props.onFiltersChange}
+                />
+                <div className='ingest-panel__avails-list'>
+                    {
+                        this.props.avails.map(({id, attachments, received, provider, ingestType}) => (
+                            (attachments.length > 1) ? (
+                                <div key={id}>Bundle</div>
+                            ) : (<Ingest key={id}
+                                         attachment={attachments[0]}
+                                         received={received}
+                                         provider={provider}
+                                         ingestType={ingestType}
+                            />)
+                        ))
+                    }
+                </div>
             </div>
         );
     }
