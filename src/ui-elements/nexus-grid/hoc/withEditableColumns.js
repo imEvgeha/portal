@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
+import cloneDeep from 'lodash.clonedeep';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
@@ -47,29 +48,29 @@ const withEditableColumns = ({
         }, [columnDefs, selectValues]);
 
         const updateColumnDefs = columnDefs => {
-            const editableColumnDefs = columnDefs.map(columnDef => {
-                const copiedColumnDef = {...columnDef};
-                const {field} = copiedColumnDef || {};
+            const copiedColumnDefs = cloneDeep(columnDefs);
+            const editableColumnDefs = copiedColumnDefs.map(columnDef => {
+                const {field} = columnDef || {};
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                 const isEditable = editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
                 if (enableEdit && isEditable) {
-                    copiedColumnDef.editable = true; 
+                    columnDef.editable = true; 
                     switch (dataType) {
                         case 'select':
-                            copiedColumnDef.cellEditorFramework = SelectCellEditor;
-                            copiedColumnDef.cellEditorParams = {
+                            columnDef.cellEditorFramework = SelectCellEditor;
+                            columnDef.cellEditorParams = {
                                 options: getOptions(field),
                             };
                             break;
                         case 'multiselect':
-                            copiedColumnDef.cellEditorFramework = MultiSelectCellEditor;
-                            copiedColumnDef.cellEditorParams = {
+                            columnDef.cellEditorFramework = MultiSelectCellEditor;
+                            columnDef.cellEditorParams = {
                                 options: getOptions(field),
                             };
                             break;
                         case 'boolean':
-                            copiedColumnDef.cellEditorFramework = SelectCellEditor;
-                            copiedColumnDef.cellEditorParams = {
+                            columnDef.cellEditorFramework = SelectCellEditor;
+                            columnDef.cellEditorParams = {
                                 options: [ 
                                     {label: 'Yes', value: true},
                                     {label: 'No', value: false},
@@ -79,16 +80,16 @@ const withEditableColumns = ({
                             // columnDef.cellEditorFramework = CheckboxCellEditor;
                             break;
                         case 'date':
-                            copiedColumnDef.cellEditorFramework = DateCellEditor;
+                            columnDef.cellEditorFramework = DateCellEditor;
                             break;
                         case 'datetime':
                         case 'localdate':
-                            copiedColumnDef.cellEditorFramework = DateTimeCellEditor;
+                            columnDef.cellEditorFramework = DateTimeCellEditor;
                             break;
                     }
                 }
 
-                return copiedColumnDef;
+                return columnDef;
             });
 
             return editableColumnDefs;
