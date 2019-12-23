@@ -13,7 +13,8 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
         if(value) {
             const defaultTooltipContent = Object.keys(value || {}).map((key, index) => {
                 return (
-                    !Array.isArray(value[key])
+                    key !== 'state'
+                    && !Array.isArray(value[key])
                     && typeof value[key] !== 'object'
                     && value[key] !== null
                     && (
