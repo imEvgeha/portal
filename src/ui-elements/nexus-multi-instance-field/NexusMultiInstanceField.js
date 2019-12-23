@@ -59,15 +59,15 @@ const NexusMultiInstanceField = ({
                     onChange={value => setFormValue(value)}
                 >
                 {!useModal &&
-                                    <>
-                                        <FormButton label='Cancel' onClick={() => {
+                                    <div className='d-flex flex-row justify-content-end'>
+                                        <Button onClick={() => {
                                                                         setEditIndex(-1);
                                                                         setFormValue({});
                                                                         setInlineEdit(null);
                                                                         }
-                                                                        }/>
+                                                                        }>Cancel</Button>
                                         <FormButton label={OKLabel} onClick={callback}/>
-                                    </>
+                                    </div>
                                 }
                 </Form>
             </>
