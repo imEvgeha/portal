@@ -32,7 +32,7 @@ import {createSchemaForColoring, addCellClass} from '../../utils';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
-const FIELDS_WITHOUT_COLOURING = ['id'];
+const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
 
