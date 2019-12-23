@@ -1,4 +1,7 @@
 import cloneDeep from 'lodash.clonedeep';
+import isEmpty from 'lodash.isempty';
+import isEqual from 'lodash.isequal';
+import get from 'lodash.get';
 import createValueFormatter from '../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import Constants from './title-matching/titleMatchingConstants';
 import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -112,13 +115,21 @@ export const createSchemaForColoring = (rightList, columnDefs) => {
             return o;
         }, {});
 
-        // additonal rules
-        if (Object.values(sortedValues).length > 1 
-            && Object.values(sortedValues).filter((el, i, arr) => el === arr[0]).length > 1
-        ) {
+        const getMostCommonValues = (values) => {
+            const entries = !isEmpty(values) ? Object.entries(values) : [];
+            if (entries.length) {
+                return entries
+                    .filter((el, i, arr) => el[1] === arr[0][1])
+                    .map(el => el[0]);
+            }
+            return [];
+        };
+
+        if (Object.values(sortedValues).length > 1) {
             acc[field] = {
                 field,
-                occurence: sortedValues,
+                values: sortedValues,
+                mostCommonValues: getMostCommonValues(sortedValues),
             };
         }
 
@@ -127,5 +138,13 @@ export const createSchemaForColoring = (rightList, columnDefs) => {
     }, {});
 
     return schema;
+};
+
+export const addCellClass = ({colDef, value, schema, cellClass = 'nexus-c-match-right-view__grid-column--highlighted'}) => {
+    const {field} = colDef;
+    const mostCommonValues = get(schema, [field, 'mostCommonValues'], null);
+    if (mostCommonValues && (mostCommonValues.length > 1 || !isEqual(mostCommonValues[0], JSON.stringify(value)))) {
+        return cellClass;
+    };
 };
 

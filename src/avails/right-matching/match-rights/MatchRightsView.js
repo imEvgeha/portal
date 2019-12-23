@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -23,17 +23,18 @@ import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditabl
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {
+    defineColumn,
     defineCheckboxSelectionColumn,
     updateColumnDefs
 } from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
-// import {createSchemaForColoring} from '../../utils';
+import {createSchemaForColoring, addCellClass} from '../../utils';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
 const FIELDS_WITHOUT_COLOURING = ['id'];
 
-const EditableNexusGrid = withEditableColumns()(NexusGrid);
+const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
 
 function MatchRightView({
     history,
@@ -54,7 +55,7 @@ function MatchRightView({
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const [selectedMatchedRightIds, setSelectedMatchedRightIds] = useState([rightId, ...matchedRightIds.split(',')]);
-    const highlightedColumns = useRef([]);
+    const [cellColoringSchema, setCellColoringSchema] = useState(); 
 
     // DOP Integration
     useDOPIntegration(null, 'rightMatchingDOP');
@@ -77,6 +78,7 @@ function MatchRightView({
     // fetch combined rights
     useEffect(() => {
         if (matchedRights.length) {
+            setCellColoringSchema(createSchemaForColoring([focusedRight, ...matchedRights], columnDefs));
             // matchedRightId from url should be correct one.
             fetchCombinedRight(selectedMatchedRightIds);
         }
@@ -108,7 +110,7 @@ function MatchRightView({
         saveCombinedRight(payload);
     };
 
-    const handleGridEvent = ({type, api}) => {
+    const onCombinedRightGridEvent = ({type, api}) => {
         let result = [];
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
@@ -156,9 +158,7 @@ function MatchRightView({
         }
     };
 
-    // rule for column coloring
-    // TODO: move this to separate file
-    const applyColumnRule = ({node, data, colDef, api, value}) => {
+    const applyColumnRule = ({data, colDef, api, value}) => {
         const selectedIds = getSelectedRows(api).map(el => el.id);
         if (selectedIds.includes(data.id)
             && !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
@@ -166,62 +166,36 @@ function MatchRightView({
                 && (selectedIds[selectedIds.length - 1] !== data.id && selectedIds[0] !== data.id)
             )
         ) {
-            const columnValuesCounter = [focusedRight, ...matchedRights]
-                .map(el => el[colDef.field])
-                .filter(Boolean)
-                .reduce((object, value) => {
-                    const val = JSON.stringify(value);
-                    object[val] = (object[val] || 0) + 1;
-                    return object;
-                }, {});
-            const sortByOccurrence = Object.keys(columnValuesCounter).sort((a, b) => {
-                return columnValuesCounter[a] < columnValuesCounter[b];
-            }) || [];
-            const numberOfMaxValues = Object.values(columnValuesCounter)
-                .filter(el => sortByOccurrence && el === columnValuesCounter[sortByOccurrence[0]]) || [];
-
-            if (!sortByOccurrence.length || sortByOccurrence.length === 1) {
-                return;
-            } else if (!isEqual(JSON.stringify(value), sortByOccurrence[0]) || numberOfMaxValues.length > 1) {
-                highlightedColumns.current = [...highlightedColumns.current, colDef.field];
-                return 'nexus-c-match-right-view__grid-column--highlighted';
-            }
+            return addCellClass({colDef, value, schema: cellColoringSchema});
         }
     };
-
-    // TODO: tets this before apply
-    // const schema = !isEmpty(focusedRight) 
-    //     && !isEmpty(matchedRights) 
-    //     && createSchemaForColoring([focusedRight, ...matchedRights], columnDefs);
-    //
-    // const applyColumnRule1 = ({data, colDef, api, value}) => {
-    //     const selectedIds = getSelectedRows(api).map(el => el.id);
-    //     if (selectedIds.includes(data.id)
-    //         && !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
-    //     && !(UNSELECTED_STATUSES.includes(data.status)
-    //          && (selectedIds[selectedIds.length - 1] !== data.id && selectedIds[0] !== data.id)
-    //         )
-    //     ) {
-    //         if (schema[colDef.field] && !isEqual(Object.keys(schema[colDef.field].occurence)[0], JSON.stringify(value))) {
-    //             return 'nexus-c-match-right-view__grid-column--highlighted';
-    //         };
-    //     }
-    // };
 
     // Sorted by start field. desc
     const matchedRightRowData = [focusedRight, ...matchedRights]
         .sort((a,b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt)))
         || [];
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
-    const updatedColumnDefs = updateColumnDefs(columnDefs, {cellClass: applyColumnRule});
-    const updatedCombinedColumnDefs = updateColumnDefs(
-        columnDefs, 
-        {
-            cellClass: ({colDef}) => highlightedColumns.current.includes(colDef.field) 
-                && 'nexus-c-match-right-view__grid-column--highlighted'
-        });
-    const matchedRightColumnDefs = columnDefs.length && matchedRightRowData.length > 1 
-        ? [checkboxSelectionColumnDef, ...updatedColumnDefs] 
+
+    // TODO: refactor column defs
+    const updatedMatchedRightColumnDefs = cellColoringSchema 
+        ? updateColumnDefs(columnDefs, {cellClass: applyColumnRule}) 
+        : columnDefs;
+    const matchedRightColumnDefs = columnDefs.length && matchedRightRowData.length > 1
+        ? [checkboxSelectionColumnDef, ...updatedMatchedRightColumnDefs] 
+        : columnDefs;
+
+    const updatedCombinedColumnDefs = cellColoringSchema
+        ? updateColumnDefs(
+            columnDefs, 
+            {
+                cellClass: ({colDef, value}) => {
+                    return !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
+                        && addCellClass({colDef, value, schema: cellColoringSchema});
+                }
+            }) 
+        : columnDefs;
+    const combinedRightColumnDefs = columnDefs.length
+        ? [defineColumn({width: 70}), ...updatedCombinedColumnDefs]
         : columnDefs;
 
     return (
@@ -249,14 +223,14 @@ function MatchRightView({
             <div className="nexus-c-match-right-view__combined">
                 <NexusTitle isSubTitle>Combined Rights</NexusTitle>
                 {!!columnDefs && (
-                    <EditableNexusGrid
-                        columnDefs={updatedCombinedColumnDefs}
+                    <CombinedRightNexusGrid
+                        columnDefs={combinedRightColumnDefs}
                         rowData={
                             !isEmpty(combinedRight) && matchedRights.length === matchedRightIds.split(',').length
                                 ? [combinedRight]
                                 : []
                         }
-                        onGridEvent={handleGridEvent}
+                        onGridEvent={onCombinedRightGridEvent}
                         mapping={mapping}
                         domLayout="autoHeight"
                     />

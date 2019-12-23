@@ -69,7 +69,7 @@ const RightMatchingView = ({
         }
     };
 
-    const focusButtonColumnDef = defineActionButtonColumn('buttons', createCellRenderer);
+    const focusButtonColumnDef = defineActionButtonColumn({cellRendererFramework: createCellRenderer});
     const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs] : columnDefs;
 
     const {params = {}} = match;

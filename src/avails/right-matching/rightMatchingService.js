@@ -33,7 +33,7 @@ export const putCombinedRight = (rightIds, combinedRight) => {
             description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
         }});
     return httpReq.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`,
         combinedRight
     );
 };

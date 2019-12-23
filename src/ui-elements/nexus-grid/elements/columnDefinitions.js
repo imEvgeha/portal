@@ -1,37 +1,54 @@
 import cloneDeep from 'lodash.clonedeep';
 
-// TODO:  create ES for column definition
-export const defineCheckboxSelectionColumn = (field = 'checkbox') => {
+export const defineColumn = ({
+    field = '',
+    headerName = '',
+    width = 100,
+    pinned = 'left',
+    resizable = false,
+    suppressSizeToFit = true,
+    suppressMovable = true,
+    lockPosition = true,
+    sortable = false,
+    menuTabs = [],
+    ...rest,
+} = {}) => {
     const columnDef = {
         field,
-        headerName: 'Action',
-        colId: 'action',
-        width: 70,
-        pinned: 'left',
-        resizable: false,
-        suppressSizeToFit: true,
-        suppressMovable: true,
-        lockPosition: true,
-        sortable: false,
-        checkboxSelection: true,
+        headerName,
+        width,
+        pinned,
+        resizable,
+        suppressSizeToFit,
+        suppressMovable,
+        lockPosition,
+        sortable,
+        menuTabs,
+        ...rest,
     };
+
     return columnDef;
 };
 
-export const defineActionButtonColumn = (field = 'buttons', cellRendererFramework) => {
-    const columnDef = {
-        field,
+export const defineCheckboxSelectionColumn = ({headerName = ''} = {}) => {
+    const columnDef = defineColumn({
+        field: 'action',
+        headerName,
+        width: 70,
+        checkboxSelection: true,
+    });
+
+    return columnDef;
+};
+
+export const defineActionButtonColumn = ({field, cellRendererFramework}) => {
+    const columnDef = defineColumn({
+        field: 'buttons',
         headerName: 'Actions',
         colId: 'actions',
-        width: 100,
-        pinned: 'left',
-        resizable: false,
-        suppressSizeToFit: true,
         cellRendererFramework,
-        suppressMovable: true,
-        lockPosition: true,
-        sortable: false,
-    };
+    });
+
     return columnDef;
 };
 
