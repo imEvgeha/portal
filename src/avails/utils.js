@@ -97,10 +97,10 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
     return null;
 }
 
-export const createSchemaForColoring = (rightList, columnDefs) => {
+export const createSchemaForColoring = (list, columnDefs) => {
     const majorityRule = (occurence, total) => occurence > (total / 2); 
     const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
-        const values = rightList.map(el => el[field]);
+        const values = list.map(el => el[field]);
         const occurence = values.reduce((o, v) => {
             const value = JSON.stringify(v);
             o[value] = (o[value] || 0) + 1;
@@ -145,8 +145,9 @@ export const createSchemaForColoring = (rightList, columnDefs) => {
 
 export const addCellClass = ({colDef, value, schema, cellClass = 'nexus-c-match-right-view__grid-column--highlighted'}) => {
     const {field} = colDef;
+    const fieldValues = get(schema, [field, 'values'], {});
     const mostCommonValue = get(schema, [field, 'mostCommonValue'], null);
-    if (!isEqual(mostCommonValue, JSON.stringify(value))) {
+    if (Object.keys(fieldValues).length && !isEqual(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     };
 };
