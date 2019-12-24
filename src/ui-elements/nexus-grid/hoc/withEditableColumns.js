@@ -90,7 +90,7 @@ const withEditableColumns = ({
                         case 'territoryType':
                             copiedColumnDef.cellEditorFramework = TerritoryCellEditor;
                             copiedColumnDef.cellEditorParams = {
-                                options: getOptions('territory', false),
+                                options: (isObject(selectValues) && selectValues[field]) || []
                             };
                             break;
                     }
@@ -102,28 +102,25 @@ const withEditableColumns = ({
             return editableColumnDefs;
         };
 
-        const getOptions = (field, parse = true) => {
+        const getOptions = (field => {
             const options = (isObject(selectValues) && selectValues[field]) || [];
-            let parsedOptions = options;
-            if(parse){
-                parsedOptions = parsedOptions.filter(Boolean).map(item => {
-                    if (isObject(item)) {
-                        const {value, id} = item;
-                        return {
-                            label: value,
-                            value,
-                            key: id,
-                        };
-                    }
+            const parsedOptions = options.filter(Boolean).map(item => {
+                if (isObject(item)) {
+                    const {value, id} = item;
                     return {
-                        label: item,
-                        value: item,
-                        key: item,
+                        label: value,
+                        value,
+                        key: id,
                     };
-                });
-            };
+                }
+                return {
+                    label: item,
+                    value: item,
+                    key: item,
+                };
+            });
             return parsedOptions;
-        };
+        });
 
         const propsWithoutHocProps = omit(props, hocProps);
 

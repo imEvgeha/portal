@@ -53,7 +53,7 @@ export default function RightTerritoryFields({isEdit, existingTerritoryList, ter
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('country') ? getError('country').message : returnValidData('country') && currentTerritory['country'],
+                            label: getError('country') ? getError('country').message : (returnValidData('country') && currentTerritory['country']),
                             value: returnValidData('country') && currentTerritory['country']
                         } : ''
                 }

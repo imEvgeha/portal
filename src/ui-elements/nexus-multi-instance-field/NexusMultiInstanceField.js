@@ -22,7 +22,7 @@ const NexusMultiInstanceField = ({
     isReadOnly,
     onSubmit,
     onConfirm,
-    useModal,
+    isUsingModal,
     specialCreate
 }) => {
     const [items, setItems] = useState(existingItems);
@@ -58,14 +58,13 @@ const NexusMultiInstanceField = ({
                     onSubmit={callback}
                     onChange={value => setFormValue(value)}
                 >
-                {!useModal &&
-                                    <div className='d-flex flex-row justify-content-end'>
+                {!isUsingModal &&
+                                    <div className='nexus-c-multi-instance-field__action-buttons'>
                                         <Button onClick={() => {
-                                                                        setEditIndex(-1);
-                                                                        setFormValue({});
-                                                                        setInlineEdit(null);
-                                                                        }
-                                                                        }>Cancel</Button>
+                                            setEditIndex(-1);
+                                            setFormValue({});
+                                            setInlineEdit(null);
+                                        }}>Cancel</Button>
                                         <FormButton label={OKLabel} onClick={callback}/>
                                     </div>
                                 }
@@ -73,7 +72,7 @@ const NexusMultiInstanceField = ({
             </>
         );
 
-        if(useModal) {
+        if(isUsingModal) {
             setModalActions([
                 {
                     text: 'Cancel', onClick: () => {
@@ -126,7 +125,7 @@ const NexusMultiInstanceField = ({
         setEditIndex(-1);
         setFormValue({});
 
-        if(useModal){
+        if(isUsingModal){
             close();
         }else{
             setInlineEdit(null);
@@ -143,7 +142,7 @@ const NexusMultiInstanceField = ({
 
         setItems(combinedItems);
         setFormValue({});
-        if(useModal){
+        if(isUsingModal){
             close();
         }else{
             setInlineEdit(null);
@@ -236,7 +235,7 @@ NexusMultiInstanceField.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     onConfirm: PropTypes.func,
-    useModal: PropTypes.bool,
+    isUsingModal: PropTypes.bool,
     specialCreate: PropTypes.bool
 };
 
@@ -245,7 +244,7 @@ NexusMultiInstanceField.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     onConfirm: () => null,
-    useModal: true,
+    isUsingModal: true,
     specialCreate: false
 };
 

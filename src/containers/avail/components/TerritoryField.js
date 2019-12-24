@@ -32,14 +32,14 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
     };
 
     return (
-        <div className='nexus-territory-field'>
+        <div className='nexus-c-territory-field'>
             {isTableMode && getAddButton()}
             {territory && territory.length > 0 ? getTerritories() : !isTableMode && getAddButton()}
             {renderChildren()}
             <br/>
             {mappingErrorMessage[name] && mappingErrorMessage[name].text &&
             <small className="text-danger m-2">
-                {mappingErrorMessage[name] ? mappingErrorMessage[name].text ? mappingErrorMessage[name].text : '' : ''}
+                {mappingErrorMessage[name] && mappingErrorMessage[name].text || ''}
             </small>
             }
         </div>

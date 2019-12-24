@@ -65,7 +65,7 @@ class TerritoryCellEditor extends Component {
                     onSubmit={this.handleChange}
                     schema={RightTerritoryFormSchema(this.getOptions())}
                     keyForTagLabel="country"
-                    useModal={false}
+                    isUsingModal={false}
                     specialCreate={true}
                 />
             </div>
