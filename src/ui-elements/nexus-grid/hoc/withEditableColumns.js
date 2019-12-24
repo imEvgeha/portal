@@ -102,7 +102,7 @@ const withEditableColumns = ({
             return editableColumnDefs;
         };
 
-        const getOptions = (field => {
+        const getOptions = (field) => {
             const options = (isObject(selectValues) && selectValues[field]) || [];
             const parsedOptions = options.filter(Boolean).map(item => {
                 if (isObject(item)) {
@@ -120,7 +120,7 @@ const withEditableColumns = ({
                 };
             });
             return parsedOptions;
-        });
+        };
 
         const propsWithoutHocProps = omit(props, hocProps);
 
