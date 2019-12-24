@@ -109,6 +109,12 @@ const parseAdvancedFilter = function (searchCriteria) {
                     key += 'Match';
                 }
             }
+            // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
+            if (key === 'territory') {
+                const updatedKey = `${key}Country`;
+                params[updatedKey] = value;
+                continue;
+            }
             params[key] = value;
         }
     }
