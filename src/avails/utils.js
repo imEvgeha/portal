@@ -98,6 +98,7 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
 }
 
 export const createSchemaForColoring = (rightList, columnDefs) => {
+    const majorityRule = (occurence, total) => occurence > (total / 2); 
     const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
         const values = rightList.map(el => el[field]);
         const occurence = values.reduce((o, v) => {
@@ -115,21 +116,23 @@ export const createSchemaForColoring = (rightList, columnDefs) => {
             return o;
         }, {});
 
-        const getMostCommonValues = (values) => {
+        const getMostCommonValue = (values) => {
             const entries = !isEmpty(values) ? Object.entries(values) : [];
             if (entries.length) {
-                return entries
-                    .filter((el, i, arr) => el[1] === arr[0][1])
-                    .map(el => el[0]);
+                const mostCommonValue = entries
+                    .filter(([key, value], i, arr) => majorityRule(value, arr.length))
+                    .map(([key, value]) => key)
+                    .toString();
+
+                return mostCommonValue;
             }
-            return [];
         };
 
         if (Object.values(sortedValues).length > 1) {
             acc[field] = {
                 field,
                 values: sortedValues,
-                mostCommonValues: getMostCommonValues(sortedValues),
+                mostCommonValue: getMostCommonValue(sortedValues),
             };
         }
 
@@ -142,8 +145,8 @@ export const createSchemaForColoring = (rightList, columnDefs) => {
 
 export const addCellClass = ({colDef, value, schema, cellClass = 'nexus-c-match-right-view__grid-column--highlighted'}) => {
     const {field} = colDef;
-    const mostCommonValues = get(schema, [field, 'mostCommonValues'], null);
-    if (mostCommonValues && (mostCommonValues.length > 1 || !isEqual(mostCommonValues[0], JSON.stringify(value)))) {
+    const mostCommonValue = get(schema, [field, 'mostCommonValue'], null);
+    if (!isEqual(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     };
 };
