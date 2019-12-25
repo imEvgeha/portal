@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
 import {convertBooleanToString} from '../../containers/avail/util/format';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {CreatableSelect} from '@atlaskit/select';
 
-export default function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, options}) {
+function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, options}) {
 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
@@ -160,3 +161,19 @@ export default function RightTerritoryFields({isEdit, existingTerritoryList, ter
         </React.Fragment>
     );
 }
+
+RightTerritoryFields.propTypes = {
+    isEdit: PropTypes.bool,
+    existingTerritoryList: PropTypes.array,
+    territoryIndex: PropTypes.number,
+    options: PropTypes.array,
+};
+
+RightTerritoryFields.defaultProps = {
+    isEdit: false,
+    existingTerritoryList: [],
+    territoryIndex: null,
+    options: [],
+};
+
+export default RightTerritoryFields;
