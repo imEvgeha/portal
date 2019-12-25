@@ -10,6 +10,7 @@ import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
 import {isObject} from '../../../util/Common';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import usePrevious from '../../../util/hooks/usePrevious';
+import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',
@@ -24,7 +25,8 @@ const DEFAULT_EDITABLE_DATA_TYPES = [
     'multiselect',
     'date',
     'datetime',
-    'localdate'
+    'localdate',
+    'territoryType'
 ];
 const DEFAULT_NOT_EDITABLE_COLUMNS = ['id'];
 
@@ -85,6 +87,12 @@ const withEditableColumns = ({
                         case 'datetime':
                         case 'localdate':
                             columnDef.cellEditorFramework = DateTimeCellEditor;
+                            break;
+                        case 'territoryType':
+                            columnDef.cellEditorFramework = TerritoryCellEditor;
+                            columnDef.cellEditorParams = {
+                                options: (isObject(selectValues) && selectValues[field]) || []
+                            };
                             break;
                     }
                 }
