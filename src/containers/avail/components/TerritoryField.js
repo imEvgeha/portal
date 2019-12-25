@@ -46,17 +46,6 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
     );
 }
 
-const defaultFunction = () => {
-};
-
-TerritoryField.defaultProps = {
-    territory: [],
-    renderChildren: defaultFunction,
-    onTagClick: defaultFunction,
-    mappingErrorMessage: {},
-    isTableMode: false
-};
-
 TerritoryField.propTypes = {
     territory: PropTypes.array,
     name: PropTypes.string.isRequired,
@@ -66,6 +55,14 @@ TerritoryField.propTypes = {
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,
     isTableMode: PropTypes.bool
+};
+
+TerritoryField.defaultProps = {
+    territory: [],
+    renderChildren: () => null,
+    onTagClick: () => null,
+    mappingErrorMessage: {},
+    isTableMode: false
 };
 
 export default TerritoryField;
