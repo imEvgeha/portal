@@ -46,18 +46,12 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
         </div>
     );
 
-    const onToolTipClick = () => {
-        if(typeof onClick === 'function') {
-            onClick();
-        }
-    };
-
     return (
         <NexusTooltip content={tooltip} >
             <span className={`nexus-c-tag ${(tagState && `nexus-c-tag--is-${tagState}`) || ''}`}>
                 <div
                     className={`nexus-c-tag__label ${onClick && 'nexus-c-tag__label--is-clickable'}`}
-                    onClick={onToolTipClick}
+                    onClick={onClick}
                 >
                     {text}
                 </div>
@@ -81,8 +75,8 @@ NexusTag.propTypes = {
 
 NexusTag.defaultProps = {
     tagState: '',
-    onClick: null,
-    onRemove: null,
+    onClick: () => null,
+    onRemove: () => null,
 };
 
 export default NexusTag;
