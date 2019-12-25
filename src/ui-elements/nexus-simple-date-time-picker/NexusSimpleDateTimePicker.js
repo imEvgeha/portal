@@ -10,6 +10,8 @@ import {getDateFormatBasedOnLocale} from '../../util/Common';
 // TODO: Move to a separate file for constants
 const TIME_PLACEHOLDER = 'HH:mm:ss';
 const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
+const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]h:mm:ss[Z]';
+const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]h:mm:ss';
 
 const NexusSimpleDateTimePicker = ({
     label,
@@ -19,7 +21,8 @@ const NexusSimpleDateTimePicker = ({
     onChange,
     error,
     isUTC,
-    ...restProps,
+    isTimestamp,
+    ...restProps
 }) => {
     const [date, setDate] = useState(value);
 
@@ -31,22 +34,20 @@ const NexusSimpleDateTimePicker = ({
     useEffect(() => setDateBasedOnTimezone(value), [value]);
 
     const setDateBasedOnTimezone = (value) => {
-        setDate(
-            !isUTC
-                ? moment.utc(value || defaultValue).local().format(ATLASKIT_DATE_FORMAT)
-                : moment(value || defaultValue).utc(false).format(ATLASKIT_DATE_FORMAT)
-        );
+        setDate(moment(value || defaultValue).format(ATLASKIT_DATE_FORMAT));
     };
 
     // Create date placeholder based on locale
     const datePlaceholder = getDateFormatBasedOnLocale(locale).toUpperCase();
 
     const convertToISO = date => {
-        const dateWithStrippedTimezone = moment.utc(date).format(ATLASKIT_DATE_FORMAT);
+        const dateWithStrippedTimezone = moment(date).format(ATLASKIT_DATE_FORMAT);
         setDate(dateWithStrippedTimezone);
 
         // .utc(isUTC) part decides whether it is necessary to shift to UTC or not
-        return moment(dateWithStrippedTimezone).utc(isUTC).toISOString();
+        return isTimestamp
+            ? moment(dateWithStrippedTimezone).toISOString()
+            : moment(dateWithStrippedTimezone).format(isUTC ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT);
     };
 
     // Parse timezone along with date and time; AtlasKit requirement
@@ -116,6 +117,7 @@ NexusSimpleDateTimePicker.propTypes = {
     defaultValue: PropTypes.string,
     error: PropTypes.string,
     isUTC: PropTypes.bool,
+    isTimestamp: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
 };
@@ -126,6 +128,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     defaultValue: '',
     error: '',
     isUTC: true,
+    isTimestamp: true,
 };
 
 export default NexusSimpleDateTimePicker;

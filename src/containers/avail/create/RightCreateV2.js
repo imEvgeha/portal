@@ -20,6 +20,7 @@ import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/Nex
 import NexusDateTimeWindowPicker from '../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
+import NexusDatePicker from '../../../components/form/NexusDatePicker';
 
 const mapStateToProps = state => {
     return {
@@ -248,31 +249,31 @@ class RightCreate extends React.Component {
                 multiselect: null,
                 localdate: null,
                 time: null,
-                duration: (
-                    <NexusDateTimeWindowPicker
+                duration: null,
+                date: (
+                    <NexusDatePicker
+                        id={jvName}
                         label={displayName}
-                        onChange={timeWindow => {
-                            /* For testing purposes */
-                            console.warn('NexusDateTimeWindowPicker returned: ', timeWindow);
+                        value={'2019-10-08T10:00:00.000Z'}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDatePicker returned: ', date);
                         }}
-                        startDateTimePickerProps={{
-                            id: `${jvName}Start`,
-                        }}
-                        endDateTimePickerProps={{
-                            id: `${jvName}End`,
-                        }}
+                        required={required}
                     />
                 ),
-                date: <NexusDateTimePicker
-                    id={jvName}
-                    label={displayName}
-                    value={'2019-10-08T10:00:00.000Z'}
-                    onChange={date => {
-                        /* For testing proposes */
-                        console.warn('NexusSimpleDateTimePicker returned: ', date);
-                    }}
-                    required={required}
-                />,
+                datetime: (
+                    <NexusDateTimePicker
+                        id={jvName}
+                        label={displayName}
+                        value={'2019-10-08T10:00:00.000Z'}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDateTimePicker returned: ', date);
+                        }}
+                        required={required}
+                    />
+                ),
                 boolean: null,
                 territoryType: (
                     <NexusMultiInstanceField

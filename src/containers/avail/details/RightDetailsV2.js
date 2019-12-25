@@ -18,6 +18,8 @@ import BlockUi from 'react-block-ui';
 import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 import rightConstants from './RightConstants';
+import NexusDatePicker from '../../../components/form/NexusDatePicker';
+import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 const {
     TERRITORY_TYPE,
@@ -337,8 +339,33 @@ class RightDetails extends React.Component {
                 duration: null,
                 time: null,
                 localdate: null,
-                date: null,
                 boolean: null,
+                date: (
+                    <NexusDatePicker
+                        id={jvName}
+                        label={displayName}
+                        value={'2019-10-08T10:00:00.000Z'}
+                        isWithInlineEdit={true}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDatePicker returned: ', date);
+                        }}
+                        required={required}
+                    />
+                ),
+                datetime: (
+                    <NexusDateTimePicker
+                        id={jvName}
+                        label={displayName}
+                        value={'2019-10-08T10:00:00.000Z'}
+                        isWithInlineEdit={true}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDateTimePicker returned: ', date);
+                        }}
+                        required={required}
+                    />
+                ),
                 territoryType: renderTerritoryField(
                     jvName,
                     displayName,
