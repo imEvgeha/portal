@@ -50,7 +50,7 @@ const NexusSimpleDateTimePicker = ({
         setDate(dateWithStrippedTimezone);
 
         return isTimestamp
-            ? moment(dateWithStrippedTimezone).toISOString()
+            ? moment(dateWithStrippedTimezone.concat('Z')).toISOString()
             : moment(dateWithStrippedTimezone).format(isUTC ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT);
     };
 
