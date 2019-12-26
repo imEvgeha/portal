@@ -106,7 +106,18 @@ const NexusDateTimePicker = ({
                         )}
                         editView={() => DatePicker(false)}
                         defaultValue={value}
-                        onConfirm={onConfirm}
+                        onConfirm={date => {
+                            let newDate = date;
+                            // As per requirement, timestamps are in ISO format
+                            // and other dates take shorter format with no milliseconds
+                            // where Simulcast(UTC) dates are with 'Z' at the end
+                            if (isTimestamp) {
+                                newDate = moment(date).toISOString();
+                            } else {
+                                newDate = isUTC ? date : date.slice(0, -1);
+                            }
+                            onConfirm(newDate);
+                        }}
                         readViewFitContainerWidth
                         {...restProps}
                     />
