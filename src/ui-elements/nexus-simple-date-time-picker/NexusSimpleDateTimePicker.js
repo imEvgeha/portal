@@ -10,8 +10,8 @@ import {getDateFormatBasedOnLocale} from '../../util/Common';
 // TODO: Move to a separate file for constants
 const TIME_PLACEHOLDER = 'HH:mm:ss';
 const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
-const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]h:mm:ss[Z]';
-const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]h:mm:ss';
+const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
+const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
 
 const NexusSimpleDateTimePicker = ({
     label,
@@ -30,40 +30,28 @@ const NexusSimpleDateTimePicker = ({
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
 
-    useEffect(() => setDateBasedOnTimezone(date), [isUTC]);
-    useEffect(() => setDateBasedOnTimezone(value), [value]);
+    useEffect(() => setStrippedDate(date), [isUTC]);
+    useEffect(() => setStrippedDate(value), [value]);
 
-    const setDateBasedOnTimezone = (value) => {
-        setDate(moment(value || defaultValue).format(ATLASKIT_DATE_FORMAT));
+    const setStrippedDate = (value) => {
+        // Removing the 'Z' at the end if it exists, because otherwise you always
+        // get local date in preview, but requirements let the user choose
+        // whether they want to use UTC or Relative
+        const strippedValue = value.endsWith('Z') ? value.slice(0, -1) : value;
+        const newDate = moment(strippedValue).format(ATLASKIT_DATE_FORMAT);
+        setDate(newDate);
     };
 
     // Create date placeholder based on locale
     const datePlaceholder = getDateFormatBasedOnLocale(locale).toUpperCase();
 
-    const convertToISO = date => {
+    const convertToRequiredFormat = date => {
         const dateWithStrippedTimezone = moment(date).format(ATLASKIT_DATE_FORMAT);
         setDate(dateWithStrippedTimezone);
 
-        // .utc(isUTC) part decides whether it is necessary to shift to UTC or not
         return isTimestamp
             ? moment(dateWithStrippedTimezone).toISOString()
             : moment(dateWithStrippedTimezone).format(isUTC ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT);
-    };
-
-    // Parse timezone along with date and time; AtlasKit requirement
-    // https://atlaskit.atlassian.com/packages/core/datetime-picker/example/timezone-compat
-    const parseTimezoneValue = (
-        value,
-        date,
-        time,
-        timezone,
-    ) => {
-        const parsed = moment(value).parseZone();
-        return {
-            dateValue: parsed.isValid() ? parsed.format('YYYY-MM-DD') : date,
-            timeValue: parsed.isValid() ? parsed.format('HH:mm') : time,
-            zoneValue: parsed.isValid() ? parsed.format('ZZ') : timezone,
-        };
     };
 
     return (
@@ -83,16 +71,15 @@ const NexusSimpleDateTimePicker = ({
                     <DateTimePicker
                         locale={locale}
                         id={id}
-                        parseValue={parseTimezoneValue}
                         defaultValue={defaultValue}
                         value={date}
-                        onChange={date => date && onChange(convertToISO(date))}
+                        onChange={date => date && onChange(convertToRequiredFormat(date))}
                         datePickerProps={{
                             placeholder: datePlaceholder,
                             onChange: (newValue) => {
                                 !moment(value).isValid()
-                                    ? onChange(convertToISO(newValue))
-                                    : onChange(convertToISO(newValue + date.slice(10)));
+                                    ? onChange(convertToRequiredFormat(newValue))
+                                    : onChange(convertToRequiredFormat(newValue + date.slice(10)));
                             }
                         }}
                         timePickerProps={{
@@ -128,7 +115,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     defaultValue: '',
     error: '',
     isUTC: true,
-    isTimestamp: true,
+    isTimestamp: false,
 };
 
 export default NexusSimpleDateTimePicker;

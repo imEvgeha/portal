@@ -12,11 +12,11 @@ import './NexusDateTimePicker.scss';
 // TODO: Move to a separate file for constants
 const RELATIVE_TIME_LABEL = 'Relative';
 const SIMULCAST_TIME_LABEL = 'Simulcast (UTC)';
-const TIME_FORMAT = ' h:mm:ss A';
-const TIMESTAMP_FORMAT = ' h:mm:ss.SSS A';
+const TIME_FORMAT = ' hh:mm:ss A';
+const TIMESTAMP_FORMAT = ' hh:mm:ss.SSS A';
 
-const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]h:mm:ss[Z]';
-const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]h:mm:ss';
+const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
+const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
 
 const NexusDateTimePicker = ({
     id,
@@ -44,6 +44,11 @@ const NexusDateTimePicker = ({
         .toUpperCase()
         .concat(isTimestamp ? TIMESTAMP_FORMAT : TIME_FORMAT); // Decide whether to include milliseconds based on type
 
+    const getDisplayDate = (date) => {
+        const hasUTCTag = date.endsWith('Z');
+        return moment(date).utc(!hasUTCTag).format(dateFormat);
+    };
+
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
             {label &&
@@ -52,7 +57,7 @@ const NexusDateTimePicker = ({
                 </div>
             }
             {isReadOnly
-                ? moment(value).format(dateFormat)
+                ? getDisplayDate(value)
                 : (
                     <>
                         <div className="nexus-c-date-time-picker__date-time">
@@ -95,7 +100,7 @@ const NexusDateTimePicker = ({
                         readView={() => (
                             <div className="nexus-c-date-time-picker__read-view-container">
                                 {moment(value).isValid()
-                                ?`${moment(value).format(dateFormat)}
+                                ?`${getDisplayDate(value)}
                                  ${isUTC && !isTimestamp ? ' (UTC)' : ''}`
                                 : <div className="read-view-container__placeholder">
                                         {`Enter ${name}`}
