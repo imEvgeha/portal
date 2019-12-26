@@ -15,12 +15,14 @@ import {safeTrim} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
-
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusDateTimeWindowPicker from '../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
-import NexusDatePicker from '../../../components/form/NexusDatePicker';
+import uiElements from '../../../ui-elements';
+
+const {
+    NexusDateTimePicker,
+    NexusDatePicker,
+    NexusMultiInstanceField
+} = uiElements;
 
 const mapStateToProps = state => {
     return {

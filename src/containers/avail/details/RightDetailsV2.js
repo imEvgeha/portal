@@ -15,11 +15,15 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
-import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 import rightConstants from './RightConstants';
-import NexusDatePicker from '../../../components/form/NexusDatePicker';
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import uiElements from '../../../ui-elements';
+
+const {
+    NexusDateTimePicker,
+    NexusDatePicker,
+    NexusMultiInstanceField
+} = uiElements;
 
 const {
     TERRITORY_TYPE,
