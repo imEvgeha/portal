@@ -115,7 +115,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     defaultValue: '',
     error: '',
     isUTC: true,
-    isTimestamp: false,
+    isTimestamp: true, //TODO: Change to false when AVAILS team finishes their part NEX-656
 };
 
 export default NexusSimpleDateTimePicker;

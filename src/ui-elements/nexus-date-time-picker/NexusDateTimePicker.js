@@ -146,7 +146,7 @@ NexusDateTimePicker.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     isLocalDate: true, //TODO: Check if this flag is useful at all anymore, if not set isUTC default as 'false'
-    isTimestamp: false,
+    isTimestamp: true, //TODO: Change to false when AVAILS team finishes their part NEX-656
     onConfirm: () => null,
 };
 
