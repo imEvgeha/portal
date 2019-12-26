@@ -8,15 +8,12 @@ import InlineEdit from '@atlaskit/inline-edit';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 import {getDateFormatBasedOnLocale} from '../../util/Common';
 import './NexusDateTimePicker.scss';
-
-// TODO: Move to a separate file for constants
-const RELATIVE_TIME_LABEL = 'Relative';
-const SIMULCAST_TIME_LABEL = 'Simulcast (UTC)';
-const TIME_FORMAT = ' hh:mm:ss A';
-const TIMESTAMP_FORMAT = ' hh:mm:ss.SSS A';
-
-const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
-const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
+import {
+    RELATIVE_TIME_LABEL,
+    SIMULCAST_TIME_LABEL,
+    TIME_FORMAT,
+    TIMESTAMP_FORMAT
+} from './constants';
 
 const NexusDateTimePicker = ({
     id,
@@ -109,10 +106,7 @@ const NexusDateTimePicker = ({
                         )}
                         editView={() => DatePicker(false)}
                         defaultValue={value}
-                        onConfirm={(date) => {
-                            console.log(date);
-                            onConfirm(date);
-                        }}
+                        onConfirm={onConfirm}
                         readViewFitContainerWidth
                         {...restProps}
                     />

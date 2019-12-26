@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
 import {getDateFormatBasedOnLocale} from '../../util/Common';
-
-// TODO: Move to a separate file for constants
-const TIME_PLACEHOLDER = 'HH:mm:ss';
-const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
-const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
-const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
+import {
+    TIME_PLACEHOLDER,
+    ATLASKIT_DATE_FORMAT,
+    SIMULCAST_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT
+} from './constants';
 
 const NexusSimpleDateTimePicker = ({
     label,

@@ -1,33 +1,37 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import Select from '@atlaskit/select';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 import NexusDatePicker from '../nexus-date-picker/NexusDatePicker';
 import './NexusDateTimeWindowPicker.scss';
-import moment from 'moment';
-
-// TODO: Move to a separate file for constants
-const RELATIVE_TIME_LABEL = 'Relative';
-const SIMULCAST_TIME_LABEL = 'Simulcast (UTC)';
-const START_DATE_ERROR = 'Start date must be before End date';
-const END_DATE_ERROR = 'End date must be after Start date';
+import {
+    END_DATE_ERROR,
+    START_DATE_ERROR,
+    RELATIVE_TIME_LABEL,
+    SIMULCAST_TIME_LABEL
+} from './constants';
 
 const NexusDateTimeWindowPicker = ({
     label,
     labels,
     isLocalDate,
     isUsingTime,
+    isTimestamp, // If set, value includes milliseconds and return value is in ISO format
     onChange,
     startDateTimePickerProps,
     endDateTimePickerProps,
 }) => {
-    const [isUTC, setIsUTC] = useState(isLocalDate);
+    const [isUTC, setIsUTC] = useState(!isLocalDate);
 
     const [startDate, setStartDate] = useState(startDateTimePickerProps.defaultValue || '');
     const [startDateError, setStartDateError] = useState('');
 
     const [endDate, setEndDate] = useState(endDateTimePickerProps.defaultValue || '');
     const [endDateError, setEndDateError] = useState('');
+
+    // Due to requirements, we check if the provided value is "zoned" and set isUTC accordingly
+    useEffect(() => {typeof value === 'string' && setIsUTC(value.endsWith('Z'));}, []);
 
     // When date changes, validate and trigger change
     useEffect(() => {
