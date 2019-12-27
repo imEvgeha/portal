@@ -31,7 +31,10 @@ const NexusDateTimeWindowPicker = ({
     const [endDateError, setEndDateError] = useState('');
 
     // Due to requirements, we check if the provided value is "zoned" and set isUTC accordingly
-    useEffect(() => {typeof value === 'string' && setIsUTC(value.endsWith('Z'));}, []);
+    useEffect(() => {
+        const {defaultValue} = startDateTimePickerProps || {};
+        typeof defaultValue === 'string' && setIsUTC(defaultValue.endsWith('Z'));
+    }, []);
 
     // When date changes, validate and trigger change
     useEffect(() => {
@@ -86,6 +89,7 @@ const NexusDateTimeWindowPicker = ({
                     ? (
                         <NexusSimpleDateTimePicker
                             isUTC={isUTC}
+                            isTimestamp={isTimestamp}
                             value={startDate}
                             onChange={setStartDate}
                             error={startDateError}
@@ -114,6 +118,7 @@ const NexusDateTimeWindowPicker = ({
                     ? (
                         <NexusSimpleDateTimePicker
                             isUTC={isUTC}
+                            isTimestamp={isTimestamp}
                             value={endDate}
                             onChange={setEndDate}
                             error={endDateError}
@@ -130,14 +135,14 @@ const NexusDateTimeWindowPicker = ({
                     )
                 }
             </div>
-            {isUsingTime &&
+            {(!isTimestamp && isUsingTime) &&
                 <div className="nexus-c-date-time-picker__type-select">
                     <label className="nexus-c-date-time-picker__label">
                         Select Type
                     </label>
                     <Select
                         defaultValue={
-                            isLocalDate
+                            !isLocalDate
                                 ? {label: RELATIVE_TIME_LABEL, value: false}
                                 : {label: SIMULCAST_TIME_LABEL, value: true}
                         }
@@ -157,6 +162,7 @@ NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
     labels: PropTypes.array,    //example: ['From', 'To']
     islocalDate: PropTypes.bool,
+    isTimestamp: PropTypes.bool,
     isUsingTime: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     startDateTimePickerProps: PropTypes.shape({
@@ -171,6 +177,7 @@ NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
     isLocalDate: false,
+    isTimestamp: false, // TODO: Convert to false when NEX-656 is finished
 };
 
 export default NexusDateTimeWindowPicker;
