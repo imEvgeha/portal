@@ -344,8 +344,17 @@ class RightDetails extends React.Component {
                 time: null,
                 localdate: null,
                 boolean: null,
-                date: (
-                    <NexusDatePicker
+                date: renderFieldTemplate(
+                    name,
+                    displayName,
+                    value,
+                    null,
+                    readOnly,
+                    required,
+                    null,
+                    null,
+                    null,
+                    (<NexusDatePicker
                         id={jvName}
                         label={displayName}
                         value={'2019-10-08T10:00:00.000Z'}
@@ -355,10 +364,20 @@ class RightDetails extends React.Component {
                             console.warn('NexusDatePicker returned: ', date);
                         }}
                         required={required}
-                    />
+                        isReadOnly={readOnly}
+                    />)
                 ),
-                datetime: (
-                    <NexusDateTimePicker
+                datetime: renderFieldTemplate(
+                    name,
+                    displayName,
+                    value,
+                    // errors,
+                    readOnly,
+                    required,
+                    null,
+                    null,
+                    null,
+                    (<NexusDateTimePicker
                         id={jvName}
                         label={displayName}
                         value={'2019-10-08T10:00:00.000Z'}
@@ -368,7 +387,8 @@ class RightDetails extends React.Component {
                             console.warn('NexusDateTimePicker returned: ', date);
                         }}
                         required={required}
-                    />
+                        isReadOnly={readOnly}
+                    />)
                 ),
                 territoryType: renderTerritoryField(
                     jvName,
