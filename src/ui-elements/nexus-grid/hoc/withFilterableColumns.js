@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEmpty from 'lodash.isempty';
 import omit from 'lodash.omit';
+import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
@@ -84,18 +85,18 @@ const withFilterableColumns = ({
         }, [gridApi, mapping]);
 
         function updateColumnDefs(columnDefs) {
-            const filterableColumnDefs = columnDefs.map(columnDef => {
-                let copiedColumnDef = {...columnDef};
-                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
+            const copiedColumnDefs = cloneDeep(columnDefs);
+            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
+                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType)
-                    && (columns ? columns.includes(copiedColumnDef.field) : true)
-                    && !excludedFilterColumns.includes(copiedColumnDef.field);
+                    && (columns ? columns.includes(columnDef.field) : true)
+                    && !excludedFilterColumns.includes(columnDef.field);
                 if (isFilterable) {
-                    copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
-                    copiedColumnDef.filterParams = setFilterParams(dataType, copiedColumnDef.field);
+                    columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
+                    columnDef.filterParams = setFilterParams(dataType, columnDef.field);
                 }
 
-                return copiedColumnDef;
+                return columnDef;
             });
 
             return filterableColumnDefs;
