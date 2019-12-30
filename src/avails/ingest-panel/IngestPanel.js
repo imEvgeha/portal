@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getAvails} from '../availsSelectors';
-import {updateFilters} from '../availsActions';
+import {getAvails, getTotalAvails} from '../availsSelectors';
+import {fetchAvails, fetchNextPage} from '../availsActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
+import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
 class IngestPanel extends React.Component {
@@ -13,10 +14,11 @@ class IngestPanel extends React.Component {
         this.state = {
             showFilters: false
         };
+        this.panelRef = React.createRef();
     }
 
     componentDidMount() {
-        this.props.onFiltersChange({});
+        this.props.onFiltersChange(getFiltersToSend());
     }
 
     toggleFilters = () => {
@@ -25,17 +27,34 @@ class IngestPanel extends React.Component {
         });
     };
 
+    onScroll = e => {
+        const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
+        const {avails, totalAvails, fetchNextPage} = this.props;
+        if ((scrollHeight - scrollTop === clientHeight) && (avails.length < totalAvails)) {
+            fetchNextPage();
+        }
+    };
+
+    onFiltersChange = filters => {
+        this.panelRef.current.scrollTop = 0;
+        this.props.onFiltersChange(filters);
+    };
+
     render () {
+        const {avails} = this.props;
         return (
             <div className='ingest-panel'>
                 <PanelHeader
                     showFilters={this.state.showFilters}
                     toggleFilters={this.toggleFilters}
-                    onFiltersChange={this.props.onFiltersChange}
+                    onFiltersChange={this.onFiltersChange}
                 />
-                <div className='ingest-panel__avails-list'>
+                <div
+                    className='ingest-panel__avails-list'
+                    onScroll={this.onScroll}
+                    ref={this.panelRef}>
                     {
-                        this.props.avails.map(({id, attachments, received, provider, ingestType}) => (
+                        avails.map(({id, attachments, received, provider, ingestType}) => (
                             (attachments.length > 1) ? (
                                 <div key={id}>Bundle</div>
                             ) : (<Ingest key={id}
@@ -55,11 +74,13 @@ class IngestPanel extends React.Component {
 const mapStateToProps = () => {
     return (state) => ({
         avails: getAvails(state),
+        totalAvails: getTotalAvails(state),
     });
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onFiltersChange: payload => dispatch(updateFilters(payload))
+    onFiltersChange: payload => dispatch(fetchAvails(payload)),
+    fetchNextPage: () => dispatch(fetchNextPage())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IngestPanel); // eslint-disable-line

@@ -179,6 +179,16 @@ const URL = {
         if(window && window.location){
             return window.location.search;
         } return null;
+    },
+
+    updateQueryParam: (values) => {     //values = {date: '12/12/12'}
+        const search = window.location.search.substring(1);
+        let params =  new URLSearchParams(search);
+        params = {
+            ...Object.fromEntries(params.entries()),
+            ...values,
+        };
+        return Object.keys(params).map(key => key + '=' + params[key]).join('&');
     }
 };
 

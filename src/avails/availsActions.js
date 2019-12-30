@@ -1,6 +1,10 @@
 import actionTypes from './availsActionTypes';
 
-export const updateFilters = payload => ({
-    type: actionTypes.UPDATE_FILTERS,
+export const fetchAvails = payload => ({
+    type: actionTypes.FETCH_AVAILS,
     payload,
+});
+
+export const fetchNextPage = () => ({
+    type: actionTypes.FETCH_NEXT_PAGE,
 });

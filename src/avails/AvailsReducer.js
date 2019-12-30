@@ -1,7 +1,8 @@
 import actionTypes from './availsActionTypes';
 
 const initialState = {
-  avails: [],
+    avails: [],
+    total: 0
 };
 
 const availsReducer = (state = initialState, action = {}) => {
@@ -10,7 +11,13 @@ const availsReducer = (state = initialState, action = {}) => {
         case actionTypes.FETCH_AVAILS_SUCCESS:
             return {
                 ...state,
-                avails: payload
+                avails: payload.data,
+                total: payload.total
+            };
+        case actionTypes.FETCH_NEXT_PAGE_SUCCESS:
+            return {
+                ...state,
+                avails: state.avails.concat(payload)
             };
 
         default:

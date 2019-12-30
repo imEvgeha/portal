@@ -18,6 +18,7 @@ const NexusDateTimeWindowPicker = ({
     isLocalDate,
     isUsingTime,
     onChange,
+    getAllUpdates,
     startDateTimePickerProps,
     endDateTimePickerProps,
 }) => {
@@ -61,7 +62,10 @@ const NexusDateTimeWindowPicker = ({
     };
 
     // If both dates are filled, send a formatted time-window string
-    const handleChange = () => startDate && endDate && onChange({startDate, endDate});
+    const handleChange = () => {
+        getAllUpdates({startDate, endDate});
+        return startDate && endDate && onChange({startDate, endDate});
+    };
 
     return (
         <div className="nexus-c-date-time-window-picker">
@@ -154,7 +158,8 @@ NexusDateTimeWindowPicker.propTypes = {
     labels: PropTypes.array,    //example: ['From', 'To']
     islocalDate: PropTypes.bool,
     isUsingTime: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    getAllUpdates: PropTypes.func,     //when any date is changed (returns blank dates as well)
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
@@ -167,6 +172,8 @@ NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
     isLocalDate: false,
+    getAllUpdates: () => null,
+    onChange: () => null,
 };
 
 export default NexusDateTimeWindowPicker;

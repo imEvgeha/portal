@@ -4,21 +4,11 @@ import Select from '@atlaskit/select/Select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import NexusDateTimeWindowPicker from '../../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import Constants from '../../Constants';
-import {getFiltersToSend} from '../../utils';
-import {URL} from '../../../../util/Common';
+import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
 const IngestFilters = ({onFiltersChange}) => {
-    const {filterKeys: {PROVIDER, RECEIVED_TO, RECEIVED_FROM, STATUS}, STATUS_LIST} = Constants;
-    const getInitialFilters = () => {
-        const status = URL.getParamIfExists(STATUS);
-        return {
-            status: status ? { value: status, label: status} : STATUS_LIST[0],
-            provider: URL.getParamIfExists(PROVIDER) || '',
-            startDate: URL.getParamIfExists(RECEIVED_FROM) || '',
-            endDate: URL.getParamIfExists(RECEIVED_TO) || '',
-        };
-    };
+    const {filterKeys: {PROVIDER, STATUS}} = Constants;
 
     const [filters, setFilters] = useState(getInitialFilters());
     const [isApplyActive, setIsApplyActive] = useState(false);
@@ -70,7 +60,7 @@ const IngestFilters = ({onFiltersChange}) => {
                     endDateTimePickerProps={{
                         id:'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate
                     }}
-                    onChange={onDateChange}
+                    getAllUpdates={onDateChange}
                     labels={Constants.DATEPICKER_LABELS}/>
             </div>
             <div className='ingest-filters__actions'>
