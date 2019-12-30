@@ -23,7 +23,7 @@ export const getRightMatchingList = (page, size, searchCriteria = {}, sortedPara
 
 export const getCombinedRight = (rightIds) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`
     );
 };
 
@@ -33,13 +33,13 @@ export const putCombinedRight = (rightIds, combinedRight) => {
             description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
         }});
     return httpReq.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`,
         combinedRight
     );
 };
 
 export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParams) => {
-    const {excludedItems} = searchCriteria;
+    const {excludedItems = []} = searchCriteria;
     const filteredSearchCriteria = Object.keys(searchCriteria)
         .reduce((object, key) => {
             if (key !== TEMPORARY_PROP) {
@@ -53,15 +53,30 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
         `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`, 
         {paramsSerializer : encodedSerialize, params}
     ).then(response => {
-        // temporary FE handling of not equal query params
+        // temporary FE handling for operand 'not equal'
+        const getUpdatedData = (response, excludedItems) => {
+            const {data = []} = response || {};
+            if (data) {
+                if (Array.isArray(excludedItems)) {
+                    const result = data.filter(({id}) => !excludedItems.includes(id));
+                    return result;
+                }
+
+                return data;
+            }
+
+            return [];
+        };
+
         const updatedResponse = {
             ...response,
             data: {
                 ...response.data,
-                data: response.data && response.data.data ? response.data.data.filter(el => Array.isArray(excludedItems) && !excludedItems.includes(el.id)) : [],
-                total: response.data.total > 0 ? response.data.total - excludedItems.length : 0,
+                data: getUpdatedData(response.data, excludedItems),
+                total: getUpdatedData(response.data, excludedItems).length,
             }
         };
+
         return updatedResponse;
     });
 };

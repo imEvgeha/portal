@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref 
+import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -7,32 +7,29 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replac
 import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
 import config from 'react-global-configuration';
-import {uid} from 'react-uid';
-import { Button, Label } from 'reactstrap';
+import {Button, Label} from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
-import { oneOfValidation, rangeValidation } from '../../../util/Validation';
-import { profileService } from '../service/ProfileService';
-import { cannot } from '../../../ability';
+import {oneOfValidation, rangeValidation} from '../../../util/Validation';
+import {profileService} from '../service/ProfileService';
+import {cannot} from '../../../ability';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
-import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
-import { momentToISO } from '../../../util/Common';
+import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {equalOrIncluded, getDeepValue, isObject, momentToISO, safeTrim} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import { confirmModal } from '../../../components/modal/ConfirmModal';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import {CustomFieldAddText, AddButton} from '../custom-form-components/CustomFormComponents';
-import {isObject} from '../../../util/Common';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import TerritoryField from '../components/TerritoryField';
+import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
     return {
@@ -974,7 +971,7 @@ class RightDetails extends React.Component {
              };
 
             let deleteTerritory = (territory) => {
-                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id);
+                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id && e.country !== territory.country);
                 ref.current.handleChange(newArray);
                 setTimeout(() => {
                     this.setState({});
@@ -1023,33 +1020,30 @@ class RightDetails extends React.Component {
                     onCancel={onCancel}
                     showError={false}
                     helperComponent={
-                        <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
-                            {territories && territories.length > 0
-                                ? territories.map((e, i) => (
-                                    <NexusTag
-                                        key={uid(e)}
-                                        text={e.country || e.value}
-                                        value={e}
-                                        removeButtonText="Remove"
-                                        onClick={() => this.toggleRightTerritoryForm(i)}
-                                        onRemove={() => deleteTerritory(e)}
+                        <TerritoryField
+                            territory={territories}
+                            name={name}
+                            onRemoveClick={(territory) => deleteTerritory(territory)}
+                            onAddClick={this.toggleAddRightTerritoryForm}
+                            onTagClick={(i) => this.toggleRightTerritoryForm(i)}
+                            renderChildren={() =>
+                                <React.Fragment>
+                                    <div style={{position: 'absolute', right: '10px'}}>
+                                        <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                                    </div>
+                                    <RightTerritoryForm
+                                        onSubmit={(e) => addTerritory(e)}
+                                        isOpen={this.state.isRightTerritoryFormOpen}
+                                        onClose={this.toggleRightTerritoryForm}
+                                        existingTerritoryList={selectedVal}
+                                        territoryIndex={this.state.territoryIndex}
+                                        isEdit={this.state.isEdit}
+                                        options={options}
                                     />
-                                ))
-                                : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
-                            }
-                            <div style={{position: 'absolute', right: '10px'}}>
-                                <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
-                            </div>
-                            <RightTerritoryForm
-                                onSubmit={(e) => addTerritory(e)}
-                                isOpen={this.state.isRightTerritoryFormOpen}
-                                onClose={this.toggleRightTerritoryForm}
-                                existingTerritoryList={selectedVal}
-                                territoryIndex={this.state.territoryIndex}
-                                isEdit={this.state.isEdit}
-                                options={options} 
-                            />
-                        </div>
+                                </React.Fragment>}
+                        />
+
+
                     } />
 
             ));

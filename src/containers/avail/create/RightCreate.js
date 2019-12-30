@@ -2,7 +2,6 @@ import React from 'react';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import moment from 'moment';
-import {uid} from 'react-uid';
 
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -10,23 +9,22 @@ import BlockUi from 'react-block-ui';
 import {Button, Input, Label} from 'reactstrap';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
-import {rangeValidation, oneOfValidation} from '../../../util/Validation';
+import {oneOfValidation, rangeValidation} from '../../../util/Validation';
 import {rightsService} from '../service/RightsService';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
-import {momentToISO, safeTrim} from '../../../util/Common';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {momentToISO, safeTrim, URL} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
-import {URL} from '../../../util/Common';
 
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import { CustomFieldAddText, AddButton } from '../custom-form-components/CustomFormComponents';
 import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import TerritoryField from '../components/TerritoryField';
+import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 
 const mapStateToProps = state => {
@@ -688,39 +686,19 @@ class RightCreate extends React.Component {
                 }
             }
             return renderFieldTemplate(name, displayName, required, null, (
-                <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
-                    {this.right.territory && this.right.territory.length > 0
-                        ? (
-                            this.right.territory.map((e)=> (
-                                <NexusTag
-                                    key={uid(e)}
-                                    text={e.country}
-                                    value={e}
-                                    removeButtonText="Remove"
-                                    onRemove={() => this.handleDeleteObjectFromArray(e.country, 'territory', 'country')}
-                                />
-                            ))
-                        )
-                        : (
-                            <CustomFieldAddText
-                                onClick={this.toggleRightTerritoryForm}
-                                id={'right-create-' + name + '-button'}
-                            >
-                                Add...
-                            </CustomFieldAddText>
-                        )
-                    }
-                    <div style={{position: 'absolute', right: '10px'}}>
-                        <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
-                    </div>
-                    <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />                    
-                    <br />
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
-                        <small className="text-danger m-2">
-                            {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                        </small>
-                    }
-                </div>
+                <TerritoryField
+                    territory={this.right.territory}
+                    name={name}
+                    onRemoveClick={ (terr) => this.handleDeleteObjectFromArray(terr.country, 'territory', 'country')}
+                    onAddClick={this.toggleRightTerritoryForm}
+                    renderChildren={() => <React.Fragment>
+                        <div style={{position: 'absolute', right: '10px'}}>
+                            <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
+                        </div>
+                        <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />
+                    </React.Fragment>}
+                    mappingErrorMessage={this.mappingErrorMessage}
+                />
             ));
         };
 
