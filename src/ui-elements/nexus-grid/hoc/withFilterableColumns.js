@@ -17,11 +17,13 @@ const DEFAULT_HOC_PROPS = [
 
 const FILTERABLE_DATA_TYPES = [
     'string',
-    'number',
+    'integer',
     'boolean',
     'select',
     'multiselect',
     'territoryType',
+    'year',
+    'duration',
 ];
 
 const NOT_FILTERABLE_COLUMNS = ['id'];
@@ -34,7 +36,9 @@ const DEFAULT_FILTER_PARAMS = {
 
 const FILTER_TYPE = {
     string: 'agTextColumnFilter',
-    number: 'agNumberColumnFilter',
+    duration: 'agTextColumnFilter',
+    integer: 'agNumberColumnFilter',
+    year: 'agNumberColumnFilter',
     select: 'agSetColumnFilter',
     multiselect: 'agSetColumnFilter',
     territoryType: 'agSetColumnFilter',
@@ -98,7 +102,7 @@ const withFilterableColumns = ({
 
                 return columnDef;
             });
-
+//
             return filterableColumnDefs;
         }
 
@@ -121,7 +125,9 @@ const withFilterableColumns = ({
         const setFilterParams = (dataType, field) => {
             switch (dataType) {
                 case 'string':
-                case 'number': 
+                case 'integer':
+                case 'year':
+                case 'duration':
                     return DEFAULT_FILTER_PARAMS;
                 case 'select':
                 case 'territoryType':
