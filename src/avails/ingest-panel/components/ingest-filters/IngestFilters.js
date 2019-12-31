@@ -8,7 +8,7 @@ import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
 const IngestFilters = ({onFiltersChange}) => {
-    const {filterKeys: {PROVIDER, STATUS}} = Constants;
+    const {filterKeys: {PROVIDER, STATUS}, STATUS_LIST} = Constants;
 
     const [filters, setFilters] = useState(getInitialFilters());
     const [isApplyActive, setIsApplyActive] = useState(false);
@@ -24,7 +24,10 @@ const IngestFilters = ({onFiltersChange}) => {
     };
 
     const clearFilters = () => {
-        setFilters(getInitialFilters());
+        setFilters({
+            status: STATUS_LIST[0],
+            provider: '',
+        });
         setIsApplyActive(false);
         onFiltersChange({});
     };
