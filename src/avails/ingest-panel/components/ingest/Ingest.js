@@ -9,6 +9,12 @@ import './Ingest.scss';
 const Ingest = ({ingestType, received, provider, attachment, selected, ingestClick}) => {
     const [showReport, setShowReport] = useState(false);
     const { link, status, ingestReport = {} } = attachment;
+
+    const onChevronClick = e => {
+        e.stopPropagation();
+        setShowReport(!showReport);
+    };
+
     const onClick = () => ingestClick(
         {ingestType, received, provider, attachment, id: attachment.id}
         );
@@ -19,7 +25,7 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
             <div className='avail-ingest__details'>
                 <span
                     className={`avail-ingest__details--${showReport ? 'open' : 'close' }`}
-                    onClick={() => setShowReport(!showReport)}>
+                    onClick={onChevronClick}>
                     <Chevron/>
                 </span>
                 <IngestStatus date={received} status={status} />

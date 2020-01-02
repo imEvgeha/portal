@@ -10,8 +10,7 @@ const {PAGE_SIZE, sortParams} = Constants;
 
 function* fetchAvails({payload}) {
     try {
-        const query = Object.keys(payload).map(key => key + '=' + payload[key]).join('&');
-        const url = `${window.location.pathname}?${query}`;
+        const url = `${window.location.pathname}?${URL.updateQueryParam(payload)}`;
         yield put(push(URL.keepEmbedded(url)));
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
         yield put({
@@ -43,9 +42,15 @@ function* fetchNextPage() {
     }
 }
 
+function* filterRightsByStatus({payload}) {
+    const url = `${window.location.pathname}?${URL.updateQueryParam({rightStatus: payload})}`;
+    yield put(push(URL.keepEmbedded(url)));
+}
+
 export default function* availsWatcher() {
     yield all([
         takeLatest(actionTypes.FETCH_AVAILS, fetchAvails),
         takeLatest(actionTypes.FETCH_NEXT_PAGE, fetchNextPage),
+        takeLatest(actionTypes.FILTER_RIGHTS_BY_STATUS, filterRightsByStatus),
     ]);
 }

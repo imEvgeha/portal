@@ -9,6 +9,7 @@
     justify-content: space-between;
     .ingest-status {
       padding-left: 30px;
+      width: 100%;
     }
   }
   &__stats {
@@ -19,6 +20,22 @@
       padding-right: 15px;
       &__field {
         width: 50px;
+        &--value {
+          cursor: pointer;
+          background: #A5ADBA;
+          &:hover {
+            background: #737E91;
+            color: #000000;
+          }
+          &.filter-active{
+            background: #42526E;
+            color: #FFFFFF;
+            &:hover {
+              background: #42526E;
+              color: #FFFFFF;
+            }
+          }
+        }
       }
     }
   }

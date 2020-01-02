@@ -15,12 +15,10 @@ export const getInitialFilters = () => {
 
 export const getFiltersToSend = (filters) => {
     const {status=STATUS_LIST[0], provider, startDate, endDate} = filters || getInitialFilters();
-    const filtersToSend = {
+    return {
         [RECEIVED_FROM]: startDate,
         [RECEIVED_TO]: endDate,
         [STATUS]: status.value,
         [PROVIDER]: provider,
     };
-    Object.keys(filtersToSend).forEach(key => (!filtersToSend[key]) && delete filtersToSend[key]);
-    return filtersToSend;
 };
