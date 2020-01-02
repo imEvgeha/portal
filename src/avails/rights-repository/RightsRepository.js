@@ -10,6 +10,8 @@ import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import * as selectors from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
+import Ingest from './components/ingest/Ingest';
+import './RightsRepository.scss';
 
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
@@ -17,7 +19,7 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: rightServiceManager.doSearch}),
 )(NexusGrid);
 
-const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping}) => {
+const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping, selectedIngest}) => {
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -39,8 +41,9 @@ const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping}) 
     });
 
     return (
-        <div className="nexus-c-avails-view__avails-table">
-            <div className='nexus-c-avails-view__avails-table--title'>Rights</div>
+        <div className="nexus-c-avails-table">
+            <div className='nexus-c-avails-table--title'>Rights Repository</div>
+            {selectedIngest && (<Ingest ingest={selectedIngest} />)}
             <NexusGridWithInfiniteScrolling
                 columnDefs={columnDefsWithRedirect}
                 mapping={mapping}

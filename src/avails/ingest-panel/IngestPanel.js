@@ -41,7 +41,7 @@ class IngestPanel extends React.Component {
     };
 
     render () {
-        const {avails} = this.props;
+        const {avails, ingestClick, selectedIngest} = this.props;
         return (
             <div className='ingest-panel'>
                 <PanelHeader
@@ -57,12 +57,15 @@ class IngestPanel extends React.Component {
                         avails.map(({id, attachments, received, provider, ingestType}) => (
                             (attachments.length > 1) ? (
                                 <div key={id}>Bundle</div>
-                            ) : (<Ingest key={id}
+                            ) : ( (attachments.length === 1) &&
+                                (<Ingest key={id}
                                          attachment={attachments[0]}
                                          received={received}
                                          provider={provider}
                                          ingestType={ingestType}
-                            />)
+                                         ingestClick={ingestClick}
+                                         selected={selectedIngest === attachments[0].id}
+                                />))
                         ))
                     }
                 </div>
