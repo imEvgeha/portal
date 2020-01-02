@@ -63,8 +63,8 @@ const NexusDateTimeWindowPicker = ({
 
     // If both dates are filled, send a formatted time-window string
     const handleChange = () => {
-        getAllUpdates({startDate, endDate});
-        return startDate && endDate && onChange({startDate, endDate});
+        startDate || endDate && getAllUpdates({startDate, endDate});
+        startDate && endDate && onChange({startDate, endDate});
     };
 
     return (
