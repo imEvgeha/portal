@@ -251,9 +251,9 @@ class TitleEdit extends Component {
         });
     };
 
-    handleRatingCreateChange = (e) => {
+    handleRatingCreateChange = (rating) => {
         this.setState({
-            ratingForCreate: e
+            ratingForCreate: rating
         });
     };
 
@@ -386,7 +386,7 @@ class TitleEdit extends Component {
         }
     };
 
-    formatRating = (newAdditionalFields) => {
+    addRatingForCreateIfExist = (newAdditionalFields) => {
         if (Object.keys(this.state.ratingForCreate).length !== 0) {
             let newAdvisoryCodes = [];
             if (this.state.ratingForCreate.advisoriesCode) {
@@ -416,12 +416,13 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
-            this.formatRating(newAdditionalFields);
+            this.addRatingForCreateIfExist(newAdditionalFields);
             titleService.updateTitle(newAdditionalFields).then((response) => {
                 this.setState({
                     isLoading: false,
                     titleForm: response.data,
                     editedForm: response.data,
+                    ratingForCreate: {},
                     isEditMode: !this.state.isEditMode,
                     territoryMetadataActiveTab: CURRENT_TAB,
                     editorialMetadataActiveTab: CURRENT_TAB,
