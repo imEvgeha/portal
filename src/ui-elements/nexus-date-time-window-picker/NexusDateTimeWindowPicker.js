@@ -34,12 +34,14 @@ const NexusDateTimeWindowPicker = ({
     useEffect(() => {
         validateStartDate(startDate);
         setEndDateError('');
+        startDate && getAllUpdates({startDate});
         handleChange();
     }, [startDate]);
 
     useEffect(() => {
         validateEndDate(endDate);
         setStartDateError('');
+        endDate && getAllUpdates({endDate});
         handleChange();
     }, [endDate]);
 
@@ -62,10 +64,7 @@ const NexusDateTimeWindowPicker = ({
     };
 
     // If both dates are filled, send a formatted time-window string
-    const handleChange = () => {
-        startDate || endDate && getAllUpdates({startDate, endDate});
-        startDate && endDate && onChange({startDate, endDate});
-    };
+    const handleChange = () => startDate && endDate && onChange({startDate, endDate});
 
     return (
         <div className="nexus-c-date-time-window-picker">

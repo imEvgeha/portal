@@ -1,7 +1,7 @@
 import actionTypes from './availsActionTypes';
 
-export const fetchAvails = payload => ({
-    type: actionTypes.FETCH_AVAILS,
+export const fetchIngests = payload => ({
+    type: actionTypes.FETCH_INGESTS,
     payload,
 });
 

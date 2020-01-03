@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getAvails, getTotalAvails} from '../availsSelectors';
-import {fetchAvails, fetchNextPage} from '../availsActions';
+import { getIngests, getTotalIngests } from '../availsSelectors';
+import {fetchIngests, fetchNextPage} from '../availsActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
 import {getFiltersToSend} from './utils';
@@ -29,8 +29,8 @@ class IngestPanel extends React.Component {
 
     onScroll = e => {
         const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
-        const {avails, totalAvails, fetchNextPage} = this.props;
-        if ((scrollHeight - scrollTop === clientHeight) && (avails.length < totalAvails)) {
+        const {ingests, totalIngests, fetchNextPage} = this.props;
+        if ((scrollHeight - scrollTop === clientHeight) && (ingests.length < totalIngests)) {
             fetchNextPage();
         }
     };
@@ -41,7 +41,7 @@ class IngestPanel extends React.Component {
     };
 
     render () {
-        const {avails, ingestClick, selectedIngest} = this.props;
+        const {ingests, ingestClick, selectedIngest} = this.props;
         return (
             <div className='ingest-panel'>
                 <PanelHeader
@@ -50,11 +50,11 @@ class IngestPanel extends React.Component {
                     onFiltersChange={this.onFiltersChange}
                 />
                 <div
-                    className='ingest-panel__avails-list'
+                    className='ingest-panel__list'
                     onScroll={this.onScroll}
                     ref={this.panelRef}>
                     {
-                        avails.map(({id, attachments, received, provider, ingestType}) => (
+                        ingests.map(({id, attachments, received, provider, ingestType}) => (
                             (attachments.length > 1) ? (
                                 <div key={id}>Bundle</div>
                             ) : ( (attachments.length === 1) &&
@@ -76,13 +76,13 @@ class IngestPanel extends React.Component {
 
 const mapStateToProps = () => {
     return (state) => ({
-        avails: getAvails(state),
-        totalAvails: getTotalAvails(state),
+        ingests: getIngests(state),
+        totalIngests: getTotalIngests(state),
     });
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onFiltersChange: payload => dispatch(fetchAvails(payload)),
+    onFiltersChange: payload => dispatch(fetchIngests(payload)),
     fetchNextPage: () => dispatch(fetchNextPage())
 });
 
