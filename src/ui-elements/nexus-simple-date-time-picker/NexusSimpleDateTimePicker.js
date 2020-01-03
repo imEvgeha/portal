@@ -20,7 +20,7 @@ const NexusSimpleDateTimePicker = ({
     defaultValue,
     onChange,
     error,
-    isUTC,
+    isSimulcast,
     isTimestamp,
     ...restProps
 }) => {
@@ -30,7 +30,7 @@ const NexusSimpleDateTimePicker = ({
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
 
-    useEffect(() => setStrippedDate(date), [isUTC]);
+    useEffect(() => setStrippedDate(date), [isSimulcast]);
     useEffect(() => setStrippedDate(value), [value]);
 
     const setStrippedDate = (value) => {
@@ -51,7 +51,7 @@ const NexusSimpleDateTimePicker = ({
 
         return isTimestamp
             ? moment(dateWithStrippedTimezone.concat('Z')).toISOString()
-            : moment(dateWithStrippedTimezone).format(isUTC ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT);
+            : moment(dateWithStrippedTimezone).format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT);
     };
 
     return (
@@ -103,7 +103,7 @@ NexusSimpleDateTimePicker.propTypes = {
     value: PropTypes.string,
     defaultValue: PropTypes.string,
     error: PropTypes.string,
-    isUTC: PropTypes.bool,
+    isSimulcast: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
@@ -114,8 +114,8 @@ NexusSimpleDateTimePicker.defaultProps = {
     value: '',
     defaultValue: '',
     error: '',
-    isUTC: true,
-    isTimestamp: true, //TODO: Change to false when AVAILS team finishes their part NEX-656
+    isSimulcast: true,
+    isTimestamp: false,
 };
 
 export default NexusSimpleDateTimePicker;

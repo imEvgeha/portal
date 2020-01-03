@@ -256,7 +256,6 @@ class RightCreate extends React.Component {
                     <NexusDatePicker
                         id={jvName}
                         label={displayName}
-                        value={'2019-10-08T10:00:00.000Z'}
                         onChange={date => {
                             /* For testing proposes */
                             console.warn('NexusDatePicker returned: ', date);
@@ -268,7 +267,6 @@ class RightCreate extends React.Component {
                     <NexusDateTimePicker
                         id={jvName}
                         label={displayName}
-                        value={'2019-10-08T10:00:00.000Z'}
                         onChange={date => {
                             /* For testing proposes */
                             console.warn('NexusDateTimePicker returned: ', date);

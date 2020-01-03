@@ -15,14 +15,13 @@ import {
 const NexusDateTimeWindowPicker = ({
     label,
     labels,
-    isLocalDate,
     isUsingTime,
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
     onChange,
     startDateTimePickerProps,
     endDateTimePickerProps,
 }) => {
-    const [isUTC, setIsUTC] = useState(!isLocalDate);
+    const [isSimulcast, setIsSimulcast] = useState(false);
 
     const [startDate, setStartDate] = useState(startDateTimePickerProps.defaultValue || '');
     const [startDateError, setStartDateError] = useState('');
@@ -30,10 +29,10 @@ const NexusDateTimeWindowPicker = ({
     const [endDate, setEndDate] = useState(endDateTimePickerProps.defaultValue || '');
     const [endDateError, setEndDateError] = useState('');
 
-    // Due to requirements, we check if the provided value is "zoned" and set isUTC accordingly
+    // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
         const {defaultValue} = startDateTimePickerProps || {};
-        typeof defaultValue === 'string' && setIsUTC(defaultValue.endsWith('Z'));
+        typeof defaultValue === 'string' && setIsSimulcast(defaultValue.endsWith('Z'));
     }, []);
 
     // When date changes, validate and trigger change
@@ -88,7 +87,7 @@ const NexusDateTimeWindowPicker = ({
                 {isUsingTime
                     ? (
                         <NexusSimpleDateTimePicker
-                            isUTC={isUTC}
+                            isSimulcast={isSimulcast}
                             isTimestamp={isTimestamp}
                             value={startDate}
                             onChange={setStartDate}
@@ -117,7 +116,7 @@ const NexusDateTimeWindowPicker = ({
                 {isUsingTime
                     ? (
                         <NexusSimpleDateTimePicker
-                            isUTC={isUTC}
+                            isSimulcast={isSimulcast}
                             isTimestamp={isTimestamp}
                             value={endDate}
                             onChange={setEndDate}
@@ -141,16 +140,12 @@ const NexusDateTimeWindowPicker = ({
                         Select Type
                     </label>
                     <Select
-                        defaultValue={
-                            !isLocalDate
-                                ? {label: RELATIVE_TIME_LABEL, value: false}
-                                : {label: SIMULCAST_TIME_LABEL, value: true}
-                        }
+                        defaultValue={{label: RELATIVE_TIME_LABEL, value: false}}
                         options={[
                             {label: RELATIVE_TIME_LABEL, value: false},
                             {label: SIMULCAST_TIME_LABEL, value: true},
                         ]}
-                        onChange={type => setIsUTC(type.value)}
+                        onChange={type => setIsSimulcast(type.value)}
                     />
                 </div>
             }
@@ -161,7 +156,6 @@ const NexusDateTimeWindowPicker = ({
 NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
     labels: PropTypes.array,    //example: ['From', 'To']
-    islocalDate: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     isUsingTime: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -176,8 +170,7 @@ NexusDateTimeWindowPicker.propTypes = {
 NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
-    isLocalDate: false,
-    isTimestamp: false, // TODO: Convert to false when NEX-656 is finished
+    isTimestamp: false,
 };
 
 export default NexusDateTimeWindowPicker;

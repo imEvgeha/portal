@@ -357,7 +357,7 @@ class RightDetails extends React.Component {
                     (<NexusDatePicker
                         id={jvName}
                         label={displayName}
-                        value={'2019-10-08T10:00:00.000Z'}
+                        value={value}
                         isWithInlineEdit={true}
                         onChange={date => {
                             /* For testing proposes */
@@ -380,7 +380,7 @@ class RightDetails extends React.Component {
                     (<NexusDateTimePicker
                         id={jvName}
                         label={displayName}
-                        value={'2019-10-08T10:00:00.000Z'}
+                        value={value}
                         isWithInlineEdit={true}
                         onChange={date => {
                             /* For testing proposes */

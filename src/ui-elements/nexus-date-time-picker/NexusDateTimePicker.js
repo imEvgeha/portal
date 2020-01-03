@@ -19,7 +19,6 @@ const NexusDateTimePicker = ({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
-    isLocalDate, // Used for CreatedAt, UpdatedAt, ReceivedAt values
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
     onChange,
     onConfirm,
@@ -27,10 +26,10 @@ const NexusDateTimePicker = ({
     label,
     ...restProps
 }) => {
-    const [isUTC, setIsUTC] = useState(!isLocalDate);
+    const [isSimulcast, setIsSimulcast] = useState(false);
 
-    // Due to requirements, we check if the provided value is "zoned" and set isUTC accordingly
-    useEffect(() => {typeof value === 'string' && setIsUTC(value.endsWith('Z'));}, []);
+    // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
+    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, []);
 
     // Get locale provided by intl
     const intl = useIntl();
@@ -62,8 +61,8 @@ const NexusDateTimePicker = ({
                                 id={id}
                                 onChange={onChange}
                                 value={value}
-                                isUTC={isUTC}
-                                defaultValue={isUTC ? value : moment(value).local().format(dateFormat)}
+                                isSimulcast={isSimulcast}
+                                defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
                                 {...restProps}
                             />
                         </div>
@@ -71,15 +70,15 @@ const NexusDateTimePicker = ({
                             <div className="nexus-c-date-time-picker__type-select">
                                 <Select
                                     defaultValue={
-                                        !isUTC
-                                            ? {label: RELATIVE_TIME_LABEL, value: false}
-                                            : {label: SIMULCAST_TIME_LABEL, value: true}
+                                        isSimulcast
+                                            ? {label: SIMULCAST_TIME_LABEL, value: true}
+                                            : {label: RELATIVE_TIME_LABEL, value: false}
                                     }
                                     options={[
                                         {label: RELATIVE_TIME_LABEL, value: false},
                                         {label: SIMULCAST_TIME_LABEL, value: true},
                                     ]}
-                                    onChange={type => setIsUTC(type.value)}
+                                    onChange={type => setIsSimulcast(type.value)}
                                 />
                             </div>
                         )}
@@ -98,7 +97,7 @@ const NexusDateTimePicker = ({
                             <div className="nexus-c-date-time-picker__read-view-container">
                                 {moment(value).isValid()
                                 ?`${getDisplayDate(value)}
-                                 ${isUTC && !isTimestamp ? ' (UTC)' : ''}`
+                                 ${isSimulcast && !isTimestamp ? ' (UTC)' : ''}`
                                 : <div className="read-view-container__placeholder">
                                         {`Enter ${name}`}
                                 </div>}
@@ -114,7 +113,7 @@ const NexusDateTimePicker = ({
                             if (isTimestamp) {
                                 newDate = moment(date).toISOString();
                             } else {
-                                newDate = isUTC ? date : date.slice(0, -1);
+                                newDate = isSimulcast ? date : date.slice(0, -1);
                             }
                             onConfirm(newDate);
                         }}
@@ -133,7 +132,6 @@ NexusDateTimePicker.propTypes = {
     value: PropTypes.string,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
-    isLocalDate: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
@@ -145,8 +143,7 @@ NexusDateTimePicker.defaultProps = {
     value: '',
     isWithInlineEdit: false,
     isReadOnly: false,
-    isLocalDate: true, //TODO: Check if this flag is useful at all anymore, if not set isUTC default as 'false'; Also check TimeWindow component
-    isTimestamp: true, //TODO: Change to false when AVAILS team finishes their part NEX-656
+    isTimestamp: false,
     onConfirm: () => null,
 };
 
