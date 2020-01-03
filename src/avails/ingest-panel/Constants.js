@@ -24,5 +24,11 @@ export default {
         RECEIVED_TO: 'receivedTo',
         STATUS: 'status',
         PROVIDER: 'provider'
+    },
+    URLFilterKeys: {
+        receivedFrom: 'igReceivedFrom',
+        receivedTo: 'igReceivedTo',
+        status: 'igStatus',
+        provider: 'igProvider'
     }
 };

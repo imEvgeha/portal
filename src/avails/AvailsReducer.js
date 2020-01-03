@@ -1,23 +1,23 @@
 import actionTypes from './availsActionTypes';
 
 const initialState = {
-    avails: [],
-    total: 0
+    ingests: [],
+    totalIngests: 0
 };
 
 const availsReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
     switch(type) {
-        case actionTypes.FETCH_AVAILS_SUCCESS:
+        case actionTypes.FETCH_INGESTS_SUCCESS:
             return {
                 ...state,
-                avails: payload.data,
-                total: payload.total
+                ingests: payload.data,
+                totalIngests: payload.total
             };
         case actionTypes.FETCH_NEXT_PAGE_SUCCESS:
             return {
                 ...state,
-                avails: state.avails.concat(payload)
+                ingests: state.ingests.concat(payload)
             };
 
         default:

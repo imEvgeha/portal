@@ -2,12 +2,12 @@ import {createSelector} from 'reselect';
 
 const getAvailsReducer = state => state.availsReducer;
 
-export const getAvails = createSelector(
+export const getIngests = createSelector(
     getAvailsReducer,
-    availsReducer => availsReducer.avails,
+    availsReducer => availsReducer.ingests,
 );
 
-export const getTotalAvails = createSelector(
+export const getTotalIngests = createSelector(
     getAvailsReducer,
-    availsReducer => availsReducer.total,
+    availsReducer => availsReducer.totalIngests,
 );

@@ -181,14 +181,14 @@ const URL = {
         } return null;
     },
 
-    updateQueryParam: (values) => {     //values = {date: '12/12/12'}
+    updateQueryParam: values => {     //values = {date: '12/12/12'}
         const search = window.location.search.substring(1);
         let params =  new URLSearchParams(search);
-        params = {
-            ...Object.fromEntries(params.entries()),
-            ...values,
-        };
-        return Object.keys(params).map(key => key + '=' + params[key]).join('&');
+        Object.keys(values).forEach(key => {
+            if(values[key]) params.set(key, values[key]);
+            else params.delete(key);
+        });
+        return params.toString();
     }
 };
 

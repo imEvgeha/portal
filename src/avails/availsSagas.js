@@ -5,22 +5,26 @@ import {URL} from '../util/Common';
 import {historyService} from '../containers/avail/service/HistoryService';
 import Constants from './Constants';
 import {getFiltersToSend} from './ingest-panel/utils';
+import FilterConstants from './ingest-panel/Constants';
 
 const {PAGE_SIZE, sortParams} = Constants;
+const {URLFilterKeys} = FilterConstants;
 
-function* fetchAvails({payload}) {
+function* fetchIngests({payload}) {
     try {
-        const query = Object.keys(payload).map(key => key + '=' + payload[key]).join('&');
-        const url = `${window.location.pathname}?${query}`;
+        const filters = {};
+        Object.keys(URLFilterKeys).map(key => filters[URLFilterKeys[key]] = payload[key]);
+        filters.page = '';
+        const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
         yield put({
-            type: actionTypes.FETCH_AVAILS_SUCCESS,
+            type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: response.data,
         });
     } catch (error) {
         yield put({
-            type: actionTypes.FETCH_AVAILS_ERROR,
+            type: actionTypes.FETCH_INGESTS_ERROR,
         });
     }
 }
@@ -45,7 +49,7 @@ function* fetchNextPage() {
 
 export default function* availsWatcher() {
     yield all([
-        takeLatest(actionTypes.FETCH_AVAILS, fetchAvails),
+        takeLatest(actionTypes.FETCH_INGESTS, fetchIngests),
         takeLatest(actionTypes.FETCH_NEXT_PAGE, fetchNextPage),
     ]);
 }

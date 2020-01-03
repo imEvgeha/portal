@@ -27,6 +27,8 @@ const IngestFilters = ({onFiltersChange}) => {
         setFilters({
             status: STATUS_LIST[0],
             provider: '',
+            startDate: '',
+            endDate: ''
         });
         setIsApplyActive(false);
         onFiltersChange({});
