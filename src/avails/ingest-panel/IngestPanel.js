@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import Button from '@atlaskit/button';
-import AvailsIcon from '../../assets/Avails.svg';
+import Select from '@atlaskit/select';
+import './IngestPanel.scss';
+import AvailsIcon from '../../assets/avails.svg';
 import PopOutIcon from '../../assets/action-shortcut.svg';
 import FilterIcon from '../../assets/filter.svg';
 import FilterSolidIcon from '../../assets/filter-solid.svg';
 import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import Select from '@atlaskit/select';
 import Constants from './Constants';
-import './IngestPanel.scss';
 
 const IngestPanel = () => {
-
     const initialFilters = {
         status: Constants.STATUS_LIST[0],
         provider: ''
@@ -53,7 +52,8 @@ const IngestPanel = () => {
                 <div className='ingest-panel__ingest-header__actions'>
                     <PopOutIcon
                         className='ingest-panel__ingest-header__actions--pop'
-                        disabled={true}/>
+                        disabled={true}
+                    />
                     <div onClick={toggleFilters}>
                         {
                             showFilters ? <FilterSolidIcon/> : <FilterIcon/>
@@ -70,14 +70,16 @@ const IngestPanel = () => {
                                 <input
                                     placeholder='Enter Provider'
                                     value={filters.provider}
-                                    onChange={e => onFilterChange('provider', e.target.value)}/>
+                                    onChange={e => onFilterChange('provider', e.target.value)}
+                                />
                             </div>
                             <div className='ingest-panel__ingest-filters__section'>
                                 Avail Status
                                 <Select
                                     options={Constants.STATUS_LIST}
                                     value={filters.status}
-                                    onChange={value => onFilterChange('status', value)}/>
+                                    onChange={value => onFilterChange('status', value)}
+                                />
                             </div>
                         </div>
                         <div className='ingest-panel__ingest-filters__row2'>
@@ -90,13 +92,15 @@ const IngestPanel = () => {
                                     id:'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate
                                 }}
                                 onChange={onDateChange}
-                                labels={Constants.DATEPICKER_LABELS}/>
+                                labels={Constants.DATEPICKER_LABELS}
+                            />
                         </div>
                         <div className='ingest-panel__ingest-filters__actions'>
                             <Button onClick={clearFilters}>Clear All</Button>
                             <Button
                                 className={isApplyActive ? 'ingest-panel__ingest-filters__actions--active' : ''}
-                                onClick={applyFilters}>
+                                onClick={applyFilters}
+                            >
                                 Apply Filter
                             </Button>
                         </div>
