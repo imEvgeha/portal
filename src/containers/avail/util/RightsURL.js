@@ -26,10 +26,7 @@ class RightsURL extends React.Component {
     static URLtoArray(url, matchParams={}){
         let toReturn = [];
         if(!isObjectEmpty(matchParams)){
-            Object.keys(matchParams).forEach(key => {
-                let value = matchParams[key];
-                toReturn.push(key + '=' + value);
-            });
+            Object.keys(matchParams).forEach(key => toReturn.push(key + '=' + matchParams[key]) );
         }
         if(url){
             const searchParams = url.substr(1).split('&');
@@ -178,22 +175,33 @@ class RightsURL extends React.Component {
         return RightsURL.instance.context.router.route.match.params;
     }
 
-    static getRightsSearchUrl(availHistoryIds, invalid = null){
+    static getErrorRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'Error'));
+    }
+
+    static getSuccessRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'ReadyNew,Ready'));
+    }
+
+    static getRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds));
+    }
+
+    static createRightsSearchUrl(availHistoryIds, status = null){
         let toReturn = '/avails';
         if(availHistoryIds){
             toReturn+='/history/' + availHistoryIds;
-            if(invalid !== null) {
-                toReturn += `?status=${invalid ? 'Error' : 'ReadyNew,Ready'}`;
+            if(status !== null) {
+                toReturn += `?status=${status}`;
             }
         }else{
             toReturn += '/rights';
         }
-        return URL.keepEmbedded(toReturn);
+        return toReturn;
     }
 
     static getRightUrl(id, nav){
         const availHistoryIds = this.matchParam.availHistoryIds;
-        const valid = this.matchParam.valid;
         const initialSearch = URL.search();
         let search;
 
@@ -249,10 +257,6 @@ class RightsURL extends React.Component {
                 let val= url.split('/')[1];
                 params.push('availHistoryIds=' + val);
                 url = url.replace('/' + val, '');
-
-                if(url.startsWith('/')){
-                    let val= url.split('/')[1];
-                }
             }
         }
         if(params.length > 0) {
