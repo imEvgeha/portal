@@ -15,12 +15,8 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
         setShowReport(!showReport);
     };
 
-    const onClick = () => ingestClick(
-        {ingestType, received, provider, attachment, id: attachment.id}
-        );
-
     return (
-        <div className={`avail-ingest ${selected ? 'selected' : ''}`} onClick={onClick}>
+        <div className={`avail-ingest ${selected ? 'selected' : ''}`} onClick={ingestClick}>
             <IngestTitle provider={provider} link={link} ingestType={ingestType} />
             <div className='avail-ingest__details'>
                 <span

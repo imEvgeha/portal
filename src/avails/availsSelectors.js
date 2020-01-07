@@ -12,15 +12,13 @@ export const getTotalIngests = createSelector(
     availsReducer => availsReducer.totalIngests,
 );
 
-const getHistory = createSelector(
-    getAvails,
-    (_, historyId) => historyId,
-    (avails, historyId) => avails.find(avail => avail.id === historyId) || {}
+export const getSelectedIngest = createSelector(
+    getAvailsReducer,
+    availsReducer => availsReducer.selectedIngest,
 );
 
-const getAttachmentId = (state, historyId, attachmentId) => attachmentId;
-
-export const getIngest = createSelector(
-    [getHistory, getAttachmentId],
-    (history, attachmentId) => history.attachments && history.attachments.find(a => a.id === attachmentId) || {}
+export const getIngestById = createSelector(
+    getIngests,
+    (_, id) => id,
+    (ingests, id) =>ingests.find(ingest => ingest.id === id)
 );

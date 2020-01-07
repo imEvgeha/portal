@@ -7,7 +7,8 @@ import DownloadIcon from '../../../../assets/action-download.svg';
 import './Ingest.scss';
 
 const Ingest = ({ingest, filterByStatus}) => {
-    const {attachment: { link, status, ingestReport = {} } = {}, ingestType, provider, received} = ingest;
+    const {attachments = [{}], ingestType, provider, received} = ingest;
+    const { link, status, ingestReport = {} } = attachments[0];
     return ingest ? (
         <div className='nexus-c-avails-ingest'>
             <div className='nexus-c-avails-ingest__details'>
@@ -30,7 +31,7 @@ Ingest.propTypes = {
 };
 
 Ingest.defaultProps = {
-    ingest: {},
+    ingest: { attachments: [{}] },
     filterByStatus: () => null
 };
 

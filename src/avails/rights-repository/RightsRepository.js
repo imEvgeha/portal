@@ -11,7 +11,8 @@ import * as selectors from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus} from '../availsActions';
+import {filterRightsByStatus, selectIngest} from '../availsActions';
+import {getSelectedIngest} from '../availsSelectors';
 import './RightsRepository.scss';
 
 const NexusGridWithInfiniteScrolling = compose(
@@ -20,13 +21,19 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: rightServiceManager.doSearch}),
 )(NexusGrid);
 
-const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping, selectedIngest, filterByStatus}) => {
+const RightsRepository = props => {
+
+    const {columnDefs, createRightMatchingColumnDefs, mapping, selectedIngest, filterByStatus, ingestClick} = props;
 
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         }
     }, [columnDefs, createRightMatchingColumnDefs]);
+
+    useEffect(() => {
+        ingestClick();
+    }, []);
 
     const columnDefsClone = cloneDeep(columnDefs);
 
@@ -59,12 +66,14 @@ const mapStateToProps = () => {
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
+        selectedIngest: getSelectedIngest(state),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
+    ingestClick: () => dispatch(selectIngest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
