@@ -5,7 +5,7 @@ import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import t from 'prop-types';
 
-const PASS_THROUGH = ['availHistoryIds', 'invalid'];
+const PASS_THROUGH = ['availHistoryIds'];
 
 class RightsURL extends React.Component {
 
@@ -28,11 +28,7 @@ class RightsURL extends React.Component {
         if(!isObjectEmpty(matchParams)){
             Object.keys(matchParams).forEach(key => {
                 let value = matchParams[key];
-                if(key === 'valid'){
-                    toReturn.push('invalid=' + (value === 'errors'));
-                }else{
-                    toReturn.push(key + '=' + value);
-                }
+                toReturn.push(key + '=' + value);
             });
         }
         if(url){
@@ -142,13 +138,11 @@ class RightsURL extends React.Component {
     static saveRightsAdvancedFilterUrl(filter){
         const searchParams = this.FilterToObj(filter);
         let availHistoryIds = null;
-        let invalid = null;
         const finalParams = {};
         Object.keys(searchParams).forEach(key => {
             const val = searchParams[key];
             if(PASS_THROUGH.includes(key)){
                 if(key === 'availHistoryIds') availHistoryIds = val;
-                if(key === 'invalid') invalid = (val === 'true');
             }else{
                 finalParams[key] = val;
             }
@@ -158,16 +152,8 @@ class RightsURL extends React.Component {
         let toReturn = '/avails';
         if(availHistoryIds){
             toReturn += '/history/' + availHistoryIds;
-            if(invalid === true){
-                toReturn+='/errors';
-            }else if(invalid === false){
-                finalParams.invalid = false;
-            }
         }else{
             toReturn += '/rights';
-            if(invalid !== null){
-                finalParams.invalid = invalid;
-            }
         }
 
         const params = [];
@@ -196,17 +182,11 @@ class RightsURL extends React.Component {
         let toReturn = '/avails';
         if(availHistoryIds){
             toReturn+='/history/' + availHistoryIds;
-            if(invalid === true){
-                toReturn += '/errors';
-            }
-            if(invalid === false){
-                toReturn += '?invalid=false';
+            if(invalid !== null) {
+                toReturn += `?status=${invalid ? 'Error' : 'ReadyNew,Ready'}`;
             }
         }else{
             toReturn += '/rights';
-            if(invalid !== null){
-                toReturn += '?invalid=' + invalid;
-            }
         }
         return URL.keepEmbedded(toReturn);
     }
@@ -219,9 +199,6 @@ class RightsURL extends React.Component {
 
         if(availHistoryIds){
             search = 'availHistoryIds=' + availHistoryIds;
-            if(valid && valid === 'errors'){
-                search += '&invalid=true';
-            }
         }
 
         if(nav && nav.back){
@@ -275,9 +252,6 @@ class RightsURL extends React.Component {
 
                 if(url.startsWith('/')){
                     let val= url.split('/')[1];
-                    if(val === 'errors'){
-                        params.push('invalid=true');
-                    }
                 }
             }
         }

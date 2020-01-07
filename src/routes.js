@@ -38,7 +38,6 @@ const routes = (
         <Route exact path="/avails/rights/:rightId/title-matching/review" component={canRender(TitleMatchReview, 'update', 'Metadata')}/>
         <Route exact path="/avails/history" component={canRender(AvailIngestHistoryContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history/manual-rights-entry" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
-        <Route exact path="/avails/history/:availHistoryIds/:valid(errors)" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds/manual-rights-entry" component={canRender(RightsCreateFromAttachment, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryId/rights/create" component={canRender(RightCreate, 'create', 'Avail')}/>
         <Route exact path="/avails/history/:availHistoryIds" component={canRender(RightDashboardContainer, 'read', 'Avail')}/>

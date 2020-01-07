@@ -50,7 +50,6 @@ class AdvancedSearchPanel extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleInvalidChange = this.handleInvalidChange.bind(this);
         this.addSearchField = this.addSearchField.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.blink = this.blink.bind(this);
@@ -107,11 +106,6 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: {value: value}});
-    }
-
-    handleInvalidChange(event) {
-        const value = event.target.value;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, rowInvalid: {value: value ? value : null}});
     }
 
     addSearchField() {
@@ -283,21 +277,6 @@ class AdvancedSearchPanel extends React.Component {
                 <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {renderSpecialCloseable()}
                     {renderCloseable()}
-                </div>
-                <div className="d-flex flex-row justify-content-between mt-2">
-                    <div style={{margin:'0 5px', alignSelf: 'center'}}>
-                        Show:
-                        <select className="form-control border-1 d-inline"
-                                id={'dashboard-title-report-select'}
-                                onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.rowInvalid && this.props.searchCriteria.rowInvalid.value ? this.props.searchCriteria.rowInvalid.value : ''}
-                                style={{width: '100px', background: 'initial', margin: '0 5px'}}
-                        >
-                            <option value="">All</option>
-                            <option value="false">Valid</option>
-                            <option value="true">Invalid</option>
-                        </select>
-                    </div>
                 </div>
             </div>
         );
