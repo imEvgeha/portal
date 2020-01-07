@@ -18,7 +18,7 @@ const NexusDateTimeWindowPicker = ({
     isLocalDate,
     isUsingTime,
     onChange,
-    getAllUpdates,
+    onChangeAny,
     startDateTimePickerProps,
     endDateTimePickerProps,
 }) => {
@@ -34,14 +34,14 @@ const NexusDateTimeWindowPicker = ({
     useEffect(() => {
         validateStartDate(startDate);
         setEndDateError('');
-        startDate && getAllUpdates({startDate});
+        startDate && onChangeAny({startDate});
         handleChange();
     }, [startDate]);
 
     useEffect(() => {
         validateEndDate(endDate);
         setStartDateError('');
-        endDate && getAllUpdates({endDate});
+        endDate && onChangeAny({endDate});
         handleChange();
     }, [endDate]);
 
@@ -158,7 +158,7 @@ NexusDateTimeWindowPicker.propTypes = {
     islocalDate: PropTypes.bool,
     isUsingTime: PropTypes.bool.isRequired,
     onChange: PropTypes.func,
-    getAllUpdates: PropTypes.func,     //when any date is changed (returns blank dates as well)
+    onChangeAny: PropTypes.func,     //when any date is changed (returns blank dates as well)
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
@@ -171,7 +171,7 @@ NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
     isLocalDate: false,
-    getAllUpdates: () => null,
+    onChangeAny: () => null,
     onChange: () => null,
 };
 

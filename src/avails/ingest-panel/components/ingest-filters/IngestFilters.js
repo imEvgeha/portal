@@ -65,7 +65,7 @@ const IngestFilters = ({onFiltersChange}) => {
                     endDateTimePickerProps={{
                         id:'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate
                     }}
-                    getAllUpdates={onDateChange}
+                    onChangeAny={onDateChange}
                     labels={Constants.DATEPICKER_LABELS}/>
             </div>
             <div className='ingest-filters__actions'>
