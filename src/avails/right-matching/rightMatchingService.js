@@ -6,17 +6,15 @@ import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '..
 import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '../../ui-elements/nexus-toast-notification/constants';
+import {store} from '../../index';
 
-const endpoint = 'rights';
 const http = Http.create();
-
-const TEMPORARY_PROP = 'excludedItems';
 
 export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = queryParams.status ? {...queryParams, page, size} : {status: 'pending', ...queryParams, page, size};
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
         {paramsSerializer: encodedSerialize, params}
     );
 };
@@ -39,26 +37,20 @@ export const putCombinedRight = (rightIds, combinedRight) => {
 };
 
 export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParams) => {
-    const {excludedItems = []} = searchCriteria;
-    const filteredSearchCriteria = Object.keys(searchCriteria)
-        .reduce((object, key) => {
-            if (key !== TEMPORARY_PROP) {
-                object[key] = searchCriteria[key];
-            }
-            return object;
-        }, {});
-    const queryParams = pickBy(filteredSearchCriteria, identity) || {};
+    const queryParams = pickBy(searchCriteria, identity) || {};
     const params = {...queryParams, page, size};
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`, 
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
         {paramsSerializer : encodedSerialize, params}
     ).then(response => {
+        const {focusedRight} = store.getState().rightMatching;
+        const {id} = focusedRight || {};
         // temporary FE handling for operand 'not equal'
-        const getUpdatedData = (response, excludedItems) => {
+        const getUpdatedData = (response, excludedId) => {
             const {data = []} = response || {};
             if (data) {
-                if (Array.isArray(excludedItems)) {
-                    const result = data.filter(({id}) => !excludedItems.includes(id));
+                if (excludedId) {
+                    const result = data.filter(({id}) => id !== excludedId);
                     return result;
                 }
 
@@ -67,13 +59,13 @@ export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParam
 
             return [];
         };
-
+        const updatedData = getUpdatedData(response.data, id);
         const updatedResponse = {
             ...response,
             data: {
                 ...response.data,
-                data: getUpdatedData(response.data, excludedItems),
-                total: getUpdatedData(response.data, excludedItems).length,
+                data: updatedData,
+                total: updatedData.length,
             }
         };
 
@@ -111,7 +103,9 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
         };
 
         const parseFieldValue = (criteria, value, subFieldName) => {
-            const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',') : value;
+            const subsetValue = Array.isArray(value)
+                ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',')
+                : value;
             const fieldValues = {
                 EQ: value,
                 SUB: subsetValue,
@@ -124,7 +118,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             return parsedValue;
         };
 
-        let result = searchCriteria.reduce((query, field) => {
+        const result = searchCriteria.reduce((query, field) => {
             const {targetFieldName, fieldName, subFieldName, criteria} = field;
             const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
             const fieldValue = targetFieldName || fieldName;
@@ -134,8 +128,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             query[key] = value;
             return query;
         }, {});
-        // temporary solution
-        result[TEMPORARY_PROP] = [id];
+
         return {
             data: {
                 fieldSearchCriteria: {
@@ -164,6 +157,6 @@ export const createRightById = (id) => {
             description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
         }
     });
-    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
+    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match/`);
 };
 
