@@ -18,6 +18,7 @@ const DEFAULT_HOC_PROPS = [
 const FILTERABLE_DATA_TYPES = [
     'string',
     'integer',
+    'double',
     'boolean',
     'select',
     'multiselect',
@@ -38,6 +39,7 @@ const FILTER_TYPE = {
     string: 'agTextColumnFilter',
     duration: 'agTextColumnFilter',
     integer: 'agNumberColumnFilter',
+    double: 'agNumberColumnFilter',
     year: 'agNumberColumnFilter',
     select: 'agSetColumnFilter',
     multiselect: 'agSetColumnFilter',
@@ -126,6 +128,7 @@ const withFilterableColumns = ({
             switch (dataType) {
                 case 'string':
                 case 'integer':
+                case 'double':
                 case 'year':
                 case 'duration':
                     return DEFAULT_FILTER_PARAMS;
