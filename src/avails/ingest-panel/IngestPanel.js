@@ -30,7 +30,7 @@ class IngestPanel extends React.Component {
     onScroll = e => {
         const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
         const {ingests, totalIngests, fetchNextPage} = this.props;
-        if ((scrollHeight - scrollTop === clientHeight) && (ingests.length < totalIngests)) {
+        if ((scrollHeight - scrollTop - clientHeight < 1) && (ingests.length < totalIngests)) {
             fetchNextPage();
         }
     };
