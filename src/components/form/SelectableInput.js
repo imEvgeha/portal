@@ -44,6 +44,7 @@ class SelectableInput extends Component {
         super(props);
         this.state = {
             invalid: false,
+            selectableInput: ''
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleOptionsChange = this.handleOptionsChange.bind(this);
@@ -87,8 +88,14 @@ class SelectableInput extends Component {
     }
 
     handleOptionsChange(selectedOptions) {
-        this.props.onChange({...this.props.value, options: selectedOptions});
+        const filteredOptions = selectedOptions.filter(option => this.filterOption(option, this.state.selectableInput));
+        this.props.onChange({...this.props.value, options: filteredOptions});
     }
+
+    filterOption = (option, inputValue) => {
+        const { label } = option;
+        return label.toLowerCase().includes(inputValue.toLowerCase());
+    };
 
     handleInvalid(value) {
         this.setState({invalid: value});
@@ -333,6 +340,8 @@ class SelectableInput extends Component {
                         options={allOptions}
                         value = {this.props.value.options || []}
                         onChange={this.handleOptionsChange}
+                        onInputChange={(selectableInput) => this.setState({selectableInput})}
+                        filterOption={this.filterOption}
                     />
                 </div>
             );
