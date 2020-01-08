@@ -1,5 +1,6 @@
 import moment from 'moment';
 import {DIRECTOR, isCastPersonType} from '../../../../constants/metadata/configAPI';
+import {TIMESTAMP_FORMAT} from '../../../nexus-date-and-time-elements/constants';
 
 const createValueFormatter = ({dataType, javaVariableName}) => {
     switch (dataType) {
@@ -8,7 +9,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             return (params) => {
                 const {data = {}} = params || {};
                 if (data[javaVariableName]) {
-                    return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format('HH:mm')}`;
+                    return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
                 }
             };
         case 'date':

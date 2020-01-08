@@ -156,8 +156,8 @@ class AvailHistoryRecordRenderer extends React.Component {
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {ingestReport.success > 0 ?
                                 (<Link to={{
-                                    pathname: RightsURL.getRightsSearchUrl(data.id, false).split('?')[0],
-                                    search: RightsURL.getRightsSearchUrl(data.id, false).split('?')[1],
+                                    pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
+                                    search: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[1],
                                     state: data
                                 }}>
                                     Success:
@@ -171,8 +171,8 @@ class AvailHistoryRecordRenderer extends React.Component {
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.success > 0 ?
                                 (<Link to={{
-                                    pathname: RightsURL.getRightsSearchUrl(data.id, false).split('?')[0],
-                                    search: RightsURL.getRightsSearchUrl(data.id, false).split('?')[1],
+                                    pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
+                                    search: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[1],
                                     state: data
                                 }}>
                                     {ingestReport.success}
@@ -195,8 +195,8 @@ class AvailHistoryRecordRenderer extends React.Component {
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {ingestReport.fatal + ingestReport.errors > 0 ?
                                 (<Link className={'error-link'} to={{
-                                    pathname: RightsURL.getRightsSearchUrl(data.id, true).split('?')[0],
-                                    search: RightsURL.getRightsSearchUrl(data.id, true).split('?')[1],
+                                    pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
+                                    search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
                                     state: data
                                 }}>
                                     Errors:
@@ -210,8 +210,8 @@ class AvailHistoryRecordRenderer extends React.Component {
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.fatal + ingestReport.errors > 0 ?
                                 (<Link className={'error-link'} to={{
-                                    pathname: RightsURL.getRightsSearchUrl(data.id, true).split('?')[0],
-                                    search: RightsURL.getRightsSearchUrl(data.id, true).split('?')[1],
+                                    pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
+                                    search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
                                     state: data
                                 }}>
                                     {ingestReport.fatal + ingestReport.errors}

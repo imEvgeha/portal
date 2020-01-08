@@ -73,7 +73,7 @@ class EditorialMetadataTab extends Component {
                     </Row>
                     <Row style={{ padding: '15px' }}>
                         <Col style={{ wordWrap: 'break-word' }}>
-                            <b>Short Title:</b> {this.props.data.title ? (this.props.data.title.sortTitle ? this.props.data.title.sortTitle : this.emptySpan()) : this.emptySpan()}
+                            <b>Sort Title:</b> {this.props.data.title ? (this.props.data.title.sortTitle ? this.props.data.title.sortTitle : this.emptySpan()) : this.emptySpan()}
                         </Col>
                     </Row>
                     <Row style={{ padding: '15px' }}>

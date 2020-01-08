@@ -1,86 +1,100 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { getIngests, getTotalIngests } from '../availsSelectors';
-import {fetchIngests, fetchNextPage} from '../availsActions';
+import {getIngests, getSelectedIngest, getTotalIngests} from '../availsSelectors';
+import {fetchIngests, fetchNextPage, selectIngest} from '../availsActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
-class IngestPanel extends React.Component {
+const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, ingestClick}) => {
 
-    constructor(props){
-        super(props);
-        this.state = {
-            showFilters: false
-        };
-        this.panelRef = React.createRef();
-    }
+    const [showFilters, setShowFilters] = useState(false);
 
-    componentDidMount() {
-        this.props.onFiltersChange(getFiltersToSend());
-    }
+    useEffect(() => {
+        onFiltersChange(getFiltersToSend());
+    }, []);
 
-    toggleFilters = () => {
-        this.setState({
-            showFilters: !this.state.showFilters
-        });
-    };
+    const panelRef = React.createRef();
 
-    onScroll = e => {
+    const toggleFilters = () => setShowFilters(!showFilters);
+
+    const onScroll = e => {
         const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
-        const {ingests, totalIngests, fetchNextPage} = this.props;
         if ((scrollHeight - scrollTop - clientHeight < 1) && (ingests.length < totalIngests)) {
             fetchNextPage();
         }
     };
 
-    onFiltersChange = filters => {
-        this.panelRef.current.scrollTop = 0;
-        this.props.onFiltersChange(filters);
+    const filtersChange = filters => {
+        if(panelRef && panelRef.current){
+            panelRef.current.scrollTop = 0;
+        }
+        onFiltersChange(filters);
     };
 
-    render () {
-        const {ingests} = this.props;
-        return (
-            <div className='ingest-panel'>
-                <PanelHeader
-                    showFilters={this.state.showFilters}
-                    toggleFilters={this.toggleFilters}
-                    onFiltersChange={this.onFiltersChange}
-                />
-                <div
-                    className='ingest-panel__list'
-                    onScroll={this.onScroll}
-                    ref={this.panelRef}>
-                    {
-                        ingests.map(({id, attachments, received, provider, ingestType}) => (
-                            (attachments.length > 1) ? (
-                                <div key={id}>Bundle</div>
-                            ) : (<Ingest key={id}
-                                         attachment={attachments[0]}
-                                         received={received}
-                                         provider={provider}
-                                         ingestType={ingestType}
-                            />)
-                        ))
-                    }
-                </div>
+    return (
+        <div className='ingest-panel'>
+            <PanelHeader
+                showFilters={showFilters}
+                toggleFilters={toggleFilters}
+                onFiltersChange={filtersChange}
+            />
+            <div
+                className='ingest-panel__list'
+                onScroll={onScroll}
+                ref={panelRef}>
+                {
+                    ingests.map(({id, attachments, received, provider, ingestType}) => (
+                        (attachments.length > 1) ? (
+                            <div key={id}>Bundle</div>
+                        ) : ( (attachments.length === 1) &&
+                            (<Ingest key={id}
+                                     attachment={attachments[0]}
+                                     received={received}
+                                     provider={provider}
+                                     ingestType={ingestType}
+                                     ingestClick={() => ingestClick(id)}
+                                     selected={selectedIngest && (selectedIngest.id === id)}
+                            />))
+                    ))
+                }
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
+
+IngestPanel.propTypes = {
+    ingests: PropTypes.array,
+    totalIngests: PropTypes.number,
+    selectedIngest: PropTypes.object,
+    onFiltersChange: PropTypes.func,
+    fetchNextPage: PropTypes.func,
+    ingestClick: PropTypes.func,
+};
+
+IngestPanel.defaultProps = {
+    ingests: [],
+    totalIngests: 0,
+    selectedIngest: {},
+    onFiltersChange: () => null,
+    fetchNextPage: () => null,
+    ingestClick: () => null,
+};
 
 const mapStateToProps = () => {
     return (state) => ({
         ingests: getIngests(state),
         totalIngests: getTotalIngests(state),
+        selectedIngest: getSelectedIngest(state),
     });
 };
 
 const mapDispatchToProps = (dispatch) => ({
     onFiltersChange: payload => dispatch(fetchIngests(payload)),
-    fetchNextPage: () => dispatch(fetchNextPage())
+    fetchNextPage: () => dispatch(fetchNextPage()),
+    ingestClick: payload => dispatch(selectIngest(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(IngestPanel); // eslint-disable-line
+export default connect(mapStateToProps, mapDispatchToProps)(IngestPanel);
