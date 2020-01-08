@@ -36,6 +36,7 @@ export const defineCheckboxSelectionColumn = ({headerName = ''} = {}) => {
         headerName,
         width: 70,
         checkboxSelection: true,
+        lockVisible: true
     });
 
     return columnDef;

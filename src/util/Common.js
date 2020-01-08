@@ -179,6 +179,16 @@ const URL = {
         if(window && window.location){
             return window.location.search;
         } return null;
+    },
+
+    updateQueryParam: values => {     //values = {date: '12/12/12'}
+        const search = window.location.search.substring(1);
+        let params =  new URLSearchParams(search);
+        Object.keys(values).forEach(key => {
+            if(values[key]) params.set(key, values[key]);
+            else params.delete(key);
+        });
+        return params.toString();
     }
 };
 
@@ -214,6 +224,9 @@ const minTwoDigits = n => `${n < 10 ? '0' : ''}${n}`;
 // Create date format based on locale
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
 
+// Attach (UTC) to date, if it is simulcast
+const parseSimulcast = (date, dateFormat) => `${moment(date).format(dateFormat)}${date.endsWith('Z') ? ' (UTC)' : ''}`;
+
 const formatNumberTwoDigits = (number) => {
     const n = parseInt(number);
     if(n) {
@@ -244,5 +257,6 @@ export {
     getDomainName,
     minTwoDigits,
     getDateFormatBasedOnLocale,
+    parseSimulcast,
     formatNumberTwoDigits
 };

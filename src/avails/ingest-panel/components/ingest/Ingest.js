@@ -6,16 +6,22 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestReport from '../ingest-report/IngestReport';
 import './Ingest.scss';
 
-const Ingest = ({ingestType, received, provider, attachment, selected}) => {
+const Ingest = ({ingestType, received, provider, attachment, selected, ingestClick}) => {
+    const [showReport, setShowReport] = useState(false);
     const { link, status, ingestReport = {} } = attachment;
-    const [showReport, setShowReport] =useState(false);
+
+    const onChevronClick = e => {
+        e.stopPropagation();
+        setShowReport(!showReport);
+    };
+
     return (
-        <div className={`avail-ingest ${selected ? 'selected' : ''}`}>
+        <div className={`avail-ingest ${selected ? 'selected' : ''}`} onClick={ingestClick}>
             <IngestTitle provider={provider} link={link} ingestType={ingestType} />
             <div className='avail-ingest__details'>
                 <span
                     className={`avail-ingest__details--${showReport ? 'open' : 'close' }`}
-                    onClick={() => setShowReport(!showReport)}>
+                    onClick={onChevronClick}>
                     <Chevron/>
                 </span>
                 <IngestStatus date={received} status={status} />
@@ -33,6 +39,7 @@ Ingest.propTypes = {
     provider: PropTypes.string,
     attachment: PropTypes.object,
     selected: PropTypes.bool,
+    ingestClick: PropTypes.func,
 };
 
 Ingest.defaultProps = {
