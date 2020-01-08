@@ -2,7 +2,8 @@ import actionTypes from './availsActionTypes';
 
 const initialState = {
     ingests: [],
-    totalIngests: 0
+    totalIngests: 0,
+    selectedIngest: null,
 };
 
 const availsReducer = (state = initialState, action = {}) => {
@@ -18,6 +19,11 @@ const availsReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 ingests: state.ingests.concat(payload)
+            };
+        case actionTypes.UPDATE_SELECTED_INGEST:
+            return {
+                ...state,
+                selectedIngest: payload
             };
 
         default:
