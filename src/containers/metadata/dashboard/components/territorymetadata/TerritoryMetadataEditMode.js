@@ -51,7 +51,6 @@ class TerritoryMetadataEditMode extends Component {
                                     id="territoryOriginalAirDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
                                     onChange={date => this.props.handleChangeDate('originalAirDate', 'territoryOriginalAirDate', date, this.props.data)}
-                                    isTimestamp={false}
                                 />
                             </Col>
                         </Row>
@@ -62,7 +61,6 @@ class TerritoryMetadataEditMode extends Component {
                                     id="territoryHomeVideoReleaseDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
                                     onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', 'territoryHomeVideoReleaseDate', date, this.props.data)}
-                                    isTimestamp={false}
                                 />
                             </Col>
                             <Col>
@@ -71,7 +69,6 @@ class TerritoryMetadataEditMode extends Component {
                                     id="territoryAvailAnnounceDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
                                     onChange={date => this.props.handleChangeDate('availAnnounceDate', 'territoryAvailAnnounceDate', date, this.props.data)}
-                                    isTimestamp={false}
                                 />
                             </Col>
                         </Row>
@@ -82,7 +79,6 @@ class TerritoryMetadataEditMode extends Component {
                                     id="territoryTheatricalReleaseDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
                                     onChange={date => this.props.handleChangeDate('theatricalReleaseDate', 'territoryTheatricalReleaseDate', date, this.props.data)}
-                                    isTimestamp={false}
                                 />
                             </Col>
                             <Col>
@@ -91,7 +87,6 @@ class TerritoryMetadataEditMode extends Component {
                                     id="territoryESTReleaseDate"
                                     value={this.getValidDate(this.props.data.originalAirDate)}
                                     onChange={date => this.props.handleChangeDate('estReleaseDate', 'territoryESTReleaseDate', date, this.props.data)}
-                                    isTimestamp={false}
                                 />
                             </Col>
                         </Row>

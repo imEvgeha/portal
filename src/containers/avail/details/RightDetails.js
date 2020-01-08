@@ -1218,9 +1218,8 @@ class RightDetails extends React.Component {
                              break;
                         case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                              break;
+                        case 'localdate':
                         case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
-                            break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;

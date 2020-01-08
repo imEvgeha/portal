@@ -6,7 +6,7 @@ import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale} from '../../../util/Common';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../util/Common';
 import './NexusDatePicker.scss';
 import {RELATIVE_DATE_FORMAT, SIMULCAST_DATE_FORMAT} from '../constants';
 
@@ -35,8 +35,6 @@ const NexusDatePicker = ({
 
     // Create date placeholder based on locale
     const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
-    // Attach (UTC) to date, if it is simulcast
-    const parseSimulcast = (date) => `${moment(date).format(dateFormat)}${date.endsWith('Z') ? ' (UTC)' : ''}`;
 
     const DatePickerComponent = (isReadOnly) => (
         <>
@@ -46,7 +44,7 @@ const NexusDatePicker = ({
                 </>
             }
             {isReadOnly
-                ? parseSimulcast(value)
+                ? parseSimulcast(value, dateFormat)
                 : (
                     <DatePicker
                         id={id}
@@ -84,7 +82,7 @@ const NexusDatePicker = ({
                     <InlineEdit
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
-                                {(moment(value).isValid() && moment(value).format(dateFormat))
+                                {(moment(value).isValid() && parseSimulcast(value, dateFormat))
                                 || <div className="read-view-container__placeholder">
                                     Enter date
                                 </div>}
@@ -109,6 +107,7 @@ NexusDatePicker.propTypes = {
     error: PropTypes.string,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
+    isTimestamp: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -120,6 +119,7 @@ NexusDatePicker.defaultProps = {
     error: '',
     isWithInlineEdit: false,
     isReadOnly: false,
+    isTimestamp: false,
     onConfirm: () => null,
 };
 

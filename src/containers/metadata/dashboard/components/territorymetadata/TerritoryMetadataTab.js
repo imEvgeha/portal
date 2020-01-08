@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Row, Col, Container} from 'reactstrap';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale} from '../../../../../util/Common';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../util/Common';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
 const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
@@ -23,8 +23,6 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
     const {globalLocale = 'en-US'} = intl || {};
 
     const dateFormat = getDateFormatBasedOnLocale(globalLocale);
-    // Attach (UTC) to date, if it is simulcast
-    const parseSimulcast = (date) => `${moment(date).format(dateFormat)}${date.endsWith('Z') ? ' (UTC)' : ''}`;
 
     return (
         <div id="territoryMetadataTabs">
@@ -56,7 +54,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Original Air Date: </b>
                         {originalAirDate
-                            ? parseSimulcast(originalAirDate)
+                            ? parseSimulcast(originalAirDate, dateFormat)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
@@ -65,14 +63,14 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Home Video Release Date: </b>
                         {homeVideoReleaseDate
-                            ? parseSimulcast(homeVideoReleaseDate)
+                            ? parseSimulcast(homeVideoReleaseDate, dateFormat)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
                     <Col>
                         <b>Avail Announce Date: </b>
                         {availAnnounceDate
-                            ? parseSimulcast(availAnnounceDate)
+                            ? parseSimulcast(availAnnounceDate, dateFormat)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
@@ -81,14 +79,14 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Theatrical Release Date: </b>
                         {theatricalReleaseDate
-                            ? parseSimulcast(theatricalReleaseDate)
+                            ? parseSimulcast(theatricalReleaseDate, dateFormat)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
                     <Col>
                         <b>EST Release Date: </b>
                         {estReleaseDate
-                            ? parseSimulcast(estReleaseDate)
+                            ? parseSimulcast(estReleaseDate, dateFormat)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
