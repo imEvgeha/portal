@@ -116,7 +116,7 @@ export default {
             displayName: 'Filename',
         },
         {
-            field: 'sheetName',
+            field: 'tabName',
             displayName: 'Sheet Name',
         },
     ],
