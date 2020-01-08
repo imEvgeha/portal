@@ -340,7 +340,12 @@ class SelectableInput extends Component {
                         options={allOptions}
                         value = {this.props.value.options || []}
                         onChange={this.handleOptionsChange}
-                        onInputChange={(selectableInput) => this.setState({selectableInput})}
+                        onInputChange={(selectableInput, event) => {
+                            //The 'set-value' action, set selectableInput to empty when user click on SelectAll checkbox
+                            if (event.action !== 'set-value') {
+                                this.setState({selectableInput});
+                            }
+                        }}
                         filterOption={this.filterOption}
                     />
                 </div>
