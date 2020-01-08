@@ -20,6 +20,7 @@ const NexusDateTimeWindowPicker = ({
     isUsingTime,
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
     onChange,
+    onChangeAny,
     startDateTimePickerProps,
     endDateTimePickerProps,
 }) => {
@@ -41,12 +42,14 @@ const NexusDateTimeWindowPicker = ({
     useEffect(() => {
         validateStartDate(startDate);
         setEndDateError('');
+        startDate && onChangeAny({startDate});
         handleChange();
     }, [startDate]);
 
     useEffect(() => {
         validateEndDate(endDate);
         setStartDateError('');
+        endDate && onChangeAny({endDate});
         handleChange();
     }, [endDate]);
 
@@ -178,7 +181,8 @@ NexusDateTimeWindowPicker.propTypes = {
     labels: PropTypes.array,    //example: ['From', 'To']
     isTimestamp: PropTypes.bool,
     isUsingTime: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    onChangeAny: PropTypes.func,     //when any date is changed (returns blank dates as well)
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
@@ -191,6 +195,8 @@ NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
     isTimestamp: true,
+    onChangeAny: () => null,
+    onChange: () => null,
 };
 
 export default NexusDateTimeWindowPicker;

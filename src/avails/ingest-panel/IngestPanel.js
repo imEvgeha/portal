@@ -1,111 +1,86 @@
-import React, {useState} from 'react';
-import Button from '@atlaskit/button';
-import AvailsIcon from '../../assets/Avails.svg';
-import PopOutIcon from '../../assets/action-shortcut.svg';
-import FilterIcon from '../../assets/filter.svg';
-import FilterSolidIcon from '../../assets/filter-solid.svg';
-import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import Select from '@atlaskit/select';
-import Constants from './Constants';
+import React from 'react';
+import {connect} from 'react-redux';
+import { getIngests, getTotalIngests } from '../availsSelectors';
+import {fetchIngests, fetchNextPage} from '../availsActions';
+import PanelHeader from './components/panel-header/PanelHeader';
+import Ingest from './components/ingest/Ingest';
+import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
-const IngestPanel = () => {
+class IngestPanel extends React.Component {
 
-    const initialFilters = {
-        status: Constants.STATUS_LIST[0],
-        provider: ''
+    constructor(props){
+        super(props);
+        this.state = {
+            showFilters: false
+        };
+        this.panelRef = React.createRef();
+    }
+
+    componentDidMount() {
+        this.props.onFiltersChange(getFiltersToSend());
+    }
+
+    toggleFilters = () => {
+        this.setState({
+            showFilters: !this.state.showFilters
+        });
     };
 
-    const [showFilters, setShowFilters] = useState(false);
-    const [filters, setFilters] = useState(initialFilters);
-    const [isApplyActive, setIsApplyActive] = useState(false);
-
-    const toggleFilters = () => {
-      setShowFilters(!showFilters);
+    onScroll = e => {
+        const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
+        const {ingests, totalIngests, fetchNextPage} = this.props;
+        if ((scrollHeight - scrollTop - clientHeight < 1) && (ingests.length < totalIngests)) {
+            fetchNextPage();
+        }
     };
 
-    const onFilterChange = (name, value) => {
-        setFilters({...filters, [name]: value});
-        setIsApplyActive(true);
+    onFiltersChange = filters => {
+        this.panelRef.current.scrollTop = 0;
+        this.props.onFiltersChange(filters);
     };
 
-    const onDateChange = (dates) => {
-        setFilters({...filters, ...dates});
-        setIsApplyActive(true);
-    };
-
-    const clearFilters = () => {
-        setFilters(initialFilters);
-        setIsApplyActive(false);
-    };
-
-    const applyFilters = () => {
-        return filters;
-    };
-
-    return (
-        <div className='ingest-panel'>
-            <div className='ingest-panel__ingest-header'>
-                <div className='ingest-panel__ingest-header__title'>
-                    <AvailsIcon />
-                    <div>Avails</div>
-                </div>
-                <div className='ingest-panel__ingest-header__actions'>
-                    <PopOutIcon
-                        className='ingest-panel__ingest-header__actions--pop'
-                        disabled={true}/>
-                    <div onClick={toggleFilters}>
-                        {
-                            showFilters ? <FilterSolidIcon/> : <FilterIcon/>
-                        }
-                    </div>
+    render () {
+        const {ingests} = this.props;
+        return (
+            <div className='ingest-panel'>
+                <PanelHeader
+                    showFilters={this.state.showFilters}
+                    toggleFilters={this.toggleFilters}
+                    onFiltersChange={this.onFiltersChange}
+                />
+                <div
+                    className='ingest-panel__list'
+                    onScroll={this.onScroll}
+                    ref={this.panelRef}>
+                    {
+                        ingests.map(({id, attachments, received, provider, ingestType}) => (
+                            (attachments.length > 1) ? (
+                                <div key={id}>Bundle</div>
+                            ) : (<Ingest key={id}
+                                         attachment={attachments[0]}
+                                         received={received}
+                                         provider={provider}
+                                         ingestType={ingestType}
+                            />)
+                        ))
+                    }
                 </div>
             </div>
-            {
-                showFilters && (
-                    <div className='ingest-panel__ingest-filters'>
-                        <div className='ingest-panel__ingest-filters__row1'>
-                            <div className='ingest-panel__ingest-filters__section'>
-                                Provider
-                                <input
-                                    placeholder='Enter Provider'
-                                    value={filters.provider}
-                                    onChange={e => onFilterChange('provider', e.target.value)}/>
-                            </div>
-                            <div className='ingest-panel__ingest-filters__section'>
-                                Avail Status
-                                <Select
-                                    options={Constants.STATUS_LIST}
-                                    value={filters.status}
-                                    onChange={value => onFilterChange('status', value)}/>
-                            </div>
-                        </div>
-                        <div className='ingest-panel__ingest-filters__row2'>
-                            <NexusDateTimeWindowPicker
-                                isUsingTime={false}
-                                isTimestamp={true}
-                                startDateTimePickerProps={{
-                                    id:'ingest-filters__start-date', placeholder: 'mm/dd/YYYY', value: filters.startDate
-                                }}
-                                endDateTimePickerProps={{
-                                    id:'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate
-                                }}
-                                onChange={onDateChange}
-                                labels={Constants.DATEPICKER_LABELS}/>
-                        </div>
-                        <div className='ingest-panel__ingest-filters__actions'>
-                            <Button onClick={clearFilters}>Clear All</Button>
-                            <Button
-                                className={isApplyActive ? 'ingest-panel__ingest-filters__actions--active' : ''}
-                                onClick={applyFilters}>
-                                Apply Filter
-                            </Button>
-                        </div>
-                    </div>
-                )
-            }
-        </div>
-    );
+        );
+    }
+}
+
+const mapStateToProps = () => {
+    return (state) => ({
+        ingests: getIngests(state),
+        totalIngests: getTotalIngests(state),
+    });
 };
 
-export default IngestPanel;
+const mapDispatchToProps = (dispatch) => ({
+    onFiltersChange: payload => dispatch(fetchIngests(payload)),
+    fetchNextPage: () => dispatch(fetchNextPage())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(IngestPanel); // eslint-disable-line

@@ -117,6 +117,17 @@ const RightToMatchView = ({
         }
     };
 
+    // temporary solution - when we enable date, datetime filter this
+    // and params from RightRepoNexusGrid could be removed
+    const rightRepoParams = fieldSearchCriteria && Object.keys(fieldSearchCriteria.params).reduce((result, key) => {
+        const ENABLED_KEYS = ['startTo', 'startFrom', 'endTo', 'endFrom'];
+        if (ENABLED_KEYS.includes(key)) {
+            result[key] = fieldSearchCriteria.params[key];
+        }
+
+        return result;
+    }, {});
+
     return (
         <div className="nexus-c-right-to-match-view">
             <NexusTitle>
@@ -154,7 +165,7 @@ const RightToMatchView = ({
                             columnDefs={updatedColumnDefs}
                             mapping={mapping}
                             setTotalCount={setTotalCount}
-                            params={fieldSearchCriteria.params}
+                            params={rightRepoParams}
                             initialFilter={fieldSearchCriteria.params}
                             handleSelectionChange={handleSelectionChange}
                             rowSelection="multiple"
