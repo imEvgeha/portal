@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import NexusDatePicker from '../../../nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import CustomIntlProvider from '../../../../layout/CustomIntlProvider';
 
 class DateCellEditor extends Component {
@@ -39,6 +39,7 @@ class DateCellEditor extends Component {
                         id={value}
                         value={value}
                         onChange={this.handleChange}
+                        isTimestamp={true}
                     />
                 </div>
             </CustomIntlProvider>
