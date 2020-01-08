@@ -3,7 +3,7 @@ import {Row, Col, Container} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import NexusDatePicker from '../../../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../../../ui-elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {DATE_FORMAT, COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
 class TerritoryMetadataEditMode extends Component {

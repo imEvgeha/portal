@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select/Select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
-import NexusDateTimeWindowPicker from '../../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
+import uiElements from '../../../../ui-elements';
 import Constants from '../../Constants';
 import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
+
+const {NexusDateTimeWindowPicker} = uiElements;
 
 const IngestFilters = ({onFiltersChange}) => {
     const {filterKeys: {PROVIDER, STATUS}, STATUS_LIST} = Constants;
@@ -59,6 +61,7 @@ const IngestFilters = ({onFiltersChange}) => {
             <div className='ingest-filters__row2'>
                 <NexusDateTimeWindowPicker
                     isUsingTime={false}
+                    isTimestamp={true}
                     startDateTimePickerProps={{
                         id:'ingest-filters__start-date', placeholder: 'mm/dd/YYYY', value: filters.startDate
                     }}

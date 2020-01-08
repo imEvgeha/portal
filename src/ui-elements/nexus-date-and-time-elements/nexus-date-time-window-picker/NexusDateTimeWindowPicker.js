@@ -9,8 +9,10 @@ import {
     END_DATE_ERROR,
     START_DATE_ERROR,
     RELATIVE_TIME_LABEL,
-    SIMULCAST_TIME_LABEL
-} from './constants';
+    SIMULCAST_TIME_LABEL,
+    FILL_DATE,
+    FILL_DATE_TIME,
+} from '../constants';
 
 const NexusDateTimeWindowPicker = ({
     label,
@@ -69,6 +71,22 @@ const NexusDateTimeWindowPicker = ({
         );
     };
 
+    // Fills seconds and milliseconds for DateTime endDate or Hours, minutes, seconds and milliseconds for Date endDate
+    const handleChangeEndDate = (date) => {
+        let endDateWithFilledTime = moment(date).valueOf() + (isUsingTime ? FILL_DATE_TIME : FILL_DATE);
+
+        if (isTimestamp) {
+            endDateWithFilledTime = moment(endDateWithFilledTime).toISOString();
+        } else {
+            // .utc(false) makes sure that moment doesn't try to convert our date to local date
+            endDateWithFilledTime = isSimulcast
+                ? moment(endDateWithFilledTime).utc(false).format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+                : moment(endDateWithFilledTime).utc(true).format('YYYY-MM-DD[T]HH:mm:ss');
+        }
+
+        setEndDate(endDateWithFilledTime);
+    };
+
     // If both dates are filled, send a formatted time-window string
     const handleChange = () => startDate && endDate && onChange({startDate, endDate});
 
@@ -101,6 +119,7 @@ const NexusDateTimeWindowPicker = ({
                     : (
                         <NexusDatePicker
                             value={startDate}
+                            isTimestamp={isTimestamp}
                             onChange={setStartDate}
                             error={startDateError}
                             {...startDateTimePickerProps}
@@ -122,7 +141,7 @@ const NexusDateTimeWindowPicker = ({
                             isSimulcast={isSimulcast}
                             isTimestamp={isTimestamp}
                             value={endDate}
-                            onChange={setEndDate}
+                            onChange={handleChangeEndDate}
                             error={endDateError}
                             {...endDateTimePickerProps}
                         />
@@ -130,7 +149,8 @@ const NexusDateTimeWindowPicker = ({
                     : (
                         <NexusDatePicker
                             value={endDate}
-                            onChange={setEndDate}
+                            isTimestamp={isTimestamp}
+                            onChange={handleChangeEndDate}
                             error={endDateError}
                             {...endDateTimePickerProps}
                         />
@@ -174,7 +194,7 @@ NexusDateTimeWindowPicker.propTypes = {
 NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
-    isTimestamp: false,
+    isTimestamp: true,
     onChangeAny: () => null,
     onChange: () => null,
 };

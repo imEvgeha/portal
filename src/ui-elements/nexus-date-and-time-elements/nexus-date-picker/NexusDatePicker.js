@@ -6,13 +6,15 @@ import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale} from '../../util/Common';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../util/Common';
 import './NexusDatePicker.scss';
+import {RELATIVE_DATE_FORMAT, SIMULCAST_DATE_FORMAT} from '../constants';
 
 const NexusDatePicker = ({
     id,
-    isWithInlineEdit,
+    isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
+    isTimestamp, // If set, value includes milliseconds and return value is in ISO format
     onChange,
     onConfirm,
     value,
@@ -21,15 +23,18 @@ const NexusDatePicker = ({
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
+    const [isSimulcast, setIsSimulcast] = useState(false);
 
     useEffect(() => setDate(value || ''), [value]);
+    // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
+    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, []);
 
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
 
     // Create date placeholder based on locale
-    const dateFormat = getDateFormatBasedOnLocale(locale);
+    const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
     const DatePickerComponent = (isReadOnly) => (
         <>
@@ -39,7 +44,7 @@ const NexusDatePicker = ({
                 </>
             }
             {isReadOnly
-                ? moment(value).format(dateFormat)
+                ? parseSimulcast(value, dateFormat)
                 : (
                     <DatePicker
                         id={id}
@@ -47,7 +52,14 @@ const NexusDatePicker = ({
                         placeholder={dateFormat}
                         onChange={date => {
                             setDate(date);
-                            onChange(moment(date).toISOString());
+                            onChange(
+                                isTimestamp
+                                    ? moment(date).toISOString()
+                                    : `${moment(date).format(isSimulcast
+                                        ? SIMULCAST_DATE_FORMAT
+                                        : RELATIVE_DATE_FORMAT)
+                                    }`
+                            );
                         }}
                         defaultValue={moment(value).isValid() ? value : ''}
                         value={date}
@@ -70,7 +82,7 @@ const NexusDatePicker = ({
                     <InlineEdit
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
-                                {(moment(value).isValid() && moment(value).format(dateFormat))
+                                {(moment(value).isValid() && parseSimulcast(value, dateFormat))
                                 || <div className="read-view-container__placeholder">
                                     Enter date
                                 </div>}
@@ -95,6 +107,7 @@ NexusDatePicker.propTypes = {
     error: PropTypes.string,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
+    isTimestamp: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -106,6 +119,7 @@ NexusDatePicker.defaultProps = {
     error: '',
     isWithInlineEdit: false,
     isReadOnly: false,
+    isTimestamp: false,
     onConfirm: () => null,
 };
 
