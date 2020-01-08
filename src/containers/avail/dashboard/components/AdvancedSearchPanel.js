@@ -79,7 +79,6 @@ class AdvancedSearchPanel extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleInvalidChange = this.handleInvalidChange.bind(this);
         this.addSearchField = this.addSearchField.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.blink = this.blink.bind(this);
@@ -136,12 +135,6 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: {value: value}});
-    }
-
-    handleInvalidChange(event) {
-        const value = event.target.value;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, invalid: {value: value}});
-        this.props.resultPageSetBulkExport(false);
     }
 
     addSearchField() {
@@ -471,36 +464,21 @@ class AdvancedSearchPanel extends React.Component {
                     {renderSpecialCloseable()}
                     {renderCloseable()}
                 </div>
-                <div className="d-flex flex-row justify-content-between mt-2">
-                    <div style={{margin:'0 5px', alignSelf: 'center'}}>
-                        Show:
-                        <select className="form-control border-1 d-inline"
-                                id={'dashboard-avails-report-select'}
-                                onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.invalid ? this.props.searchCriteria.invalid.value : ''}
-                                style={{width: '100px', background: 'initial', margin: '0 5px'}}
-                        >
-                            <option value="">All</option>
-                            <option value="false">Valid</option>
-                            <option value="true">Invalid</option>
-                        </select>
-                    </div>
-                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                 disabled={!this.props.availTabPage.total}
-                                 style={{ margin: '4px 7px 0'}}>bulk export</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
-                                 disabled={!this.props.reportName}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                 innerRef={this.refSearchBtn}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
-                     </div>
-                </div>
+                 <div className="mt-2" style={{ textAlign: 'right', display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
+                     <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
+                             disabled={!this.props.availTabPage.total}
+                             style={{ margin: '4px 7px 0'}}>bulk export</Button>
+                     <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
+                             disabled={!this.props.reportName}
+                             style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
+                     <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
+                             style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
+                     <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
+                             style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
+                     <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
+                             innerRef={this.refSearchBtn}
+                             style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
+                 </div>
             </div>
         );
     }
