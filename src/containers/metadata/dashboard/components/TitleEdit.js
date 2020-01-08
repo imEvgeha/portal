@@ -13,7 +13,6 @@ import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
 import {AvForm} from 'availity-reactstrap-validation';
-import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
@@ -532,11 +531,11 @@ class TitleEdit extends Component {
         this.state.updatedTerritories.forEach(t => {
             const dataFormatted = {
                 ...t,
-                theatricalReleaseDate: t.theatricalReleaseDate ? moment(t.theatricalReleaseDate).utc().toISOString() : null,
-                homeVideoReleaseDate: t.homeVideoReleaseDate ? moment(t.homeVideoReleaseDate).utc().toISOString() : null,
-                availAnnounceDate: t.availAnnounceDate ? moment(t.availAnnounceDate).utc().toISOString() : null,
-                originalAirDate: t.originalAirDate ? moment(t.originalAirDate).utc().toISOString() : null,
-                estReleaseDate: t.estReleaseDate ? moment(t.estReleaseDate).utc().toISOString() : null,
+                theatricalReleaseDate: t.theatricalReleaseDate || null,
+                homeVideoReleaseDate: t.homeVideoReleaseDate || null,
+                availAnnounceDate: t.availAnnounceDate || null,
+                originalAirDate: t.originalAirDate || null,
+                estReleaseDate: t.estReleaseDate || null,
             };
             titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
                 let list = [].concat(this.state.territory);
@@ -565,11 +564,11 @@ class TitleEdit extends Component {
 
             const newTerritory = {
                 ...this.state.territories,
-                theatricalReleaseDate: theatricalReleaseDate ? moment(theatricalReleaseDate).utc().toISOString() : null,
-                homeVideoReleaseDate: homeVideoReleaseDate ? moment(homeVideoReleaseDate).utc().toISOString() : null,
-                availAnnounceDate: availAnnounceDate ? moment(availAnnounceDate).utc().toISOString() : null,
-                originalAirDate: originalAirDate ? moment(originalAirDate).utc().toISOString() : null,
-                estReleaseDate: estReleaseDate ? moment(estReleaseDate).utc().toISOString() : null,
+                theatricalReleaseDate: theatricalReleaseDate || null,
+                homeVideoReleaseDate: homeVideoReleaseDate || null,
+                availAnnounceDate: availAnnounceDate || null,
+                originalAirDate: originalAirDate || null,
+                estReleaseDate: estReleaseDate || null,
                 parentId: this.props.match.params.id
             };
 

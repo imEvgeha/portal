@@ -23,6 +23,8 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
     const {globalLocale = 'en-US'} = intl || {};
 
     const dateFormat = getDateFormatBasedOnLocale(globalLocale);
+    // Attach (UTC) to date, if it is simulcast
+    const parseSimulcast = (date) => `${moment(date).format(dateFormat)}${date.endsWith('Z') ? ' (UTC)' : ''}`;
 
     return (
         <div id="territoryMetadataTabs">
@@ -54,7 +56,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Original Air Date: </b>
                         {originalAirDate
-                            ? moment(originalAirDate).format(dateFormat)
+                            ? parseSimulcast(originalAirDate)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
@@ -63,14 +65,14 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Home Video Release Date: </b>
                         {homeVideoReleaseDate
-                            ? moment(homeVideoReleaseDate).format(dateFormat)
+                            ? parseSimulcast(homeVideoReleaseDate)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
                     <Col>
                         <b>Avail Announce Date: </b>
                         {availAnnounceDate
-                            ? moment(availAnnounceDate).format(dateFormat)
+                            ? parseSimulcast(availAnnounceDate)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
@@ -79,14 +81,14 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Theatrical Release Date: </b>
                         {theatricalReleaseDate
-                            ? moment(theatricalReleaseDate).format(dateFormat)
+                            ? parseSimulcast(theatricalReleaseDate)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
                     <Col>
                         <b>EST Release Date: </b>
                         {estReleaseDate
-                            ? moment(estReleaseDate).format(dateFormat)
+                            ? parseSimulcast(estReleaseDate)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>

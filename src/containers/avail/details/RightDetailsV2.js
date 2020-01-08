@@ -359,6 +359,7 @@ class RightDetails extends React.Component {
                         label={displayName}
                         value={value}
                         isWithInlineEdit={true}
+                        isTimestamp={true}
                         onChange={date => {
                             /* For testing proposes */
                             console.warn('NexusDatePicker returned: ', date);
@@ -371,7 +372,7 @@ class RightDetails extends React.Component {
                     name,
                     displayName,
                     value,
-                    // errors,
+                    null,
                     readOnly,
                     required,
                     null,
@@ -381,6 +382,7 @@ class RightDetails extends React.Component {
                         id={jvName}
                         label={displayName}
                         value={value}
+                        isTimestamp={true}
                         isWithInlineEdit={true}
                         onChange={date => {
                             /* For testing proposes */

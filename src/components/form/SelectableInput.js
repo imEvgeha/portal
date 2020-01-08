@@ -7,7 +7,7 @@ import RangeDuration from './RangeDuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
-import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
+import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 
 
 const mapStateToProps = state => {
@@ -263,10 +263,11 @@ class SelectableInput extends Component {
                         onChange({...value, from, to});
                     }}
                     isUsingTime={showTime}
+                    isTimestamp={true}
                     startDateTimePickerProps={{
                         id: `${id}-datepicker-start`,
                         defaultValue: from,
-                        label: 'From'
+                        label: 'From',
                     }}
                     endDateTimePickerProps={{
                         id: `${id}-datepicker-end`,

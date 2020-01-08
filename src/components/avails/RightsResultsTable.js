@@ -6,6 +6,7 @@ import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import LoadingGif from '../../img/loading.gif';
 import {isObject} from '../../util/Common';
+import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
 
 export default class RightsResultsTable extends React.Component {
     static propTypes = {
@@ -22,7 +23,7 @@ export default class RightsResultsTable extends React.Component {
 
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
-        const dateFormat = `${getDateFormatBasedOnLocale(locale)} HH:mm`;
+        const dateFormat = `${getDateFormatBasedOnLocale(locale)} ${TIMESTAMP_FORMAT}`;
 
         let formatter = (column) => {
             const {

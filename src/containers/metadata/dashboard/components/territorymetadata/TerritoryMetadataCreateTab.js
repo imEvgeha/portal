@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
-import NexusDatePicker from '../../../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../../../ui-elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 
 // TODO: Convert to functional component
 class TerritoryMetadataCreateTab extends Component {
@@ -69,6 +69,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Original Air Date"
                                 id="territoryOriginalAirDate"
                                 onChange={date => this.props.handleChangeDate('originalAirDate', date)}
+                                isTimestamp={false}
                             />
                         </Col>
                     </Row>
@@ -78,6 +79,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Home Video Release Date"
                                 id="territoryHomeVideoReleaseDate"
                                 onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', date)}
+                                isTimestamp={false}
                             />
                         </Col>
                         <Col>
@@ -85,6 +87,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Avail Announce Date"
                                 id="territoryAvailAnnounceDate"
                                 onChange={date => this.props.handleChangeDate('availAnnounceDate', date)}
+                                isTimestamp={false}
                             />
                         </Col>
                     </Row>
@@ -94,6 +97,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Theatrical Release Date"
                                 id="territoryTheatricalReleaseDate"
                                 onChange={date => this.props.handleChangeDate('theatricalReleaseDate', date)}
+                                isTimestamp={false}
                             />
                         </Col>
                         <Col>
@@ -101,6 +105,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="EST Release Date"
                                 id="territoryESTReleaseDate"
                                 onChange={date => this.props.handleChangeDate('estReleaseDate', date)}
+                                isTimestamp={false}
                             />
                         </Col>
                     </Row>

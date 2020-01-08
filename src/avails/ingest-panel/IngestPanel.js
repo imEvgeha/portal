@@ -4,7 +4,7 @@ import AvailsIcon from '../../assets/Avails.svg';
 import PopOutIcon from '../../assets/action-shortcut.svg';
 import FilterIcon from '../../assets/filter.svg';
 import FilterSolidIcon from '../../assets/filter-solid.svg';
-import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
+import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import Select from '@atlaskit/select';
 import Constants from './Constants';
 import './IngestPanel.scss';
@@ -83,6 +83,7 @@ const IngestPanel = () => {
                         <div className='ingest-panel__ingest-filters__row2'>
                             <NexusDateTimeWindowPicker
                                 isUsingTime={false}
+                                isTimestamp={true}
                                 startDateTimePickerProps={{
                                     id:'ingest-filters__start-date', placeholder: 'mm/dd/YYYY', value: filters.startDate
                                 }}
