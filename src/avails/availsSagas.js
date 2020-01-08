@@ -62,15 +62,17 @@ function* selectIngest({payload}) {
         const params = new URLSearchParams(window.location.search.substring(1));
         ingestId = params.get(Constants.AVAIL_HISTORY_ID);
     }
-    let selectedIngest = yield select(getIngestById, ingestId);
-    if(!selectedIngest){
-        const response = yield call(historyService.getHistory, ingestId);
-        selectedIngest = response.data;
+    if(ingestId) {
+        let selectedIngest = yield select(getIngestById, ingestId);
+        if(!selectedIngest){
+            const response = yield call(historyService.getHistory, ingestId);
+            selectedIngest = response.data;
+        }
+        yield put({
+            type: actionTypes.UPDATE_SELECTED_INGEST,
+            payload: selectedIngest,
+        });
     }
-    yield put({
-        type: actionTypes.UPDATE_SELECTED_INGEST,
-        payload: selectedIngest,
-    });
 }
 
 export default function* availsWatcher() {

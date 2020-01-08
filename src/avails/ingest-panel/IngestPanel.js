@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {getIngests, getSelectedIngest, getTotalIngests} from '../availsSelectors';
 import {fetchIngests, fetchNextPage, selectIngest} from '../availsActions';
@@ -62,6 +63,24 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
             </div>
         </div>
     );
+};
+
+IngestPanel.propTypes = {
+    ingests: PropTypes.array,
+    totalIngests: PropTypes.number,
+    selectedIngest: PropTypes.object,
+    onFiltersChange: PropTypes.func,
+    fetchNextPage: PropTypes.func,
+    ingestClick: PropTypes.func,
+};
+
+IngestPanel.defaultProps = {
+    ingests: [],
+    totalIngests: 0,
+    selectedIngest: {},
+    onFiltersChange: () => null,
+    fetchNextPage: () => null,
+    ingestClick: () => null,
 };
 
 const mapStateToProps = () => {
