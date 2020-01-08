@@ -1049,7 +1049,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted, isLocalDate) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted) => {
             let ref;
 
             const {flatRight} = this.state;
@@ -1095,7 +1095,7 @@ class RightDetails extends React.Component {
             };
 
             const component = showTime
-                ? <NexusDateTimePicker {...props} isLocalDate={isLocalDate} />
+                ? <NexusDateTimePicker {...props} />
                 : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(
@@ -1215,11 +1215,11 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                              break;
-                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
+                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, true));
+                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
