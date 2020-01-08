@@ -5,13 +5,13 @@ import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
-import {getDateFormatBasedOnLocale} from '../../util/Common';
+import {getDateFormatBasedOnLocale} from '../../../util/Common';
 import {
     TIME_PLACEHOLDER,
     ATLASKIT_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT
-} from './constants';
+} from '../constants';
 
 const NexusSimpleDateTimePicker = ({
     label,
