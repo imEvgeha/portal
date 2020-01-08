@@ -22,9 +22,7 @@ const RulesEngineInfo = (params) => {
                               key={rule.field}
                               className="nexus-c-rules-popup__content__field">
                               <label>{rule.displayName}:</label>
-                              <span>
-                                  {JSON.stringify(availSource[rule.field] || '').replace(/["]/g, '')}
-                              </span>
+                              <span>{availSource[rule.field]}</span>
                           </div>
                       ))
                   }
