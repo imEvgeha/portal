@@ -1,4 +1,4 @@
-@import '../../../styles/config.scss';
+@import '../../../styles/config';
 
 .nexus-c-match-right-view {
     padding: 15px;
@@ -48,6 +48,12 @@
     .nexus-c-match-right-view__buttons & {
         width: 100px;
         font-size: 14px;
+    }
+}
+
+.nexus-c-match-right-view__grid-column {
+    &--highlighted {
+        background-color: rgba(map-get($colors, warning), 0.3);
     }
 }
 

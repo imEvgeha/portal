@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEmpty from 'lodash.isempty';
 import omit from 'lodash.omit';
+import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
@@ -16,11 +17,14 @@ const DEFAULT_HOC_PROPS = [
 
 const FILTERABLE_DATA_TYPES = [
     'string',
-    'number',
+    'integer',
+    'double',
     'boolean',
     'select',
     'multiselect',
     'territoryType',
+    'year',
+    'duration',
 ];
 
 const NOT_FILTERABLE_COLUMNS = ['id'];
@@ -33,7 +37,10 @@ const DEFAULT_FILTER_PARAMS = {
 
 const FILTER_TYPE = {
     string: 'agTextColumnFilter',
-    number: 'agNumberColumnFilter',
+    duration: 'agTextColumnFilter',
+    integer: 'agNumberColumnFilter',
+    double: 'agNumberColumnFilter',
+    year: 'agNumberColumnFilter',
     select: 'agSetColumnFilter',
     multiselect: 'agSetColumnFilter',
     territoryType: 'agSetColumnFilter',
@@ -84,20 +91,20 @@ const withFilterableColumns = ({
         }, [gridApi, mapping]);
 
         function updateColumnDefs(columnDefs) {
-            const filterableColumnDefs = columnDefs.map(columnDef => {
-                let copiedColumnDef = {...columnDef};
-                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === copiedColumnDef.field))) || {};
+            const copiedColumnDefs = cloneDeep(columnDefs);
+            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
+                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType)
-                    && (columns ? columns.includes(copiedColumnDef.field) : true)
-                    && !excludedFilterColumns.includes(copiedColumnDef.field);
+                    && (columns ? columns.includes(columnDef.field) : true)
+                    && !excludedFilterColumns.includes(columnDef.field);
                 if (isFilterable) {
-                    copiedColumnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
-                    copiedColumnDef.filterParams = setFilterParams(dataType, copiedColumnDef.field);
+                    columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
+                    columnDef.filterParams = setFilterParams(dataType, columnDef.field);
                 }
 
-                return copiedColumnDef;
+                return columnDef;
             });
-
+//
             return filterableColumnDefs;
         }
 
@@ -120,7 +127,10 @@ const withFilterableColumns = ({
         const setFilterParams = (dataType, field) => {
             switch (dataType) {
                 case 'string':
-                case 'number': 
+                case 'integer':
+                case 'double':
+                case 'year':
+                case 'duration':
                     return DEFAULT_FILTER_PARAMS;
                 case 'select':
                 case 'territoryType':

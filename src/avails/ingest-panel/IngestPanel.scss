@@ -1,101 +1,16 @@
 .ingest-panel {
-  width: 325px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 325px;
   border-right: 1px solid #737E91;
-  padding: 48px 0;
+  padding: 48px 0 0;
   margin-right: 10px;
   color: #42526E;
-  &__ingest-header {
+  &__list {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    padding: 0 24px;
-    &__title {
-      display: flex;
-      font-size: 29px;
-      align-items: center;
-      svg {
-        margin-right: 16px;
-      }
-    }
-    &__actions {
-      display: flex;
-      align-items: center;
-      svg {
-        cursor: pointer;
-      }
-    }
-    .ingest-panel__ingest-header__actions--pop {
-      margin-right: 20px;
-      fill: #A5ADBA;
-    }
-  }
-  &__ingest-filters{
-    font-size: 16px;
-    color: #42526E;
-    &__section {
-      color: #A5ADBA;
-      & > div {
-        width: 135px;
-        > div {
-          background: #EBEDF0;
-          border: 0;
-        }
-      }
-      & > input {
-        width: 135px;
-        height: 40px;
-        background: #EBEDF0;
-        border: 0;
-        color: #42526E;
-        padding: 0 10px;
-      }
-    }
-    &__row1{
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .nexus-c-date-time-window-picker{
-      display: flex;
-      justify-content: space-between;
-      &__start-date, &__end-date{
-        width: 135px;
-        div {
-          background: white;
-          border: 0;
-          &.nexus-c-date-time-window-picker__label {
-            background: transparent;
-            color: #A5ADBA;
-          }
-          input {
-            color: transparent!important;
-          }
-        }
-      }
-      svg{
-        margin-right: 5px;
-      }
-    }
-    &__actions {
-      margin-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      button{
-        width: 135px;
-        background: #EBEDF0;
-        color: #42526E;
-        justify-content: center;
-        &.ingest-panel__ingest-filters__actions--active {
-          background: #42526E;
-          color: #FFFFFF!important;
-        }
-      }
-    }
-  }
-  svg {
-    width: 20px;
-    height: 20px;
-    fill: #42526E;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 }

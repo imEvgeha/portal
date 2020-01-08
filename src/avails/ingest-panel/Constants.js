@@ -18,5 +18,17 @@ export default {
     ingestTypes: {
         EMAIL: 'Email',
         UPLOAD: 'Upload'
+    },
+    filterKeys: {
+        RECEIVED_FROM: 'receivedFrom',
+        RECEIVED_TO: 'receivedTo',
+        STATUS: 'status',
+        PROVIDER: 'provider'
+    },
+    URLFilterKeys: {
+        receivedFrom: 'igReceivedFrom',
+        receivedTo: 'igReceivedTo',
+        status: 'igStatus',
+        provider: 'igProvider'
     }
 };

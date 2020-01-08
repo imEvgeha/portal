@@ -69,7 +69,7 @@ const RightToMatchView = ({
         }
     }, [rightId]);
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
@@ -100,7 +100,7 @@ const RightToMatchView = ({
         );
     };
 
-    const actionNewButtonColumnDef = defineActionButtonColumn('buttons', createNewButtonCellRenderer);
+    const actionNewButtonColumnDef = defineActionButtonColumn({field: 'buttons', cellRendererFramework: createNewButtonCellRenderer});
     const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
@@ -116,6 +116,17 @@ const RightToMatchView = ({
             history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds}`));
         }
     };
+
+    // temporary solution - when we enable date, datetime filter this
+    // and params from RightRepoNexusGrid could be removed
+    const rightRepoParams = fieldSearchCriteria && Object.keys(fieldSearchCriteria.params).reduce((result, key) => {
+        const ENABLED_KEYS = ['startTo', 'startFrom', 'endTo', 'endFrom'];
+        if (ENABLED_KEYS.includes(key)) {
+            result[key] = fieldSearchCriteria.params[key];
+        }
+
+        return result;
+    }, {});
 
     return (
         <div className="nexus-c-right-to-match-view">
@@ -154,10 +165,11 @@ const RightToMatchView = ({
                             columnDefs={updatedColumnDefs}
                             mapping={mapping}
                             setTotalCount={setTotalCount}
-                            params={fieldSearchCriteria.params}
+                            params={rightRepoParams}
                             initialFilter={fieldSearchCriteria.params}
                             handleSelectionChange={handleSelectionChange}
                             rowSelection="multiple"
+                            suppressRowClickSelection={true}
                         />
                 )}
             </div>
