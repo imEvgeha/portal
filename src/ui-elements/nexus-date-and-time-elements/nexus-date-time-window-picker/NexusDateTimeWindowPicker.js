@@ -12,7 +12,7 @@ import {
     SIMULCAST_TIME_LABEL,
     FILL_DATE,
     FILL_DATE_TIME,
-} from './constants';
+} from '../constants';
 
 const NexusDateTimeWindowPicker = ({
     label,
@@ -116,6 +116,7 @@ const NexusDateTimeWindowPicker = ({
                     : (
                         <NexusDatePicker
                             value={startDate}
+                            isTimestamp={isTimestamp}
                             onChange={setStartDate}
                             error={startDateError}
                             {...startDateTimePickerProps}
@@ -145,6 +146,7 @@ const NexusDateTimeWindowPicker = ({
                     : (
                         <NexusDatePicker
                             value={endDate}
+                            isTimestamp={isTimestamp}
                             onChange={handleChangeEndDate}
                             error={endDateError}
                             {...endDateTimePickerProps}
@@ -188,7 +190,7 @@ NexusDateTimeWindowPicker.propTypes = {
 NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
-    isTimestamp: false,
+    isTimestamp: true,
 };
 
 export default NexusDateTimeWindowPicker;
