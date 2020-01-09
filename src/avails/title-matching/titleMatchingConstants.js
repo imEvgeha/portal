@@ -12,6 +12,7 @@ export default {
         suppressMovable: true,
         lockPosition: true,
         sortable: false,
+        lockVisible: true
     },
     searchParameters: {
         TITLE: 'title',
