@@ -85,7 +85,6 @@ class ServerRightsResultsTable extends RightsResultsTable {
     }
 
     getRows(params){
-        console.log(params, 'params');
         if(this.state.table && this.state.table.api.getDisplayedRowCount() === 0 && !this.props.autoRefresh){
             this.state.table.api.showLoadingOverlay();
         }

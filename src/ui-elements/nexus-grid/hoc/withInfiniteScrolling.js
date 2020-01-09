@@ -35,7 +35,7 @@ const withInfiniteScrolling = ({
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
 
-        // params
+        //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
             if ((!isEqual(params, previousParams) && params) 
@@ -97,6 +97,16 @@ const withInfiniteScrolling = ({
                         } else {
                             successCallback(data, lastRow);
                         }
+
+                        // selected rows
+                        if (props.selectedRows) {
+                            gridApi.forEachNode(rowNode => {
+                                const selectedNode = props.selectedRows[rowNode.id];
+                                if (selectedNode) {
+                                    rowNode.setSelected(true);
+                                }
+                            });
+                        }  
 
                         if (typeof props.successDataFetchCallback === 'function') {
                             const preparedData = {page, size, total, data};

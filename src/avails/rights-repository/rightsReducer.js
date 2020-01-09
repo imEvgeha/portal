@@ -7,8 +7,10 @@ const initialState = {
 };
 
 const rightsReducer = (state = initialState, action = {}) => {
-    switch (state, action) {
-        case actionTypes.UPDATE_RIGHTS:
+    const {type, payload = {}} = action;
+
+    switch (type) {
+        case actionTypes.SET_SELECTED_RIGHTS:
             return {
                 ...state,
                 selected: payload,
