@@ -18,7 +18,7 @@ const NexusDatePicker = ({
     value,
     error,
     label,
-    ...restProps,
+    ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
 
