@@ -6,14 +6,12 @@ import './BundleTitle.scss';
 const BundleTitle = ({provider, totalAttachments}) => {
     return (
         <div className='bundle-title'>
-            <span className='bundle-title__details'>
-                <React.Fragment>
-                    <Folder className='bundle-title__details--folder'/>
-                    <span className='ingest-title__details--provider'>{provider}</span>
-                    <span className='ingest-title__details--separator'>|</span>
-                    <span className='ingest-title__details--totalAttachments'>{totalAttachments} Files</span>
-                </React.Fragment>
-            </span>
+            <div className='bundle-title__details'>
+                <Folder className='bundle-title__details--folder'/>
+                <span className='ingest-title__details--provider'>{provider}</span>
+                <span className='ingest-title__details--separator'>|</span>
+                <span className='ingest-title__details--totalAttachments'>{totalAttachments} Files</span>
+            </div>
         </div>
     );
 };

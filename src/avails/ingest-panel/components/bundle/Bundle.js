@@ -10,10 +10,7 @@ import './Bundle.scss';
 const Bundle = ({id, ingestType, received, provider, attachments, selectedIngest, ingestClick}) => {
     const [showIngests, setShowIngests] = useState(false);
 
-    const onBundleClick = e => {
-        e.stopPropagation();
-        setShowIngests(!showIngests);
-    };
+    const onBundleClick = () => setShowIngests(!showIngests);
 
     return (
         <div className='avail-bundle'>
