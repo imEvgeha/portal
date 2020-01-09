@@ -150,14 +150,14 @@ const withInfiniteScrolling = ({
 
         const onGridEvent = data => {
             const {onGridEvent} = props;
-            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED]; 
+            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED, GRID_EVENTS.SELECTION_CHANGED]; 
             const {api, type} = data || {};
             if (type === GRID_EVENTS.READY && !gridApi) {
                 setGridApi(api);
             }
 
-            if (events.includes(data.type) && typeof onGridEvent === 'function') {
-                onGridEvent(data);
+            if (events.includes(type) && typeof onGridEvent === 'function') {
+                props.onGridEvent(data);
             }
         };
 

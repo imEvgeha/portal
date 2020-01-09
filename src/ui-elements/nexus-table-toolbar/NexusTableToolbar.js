@@ -10,14 +10,30 @@ const NexusTableToolbar = ({
     totalRows,
     hasSelectedTab,
     hasDownloadButton,
-    selectedRows
+    selectedRows,
+    isSelectedOptionActive,
+    setIsSelectedOptionActive,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
             <MoreIcon fill="#A5ADBA" />
-            <div className="nexus-c-table-toolbar__title">{title} ({totalRows})</div>
+            <div 
+                className={`
+                    nexus-c-table-toolbar__title 
+                    ${!isSelectedOptionActive ? 'nexus-c-table-toolbar__title--is-active' : ''}
+                `}
+                onClick={() => setIsSelectedOptionActive(false)}
+            >
+                {title} ({totalRows})
+            </div>
             {hasSelectedTab && (
-                <div className={`nexus-c-table-toolbar__selected-option ${!selectedRows ? 'nexus-c-table-toolbar__selected-option--is-disabled' : ''}`}>
+                <div 
+                    className={`
+                        nexus-c-table-toolbar__selected-option
+                        ${isSelectedOptionActive ? 'nexus-c-table-toolbar__selected-option--is-active' : ''}
+                    `}
+                    onClick={() => setIsSelectedOptionActive(true)}
+                >
                     Selected ({selectedRows})
                 </div>
             )}

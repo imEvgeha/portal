@@ -5,16 +5,31 @@
     align-items: center;
     width: 100%;
     color: map-get($colors, nexus-title-color);
+    padding-top: 20px;
 }
 
 .nexus-c-table-toolbar__title {
     margin: 0 16px;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &--is-active {
+        color: #a5adba;
+    }
 }
 
 .nexus-c-table-toolbar__selected-option {
     margin-right: 16px;
+    cursor: pointer;
 
-    &--is-disabled {
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &--is-active {
         color: #a5adba;
     }
 }

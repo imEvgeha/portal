@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Constants from '../../Constants';
+import Constants from '../../constants';
 import Email from '../../../../assets/email.svg';
 import File from '../../../../assets/file.svg';
 import StatusInfo from '../../../../assets/status-info.svg';
