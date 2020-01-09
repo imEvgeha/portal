@@ -16,15 +16,14 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
 
     const [opened, setOpened] = useState(false);
 
-    const {setModalContent, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    useEffect(() => {
-        setModalStyle({width: '100%'});
-    }, []);
+    const TITLE = `Audit History (${selectedAvails.length})`;
 
     useEffect(() => {
         if (opened) {
-            setModalContent(buildContent());
+            setModalStyle({width: '100%'});
+            setModalContentAndTitle(buildContent(), TITLE);
         }
     }, [rightsEventHistory]);
 
@@ -49,8 +48,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
                 setOpened(false);
             }
         }]);
-
-        setModalContent(SPINNER);
+        setModalContentAndTitle(SPINNER, TITLE);
         setOpened(true);
     };
 
