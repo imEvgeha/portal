@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
 import LoadingGif from '../../img/loading.gif';
+import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
@@ -27,7 +28,7 @@ const withRightsResultsTable = BaseComponent => {
     const selectRightMode = 'selectRightsMode';
 
     const ComposedComponent = props => {
-        // parse colums schema
+        // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
             const formatter = (column) => {
@@ -38,7 +39,7 @@ const withRightsResultsTable = BaseComponent => {
                         return (params) => {
                         const {data} = params;
                         if (data && data[javaVariableName]) {
-                            return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format('HH:mm')}`;
+                            return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
                         }
                     };
                     case 'date':

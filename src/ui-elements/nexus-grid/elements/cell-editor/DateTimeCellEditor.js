@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './DateTimeCellEditor.scss';
-import NexusDateTimePicker from '../../../nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '../../../nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import CustomIntlProvider from '../../../../layout/CustomIntlProvider';
 
 class DateTimeCellEditor extends Component {
@@ -40,6 +40,7 @@ class DateTimeCellEditor extends Component {
                         id={value}
                         value={value}
                         onChange={this.handleChange}
+                        isTimestamp={true}
                     />
                 </div>
             </CustomIntlProvider>

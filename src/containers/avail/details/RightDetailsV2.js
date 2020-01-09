@@ -15,9 +15,15 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
-import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 import rightConstants from './RightConstants';
+import uiElements from '../../../ui-elements';
+
+const {
+    NexusDateTimePicker,
+    NexusDatePicker,
+    NexusMultiInstanceField
+} = uiElements;
 
 const {
     TERRITORY_TYPE,
@@ -337,8 +343,55 @@ class RightDetails extends React.Component {
                 duration: null,
                 time: null,
                 localdate: null,
-                date: null,
                 boolean: null,
+                date: renderFieldTemplate(
+                    name,
+                    displayName,
+                    value,
+                    null,
+                    readOnly,
+                    required,
+                    null,
+                    null,
+                    null,
+                    (<NexusDatePicker
+                        id={jvName}
+                        label={displayName}
+                        value={value}
+                        isWithInlineEdit={true}
+                        isTimestamp={true}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDatePicker returned: ', date);
+                        }}
+                        required={required}
+                        isReadOnly={readOnly}
+                    />)
+                ),
+                datetime: renderFieldTemplate(
+                    name,
+                    displayName,
+                    value,
+                    null,
+                    readOnly,
+                    required,
+                    null,
+                    null,
+                    null,
+                    (<NexusDateTimePicker
+                        id={jvName}
+                        label={displayName}
+                        value={value}
+                        isTimestamp={true}
+                        isWithInlineEdit={true}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDateTimePicker returned: ', date);
+                        }}
+                        required={required}
+                        isReadOnly={readOnly}
+                    />)
+                ),
                 territoryType: renderTerritoryField(
                     jvName,
                     displayName,

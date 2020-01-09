@@ -25,9 +25,9 @@ import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '../../../ui-elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
-import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../ui-elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 
@@ -1049,7 +1049,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted, isLocalDate) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted) => {
             let ref;
 
             const {flatRight} = this.state;
@@ -1092,10 +1092,11 @@ class RightDetails extends React.Component {
                 error,
                 required,
                 isWithInlineEdit: true,
+                isTimestamp: true,
             };
 
             const component = showTime
-                ? <NexusDateTimePicker {...props} isLocalDate={isLocalDate} />
+                ? <NexusDateTimePicker {...props} />
                 : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(
@@ -1215,11 +1216,10 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                              break;
-                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
-                            break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, true));
+                        case 'localdate':
+                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
