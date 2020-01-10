@@ -1,22 +1,30 @@
 import moment from 'moment';
 import {DIRECTOR, isCastPersonType} from '../../../../constants/metadata/configAPI';
 import {TIMESTAMP_FORMAT} from '../../../nexus-date-and-time-elements/constants';
+import {getDateFormatBasedOnLocale} from '../../../../util/Common';
+import {store} from '../../../../index';
 
-const createValueFormatter = ({dataType, javaVariableName}) => {
+const createValueFormatter = ({dataType, javaVariableName}, locale) => {
+    const {locale: locale1} = store.getState().localeReducer;
+    console.log(locale1)
+
+    // Create date placeholder based on locale
+    const dateFormat = getDateFormatBasedOnLocale(locale);
+
     switch (dataType) {
         case 'localdate':
         case 'datetime':
             return (params) => {
                 const {data = {}} = params || {};
                 if (data[javaVariableName]) {
-                    return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
+                    return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
                 }
             };
         case 'date':
             return (params) => {
                 const {data = {}} = params || {};
                 if ((data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
-                    return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
+                    return moment(data[javaVariableName].toString().substr(0, 10)).format(dateFormat);
                 }
             };
         case 'territoryType':
