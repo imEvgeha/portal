@@ -3,11 +3,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import cloneDeep from 'lodash.clonedeep';
 import './RightsRepository.scss';
-import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
-import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
 import * as selectors from './rightsSelectors';
 import {setSelectedRights} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
@@ -16,10 +12,15 @@ import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
 import {filterRightsByStatus, selectIngest} from '../ingest-panel/ingestActions';
 import {getSelectedIngest} from '../ingest-panel/ingestSelectors';
-import RightsRepositoryHeader from '../components/RightsRepositoryHeader';
-import NexusTableToolbar from '../../ui-elements/nexus-table-toolbar/NexusTableToolbar';
-import {defineCheckboxSelectionColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
+import {defineCheckboxSelectionColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
+import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
+import UiElements from '../../ui-elements';
+
+const {NexusGrid, NexusTableToolbar} = UiElements;
 
 const RightsRepositoryTable = compose(
     withSideBar(),
@@ -27,17 +28,24 @@ const RightsRepositoryTable = compose(
     withInfiniteScrolling({fetchData: rightServiceManager.doSearch}),
 )(NexusGrid);
 
-const SelectedRighstRepository = compose(
+const SelectedRighstRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns(),
 )(NexusGrid);
 
 const RightsRepository = props => {
-    const {columnDefs, createRightMatchingColumnDefs, mapping, selectedIngest, filterByStatus, ingestClick, setSelectedRights, getSelectedRows} = props;
+    const {
+        columnDefs,
+        createRightMatchingColumnDefs,
+        mapping,
+        selectedIngest,
+        filterByStatus,
+        ingestClick,
+        setSelectedRights,
+        selectedRights,
+    } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [gridApi, setGridApi] = useState();
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -51,13 +59,12 @@ const RightsRepository = props => {
 
     const columnDefsClone = cloneDeep(columnDefs);
 
-    const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
+    const handleRightRedirect = params => createLinkableCellRenderer(params);
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
         if(columnDef.cellRenderer) {
             columnDef.cellRenderer = handleRightRedirect;
         }
-
         return columnDef;
     });
 
@@ -67,21 +74,14 @@ const RightsRepository = props => {
         : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api}) => {
-        switch (type) {
-            case GRID_EVENTS.SELECTION_CHANGED:
-                const allSelectedRows = api.getSelectedRows() || [];
-                setSelectedRows(allSelectedRows);
-                const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
-                setSelectedRights(payload);
-                break;
-            case GRID_EVENTS.READY:
-                setGridApi(api);
-                break;
+        if (type === GRID_EVENTS.SELECTION_CHANGED) {
+            const allSelectedRows = api.getSelectedRows() || [];
+            const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
+            setSelectedRights(payload);
         }
     };
 
-
-    return(
+    return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
             {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} />)}
@@ -90,12 +90,12 @@ const RightsRepository = props => {
                 totalRows={totalCount}
                 setIsSelectedOptionActive={setIsSelectedOptionActive}
                 isSelectedOptionActive={isSelectedOptionActive}
-                selectedRows={selectedRows.length}
+                selectedRows={Object.keys(selectedRights).length}
             />
-            <SelectedRighstRepository
+            <SelectedRighstRepositoryTable
                 columnDefs={columnDefsWithRedirect}
                 mapping={mapping}
-                rowData={selectedRows}
+                rowData={Object.keys(selectedRights).map(key => selectedRights[key])}
                 isGridHidden={!isSelectedOptionActive}
             />
             <RightsRepositoryTable
@@ -106,6 +106,7 @@ const RightsRepository = props => {
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
                 isGridHidden={isSelectedOptionActive}
+                selectedRows={selectedRights}
             />
         </div>
     );

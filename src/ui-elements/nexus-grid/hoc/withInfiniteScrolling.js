@@ -12,6 +12,7 @@ const DEFAULT_HOC_PROPS = [
     'setTotalCount',
     'isDatasourceEnabled',
     'successDataFetchCallback',
+    'selectedRows',
 ];
 
 const ROW_BUFFER = 10;
