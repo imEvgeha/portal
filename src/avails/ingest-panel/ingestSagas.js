@@ -5,13 +5,14 @@ import {URL} from '../../util/Common';
 import {historyService} from '../../containers/avail/service/HistoryService';
 import Constants from '../constants';
 import {getFiltersToSend} from './utils';
-import FilterConstants from '../constants';
+import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
 
 function* fetchIngests({payload}) {
+    console.warn('FETCH');
     try {
         const filters = {};
         Object.keys(URLFilterKeys).map(key => filters[URLFilterKeys[key]] = payload[key]);
