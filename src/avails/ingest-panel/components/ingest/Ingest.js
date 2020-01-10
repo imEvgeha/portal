@@ -19,15 +19,20 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
         <div className={`avail-ingest ${selected ? 'selected' : ''}`} onClick={ingestClick}>
             <IngestTitle provider={provider} link={link} ingestType={ingestType} />
             <div className='avail-ingest__details'>
-                <span
-                    className={`avail-ingest__details--${showReport ? 'open' : 'close' }`}
-                    onClick={onChevronClick}>
-                    <Chevron/>
-                </span>
-                <IngestStatus date={received} status={status} />
+                {
+                    ingestReport &&
+                    <span
+                        className={`avail-ingest__details--${showReport ? 'open' : 'close'}`}
+                        onClick={onChevronClick}>
+                        <Chevron/>
+                    </span>
+                }
+                <div className={`avail-ingest__details--status ${ingestReport ? '' : 'not-expandable'}`}>
+                    <IngestStatus date={received} status={status} />
+                </div>
             </div>
             {
-                showReport && <IngestReport report={ingestReport} />
+                showReport && ingestReport && <IngestReport report={ingestReport} />
             }
         </div>
     );

@@ -8,10 +8,18 @@
     width: 18px;
     height: 18px;
     fill: #A5ADBA;
+    flex-shrink: 0;
+  }
+  &--filename {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
   }
   &__details {
     display: flex;
     align-items: center;
+    width: 100%;
     &--type {
       margin-right: 12px;
     }

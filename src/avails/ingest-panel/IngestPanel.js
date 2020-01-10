@@ -55,7 +55,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                     received={received}
                                     provider={provider}
                                     ingestType={ingestType}
-                                    ingestClick={() => ingestClick(id)}
+                                    ingestClick={ingestClick}
                                     selectedIngest={selectedIngest}
                         />) : ( (attachments.length === 1) &&
                             (<Ingest key={id}

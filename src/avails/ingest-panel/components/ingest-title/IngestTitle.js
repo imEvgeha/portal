@@ -11,7 +11,7 @@ const IngestTitle = ({provider, link, ingestType}) => {
     const {ingestTypes: {UPLOAD}} = Constants;
     return (
         <div className='ingest-title'>
-            <span className='ingest-title__details'>
+            <div className='ingest-title__details'>
                 {
                     ingestType === UPLOAD ? <File className='ingest-title__details--type'/> : (
                         <React.Fragment>
@@ -21,9 +21,9 @@ const IngestTitle = ({provider, link, ingestType}) => {
                         </React.Fragment>
                     )
                 }
-                <span className='ingest-title--filename'>{fileName}</span>
-            </span>
-            <StatusInfo/>
+                <span title={fileName} className='ingest-title--filename'>{fileName}</span>
+                <StatusInfo/>
+            </div>
         </div>
     );
 };

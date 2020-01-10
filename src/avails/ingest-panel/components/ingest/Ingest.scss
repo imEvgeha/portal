@@ -28,6 +28,11 @@
         transform: rotate(90deg);
       }
     }
+    &--status {
+      &.not-expandable {
+        margin-left: 35px;
+      }
+    }
   }
   .ingest-report{
     width: 100%;
