@@ -1063,7 +1063,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.titleId",
-  "displayName": "EIDR Title ID",
+  "displayName": "Title ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrTitleId",
@@ -1073,7 +1073,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seriesId",
-  "displayName": "EIDR Series ID",
+  "displayName": "Series ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeriesId",
@@ -1083,7 +1083,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seasonId",
-  "displayName": "EIDR Season ID",
+  "displayName": "Season ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeasonId",
@@ -1093,7 +1093,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeTitleId",
-  "displayName": "EIDR Episode Title ID",
+  "displayName": "Episode Title ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEpisodeTitleId",
@@ -1103,7 +1103,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.volumeId",
-  "displayName": "EIDR Volume ID",
+  "displayName": "Volume ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrVolumeId",
@@ -1113,7 +1113,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeId",
-  "displayName": "EIDR Episode ID",
+  "displayName": "Episode ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEpisodeId",
@@ -1123,7 +1123,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.editId",
-  "displayName": "EIDR Edit ID",
+  "displayName": "Edit ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEditId",
@@ -1133,7 +1133,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.encodeId",
-  "displayName": "EIDR Encode ID",
+  "displayName": "Encode ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEncodeId",
