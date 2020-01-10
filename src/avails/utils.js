@@ -1,3 +1,4 @@
+import React from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import isEmpty from 'lodash.isempty';
 import isEqual from 'lodash.isequal';
