@@ -13,12 +13,12 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedIngest
     const onBundleClick = () => setShowIngests(!showIngests);
 
     return (
-        <div className='avail-bundle'>
-            <div className='avail-bundle__cell' onClick={onBundleClick}>
+        <div className='nexus-c-avail-bundle'>
+            <div className='nexus-c-avail-bundle__cell' onClick={onBundleClick}>
                 <BundleTitle provider={provider} totalAttachments={attachments.length} />
-                <div className='avail-bundle__cell__details'>
+                <div className='nexus-c-avail-bundle__details'>
                     <span
-                        className={`avail-bundle__cell__details--${showIngests ? 'open' : 'close' }`}
+                        className={`nexus-c-avail-bundle__chevron nexus-c-avail-bundle__chevron--is-${showIngests ? 'opened' : 'closed' }`}
                         onClick={onBundleClick}>
                         <Chevron/>
                     </span>
@@ -26,7 +26,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedIngest
                 </div>
             </div>
             {
-                showIngests && <div className='avail-bundle__ingests'>
+                showIngests && <div className='nexus-c-avail-bundle__ingests'>
                     {
                         attachments.map((attachment) =>
                             <Ingest key={attachment.id}

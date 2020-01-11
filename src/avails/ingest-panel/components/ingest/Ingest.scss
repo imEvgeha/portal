@@ -1,44 +1,46 @@
-.avail-ingest {
+.nexus-c-avail-ingest {
   width: 324px;
   padding: 12px;
   border: 1px solid #737E91;
   background: #FFFFFF;
-  &.selected {
-    background: #E0ECF7;
-    &:hover {
-      background: #E0ECF7;
-    }
-  }
   &:hover {
     background: #FAFAFA;
   }
-  &__details {
-    display: flex;
+}
+
+.nexus-c-avail-ingest--is-selected {
+  background: #E0ECF7;
+  &:hover {
+    background: #E0ECF7;
+  }
+}
+
+.nexus-c-avail-ingest__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.nexus-c-avail-ingest__chevron svg {
+  width: 15px;
+  height: 15px;
+  fill: #A5ADBA;
+  cursor: pointer;
+}
+
+.nexus-c-avail-ingest__chevron--is-opened svg {
+  transform: rotate(90deg);
+}
+
+.nexus-c-avail-ingest .ingest-report {
+  width: 100%;
+  margin-top: 15px;
+  &__fields {
     justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    svg {
-      width: 15px;
-      height: 15px;
-      fill: #A5ADBA;
-      cursor: pointer;
-    }
-    &--open {
-      svg {
-        transform: rotate(90deg);
-      }
-    }
-    &--status {
-      &.not-expandable {
-        margin-left: 35px;
-      }
-    }
   }
-  .ingest-report{
-    width: 100%;
-    margin-top: 15px;
-    &__fields {
-      justify-content: space-between;
-    }
-  }
+}
+
+.nexus-c-avail-ingest__status--is-not-expandable {
+  margin-left: 35px;
 }

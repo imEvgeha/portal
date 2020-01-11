@@ -1,24 +1,27 @@
-.bundle-title{
+.nexus-c-bundle-title {
   font-size: 14px;
   width: 300px;
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
+
   svg {
     width: 18px;
     height: 18px;
     fill: #A5ADBA;
   }
-  &__details {
-    display: flex;
-    align-items: center;
-    &--folder {
-      margin-right: 12px;
-    }
-    &--provider, &--separator {
-      font-weight: bold;
-      margin-right: 12px;
-    }
-  }
+}
 
+.nexus-c-bundle-title__details {
+  display: flex;
+  align-items: center;
+}
+
+.nexus-c-bundle-title__folder {
+  margin-right: 12px;
+}
+
+.nexus-c-bundle-title__provider, .nexus-c-bundle-title__separator {
+  font-weight: bold;
+  margin-right: 12px;
 }

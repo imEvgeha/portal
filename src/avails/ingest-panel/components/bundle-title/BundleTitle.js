@@ -5,12 +5,12 @@ import './BundleTitle.scss';
 
 const BundleTitle = ({provider, totalAttachments}) => {
     return (
-        <div className='bundle-title'>
-            <div className='bundle-title__details'>
-                <Folder className='bundle-title__details--folder'/>
-                <span className='ingest-title__details--provider'>{provider}</span>
-                <span className='ingest-title__details--separator'>|</span>
-                <span className='ingest-title__details--totalAttachments'>{totalAttachments} Files</span>
+        <div className='nexus-c-bundle-title'>
+            <div className='nexus-c-bundle-title__details'>
+                <Folder className='nexus-c-bundle-title__folder'/>
+                <span className='nexus-c-bundle-title__provider'>{provider}</span>
+                <span className='nexus-c-bundle-title__separator'>|</span>
+                <span className='nexus-c-bundle-title__total-attachments'>{totalAttachments} Files</span>
             </div>
         </div>
     );
