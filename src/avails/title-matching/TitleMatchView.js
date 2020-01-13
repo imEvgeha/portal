@@ -58,9 +58,9 @@ const TitleMatchView = ({
     useEffect(() => {
         if (match && match.params.rightId) {
             fetchFocusedRight(match.params.rightId);
+            DOP.setErrorsCount(1);
         }
-        DOP.setErrorsCount(1);
-    }, [match]);
+    }, []);
 
     useEffect(() => {
         if (!columnDefs.length) {
