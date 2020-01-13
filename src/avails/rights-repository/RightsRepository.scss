@@ -1,13 +1,8 @@
-.nexus-c-avails-table {
+.nexus-c-rights-repository {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
   min-height: 400px;
   padding: 48px 24px;
-  &--title{
-    font-size: 29px;
-    color: #42526E;
-    margin-bottom: 16px;
-  }
 }

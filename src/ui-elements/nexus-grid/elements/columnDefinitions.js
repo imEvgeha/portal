@@ -11,7 +11,7 @@ export const defineColumn = ({
     lockPosition = true,
     sortable = false,
     menuTabs = [],
-    ...rest,
+    ...rest
 } = {}) => {
     const columnDef = {
         field,

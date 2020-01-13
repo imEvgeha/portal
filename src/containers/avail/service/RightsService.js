@@ -72,7 +72,7 @@ const populate = function(key, value, location){
             populate(restKey, value, location[firstKey]);
         }
     }else{        
-        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){            
+        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key) && value){
             value = value.split(',');
         }
         location[key] = parse(value, key);

@@ -11,6 +11,7 @@ import {
     SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, SUCCESS_ICON, SUCCESS_TITLE
 } from '../../ui-elements/nexus-toast-notification/constants';
 import { ADD_TOAST } from '../../ui-elements/nexus-toast-notification/actionTypes';
+import {SET_LOCALE} from '../../constants/action-types';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -273,6 +274,7 @@ export function* createNewRight(requestMethod, {payload}) {
 export function* rightMatchingWatcher() {
     yield all([
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
+        takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeLatest(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),

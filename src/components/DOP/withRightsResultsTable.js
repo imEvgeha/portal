@@ -1,14 +1,22 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {getDeepValue} from '../../util/Common';
+import {useIntl} from 'react-intl';
 import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
+import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
 import LoadingGif from '../../img/loading.gif';
 import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
+
+    // Get locale provided by intl
+    const intl = useIntl();
+    const {locale = 'en-US'} = intl || {};
+
+    // Create date placeholder based on locale
+    const dateFormat = getDateFormatBasedOnLocale(locale);
 
     const errorCellColor = '#f2dede';
     const readyNewCellColor = '#FFFFFF';
@@ -31,14 +39,14 @@ const withRightsResultsTable = BaseComponent => {
                         return (params) => {
                         const {data} = params;
                         if (data && data[javaVariableName]) {
-                            return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
+                            return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
                         }
                     };
                     case 'date':
                         return (params) => {
                             const {data} = params;
                             if ((data && data[column.javaVariableName]) && moment(data[column.javaVariableName].toString().substr(0, 10)).isValid()) {
-                                return moment(data[column.javaVariableName].toString().substr(0, 10)).format('L');
+                                return moment(data[column.javaVariableName].toString().substr(0, 10)).format(dateFormat);
                             }
                         };
                     case 'territoryType':

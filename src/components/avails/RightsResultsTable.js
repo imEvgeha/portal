@@ -279,8 +279,8 @@ export default class RightsResultsTable extends React.Component {
                     || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
                     || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
                     || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')
-                    || (e.fieldName.includes('affiliate') && params.colDef.field === 'affiliate')
-                    || (e.fieldName.includes('affiliateExclude') && params.colDef.field === 'affiliateExclude')
+                    || (e.fieldName.includes('affiliate[') && params.colDef.field === 'affiliate')
+                    || (e.fieldName.includes('affiliateExclude[') && params.colDef.field === 'affiliateExclude')
                     || (e.fieldName.includes('castCrew') && params.colDef.field === 'castCrew')) {
                     error = e;
                 }

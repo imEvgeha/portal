@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AvailsIcon from '../../../../assets/Avails.svg';
+import AvailsIcon from '../../../../assets/avails.svg';
 import PopOutIcon from '../../../../assets/action-shortcut.svg';
 import FilterSolidIcon from '../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../assets/filter.svg';
