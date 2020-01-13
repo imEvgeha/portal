@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import NexusDatePicker from '../../../nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import CustomIntlProvider from '../../../../layout/CustomIntlProvider';
+import './DateCellEditor.scss';
 
 class DateCellEditor extends Component {
     static propTypes = {
