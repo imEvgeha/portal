@@ -59,7 +59,7 @@ const RightsRepository = props => {
 
     const columnDefsClone = cloneDeep(columnDefs);
 
-    const handleRightRedirect = params => createLinkableCellRenderer(params);
+    const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
         if(columnDef.cellRenderer) {
