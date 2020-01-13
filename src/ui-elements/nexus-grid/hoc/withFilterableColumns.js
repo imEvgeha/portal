@@ -6,6 +6,7 @@ import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
+import booleanFilterCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/booleanFilterCellRenderer';
 
 const DEFAULT_HOC_PROPS = [
     'initialFilter',
@@ -36,6 +37,7 @@ const DEFAULT_FILTER_PARAMS = {
 };
 
 const FILTER_TYPE = {
+    boolean: 'agSetColumnFilter',
     string: 'agTextColumnFilter',
     duration: 'agTextColumnFilter',
     integer: 'agNumberColumnFilter',
@@ -126,6 +128,12 @@ const withFilterableColumns = ({
 
         const setFilterParams = (dataType, field) => {
             switch (dataType) {
+                case 'boolean':
+                    return {
+                        ...DEFAULT_FILTER_PARAMS,
+                        values: [false, true],
+                        cellRenderer: booleanFilterCellRenderer
+                    };
                 case 'string':
                 case 'integer':
                 case 'double':
