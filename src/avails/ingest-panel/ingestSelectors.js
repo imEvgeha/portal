@@ -1,20 +1,20 @@
 import {createSelector} from 'reselect';
 
-const getAvailsReducer = state => state.availsReducer;
+const getIngestReducer = state => state.avails.ingest;
 
 export const getIngests = createSelector(
-    getAvailsReducer,
-    availsReducer => availsReducer.ingests,
+    getIngestReducer,
+    ingest => ingest.ingests,
 );
 
 export const getTotalIngests = createSelector(
-    getAvailsReducer,
-    availsReducer => availsReducer.totalIngests,
+    getIngestReducer,
+    ingest => ingest.totalIngests,
 );
 
 export const getSelectedIngest = createSelector(
-    getAvailsReducer,
-    availsReducer => availsReducer.selectedIngest,
+    getIngestReducer,
+    ingest => ingest.selectedIngest,
 );
 
 export const getIngestById = createSelector(
