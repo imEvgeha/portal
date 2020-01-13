@@ -1,6 +1,6 @@
 @import '../../../styles/config.scss';
 
-.nexus-c-right-to-match-view {    
+.nexus-c-right-to-match-view {
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -47,6 +47,27 @@
     .nexus-c-right-to-match-view__buttons & {
         width: 100px;
         font-size: 14px;
+    }
+}
+
+.nexus-c-right-to-match-view__buttons_notification {
+    &--error {
+        position: absolute;
+        //bottom: 5px;
+        //right: 15px;
+        padding: 2px 2px;
+        border-radius: 50%;
+        color: white;
+        background: red;
+    }
+    &--success {
+        position: absolute;
+        //bottom: 5px;
+        //right: 15px;
+        padding: 2px 2px;
+        border-radius: 50%;
+        color: white;
+        background: green;
     }
 }
 
