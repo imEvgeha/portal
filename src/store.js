@@ -3,10 +3,15 @@ import createSagaMiddleware, {END} from 'redux-saga';
 // import {createLogger} from 'redux-logger';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {routerMiddleware} from 'connected-react-router';
+import throttle from 'lodash.throttle';
 import createRootReducer from './reducer';
+import {loadAppState, saveAppState} from './localStorage';
+
+const DELAY = 1000;
 
 // configure store
 const configureStore = (initialState = {}, history) => {
+    const persistedState = loadAppState();
     const sagaMiddleware = createSagaMiddleware();
     let middleware = [
         routerMiddleware(history),
@@ -21,12 +26,20 @@ const configureStore = (initialState = {}, history) => {
 
     const store = createStore(
         createRootReducer(history),
-        initialState,
+        persistedState,
         composeWithDevTools(
             applyMiddleware(...middleware),
         ),
     );
     store.runSaga = sagaMiddleware.run;
+
+    // subscribe
+    store.subscribe(throttle(() => {
+        saveAppState({
+            avails: store.getState().avails,
+        });
+    }, DELAY));
+
     store.close = () => store.dispatch(END);
 
     return store;

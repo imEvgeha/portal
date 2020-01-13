@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {getIngests, getSelectedIngest, getTotalIngests} from '../availsSelectors';
-import {fetchIngests, fetchNextPage, selectIngest} from '../availsActions';
+import {getIngests, getSelectedIngest, getTotalIngests} from './ingestSelectors';
+import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
 const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, ingestClick}) => {
-
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {

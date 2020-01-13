@@ -18,6 +18,7 @@ const NexusGrid = ({
     // rowHeight,
     handleSelectionChange,
     onGridEvent,
+    isGridHidden,
     ...restProps
 }) => {
     const onGridReady = params => {
@@ -63,8 +64,8 @@ const NexusGrid = ({
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
     return (
-        <div className={
-            `ag-theme-balham
+        <div className={`
+            ag-theme-balham ${isGridHidden ? 'd-none' : ''}
             nexus-c-nexus-grid
             nexus-c-nexus-grid--overflow
             ${isAutoHeight(restProps) ? 'nexus-c-nexus-grid--auto-height' : ''}
@@ -93,6 +94,7 @@ NexusGrid.propTypes = {
     // headerHeight: PropTypes.number,
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
+    isGridHidden: PropTypes.bool,
 };
 
 NexusGrid.defaultProps = {
@@ -103,6 +105,7 @@ NexusGrid.defaultProps = {
     // headerHeight: 52,
     // rowHeight: 48,
     setRowData: null,
+    isGridHidden: false,
 };
 
 export default NexusGrid;

@@ -1,4 +1,4 @@
-import Constants from './Constants';
+import Constants from './constants';
 import {URL} from '../../util/Common';
 
 const {STATUS_LIST, filterKeys: {PROVIDER, STATUS, RECEIVED_FROM, RECEIVED_TO}, URLFilterKeys} = Constants;
