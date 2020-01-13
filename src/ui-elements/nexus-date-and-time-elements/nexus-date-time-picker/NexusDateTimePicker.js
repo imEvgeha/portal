@@ -62,6 +62,7 @@ const NexusDateTimePicker = ({
                                 onChange={onChange}
                                 value={value}
                                 isSimulcast={isSimulcast}
+                                isTimestamp={isTimestamp}
                                 defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
                                 {...restProps}
                             />
