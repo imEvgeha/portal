@@ -9,7 +9,7 @@ const IngestStatus = ({date, status}) => {
     return (
         <div className='ingest-status'>
             <span className='ingest-status__date'>{dateFormatted}</span>
-            <StatusTag status={status} />
+            {status && <StatusTag status={status} />}
         </div>
     );
 };
