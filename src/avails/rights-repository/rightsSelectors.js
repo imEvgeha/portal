@@ -5,7 +5,7 @@ const getRightsReducer = state => {
     return avails.rights;
 };
 
-export const getRights = () => createSelector(
+export const createRightsSelector = () => createSelector(
     getRightsReducer,
     rights => rights.list,
 );
@@ -15,3 +15,7 @@ export const createSelectedRightsSelector = () => createSelector(
     rights => rights.selected,
 );
 
+export const createRightsFilterSelector = () => createSelector(
+    getRightsReducer,
+    rights => rights.filter,
+);

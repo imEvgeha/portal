@@ -104,7 +104,7 @@ const withFilterableColumns = ({
 
                 return columnDef;
             });
-//
+
             return filterableColumnDefs;
         }
 

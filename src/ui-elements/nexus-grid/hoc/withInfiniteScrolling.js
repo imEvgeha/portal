@@ -65,6 +65,11 @@ const withInfiniteScrolling = ({
                     return object;
                 }, {});
             const filterParams = filterBy(filterModel);
+            // handle filter
+            if (typeof props.filterAction === 'function') {
+                props.filterAction(filterParams);
+            }
+
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -76,10 +81,9 @@ const withInfiniteScrolling = ({
             const preparedParams = {
                 ...parsedParams,
                 ...filterParams,
-                ...sortParams,
             };
 
-            fetchData(pageNumber, pageSize, !isEmpty(preparedParams) && preparedParams)
+            fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
                     const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
 

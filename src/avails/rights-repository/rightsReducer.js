@@ -4,6 +4,7 @@ const initialState = {
     list: {},
     total: 0,
     selected: {},
+    filter: {},
 };
 
 const rightsReducer = (state = initialState, action = {}) => {
@@ -14,6 +15,11 @@ const rightsReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 selected: payload,
+            };
+        case actionTypes.STORE_RIGHTS_FILTER_SUCCESS:
+            return {
+                ...state,
+                filter: {...state.filter, ...payload},
             };
         default:
             return state;

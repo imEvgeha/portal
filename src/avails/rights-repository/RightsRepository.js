@@ -3,9 +3,9 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import cloneDeep from 'lodash.clonedeep';
 import './RightsRepository.scss';
-import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
+import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights} from './rightsActions';
+import {setSelectedRights, setRightsFilter} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
@@ -25,7 +25,7 @@ const {NexusGrid, NexusTableToolbar} = UiElements;
 const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: rightServiceManager.doSearch}),
+    withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
 )(NexusGrid);
 
 const SelectedRighstRepositoryTable = compose(
@@ -43,6 +43,8 @@ const RightsRepository = props => {
         ingestClick,
         setSelectedRights,
         selectedRights,
+        setRightsFilter,
+        rightsFilter,
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
@@ -107,6 +109,9 @@ const RightsRepository = props => {
                 suppressRowClickSelection={true}
                 isGridHidden={isSelectedOptionActive}
                 selectedRows={selectedRights}
+                filterAction={setRightsFilter}
+                initialFilter={rightsFilter}
+                params={rightsFilter}
             />
         </div>
     );
@@ -116,12 +121,14 @@ const mapStateToProps = () => {
     const rightMatchingColumnDefsSelector = createRightMatchingColumnDefsSelector();
     const availsMappingSelector = createAvailsMappingSelector();
     const selectedRightsSelector = selectors.createSelectedRightsSelector();
+    const rightsFilterSelector = selectors.createRightsFilterSelector();
 
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         selectedIngest: getSelectedIngest(state),
         selectedRights: selectedRightsSelector(state, props),
+        rightsFilter: rightsFilterSelector(state, props),
     });
 };
 
@@ -130,6 +137,7 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
+    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
