@@ -20099,6 +20099,14 @@ react-toggle-button@^2.2.0:
     prop-types "^15.6.0"
     react-motion "^0.5.2"
 
+react-tooltip@^3.11.2:
+  version "3.11.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-tooltip/-/react-tooltip-3.11.2.tgz#78972910657d6184defdcdc9a0182c1e44e01ce6"
+  integrity sha512-7EJ7Cv7lgctw02j0hyp+PpJklIP3gyDbm4CvVQvq7U6zgZtuI+bFFnRzsQB1oTiHPkkhE2NU04EIkgBDiVNzxw==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+
 react-transform-catch-errors@1.0.2:
   version "1.0.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-transform-catch-errors/-/react-transform-catch-errors-1.0.2.tgz#1b4d4a76e97271896fc16fe3086c793ec88a9eeb"

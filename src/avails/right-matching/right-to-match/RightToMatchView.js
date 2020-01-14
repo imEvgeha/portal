@@ -7,6 +7,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
+import ReactTooltip from 'react-tooltip';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
@@ -28,7 +29,6 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import NexusTooltip from '../../../ui-elements/nexus-tooltip/NexusTooltip';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -75,21 +75,38 @@ const RightToMatchView = ({
         }
     }, [rightId]);
 
+    const getMatchingButtonTooltipContent = ({id}) => {
+        return <div>
+            Title <br/>No matching title <br/><a href={`/avails/history/${id}/right-matching`}><b>FIND MATCH</b></a>
+        </div>;
+    };
+
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id, coreTitleId} = data || {};
         const notificationEnd = coreTitleId !== null ? '' : '--error';
         return (
             <CustomActionsCellRenderer id={id}>
-                <NexusTooltip content={`coreTitleId = ${coreTitleId}`}>
+                <div data-tip>
                     <EditorMediaWrapLeftIcon />
-                </NexusTooltip>
-                <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationEnd}/>
+                    <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationEnd}/>
+                </div>
+                <ReactTooltip
+                    className='nexus-c-right-to-match-view__tooltip'
+                    delayHide={300}
+                    delayShow={200}
+                    delayUpdate={300}
+                    place='top'
+                    multiline={true}
+                    border={true}
+                    type={'light'}
+                    effect='solid'
+                > {getMatchingButtonTooltipContent({id})} </ReactTooltip>
             </CustomActionsCellRenderer>
         );
     };
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer});
+    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellClass: 'custom-cell'});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
@@ -190,6 +207,7 @@ const RightToMatchView = ({
                             handleSelectionChange={handleSelectionChange}
                             rowSelection="multiple"
                             suppressRowClickSelection={true}
+                            suppressRowTransform={true}
                         />
                 )}
             </div>
