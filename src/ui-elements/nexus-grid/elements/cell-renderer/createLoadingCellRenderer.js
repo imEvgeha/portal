@@ -15,7 +15,7 @@ export default function createLoadingCellRenderer(params) {
         value = value.join(', ');
     }
     const content = valueFormatted || value;
-    if (content !== undefined) {
+    if (content !== undefined && content !== null) {
         let highlighted = false;
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
