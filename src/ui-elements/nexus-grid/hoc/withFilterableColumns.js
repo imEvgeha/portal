@@ -6,7 +6,6 @@ import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
-import booleanFilterCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/booleanFilterCellRenderer';
 
 const DEFAULT_HOC_PROPS = [
     'initialFilter',
@@ -131,8 +130,7 @@ const withFilterableColumns = ({
                 case 'boolean':
                     return {
                         ...DEFAULT_FILTER_PARAMS,
-                        values: [false, true],
-                        cellRenderer: booleanFilterCellRenderer
+                        values: [false, true]
                     };
                 case 'string':
                 case 'integer':

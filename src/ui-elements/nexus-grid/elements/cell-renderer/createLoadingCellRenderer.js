@@ -8,9 +8,6 @@ export default function createLoadingCellRenderer(params) {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
     }
     let value = getDeepValue(data, colDef.field);
-    if (typeof value === 'boolean') {
-        return `<span>${value ? 'Yes' : 'No'}</span>`;
-    }
     if (isObject(value)) {
         value = JSON.stringify(value);
     }
@@ -18,7 +15,7 @@ export default function createLoadingCellRenderer(params) {
         value = value.join(', ');
     }
     const content = valueFormatted || value;
-    if (content) {
+    if (content !== undefined) {
         let highlighted = false;
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
