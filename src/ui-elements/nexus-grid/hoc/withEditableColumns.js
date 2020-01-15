@@ -83,10 +83,16 @@ const withEditableColumns = ({
                             break;
                         case 'date':
                             columnDef.cellEditorFramework = DateCellEditor;
+                            // Keep Ag-Grid away from Enter key event due to AtlasKit's & Ag-Grid's
+                            // mutual incompatibility where Ag-Grid kept intercepting Enter key and not passing
+                            // it down to AtlasKit who requires it to set the actual value. Check PORT-1393
+                            columnDef.suppressKeyboardEvent = params => params.event.key === 'Enter';
                             break;
                         case 'datetime':
                         case 'localdate':
                             columnDef.cellEditorFramework = DateTimeCellEditor;
+                            // Check the comment above for 'date' field and PORT-1393
+                            columnDef.suppressKeyboardEvent = params => params.event.key === 'Enter';
                             break;
                         case 'territoryType':
                             columnDef.cellEditorFramework = TerritoryCellEditor;
