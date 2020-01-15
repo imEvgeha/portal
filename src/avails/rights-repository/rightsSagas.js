@@ -19,9 +19,11 @@ export function* storeRights({payload}) {
 
 export function* storeRightsFilter({payload}) {
     const {pathname} = yield select(state => state.router.location);
-    const url = `${pathname}?${URL.updateQueryParam(payload || {})}`;
+    const {external = {}, column = {}} = payload || {};
+    const query = {...external, ...column};
+    const url = `${pathname}?${URL.updateQueryParam(query || {})}`;
     try {
-        yield put(push(URL.keepEmbedded(url)));
+        // yield put(push(URL.keepEmbedded(url)));
         yield put({
             type: actionTypes.STORE_RIGHTS_FILTER_SUCCESS,
             payload,

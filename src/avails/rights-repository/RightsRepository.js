@@ -48,6 +48,7 @@ const RightsRepository = props => {
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
+    const [gridApi, setGridApi] = useState();
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -80,13 +81,15 @@ const RightsRepository = props => {
             const allSelectedRows = api.getSelectedRows() || [];
             const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
             setSelectedRights(payload);
+        } else if (type === GRID_EVENTS.READY) {
+            setGridApi(api);
         }
     };
 
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} />)}
+            {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} gridApi={gridApi} />)}
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -110,8 +113,8 @@ const RightsRepository = props => {
                 isGridHidden={isSelectedOptionActive}
                 selectedRows={selectedRights}
                 filterAction={setRightsFilter}
-                initialFilter={rightsFilter}
-                params={rightsFilter}
+                initialFilter={rightsFilter.column}
+                params={rightsFilter.external}
             />
         </div>
     );

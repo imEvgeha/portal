@@ -4,7 +4,10 @@ const initialState = {
     list: {},
     total: 0,
     selected: {},
-    filter: {},
+    filter: {
+        column: {},
+        external: {},
+    },
 };
 
 const rightsReducer = (state = initialState, action = {}) => {
@@ -17,9 +20,22 @@ const rightsReducer = (state = initialState, action = {}) => {
                 selected: payload,
             };
         case actionTypes.STORE_RIGHTS_FILTER_SUCCESS:
+            const {external, column} = state.filter;
+            if (payload.external) {
+                return {
+                    ...state,
+                    filter: {
+                        column,
+                        external: {...external, ...payload.external}
+                    },
+                };
+            }
             return {
                 ...state,
-                filter: {...state.filter, ...payload},
+                filter: {
+                    column: {...column, ...payload.column},
+                    external,
+                },
             };
         default:
             return state;

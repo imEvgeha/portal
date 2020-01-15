@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEmpty from 'lodash.isempty';
+import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
 import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
 import {GRID_EVENTS} from '../constants';
+import usePrevious from '../../../util/hooks/usePrevious';
 
 const DEFAULT_HOC_PROPS = [
     'initialFilter',
@@ -53,13 +55,14 @@ const withFilterableColumns = ({
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, mapping, selectValues} = props;
+        const {columnDefs, mapping, selectValues, params} = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
         const filters = props.initialFilter || initialFilter;
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
+        const previousParams = usePrevious(params);
 
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
@@ -71,21 +74,27 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
                 Object.keys(filters).forEach(key => {
-                    const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === key))) || {};
-                    const filterInstance = gridApi.getFilterInstance(key);
+                    const suffixes = ['Match', 'To', 'From'];
+                    const keySuffix = suffixes.find(suffix => key.includes(suffix));
+                    const updatedKey = keySuffix ? key.slice(0, key.indexOf(keySuffix)) : key;
+                    const {dataType} = (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === updatedKey)) || {};
+                    const filterInstance = gridApi.getFilterInstance(updatedKey);
                     if (filterInstance) {
                         if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
-                        } else {
-                            filterInstance.setModel({
-                                type: 'equals',
-                                filter: filters[key],
-                            });
+                            return;
                         }
+
+                        filterInstance.setModel({
+                            type: 'equals',
+                            filter: filters[key],
+                        });
                     }
                 });
                 gridApi.onFilterChanged();
+                setIsDatasourceEnabled(true);
+            } else if (isEmpty(filters)) {
                 setIsDatasourceEnabled(true);
             } 
         }, [gridApi, mapping]);

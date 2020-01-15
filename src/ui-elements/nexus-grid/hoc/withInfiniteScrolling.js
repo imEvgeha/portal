@@ -65,9 +65,10 @@ const withInfiniteScrolling = ({
                     return object;
                 }, {});
             const filterParams = filterBy(filterModel);
+
             // handle filter
             if (typeof props.filterAction === 'function') {
-                props.filterAction(filterParams);
+                props.filterAction({column: filterParams});
             }
 
             const sortParams = sortBy(sortModel);

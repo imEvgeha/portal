@@ -52,22 +52,22 @@ function* fetchNextPage() {
 function* filterRightsByStatus({payload}) {
     const queryParam = {status: payload};
     const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
-    // yield put(push(URL.keepEmbedded(url)));
+    yield put(push(URL.keepEmbedded(url)));
     yield put({
         type: STORE_RIGHTS_FILTER,
-        payload: queryParam,
+        payload: {external: queryParam},
     });
 }
 
 function* selectIngest({payload}) {
     let ingestId = payload;
+    const queryParam = {[AVAIL_HISTORY_ID]: payload};
     if (ingestId) {
-        const queryParam = {[AVAIL_HISTORY_ID]: payload};
         const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
-        // yield put(push(URL.keepEmbedded(url)));
+        yield put(push(URL.keepEmbedded(url)));
         yield put({
             type: STORE_RIGHTS_FILTER,
-            payload: queryParam,
+            payload: {external: queryParam},
         });
     } else {
         const params = new URLSearchParams(window.location.search.substring(1));

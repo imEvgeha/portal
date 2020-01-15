@@ -6,7 +6,7 @@ import IngestReport from '../../../ingest-panel/components/ingest-report/IngestR
 import DownloadIcon from '../../../../assets/action-download.svg';
 import './Ingest.scss';
 
-const Ingest = ({ingest, filterByStatus}) => {
+const Ingest = ({ingest, filterByStatus, gridApi}) => {
     const {attachments = [{}], ingestType, provider, received} = ingest;
     const {link, status, ingestReport = {}} = attachments[0];
     return ingest ? (
@@ -27,6 +27,7 @@ const Ingest = ({ingest, filterByStatus}) => {
                     report={ingestReport}
                     showErrorMessage={false}
                     filterClick={filterByStatus}
+                    gridApi={gridApi}
                 />
                 <div className='nexus-c-avails-ingest__download'>
                     <DownloadIcon />

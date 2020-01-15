@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import Constants from '../../constants';
 import './IngestReport.scss';
 
-const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
+const IngestReport = ({report, showErrorMessage = true, filterClick, gridApi}) => {
     const [activeFilter, setActiveFilter] = useState('');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
     const onFilterClick = filterKey => {
         const key = activeFilter === filterKey ? '' : filterKey;
-        filterClick(key);
+        filterClick(reportFields[key]);
         setActiveFilter(key);
+        gridApi.refreshInfiniteCache();
     };
     return (
         <div className='ingest-report'>
