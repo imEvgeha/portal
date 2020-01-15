@@ -12,6 +12,7 @@ const DEFAULT_HOC_PROPS = [
     'setTotalCount',
     'isDatasourceEnabled',
     'successDataFetchCallback',
+    'selectedRows',
 ];
 
 const ROW_BUFFER = 10;
@@ -35,7 +36,7 @@ const withInfiniteScrolling = ({
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
 
-        // params
+        //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
             if ((!isEqual(params, previousParams) && params) 
@@ -98,6 +99,16 @@ const withInfiniteScrolling = ({
                             successCallback(data, lastRow);
                         }
 
+                        // selected rows
+                        if (props.selectedRows) {
+                            gridApi.forEachNode(rowNode => {
+                                const selectedNode = props.selectedRows[rowNode.id];
+                                if (selectedNode) {
+                                    rowNode.setSelected(true);
+                                }
+                            });
+                        }  
+
                         if (typeof props.successDataFetchCallback === 'function') {
                             const preparedData = {page, size, total, data};
                             props.successDataFetchCallback(pageNumber, preparedData);
@@ -150,14 +161,14 @@ const withInfiniteScrolling = ({
 
         const onGridEvent = data => {
             const {onGridEvent} = props;
-            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED]; 
+            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED, GRID_EVENTS.SELECTION_CHANGED]; 
             const {api, type} = data || {};
             if (type === GRID_EVENTS.READY && !gridApi) {
                 setGridApi(api);
             }
 
-            if (events.includes(data.type) && typeof onGridEvent === 'function') {
-                onGridEvent(data);
+            if (events.includes(type) && typeof onGridEvent === 'function') {
+                props.onGridEvent(data);
             }
         };
 

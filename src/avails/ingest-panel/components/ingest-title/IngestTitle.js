@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Constants from '../../Constants';
+import Constants from '../../constants';
 import Email from '../../../../assets/email.svg';
 import File from '../../../../assets/file.svg';
 import StatusInfo from '../../../../assets/status-info.svg';
@@ -10,20 +10,20 @@ const IngestTitle = ({provider, link, ingestType}) => {
     const fileName = link.split('/').pop();
     const {ingestTypes: {UPLOAD}} = Constants;
     return (
-        <div className='ingest-title'>
-            <span className='ingest-title__details'>
+        <div className='nexus-c-ingest-title'>
+            <div className='nexus-c-ingest-title__details'>
                 {
-                    ingestType === UPLOAD ? <File className='ingest-title__details--type'/> : (
+                    ingestType === UPLOAD ? <File className='nexus-c-ingest-title__type'/> : (
                         <React.Fragment>
-                            <Email className='ingest-title__details--type'/>
-                            <span className='ingest-title__details--provider'>{provider}</span>
-                            <span className='ingest-title__details--separator'>|</span>
+                            <Email className='nexus-c-ingest-title__type'/>
+                            <span className='nexus-c-ingest-title__provider'>{provider}</span>
+                            <span className='nexus-c-ingest-title__separator'>|</span>
                         </React.Fragment>
                     )
                 }
-                <span className='ingest-title--filename'>{fileName}</span>
-            </span>
-            <StatusInfo/>
+                <span title={fileName} className='nexus-c-ingest-title__filename'>{fileName}</span>
+                <StatusInfo/>
+            </div>
         </div>
     );
 };

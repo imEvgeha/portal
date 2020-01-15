@@ -72,6 +72,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.omit": "^4.5.0",
     "lodash.pickby": "^4.6.0",
+    "lodash.throttle": "^4.1.1",
     "lodash.union": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
     "material-dashboard-pro-react": "1.5.0",

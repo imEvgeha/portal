@@ -16,18 +16,23 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
     };
 
     return (
-        <div className={`avail-ingest ${selected ? 'selected' : ''}`} onClick={ingestClick}>
+        <div className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''}`} onClick={ingestClick}>
             <IngestTitle provider={provider} link={link} ingestType={ingestType} />
-            <div className='avail-ingest__details'>
-                <span
-                    className={`avail-ingest__details--${showReport ? 'open' : 'close' }`}
-                    onClick={onChevronClick}>
-                    <Chevron/>
-                </span>
-                <IngestStatus date={received} status={status} />
+            <div className='nexus-c-avail-ingest__details'>
+                {
+                    ingestReport &&
+                    <span
+                        className={`nexus-c-avail-ingest__chevron nexus-c-avail-ingest__chevron--is-${showReport ? 'opened' : 'closed'}`}
+                        onClick={onChevronClick}>
+                        <Chevron/>
+                    </span>
+                }
+                <div className={`nexus-c-avail-ingest__status--is-${ingestReport ? 'expandable' : 'not-expandable'}`}>
+                    <IngestStatus date={received} status={status} />
+                </div>
             </div>
             {
-                showReport && <IngestReport report={ingestReport} />
+                showReport && ingestReport && <IngestReport report={ingestReport} />
             }
         </div>
     );

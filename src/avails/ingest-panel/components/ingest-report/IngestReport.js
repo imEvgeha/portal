@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Constants from '../../Constants';
+import Constants from '../../constants';
 import './IngestReport.scss';
 
 const IngestReport = ({report, showErrorMessage = true, filterClick}) => {

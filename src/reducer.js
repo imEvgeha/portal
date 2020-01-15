@@ -14,7 +14,7 @@ import localeReducer from './stores/reducers/localization/localeReducer';
 import rightHistory from './avails/right-history-view/rightHistoryReducer';
 import manualRightsEntry from './stores/reducers/avail/manualRightsEntry';
 import toastReducer from './ui-elements/nexus-toast-notification/reducer';
-import availsReducer from './avails/AvailsReducer';
+import availsReducer from './avails/availsReducer';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -32,7 +32,7 @@ const createRootReducer = routerHistory => combineReducers({
     rightHistory,
     manualRightsEntry,
     toastReducer,
-    availsReducer
+    avails: availsReducer
 });
 
 export default createRootReducer;

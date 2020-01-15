@@ -8,6 +8,7 @@ import NexusTooltip from './nexus-tooltip/NexusTooltip';
 import NexusTitle from './nexus-title/NexusTitle';
 import NexusTag from './nexus-tag/NexusTag';
 import NexusSimpleDateTimePicker from './nexus-date-and-time-elements/nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
+import NexusTableToolbar from './nexus-table-toolbar/NexusTableToolbar';
 
 export default {
     NexusCheckboxSelect,
@@ -20,4 +21,5 @@ export default {
     NexusTag,
     NexusTitle,
     NexusTooltip,
+    NexusTableToolbar,
 };
