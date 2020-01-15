@@ -36,8 +36,8 @@ export default (countryItems) => ([
         options: [
             {
                 items: [
-                    { label: 'Yes', value: true },
-                    { label: 'No', value: false },
+                    { label: 'true', value: true },
+                    { label: 'false', value: false },
                 ],
             }
         ],
@@ -80,8 +80,8 @@ export default (countryItems) => ([
         options: [
             {
                 items: [
-                    { label: 'Yes', value: true },
-                    { label: 'No', value: false },
+                    { label: 'true', value: true },
+                    { label: 'false', value: false },
                 ],
             }
         ],

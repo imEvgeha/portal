@@ -36,6 +36,7 @@ const DEFAULT_FILTER_PARAMS = {
 };
 
 const FILTER_TYPE = {
+    boolean: 'agSetColumnFilter',
     string: 'agTextColumnFilter',
     duration: 'agTextColumnFilter',
     integer: 'agNumberColumnFilter',
@@ -133,6 +134,11 @@ const withFilterableColumns = ({
 
         const setFilterParams = (dataType, field) => {
             switch (dataType) {
+                case 'boolean':
+                    return {
+                        ...DEFAULT_FILTER_PARAMS,
+                        values: [false, true]
+                    };
                 case 'string':
                 case 'integer':
                 case 'double':
