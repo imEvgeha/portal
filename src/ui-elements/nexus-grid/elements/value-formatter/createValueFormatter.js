@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {DIRECTOR, isCastPersonType} from '../../../../constants/metadata/configAPI';
 import {TIMESTAMP_FORMAT} from '../../../nexus-date-and-time-elements/constants';
-import {getDateFormatBasedOnLocale} from '../../../../util/Common';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/Common';
 import {store} from '../../../../index';
 
 const createValueFormatter = ({dataType, javaVariableName}) => {
@@ -22,9 +22,8 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
         case 'date':
             return (params) => {
                 const {data = {}} = params || {};
-                if ((data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
-                    return moment(data[javaVariableName].toString().substr(0, 10)).format(dateFormat);
-                }
+                const {[javaVariableName]: date} = data || {};
+                return parseSimulcast(date, dateFormat);
             };
         case 'territoryType':
             return (params) => {

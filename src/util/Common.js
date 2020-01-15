@@ -225,7 +225,13 @@ const minTwoDigits = n => `${n < 10 ? '0' : ''}${n}`;
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
 
 // Attach (UTC) to date, if it is simulcast
-const parseSimulcast = (date, dateFormat) => `${moment(date).format(dateFormat)}${date.endsWith('Z') ? ' (UTC)' : ''}`;
+const parseSimulcast = (date, dateFormat) => {
+    const isUTC = date.endsWith('Z');
+    return moment(date).isValid()
+        ? `${moment(date).utc(isUTC).format(dateFormat)}${isUTC ? ' (UTC)' : ''}`
+        : 'Invalid Date';
+};
+
 
 const formatNumberTwoDigits = (number) => {
     const n = parseInt(number);
