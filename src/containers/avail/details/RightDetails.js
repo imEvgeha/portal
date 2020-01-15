@@ -678,8 +678,8 @@ class RightDetails extends React.Component {
             }
 
             let options = [{ server: null, value: 1, label: 'Select...', display: null },
-            { server: false, value: 2, label: 'No', display: 'No' },
-            { server: true, value: 3, label: 'Yes', display: 'Yes' }];
+            { server: false, value: 2, label: 'false', display: 'false' },
+            { server: true, value: 3, label: 'true', display: 'true' }];
             const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
 
             let handleOptionsChange = (option) => {
