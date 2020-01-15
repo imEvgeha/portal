@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
@@ -19,8 +18,7 @@ import RightToMatchNavigation from './components/navigation/RightToMatchNavigati
 import {URL} from '../../../util/Common';
 import {
     defineCheckboxSelectionColumn,
-    defineActionButtonColumn,
-    defineButtonColumn
+    defineActionButtonColumn
 } from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
@@ -28,8 +26,6 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import TooltipCallEditor from './components/tooltip/TooltipCallEditor';
-import {calculateIndicatorType, INDICATOR_RED, INDICATOR_NON} from '../util/indicator';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -75,25 +71,9 @@ const RightToMatchView = ({
             fetchRightMatchingFieldSearchCriteria(availHistoryIds);
         }
     }, [rightId]);
-    
-
-    const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
-        const {id} = data || {};
-        const indicator = calculateIndicatorType(data);
-        const notificationClass = indicator !== INDICATOR_RED ? '' : ' nexus-c-right-to-match-view__buttons_notification--error';
-        return (
-            <CustomActionsCellRenderer id={id}>
-                <div>
-                    <EditorMediaWrapLeftIcon/>
-                    {indicator !== INDICATOR_NON && <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>}
-                </div>
-            </CustomActionsCellRenderer>
-        );
-    };
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCallEditor, editable: true});
-    const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefs] : columnDefs;
+    const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
         removeToast();
@@ -193,7 +173,6 @@ const RightToMatchView = ({
                             handleSelectionChange={handleSelectionChange}
                             rowSelection="multiple"
                             suppressRowClickSelection={true}
-                            singleClickEdit={true}
                         />
                 )}
             </div>

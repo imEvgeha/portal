@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './TooltipCallEditor.scss';
-import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from '../../../util/indicator';
+import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from '../../util/indicator';
 
 class TooltipCallEditor extends Component {
     static propTypes = {
@@ -32,7 +32,7 @@ class TooltipCallEditor extends Component {
         const {id} = this.state.data;
         switch (calculateIndicatorType(this.state.data)) {
             case INDICATOR_RED:
-                return <span>Title | No matching title <a href={`/avails/history/${id}/right-matching`}><b>FIND MATCH</b></a></span>;
+                return <span>Title | No matching title <a href={`/avails/rights/${id}/title-matching`}><b>FIND MATCH</b></a></span>;
             case INDICATOR_NON:
                 return <span>Title | Matched title</span>;
         }
