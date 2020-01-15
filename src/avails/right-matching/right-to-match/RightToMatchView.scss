@@ -51,22 +51,16 @@
 }
 
 .nexus-c-right-to-match-view__buttons_notification {
+    position: absolute;
+    bottom: 5px;
+    right: 43px;
+    padding: 2px 2px;
+    border-radius: 50%;
+    color: white;
     &--error {
-        position: absolute;
-        bottom: 5px;
-        right: 43px;
-        padding: 2px 2px;
-        border-radius: 50%;
-        color: white;
         background: red;
     }
     &--success {
-        position: absolute;
-        //bottom: 5px;
-        //right: 15px;
-        padding: 2px 2px;
-        border-radius: 50%;
-        color: white;
         background: green;
     }
 }
@@ -81,12 +75,4 @@
     font-family: $nexus-font;
     margin: 0;
     padding: 0;
-}
-
-.nexus-c-right-to-match-view__tooltip {
-    //z-index: 999999 !important;
-}
-
-.custom-cell {
-    //overflow: visible !important
 }

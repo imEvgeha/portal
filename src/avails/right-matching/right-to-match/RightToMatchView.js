@@ -7,7 +7,6 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
-import ReactTooltip from 'react-tooltip';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
@@ -29,6 +28,8 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import TooltipCallEditor from './components/tooltip/TooltipCallEditor';
+import {calculateIndicatorType, INDICATOR_RED, INDICATOR_NON} from '../util/indicator';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -74,39 +75,24 @@ const RightToMatchView = ({
             fetchRightMatchingFieldSearchCriteria(availHistoryIds);
         }
     }, [rightId]);
-
-    const getMatchingButtonTooltipContent = ({id}) => {
-        return <div>
-            Title <br/>No matching title <br/><a href={`/avails/history/${id}/right-matching`}><b>FIND MATCH</b></a>
-        </div>;
-    };
+    
 
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
-        const {id, coreTitleId} = data || {};
-        const notificationEnd = coreTitleId !== null ? '' : '--error';
+        const {id} = data || {};
+        const indicator = calculateIndicatorType(data);
+        const notificationClass = indicator !== INDICATOR_RED ? '' : ' nexus-c-right-to-match-view__buttons_notification--error';
         return (
             <CustomActionsCellRenderer id={id}>
-                <div data-tip>
-                    <EditorMediaWrapLeftIcon />
-                    <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationEnd}/>
+                <div>
+                    <EditorMediaWrapLeftIcon/>
+                    {indicator !== INDICATOR_NON && <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>}
                 </div>
-                <ReactTooltip
-                    className='nexus-c-right-to-match-view__tooltip'
-                    delayHide={300}
-                    delayShow={200}
-                    delayUpdate={300}
-                    place='top'
-                    multiline={true}
-                    border={true}
-                    type={'light'}
-                    effect='solid'
-                > {getMatchingButtonTooltipContent({id})} </ReactTooltip>
             </CustomActionsCellRenderer>
         );
     };
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellClass: 'custom-cell'});
+    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCallEditor, editable: true});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
@@ -194,7 +180,7 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
+                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle>
                 {fieldSearchCriteria 
                     && fieldSearchCriteria.id === rightId 
                     && (
@@ -207,7 +193,7 @@ const RightToMatchView = ({
                             handleSelectionChange={handleSelectionChange}
                             rowSelection="multiple"
                             suppressRowClickSelection={true}
-                            suppressRowTransform={true}
+                            singleClickEdit={true}
                         />
                 )}
             </div>
