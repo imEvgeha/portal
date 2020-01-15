@@ -15,9 +15,12 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
         case 'datetime':
             return (params) => {
                 const {data = {}} = params || {};
-                if (data[javaVariableName]) {
-                    return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
-                }
+                const {[javaVariableName]: date = ''} = data || {};
+                const isUTC = date && date.endsWith('Z');
+                return moment(date).isValid()
+                    ? `${moment(date).utc(!isUTC).format(dateFormat)} 
+                       ${moment(date).utc(!isUTC).format(TIMESTAMP_FORMAT)}`
+                    : '';
             };
         case 'date':
             return (params) => {
