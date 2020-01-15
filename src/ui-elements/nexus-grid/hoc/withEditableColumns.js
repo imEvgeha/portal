@@ -74,8 +74,8 @@ const withEditableColumns = ({
                             columnDef.cellEditorFramework = SelectCellEditor;
                             columnDef.cellEditorParams = {
                                 options: [ 
-                                    {label: 'True', value: true},
-                                    {label: 'False', value: false},
+                                    {label: 'true', value: true},
+                                    {label: 'false', value: false},
                                 ],
                             };
                             // TODO: doesn't work try to find solution

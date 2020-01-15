@@ -79,7 +79,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 )}
 
             </Field>
-            <Field label="SELECTED" name="selected" defaultValue={isEdit ? { label: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : 'False', value: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : false } : { label: 'False', value: false }}>
+            <Field label="SELECTED" name="selected" defaultValue={isEdit ? { label: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : 'false', value: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : false } : { label: 'False', value: false }}>
                 {({ fieldProps: { id, ...rest } }) => (
                     <Select
                         id={`select-${id}`}
@@ -87,8 +87,8 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                         isSearchable={false}
                         placeholder="Add selected"
                         options={[
-                            { label: 'True', value: true },
-                            { label: 'False', value: false },]}
+                            { label: 'true', value: true },
+                            { label: 'false', value: false },]}
                     />
                 )}
             </Field>
