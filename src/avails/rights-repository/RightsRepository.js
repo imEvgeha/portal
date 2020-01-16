@@ -94,6 +94,9 @@ const RightsRepository = props => {
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
+    const updatedColumnDefsWithRedirect = columnDefsWithRedirect.length
+        ? [actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
+        : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api}) => {
         if (type === GRID_EVENTS.SELECTION_CHANGED) {
@@ -115,10 +118,11 @@ const RightsRepository = props => {
                 selectedRows={Object.keys(selectedRights).length}
             />
             <SelectedRighstRepositoryTable
-                columnDefs={columnDefsWithRedirect}
+                columnDefs={updatedColumnDefsWithRedirect}
                 mapping={mapping}
                 rowData={Object.keys(selectedRights).map(key => selectedRights[key])}
                 isGridHidden={!isSelectedOptionActive}
+                singleClickEdit={true}
             />
             <RightsRepositoryTable
                 columnDefs={updatedColumnDefs}
