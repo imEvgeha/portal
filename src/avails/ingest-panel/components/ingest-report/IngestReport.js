@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import Constants from '../../constants';
 import './IngestReport.scss';
 
-const IngestReport = ({report, showErrorMessage = true, filterClick, gridApi}) => {
+const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
     const [activeFilter, setActiveFilter] = useState('');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
     const onFilterClick = filterKey => {
         const key = activeFilter === filterKey ? '' : filterKey;
-        filterClick(reportFields[key]);
+        filterClick(reportFields[key] !== Constants.REPORT.total && reportFields[key]);
         setActiveFilter(key);
-        gridApi.refreshInfiniteCache();
     };
+
+    const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
+
     return (
         <div className='ingest-report'>
             <div className='ingest-report__fields'>
@@ -22,7 +24,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick, gridApi}) =
                             <span className='ingest-report__field--label'>{reportFields[key]}</span>
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
-                                onClick={() => onFilterClick(key)} >
+                                onClick={() => FILTERABLE_KEYS.includes(key) && onFilterClick(key)} >
                                 {reportValues[key] || ''}
                             </span>
                         </div>

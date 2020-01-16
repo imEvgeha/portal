@@ -62,7 +62,7 @@ const withFilterableColumns = ({
         const filters = props.initialFilter || initialFilter;
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
-        const previousParams = usePrevious(params);
+        const previousFilters = usePrevious(filters);
 
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
@@ -79,6 +79,7 @@ const withFilterableColumns = ({
                     const updatedKey = keySuffix ? key.slice(0, key.indexOf(keySuffix)) : key;
                     const {dataType} = (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === updatedKey)) || {};
                     const filterInstance = gridApi.getFilterInstance(updatedKey);
+
                     if (filterInstance) {
                         if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
@@ -120,7 +121,13 @@ const withFilterableColumns = ({
         const onGridEvent = (data) => {
             const {api, type} = data || {};
             const {onGridEvent} = props;
-            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED, GRID_EVENTS.SELECTION_CHANGED]; 
+            const events = [
+                GRID_EVENTS.READY,
+                GRID_EVENTS.FIRST_DATA_RENDERED,
+                GRID_EVENTS.SELECTION_CHANGED,
+                GRID_EVENTS.FILTER_CHANGED,
+            ]; 
+
             if (type === GRID_EVENTS.READY) {
                 setGridApi(api);
             }

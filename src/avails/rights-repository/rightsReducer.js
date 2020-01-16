@@ -21,21 +21,31 @@ const rightsReducer = (state = initialState, action = {}) => {
             };
         case actionTypes.STORE_RIGHTS_FILTER_SUCCESS:
             const {external, column} = state.filter;
-            if (payload.external) {
-                return {
-                    ...state,
-                    filter: {
-                        column,
-                        external: {...external, ...payload.external}
-                    },
-                };
-            }
             return {
                 ...state,
                 filter: {
-                    column: {...column, ...payload.column},
-                    external,
+                    column: payload.column ? {...column, ...payload.column} : column,
+                    external: payload.external ? {...external, ...payload.external} : external,
                 },
+            };
+        // case actionTypes.ADD_RIGHTS_FILTER:
+        // case actionTypes.EDIT_RIGHTS_FILTER:
+
+        case actionTypes.REMOVE_RIGHTS_FILTER:
+            const updatedColumnFilter = Object.keys(state.filter.column)
+                .filter(key => key !== payload)
+                .reduce((o, key) => (o[key] = state.filter.column[key]  , o), {});
+            const updatedExternalFilter = Object.keys(state.filter.external)
+                .filter(key => key !== payload)
+                .reduce((o, key) => (o[key] = state.filter.external[key]  , o), {});
+            const updatedFilter = {
+                column: updatedColumnFilter,
+                external: updatedExternalFilter,
+            };
+
+            return {
+                ...state,
+                filter: updatedFilter
             };
         default:
             return state;

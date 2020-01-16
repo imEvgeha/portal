@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import cloneDeep from 'lodash.clonedeep';
+import isEqual from 'lodash.isequal';
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
@@ -19,6 +20,8 @@ import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterab
 import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import UiElements from '../../ui-elements';
+import {filterBy} from '../../ui-elements/nexus-grid/utils';
+import usePrevious from '../../util/hooks/usePrevious';
 
 const {NexusGrid, NexusTableToolbar} = UiElements;
 
@@ -49,6 +52,7 @@ const RightsRepository = props => {
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
     const [gridApi, setGridApi] = useState();
+    const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -60,8 +64,27 @@ const RightsRepository = props => {
         ingestClick();
     }, []);
 
-    const columnDefsClone = cloneDeep(columnDefs);
+    useEffect(() => {
+        if (!isEqual(previousExternalStatusFilter, rightsFilter.external.status) && gridApi) {
+            const filterInstance = gridApi.getFilterInstance('status');
+            const {status} = rightsFilter.external;
+            let values;
+            if (!status || status === 'Rights') {
+                const {options} = (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) || {};
+                values = options;
+            } else {
+                values = [rightsFilter.external.status]; 
+            }
+            
+            filterInstance.setModel({
+                type: 'set',
+                values,
+            });
+            gridApi.onFilterChanged();
+        }
+    }, [rightsFilter, mapping]);
 
+    const columnDefsClone = cloneDeep(columnDefs);
     const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
@@ -77,19 +100,25 @@ const RightsRepository = props => {
         : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api}) => {
-        if (type === GRID_EVENTS.SELECTION_CHANGED) {
-            const allSelectedRows = api.getSelectedRows() || [];
-            const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
-            setSelectedRights(payload);
-        } else if (type === GRID_EVENTS.READY) {
-            setGridApi(api);
+        switch (type) {
+            case GRID_EVENTS.SELECTION_CHANGED:
+                const allSelectedRows = api.getSelectedRows() || [];
+                const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
+                setSelectedRights(payload);
+                break;
+            case GRID_EVENTS.READY:
+                setGridApi(api);
+                break;
+            case GRID_EVENTS.FILTER_CHANGED:
+                setRightsFilter({column: filterBy(api.getFilterModel())});
+                break;
         }
     };
 
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} gridApi={gridApi} />)}
+            {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} />)}
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -112,7 +141,6 @@ const RightsRepository = props => {
                 suppressRowClickSelection={true}
                 isGridHidden={isSelectedOptionActive}
                 selectedRows={selectedRights}
-                filterAction={setRightsFilter}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
             />

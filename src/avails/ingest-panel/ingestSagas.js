@@ -7,7 +7,7 @@ import Constants from '../constants';
 import {getFiltersToSend} from './utils';
 import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
-import {STORE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
+import {STORE_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
@@ -50,12 +50,24 @@ function* fetchNextPage() {
 }
 
 function* filterRightsByStatus({payload}) {
-    const queryParam = {status: payload};
+    const queryParam = payload ? {status: payload} : {};
     const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
     yield put(push(URL.keepEmbedded(url)));
+
+    if (payload) {
+        yield put({
+            type: STORE_RIGHTS_FILTER,
+            payload: {external: queryParam},
+        });
+        // yield put({
+        //     type: ADD_RIGHTS_FILTER,
+        //     payload: queryParam,
+        // });
+        return;
+    }
     yield put({
-        type: STORE_RIGHTS_FILTER,
-        payload: {external: queryParam},
+        type: REMOVE_RIGHTS_FILTER,
+        payload: 'status',
     });
 }
 

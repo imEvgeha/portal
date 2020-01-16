@@ -6,6 +6,7 @@ import omit from 'lodash.omit';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+import {filterBy, sortBy} from '../utils';
 
 const DEFAULT_HOC_PROPS = [
     'params',
@@ -65,12 +66,6 @@ const withInfiniteScrolling = ({
                     return object;
                 }, {});
             const filterParams = filterBy(filterModel);
-
-            // handle filter
-            if (typeof props.filterAction === 'function') {
-                props.filterAction({column: filterParams});
-            }
-
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -129,31 +124,6 @@ const withInfiniteScrolling = ({
                 .finally(() => hasBeenCalledRef.current = false);
         };
 
-        // filtering 
-        const filterBy = filterObject => {
-            const ALLOWED_TYPES_OPERAND = ['equals'];
-            const FILTER_TYPES = ['set'];
-            if (!isEmpty(filterObject)) {
-                const filteredEqualsType = Object.keys(filterObject)
-                    .filter(key => ALLOWED_TYPES_OPERAND.includes(filterObject[key].type) || FILTER_TYPES.includes(filterObject[key].filterType))
-                    .reduce((obj, key) => {
-                        obj[key] = filterObject[key];
-                        return obj;
-                      }, {});
-                const filterParams = Object.keys(filteredEqualsType).reduce((object, name) => {
-                    const {filter, values, filterType} = filteredEqualsType[name] || {};
-                    object[name] = FILTER_TYPES.includes(filterType) ? Array.isArray(values) && values.join(', ') : filter;
-                    return object;
-                }, {});
-                return parseAdvancedFilter(filterParams);
-            }
-            return {};
-        };
-
-        // sorting
-        const sortBy = sortModel => {
-            return sortModel;
-        };
 
         const updateData = (fetchData, gridApi) => {
             hasBeenCalledRef.current = true;
@@ -166,7 +136,12 @@ const withInfiniteScrolling = ({
 
         const onGridEvent = data => {
             const {onGridEvent} = props;
-            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED, GRID_EVENTS.SELECTION_CHANGED]; 
+            const events = [
+                GRID_EVENTS.READY,
+                GRID_EVENTS.FIRST_DATA_RENDERED,
+                GRID_EVENTS.SELECTION_CHANGED,
+                GRID_EVENTS.FILTER_CHANGED,
+            ]; 
             const {api, type} = data || {};
             if (type === GRID_EVENTS.READY && !gridApi) {
                 setGridApi(api);
