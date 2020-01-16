@@ -25,7 +25,7 @@ import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfinite
 import UiElements from '../../ui-elements';
 import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from './util/indicator';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import TooltipCallEditor from './components/tooltip/TooltipCallEditor';
+import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 
 const {NexusGrid, NexusTableToolbar} = UiElements;
 
@@ -90,7 +90,7 @@ const RightsRepository = props => {
     });
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCallEditor, editable: true});
+    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCellEditor, editable: true});
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;

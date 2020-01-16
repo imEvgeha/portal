@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './TooltipCallEditor.scss';
+import './TooltipCellEditor.scss';
 import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from '../../util/indicator';
 
-class TooltipCallEditor extends Component {
+class TooltipCellEditor extends Component {
     static propTypes = {
         data: PropTypes.object,
     };
@@ -47,5 +47,5 @@ class TooltipCallEditor extends Component {
     }
 }
 
-export default TooltipCallEditor;
+export default TooltipCellEditor;
 
