@@ -9,7 +9,7 @@ import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
 import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
 
-const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, ATTACHMENT_ID} = Constants;
+const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;
 
 function* fetchIngests({payload}) {
@@ -73,7 +73,7 @@ function* filterRightsByStatus({payload}) {
 function* selectIngest({payload}) {
     const {availHistoryId, attachmentId} = payload || {};
     let ingestId = availHistoryId; 
-    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [ATTACHMENT_ID]: attachmentId};
+    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [INGEST_HISTORY_ATTACHMENT_IDS]: attachmentId};
 
     if (ingestId) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
@@ -87,7 +87,7 @@ function* selectIngest({payload}) {
             yield put({
                 type: REMOVE_RIGHTS_FILTER,
                 payload: {
-                    filter: 'attachmentId',
+                    filter: INGEST_HISTORY_ATTACHMENT_IDS,
                 }
             });
         }
