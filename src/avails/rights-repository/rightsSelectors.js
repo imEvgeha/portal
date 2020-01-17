@@ -7,15 +7,15 @@ const getRightsReducer = state => {
 
 export const createRightsSelector = () => createSelector(
     getRightsReducer,
-    rights => rights.list,
+    rights => rights.list || {},
 );
 
 export const createSelectedRightsSelector = () => createSelector(
     getRightsReducer,
-    rights => rights.selected,
+    rights => rights.selected || {},
 );
 
 export const createRightsFilterSelector = () => createSelector(
     getRightsReducer,
-    rights => rights.filter,
+    rights => rights.filter || {},
 );

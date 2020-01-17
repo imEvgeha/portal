@@ -65,9 +65,10 @@ const RightsRepository = props => {
     }, []);
 
     useEffect(() => {
-        if (!isEqual(previousExternalStatusFilter, rightsFilter.external.status) && gridApi) {
+        const {external = {}} = rightsFilter || {};
+        const {status} = external;
+        if (!isEqual(previousExternalStatusFilter, status) && gridApi) {
             const filterInstance = gridApi.getFilterInstance('status');
-            const {status} = rightsFilter.external;
             let values;
             if (!status || status === 'Rights') {
                 const {options} = (Array.isArray(mapping)
