@@ -246,48 +246,48 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                 </div>
                 {availsMapping &&
-                <React.Fragment>
-                    <div className='nexus-c-manual-rights-entry__table_header'>
-                        <ManualRightEntryTableTabs
-                            getCustomSearchCriteria={this.getCustomSearchCriteria}
-                            createdCount={created}
-                            updatedCount={updated}
-                            historyData={this.state.historyData}
-                            fatalCount={fatal}/>
-                        <div className='nexus-c-manual-rights-entry__actions'>
-                            <Button className='nexus-c-manual-rights-entry__button'
-                                    id="right-create"
-                                    onClick={this.createRight}>
-                                Create Right
-                            </Button>
-                            <TableColumnCustomization
-                                availsMapping={availsMapping}
-                                updateColumnsOrder={this.updateColumnsOrder}
-                                columns={columns}
-                            />
-                            <TableDownloadRights
-                                getColumns={() => columns}
-                                allowDownloadFullTab={true}
-                                exportCriteria={this.getCustomSearchCriteria(selectedTab)}
-                                selectedTab={selectedTab}
-                                getSelected={this.getSelectedBasedOnTab}
-                            />
+                    <React.Fragment>
+                        <div className='nexus-c-manual-rights-entry__table_header'>
+                            <ManualRightEntryTableTabs
+                                getCustomSearchCriteria={this.getCustomSearchCriteria}
+                                createdCount={created}
+                                updatedCount={updated}
+                                historyData={this.state.historyData}
+                                fatalCount={fatal}/>
+                            <div className='nexus-c-manual-rights-entry__actions'>
+                                <Button className='nexus-c-manual-rights-entry__button'
+                                        id="right-create"
+                                        onClick={this.createRight}>
+                                    Create Right
+                                </Button>
+                                <TableColumnCustomization
+                                    availsMapping={availsMapping}
+                                    updateColumnsOrder={this.updateColumnsOrder}
+                                    columns={columns}
+                                />
+                                <TableDownloadRights
+                                    getColumns={() => columns}
+                                    allowDownloadFullTab={true}
+                                    exportCriteria={this.getCustomSearchCriteria(selectedTab)}
+                                    selectedTab={selectedTab}
+                                    getSelected={this.getSelectedBasedOnTab}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <RightsResultTable
-                        fromServer={true}
-                        columns={columns}
-                        nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
-                        autoload={false}
-                        status={status}
-                        selectedTab={selectedTab}
-                        historyData={this.state.historyData}
-                        hidden={selectedTab === FATAL}
-                        searchCriteria={this.getCustomSearchCriteria(selectedTab)}
-                        onTableLoaded={this.onTableLoaded}
-                    />
-                    <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
-                </React.Fragment>
+                        <RightsResultTable
+                            fromServer={true}
+                            columns={columns}
+                            nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
+                            autoload={false}
+                            status={status}
+                            selectedTab={selectedTab}
+                            historyData={this.state.historyData}
+                            hidden={selectedTab === FATAL}
+                            searchCriteria={this.getCustomSearchCriteria(selectedTab)}
+                            onTableLoaded={this.onTableLoaded}
+                        />
+                        <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
+                    </React.Fragment>
                 }
             </div>
         );
