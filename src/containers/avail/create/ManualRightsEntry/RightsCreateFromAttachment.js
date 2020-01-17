@@ -46,6 +46,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class RightsCreateFromAttachment extends React.Component {
+    // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
+    // if component gets unmounted during call execution to prevent setting state on an unmounted component
+    _isMounted = false;
 
     static propTypes = {
         match: t.object,
@@ -75,6 +78,8 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
+        this.getHistoryData();
         if (this.props.location && this.props.location.search) {
             const sparams = new URLSearchParams(this.props.location.search);
             const availHistoryIds = sparams.get('availHistoryIds');
@@ -107,6 +112,7 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
         if (this.refresh !== null) {
             clearInterval(this.refresh);
             this.refresh = null;
@@ -117,7 +123,7 @@ class RightsCreateFromAttachment extends React.Component {
         if (this.state.availHistoryId) {
             historyService.getHistory(this.state.availHistoryId)
                 .then(res => {
-                    if (res && res.data) {
+                    if (res && res.data && this._isMounted) {
                         this.setState({
                             historyData: res.data,
                         });
@@ -163,19 +169,19 @@ class RightsCreateFromAttachment extends React.Component {
     renderAttachments = (type, icon) => {
         const {attachments = []} = this.state.historyData || {};
         return attachments.filter(({ attachmentType }) => attachmentType === type)
-                .map((e, i, arr) => {
-                    return (
-                        <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
-                            <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
-                                <a href="#"
-                                   onClick = {() => this.getDownloadLink(e)}>
-                                    {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
-                                </a>
-                                <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
-                            </div>
-                        </NexusTooltip>
-                    );
-                });
+            .map((e, i, arr) => {
+                return (
+                    <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
+                        <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
+                            <a href="#"
+                               onClick = {() => this.getDownloadLink(e)}>
+                                {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
+                            </a>
+                            <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
+                        </div>
+                    </NexusTooltip>
+                );
+            });
     };
 
     updateColumnsOrder = (cols) => {
@@ -240,48 +246,48 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                 </div>
                 {availsMapping &&
-                    <React.Fragment>
-                        <div className='nexus-c-manual-rights-entry__table_header'>
-                            <ManualRightEntryTableTabs
-                                getCustomSearchCriteria={this.getCustomSearchCriteria}
-                                createdCount={created}
-                                updatedCount={updated}
-                                historyData={this.state.historyData}
-                                fatalCount={fatal}/>
-                            <div className='nexus-c-manual-rights-entry__actions'>
-                                <Button className='nexus-c-manual-rights-entry__button'
-                                        id="right-create"
-                                        onClick={this.createRight}>
-                                    Create Right
-                                </Button>
-                                <TableColumnCustomization
-                                    availsMapping={availsMapping}
-                                    updateColumnsOrder={this.updateColumnsOrder}
-                                    columns={columns}
-                                />
-                                <TableDownloadRights
-                                    getColumns={() => columns}
-                                    allowDownloadFullTab={true}
-                                    exportCriteria={this.getCustomSearchCriteria(selectedTab)}
-                                    selectedTab={selectedTab}
-                                    getSelected={this.getSelectedBasedOnTab}
-                                />
-                            </div>
-                        </div>
-                        <RightsResultTable
-                            fromServer={true}
-                            columns={columns}
-                            nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
-                            autoload={false}
-                            status={status}
-                            selectedTab={selectedTab}
+                <React.Fragment>
+                    <div className='nexus-c-manual-rights-entry__table_header'>
+                        <ManualRightEntryTableTabs
+                            getCustomSearchCriteria={this.getCustomSearchCriteria}
+                            createdCount={created}
+                            updatedCount={updated}
                             historyData={this.state.historyData}
-                            hidden={selectedTab === FATAL}
-                            searchCriteria={this.getCustomSearchCriteria(selectedTab)}
-                            onTableLoaded={this.onTableLoaded}
-                        />
-                        <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
-                    </React.Fragment>
+                            fatalCount={fatal}/>
+                        <div className='nexus-c-manual-rights-entry__actions'>
+                            <Button className='nexus-c-manual-rights-entry__button'
+                                    id="right-create"
+                                    onClick={this.createRight}>
+                                Create Right
+                            </Button>
+                            <TableColumnCustomization
+                                availsMapping={availsMapping}
+                                updateColumnsOrder={this.updateColumnsOrder}
+                                columns={columns}
+                            />
+                            <TableDownloadRights
+                                getColumns={() => columns}
+                                allowDownloadFullTab={true}
+                                exportCriteria={this.getCustomSearchCriteria(selectedTab)}
+                                selectedTab={selectedTab}
+                                getSelected={this.getSelectedBasedOnTab}
+                            />
+                        </div>
+                    </div>
+                    <RightsResultTable
+                        fromServer={true}
+                        columns={columns}
+                        nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
+                        autoload={false}
+                        status={status}
+                        selectedTab={selectedTab}
+                        historyData={this.state.historyData}
+                        hidden={selectedTab === FATAL}
+                        searchCriteria={this.getCustomSearchCriteria(selectedTab)}
+                        onTableLoaded={this.onTableLoaded}
+                    />
+                    <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
+                </React.Fragment>
                 }
             </div>
         );
