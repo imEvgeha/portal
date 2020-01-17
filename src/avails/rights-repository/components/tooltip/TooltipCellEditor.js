@@ -14,23 +14,17 @@ class TooltipCellEditor extends Component {
 
     constructor(props) {
         super(props);
-        const {data} = props;
-        this.state = { data };
     }
 
     isPopup = () => true;
 
-    getValue = () => this.state.data;
+    getValue = () => this.props.data;
 
-    handleChange = (id) => {
-        this.setState({
-            id
-        });
-    };
+    handleChange = () => {};
     
     renderContent = () => {
-        const {id} = this.state.data;
-        switch (calculateIndicatorType(this.state.data)) {
+        const {id} = this.props.data;
+        switch (calculateIndicatorType(this.props.data)) {
             case INDICATOR_RED:
                 return <span>Title | No matching title <a href={`/avails/rights/${id}/title-matching`} target='_blank'><b>FIND MATCH</b></a></span>;
             case INDICATOR_NON:

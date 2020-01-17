@@ -122,7 +122,7 @@ const RightsRepository = props => {
                 mapping={mapping}
                 rowData={Object.keys(selectedRights).map(key => selectedRights[key])}
                 isGridHidden={!isSelectedOptionActive}
-                singleClickEdit={true}
+                singleClickEdit
             />
             <RightsRepositoryTable
                 columnDefs={updatedColumnDefs}
@@ -133,7 +133,7 @@ const RightsRepository = props => {
                 suppressRowClickSelection={true}
                 isGridHidden={isSelectedOptionActive}
                 selectedRows={selectedRights}
-                singleClickEdit={true}
+                singleClickEdit
             />
         </div>
     );
