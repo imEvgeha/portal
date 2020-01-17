@@ -12,10 +12,6 @@ class TooltipCellEditor extends Component {
         data: {},
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     isPopup = () => true;
 
     getValue = () => this.props.data;
