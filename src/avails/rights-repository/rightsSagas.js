@@ -3,20 +3,6 @@ import {push} from 'connected-react-router';
 import * as actionTypes from './rightsActionTypes';
 import {URL} from '../../util/Common';
 
-export function* storeRights({payload}) {
-    try {
-        yield put({
-            type: actionTypes.STORE_RIGHTS,
-            payload,
-        });
-    } catch (error) {
-        yield put({
-            type: actionTypes.STORE_RIGHTS_ERROR,
-            payload: error,
-        });
-    }
-}
-
 export function* storeRightsFilter({payload}) {
     const {pathname} = yield select(state => state.router.location);
     const {external = {}, column = {}} = payload || {};
@@ -25,12 +11,12 @@ export function* storeRightsFilter({payload}) {
     try {
         // yield put(push(URL.keepEmbedded(url)));
         yield put({
-            type: actionTypes.STORE_RIGHTS_FILTER_SUCCESS,
+            type: actionTypes.ADD_RIGHTS_FILTER_SUCCESS,
             payload,
         });
     } catch (error) {
         yield put({
-            type: actionTypes.STORE_RIGHTS_FILTER_ERROR,
+            type: actionTypes.ADD_RIGHTS_FILTER_ERROR,
             payload: error,
         });
     }
@@ -38,6 +24,6 @@ export function* storeRightsFilter({payload}) {
 
 export function* rightsWatcher() {
     yield all([
-        takeEvery(actionTypes.STORE_RIGHTS_FILTER, storeRightsFilter),
+        takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
     ]);
 }

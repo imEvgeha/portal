@@ -7,9 +7,9 @@ import Constants from '../constants';
 import {getFiltersToSend} from './utils';
 import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
-import {STORE_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
+import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
 
-const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID} = Constants;
+const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, ATTACHMENT_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
 
 function* fetchIngests({payload}) {
@@ -52,35 +52,45 @@ function* fetchNextPage() {
 function* filterRightsByStatus({payload}) {
     const queryParam = payload ? {status: payload} : {};
     const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
-    yield put(push(URL.keepEmbedded(url)));
+    // yield put(push(URL.keepEmbedded(url)));
 
     if (payload) {
         yield put({
-            type: STORE_RIGHTS_FILTER,
+            type: ADD_RIGHTS_FILTER,
             payload: {external: queryParam},
         });
-        // yield put({
-        //     type: ADD_RIGHTS_FILTER,
-        //     payload: queryParam,
-        // });
         return;
     }
+
     yield put({
         type: REMOVE_RIGHTS_FILTER,
-        payload: 'status',
+        payload: {
+            filter: 'status',
+        }
     });
 }
 
 function* selectIngest({payload}) {
-    let ingestId = payload;
-    const queryParam = {[AVAIL_HISTORY_ID]: payload};
+    const {availHistoryId, attachmentId} = payload || {};
+    let ingestId = availHistoryId; 
+    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [ATTACHMENT_ID]: attachmentId};
+
     if (ingestId) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
         yield put(push(URL.keepEmbedded(url)));
         yield put({
-            type: STORE_RIGHTS_FILTER,
+            type: ADD_RIGHTS_FILTER,
             payload: {external: queryParam},
         });
+
+        if (!attachmentId) {
+            yield put({
+                type: REMOVE_RIGHTS_FILTER,
+                payload: {
+                    filter: 'attachmentId',
+                }
+            });
+        }
     } else {
         const params = new URLSearchParams(window.location.search.substring(1));
         ingestId = params.get(Constants.AVAIL_HISTORY_ID);

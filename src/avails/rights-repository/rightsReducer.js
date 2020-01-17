@@ -10,6 +10,14 @@ const initialState = {
     },
 };
 
+const filteringObject = (object, criteria) => {
+    const filteredObject = Object.keys(object)
+        .filter(criteria)
+        .reduce((o, key) => (o[key] = object[key]  , o), {});
+
+    return filteredObject;
+};
+
 const rightsReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
@@ -19,7 +27,7 @@ const rightsReducer = (state = initialState, action = {}) => {
                 ...state,
                 selected: payload,
             };
-        case actionTypes.STORE_RIGHTS_FILTER_SUCCESS:
+        case actionTypes.ADD_RIGHTS_FILTER_SUCCESS:
             const {external, column} = state.filter;
             return {
                 ...state,
@@ -28,19 +36,13 @@ const rightsReducer = (state = initialState, action = {}) => {
                     external: payload.external ? {...external, ...payload.external} : external,
                 },
             };
-        // case actionTypes.ADD_RIGHTS_FILTER:
-        // case actionTypes.EDIT_RIGHTS_FILTER:
-
         case actionTypes.REMOVE_RIGHTS_FILTER:
-            const updatedColumnFilter = Object.keys(state.filter.column)
-                .filter(key => key !== payload)
-                .reduce((o, key) => (o[key] = state.filter.column[key]  , o), {});
-            const updatedExternalFilter = Object.keys(state.filter.external)
-                .filter(key => key !== payload)
-                .reduce((o, key) => (o[key] = state.filter.external[key]  , o), {});
+            const criteria = filter => filter !== payload.filter;
+            const updatedColumn = filteringObject(state.filter.column, criteria);
+            const updatedExternal = filteringObject(state.filter.external, criteria);
             const updatedFilter = {
-                column: updatedColumnFilter,
-                external: updatedExternalFilter,
+                column: updatedColumn,
+                external: updatedExternal,
             };
 
             return {

@@ -6,7 +6,7 @@ import isEqual from 'lodash.isequal';
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights, setRightsFilter} from './rightsActions';
+import {setSelectedRights, addRightsFilter} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
@@ -46,7 +46,7 @@ const RightsRepository = props => {
         ingestClick,
         setSelectedRights,
         selectedRights,
-        setRightsFilter,
+        addRightsFilter,
         rightsFilter,
     } = props;
     const [totalCount, setTotalCount] = useState(0);
@@ -70,7 +70,9 @@ const RightsRepository = props => {
             const {status} = rightsFilter.external;
             let values;
             if (!status || status === 'Rights') {
-                const {options} = (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) || {};
+                const {options} = (Array.isArray(mapping)
+                    && mapping.find(({javaVariableName}) => javaVariableName === 'status')
+                ) || {};
                 values = options;
             } else {
                 values = [rightsFilter.external.status]; 
@@ -110,7 +112,7 @@ const RightsRepository = props => {
                 setGridApi(api);
                 break;
             case GRID_EVENTS.FILTER_CHANGED:
-                setRightsFilter({column: filterBy(api.getFilterModel())});
+                addRightsFilter({column: filterBy(api.getFilterModel())});
                 break;
         }
     };
@@ -168,7 +170,7 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
-    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    addRightsFilter: payload => dispatch(addRightsFilter(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
