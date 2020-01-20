@@ -46,6 +46,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class RightsCreateFromAttachment extends React.Component {
+    // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
+    // if component gets unmounted during call execution to prevent setting state on an unmounted component
+    _isMounted = false;
 
     static propTypes = {
         match: t.object,
@@ -75,6 +78,8 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
+        this.getHistoryData();
         if (this.props.location && this.props.location.search) {
             const sparams = new URLSearchParams(this.props.location.search);
             const availHistoryIds = sparams.get('availHistoryIds');
@@ -107,6 +112,7 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
         if (this.refresh !== null) {
             clearInterval(this.refresh);
             this.refresh = null;
@@ -117,7 +123,7 @@ class RightsCreateFromAttachment extends React.Component {
         if (this.state.availHistoryId) {
             historyService.getHistory(this.state.availHistoryId)
                 .then(res => {
-                    if (res && res.data) {
+                    if (res && res.data && this._isMounted) {
                         this.setState({
                             historyData: res.data,
                         });
@@ -163,19 +169,19 @@ class RightsCreateFromAttachment extends React.Component {
     renderAttachments = (type, icon) => {
         const {attachments = []} = this.state.historyData || {};
         return attachments.filter(({ attachmentType }) => attachmentType === type)
-                .map((e, i, arr) => {
-                    return (
-                        <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
-                            <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
-                                <a href="#"
-                                   onClick = {() => this.getDownloadLink(e)}>
-                                    {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
-                                </a>
-                                <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
-                            </div>
-                        </NexusTooltip>
-                    );
-                });
+            .map((e, i, arr) => {
+                return (
+                    <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
+                        <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
+                            <a href="#"
+                               onClick = {() => this.getDownloadLink(e)}>
+                                {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
+                            </a>
+                            <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
+                        </div>
+                    </NexusTooltip>
+                );
+            });
     };
 
     updateColumnsOrder = (cols) => {

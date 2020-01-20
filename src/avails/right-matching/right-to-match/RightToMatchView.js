@@ -16,7 +16,10 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRightToMatchList} from '../rightMatchingService';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import {URL} from '../../../util/Common';
-import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {
+    defineCheckboxSelectionColumn,
+    defineActionButtonColumn
+} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
 import {backArrowColor} from '../../../constants/avails/constants';
@@ -157,7 +160,7 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
+                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle>
                 {fieldSearchCriteria 
                     && fieldSearchCriteria.id === rightId 
                     && (
