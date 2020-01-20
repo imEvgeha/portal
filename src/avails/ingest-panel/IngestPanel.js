@@ -62,7 +62,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                      received={received}
                                      provider={provider}
                                      ingestType={ingestType}
-                                     ingestClick={() => ingestClick(id)}
+                                     ingestClick={() => ingestClick({availHistoryId: id})}
                                      selected={selectedIngest && (selectedIngest.id === id)}
                             />))
                     ))

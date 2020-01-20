@@ -22,44 +22,22 @@ const NexusGrid = ({
     isGridHidden,
     ...restProps
 }) => {
-    const onGridReady = params => {
+
+    const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
-            onGridEvent(params);
+            onGridEvent(data);
+        }
+
+        // temporary condition
+        if (typeof handleSelectionChange === 'function' && data.type === 'selectionChanged') {
+            const {api,columnApi} = data;
+            handleSelectionChange(api, columnApi);
         }
     };
 
     const onGridSizeChanged = () => {
         // TODO: add onGridEvent callback instead
         // api.sizeColumnsToFit();
-    };
-
-    const onSelectionChanged = (data) => {
-        const {api, columnApi} = data;
-        // TODO: add onGridEvent callback instead
-        if (typeof handleSelectionChange === 'function') {
-            handleSelectionChange(api, columnApi);
-        }
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
-    const onCellValueChanged = (data)  => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
-    const onFirstDataRendered = data => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
-    const onRowDataChanged = data => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
     };
 
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
@@ -75,12 +53,13 @@ const NexusGrid = ({
                 columnDefs={columnDefs}
                 getContextMenuItems={getContextMenuItems}
                 rowData={rowData}
-                onGridReady={onGridReady}
+                onGridReady={handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
-                onSelectionChanged={onSelectionChanged}
-                onCellValueChanged={onCellValueChanged}
-                onFirstDataRendered={onFirstDataRendered}
-                onRowDataChanged={onRowDataChanged}
+                onSelectionChanged={handleGridEvent}
+                onCellValueChanged={handleGridEvent}
+                onFirstDataRendered={handleGridEvent}
+                onRowDataChanged={handleGridEvent}
+                onFilterChanged={handleGridEvent}
                 {...restProps}
             >
             </AgGridReact> 
