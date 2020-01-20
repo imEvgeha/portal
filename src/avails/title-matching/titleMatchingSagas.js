@@ -79,9 +79,10 @@ function* mergeAndStoreTitles({payload}){
         query = query.concat(`&idsToHide=${Object.keys(duplicateList).join(',')}`);
 
         const response = yield call(titleService.mergeTitles, query) || {data: {}};
-
-        let updatedRight = { coreTitleId: response.data.id };
-        yield call(rightsService.update, updatedRight, rightId);
+        if(!URL.isEmbedded()) {
+            let updatedRight = {coreTitleId: response.data.id};
+            yield call(rightsService.update, updatedRight, rightId);
+        }
 
         yield put({
             type: actionTypes.STORE_COMBINED_TITLE,
