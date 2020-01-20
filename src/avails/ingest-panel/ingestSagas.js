@@ -51,8 +51,6 @@ function* fetchNextPage() {
 
 function* filterRightsByStatus({payload}) {
     const queryParam = payload ? {status: payload} : {};
-    const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
-    // yield put(push(URL.keepEmbedded(url)));
 
     if (payload) {
         yield put({
