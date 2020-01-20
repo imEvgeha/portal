@@ -5,47 +5,11 @@ import omit from 'lodash.omit';
 import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
-import {GRID_EVENTS} from '../constants';
+import Constants from '../constants';
+import moment from 'moment';
 
-const DEFAULT_HOC_PROPS = [
-    'initialFilter',
-    'filterableColumns',
-    'notFilterableColumns',
-    'mapping',
-    'selectValues'
-];
-
-const FILTERABLE_DATA_TYPES = [
-    'string',
-    'integer',
-    'double',
-    'boolean',
-    'select',
-    'multiselect',
-    'territoryType',
-    'year',
-    'duration',
-];
-
-const NOT_FILTERABLE_COLUMNS = ['id'];
-
-const DEFAULT_FILTER_PARAMS = {
-    filterOptions: ['equals'],
-    suppressAndOrCondition: true,
-    debounceMs: 1000,
-};
-
-const FILTER_TYPE = {
-    boolean: 'agSetColumnFilter',
-    string: 'agTextColumnFilter',
-    duration: 'agTextColumnFilter',
-    integer: 'agNumberColumnFilter',
-    double: 'agNumberColumnFilter',
-    year: 'agNumberColumnFilter',
-    select: 'agSetColumnFilter',
-    multiselect: 'agSetColumnFilter',
-    territoryType: 'agSetColumnFilter',
-};
+const {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
+    FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = Constants;
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -72,12 +36,20 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
                 Object.keys(filters).forEach(key => {
-                    const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === key))) || {};
-                    const filterInstance = gridApi.getFilterInstance(key);
+                    const field = key.replace(/From|To/, '');
+                    const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
+                        const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                         if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
+                        } else if (dataType === 'datetime') {
+                            const date = moment(filters[key]).format('YYYY-MM-DD');
+                            filterInstance.setModel({
+                                type: 'inRange',
+                                dateFrom: date,
+                                dateTo: date,
+                            });
                         } else {
                             filterInstance.setModel({
                                 type: 'equals',
@@ -139,18 +111,17 @@ const withFilterableColumns = ({
                         ...DEFAULT_FILTER_PARAMS,
                         values: [false, true]
                     };
-                case 'string':
-                case 'integer':
-                case 'double':
-                case 'year':
-                case 'duration':
-                    return DEFAULT_FILTER_PARAMS;
                 case 'select':
                 case 'territoryType':
                 case 'multiselect': 
                     return {
                         ...DEFAULT_FILTER_PARAMS, 
                         values: getFilterOptions(field),
+                    };
+                case 'datetime':
+                    return {
+                        ...DEFAULT_FILTER_PARAMS,
+                        filterOptions: ['inRange'],
                     };
                 default:
                     return DEFAULT_FILTER_PARAMS;

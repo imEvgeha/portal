@@ -12,14 +12,14 @@ import createLoadingCellRenderer from '../ui-elements/nexus-grid/elements/cell-r
 
 export function createColumnDefs(payload) {
     return payload.reduce((columnDefs, column) => {
-        const {javaVariableName, displayName} = column;
+        const {javaVariableName, displayName, dataType} = column;
         const columnDef = {
             field: javaVariableName,
             headerName: displayName,
             colId: javaVariableName,
             cellRenderer: createLoadingCellRenderer,
             valueFormatter: createValueFormatter(column),
-            width: 150,
+            width: (dataType === 'datetime') ? 200 : 150,
         };
         return [...columnDefs, columnDef];
     }, []);
