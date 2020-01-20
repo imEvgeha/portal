@@ -67,7 +67,7 @@ const CreateTitleForm = ({close, focusedRight}) => {
                     }
                 });
             } else {
-                let updatedRight = { coreTitleId: res.data.id };
+                const updatedRight = { coreTitleId: res.data.id };
                 rightsService.update(updatedRight, focusedId);
             }
             close();

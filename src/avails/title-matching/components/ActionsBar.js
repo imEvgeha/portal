@@ -47,7 +47,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
                 }
             });
         } else {
-            let updatedRight = { 'coreTitleId': matchList[NEXUS].id };
+            const updatedRight = { 'coreTitleId': matchList[NEXUS].id };
             rightsService.update(updatedRight, rightId);
         }
 

@@ -80,7 +80,7 @@ function* mergeAndStoreTitles({payload}){
 
         const response = yield call(titleService.mergeTitles, query) || {data: {}};
         if(!URL.isEmbedded()) {
-            let updatedRight = {coreTitleId: response.data.id};
+            const updatedRight = {coreTitleId: response.data.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
 
