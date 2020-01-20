@@ -4,6 +4,7 @@ export const GRID_EVENTS = {
     SELECTION_CHANGED: 'selectionChanged',
     CELL_VALUE_CHANGED: 'cellValueChanged',
     FIRST_DATA_RENDERED: 'firstDataRendered',
+    FILTER_CHANGED: 'filterChanged',
 };
 
 export default {

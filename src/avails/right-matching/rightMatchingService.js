@@ -10,7 +10,7 @@ import {store} from '../../index';
 
 const http = Http.create();
 
-export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
+export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = queryParams.status ? {...queryParams, page, size} : {status: 'pending', ...queryParams, page, size};
     return http.get(
@@ -36,7 +36,7 @@ export const putCombinedRight = (rightIds, combinedRight) => {
     );
 };
 
-export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParams) => {
+export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = {...queryParams, page, size};
     return http.get(

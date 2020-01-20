@@ -1,16 +1,23 @@
-import {call, put, all, takeLatest, select} from 'redux-saga/effects';
-import actionTypes from './rightsActionTypes';
+import {call, put, all, takeEvery, select} from 'redux-saga/effects';
+import {push} from 'connected-react-router';
+import * as actionTypes from './rightsActionTypes';
 
-function* storeRights({payload}) {
+export function* storeRightsFilter({payload}) {
     try {
         yield put({
-            type: actionTypes.STORE_RIGHTS,
-            payload: response.data,
+            type: actionTypes.ADD_RIGHTS_FILTER_SUCCESS,
+            payload,
         });
     } catch (error) {
         yield put({
-            type: actionTypes.STORE_RIGHTS_ERROR,
+            type: actionTypes.ADD_RIGHTS_FILTER_ERROR,
+            payload: error,
         });
     }
 }
 
+export function* rightsWatcher() {
+    yield all([
+        takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
+    ]);
+}

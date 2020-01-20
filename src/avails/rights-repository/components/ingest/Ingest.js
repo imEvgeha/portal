@@ -8,15 +8,26 @@ import './Ingest.scss';
 
 const Ingest = ({ingest, filterByStatus}) => {
     const {attachments = [{}], ingestType, provider, received} = ingest;
-    const { link, status, ingestReport = {} } = attachments[0];
+    const {link, status, ingestReport = {}} = attachments[0];
     return ingest ? (
         <div className='nexus-c-avails-ingest'>
             <div className='nexus-c-avails-ingest__details'>
-                <IngestTitle ingestType={ingestType} provider={provider} link={link}/>
-                <IngestStatus status={status} date={received} />
+                <IngestTitle
+                    ingestType={ingestType}
+                    provider={provider}
+                    link={link}
+                />
+                <IngestStatus
+                    status={status}
+                    date={received}
+                />
             </div>
             <div className='nexus-c-avails-ingest__stats'>
-                <IngestReport report={ingestReport} showErrorMessage={false} filterClick={filterByStatus} />
+                <IngestReport
+                    report={ingestReport}
+                    showErrorMessage={false}
+                    filterClick={filterByStatus}
+                />
                 <div className='nexus-c-avails-ingest__download'>
                     <DownloadIcon />
                 </div>
@@ -31,7 +42,7 @@ Ingest.propTypes = {
 };
 
 Ingest.defaultProps = {
-    ingest: { attachments: [{}] },
+    ingest: {attachments: [{}]},
     filterByStatus: () => null
 };
 

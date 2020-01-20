@@ -152,6 +152,11 @@ export default class RightsResultsTable extends React.Component {
                 return result || [];
             };
 
+            const getFormattedOriginalFieldName = ({originalFieldName}) => {
+                const complexFieldIndex = originalFieldName.indexOf('[');
+                return originalFieldName.slice(0, complexFieldIndex);
+            };
+
             const filterFieldErrors = (errors, type) => {
                 const regForEror = /\[(.*?)\]/i;
                 const result = Array.isArray(errors) && errors.filter(({fieldName}) => {
@@ -168,7 +173,7 @@ export default class RightsResultsTable extends React.Component {
                         return {
                             type: 'error',
                             value: (sourceDetails && sourceDetails.originalValue) || message,
-                            field: sourceDetails && sourceDetails.originalFieldName,
+                            field: sourceDetails && getFormattedOriginalFieldName(sourceDetails),
                             severityType,
                             id: matchObj && Number(matchObj[1]),
                             isValid: false,

@@ -7,6 +7,7 @@ import {createAvailSelectValuesSelector} from '../../../containers/avail/availSe
 import {isObject, switchCase} from '../../../util/Common';
 import Constants from '../constants';
 import moment from 'moment';
+import usePrevious from '../../../util/hooks/usePrevious';
 
 const {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
     FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = Constants;
@@ -18,13 +19,14 @@ const withFilterableColumns = ({
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, mapping, selectValues} = props;
+        const {columnDefs, mapping, selectValues, params} = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
         const filters = props.initialFilter || initialFilter;
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
+        const previousFilters = usePrevious(filters);
 
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
@@ -36,13 +38,14 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
                 Object.keys(filters).forEach(key => {
-                    const field = key.replace(/From|To/, '');
+                    const field = key.replace(/From|To|Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
                         const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                         if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
+                            return;
                         } else if (dataType === 'datetime') {
                             const date = moment(filters[key]).format('YYYY-MM-DD');
                             filterInstance.setModel({
@@ -50,17 +53,19 @@ const withFilterableColumns = ({
                                 dateFrom: date,
                                 dateTo: date,
                             });
-                        } else {
-                            filterInstance.setModel({
-                                type: 'equals',
-                                filter: filters[key],
-                            });
+                            return;
                         }
+                        filterInstance.setModel({
+                            type: 'equals',
+                            filter: filters[key],
+                        });
                     }
                 });
                 gridApi.onFilterChanged();
                 setIsDatasourceEnabled(true);
-            } 
+            } else if (isEmpty(filters)) {
+                setIsDatasourceEnabled(true);
+            }
         }, [gridApi, mapping]);
 
         function updateColumnDefs(columnDefs) {
@@ -77,14 +82,20 @@ const withFilterableColumns = ({
 
                 return columnDef;
             });
-//
+
             return filterableColumnDefs;
         }
 
         const onGridEvent = (data) => {
             const {api, type} = data || {};
             const {onGridEvent} = props;
-            const events = [GRID_EVENTS.READY, GRID_EVENTS.FIRST_DATA_RENDERED, GRID_EVENTS.SELECTION_CHANGED]; 
+            const events = [
+                GRID_EVENTS.READY,
+                GRID_EVENTS.FIRST_DATA_RENDERED,
+                GRID_EVENTS.SELECTION_CHANGED,
+                GRID_EVENTS.FILTER_CHANGED,
+            ];
+
             if (type === GRID_EVENTS.READY) {
                 setGridApi(api);
             }

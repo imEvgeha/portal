@@ -34,7 +34,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedIngest
                                     received={received}
                                     provider={provider}
                                     ingestType={ingestType}
-                                    ingestClick={() => ingestClick(id)}
+                                    ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id})}
                                     selected={selectedIngest && (selectedIngest.id === id)}
                             />)
                     }
