@@ -163,7 +163,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
             <ActionsBar
                 rightId={rightId}
                 matchList={matchList}
-                mergeTitles={() => mergeTitles(matchList, duplicateList)}
+                mergeTitles={() => mergeTitles(matchList, duplicateList, rightId)}
             />
         </React.Fragment>
     );

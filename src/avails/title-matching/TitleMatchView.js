@@ -132,7 +132,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList) => dispatch(mergeTitles(matchList, duplicateList))
+    mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId}))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line
