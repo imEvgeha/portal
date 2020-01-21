@@ -62,7 +62,7 @@ function* createTitleMatchingColumnDefs(){
 }
 
 function* mergeAndStoreTitles({payload}){
-    const {matchList, duplicateList} = payload;
+    const {matchList, duplicateList, rightId} = payload;
     try{
         let query = '';
         const matches = Object.keys(matchList);
@@ -79,6 +79,10 @@ function* mergeAndStoreTitles({payload}){
         query = query.concat(`&idsToHide=${Object.keys(duplicateList).join(',')}`);
 
         const response = yield call(titleService.mergeTitles, query) || {data: {}};
+        if(!URL.isEmbedded()) {
+            const updatedRight = {coreTitleId: response.data.id};
+            yield call(rightsService.update, updatedRight, rightId);
+        }
 
         yield put({
             type: actionTypes.STORE_COMBINED_TITLE,

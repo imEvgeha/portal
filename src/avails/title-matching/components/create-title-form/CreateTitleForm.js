@@ -5,10 +5,12 @@ import {renderer} from 'react-forms-processor-atlaskit';
 import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import {titleService} from '../../../../containers/metadata/service/TitleService';
+import {rightsService} from '../../../../containers/avail/service/RightsService';
 import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
 import DOP from '../../../../util/DOP';
 import './CreateTitleForm.scss';
+import {URL} from '../../../../util/Common';
 
 const {
     NEW_TITLE_FORM_SCHEMA,
@@ -56,13 +58,18 @@ const CreateTitleForm = ({close, focusedRight}) => {
 
         // Submit the title to back-end
         titleService.createTitleWithoutErrorModal(title).then(res => {
-            DOP.setErrorsCount(0);
-            DOP.setData({
-                match: {
-                    rightId: focusedId,
-                    titleId: res.data.id
-                }
-            });
+            if(URL.isEmbedded()) {
+                DOP.setErrorsCount(0);
+                DOP.setData({
+                    match: {
+                        rightId: focusedId,
+                        titleId: res.data.id
+                    }
+                });
+            } else {
+                const updatedRight = { coreTitleId: res.data.id };
+                rightsService.update(updatedRight, focusedId);
+            }
             close();
         }).catch((error) => {
             const {response: {data: {description, message} = {}} = {}}  = error;
