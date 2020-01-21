@@ -12,7 +12,8 @@ import {
     WARNING_ICON,
     SUCCESS_ICON,
 } from '../../../ui-elements/nexus-toast-notification/constants';
-import {getDomainName} from '../../../util/Common';
+import {getDomainName, URL} from '../../../util/Common';
+import {rightsService} from '../../../containers/avail/service/RightsService';
 
 const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
@@ -36,13 +37,20 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const onViewTitleClick = () => window.open(url,'_blank');
-        DOP.setErrorsCount(0);
-        DOP.setData({
-            match: {
-                rightId,
-                titleId: matchList[NEXUS].id
-            }
-        });
+
+        if(URL.isEmbedded()) {
+            DOP.setErrorsCount(0);
+            DOP.setData({
+                match: {
+                    rightId,
+                    titleId: matchList[NEXUS].id
+                }
+            });
+        } else {
+            const updatedRight = { 'coreTitleId': matchList[NEXUS].id };
+            rightsService.update(updatedRight, rightId);
+        }
+
         addToast({
             title: SUCCESS_TITLE,
             description: TITLE_MATCH_SUCCESS_MESSAGE,
