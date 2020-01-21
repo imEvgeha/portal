@@ -13,9 +13,9 @@ import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.advancedSearch}))(NexusGrid);
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.freeTextSearch}))(NexusGrid);
 
-const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
+const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
@@ -162,6 +162,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
                 onAddAdditionalField={addGenresToTitle}
                 columnDefs={[matchButton, duplicateButton, numOfEpisodeAndSeasonField, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}
+                params={queryParams}
             />
             <ActionsBar
                 rightId={rightId}
@@ -175,12 +176,14 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
     mergeTitles: PropTypes.func,
+    queryParams: PropTypes.object,
     rightId: PropTypes.string.isRequired,
 };
 
 TitlesList.defaultProps = {
     columnDefs: [],
     mergeTitles: () => null,
+    queryParams: {},
 };
 
 export default TitlesList;
