@@ -67,15 +67,21 @@ const TitleMatchView = ({
             createColumnDefs();
         }
     }, [columnDefs]);
+
     let deepCloneRightColumnDefs = cloneDeep(rightColumns);
     let updatedRightColumnDefs;
-    if(focusedRight && focusedRight.contentType === 'Episode') {
+
+    if (focusedRight && focusedRight.contentType === 'Episode') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
-    } else if(focusedRight && focusedRight.contentType === 'Season'){
+    } else if (focusedRight && focusedRight.contentType === 'Season') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber');
     } else {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber');
     }
+
+    // Taken from focused right to be able to filter title list table
+    const {title, contentType} = focusedRight || {};
+
     return (
         <div className="nexus-c-title-to-match">
             <div className="nexus-c-title-to-match__header">
@@ -97,7 +103,10 @@ const TitleMatchView = ({
                         <TitlesList
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
-                            mergeTitles={mergeTitles}/>
+                            mergeTitles={mergeTitles}
+                            // TODO: Capitalized variable name due to invalid BE requirement
+                            queryParams={{ContentType: contentType, title}}
+                        />
                     </React.Fragment>
                 )
             }
