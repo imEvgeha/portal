@@ -10,11 +10,11 @@ const IngestReport = params => {
             <div>{valueFormatted}</div>
             <div className='nexus-c-ingest-report__counters'>
                 {
-                    Constants.REPORT_FIELDS.map( report => (
-                        <div key={report.field} className='nexus-c-ingest-report__counters-section'>
-                            <label>{report.displayName}</label>
+                    Constants.REPORT_FIELDS.map(({field, displayName}) => (
+                        <div key={field} className='nexus-c-ingest-report__counters-section'>
+                            <label>{displayName}</label>
                             <div className='nexus-c-ingest-report__counters-section--value'>
-                                {ingestReport[report.field]}
+                                {ingestReport[field]}
                             </div>
                         </div>
                     ))

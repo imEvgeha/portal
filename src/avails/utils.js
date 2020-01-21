@@ -27,10 +27,9 @@ export function createColumnDefs(payload) {
 
 export function getRepositoryName(id) {
     const {NEXUS, MOVIDA, VZ} = Constants.repository;
-    if(id.startsWith('movtitl_')) {
+    if (id && id.startsWith('movtitl_')) {
         return MOVIDA;
-    }
-    else if(id.startsWith('vztitl_')) {
+    } else if (id && id.startsWith('vztitl_')) {
         return VZ;
     }
     return NEXUS;
@@ -61,9 +60,6 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
     }
     let value = getDeepValue(data, colDef.field);
-    if (typeof value === 'boolean') {
-        return `<span>${value ? 'Yes' : 'No'}</span>`;
-    }
     if (isObject(value)) {
         value = JSON.stringify(value);
     }

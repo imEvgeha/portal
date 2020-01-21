@@ -211,7 +211,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
         let isIdFounded = false;
         let isBoundaryValue = false;
         while (!isIdFounded || isBoundaryValue) {
-            const response = yield call(requestMethod, pageNumber, pageSize, searchParams);
+            const response = yield call(requestMethod, null, pageNumber, pageSize, searchParams);
             const ids = response.data.data.map(el => el.id);
             if (ids.length === 0) {
                 break;

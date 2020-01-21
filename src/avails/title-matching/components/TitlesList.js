@@ -7,14 +7,13 @@ import { Radio } from '@atlaskit/radio';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
+import {titleService} from '../../../containers/metadata/service/TitleService';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
-import {titleService} from '../../../containers/metadata/service/TitleService';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleServiceManager.doSearch})(NexusGrid));
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.advancedSearch}))(NexusGrid);
 
 const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     const [totalCount, setTotalCount] = useState(0);
@@ -117,9 +116,13 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
     });
 
     const renderEpisodeAndSeasonNumber = params => {
-        if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;
-        else if(params.data.contentType === 'SEASON') return params.data.episodic.seasonNumber;
-        else return null;
+        const {data = {}} = params || {};
+        const {contentType, episodic = {}} = data || {};
+        if (contentType === 'EPISODE') {
+            return episodic.episodeNumber;
+        } else if (contentType === 'SEASON') {
+            return episodic.seasonNumber;
+        }
     };
 
     const numOfEpisodeAndSeasonField = {
@@ -163,7 +166,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId}) => {
             <ActionsBar
                 rightId={rightId}
                 matchList={matchList}
-                mergeTitles={() => mergeTitles(matchList, duplicateList)}
+                mergeTitles={() => mergeTitles(matchList, duplicateList, rightId)}
             />
         </React.Fragment>
     );

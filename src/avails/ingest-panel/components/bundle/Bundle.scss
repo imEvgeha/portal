@@ -1,0 +1,33 @@
+.nexus-c-avail-bundle__cell {
+  cursor: grab;
+  width: 324px;
+  padding: 12px;
+  border-bottom: 1px solid #737E91;
+  background: #F5F5F7;
+
+  &:hover {
+    background: #E6EDF0;
+  }
+}
+
+.nexus-c-avail-bundle__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.nexus-c-avail-bundle__chevron {
+    & svg {
+        width: 15px;
+        height: 15px;
+        fill: #A5ADBA;
+        cursor: pointer;
+    }
+
+    &--is-opened {
+        & svg {
+            transform: rotate(90deg);
+        }
+    }
+}
