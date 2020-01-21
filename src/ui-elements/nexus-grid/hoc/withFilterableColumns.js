@@ -8,6 +8,7 @@ import {isObject, switchCase} from '../../../util/Common';
 import constants from '../constants';
 import moment from 'moment';
 import usePrevious from '../../../util/hooks/usePrevious';
+import {DATE_FORMAT} from '../../../constants/metadata/constant-variables';
 
 const {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
     FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = constants;
@@ -47,7 +48,7 @@ const withFilterableColumns = ({
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
                             return;
                         } else if (dataType === 'datetime') {
-                            const date = moment(filters[key]).format('YYYY-MM-DD');
+                            const date = moment(filters[key]).format(DATE_FORMAT);
                             filterInstance.setModel({
                                 type: 'inRange',
                                 dateFrom: date,
