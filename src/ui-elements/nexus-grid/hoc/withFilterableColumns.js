@@ -5,12 +5,12 @@ import omit from 'lodash.omit';
 import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
-import Constants from '../constants';
+import constants from '../constants';
 import moment from 'moment';
 import usePrevious from '../../../util/hooks/usePrevious';
 
 const {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
-    FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = Constants;
+    FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = constants;
 
 const withFilterableColumns = ({
     hocProps = [],
