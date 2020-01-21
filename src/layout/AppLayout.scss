@@ -11,6 +11,12 @@
     &.nexus-navigation {
         flex-direction: row;
     }
+    .nexus-navbar-user{
+        .dropdown-menu{
+            right: 0;
+            left: auto;
+        }
+    }
 }
 
 .nexus-c-app-layout__main {
