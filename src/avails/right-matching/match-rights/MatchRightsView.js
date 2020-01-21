@@ -28,7 +28,7 @@ import {
     updateColumnDefs
 } from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
-import {createSchemaForColoring, addCellClass} from '../../utils';
+import {createSchemaForColoring, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -189,8 +189,14 @@ function MatchRightView({
             columnDefs, 
             {
                 cellClass: ({colDef, value}) => {
-                    return !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
-                        && addCellClass({colDef, value, schema: cellColoringSchema});
+                    const {field} = colDef || {};
+                    if (!FIELDS_WITHOUT_COLOURING.includes(field)) {
+                        const fieldSchema = cellColoringSchema[field];
+                        const {values} = fieldSchema || {};
+                        const isCellHighlighted = values && Object.keys(values).length > 1;
+
+                        return isCellHighlighted && HIGHLIGHTED_CELL_CLASS;
+                    }
                 }
             }) 
         : columnDefs;

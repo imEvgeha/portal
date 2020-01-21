@@ -140,7 +140,9 @@ export const createSchemaForColoring = (list, columnDefs) => {
     return schema;
 };
 
-export const addCellClass = ({colDef, value, schema, cellClass = 'nexus-c-match-right-view__grid-column--highlighted'}) => {
+export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
+
+export const addCellClass = ({colDef, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
     const {field} = colDef;
     const fieldValues = get(schema, [field, 'values'], {});
     const mostCommonValue = get(schema, [field, 'mostCommonValue'], null);
