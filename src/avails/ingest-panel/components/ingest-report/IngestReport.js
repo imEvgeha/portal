@@ -9,9 +9,12 @@ const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
     const reportValues = report || {};
     const onFilterClick = filterKey => {
         const key = activeFilter === filterKey ? '' : filterKey;
-        filterClick(key);
+        filterClick(reportFields[key] !== Constants.REPORT.total && reportFields[key]);
         setActiveFilter(key);
     };
+
+    const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
+
     return (
         <div className='ingest-report'>
             <div className='ingest-report__fields'>
@@ -21,7 +24,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
                             <span className='ingest-report__field--label'>{reportFields[key]}</span>
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
-                                onClick={() => onFilterClick(key)} >
+                                onClick={() => FILTERABLE_KEYS.includes(key) && onFilterClick(key)} >
                                 {reportValues[key] || ''}
                             </span>
                         </div>

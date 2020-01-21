@@ -13,22 +13,39 @@ import {
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
-function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedTab, getCustomSearchCriteria, createdCount, updatedCount, fatalCount, historyData}) {
+function ManualRightEntryTableTabs({
+    selectedTab,
+    updateManualRightEntrySelectedTab,
+    getCustomSearchCriteria,
+    createdCount,
+    updatedCount,
+    fatalCount,
+    historyData
+}) {
+    // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
+    // if component gets unmounted during call execution to prevent setting state on an unmounted component
+    let _isMounted = false;
 
     const [totalRightsCount, setTotalRightsCount] = useState();
     const [successCount, setSuccessCount] = useState();
     const [pendingCount, setPendingCount] = useState();
     const [errorsCount, setErrorsCount] = useState();
 
+    // Effect hook that acts as a componentDidMount and componentWillUnmount, to set the _isMounted flag accordingly
+    useEffect(() => {
+        _isMounted = true;
+        return () => {_isMounted = false;};
+    }, []);
+
     useEffect(() => {
         rightsService.advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
-            .then(response => setTotalRightsCount(response.data.total));
+            .then(response => _isMounted && setTotalRightsCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
-            .then(response => setSuccessCount(response.data.total));
+            .then(response => _isMounted && setSuccessCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(UNMATCHED), 0, 1)
-            .then(response => setPendingCount(response.data.total));
+            .then(response => _isMounted && setPendingCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
-            .then(response => setErrorsCount(response.data.total));
+            .then(response => _isMounted && setErrorsCount(response.data.total));
     }, [historyData]);
 
     const getCustomTotalCount = () => {
@@ -39,23 +56,42 @@ function ManualRightEntryTableTabs({selectedTab, updateManualRightEntrySelectedT
 
     return (
         <TabContainer>
-            <ManualRightEntryTab isActive={selectedTab === TOTAL_RIGHTS}
-                                 onClick={() => updateManualRightEntrySelectedTab(TOTAL_RIGHTS)}>Total Rights
-                ({getCustomTotalCount()})</ManualRightEntryTab>
-            <ManualRightEntryTab isNotClickable={true}>Created ({createdCount})</ManualRightEntryTab>
-            <ManualRightEntryTab isNotClickable={true}>Updated ({updatedCount})</ManualRightEntryTab>
-            <ManualRightEntryTab isActive={selectedTab === SUCCESS}
-                                 onClick={() => updateManualRightEntrySelectedTab(SUCCESS)}>Success
-                ({successCount})</ManualRightEntryTab>
-            <ManualRightEntryTab isActive={selectedTab === UNMATCHED}
-                                 onClick={() => updateManualRightEntrySelectedTab(UNMATCHED)}>Unmatched
-                ({pendingCount})</ManualRightEntryTab>
-            <ManualRightEntryTab isActive={selectedTab === ERRORS}
-                                 onClick={() => updateManualRightEntrySelectedTab(ERRORS)}>Errors
-                ({errorsCount})</ManualRightEntryTab>
-            <ManualRightEntryTab isActive={selectedTab === FATAL}
-                                 onClick={() => updateManualRightEntrySelectedTab(FATAL)}>Fatal
-                ({fatalCount})</ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === TOTAL_RIGHTS}
+                onClick={() => updateManualRightEntrySelectedTab(TOTAL_RIGHTS)}
+            >
+                Total Rights ({getCustomTotalCount()})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab isNotClickable={true}>
+                Created ({createdCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab isNotClickable={true}>
+                Updated ({updatedCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === SUCCESS}
+                onClick={() => updateManualRightEntrySelectedTab(SUCCESS)}
+            >
+                Success ({successCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === UNMATCHED}
+                onClick={() => updateManualRightEntrySelectedTab(UNMATCHED)}
+            >
+                Unmatched ({pendingCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === ERRORS}
+                onClick={() => updateManualRightEntrySelectedTab(ERRORS)}
+            >
+                Errors ({errorsCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === FATAL}
+                onClick={() => updateManualRightEntrySelectedTab(FATAL)}
+            >
+                Fatal ({fatalCount})
+            </ManualRightEntryTab>
         </TabContainer>
     );
 }

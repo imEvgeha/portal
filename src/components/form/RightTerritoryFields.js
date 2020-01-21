@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
-import {convertBooleanToString} from '../../containers/avail/util/format';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {CreatableSelect} from '@atlaskit/select';
 
@@ -80,7 +79,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 )}
 
             </Field>
-            <Field label="SELECTED" name="selected" defaultValue={isEdit ? { label: returnValidData('selected') ? convertBooleanToString(existingTerritoryList[territoryIndex]['selected']) : 'No', value: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : false } : { label: 'No', value: false }}>
+            <Field label="SELECTED" name="selected" defaultValue={isEdit ? { label: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : 'false', value: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : false } : { label: 'False', value: false }}>
                 {({ fieldProps: { id, ...rest } }) => (
                     <Select
                         id={`select-${id}`}
@@ -88,8 +87,8 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                         isSearchable={false}
                         placeholder="Add selected"
                         options={[
-                            { label: 'Yes', value: true },
-                            { label: 'No', value: false },]}
+                            { label: 'true', value: true },
+                            { label: 'false', value: false },]}
                     />
                 )}
             </Field>

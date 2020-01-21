@@ -6,6 +6,7 @@ import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './NexusGrid.scss';
+import getContextMenuItems from '../../ui-elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 // TODO: it should be inside env file when we create it
 const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
@@ -21,44 +22,22 @@ const NexusGrid = ({
     isGridHidden,
     ...restProps
 }) => {
-    const onGridReady = params => {
+
+    const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
-            onGridEvent(params);
+            onGridEvent(data);
+        }
+
+        // temporary condition
+        if (typeof handleSelectionChange === 'function' && data.type === 'selectionChanged') {
+            const {api,columnApi} = data;
+            handleSelectionChange(api, columnApi);
         }
     };
 
     const onGridSizeChanged = () => {
         // TODO: add onGridEvent callback instead
         // api.sizeColumnsToFit();
-    };
-
-    const onSelectionChanged = (data) => {
-        const {api, columnApi} = data;
-        // TODO: add onGridEvent callback instead
-        if (typeof handleSelectionChange === 'function') {
-            handleSelectionChange(api, columnApi);
-        }
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
-    const onCellValueChanged = (data)  => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
-    const onFirstDataRendered = data => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
-    };
-
-    const onRowDataChanged = data => {
-        if (typeof onGridEvent === 'function') {
-            onGridEvent(data);
-        }
     };
 
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
@@ -72,13 +51,15 @@ const NexusGrid = ({
         `}>
             <AgGridReact
                 columnDefs={columnDefs}
+                getContextMenuItems={getContextMenuItems}
                 rowData={rowData}
-                onGridReady={onGridReady}
+                onGridReady={handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
-                onSelectionChanged={onSelectionChanged}
-                onCellValueChanged={onCellValueChanged}
-                onFirstDataRendered={onFirstDataRendered}
-                onRowDataChanged={onRowDataChanged}
+                onSelectionChanged={handleGridEvent}
+                onCellValueChanged={handleGridEvent}
+                onFirstDataRendered={handleGridEvent}
+                onRowDataChanged={handleGridEvent}
+                onFilterChanged={handleGridEvent}
                 {...restProps}
             >
             </AgGridReact> 

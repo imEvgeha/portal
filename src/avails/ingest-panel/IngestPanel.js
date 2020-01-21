@@ -5,6 +5,7 @@ import {getIngests, getSelectedIngest, getTotalIngests} from './ingestSelectors'
 import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
+import Bundle from './components/bundle/Bundle';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
@@ -47,14 +48,21 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                 {
                     ingests.map(({id, attachments, received, provider, ingestType}) => (
                         (attachments.length > 1) ? (
-                            <div key={id}>Bundle</div>
-                        ) : ( (attachments.length === 1) &&
+                            <Bundle key={id}
+                                    id={id}
+                                    attachments={attachments}
+                                    received={received}
+                                    provider={provider}
+                                    ingestType={ingestType}
+                                    ingestClick={ingestClick}
+                                    selectedIngest={selectedIngest}
+                        />) : ( (attachments.length === 1) &&
                             (<Ingest key={id}
                                      attachment={attachments[0]}
                                      received={received}
                                      provider={provider}
                                      ingestType={ingestType}
-                                     ingestClick={() => ingestClick(id)}
+                                     ingestClick={() => ingestClick({availHistoryId: id})}
                                      selected={selectedIngest && (selectedIngest.id === id)}
                             />))
                     ))
