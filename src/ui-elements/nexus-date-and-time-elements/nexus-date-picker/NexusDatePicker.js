@@ -38,11 +38,12 @@ const NexusDatePicker = ({
 
     const DatePickerComponent = (isReadOnly) => (
         <>
-            {label &&
-                <>
-                    {label}
-                </>
-            }
+            {/*TODO: apply when refactoring/redesigning RightDetails component*/}
+            {/*{label &&*/}
+            {/*    <>*/}
+            {/*        {label}*/}
+            {/*    </>*/}
+            {/*}*/}
             {isReadOnly
                 ? parseSimulcast(value, dateFormat)
                 : (
@@ -83,9 +84,10 @@ const NexusDatePicker = ({
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
                                 {(moment(value).isValid() && parseSimulcast(value, dateFormat))
-                                || <div className="read-view-container__placeholder">
-                                    Enter date
-                                </div>}
+                                    || <div className="read-view-container__placeholder">
+                                        {`Enter ${label}`}
+                                    </div>
+                                }
                             </div>
                         )}
                         editView={() => DatePickerComponent(false)}

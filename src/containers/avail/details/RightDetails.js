@@ -1078,6 +1078,7 @@ class RightDetails extends React.Component {
 
             const props = {
                 id: displayName,
+                label: displayName,
                 onChange: (date) => {
                     // Keep a separate state for edited values
                     this.setState((prevState) => ({
