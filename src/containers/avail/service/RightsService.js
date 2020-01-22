@@ -6,7 +6,7 @@ import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '.
 
 const http = Http.create();
 
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId', 'originalRightIds'];
+const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId', 'originalRightIds', 'keywords'];
 const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
 const ARRAY_OF_OBJETS = ['territory'];
 
