@@ -94,35 +94,49 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
     return null;
 }
 
-export const createSchemaForColoring = (list, columnDefs) => {
+export const createColumnSchema = (list, field) => {
     const majorityRule = (occurence, total) => occurence > (total / 2); 
-    const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
-        const values = list.map(el => el[field]);
-        const occurence = values.reduce((o, v) => {
-            const value = JSON.stringify(v);
-            o[value] = (o[value] || 0) + 1;
-            return o;
-        }, {});
-        const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
-        const getMostCommonValue = (entries) => {
-            if (entries.length) {
-                const mostCommonValue = entries
-                    .filter(([key, value], i) => majorityRule(value, list.length))
-                    .map(([key, value]) => key);
-                return mostCommonValue[0];
-            }
-        };
-
-        if (sortedValuesEntries.length > 1) {
-            acc[field] = {
-                field,
-                values: sortedValuesEntries.reduce((o, [key, value], i) => (o[key] = value, o), {}),
-                mostCommonValue: getMostCommonValue(sortedValuesEntries),
-            };
+    const destructedField = field.split('.');
+    const values = list.map(el => {
+        // TODO: we have as avails map languageAudioTypes.language and languageAudioTypes.audoType
+        // and data consists as field languageAudioTypes {Array of objects {language, audioType} )
+        if (destructedField.includes('languageAudioTypes')) {
+            return el['languageAudioTypes'].map(el => el[destructedField[1]]).filter(Boolean);
         }
+        return get(el, destructedField, {});
+    });
+
+    const occurence = values.reduce((o, v) => {
+        const value = JSON.stringify(v);
+        o[value] = (o[value] || 0) + 1;
+        return o;
+    }, {});
+
+    const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
+
+    const getMostCommonValue = (entries) => {
+        if (entries.length) {
+            const mostCommonValue = entries
+            .filter(([key, value], i) => majorityRule(value, list.length))
+            .map(([key, value]) => key);
+
+            return mostCommonValue[0];
+        }
+    };
+
+    return {
+        field,
+        values: sortedValuesEntries.reduce((o, [key, value], i) => (o[key] = value, o), {}),
+        mostCommonValue: getMostCommonValue(sortedValuesEntries),
+    };
+}; 
+
+export const createSchemaForColoring = (list, columnDefs) => {
+    const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
+        const fieldValue = createColumnSchema(list, field);
+        acc[field] = fieldValue;
 
         return acc;
-
     }, {});
 
     return schema;
@@ -130,10 +144,10 @@ export const createSchemaForColoring = (list, columnDefs) => {
 
 export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
 
-export const addCellClass = ({colDef, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
-    const {field} = colDef;
-    const fieldValues = get(schema, [field, 'values'], {});
-    const mostCommonValue = get(schema, [field, 'mostCommonValue'], null);
+export const addCellClass = ({field, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
+    const fieldValues = get(schema, ['values'], {});
+    const mostCommonValue = get(schema, ['mostCommonValue'], null);
+
     if (Object.keys(fieldValues).length && !isEqual(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     };
