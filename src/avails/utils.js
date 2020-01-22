@@ -103,33 +103,21 @@ export const createSchemaForColoring = (list, columnDefs) => {
             o[value] = (o[value] || 0) + 1;
             return o;
         }, {});
-
-        const sortByOccurrence = Object.keys(occurence).sort((a, b) => {
-            return occurence[a] < occurence[b];
-        }) || [];
-
-        const sortedValues = sortByOccurrence.reduce((o, v) => {
-            o[v] = occurence[v];
-            return o;
-        }, {});
-
-        const getMostCommonValue = (values) => {
-            const entries = !isEmpty(values) ? Object.entries(values) : [];
+        const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
+        const getMostCommonValue = (entries) => {
             if (entries.length) {
                 const mostCommonValue = entries
-                    .filter(([key, value], i, arr) => majorityRule(value, arr.length))
-                    .map(([key, value]) => key)
-                    .toString();
-
-                return mostCommonValue;
+                    .filter(([key, value], i) => majorityRule(value, list.length))
+                    .map(([key, value]) => key);
+                return mostCommonValue[0];
             }
         };
 
-        if (Object.values(sortedValues).length > 1) {
+        if (sortedValuesEntries.length > 1) {
             acc[field] = {
                 field,
-                values: sortedValues,
-                mostCommonValue: getMostCommonValue(sortedValues),
+                values: sortedValuesEntries.reduce((o, [key, value], i) => (o[key] = value, o), {}),
+                mostCommonValue: getMostCommonValue(sortedValuesEntries),
             };
         }
 
