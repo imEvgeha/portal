@@ -10,14 +10,6 @@ import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/c
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
-
-    // Get locale provided by intl
-    const intl = useIntl();
-    const {locale = 'en-US'} = intl || {};
-
-    // Create date placeholder based on locale
-    const dateFormat = getDateFormatBasedOnLocale(locale);
-
     const errorCellColor = '#f2dede';
     const readyNewCellColor = '#FFFFFF';
     const readyCellColor = '#D3D3D3';
@@ -28,6 +20,13 @@ const withRightsResultsTable = BaseComponent => {
     const selectRightMode = 'selectRightsMode';
 
     const ComposedComponent = props => {
+        // Get locale provided by intl
+        const intl = useIntl();
+        const {locale = 'en-US'} = intl || {};
+
+        // Create date placeholder based on locale
+        const dateFormat = getDateFormatBasedOnLocale(locale);
+
         // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
