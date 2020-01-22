@@ -24,6 +24,7 @@ const NexusDateTimePicker = ({
     onConfirm,
     value,
     label,
+    hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     ...restProps
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
@@ -41,13 +42,13 @@ const NexusDateTimePicker = ({
         .concat(isTimestamp ? TIMESTAMP_FORMAT : TIME_FORMAT); // Decide whether to include milliseconds based on type
 
     const getDisplayDate = (date) => {
-        const hasUTCTag = date.endsWith('Z');
+        const hasUTCTag = date && date.endsWith('Z');
         return moment(date).utc(!hasUTCTag).format(dateFormat);
     };
 
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
-            {label &&
+            {!hideLabel && label &&
                 <div className="nexus-c-date-time-picker__label">
                     {label}
                 </div>
@@ -60,7 +61,7 @@ const NexusDateTimePicker = ({
                             <NexusSimpleDateTimePicker
                                 id={id}
                                 onChange={onChange}
-                                value={value}
+                                value={value || ''}
                                 isSimulcast={isSimulcast}
                                 isTimestamp={isTimestamp}
                                 defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
@@ -97,15 +98,16 @@ const NexusDateTimePicker = ({
                         readView={() => (
                             <div className="nexus-c-date-time-picker__read-view-container">
                                 {moment(value).isValid()
-                                ?`${getDisplayDate(value)}
-                                 ${isSimulcast && !isTimestamp ? ' (UTC)' : ''}`
-                                : <div className="read-view-container__placeholder">
-                                        {`Enter ${name}`}
-                                </div>}
+                                    ?`${getDisplayDate(value)}
+                                     ${isSimulcast && !isTimestamp ? ' (UTC)' : ''}`
+                                    : <div className="read-view-container__placeholder">
+                                        {`Enter ${label}`}
+                                    </div>
+                                }
                             </div>
                         )}
                         editView={() => DatePicker(false)}
-                        defaultValue={value}
+                        defaultValue={value || ''}
                         onConfirm={date => {
                             let newDate = date;
                             // As per requirement, timestamps are in ISO format
@@ -134,6 +136,7 @@ NexusDateTimePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
+    hideLabel: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -145,6 +148,7 @@ NexusDateTimePicker.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     isTimestamp: false,
+    hideLabel: false,
     onConfirm: () => null,
 };
 
