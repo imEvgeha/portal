@@ -88,13 +88,20 @@ class SelectableInput extends Component {
     }
 
     handleOptionsChange(selectedOptions) {
-        const filteredOptions = selectedOptions.filter(option => this.filterOption(option, this.state.selectableInput));
+        const {options = []} = this.props.value || {};
+        const {selectableInput} = this.state;
+        let filteredOptions = selectedOptions.filter(option => this.filterOption(option, selectableInput, options));
         this.props.onChange({...this.props.value, options: filteredOptions});
     }
 
-    filterOption = (option, inputValue) => {
+    filterOption = (option, inputValue, previousOptions) => {
         const { label } = option;
-        return label.toLowerCase().includes(inputValue.toLowerCase());
+        let presentInPreviousSelection = false;
+        if(previousOptions) {
+            presentInPreviousSelection = previousOptions.some(e => e.label === label);
+        }
+
+        return label.toLowerCase().includes(inputValue.toLowerCase()) || presentInPreviousSelection;
     };
 
     handleInvalid(value) {
