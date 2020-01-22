@@ -83,7 +83,7 @@ class NavbarConnect extends React.Component {
                             </li>
                         </Can>
                     </ul>
-                    <ul className="nav navbar-nav ml-auto">
+                    <ul className="nav navbar-nav ml-auto nexus-navbar-user">
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}
                             inNavbar={true} nav={true}>
                             <DropdownToggle caret nav={true} id="navbar-dropdown-btn">
