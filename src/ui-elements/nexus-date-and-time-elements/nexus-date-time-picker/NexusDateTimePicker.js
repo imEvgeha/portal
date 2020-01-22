@@ -24,6 +24,7 @@ const NexusDateTimePicker = ({
     onConfirm,
     value,
     label,
+    hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     ...restProps
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
@@ -47,12 +48,11 @@ const NexusDateTimePicker = ({
 
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
-            {/*TODO: apply when refactoring/redesigning RightDetails component*/}
-            {/*{label &&*/}
-            {/*    <div className="nexus-c-date-time-picker__label">*/}
-            {/*        {label}*/}
-            {/*    </div>*/}
-            {/*}*/}
+            {!hideLabel && label &&
+                <div className="nexus-c-date-time-picker__label">
+                    {label}
+                </div>
+            }
             {isReadOnly
                 ? getDisplayDate(value)
                 : (
@@ -136,6 +136,7 @@ NexusDateTimePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
+    hideLabel: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -147,6 +148,7 @@ NexusDateTimePicker.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     isTimestamp: false,
+    hideLabel: false,
     onConfirm: () => null,
 };
 

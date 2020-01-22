@@ -20,6 +20,7 @@ const NexusDatePicker = ({
     value,
     error,
     label,
+    hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
@@ -38,12 +39,11 @@ const NexusDatePicker = ({
 
     const DatePickerComponent = (isReadOnly) => (
         <>
-            {/*TODO: apply when refactoring/redesigning RightDetails component*/}
-            {/*{label &&*/}
-            {/*    <>*/}
-            {/*        {label}*/}
-            {/*    </>*/}
-            {/*}*/}
+            {!hideLabel && label &&
+                <>
+                    {label}
+                </>
+            }
             {isReadOnly
                 ? parseSimulcast(value, dateFormat)
                 : (
@@ -110,6 +110,7 @@ NexusDatePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
+    hideLabel: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -122,6 +123,7 @@ NexusDatePicker.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     isTimestamp: false,
+    hideLabel: false,
     onConfirm: () => null,
 };
 
