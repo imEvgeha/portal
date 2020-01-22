@@ -1,4 +1,8 @@
 .nexus-c-date-time-cell-editor {
     width: 350px;
+    .nexus-c-nexus-grid & {
+        width: auto;
+        min-width: 200px;
+    }
 }
 
