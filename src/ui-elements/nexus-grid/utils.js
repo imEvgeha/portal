@@ -5,7 +5,7 @@ import Constants from './constants';
 
 // grid filter
 export const filterBy = filterObject => {
-    const ALLOWED_TYPES_OPERAND = ['equals', 'inRange'];
+    const ALLOWED_TYPES_OPERAND = ['equals', 'range'];
     const FILTER_TYPES = ['set'];
     if (!isEmpty(filterObject)) {
         const filteredEqualsType = Object.keys(filterObject)
@@ -15,13 +15,9 @@ export const filterBy = filterObject => {
                 return obj;
             }, {});
         const filterParams = Object.keys(filteredEqualsType).reduce((object, name) => {
-            const {filter, values, filterType, dateFrom, dateTo} = filteredEqualsType[name] || {};
+            const {filter, values, filterType} = filteredEqualsType[name] || {};
             object[name] = FILTER_TYPES.includes(filterType) ?
-                Array.isArray(values) && values.join(', ') :
-                (filter || {
-                    [`${name}From`]: moment.utc(dateFrom).toISOString(),
-                    [`${name}To`]: moment(moment.utc(dateTo).valueOf() + Constants.END_DATE_VALUE).toISOString()
-                });
+                Array.isArray(values) && values.join(', ') : filter;
             return object;
         }, {});
         return parseAdvancedFilter(filterParams);

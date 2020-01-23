@@ -9,5 +9,4 @@ export default {
     ],
     MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS: ['languageAudioTypes'],
     ARRAY_OF_OBJECTS: ['territory'],
-    DATE_FIELDS: ['startFrom', 'startTo', 'endFrom', 'endTo']
 };

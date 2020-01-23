@@ -7,7 +7,7 @@ import Constants from './Constants';
 
 const http = Http.create();
 const {STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS, MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
-    ARRAY_OF_OBJECTS, DATE_FIELDS} = Constants;
+    ARRAY_OF_OBJECTS} = Constants;
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -126,8 +126,6 @@ const parseAdvancedFilter = function (searchCriteria) {
         }
     }
 
-    //to replace focused rights date filters when user removes date filters in rights table
-    DATE_FIELDS.map(field => params[field] = params[field] || '');
     return params;
 };
 

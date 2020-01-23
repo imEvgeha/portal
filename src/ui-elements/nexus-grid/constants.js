@@ -32,7 +32,6 @@ export default {
         'territoryType',
         'year',
         'duration',
-        'datetime'
     ],
     NOT_FILTERABLE_COLUMNS: ['id'],
     DEFAULT_FILTER_PARAMS: {
@@ -49,8 +48,7 @@ export default {
         select: 'agSetColumnFilter',
         multiselect: 'agSetColumnFilter',
         territoryType: 'agSetColumnFilter',
-        datetime: 'agDateColumnFilter',
     },
-    END_DATE_VALUE: 86399999    // + 23 hours 59 minutes 59 seconds
+    DATEPICKER_LABELS: ['From', 'To'],
 };
 

@@ -6,9 +6,8 @@ import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
 import constants from '../constants';
-import moment from 'moment';
 import usePrevious from '../../../util/hooks/usePrevious';
-import {DATE_FORMAT} from '../../../constants/metadata/constant-variables';
+import {CustomDateFilter, DateFilter} from './components/CustomDateFilter';
 
 const {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
     FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = constants;
@@ -24,7 +23,7 @@ const withFilterableColumns = ({
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
-        const filters = props.initialFilter || initialFilter;
+        const filters = props.initialFilter || initialFilter || {};
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
         const previousFilters = usePrevious(filters);
@@ -39,21 +38,13 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
                 Object.keys(filters).forEach(key => {
-                    const field = key.replace(/From|To|Match/, '');
+                    const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
                         const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                         if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
-                            return;
-                        } else if (dataType === 'datetime') {
-                            const date = moment(filters[key]).format(DATE_FORMAT);
-                            filterInstance.setModel({
-                                type: 'inRange',
-                                dateFrom: date,
-                                dateTo: date,
-                            });
                             return;
                         }
                         filterInstance.setModel({
@@ -80,7 +71,16 @@ const withFilterableColumns = ({
                     columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     columnDef.filterParams = setFilterParams(dataType, columnDef.field);
                 }
-
+                if(dataType === 'datetime') {
+                    const initialFilters = {
+                      from: filters[`${columnDef.field}From`],
+                      to: filters[`${columnDef.field}To`]
+                    };
+                    columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                    columnDef.floatingFilterComponentParams = { initialFilters };
+                    columnDef.filter = 'customDateFilter';
+                    columnDef.filterParams = { initialFilters };
+                }
                 return columnDef;
             });
 
@@ -161,6 +161,10 @@ const withFilterableColumns = ({
                     columnDefs={filterableColumnDefs}
                     floatingFilter={true}
                     onGridEvent={onGridEvent}
+                    frameworkComponents={{
+                        customDateFloatingFilter: CustomDateFilter,
+                        customDateFilter: DateFilter
+                    }}
                     isDatasourceEnabled={isDatasourceEnabled}
                 />
             ) : null

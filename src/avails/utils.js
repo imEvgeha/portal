@@ -19,7 +19,7 @@ export function createColumnDefs(payload) {
             colId: javaVariableName,
             cellRenderer: createLoadingCellRenderer,
             valueFormatter: createValueFormatter(column),
-            width: (dataType === 'datetime') ? 200 : 150,
+            width: (dataType === 'datetime') ? 235 : 150,
         };
         return [...columnDefs, columnDef];
     }, []);
