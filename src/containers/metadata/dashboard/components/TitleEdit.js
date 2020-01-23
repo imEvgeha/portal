@@ -14,6 +14,7 @@ import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
 import {default as AtlaskitButton} from '@atlaskit/button';
 import {AvForm} from 'availity-reactstrap-validation';
+import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
@@ -919,12 +920,11 @@ class TitleEdit extends Component {
         });
     }
 
-    renderSyncField = (name, legacyId, updatedAt) => {
-        const {dataRetrievedAt, publishedAt} = legacyId || {};
-        console.log(name, dataRetrievedAt, publishedAt)
-        const lastUpdated = !publishedAt ? !dataRetrievedAt ? 'No record exist' : dataRetrievedAt : publishedAt;
-        const buttonName = !publishedAt ? !dataRetrievedAt ? 'Publish' : 'Sync' : 'Sync';
-        const isDisabled = updatedAt === lastUpdated;
+    renderSyncField = (name, titleModifiedAt, id, publishedAt) => {
+
+        const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
+        const buttonName = !id || !publishedAt ? 'Publish' : 'Sync';
+        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt));
         const indicator = isDisabled ? 'success' : 'error';
         return (<div className='nexus-c-title-edit__sync-container-field'>
             <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
@@ -940,12 +940,17 @@ class TitleEdit extends Component {
     };
 
     renderSyncVzMovidaFields = () => {
-        const {legacyIds, updatedAt} = this.state.titleForm;
+        const {legacyIds, modifiedAt} = this.state.titleForm;
         const {vz, movida} = legacyIds || {};
+        const {vzId} = vz || {};
+        const {movidaId} = movida || {};
+        const vzPublishedAt = (vz || {}).publishedAt;
+        const movidaPublishedAt = (movida || {}).publishedAt;
+
         return (
             <>
-                {this.renderSyncField('VZ', vz, updatedAt)}
-                {this.renderSyncField('Movida', movida, updatedAt)}
+                {this.renderSyncField('VZ', modifiedAt, vzId, vzPublishedAt)}
+                {this.renderSyncField('Movida', modifiedAt, movidaId, movidaPublishedAt)}
             </>
         );
     };
@@ -967,7 +972,7 @@ class TitleEdit extends Component {
                                     <Fragment>
                                         <Col>
                                             <div className='nexus-c-title-edit__sync-container'>
-                                            {this.renderSyncVzMovidaFields()}
+                                            {/*{this.renderSyncVzMovidaFields()}*/}
                                             <Can I="update" a="Metadata">
                                                 <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
                                             </Can>
