@@ -5,7 +5,8 @@ export default {
         'regionExcluded',
         'genres',
         'contractId',
-        'originalRightIds'
+        'originalRightIds',
+        'keywords'
     ],
     MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS: ['languageAudioTypes'],
     ARRAY_OF_OBJECTS: ['territory'],

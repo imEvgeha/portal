@@ -21,6 +21,7 @@ const NexusDatePicker = ({
     value,
     error,
     label,
+    hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     allowClear,
     ...restProps
 }) => {
@@ -55,7 +56,7 @@ const NexusDatePicker = ({
 
     const DatePickerComponent = (isReadOnly) => (
         <>
-            {label &&
+            {!hideLabel && label &&
                 <>
                     {label}
                 </>
@@ -93,9 +94,10 @@ const NexusDatePicker = ({
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
                                 {(moment(value).isValid() && parseSimulcast(value, dateFormat))
-                                || <div className="read-view-container__placeholder">
-                                    Enter date
-                                </div>}
+                                    || <div className="read-view-container__placeholder">
+                                        {`Enter ${label}`}
+                                    </div>
+                                }
                             </div>
                         )}
                         editView={() => DatePickerComponent(false)}
@@ -118,6 +120,7 @@ NexusDatePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
+    hideLabel: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -131,6 +134,7 @@ NexusDatePicker.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     isTimestamp: false,
+    hideLabel: false,
     onConfirm: () => null,
     allowClear: false,
 };

@@ -23,7 +23,7 @@ class MultiSelectCellEditor extends Component {
     }
 
     prepareDataForSelect = data => {
-        if (data.length) {
+        if (data && data.length) {
             const arr = data.filter(Boolean);
             const result = arr.map(el => {
                 return {
@@ -47,7 +47,7 @@ class MultiSelectCellEditor extends Component {
 
     getValue = () => {
         const {value} = this.state;
-        return value.map(el => el.value);
+        return value && value.map(el => el.value);
     }
 
     handleChange = (value) => {
