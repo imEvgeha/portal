@@ -118,7 +118,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
         };
 
         const result = searchCriteria.reduce((query, field) => {
-            const {fieldName, subFieldName, criteria, targetFieldName} = field;
+            const {targetFieldName, fieldName, subFieldName, criteria} = field;
             const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
             const fieldValue = targetFieldName || fieldName;
             const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];

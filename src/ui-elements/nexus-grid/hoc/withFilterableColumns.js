@@ -7,7 +7,8 @@ import {createAvailSelectValuesSelector} from '../../../containers/avail/availSe
 import {isObject, switchCase} from '../../../util/Common';
 import constants from '../constants';
 import usePrevious from '../../../util/hooks/usePrevious';
-import {CustomDateFilter, DateFilter} from './components/CustomDateFilter';
+import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
+import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
 
 const {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
     FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} = constants;
@@ -162,8 +163,8 @@ const withFilterableColumns = ({
                     floatingFilter={true}
                     onGridEvent={onGridEvent}
                     frameworkComponents={{
-                        customDateFloatingFilter: CustomDateFilter,
-                        customDateFilter: DateFilter
+                        customDateFloatingFilter: CustomDateFloatingFilter,
+                        customDateFilter: CustomDateFilter
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}
                 />
