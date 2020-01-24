@@ -6,6 +6,7 @@ import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
 import Bundle from './components/bundle/Bundle';
+import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
@@ -68,6 +69,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                     ))
                 }
             </div>
+           <UploadIngestButton/>
         </div>
     );
 };
