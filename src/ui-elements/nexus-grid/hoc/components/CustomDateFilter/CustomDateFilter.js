@@ -4,7 +4,7 @@ import moment from 'moment';
 import './CustomDateFilter.scss';
 import NexusDateTimeWindowPicker
     from '../../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import constants from '../../../constants';
+import {DATEPICKER_LABELS} from '../../../constants';
 import './CustomDateFilter.scss';
 
 export class CustomDateFilter extends React.Component {
@@ -72,7 +72,7 @@ export class CustomDateFilter extends React.Component {
                         id:`${field}-filter__to`, defaultValue: endDate
                     }}
                     onChangeAny={this.onChange}
-                    labels={constants.DATEPICKER_LABELS}
+                    labels={DATEPICKER_LABELS}
                     allowClear={true}
                 />
             </div>

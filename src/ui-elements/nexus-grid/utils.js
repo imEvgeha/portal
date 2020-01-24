@@ -1,7 +1,5 @@
 import isEmpty from 'lodash.isempty';
 import {parseAdvancedFilter} from '../../containers/avail/service/RightsService';
-import moment from 'moment';
-import Constants from './constants';
 
 // grid filter
 export const filterBy = filterObject => {
