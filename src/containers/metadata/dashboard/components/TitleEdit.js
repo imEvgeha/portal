@@ -12,7 +12,9 @@ import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
+import {default as AtlaskitButton} from '@atlaskit/button';
 import {AvForm} from 'availity-reactstrap-validation';
+import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
@@ -23,10 +25,13 @@ import {
 import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
-import {CAST, getFilteredCrewList, getFilteredCastList} from '../../../../constants/metadata/configAPI';
+import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
+
+const MOVIDA = 'Movida';
+const VZ = 'VZ';
 
 const emptyTerritory = {
     locale: null,
@@ -405,6 +410,23 @@ class TitleEdit extends Component {
         }
     }
 
+    titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
+        titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
+            this.setState({
+                isLoading: false,
+                titleForm: response.data,
+                editedForm: response.data,
+                ratingForCreate: {},
+                isEditMode: switchEditMode && !this.state.isEditMode,
+                territoryMetadataActiveTab: CURRENT_TAB,
+                editorialMetadataActiveTab: CURRENT_TAB,
+                titleRankingActiveTab: CURRENT_TAB,
+            });
+        }).catch(() => {
+            console.error('Unable to load Title Data');
+        });
+    };
+
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm || Object.keys(this.state.ratingForCreate).length !== 0) {
             this.setState({
@@ -416,20 +438,7 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.addRatingForCreateIfExist(newAdditionalFields);
-            titleService.updateTitle(newAdditionalFields).then((response) => {
-                this.setState({
-                    isLoading: false,
-                    titleForm: response.data,
-                    editedForm: response.data,
-                    ratingForCreate: {},
-                    isEditMode: !this.state.isEditMode,
-                    territoryMetadataActiveTab: CURRENT_TAB,
-                    editorialMetadataActiveTab: CURRENT_TAB,
-                    titleRankingActiveTab: CURRENT_TAB,
-                });
-            }).catch(() => {
-                console.error('Unable to load Title Data');
-            });
+            this.titleUpdate(newAdditionalFields);
         } else {
             this.setState({
                 isEditMode: !this.state.isEditMode,
@@ -914,6 +923,41 @@ class TitleEdit extends Component {
         });
     }
 
+    renderSyncField = (name, titleModifiedAt, id, publishedAt) => {
+
+        const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
+        const buttonName = !id || !publishedAt ? 'Publish' : 'Sync';
+        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt));
+        const indicator = isDisabled ? 'success' : 'error';
+        return (<div className='nexus-c-title-edit__sync-container-field'>
+            <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
+            <div className='nexus-c-title-edit__sync-container-field-description'><b>{name}</b> Last updated: {lastUpdated}</div>
+            <AtlaskitButton appearance='primary' isDisabled={isDisabled} onClick={() => this.onSyncPublishClick(name)}>{buttonName}</AtlaskitButton>
+        </div>);
+    };
+
+    onSyncPublishClick = (name) => {
+        const syncToVz = name === VZ;
+        const syncToMovida = name === MOVIDA;
+        this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
+    };
+
+    renderSyncVzMovidaFields = () => {
+        const {legacyIds, modifiedAt} = this.state.titleForm;
+        const {vz, movida} = legacyIds || {};
+        const {vzId} = vz || {};
+        const {movidaId} = movida || {};
+        const vzPublishedAt = (vz || {}).publishedAt;
+        const movidaPublishedAt = (movida || {}).publishedAt;
+
+        return (
+            <>
+                {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
+                {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
+            </>
+        );
+    };
+
     render() {
         return (
             <EditPage>
@@ -930,9 +974,12 @@ class TitleEdit extends Component {
                                     :
                                     <Fragment>
                                         <Col>
+                                            <div className='nexus-c-title-edit__sync-container'>
+                                            {/*{this.renderSyncVzMovidaFields()}*/}
                                             <Can I="update" a="Metadata">
                                                 <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
                                             </Can>
+                                            </div>
                                         </Col>
                                     </Fragment>
                             }
