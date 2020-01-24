@@ -69,6 +69,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Original Air Date"
                                 id="territoryOriginalAirDate"
                                 onChange={date => this.props.handleChangeDate('originalAirDate', date)}
+                                isMetadata
                             />
                         </Col>
                     </Row>
@@ -78,6 +79,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Home Video Release Date"
                                 id="territoryHomeVideoReleaseDate"
                                 onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', date)}
+                                isMetadata
                             />
                         </Col>
                         <Col>
@@ -85,6 +87,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Avail Announce Date"
                                 id="territoryAvailAnnounceDate"
                                 onChange={date => this.props.handleChangeDate('availAnnounceDate', date)}
+                                isMetadata
                             />
                         </Col>
                     </Row>
@@ -94,6 +97,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Theatrical Release Date"
                                 id="territoryTheatricalReleaseDate"
                                 onChange={date => this.props.handleChangeDate('theatricalReleaseDate', date)}
+                                isMetadata
                             />
                         </Col>
                         <Col>
@@ -101,6 +105,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="EST Release Date"
                                 id="territoryESTReleaseDate"
                                 onChange={date => this.props.handleChangeDate('estReleaseDate', date)}
+                                isMetadata
                             />
                         </Col>
                     </Row>

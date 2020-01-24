@@ -8,5 +8,7 @@ export const TIMESTAMP_FORMAT = ' hh:mm:ss.SSS A';
 export const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
 export const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
 export const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
+// TODO: Temporary workaround for Metadata dates, since they accept off-spec date format; check PORT-1027
+export const METADATA_RELATIVE_DATE_FORMAT = 'YYYY-MM-DD';
 export const FILL_DATE_TIME = 59999; // 59 seconds and 999 milliseconds
 export const FILL_DATE = 86399999; // 23 hours 59 minutes 59 seconds and 999 milliseconds

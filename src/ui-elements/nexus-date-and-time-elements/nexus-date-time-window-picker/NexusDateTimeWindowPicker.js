@@ -12,17 +12,23 @@ import {
     SIMULCAST_TIME_LABEL,
     FILL_DATE,
     FILL_DATE_TIME,
+    SIMULCAST_DATE_FORMAT,
+    METADATA_RELATIVE_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT,
 } from '../constants';
+import CustomIntlProvider from '../../../layout/CustomIntlProvider';
 
 const NexusDateTimeWindowPicker = ({
     label,
     labels,
     isUsingTime,
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
+    isMetadata, // TODO: Temporary flag for metadata, since they accept off-spec date format; PORT-1027
     onChange,
     onChangeAny,
     startDateTimePickerProps,
     endDateTimePickerProps,
+    allowClear
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
 
@@ -42,14 +48,14 @@ const NexusDateTimeWindowPicker = ({
     useEffect(() => {
         validateStartDate(startDate);
         setEndDateError('');
-        startDate && onChangeAny({startDate});
+        onChangeAny({startDate});
         handleChange();
     }, [startDate]);
 
     useEffect(() => {
         validateEndDate(endDate);
         setStartDateError('');
-        endDate && onChangeAny({endDate});
+        onChangeAny({endDate});
         handleChange();
     }, [endDate]);
 
@@ -73,15 +79,22 @@ const NexusDateTimeWindowPicker = ({
 
     // Fills seconds and milliseconds for DateTime endDate or Hours, minutes, seconds and milliseconds for Date endDate
     const handleChangeEndDate = (date) => {
+        if(!date) {
+            setEndDate('');
+            return;
+        }
         let endDateWithFilledTime = moment(date).valueOf() + (isUsingTime ? FILL_DATE_TIME : FILL_DATE);
+
+        // TODO: Temporary; PORT-1027
+        const RELATIVE_FORMAT = isMetadata ? METADATA_RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT;
 
         if (isTimestamp) {
             endDateWithFilledTime = moment(endDateWithFilledTime).toISOString();
         } else {
             // .utc(false) makes sure that moment doesn't try to convert our date to local date
             endDateWithFilledTime = isSimulcast
-                ? moment(endDateWithFilledTime).utc(false).format('YYYY-MM-DD[T]HH:mm:ss[Z]')
-                : moment(endDateWithFilledTime).utc(true).format('YYYY-MM-DD[T]HH:mm:ss');
+                ? moment(endDateWithFilledTime).utc(false).format(SIMULCAST_DATE_FORMAT)
+                : moment(endDateWithFilledTime).utc(true).format(RELATIVE_FORMAT);
         }
 
         setEndDate(endDateWithFilledTime);
@@ -91,73 +104,79 @@ const NexusDateTimeWindowPicker = ({
     const handleChange = () => startDate && endDate && onChange({startDate, endDate});
 
     return (
-        <div className="nexus-c-date-time-window-picker">
-            {label &&
+        <CustomIntlProvider>
+            <div className="nexus-c-date-time-window-picker">
+                {label &&
                 <div className="nexus-c-date-time-window-picker__label">
                     {label}
                 </div>
-            }
-            <div className="nexus-c-date-time-window-picker__start-date">
-                {
-                    !!labels.length && (
-                        <div className="nexus-c-date-time-window-picker__label">
-                            {labels[0]}
-                        </div>
-                    )
                 }
-                {isUsingTime
-                    ? (
-                        <NexusSimpleDateTimePicker
-                            isSimulcast={isSimulcast}
-                            isTimestamp={isTimestamp}
-                            value={startDate}
-                            onChange={setStartDate}
-                            error={startDateError}
-                            {...startDateTimePickerProps}
-                        />
-                    )
-                    : (
-                        <NexusDatePicker
-                            value={startDate}
-                            isTimestamp={isTimestamp}
-                            onChange={setStartDate}
-                            error={startDateError}
-                            {...startDateTimePickerProps}
-                        />
-                    )
-                }
-            </div>
-            <div className="nexus-c-date-time-window-picker__end-date">
-                {
-                    !!labels.length && (
-                        <div className="nexus-c-date-time-window-picker__label">
-                            {labels[1]}
-                        </div>
-                    )
-                }
-                {isUsingTime
-                    ? (
-                        <NexusSimpleDateTimePicker
-                            isSimulcast={isSimulcast}
-                            isTimestamp={isTimestamp}
-                            value={endDate}
-                            onChange={handleChangeEndDate}
-                            error={endDateError}
-                            {...endDateTimePickerProps}
-                        />
-                    )
-                    : (
-                        <NexusDatePicker
-                            value={endDate}
-                            isTimestamp={isTimestamp}
-                            onChange={handleChangeEndDate}
-                            error={endDateError}
-                            {...endDateTimePickerProps}
-                        />
-                    )
-                }
-            </div>
-            {(!isTimestamp && isUsingTime) &&
+                <div className="nexus-c-date-time-window-picker__start-date">
+                    {
+                        !!labels.length && (
+                            <div className="nexus-c-date-time-window-picker__label">
+                                {labels[0]}
+                            </div>
+                        )
+                    }
+                    {isUsingTime
+                        ? (
+                            <NexusSimpleDateTimePicker
+                                isSimulcast={isSimulcast}
+                                isTimestamp={isTimestamp}
+                                value={startDate}
+                                onChange={setStartDate}
+                                error={startDateError}
+                                allowClear={allowClear}
+                                {...startDateTimePickerProps}
+                            />
+                        )
+                        : (
+                            <NexusDatePicker
+                                value={startDate}
+                                isTimestamp={isTimestamp}
+                                onChange={setStartDate}
+                                error={startDateError}
+                                allowClear={allowClear}
+                                {...startDateTimePickerProps}
+                            />
+                        )
+                    }
+                </div>
+                <div className="nexus-c-date-time-window-picker__end-date">
+                    {
+                        !!labels.length && (
+                            <div className="nexus-c-date-time-window-picker__label">
+                                {labels[1]}
+                            </div>
+                        )
+                    }
+                    {isUsingTime
+                        ? (
+                            <NexusSimpleDateTimePicker
+                                isSimulcast={isSimulcast}
+                                isTimestamp={isTimestamp}
+                                value={endDate}
+                                onChange={handleChangeEndDate}
+                                error={endDateError}
+                                allowClear={allowClear}
+                                {...endDateTimePickerProps}
+                            />
+                        )
+                        : (
+                            <NexusDatePicker
+                                value={endDate}
+                                isTimestamp={isTimestamp}
+                                onChange={handleChangeEndDate}
+                                error={endDateError}
+                                allowClear={allowClear}
+                                isMetadata={isMetadata}
+                                {...endDateTimePickerProps}
+                            />
+                        )
+                    }
+                </div>
+                {(!isTimestamp && isUsingTime) &&
                 <div className="nexus-c-date-time-picker__type-select">
                     <label className="nexus-c-date-time-picker__label">
                         Select Type
@@ -171,8 +190,9 @@ const NexusDateTimeWindowPicker = ({
                         onChange={type => setIsSimulcast(type.value)}
                     />
                 </div>
-            }
-        </div>
+                }
+            </div>
+        </CustomIntlProvider>
     );
 };
 
@@ -180,23 +200,27 @@ NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
     labels: PropTypes.array,    //example: ['From', 'To']
     isTimestamp: PropTypes.bool,
-    isUsingTime: PropTypes.bool.isRequired,
+    isMetadata: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeAny: PropTypes.func,     //when any date is changed (returns blank dates as well)
+    isUsingTime: PropTypes.bool.isRequired,
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
     endDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }).isRequired,
+    allowClear: PropTypes.bool
 };
 
 NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
     isTimestamp: true,
+    isMetadata: false,
     onChangeAny: () => null,
     onChange: () => null,
+    allowClear: false
 };
 
 export default NexusDateTimeWindowPicker;

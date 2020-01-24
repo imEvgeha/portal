@@ -2,6 +2,7 @@ import React from 'react';
 import { ModalFooter, ModalHeader, Modal, Button, ModalBody, Alert, Row, Col, Label, Container, Progress, FormGroup } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
+import {Checkbox} from '@atlaskit/checkbox';
 import '../Title.scss';
 import { titleService } from '../../service/TitleService';
 import connect from 'react-redux/es/connect/connect';
@@ -24,6 +25,8 @@ class TitleCreate extends React.Component {
             isReleaseYearRequired: true,
             isSeasonNumberRequired: false,
             isEpisodeNumberRequired: false,
+            isSyncVZ: false,
+            isSyncMovida: false,
 
             titleForm: {
                 title: '',
@@ -112,7 +115,8 @@ class TitleCreate extends React.Component {
         this.setState({ loading: true, errorMessage: '' });
 
         let title = this.getTitleWithoutEmptyField();
-        titleService.createTitle(title).then(() => {
+        const {isSyncVZ, isSyncMovida} = this.state;
+        titleService.createTitle(title, isSyncVZ, isSyncMovida).then(() => {
             this.form && this.form.reset();
             this.cleanFields();
             this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false });
@@ -286,6 +290,28 @@ class TitleCreate extends React.Component {
         }
     };
 
+    renderSyncCheckBoxes = () => {
+        const {isSyncVZ, isSyncMovida} = this.state;
+        return (
+            <Row>
+                <Col>
+                    <Checkbox
+                        id='syncVZ'
+                        label='Publish to VZ'
+                        onChange={(event) => this.setState({isSyncVZ: event.currentTarget.checked})}
+                        isChecked={isSyncVZ}
+                    />
+                    <Checkbox
+                        id='syncMovida'
+                        label='Publish to Movida'
+                        onChange={(event) => this.setState({isSyncMovida: event.currentTarget.checked})}
+                        isChecked={isSyncMovida}
+                    />
+                </Col>
+            </Row>
+        );
+    };
+
     render() {
         const { MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH, } = constants;
         return (
@@ -392,6 +418,7 @@ class TitleCreate extends React.Component {
                                         </Col>
                                     </Row> : null
                                     }
+                                    {/*{this.renderSyncCheckBoxes()}*/}
                                     {
                                         this.state.loading ?
                                             <Progress striped color="success" value="100">Creating...</Progress>

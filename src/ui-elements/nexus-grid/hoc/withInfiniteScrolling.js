@@ -1,27 +1,11 @@
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
-import isEmpty from 'lodash.isempty';
 import omit from 'lodash.omit';
 import usePrevious from '../../../util/hooks/usePrevious';
-import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
+    MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {filterBy, sortBy} from '../utils';
-
-const DEFAULT_HOC_PROPS = [
-    'params',
-    'setTotalCount',
-    'isDatasourceEnabled',
-    'successDataFetchCallback',
-    'selectedRows',
-];
-
-const ROW_BUFFER = 10;
-const PAGINATION_PAGE_SIZE = 100;
-const CACHE_OVERFLOW_SIZE = 2;
-const MAX_CONCURRENT_DATASOURCE_REQUEST = 1;
-const MAX_BLOCKS_IN_CACHE = 100;
-const ROW_MODEL_TYPE = 'infinite';
 
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS, 
@@ -141,7 +125,7 @@ const withInfiniteScrolling = ({
                 GRID_EVENTS.FIRST_DATA_RENDERED,
                 GRID_EVENTS.SELECTION_CHANGED,
                 GRID_EVENTS.FILTER_CHANGED,
-            ]; 
+            ];
             const {api, type} = data || {};
             if (type === GRID_EVENTS.READY && !gridApi) {
                 setGridApi(api);

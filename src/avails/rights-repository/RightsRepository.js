@@ -23,14 +23,12 @@ import {
 import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import UiElements from '../../ui-elements';
+import {NexusGrid, NexusTableToolbar} from '../../ui-elements';
 import {filterBy} from '../../ui-elements/nexus-grid/utils';
 import usePrevious from '../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from './util/indicator';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
-
-const {NexusGrid, NexusTableToolbar} = UiElements;
 
 const RightsRepositoryTable = compose(
     withSideBar(),
