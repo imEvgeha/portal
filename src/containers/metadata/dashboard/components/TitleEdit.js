@@ -30,6 +30,9 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
 
+const MOVIDA = 'Movida';
+const VZ = 'VZ';
+
 const emptyTerritory = {
     locale: null,
     availAnnounceDate: null,
@@ -934,8 +937,8 @@ class TitleEdit extends Component {
     };
 
     onSyncPublishClick = (name) => {
-        const syncToVz = name.toLowerCase() === 'vz';
-        const syncToMovida = name.toLowerCase() === 'movida';
+        const syncToVz = name === VZ;
+        const syncToMovida = name === MOVIDA;
         this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
     };
 
@@ -949,8 +952,8 @@ class TitleEdit extends Component {
 
         return (
             <>
-                {this.renderSyncField('VZ', modifiedAt, vzId, vzPublishedAt)}
-                {this.renderSyncField('Movida', modifiedAt, movidaId, movidaPublishedAt)}
+                {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
+                {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
             </>
         );
     };
