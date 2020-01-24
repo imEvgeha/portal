@@ -31,7 +31,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
                     field,
                     headerName,
                     colId: colId || field,
-                    width: 115,
+                    width: 155,
                     valueFormatter: valueFormatter(col),
                     cellStyle: params => cellStyling(params, focusedRight, col),
                     tooltipComponent: 'customTooltip',

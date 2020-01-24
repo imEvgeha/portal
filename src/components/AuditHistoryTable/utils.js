@@ -3,6 +3,9 @@ import Constants from './Constants';
 import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
 import jsonpatch from 'fast-json-patch';
+import {store} from '../../index';
+import {getDateFormatBasedOnLocale} from '../../util/Common';
+import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
 
 const { dataTypes: {DATE, AUDIO, RATING, METHOD},
     colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD,
@@ -11,14 +14,19 @@ const { dataTypes: {DATE, AUDIO, RATING, METHOD},
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
 export const valueFormatter = ({colId, field, dataType}) => {
+    const {locale} = store.getState().localeReducer;
+
+    // Create date placeholder based on locale
+    const dateFormat = `${getDateFormatBasedOnLocale(locale)} ${TIMESTAMP_FORMAT}`;
+
     switch (dataType) {
         case DATE:
             return (params) => {
                 const {data = {}} = params || {};
-                if ((data[field])) {
-                    const date = new Date(data[field]);
-                    return isNaN(date.getTime()) ? data[field] : moment(date).format('L');
-                }
+                const {[field]: date = ''} = data || {};
+                const isUTC = typeof date === 'string' && date.endsWith('Z');
+
+                return moment(date).isValid() ? moment(date).utc(!isUTC).format(dateFormat) : '';
             };
         case RATING:
             return (params) => {

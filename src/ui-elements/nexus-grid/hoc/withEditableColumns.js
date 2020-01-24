@@ -113,10 +113,10 @@ const withEditableColumns = ({
             const options = (isObject(selectValues) && selectValues[field]) || [];
             const parsedOptions = options.filter(Boolean).map(item => {
                 if (isObject(item)) {
-                    const {value, id} = item;
+                    const {value, id, countryCode} = item;
                     return {
-                        label: value,
-                        value,
+                        label: value || countryCode,
+                        value: value || countryCode,
                         key: id,
                     };
                 }
