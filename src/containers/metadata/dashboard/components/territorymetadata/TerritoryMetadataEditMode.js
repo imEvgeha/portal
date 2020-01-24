@@ -59,7 +59,7 @@ class TerritoryMetadataEditMode extends Component {
                                 <NexusDatePicker
                                     label="Home Video Release Date"
                                     id="territoryHomeVideoReleaseDate"
-                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    value={this.getValidDate(this.props.data.homeVideoReleaseDate)}
                                     onChange={date => this.props.handleChangeDate('homeVideoReleaseDate', 'territoryHomeVideoReleaseDate', date, this.props.data)}
                                 />
                             </Col>
@@ -67,7 +67,7 @@ class TerritoryMetadataEditMode extends Component {
                                 <NexusDatePicker
                                     label="Avail Announce Date"
                                     id="territoryAvailAnnounceDate"
-                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    value={this.getValidDate(this.props.data.availAnnounceDate)}
                                     onChange={date => this.props.handleChangeDate('availAnnounceDate', 'territoryAvailAnnounceDate', date, this.props.data)}
                                 />
                             </Col>
@@ -77,7 +77,7 @@ class TerritoryMetadataEditMode extends Component {
                                 <NexusDatePicker
                                     label="Theatrical Release Date"
                                     id="territoryTheatricalReleaseDate"
-                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    value={this.getValidDate(this.props.data.theatricalReleaseDate)}
                                     onChange={date => this.props.handleChangeDate('theatricalReleaseDate', 'territoryTheatricalReleaseDate', date, this.props.data)}
                                 />
                             </Col>
@@ -85,7 +85,7 @@ class TerritoryMetadataEditMode extends Component {
                                 <NexusDatePicker
                                     label="EST Release Date"
                                     id="territoryESTReleaseDate"
-                                    value={this.getValidDate(this.props.data.originalAirDate)}
+                                    value={this.getValidDate(this.props.data.estReleaseDate)}
                                     onChange={date => this.props.handleChangeDate('estReleaseDate', 'territoryESTReleaseDate', date, this.props.data)}
                                 />
                             </Col>
