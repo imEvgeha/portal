@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import Constants from '../../constants';
 import Email from '../../../../assets/email.svg';
 import File from '../../../../assets/file.svg';
-import StatusInfo from '../../../../assets/status-info.svg';
 import './IngestTitle.scss';
 
-const IngestTitle = ({provider, link, ingestType}) => {
+const IngestTitle = ({provider, link, attachmentType}) => {
     const fileName = link.split('/').pop();
-    const {ingestTypes: {UPLOAD}} = Constants;
+    const {attachmentTypes: {EXCEL}} = Constants;
     return (
         <div className='nexus-c-ingest-title'>
             <div className='nexus-c-ingest-title__details'>
                 {
-                    ingestType === UPLOAD ? <File className='nexus-c-ingest-title__type'/> : (
+                    attachmentType === EXCEL ? <File className='nexus-c-ingest-title__type'/> : (
                         <React.Fragment>
                             <Email className='nexus-c-ingest-title__type'/>
                             <span className='nexus-c-ingest-title__provider'>{provider}</span>
@@ -22,7 +21,6 @@ const IngestTitle = ({provider, link, ingestType}) => {
                     )
                 }
                 <span title={fileName} className='nexus-c-ingest-title__filename'>{fileName}</span>
-                <StatusInfo/>
             </div>
         </div>
     );

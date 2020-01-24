@@ -11,13 +11,17 @@ export default {
         total: 'Rights',
         created: 'Created',
         updated: 'Updated',
+        fatal: 'Fatals',
         pending: 'Pending',
-        errors: 'Error',
-        fatal: 'Fatal'
+        errors: 'Errors'
     },
     ingestTypes: {
         EMAIL: 'Email',
         UPLOAD: 'Upload'
+    },
+    attachmentTypes: {
+        EXCEL: 'Excel',
+        EMAIL: 'Email'
     },
     filterKeys: {
         RECEIVED_FROM: 'receivedFrom',
