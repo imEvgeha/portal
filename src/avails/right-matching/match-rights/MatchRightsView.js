@@ -29,6 +29,7 @@ import {
 } from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {createSchemaForColoring, addCellClass} from '../../utils';
+import usePrevious from '../../../util/hooks/usePrevious';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -56,6 +57,8 @@ function MatchRightView({
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const [selectedMatchedRightIds, setSelectedMatchedRightIds] = useState([rightId, ...matchedRightIds.split(',')]);
     const [cellColoringSchema, setCellColoringSchema] = useState(); 
+    const previousMatchedRights = usePrevious(matchedRights);
+    const previousSelectedMatchedRightIds = usePrevious(selectedMatchedRightIds);
 
     // DOP Integration
     useDOPIntegration(null, 'rightMatchingDOP');
@@ -77,7 +80,9 @@ function MatchRightView({
 
     // fetch combined rights
     useEffect(() => {
-        if (matchedRights.length) {
+        if (!isEqual(previousMatchedRights, matchedRights)
+            || !isEqual(previousSelectedMatchedRightIds, selectedMatchedRightIds)
+        ) {
             setCellColoringSchema(createSchemaForColoring([focusedRight, ...matchedRights], columnDefs));
             // matchedRightId from url should be correct one.
             fetchCombinedRight(selectedMatchedRightIds);
