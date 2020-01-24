@@ -4,6 +4,7 @@ import {ConnectedRouter} from 'connected-react-router';
 import './AppLayout.scss';
 import {IfEmbedded} from './../util/Common';
 import Navigation from '../navigation/NexusNavigation';
+import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import DOP from '../util/DOP';
 import routes from '../routes';
 
@@ -17,6 +18,7 @@ const AppLayout = ({history}) => (
                 <Navigation />
             </IfEmbedded>
             <div className="nexus-c-app-layout__main">
+                <NexusBreadcrumb/>
                 {routes}
             </div>
          </div>
