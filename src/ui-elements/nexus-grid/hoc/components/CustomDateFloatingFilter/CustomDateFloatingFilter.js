@@ -8,9 +8,11 @@ import './CustomDateFloatingFilter.scss';
 class CustomDateFloatingFilter extends React.Component {
     constructor(props) {
         super(props);
+        const { column: { colDef: {field}}, currentParentModel} = props;
+        const {filter = {}} = currentParentModel() || {};
         this.state = {
-            from: props.initialFilters.from,
-            to: props.initialFilters.to,
+            from: filter[`${field}From`] || '',
+            to: filter[`${field}To`] || ''
         };
     }
 
@@ -37,13 +39,5 @@ class CustomDateFloatingFilter extends React.Component {
         );
     }
 }
-
-CustomDateFloatingFilter.propTypes = {
-    initialFilters: PropTypes.object,
-};
-
-CustomDateFloatingFilter.defaultProps = {
-    initialFilters: {},
-};
 
 export default CustomDateFloatingFilter;

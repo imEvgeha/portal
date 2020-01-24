@@ -19,6 +19,7 @@ export class CustomDateFilter extends React.Component {
     }
 
     onChange = dateRange => {
+        if (!dateRange) return;
         const {filterChangedCallback} = this.props;
         const {startDate, endDate} = this.state.dates;
         const keys = Object.keys(dateRange);

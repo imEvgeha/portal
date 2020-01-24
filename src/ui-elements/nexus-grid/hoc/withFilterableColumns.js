@@ -76,7 +76,6 @@ const withFilterableColumns = ({
                       to: filters[`${columnDef.field}To`]
                     };
                     columnDef.floatingFilterComponent = 'customDateFloatingFilter';
-                    columnDef.floatingFilterComponentParams = { initialFilters };
                     columnDef.filter = 'customDateFilter';
                     columnDef.filterParams = { initialFilters };
                 }
