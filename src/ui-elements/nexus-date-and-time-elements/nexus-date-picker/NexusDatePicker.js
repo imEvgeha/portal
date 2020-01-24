@@ -8,7 +8,11 @@ import moment from 'moment';
 import {useIntl} from 'react-intl';
 import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../util/Common';
 import './NexusDatePicker.scss';
-import {RELATIVE_DATE_FORMAT, SIMULCAST_DATE_FORMAT} from '../constants';
+import {
+    RELATIVE_DATE_FORMAT,
+    SIMULCAST_DATE_FORMAT,
+    METADATA_RELATIVE_DATE_FORMAT,
+} from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
 const NexusDatePicker = ({
@@ -22,6 +26,7 @@ const NexusDatePicker = ({
     error,
     label,
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
+    isMetadata, // TODO: Temporary flag for metadata, since they accept off-spec date format; PORT-1027
     allowClear,
     ...restProps
 }) => {
@@ -43,16 +48,19 @@ const NexusDatePicker = ({
         if(date){
             setDate(date);
             onChange(isTimestamp
-                ? moment(moment.utc(date)).toISOString()
+                ? moment(date).toISOString()
                 : `${moment(date).format(isSimulcast
                     ? SIMULCAST_DATE_FORMAT
-                    : RELATIVE_DATE_FORMAT)
+                    : RELATIVE_FORMAT)
                 }`);
         } else {
             setDate('');
             onChange('');
         }
     };
+
+    // TODO: Temporary; PORT-1027
+    const RELATIVE_FORMAT = isMetadata ? METADATA_RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT;
 
     const DatePickerComponent = (isReadOnly) => (
         <>
@@ -121,6 +129,7 @@ NexusDatePicker.propTypes = {
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     hideLabel: PropTypes.bool,
+    isMetadata: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -135,6 +144,7 @@ NexusDatePicker.defaultProps = {
     isReadOnly: false,
     isTimestamp: false,
     hideLabel: false,
+    isMetadata: false,
     onConfirm: () => null,
     allowClear: false,
 };
