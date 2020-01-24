@@ -16,6 +16,19 @@ const onViewTitleClick = (response) => {
     window.open(url, '_blank');
 };
 
+const getSyncQueryParams = (syncToVZ, syncToMovida) => {
+    if(syncToVZ || syncToMovida) {
+        if(syncToVZ && syncToMovida) {
+            return 'vz,movida';
+        } else if(syncToVZ) {
+            return 'vz';
+        } else {
+            return 'movida';
+        }
+    }
+    return null;
+};
+
 export const titleService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -37,8 +50,11 @@ export const titleService = {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles' + prepareSortMatrixParamTitles(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
 
-    createTitle: (title) => {
-        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
+    createTitle: (title, syncToVZ, syncToMovida) => {
+        const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
+
+        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
     },
     createTitleWithoutErrorModal: (title) => {
         const httpNoErrorModal = Http.create({
@@ -50,8 +66,11 @@ export const titleService = {
         });
         return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
     },
-    updateTitle: (title) => {
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title);
+    updateTitle: (title, syncToVZ, syncToMovida) => {
+        const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
+
+        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title, {params});
     },
     getTitleById: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`);
