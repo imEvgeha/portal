@@ -13,6 +13,7 @@ import {
     SIMULCAST_DATE_FORMAT,
     METADATA_RELATIVE_DATE_FORMAT,
 } from '../constants';
+import ClearButton from '../clear-button/ClearButton';
 
 const NexusDatePicker = ({
     id,
@@ -26,6 +27,7 @@ const NexusDatePicker = ({
     label,
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     isMetadata, // TODO: Temporary flag for metadata, since they accept off-spec date format; PORT-1027
+    allowClear,
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
@@ -42,6 +44,21 @@ const NexusDatePicker = ({
     // Create date placeholder based on locale
     const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
+    const onDateChange = date => {
+        if(date){
+            setDate(date);
+            onChange(isTimestamp
+                ? moment(date).toISOString()
+                : `${moment(date).format(isSimulcast
+                    ? SIMULCAST_DATE_FORMAT
+                    : RELATIVE_FORMAT)
+                }`);
+        } else {
+            setDate('');
+            onChange('');
+        }
+    };
+
     // TODO: Temporary; PORT-1027
     const RELATIVE_FORMAT = isMetadata ? METADATA_RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT;
 
@@ -55,25 +72,18 @@ const NexusDatePicker = ({
             {isReadOnly
                 ? parseSimulcast(value, dateFormat)
                 : (
-                    <DatePicker
-                        id={id}
-                        locale={locale}
-                        placeholder={dateFormat}
-                        onChange={date => {
-                            setDate(date);
-                            onChange(
-                                isTimestamp
-                                    ? moment(date).toISOString()
-                                    : `${moment(date).format(isSimulcast
-                                        ? SIMULCAST_DATE_FORMAT
-                                        : RELATIVE_FORMAT)
-                                    }`
-                            );
-                        }}
-                        defaultValue={moment(value).isValid() ? value : ''}
-                        value={date}
-                        {...restProps}
-                    />
+                    <div className='nexus-c-date-picker__date-clear-wrapper'>
+                        <DatePicker
+                            id={id}
+                            locale={locale}
+                            placeholder={dateFormat}
+                            onChange={onDateChange}
+                            defaultValue={moment(value).isValid() ? value : ''}
+                            value={date}
+                            {...restProps}
+                        />
+                        {allowClear && <ClearButton onClear={() => onDateChange('')}/>}
+                    </div>
                 )
             }
             {error &&
@@ -123,6 +133,7 @@ NexusDatePicker.propTypes = {
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    allowClear: PropTypes.bool,
 };
 
 NexusDatePicker.defaultProps = {
@@ -135,6 +146,7 @@ NexusDatePicker.defaultProps = {
     hideLabel: false,
     isMetadata: false,
     onConfirm: () => null,
+    allowClear: false,
 };
 
 export default NexusDatePicker;

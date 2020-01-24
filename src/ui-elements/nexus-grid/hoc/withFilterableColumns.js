@@ -1,53 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import isEmpty from 'lodash.isempty';
-import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
 import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
-import {GRID_EVENTS} from '../constants';
+import {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
+    FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} from '../constants';
 import usePrevious from '../../../util/hooks/usePrevious';
-
-const DEFAULT_HOC_PROPS = [
-    'initialFilter',
-    'filterableColumns',
-    'notFilterableColumns',
-    'mapping',
-    'selectValues'
-];
-
-const FILTERABLE_DATA_TYPES = [
-    'string',
-    'integer',
-    'double',
-    'boolean',
-    'select',
-    'multiselect',
-    'territoryType',
-    'year',
-    'duration',
-];
-
-const NOT_FILTERABLE_COLUMNS = ['id'];
-
-const DEFAULT_FILTER_PARAMS = {
-    filterOptions: ['equals'],
-    suppressAndOrCondition: true,
-    debounceMs: 1000,
-};
-
-const FILTER_TYPE = {
-    boolean: 'agSetColumnFilter',
-    string: 'agTextColumnFilter',
-    duration: 'agTextColumnFilter',
-    integer: 'agNumberColumnFilter',
-    double: 'agNumberColumnFilter',
-    year: 'agNumberColumnFilter',
-    select: 'agSetColumnFilter',
-    multiselect: 'agSetColumnFilter',
-    territoryType: 'agSetColumnFilter',
-};
+import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
+import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -60,7 +22,7 @@ const withFilterableColumns = ({
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
-        const filters = props.initialFilter || initialFilter;
+        const filters = props.initialFilter || initialFilter || {};
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
         const previousFilters = usePrevious(filters);
@@ -75,19 +37,15 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
                 Object.keys(filters).forEach(key => {
-                    const suffixes = ['Match', 'To', 'From'];
-                    const keySuffix = suffixes.find(suffix => key.includes(suffix));
-                    const updatedKey = keySuffix ? key.slice(0, key.indexOf(keySuffix)) : key;
-                    const {dataType} = (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === updatedKey)) || {};
-                    const filterInstance = gridApi.getFilterInstance(updatedKey);
-
+                    const field = key.replace(/Match/, '');
+                    const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
+                        const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                         if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
                             return;
                         }
-
                         filterInstance.setModel({
                             type: 'equals',
                             filter: filters[key],
@@ -98,7 +56,7 @@ const withFilterableColumns = ({
                 setIsDatasourceEnabled(true);
             } else if (isEmpty(filters)) {
                 setIsDatasourceEnabled(true);
-            } 
+            }
         }, [gridApi, mapping]);
 
         function updateColumnDefs(columnDefs) {
@@ -112,7 +70,15 @@ const withFilterableColumns = ({
                     columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     columnDef.filterParams = setFilterParams(dataType, columnDef.field);
                 }
-
+                if(dataType === 'datetime') {
+                    const initialFilters = {
+                      from: filters[`${columnDef.field}From`],
+                      to: filters[`${columnDef.field}To`]
+                    };
+                    columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                    columnDef.filter = 'customDateFilter';
+                    columnDef.filterParams = { initialFilters };
+                }
                 return columnDef;
             });
 
@@ -127,7 +93,7 @@ const withFilterableColumns = ({
                 GRID_EVENTS.FIRST_DATA_RENDERED,
                 GRID_EVENTS.SELECTION_CHANGED,
                 GRID_EVENTS.FILTER_CHANGED,
-            ]; 
+            ];
 
             if (type === GRID_EVENTS.READY) {
                 setGridApi(api);
@@ -155,18 +121,17 @@ const withFilterableColumns = ({
                         ...DEFAULT_FILTER_PARAMS,
                         values: [false, true]
                     };
-                case 'string':
-                case 'integer':
-                case 'double':
-                case 'year':
-                case 'duration':
-                    return DEFAULT_FILTER_PARAMS;
                 case 'select':
                 case 'territoryType':
                 case 'multiselect': 
                     return {
                         ...DEFAULT_FILTER_PARAMS, 
                         values: getFilterOptions(field),
+                    };
+                case 'datetime':
+                    return {
+                        ...DEFAULT_FILTER_PARAMS,
+                        filterOptions: ['inRange'],
                     };
                 default:
                     return DEFAULT_FILTER_PARAMS;
@@ -194,6 +159,10 @@ const withFilterableColumns = ({
                     columnDefs={filterableColumnDefs}
                     floatingFilter={true}
                     onGridEvent={onGridEvent}
+                    frameworkComponents={{
+                        customDateFloatingFilter: CustomDateFloatingFilter,
+                        customDateFilter: CustomDateFilter
+                    }}
                     isDatasourceEnabled={isDatasourceEnabled}
                 />
             ) : null
