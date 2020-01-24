@@ -76,7 +76,7 @@ const RightsRepository = props => {
             const filterInstance = gridApi.getFilterInstance('status');
             let values;
             if (!status || status === 'Rights') {
-                const {options} = (Array.isArray(mapping)
+                const {options = []} = (Array.isArray(mapping)
                     && mapping.find(({javaVariableName}) => javaVariableName === 'status')
                 ) || {};
                 values = options;
