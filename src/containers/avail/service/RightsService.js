@@ -3,11 +3,10 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import {store} from '../../../index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
-import Constants from './Constants';
+import {STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS, MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
+    ARRAY_OF_OBJECTS} from './Constants';
 
 const http = Http.create();
-const {STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS, MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
-    ARRAY_OF_OBJECTS} = Constants;
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
