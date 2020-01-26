@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {getIngests, getSelectedIngest, getTotalIngests} from './ingestSelectors';
+import {getIngests, getSelectedIngest, getSelectedAttachmentId, getTotalIngests} from './ingestSelectors';
 import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
@@ -9,7 +9,7 @@ import Bundle from './components/bundle/Bundle';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 
-const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, ingestClick}) => {
+const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) => {
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
@@ -55,14 +55,14 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                     provider={provider}
                                     ingestType={ingestType}
                                     ingestClick={ingestClick}
-                                    selectedIngest={selectedIngest}
+                                    selectedAttachmentId={selectedAttachmentId}
                         />) : ( (attachments.length === 1) &&
                             (<Ingest key={id}
                                      attachment={attachments[0]}
                                      received={received}
                                      provider={provider}
                                      ingestType={ingestType}
-                                     ingestClick={() => ingestClick({availHistoryId: id})}
+                                     ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachments[0].id})}
                                      selected={selectedIngest && (selectedIngest.id === id)}
                             />))
                     ))
@@ -76,6 +76,7 @@ IngestPanel.propTypes = {
     ingests: PropTypes.array,
     totalIngests: PropTypes.number,
     selectedIngest: PropTypes.object,
+    selectedAttachmentId: PropTypes.string,
     onFiltersChange: PropTypes.func,
     fetchNextPage: PropTypes.func,
     ingestClick: PropTypes.func,
@@ -85,6 +86,7 @@ IngestPanel.defaultProps = {
     ingests: [],
     totalIngests: 0,
     selectedIngest: {},
+    selectedAttachmentId: '',
     onFiltersChange: () => null,
     fetchNextPage: () => null,
     ingestClick: () => null,
@@ -95,13 +97,14 @@ const mapStateToProps = () => {
         ingests: getIngests(state),
         totalIngests: getTotalIngests(state),
         selectedIngest: getSelectedIngest(state),
+        selectedAttachmentId: getSelectedAttachmentId(state),
     });
 };
 
 const mapDispatchToProps = (dispatch) => ({
     onFiltersChange: payload => dispatch(fetchIngests(payload)),
     fetchNextPage: () => dispatch(fetchNextPage()),
-    ingestClick: payload => dispatch(selectIngest(payload)),
+    ingestClick: (payload) => dispatch(selectIngest(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IngestPanel);

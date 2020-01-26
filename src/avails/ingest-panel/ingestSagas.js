@@ -70,7 +70,7 @@ function* filterRightsByStatus({payload}) {
 
 function* selectIngest({payload}) {
     const {availHistoryId, attachmentId} = payload || {};
-    let ingestId = availHistoryId; 
+    let ingestId = availHistoryId;
     const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [INGEST_HISTORY_ATTACHMENT_IDS]: attachmentId};
 
     if (ingestId) {
@@ -88,6 +88,11 @@ function* selectIngest({payload}) {
                     filter: INGEST_HISTORY_ATTACHMENT_IDS,
                 }
             });
+        } else {
+            yield put({
+                type: actionTypes.UPDATE_SELECTED_ATTACHMENT_ID,
+                payload: attachmentId,
+            });
         }
     } else {
         const params = new URLSearchParams(window.location.search.substring(1));
@@ -95,7 +100,7 @@ function* selectIngest({payload}) {
     }
     if (ingestId) {
         let selectedIngest = yield select(getIngestById, ingestId);
-        if(!selectedIngest){
+        if (!selectedIngest) {
             const response = yield call(historyService.getHistory, ingestId);
             selectedIngest = response.data;
         }
@@ -106,11 +111,34 @@ function* selectIngest({payload}) {
     }
 }
 
+
+function* deselectIngest() {
+    const url = `${window.location.pathname}`;
+    yield put(push(URL.keepEmbedded(url)));
+
+    yield put({
+        type: REMOVE_RIGHTS_FILTER,
+        payload: {
+            filter: INGEST_HISTORY_ATTACHMENT_IDS,
+        }
+    });
+    yield put({
+        type: REMOVE_RIGHTS_FILTER,
+        payload: {
+            filter: AVAIL_HISTORY_ID,
+        }
+    });
+    yield put({
+        type: actionTypes.CLEAR_SELECTED_INGEST
+    });
+}
+
 export default function* ingestWatcher() {
     yield all([
         takeLatest(actionTypes.FETCH_INGESTS, fetchIngests),
         takeLatest(actionTypes.FETCH_NEXT_PAGE, fetchNextPage),
         takeLatest(actionTypes.FILTER_RIGHTS_BY_STATUS, filterRightsByStatus),
         takeLatest(actionTypes.SELECT_INGEST, selectIngest),
+        takeLatest(actionTypes.DESELECT_INGEST, deselectIngest),
     ]);
 }
