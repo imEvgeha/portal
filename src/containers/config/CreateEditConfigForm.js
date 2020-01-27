@@ -18,6 +18,7 @@ import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 import DelayedOptions from './custom-types/DelayedOptions';
 import {Can} from '../../ability';
+import {Field as AkField} from '@atlaskit/form';
 
 const renderer = (
     field,
@@ -79,19 +80,25 @@ const renderer = (
             );
         case 'timestamp':
             return (
-                <NexusDateTimePicker
-                    label={label}
-                    id={id}
-                    value={value || defaultValue || ''}
-                    onChange={value => {
-                        onChange(id, value);
-                    }}
-                    disableViewMode={true}
-                    hideIcon={field.disabled}
-                    isReadOnly={field.disabled}
-                    isDisabled={field.disabled}
-                    isTimestamp={true}
-                />
+                <AkField label={label} name={id} key={id}>
+                    {
+                        () => <Form>
+
+                        <NexusDateTimePicker
+                            id={id}
+                            value={value || defaultValue || ''}
+                            onChange={value => {
+                                onChange(id, value);
+                            }}
+                            isViewModeDisabled={true}
+                            hideIcon={field.disabled}
+                            isReadOnly={field.disabled}
+                            isDisabled={field.disabled}
+                            isTimestamp={true}
+                        />
+                        </Form>
+                    }
+                </AkField>
             );
         case 'select':
         case 'multiselect':

@@ -19,7 +19,7 @@ const NexusDateTimePicker = ({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
-    disableViewMode, //show atlaskit component instead of view mode
+    isViewModeDisabled, //show atlaskit component instead of view mode
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
     onChange,
     onConfirm,
@@ -54,7 +54,7 @@ const NexusDateTimePicker = ({
                     {label}
                 </div>
             }
-            {isReadOnly && !disableViewMode
+            {isReadOnly && !isViewModeDisabled
                 ? getDisplayDate(value)
                 : (
                     <>
@@ -93,7 +93,7 @@ const NexusDateTimePicker = ({
 
     return (
         <>
-            {isWithInlineEdit && !isReadOnly && !disableViewMode
+            {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
                 ? (
                     <InlineEdit
                         readView={() => (
@@ -136,7 +136,7 @@ NexusDateTimePicker.propTypes = {
     value: PropTypes.string,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
-    disableViewMode: PropTypes.bool,
+    isViewModeDisabled: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     hideLabel: PropTypes.bool,
     onConfirm: PropTypes.func,
@@ -149,7 +149,7 @@ NexusDateTimePicker.defaultProps = {
     value: '',
     isWithInlineEdit: false,
     isReadOnly: false,
-    disableViewMode: false,
+    isViewModeDisabled: false,
     isTimestamp: false,
     hideLabel: false,
     onConfirm: () => null,
