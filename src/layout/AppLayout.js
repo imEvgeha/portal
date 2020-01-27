@@ -18,7 +18,7 @@ const AppLayout = ({history}) => (
                 <Navigation />
             </IfEmbedded>
             <div className="nexus-c-app-layout__main">
-                <NexusBreadcrumb/>
+                <NexusBreadcrumb />
                 {routes}
             </div>
          </div>
