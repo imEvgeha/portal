@@ -8,7 +8,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import RepeatingFormField from './custom-types/Repeats';
 
 import RepeatingField from './custom-types/RepeatsPrimitives';
-
+import NexusDateTimePicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import {isObject} from '../../util/Common';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import {cache} from './EndpointContainer';
@@ -38,7 +38,7 @@ const renderer = (
     const unidentifiedLabel = misc.unidentifiedLabel;
     const noItemsMessage = misc.noItemsMessage;
     const idAttribute = misc.idAttribute;
-
+    console.log('label:', label);
     switch (type) {
         case 'array':
             Comp = dynamic === true ? ObjectKey : (singleField ? RepeatingField : RepeatingFormField);
@@ -76,6 +76,22 @@ const renderer = (
                     unidentifiedLabel={unidentifiedLabel}
                     noItemsMessage={noItemsMessage}
                     idAttribute={idAttribute}
+                />
+            );
+        case 'timestamp':
+            return (
+                <NexusDateTimePicker
+                    label={label}
+                    id={id}
+                    value={value || defaultValue || ''}
+                    onChange={value => {
+                        onChange(id, value);
+                    }}
+                    disableViewMode={true}
+                    hideIcon={field.disabled}
+                    isReadOnly={field.disabled}
+                    isDisabled={field.disabled}
+                    isTimestamp={true}
                 />
             );
         case 'select':
