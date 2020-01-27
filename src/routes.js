@@ -23,6 +23,7 @@ import MatchRightView from './avails/right-matching/match-rights/MatchRightsView
 import TitleMatchView from './avails/title-matching/TitleMatchView';
 import TitleMatchReview from './avails/title-matching/TitleMatchReview/TitleMatchReview';
 import AvailsView from './avails/AvailsView';
+import TitleMergingView from './metadata/title-merging/TitleMergingView';
 
 const routes = (
     <Switch>
@@ -46,7 +47,8 @@ const routes = (
         <Route exact path="/avails/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds" component={canRender(MatchRightView, 'update', 'Avail')}/>
         <Route exact path="/avails/select-rights-planning" component={canRender(SelectRightsPlanning, 'update', 'Avail')}/>
         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
-        <Route path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
+        <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
+        <Route exact path="/metadata/detail/:id/title-merging" component={canRender(TitleMergingView, 'update', 'Metadata')} />
         <Route exact path="/contractprofile" component={ContractProfile} />
         <Route exact path="/contractsearch" component={Contract} />
         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />
