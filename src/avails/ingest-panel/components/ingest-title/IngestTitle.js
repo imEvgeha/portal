@@ -1,25 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Constants from '../../constants';
-import Email from '../../../../assets/email.svg';
 import File from '../../../../assets/file.svg';
 import './IngestTitle.scss';
 
-const IngestTitle = ({provider, link, attachmentType}) => {
+const IngestTitle = ({link}) => {
     const fileName = link.split('/').pop();
-    const {attachmentTypes: {EXCEL}} = Constants;
     return (
         <div className='nexus-c-ingest-title'>
             <div className='nexus-c-ingest-title__details'>
-                {
-                    attachmentType === EXCEL ? <File className='nexus-c-ingest-title__type'/> : (
-                        <React.Fragment>
-                            <Email className='nexus-c-ingest-title__type'/>
-                            <span className='nexus-c-ingest-title__provider'>{provider}</span>
-                            <span className='nexus-c-ingest-title__separator'>|</span>
-                        </React.Fragment>
-                    )
-                }
+                <File className='nexus-c-ingest-title__type'/>
                 <span title={fileName} className='nexus-c-ingest-title__filename'>{fileName}</span>
             </div>
         </div>

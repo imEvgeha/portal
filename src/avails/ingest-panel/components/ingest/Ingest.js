@@ -17,7 +17,7 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
 
     return (
         <div className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''}`} onClick={ingestClick}>
-            <IngestTitle provider={provider} link={link} attachmentType={attachmentType} />
+            <IngestTitle link={link} />
             <div className='nexus-c-avail-ingest__details'>
                 {
                     ingestReport &&

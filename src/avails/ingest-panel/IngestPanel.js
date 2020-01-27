@@ -8,6 +8,7 @@ import Ingest from './components/ingest/Ingest';
 import Bundle from './components/bundle/Bundle';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
+import Constants from './constants';
 
 const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) => {
     const [showFilters, setShowFilters] = useState(false);
@@ -33,7 +34,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
         }
         onFiltersChange(filters);
     };
-
+    const {attachmentTypes: {EXCEL}} = Constants;
     return (
         <div className='ingest-panel'>
             <PanelHeader
@@ -46,26 +47,30 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                 onScroll={onScroll}
                 ref={panelRef}>
                 {
-                    ingests.map(({id, attachments, received, provider, ingestType}) => (
-                        (attachments.length > 1) ? (
+                    ingests.map(({id, attachments, received, provider, ingestType}) => {
+                        const excelAttachments = attachments.filter(a => a.attachmentType && a.attachmentType === EXCEL);
+                        return (excelAttachments.length > 1) ? (
                             <Bundle key={id}
                                     id={id}
-                                    attachments={attachments}
+                                    attachments={excelAttachments}
                                     received={received}
                                     provider={provider}
                                     ingestType={ingestType}
                                     ingestClick={ingestClick}
                                     selectedAttachmentId={selectedAttachmentId}
-                        />) : ( (attachments.length === 1) &&
+                            />) : ((excelAttachments.length === 1) &&
                             (<Ingest key={id}
-                                     attachment={attachments[0]}
+                                     attachment={excelAttachments[0]}
                                      received={received}
                                      provider={provider}
                                      ingestType={ingestType}
-                                     ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachments[0].id})}
+                                     ingestClick={() => ingestClick({
+                                         availHistoryId: id,
+                                         attachmentId: excelAttachments[0].id
+                                     })}
                                      selected={selectedIngest && (selectedIngest.id === id)}
-                            />))
-                    ))
+                            />));
+                    })
                 }
             </div>
         </div>
