@@ -67,7 +67,7 @@ module.exports = {
         htmlPlugin,
         new CopyWebpackPlugin([
             // relative path is from src
-            { from: 'src/favicon.ico' }, // <- your path to favicon
+            { from: 'src/assets/favicon.ico' }, // <- your path to favicon
             { from: 'profile/availMapping.json' }
         ])
     ]
