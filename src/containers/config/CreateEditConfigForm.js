@@ -38,7 +38,6 @@ const renderer = (
     const unidentifiedLabel = misc.unidentifiedLabel;
     const noItemsMessage = misc.noItemsMessage;
     const idAttribute = misc.idAttribute;
-    console.log('label:', label);
     switch (type) {
         case 'array':
             Comp = dynamic === true ? ObjectKey : (singleField ? RepeatingField : RepeatingFormField);
