@@ -66,7 +66,8 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                      ingestType={ingestType}
                                      ingestClick={() => ingestClick({
                                          availHistoryId: id,
-                                         attachmentId: excelAttachments[0].id
+                                         attachmentId: excelAttachments[0].id,
+                                         selectedAttachmentId: selectedAttachmentId
                                      })}
                                      selected={selectedIngest && (selectedIngest.id === id)}
                             />));

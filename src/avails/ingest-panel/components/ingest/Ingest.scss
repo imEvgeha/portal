@@ -4,6 +4,10 @@
   border-bottom: 1px solid #DCDCDC;
   background: #FFFFFF;
 
+  &--is-in-bundle {
+    padding-left: 30px;
+  }
+
   &:hover {
     background: #FAFAFA;
   }

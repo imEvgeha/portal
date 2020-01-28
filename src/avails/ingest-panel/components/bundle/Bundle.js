@@ -34,8 +34,9 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
                                     received={received}
                                     provider={provider}
                                     ingestType={ingestType}
-                                    ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id})}
-                                    selected={selectedAttachmentId && (selectedAttachmentId === attachment.id)}
+                                    ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
+                                    selected={selectedAttachmentId === attachment.id}
+                                    inBundle
                             />)
                     }
                 </div>
