@@ -59,6 +59,8 @@ const RightsRepository = props => {
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
     const [gridApi, setGridApi] = useState();
+    const [columnApi, setColumnApi] = useState();
+    const [selectedColumnApi, setSelectedColumnApi] = useState();
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
 
     useEffect(() => {
@@ -127,7 +129,7 @@ const RightsRepository = props => {
         ? [actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
-    const onRightsRepositoryGridEvent = ({type, api}) => {
+    const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         switch (type) {
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
@@ -136,10 +138,17 @@ const RightsRepository = props => {
                 break;
             case GRID_EVENTS.READY:
                 setGridApi(api);
+                setColumnApi(columnApi);
                 break;
             case GRID_EVENTS.FILTER_CHANGED:
                 addRightsFilter({column: filterBy(api.getFilterModel())});
                 break;
+        }
+    };
+
+    const onSelectedRightsRepositoryGridEvent = ({type, columnApi}) => {
+        if(type === GRID_EVENTS.READY) {
+            setSelectedColumnApi(columnApi);
         }
     };
 
@@ -152,13 +161,17 @@ const RightsRepository = props => {
                 totalRows={totalCount}
                 setIsSelectedOptionActive={setIsSelectedOptionActive}
                 isSelectedOptionActive={isSelectedOptionActive}
-                selectedRows={Object.keys(selectedRights).length}
+                selectedRows={selectedRights}
+                rightsFilter={rightsFilter}
+                rightColumnApi={columnApi}
+                selectedRightColumnApi={selectedColumnApi}
             />
             <SelectedRighstRepositoryTable
                 columnDefs={updatedColumnDefsWithRedirect}
                 mapping={mapping}
                 rowData={Object.keys(selectedRights).map(key => selectedRights[key])}
                 isGridHidden={!isSelectedOptionActive}
+                onGridEvent={onSelectedRightsRepositoryGridEvent}
                 singleClickEdit
             />
             <RightsRepositoryTable

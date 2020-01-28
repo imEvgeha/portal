@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import './NexusTableToolbar.scss';
 import PopOutIcon from '../../assets/action-shortcut.svg';
 import MoreIcon from '../../assets/more-icon.svg';
+import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 
 const NexusTableToolbar = ({
     title,
@@ -13,11 +13,14 @@ const NexusTableToolbar = ({
     selectedRows,
     isSelectedOptionActive,
     setIsSelectedOptionActive,
+    rightsFilter,
+    rightColumnApi,
+    selectedRightColumnApi
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
             <MoreIcon fill="#A5ADBA" />
-            <div 
+            <div
                 className={`
                     nexus-c-table-toolbar__title 
                     ${!isSelectedOptionActive ? 'nexus-c-table-toolbar__title--is-active' : ''}
@@ -27,26 +30,26 @@ const NexusTableToolbar = ({
                 {title} ({totalRows})
             </div>
             {hasSelectedTab && (
-                <div 
+                <div
                     className={`
                         nexus-c-table-toolbar__selected-option
                         ${isSelectedOptionActive ? 'nexus-c-table-toolbar__selected-option--is-active' : ''}
                     `}
                     onClick={() => setIsSelectedOptionActive(true)}
                 >
-                    Selected ({selectedRows})
+                    Selected ({Object.keys(selectedRows).length})
                 </div>
             )}
             <PopOutIcon fill="#A5ADBA" />
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
-                    <Button 
-                        spacing="compact"
-                        isDisabled={true}
-                        className="nexus-c-table-toolbar__button"
-                    >
-                        Download
-                    </Button>
+                    <NexusTableExportDropdown
+                        isSelectedOptionActive={isSelectedOptionActive}
+                        selectedRows={selectedRows}
+                        rightsFilter={rightsFilter}
+                        rightColumnApi={rightColumnApi}
+                        selectedRightColumnApi={selectedRightColumnApi}
+                    />
                 </div>
             )}
         </div>
@@ -58,7 +61,10 @@ NexusTableToolbar.propsTypes = {
     totalRows: PropTypes.bool,
     hasSelectedTab: PropTypes.bool,
     hasDownloadButton: PropTypes.bool,
-    selectedRows: PropTypes.number,
+    selectedRows: PropTypes.object.isRequired,
+    rightsFilter: PropTypes.object.isRequired,
+    rightColumnApi: PropTypes.object.isRequired,
+    selectedRightColumnApi: PropTypes.object.isRequired
 };
 
 NexusTableToolbar.defaultProps = {
@@ -66,7 +72,7 @@ NexusTableToolbar.defaultProps = {
     totalRows: 0,
     hasSelectedTab: true,
     hasDownloadButton: true,
-    selectedRows: 0,
+    getAllColumns: () => [],
 };
 
 export default NexusTableToolbar;
