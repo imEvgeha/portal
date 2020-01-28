@@ -1,8 +1,18 @@
+@import '../../styles/config.scss';
+
 .nexus-c-title-merging-view {
     padding: 15px;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
+}
+
+.nexus-c-title-merging-view__section-message {
+    color: map-get($colors, nexus-secondary-color);
+    font-weight: 500;
+    font-family: $nexus-font;
+    margin: 0;
+    padding: 0;
 }
 
