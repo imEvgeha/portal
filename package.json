@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --env dev --hot --inline --open --mode development --progress --client-log-level info",
     "build": "webpack --env dev --mode development",
     "test": "webpack --env test --mode development",
-    "stats": "eslint-nibble --cache src",
+    "lint": "eslint-nibble --cache src",
     "build:prod": "webpack --env prod --mode production && docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {
