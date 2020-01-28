@@ -118,7 +118,7 @@ const RightsRepository = props => {
         return columnDef;
     });
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCellEditor, editable: true});
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]

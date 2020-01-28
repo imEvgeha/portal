@@ -9,7 +9,7 @@ export default {
     DATEPICKER_LABELS: ['From', 'To'],
     REPORT: {
         total: 'Rights',
-        created: 'Created',
+        created: 'New',
         updated: 'Updated',
         fatal: 'Fatals',
         pending: 'Pending',

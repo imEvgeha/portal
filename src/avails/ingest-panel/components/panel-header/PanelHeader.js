@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AvailsIcon from '../../../../assets/avails.svg';
-import PopOutIcon from '../../../../assets/action-shortcut.svg';
 import FilterSolidIcon from '../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../assets/filter.svg';
 import IngestFilters from '../ingest-filters/IngestFilters';
@@ -16,9 +15,6 @@ const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
                     <div>Avails</div>
                 </div>
                 <div className='ingest-header__actions'>
-                    <PopOutIcon
-                        className='ingest-header__actions--pop'
-                        disabled={true}/>
                     <div onClick={toggleFilters}>
                         {
                             showFilters ? <FilterSolidIcon/> : <FilterIcon/>
