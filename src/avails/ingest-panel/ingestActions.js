@@ -14,8 +14,8 @@ export const filterRightsByStatus = payload => ({
     payload,
 });
 
-export const selectIngest = payload => {
-    if (payload && payload.selectedAttachmentId && payload.selectedAttachmentId === payload.attachmentId) {
+export const selectIngest = (payload = {}) => {
+    if (payload.selectedAttachmentId === payload.attachmentId) {
         return {
             type: actionTypes.DESELECT_INGEST
         };
