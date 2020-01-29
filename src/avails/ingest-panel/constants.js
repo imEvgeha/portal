@@ -30,5 +30,9 @@ export default {
         receivedTo: 'igReceivedTo',
         status: 'igStatus',
         provider: 'igProvider'
-    }
+    },
+    SERVICE_REGIONS: [
+        {label: 'US'},
+        {label: 'UK'}
+    ],
 };

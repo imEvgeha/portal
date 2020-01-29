@@ -8,9 +8,13 @@ import {getFiltersToSend} from './utils';
 import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
 import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
+import {uploadService} from '../../containers/avail/service/UploadService';
+import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
+import { SUCCESS_ICON, SUCCESS_TITLE } from '../../ui-elements/nexus-toast-notification/constants';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;
+const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
 
 function* fetchIngests({payload}) {
     try {
@@ -106,11 +110,45 @@ function* selectIngest({payload}) {
     }
 }
 
+function* uploadIngest({payload}) {
+    const {file, closeModal, ...rest} = payload || {};
+    try {
+        yield put({
+            type: actionTypes.IS_UPLOADING,
+            payload: true,
+        });
+        const response = yield uploadService.uploadAvail(file, null, null, {...rest});
+        if(response.status === 200) {
+            closeModal();
+            yield put({
+                type: ADD_TOAST,
+                payload: {
+                    title: SUCCESS_TITLE,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                    description: `${UPLOAD_SUCCESS_MESSAGE} ${response.data.fileName}`,
+                }
+            });
+        }
+        yield put({
+            type: actionTypes.IS_UPLOADING,
+            payload: false,
+        });
+    }
+    catch (e) {
+        yield put({
+            type: actionTypes.IS_UPLOADING,
+            payload: false,
+        });
+    }
+}
+
 export default function* ingestWatcher() {
     yield all([
         takeLatest(actionTypes.FETCH_INGESTS, fetchIngests),
         takeLatest(actionTypes.FETCH_NEXT_PAGE, fetchNextPage),
         takeLatest(actionTypes.FILTER_RIGHTS_BY_STATUS, filterRightsByStatus),
         takeLatest(actionTypes.SELECT_INGEST, selectIngest),
+        takeLatest(actionTypes.UPLOAD_INGEST, uploadIngest),
     ]);
 }

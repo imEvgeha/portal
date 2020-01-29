@@ -22,3 +22,20 @@ export const getIngestById = createSelector(
     (_, id) => id,
     (ingests, id) =>ingests.find(ingest => ingest.id === id)
 );
+
+const getRoot = state => state.root;
+
+export const getSelectValues = createSelector(
+    getRoot,
+    root => root.selectValues,
+);
+
+export const getLicensors = createSelector(
+    getSelectValues,
+    selectValues => selectValues.licensor || [],
+);
+
+export const getIsUploading = createSelector(
+    getIngestReducer,
+    ingest => ingest.isUploading,
+);

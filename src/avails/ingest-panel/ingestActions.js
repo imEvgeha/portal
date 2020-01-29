@@ -18,3 +18,9 @@ export const selectIngest = payload => ({
     type: actionTypes.SELECT_INGEST,
     payload,
 });
+
+export const uploadIngest = payload => ({
+    type: actionTypes.UPLOAD_INGEST,
+    payload,
+});
+

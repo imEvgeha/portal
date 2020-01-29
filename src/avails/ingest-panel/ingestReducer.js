@@ -4,6 +4,7 @@ const initialState = {
     ingests: [],
     totalIngests: 0,
     selectedIngest: null,
+    isUploading: false,
 };
 
 const ingestReducer = (state = initialState, action = {}) => {
@@ -24,6 +25,11 @@ const ingestReducer = (state = initialState, action = {}) => {
             return {
             ...state,
             selectedIngest: payload
+        };
+        case actionTypes.IS_UPLOADING:
+            return {
+            ...state,
+            isUploading: payload
         };
 
         default:
