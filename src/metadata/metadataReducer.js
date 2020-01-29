@@ -2,17 +2,17 @@ import * as actionTypes from './metadataActionTypes';
 
 const initialState = {
     titles: {},
-    focusedTitle: null,
+    titleId: null,
 };
 
-const metadataReducer = (state = inititalState, action) => {
+const metadataReducer = (state = initialState, action) => {
     const {type, payload} = action;
     switch (type) {
-        case actionTypes.FETCH_AND_STORE_TITLE_SUCCESS:
+        case actionTypes.STORE_TITLE:
             return {
                 ...state,
-                titles: {...titles, payload},
-                focusedTitle: payload.id,
+                titles: {...state.titles, ...payload},
+                titleId: Object.values(payload)[0].id,
             };
         default:
             return state;

@@ -1,8 +1,8 @@
 import {createSelector} from 'reselect';
 
-const getTitle = state => {
+const getTitleId = state => {
     const {metadata = {}} = state;
-    return metadata.focusedTitle;
+    return metadata.titleId;
 };
 
 const getTitles = state => {
@@ -11,8 +11,8 @@ const getTitles = state => {
 };
 
 export const createTitleSelector = () => createSelector(
-    getTitle,
-    title => title,
+    [getTitleId, getTitles],
+    (titleId, titles) => titles[titleId],
 );
 
 export const createTitlesSelector = () => createSelector(

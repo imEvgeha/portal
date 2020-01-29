@@ -41,7 +41,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 return (params) => {
                     const {data = {}} = params || {};
                     const key = javaVariableName.split('.')[1];
-                    if (data['castCrew']) {
+                    if (data && data['castCrew']) {
                         if (key === 'director') {
                             return data['castCrew']
                                 .filter(({personType}) => personType.toLowerCase() === DIRECTOR.toLowerCase())
@@ -58,7 +58,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName === 'ratings') {
                 return (params) => {
                     const {data = {}} = params || {};
-                    if (data[javaVariableName]) {
+                    if (data && data[javaVariableName]) {
                         return data[javaVariableName]
                             .map(({ratingSystem, rating}) => `${ratingSystem ? ratingSystem : 'Empty'} ${rating ? rating : 'Empty'}`)
                             .join(', ');
@@ -67,7 +67,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName && javaVariableName.startsWith('externalIds')) {
                 return (params) => {
                     const {data = {}} = params || {};
-                    const {externalIds} = data;
+                    const {externalIds} = data || {};
                     const key = javaVariableName.split('.')[1];
                     if (externalIds && externalIds[key]) {
                         return externalIds[key];
@@ -75,7 +75,8 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 };
             } else if (javaVariableName === 'system') {
                 return (params) => {
-                    const {data: {id, legacyIds = {}} = {}} = params || {};
+                    const {data = {}} = params || {};
+                    const {id, legacyIds = {}} = data || {};
                     const {movida, vz} = legacyIds || {};
                     const {movidaTitleId} = movida || {};
                     const {vzTitleId} = vz || {};
@@ -91,7 +92,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName === 'editorialGenres') {
                 return (params) => {
                     const {data = {}} = params || {};
-                    if (data[javaVariableName]) {
+                    if (data && data[javaVariableName]) {
                         return data[javaVariableName]
                             .map(({genre}) => genre)
                             .join(', ');
