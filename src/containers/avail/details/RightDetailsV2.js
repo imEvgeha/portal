@@ -17,13 +17,11 @@ import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 import rightConstants from './RightConstants';
-import uiElements from '../../../ui-elements';
-
-const {
+import {
     NexusDateTimePicker,
     NexusDatePicker,
     NexusMultiInstanceField
-} = uiElements;
+} from '../../../ui-elements';
 
 const {
     TERRITORY_TYPE,

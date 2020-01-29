@@ -16,13 +16,11 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
-import uiElements from '../../../ui-elements';
-
-const {
+import {
     NexusDateTimePicker,
     NexusDatePicker,
     NexusMultiInstanceField
-} = uiElements;
+} from '../../../ui-elements';
 
 const mapStateToProps = state => {
     return {

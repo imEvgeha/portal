@@ -10,7 +10,7 @@ import NexusTag from './nexus-tag/NexusTag';
 import NexusSimpleDateTimePicker from './nexus-date-and-time-elements/nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 import NexusTableToolbar from './nexus-table-toolbar/NexusTableToolbar';
 
-export default {
+export {
     NexusCheckboxSelect,
     NexusDatePicker,
     NexusDateTimePicker,

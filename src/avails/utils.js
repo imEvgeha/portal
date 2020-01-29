@@ -12,14 +12,14 @@ import createLoadingCellRenderer from '../ui-elements/nexus-grid/elements/cell-r
 
 export function createColumnDefs(payload) {
     return payload.reduce((columnDefs, column) => {
-        const {javaVariableName, displayName} = column;
+        const {javaVariableName, displayName, dataType} = column;
         const columnDef = {
             field: javaVariableName,
             headerName: displayName,
             colId: javaVariableName,
             cellRenderer: createLoadingCellRenderer,
             valueFormatter: createValueFormatter(column),
-            width: 150,
+            width: (dataType === 'datetime') ? 235 : 150,
         };
         return [...columnDefs, columnDef];
     }, []);
@@ -94,56 +94,60 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
     return null;
 }
 
-export const createSchemaForColoring = (list, columnDefs) => {
+export const createColumnSchema = (list, field) => {
     const majorityRule = (occurence, total) => occurence > (total / 2); 
-    const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
-        const values = list.map(el => el[field]);
-        const occurence = values.reduce((o, v) => {
-            const value = JSON.stringify(v);
-            o[value] = (o[value] || 0) + 1;
-            return o;
-        }, {});
-
-        const sortByOccurrence = Object.keys(occurence).sort((a, b) => {
-            return occurence[a] < occurence[b];
-        }) || [];
-
-        const sortedValues = sortByOccurrence.reduce((o, v) => {
-            o[v] = occurence[v];
-            return o;
-        }, {});
-
-        const getMostCommonValue = (values) => {
-            const entries = !isEmpty(values) ? Object.entries(values) : [];
-            if (entries.length) {
-                const mostCommonValue = entries
-                    .filter(([key, value], i, arr) => majorityRule(value, arr.length))
-                    .map(([key, value]) => key)
-                    .toString();
-
-                return mostCommonValue;
-            }
-        };
-
-        if (Object.values(sortedValues).length > 1) {
-            acc[field] = {
-                field,
-                values: sortedValues,
-                mostCommonValue: getMostCommonValue(sortedValues),
-            };
+    const destructedField = field.split('.');
+    const values = list.map(el => {
+        // TODO: we have as avails map languageAudioTypes.language and languageAudioTypes.audoType
+        // and data consists as field languageAudioTypes {Array of objects {language, audioType} )
+        if (destructedField.includes('languageAudioTypes')) {
+            return el['languageAudioTypes'].map(el => el[destructedField[1]]).filter(Boolean);
         }
+        return get(el, destructedField, {});
+    });
+
+    const occurence = values.reduce((o, v) => {
+        const value = JSON.stringify(v);
+        o[value] = (o[value] || 0) + 1;
+        return o;
+    }, {});
+
+    const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
+
+    const getMostCommonValue = (entries) => {
+        if (entries.length) {
+            const mostCommonValue = entries
+            .filter(([key, value], i) => majorityRule(value, list.length))
+            .map(([key, value]) => key);
+
+            return mostCommonValue[0];
+        }
+    };
+
+    return {
+        field,
+        values: sortedValuesEntries.reduce((o, [key, value], i) => (o[key] = value, o), {}),
+        mostCommonValue: getMostCommonValue(sortedValuesEntries),
+    };
+}; 
+
+export const createSchemaForColoring = (list, columnDefs) => {
+    const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
+        const fieldValue = createColumnSchema(list, field);
+        acc[field] = fieldValue;
 
         return acc;
-
     }, {});
 
     return schema;
 };
 
-export const addCellClass = ({colDef, value, schema, cellClass = 'nexus-c-match-right-view__grid-column--highlighted'}) => {
-    const {field} = colDef;
-    const fieldValues = get(schema, [field, 'values'], {});
-    const mostCommonValue = get(schema, [field, 'mostCommonValue'], null);
+export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
+
+export const addCellClass = ({field, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
+    const fieldValues = get(schema, ['values'], {});
+    const mostCommonValue = get(schema, ['mostCommonValue'], null);
+
     if (Object.keys(fieldValues).length && !isEqual(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     };

@@ -12,6 +12,9 @@ import {navigationPrimaryItems} from './components/NavigationItems';
 import {keycloak} from '../index';
 import {SETTINGS, backgroundColor} from './constants';
 import {Can, idToAbilityNameMap} from '../ability';
+import {searchFormShowSearchResults} from '../stores/actions/avail/dashboard';
+import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
+import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 
 const customThemeMode = modeGenerator({
     product: {
@@ -122,6 +125,11 @@ const mapStateToProps = state => {
     return {
         profileInfo: state.root.profileInfo
     };
+};
+
+export const gotoAvailsDashboard = () => {
+    store.dispatch(searchFormShowSearchResults(false));
+    NexusBreadcrumb.set(AVAILS_DASHBOARD);
 };
 
 export default withRouter(connect(mapStateToProps, null)(NexusNavigation));
