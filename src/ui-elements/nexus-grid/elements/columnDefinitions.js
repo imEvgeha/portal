@@ -54,7 +54,7 @@ export const defineButtonColumn = ({headerName = '', cellRendererFramework, cell
         cellRendererFramework,
         cellEditorFramework,
         editable: editable,
-        width: 40
+        width: headerName !== ''? 100 : 40
     });
 
     return columnDef;

@@ -26,7 +26,7 @@ import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfinite
 import UiElements from '../../ui-elements';
 import {filterBy} from '../../ui-elements/nexus-grid/utils';
 import usePrevious from '../../util/hooks/usePrevious';
-import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from './util/indicator';
+import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/indicator';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 
@@ -100,12 +100,12 @@ const RightsRepository = props => {
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         const indicator = calculateIndicatorType(data);
-        const notificationClass = indicator !== INDICATOR_RED ? '' : ' nexus-c-right-to-match-view__buttons_notification--error';
+        const notificationClass = indicator !== INDICATOR_RED ? '--success' : '--error';
         return (
             <CustomActionsCellRenderer id={id}>
                 <div>
                     <EditorMediaWrapLeftIcon/>
-                    {indicator !== INDICATOR_NON && <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>}
+                    <span className={'nexus-c-right-to-match-view__buttons_notification  nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>
                 </div>
             </CustomActionsCellRenderer>
         );
