@@ -17,7 +17,7 @@ import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 
 const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.freeTextSearch}))(NexusGrid);
 
-const CandidatesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
+const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
@@ -169,6 +169,7 @@ const CandidatesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
                         getRepositoryCell({headerName: 'System'}),
                         ...updatedColumnDefs
                     ]}
+                    rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
                     setTotalCount={setTotalCount}
                     params={queryParams}
                 />
@@ -181,7 +182,7 @@ CandidatesList.propTypes = {
     columnDefs: PropTypes.array,
     mergeTitles: PropTypes.func,
     queryParams: PropTypes.object,
-    rightId: PropTypes.string.isRequired,
+    titleId: PropTypes.string.isRequired,
 };
 
 CandidatesList.defaultProps = {

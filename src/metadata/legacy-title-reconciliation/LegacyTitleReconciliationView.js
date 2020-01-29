@@ -51,7 +51,7 @@ const LegacyTitleReconciliationView = ({
                 <p className="nexus-c-legacy-title-reconciliation-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <CandidatesList
-                rightId={params.id}
+                titleId={params.id}
                 columnDefs={columnDefs}
                 // TODO: Capitalized variable name due to invalid BE requirement
                 queryParams={{ContentType: contentType, title}}
