@@ -49,6 +49,7 @@ const NexusTableToolbar = ({
                         rightsFilter={rightsFilter}
                         rightColumnApi={rightColumnApi}
                         selectedRightColumnApi={selectedRightColumnApi}
+                        totalRows={totalRows}
                     />
                 </div>
             )}

@@ -1,21 +1,43 @@
 import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
 import './NexusTableExportDropdown.scss';
 import {exportService} from '../../containers/avail/service/ExportService';
 import {downloadFile} from '../../util/Common';
-import {connect} from 'react-redux';
 import * as selectors from '../../avails/right-matching/rightMatchingSelectors';
+import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, rightsFilter, rightColumnApi, selectedRightColumnApi, mapping}) {
+function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, mapping}) {
 
     const [mappingColumnNames, setMappingColumnNames] = useState();
+    const [tooltipContent, setTooltipContent] = useState();
+    const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
         if(mapping) {
             setMappingColumnNames(mapping.map(({javaVariableName}) => javaVariableName));
         }
     }, [mapping]);
+
+    useEffect(() => {
+        let disable = false;
+        if(isSelectedOptionActive) {
+            if (Object.keys(selectedRows).length === 0) {
+                setTooltipContent('Select at least one right to export');
+                disable = true;
+            }
+        } else {
+            if (totalRows === 0) {
+                setTooltipContent('There is no result to export');
+                disable = true;
+            } else if (totalRows > 50000) {
+                setTooltipContent('You have more that 50000 avails, please change filters');
+                disable = true;
+            }
+        }
+        setIsDisabled(disable);
+    }, [isSelectedOptionActive, selectedRows, totalRows])
 
     const onAllColumnsExportClick = () => {
         if(isSelectedOptionActive) {
@@ -24,8 +46,8 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, rightsF
                 .then(response => downloadFile(response.data));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
-            const {external} = rightsFilter;
-            exportService.bulkExportAvails(external, allDisplayedColumns)
+            const {external, column} = rightsFilter;
+            exportService.bulkExportAvails({...external, ...column}, allDisplayedColumns)
                 .then(response => downloadFile(response.data));
         }
     };
@@ -37,8 +59,8 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, rightsF
                 .then(response => downloadFile(response.data));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
-            const {external} = rightsFilter;
-            exportService.bulkExportAvails(external, visibleColumns)
+            const {external, column} = rightsFilter;
+            exportService.bulkExportAvails({...external, ...column}, visibleColumns)
                 .then(response => downloadFile(response.data));
         }
     };
@@ -61,17 +83,30 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, rightsF
         }).filter(col => mappingColumnNames.includes(col));
     };
 
+    const renderDropdown = () => {
+        return <DropdownMenu
+            trigger="Export"
+            triggerType="button"
+            triggerButtonProps={{isDisabled: isDisabled}}
+        >
+            <DropdownItemGroup>
+                <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
+                <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
+            </DropdownItemGroup>
+        </DropdownMenu>;
+    }
+
+    console.log(rightsFilter)
+
     return (
         <div className='nexus-c-right-repository-export'>
-            <DropdownMenu
-                trigger="Export"
-                triggerType="button"
-            >
-                <DropdownItemGroup>
-                    <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
-                    <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
-                </DropdownItemGroup>
-            </DropdownMenu>
+            {isDisabled &&
+                <NexusTooltip
+                    content={tooltipContent}
+                    children={renderDropdown()}
+                />
+            }
+            {!isDisabled && renderDropdown()}
         </div>
     );
 }
@@ -79,6 +114,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, rightsF
 NexusTableExportDropdown.propsTypes = {
     isSelectedOptionActive: PropTypes.bool,
     selectedRows: PropTypes.object.isRequired,
+    totalRows: PropTypes.number.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightColumnApi: PropTypes.object.isRequired,

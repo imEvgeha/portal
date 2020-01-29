@@ -7,7 +7,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights, addRightsFilter} from './rightsActions';
+import {setSelectedRights, addRightsFilter, removeRightsFilter, setRightsFilter} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
@@ -54,6 +54,7 @@ const RightsRepository = props => {
         setSelectedRights,
         selectedRights,
         addRightsFilter,
+        setRightsFilter,
         rightsFilter,
     } = props;
     const [totalCount, setTotalCount] = useState(0);
@@ -141,7 +142,14 @@ const RightsRepository = props => {
                 setColumnApi(columnApi);
                 break;
             case GRID_EVENTS.FILTER_CHANGED:
-                addRightsFilter({column: filterBy(api.getFilterModel())});
+                const column = filterBy(api.getFilterModel());
+                if (Object.keys(column).length === 0) {
+                    let filter = Object.assign({}, rightsFilter);
+                    delete filter.column;
+                    setRightsFilter({filter});
+                } else {
+                    setRightsFilter({filter: {...rightsFilter, column}});
+                }
                 break;
         }
     };
@@ -212,6 +220,7 @@ const mapDispatchToProps = dispatch => ({
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
+    setRightsFilter: payload => dispatch(setRightsFilter(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
