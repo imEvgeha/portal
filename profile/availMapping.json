@@ -610,8 +610,8 @@
 }, {
   "javaVariableName": "episodic.volumeDistributionNumber",
   "displayName": "Volume Distribution Number",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "volumeDistributionNumber",
   "readOnly": false,
   "enableSearch": true,
