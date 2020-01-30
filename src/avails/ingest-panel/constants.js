@@ -32,7 +32,7 @@ export default {
         provider: 'igProvider'
     },
     SERVICE_REGIONS: [
-        {label: 'US'},
-        {label: 'UK'}
+        {label: 'US', value: 'US'},
+        {label: 'UK', value: 'UK'}
     ],
 };

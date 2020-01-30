@@ -24,6 +24,13 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
 
     useEffect(() => {
         updateUploadStatus();
+        const serviceRegions = get(licensor, 'value.servicingRegions', []);
+        if(serviceRegions.length === 1) {
+            const name = serviceRegions[0].servicingRegionName;
+            setServiceRegion({label: name, value: name});
+        } else {
+            setServiceRegion('');
+        }
     }, [licensor]);
 
     useEffect(() => {
@@ -40,7 +47,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
 
     const uploadHandler = () => {
         const params = {
-            serviceRegion: serviceRegion.label,
+            serviceRegion: serviceRegion.value,
             file,
             closeModal
         };
@@ -52,8 +59,8 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
         uploadIngest(params);
     };
 
-    const serviceRegionOptions = get(licensor, 'value') ? get(licensor, 'value.servicingRegions',
-        []).map(({servicingRegionName}) => ({label: servicingRegionName})) : SERVICE_REGIONS;
+    const serviceRegionOptions = get(licensor, 'value') ? get(licensor, 'value.servicingRegions', [])
+        .map(({servicingRegionName}) => ({label: servicingRegionName, value: servicingRegionName})) : SERVICE_REGIONS;
     const selectProps = {
         styles: {
             menuPortal: base => ({
@@ -94,6 +101,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                     <Select
                         id='manual-upload-service-region'
                         onChange={setServiceRegion}
+                        value={serviceRegion}
                         options={serviceRegionOptions}
                         isDisabled={!licensor}
                         placeholder='Select'
