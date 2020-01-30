@@ -1,0 +1,9 @@
+.nexus-c-candidates-list {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+.nexus-c-candidates-list__row {
+    font-weight: bold;
+}

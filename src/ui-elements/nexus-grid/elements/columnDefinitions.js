@@ -43,7 +43,7 @@ export const defineCheckboxSelectionColumn = ({headerName = ''} = {}) => {
 };
 
 export const defineActionButtonColumn = ({field, cellRendererFramework}) => {
-        return defineButtonColumn({headerName: 'Actions', cellRendererFramework});
+    return defineButtonColumn({headerName: 'Actions', cellRendererFramework});
 };
 
 export const defineButtonColumn = ({headerName = '', cellRendererFramework, cellEditorFramework, editable = false}) => {
@@ -61,11 +61,32 @@ export const defineButtonColumn = ({headerName = '', cellRendererFramework, cell
 
 export const updateColumnDefs = (columnDefs, objectFields) => {
     const clonedColumnDefs = cloneDeep(columnDefs);
-    const updateColumnDefs = clonedColumnDefs.map(def => {
+    const updatedColumnDefs = clonedColumnDefs.map(def => {
         Object.keys(objectFields).forEach(key => def[key] = objectFields[key]);
         return def;
     });
 
-    return updateColumnDefs;;
+    return updatedColumnDefs;;
 };
 
+export const getColumnDefsWithCleanContentType = (columnDefs, data) => {
+    const CONTENT_TYPE = {
+        EPISODE: 'episode',
+        SEASON: 'season',
+    };
+    const FIELD = {
+        EPISODE: 'episodic.episodeNumber',
+        SEASON: 'episodic.seasonNumber',
+    };
+    const clonedColumnDefs = cloneDeep(columnDefs);
+    const {contentType} = data || {};
+    const preparedContentType = contentType && contentType.toLowerCase();
+    switch (preparedContentType) {
+        case CONTENT_TYPE.EPISODE:
+            return clonedColumnDefs.filter(({field}) => field !== FIELD.SEASON);
+        case CONTENT_TYPE.SEASON:
+            return clonedColumnDefs.filter(({field}) => field !== FIELD.EPISODE);
+        default:
+            return clonedColumnDefs.filter(({field}) => !([FIELD.EPISODE, FIELD.SEASON].includes(field)));
+    }
+};
