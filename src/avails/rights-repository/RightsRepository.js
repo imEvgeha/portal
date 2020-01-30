@@ -7,7 +7,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights, addRightsFilter, removeRightsFilter, setRightsFilter} from './rightsActions';
+import {setSelectedRights, addRightsFilter, setRightsFilter} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
@@ -146,9 +146,9 @@ const RightsRepository = props => {
                 if (Object.keys(column).length === 0) {
                     let filter = Object.assign({}, rightsFilter);
                     delete filter.column;
-                    setRightsFilter({filter});
+                    setRightsFilter(filter);
                 } else {
-                    setRightsFilter({filter: {...rightsFilter, column}});
+                    setRightsFilter({...rightsFilter, column});
                 }
                 break;
         }

@@ -52,7 +52,7 @@ const rightsReducer = (state = initialState, action = {}) => {
         case actionTypes.SET_RIGHTS_FILTER:
             return {
                 ...state,
-                filter: payload.filter
+                filter: payload
             };
         default:
             return state;

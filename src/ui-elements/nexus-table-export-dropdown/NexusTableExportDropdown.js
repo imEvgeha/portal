@@ -77,10 +77,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     };
 
     const getDownloadableColumns = (columns = []) => {
-        return columns.map(({colDef}) => {
-            const {field} = colDef || {};
-            return field;
-        }).filter(col => mappingColumnNames.includes(col));
+        return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
     const renderDropdown = () => {
