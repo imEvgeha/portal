@@ -1,6 +1,6 @@
 export default {
-    COMPLETED: 'SUCCESS',
-    PENDING: 'PENDING',
-    FAILED: 'FAILED',
-    MANUAL: 'MANUAL'
+    COMPLETED: 'Completed',
+    PENDING: 'Pending',
+    FAILED: 'Failed',
+    MANUAL: 'Manual'
 };

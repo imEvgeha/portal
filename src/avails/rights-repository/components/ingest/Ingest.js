@@ -6,9 +6,10 @@ import IngestReport from '../../../ingest-panel/components/ingest-report/IngestR
 import DownloadIcon from '../../../../assets/action-download.svg';
 import './Ingest.scss';
 
-const Ingest = ({ingest, filterByStatus}) => {
-    const {attachments = [{}], ingestType, provider, received} = ingest;
-    const {link, status, ingestReport = {}} = attachments[0];
+const Ingest = ({ingest, filterByStatus, attachment}) => {
+    const {ingestType, provider, received} = ingest;
+
+    const {link, status, ingestReport = {}} = attachment;
     return ingest ? (
         <div className='nexus-c-avails-ingest'>
             <div className='nexus-c-avails-ingest__details'>
@@ -39,11 +40,15 @@ const Ingest = ({ingest, filterByStatus}) => {
 Ingest.propTypes = {
     ingest: PropTypes.object,
     filterByStatus: PropTypes.func,
+    deselectIngest: PropTypes.func,
+    selectedAttachmentId: PropTypes.string,
 };
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
-    filterByStatus: () => null
+    filterByStatus: () => null,
+    deselectIngest: () => null,
+    selectedAttachmentId: ''
 };
 
 export default Ingest;
