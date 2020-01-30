@@ -6,7 +6,7 @@ import './StatusTag.scss';
 const StatusTag = ({status}) => {
     return (
         <div className={`nexus-status-tag ${status.toLowerCase()}`}>
-            {Constants[status.toUpperCase()]}
+            {Constants[status]}
         </div>
     );
 };

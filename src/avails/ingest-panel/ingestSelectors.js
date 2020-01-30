@@ -17,6 +17,12 @@ export const getSelectedIngest = createSelector(
     ingest => ingest.selectedIngest,
 );
 
+export const getSelectedAttachmentId= createSelector(
+    getIngestReducer,
+    ingest => ingest.selectedAttachmentId,
+);
+
+
 export const getIngestById = createSelector(
     getIngests,
     (_, id) => id,

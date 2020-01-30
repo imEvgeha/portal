@@ -25,7 +25,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
                                 onClick={() => FILTERABLE_KEYS.includes(key) && onFilterClick(key)} >
-                                {reportValues[key] || ''}
+                                {reportValues[key] || 0}
                             </span>
                         </div>
                     ))

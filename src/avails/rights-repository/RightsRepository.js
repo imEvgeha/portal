@@ -3,6 +3,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
@@ -12,8 +13,8 @@ import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest} from '../ingest-panel/ingestActions';
-import {getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import {filterRightsByStatus, selectIngest, deselectIngest} from '../ingest-panel/ingestActions';
+import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import {
@@ -53,12 +54,14 @@ const RightsRepository = props => {
         selectedRights,
         addRightsFilter,
         rightsFilter,
+        selectedAttachmentId,
+        deselectIngest
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
     const [gridApi, setGridApi] = useState();
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
-
+    const [attachment, setAttachment] = useState();
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
@@ -68,6 +71,17 @@ const RightsRepository = props => {
     useEffect(() => {
         ingestClick();
     }, []);
+
+    useEffect(() => {
+        if(selectedIngest && selectedAttachmentId) {
+            const {attachments} = selectedIngest;
+            const attachment = attachments.find(a => a.id === selectedAttachmentId);
+            setAttachment(attachment);
+            if (!attachment) {
+                deselectIngest();
+            }
+        }
+    }, [selectedIngest, selectedAttachmentId]);
 
     useEffect(() => {
         const {external = {}} = rightsFilter || {};
@@ -144,7 +158,12 @@ const RightsRepository = props => {
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} />)}
+            {selectedIngest && !isEmpty(selectedIngest) && attachment && (<Ingest
+                ingest={selectedIngest}
+                deselectIngest={deselectIngest}
+                attachment={attachment}
+                filterByStatus={filterByStatus} />)
+            }
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -186,6 +205,7 @@ const mapStateToProps = () => {
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         selectedIngest: getSelectedIngest(state),
+        selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
@@ -197,6 +217,7 @@ const mapDispatchToProps = dispatch => ({
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
+    deselectIngest: () => dispatch(deselectIngest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

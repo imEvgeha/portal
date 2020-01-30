@@ -5,6 +5,7 @@ const initialState = {
     totalIngests: 0,
     selectedIngest: null,
     isUploading: false,
+    selectedAttachmentId: null
 };
 
 const ingestReducer = (state = initialState, action = {}) => {
@@ -31,7 +32,17 @@ const ingestReducer = (state = initialState, action = {}) => {
             ...state,
             isUploading: payload
         };
-
+        case actionTypes.UPDATE_SELECTED_ATTACHMENT_ID:
+            return {
+                ...state,
+                selectedAttachmentId: payload
+            };
+        case actionTypes.CLEAR_SELECTED_INGEST:
+            return {
+                ...state,
+                selectedAttachmentId: null,
+                selectedIngest: null
+            };
         default:
             return state;
     }

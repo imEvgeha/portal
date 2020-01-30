@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import './NexusTableToolbar.scss';
-import PopOutIcon from '../../assets/action-shortcut.svg';
 import MoreIcon from '../../assets/more-icon.svg';
 
 const NexusTableToolbar = ({
@@ -37,7 +36,6 @@ const NexusTableToolbar = ({
                     Selected ({selectedRows})
                 </div>
             )}
-            <PopOutIcon fill="#A5ADBA" />
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
                     <Button 
