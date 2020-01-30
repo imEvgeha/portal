@@ -26,3 +26,7 @@ export const selectIngest = (payload={}) => {
         };
     }
 };
+
+export const deselectIngest = () => ({
+    type: actionTypes.DESELECT_INGEST
+});

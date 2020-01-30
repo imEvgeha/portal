@@ -13,7 +13,7 @@ import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest} from '../ingest-panel/ingestActions';
+import {filterRightsByStatus, selectIngest, deselectIngest} from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
@@ -56,13 +56,14 @@ const RightsRepository = props => {
         selectedRights,
         addRightsFilter,
         rightsFilter,
-        selectedAttachmentId
+        selectedAttachmentId,
+        deselectIngest
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
     const [gridApi, setGridApi] = useState();
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
-
+    const [attachment, setAttachment] = useState();
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
@@ -72,6 +73,17 @@ const RightsRepository = props => {
     useEffect(() => {
         ingestClick();
     }, []);
+
+    useEffect(() => {
+        if(selectedIngest && selectedAttachmentId) {
+            const {attachments} = selectedIngest;
+            const attachment = attachments.find(a => a.id === selectedAttachmentId);
+            setAttachment(attachment);
+            if (!attachment) {
+                deselectIngest();
+            }
+        }
+    }, [selectedIngest, selectedAttachmentId]);
 
     useEffect(() => {
         const {external = {}} = rightsFilter || {};
@@ -148,7 +160,12 @@ const RightsRepository = props => {
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && !isEmpty(selectedIngest) && selectedAttachmentId && (<Ingest ingest={selectedIngest} selectedAttachmentId={selectedAttachmentId} filterByStatus={filterByStatus} />)}
+            {selectedIngest && !isEmpty(selectedIngest) && attachment && (<Ingest
+                ingest={selectedIngest}
+                deselectIngest={deselectIngest}
+                attachment={attachment}
+                filterByStatus={filterByStatus} />)
+            }
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -202,6 +219,7 @@ const mapDispatchToProps = dispatch => ({
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
+    deselectIngest: () => dispatch(deselectIngest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
