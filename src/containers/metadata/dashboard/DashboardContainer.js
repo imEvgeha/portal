@@ -25,7 +25,7 @@ import {
 import moment from 'moment';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {configService} from '../service/ConfigService';
-import TitleResultTable from './components/TitleResultTable';
+import TitleResultTable from './components/table/TitleResultTable';
 
 const mapStateToProps = state => {
     return {
