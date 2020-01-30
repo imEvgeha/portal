@@ -62,6 +62,10 @@ const RightsRepository = props => {
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
 
     useEffect(() => {
+        gridApi && gridApi.setFilterModel(null);
+    }, [selectedIngest]);
+
+    useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         }
