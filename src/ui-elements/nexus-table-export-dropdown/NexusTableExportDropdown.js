@@ -93,8 +93,6 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         </DropdownMenu>;
     }
 
-    console.log(rightsFilter)
-
     return (
         <div className='nexus-c-right-repository-export'>
             {isDisabled &&
