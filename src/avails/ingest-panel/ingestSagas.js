@@ -100,14 +100,22 @@ function* selectIngest({payload}) {
     }
     if (ingestId) {
         let selectedIngest = yield select(getIngestById, ingestId);
-        if (!selectedIngest) {
-            const response = yield call(historyService.getHistory, ingestId);
-            selectedIngest = response.data;
-        }
-        yield put({
-            type: actionTypes.UPDATE_SELECTED_INGEST,
-            payload: selectedIngest,
-        });
+
+            try {
+                if (!selectedIngest) {
+                    const response = yield call(historyService.getHistory, ingestId);
+                    selectedIngest = response.data;
+                }
+                yield put({
+                    type: actionTypes.UPDATE_SELECTED_INGEST,
+                    payload: selectedIngest,
+                });
+            } catch (error) {
+                yield  put( {
+                    type: 'DESELECT_INGEST'
+                });
+            }
+
     }
 }
 

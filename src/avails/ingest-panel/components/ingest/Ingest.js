@@ -8,7 +8,7 @@ import './Ingest.scss';
 
 const Ingest = ({received, attachment, selected, ingestClick, inBundle}) => {
     const [showReport, setShowReport] = useState(false);
-    const { link, status, ingestReport, attachmentType = {} } = attachment;
+    const { link, status, ingestReport } = attachment;
 
     const onChevronClick = e => {
         e.stopPropagation();

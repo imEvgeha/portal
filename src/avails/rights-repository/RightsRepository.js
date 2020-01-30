@@ -3,6 +3,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
@@ -147,7 +148,7 @@ const RightsRepository = props => {
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && (<Ingest ingest={selectedIngest} selectedAttachmentId={selectedAttachmentId} filterByStatus={filterByStatus} />)}
+            {selectedIngest && !isEmpty(selectedIngest) && selectedAttachmentId && (<Ingest ingest={selectedIngest} selectedAttachmentId={selectedAttachmentId} filterByStatus={filterByStatus} />)}
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
