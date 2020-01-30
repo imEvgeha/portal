@@ -11,9 +11,9 @@ export default {
         total: 'Rights',
         created: 'New',
         updated: 'Updated',
-        fatal: 'Fatals',
+        fatal: 'Fatal',
         pending: 'Pending',
-        errors: 'Errors'
+        errors: 'Error'
     },
     ingestTypes: {
         EMAIL: 'Email',

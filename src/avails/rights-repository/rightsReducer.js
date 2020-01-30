@@ -49,6 +49,12 @@ const rightsReducer = (state = initialState, action = {}) => {
                 ...state,
                 filter: updatedFilter
             };
+        case actionTypes.REMOVE_ALL_RIGHTS_FILTER:
+            const updatedFilters =  {...state.filter,  column: {}};
+            return {
+                ...state,
+                filter: updatedFilters
+            };
         default:
             return state;
     }
