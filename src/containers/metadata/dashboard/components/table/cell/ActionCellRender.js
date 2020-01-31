@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
 import './ActionCellRender.scss';
 import CustomActionsCellRenderer
     from '../../../../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTooltip from '../../../../../../ui-elements/nexus-tooltip/NexusTooltip';
+import {storeTitle} from '../../../../../../metadata/metadataActions';
 
-function ActionCellRender({data}) {
+function ActionCellRender({data, storeTitle}) {
 
     const [isMovidaOrVz, setIsMovidaOrVz] = useState();
 
@@ -19,14 +21,16 @@ function ActionCellRender({data}) {
     return (
         <CustomActionsCellRenderer id={'action-' + data.id}>
             {!isMovidaOrVz &&
-            <NexusTooltip content='Legacy title reconciliation'>
                 <div>
-                    <a className='nexus-c-metadata-table-action' href={`/metadata/detail/${data.id}/title-merging`} target='_blank'><b>Inspect</b></a>
+                    <a className='nexus-c-metadata-table-action' href={`/metadata/detail/${data.id}/legacy-title-reconciliation`} onClick={() => storeTitle(data)} target='_blank'><b>Inspect</b></a>
                 </div>
-            </NexusTooltip>
             }
         </CustomActionsCellRenderer>
     );
 }
 
-export default ActionCellRender;
+const mapDispatchToProps = dispatch => ({
+    storeTitle: payload => dispatch(storeTitle(payload))
+});
+
+export default connect(null, mapDispatchToProps)(ActionCellRender);

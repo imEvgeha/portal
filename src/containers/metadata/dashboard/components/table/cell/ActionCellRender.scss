@@ -1,10 +1,18 @@
 .nexus-c-metadata-table-action {
+  /* unvisited link */
   &:link {
-    color: lightblue;
+    //color: #cccccc;
+    //color: #999999;
+    color: gray;
   }
 
-  /* mouse over link */
+  &:visited {
+    color: gray;
+  }
+
   &:hover {
-    color: blue;
+    //color: dodgerblue;
+    color: #007bff;
+    text-decoration: underline;
   }
 }
