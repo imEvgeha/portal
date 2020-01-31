@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
+import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../ui-elements/';
-import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE} from './constants';
+import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
 import {fetchTitle} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
@@ -22,6 +23,8 @@ const LegacyTitleReconciliationView = ({
 }) => {
     const {params = {}} = match;
 
+    const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
+
     // TODO: this should be generate on initial app load
     useEffect(() => {
         if (!columnDefs.length) {
@@ -35,6 +38,13 @@ const LegacyTitleReconciliationView = ({
     }, []);
 
     const {title, contentType} = titleMetadata || {};
+
+    const handleDoneClick = values => values;
+
+    const handleDataChange = ({matchList = {}, duplicateList = {}}) => {
+        const hasItem = Object.keys(matchList).length || Object.keys(duplicateList).length;
+        setIsDoneButtonDisabled(!hasItem);
+    };
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">
@@ -55,7 +65,18 @@ const LegacyTitleReconciliationView = ({
                 columnDefs={columnDefs}
                 // TODO: Capitalized variable name due to invalid BE requirement
                 queryParams={{ContentType: contentType, title}}
+                onDataChange={handleDataChange}
             />
+            <div className="nexus-c-legacy-title-reconciliation-view__buttons">
+                <Button
+                    className="nexus-c-button"
+                    appearance="primary"
+                    onClick={handleDoneClick}
+                    isDisabled={isDoneDisabled}
+                >
+                    {SAVE_BTN}
+                </Button>
+            </div>
         </div>
     );
 };

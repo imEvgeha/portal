@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
@@ -14,68 +14,74 @@ import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {CANDIDATES_LIST_TITLE} from '../constants';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+import {getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.freeTextSearch}))(NexusGrid);
+const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.freeTextSearchWithGenres}))(NexusGrid);
 
-const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
+const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams, onDataChange}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [matchList, setMatchList] = useState({});
     const [duplicateList, setDuplicateList] = useState({});
 
-    const matchClickHandler = (data, repo, checked) => {
+    // inform parent about match and duplicate list change
+    useEffect(() => {
+        onDataChange({matchList, duplicateList});
+    }, [matchList, duplicateList]);
+
+    const handleMatchClick = (data, repo, checked) => {
         const {id} = data || {};
-        if(checked) {
-            const {NEXUS, VZ, MOVIDA} = constants.repository;
-            const newMatchList = {...matchList};
-            if(duplicateList[id]){
+        if (checked) {
+            const {VZ, MOVIDA} = constants.repository;
+            let newMatchList = {...matchList};
+            
+            if (duplicateList[id]){
                 let list = {...duplicateList};
                 delete list[id];
                 setDuplicateList(list);
             }
 
-            if(repo === NEXUS){
-                delete newMatchList[VZ];
-                delete newMatchList[MOVIDA];
-            }
-            else{
-                delete newMatchList[NEXUS];
-            }
             newMatchList[repo] = data;
             setMatchList(newMatchList);
         }
     };
     const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
-        const repoName = getRepositoryName(id);
+        const repo = getRepositoryName(id);
+
         return (
-            <CustomActionsCellRenderer id={id} >
-                <Radio
-                    name={repoName}
-                    isChecked={matchList[repoName] && matchList[repoName].id === id}
-                    onChange={event => matchClickHandler(data, repoName, event.target.checked)}
-                />
-            </CustomActionsCellRenderer>
+            repo !== constants.repository.NEXUS && (
+                <CustomActionsCellRenderer id={id} >
+                    <Radio
+                        name={repo}
+                        isChecked={matchList[repo] && matchList[repo].id === id}
+                        onChange={({target}) => handleMatchClick(data, repo, target.checked)}
+                    />
+                </CustomActionsCellRenderer>
+            )
         );
     };
 
-    const duplicateClickHandler = (id, name, checked) => {
-        if(checked) {
-            if(matchList[name] && matchList[name].id === id) {
+    const handleDuplicateClick = (id, name, checked) => {
+        if (checked) {
+            if (matchList[name] && matchList[name].id === id) {
                 let list = {...matchList};
                 delete list[name];
                 setMatchList(list);
             }
+
             setDuplicateList({
                 ...duplicateList,
                 [id]: name
             });
+            return;
         }
-        else {
-            let list = {...duplicateList};
-            delete list[id];
-            setDuplicateList(list);
-        }
+
+        let list = {...duplicateList};
+        delete list[id];
+        setDuplicateList(list);
+
     };
+
     const duplicateButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         const repo = getRepositoryName(id);
@@ -84,7 +90,7 @@ const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
                 <CustomActionsCellRenderer id={id}>
                     <Checkbox
                         isChecked={duplicateList[id]}
-                        onChange={event => duplicateClickHandler(id, repo, event.currentTarget.checked)}
+                        onChange={({currentTarget}) => handleDuplicateClick(id, repo, currentTarget.checked)}
                     />
                 </CustomActionsCellRenderer>
             )
@@ -107,14 +113,8 @@ const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
         cellRendererParams: duplicateList,
         cellRendererFramework: duplicateButtonCell,
     }; 
-    let deepCloneColumnDefs = cloneDeep(columnDefs);
-    const handleTitleMatchingRedirect = params => {
-        return createLinkableCellRenderer(params);
-    };
-    let updatedColumnDefs = deepCloneColumnDefs.map(e => {
-        if(e.cellRenderer) e.cellRenderer = handleTitleMatchingRedirect;
-        return e;
-    });
+
+    const handleTitleMatchingRedirect = params => createLinkableCellRenderer(params);
 
     const renderEpisodeAndSeasonNumber = params => {
         const {data = {}} = params || {};
@@ -135,6 +135,8 @@ const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
         width: 100
     };
 
+    const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
+
     const onGridEvent = ({type, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
             const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
@@ -142,18 +144,6 @@ const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
         }
     };
 
-    // TODO: REFACTOR THIS
-    const addGenresToTitle = (titles, successCallback) => {
-        titles.forEach(title => {
-            titleService.getEditorialMetadataByTitleId(title.id).then(({data}) => {
-                const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
-                if(founded) {
-                    title['editorialGenres'] = founded.genres;
-                }
-                successCallback(titles);
-            });
-        });
-    };
 
     return (
         <div className="nexus-c-candidates-list">
@@ -161,13 +151,12 @@ const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
             {queryParams.title && (
                 <NexusGridWithInfiniteScrolling
                     onGridEvent={onGridEvent}
-                    onAddAdditionalField={addGenresToTitle}
                     columnDefs={[
                         matchButton,
                         duplicateButton,
                         numOfEpisodeAndSeasonField,
                         getRepositoryCell({headerName: 'System'}),
-                        ...updatedColumnDefs
+                        ...updatedColumnDefs,
                     ]}
                     rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
                     setTotalCount={setTotalCount}
@@ -179,16 +168,18 @@ const CandidatesList = ({columnDefs, mergeTitles, titleId, queryParams}) => {
 };
 
 CandidatesList.propTypes = {
+    queryParams: PropTypes.object,
     columnDefs: PropTypes.array,
     mergeTitles: PropTypes.func,
-    queryParams: PropTypes.object,
+    onDataChange: PropTypes.func,
     titleId: PropTypes.string.isRequired,
 };
 
 CandidatesList.defaultProps = {
+    queryParams: {},
     columnDefs: [],
     mergeTitles: () => null,
-    queryParams: {},
+    onDataChange: () => null,
 };
 
 export default CandidatesList;

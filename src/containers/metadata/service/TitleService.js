@@ -40,6 +40,45 @@ export const titleService = {
         }
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles/search' + prepareSortMatrixParamTitles(sortedParams), {params: {...params, page: page, size: pageSize}});
     },
+
+    freeTextSearchWithGenres: (searchCriteria, page, pageSize, sortedParams) => {
+        const LANGUAGES = ['English', 'en'];
+        const LOCALE = ['US'];
+        const GENRE_KEY = 'editorialGenres';
+
+        return titleService.freeTextSearch(searchCriteria, page, pageSize, sortedParams).then(response => {
+            const {data, page, size, total} = (response && response.data) || {};
+            const promises = data.map((title) => {
+                const {id} = title;
+                if (title[GENRE_KEY]) {
+                    return title;
+                }
+                return titleService.getEditorialMetadataByTitleId(id)
+                    .then(({data}) => {
+                        const itemWithGenres = data.find(({locale, language}) => {
+                            return LOCALE.includes(locale) && LANGUAGES.includes(language);
+                        });
+                        if (itemWithGenres) {
+                            title[GENRE_KEY] = itemWithGenres.genres;
+                        }
+                        return title;
+                    })
+                    .catch(e => e);
+            });
+            return Promise.all(promises)
+                .then(titles => {
+                    return {
+                        data: {
+                            data: titles,
+                            page,
+                            size,
+                            total,
+                        }
+                    };
+                });
+        });
+    },
+
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
         for (let key in searchCriteria) {
@@ -56,6 +95,7 @@ export const titleService = {
 
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
     },
+
     createTitleWithoutErrorModal: (title) => {
         const httpNoErrorModal = Http.create({
             defaultErrorHandling: false,
@@ -66,15 +106,18 @@ export const titleService = {
         });
         return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
     },
+
     updateTitle: (title, syncToVZ, syncToMovida) => {
         const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
 
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title, {params});
     },
+
     getTitleById: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`);
     },
+
     bulkGetTitles: (ids) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ', ids);
     },
@@ -82,9 +125,11 @@ export const titleService = {
     addTerritoryMetadata: (territoryMetadata) => {
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', territoryMetadata);
     },
+
     getTerritoryMetadataById: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/territorymetadata?titleId=${id}`);
     },
+    
     updateTerritoryMetadata: (editedTerritoryMetadata) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', editedTerritoryMetadata);
     },
@@ -92,9 +137,11 @@ export const titleService = {
     addEditorialMetadata: (editorialMetadata) => {
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editorialMetadata);
     },
+
     getEditorialMetadataByTitleId: (id) => {
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/editorialmetadata?titleId=${id}`);
     },
+
     updateEditorialMetadata: (editedEditorialMetadata) => {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
     },
