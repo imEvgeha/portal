@@ -13,7 +13,7 @@ import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActi
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
 import {filterRightsByStatus, selectIngest} from '../ingest-panel/ingestActions';
-import {getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import {
@@ -49,6 +49,7 @@ const RightsRepository = props => {
         createRightMatchingColumnDefs,
         mapping,
         selectedIngest,
+        selectedAttachmentId,
         filterByStatus,
         ingestClick,
         setSelectedRights,
@@ -63,7 +64,7 @@ const RightsRepository = props => {
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
-    }, [selectedIngest]);
+    }, [selectedIngest, selectedAttachmentId]);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -192,6 +193,7 @@ const mapStateToProps = () => {
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         selectedIngest: getSelectedIngest(state),
+        selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
@@ -202,7 +204,7 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
-    addRightsFilter: payload => dispatch(addRightsFilter(payload)),
+    addRightsFilter: payload => dispatch(addRightsFilter(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
