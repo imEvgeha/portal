@@ -12,6 +12,7 @@ import {
     SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT
 } from '../constants';
+import ClearButton from '../clear-button/ClearButton';
 
 const NexusSimpleDateTimePicker = ({
     label,
@@ -22,6 +23,7 @@ const NexusSimpleDateTimePicker = ({
     error,
     isSimulcast,
     isTimestamp,
+    allowClear,
     ...restProps
 }) => {
     const [date, setDate] = useState(value);
@@ -34,6 +36,10 @@ const NexusSimpleDateTimePicker = ({
     useEffect(() => setStrippedDate(value), [value]);
 
     const setStrippedDate = (value) => {
+        if(!value) {
+            setDate('');
+            return;
+        }
         // Removing the 'Z' at the end if it exists, because otherwise you always
         // get local date in preview, but requirements let the user choose
         // whether they want to use UTC or Relative
@@ -46,12 +52,24 @@ const NexusSimpleDateTimePicker = ({
     const datePlaceholder = getDateFormatBasedOnLocale(locale).toUpperCase();
 
     const convertToRequiredFormat = date => {
+        if(!date) {
+            setDate('');
+            return;
+        }
         const dateWithStrippedTimezone = moment(date).format(ATLASKIT_DATE_FORMAT);
         setDate(dateWithStrippedTimezone);
 
         return isTimestamp
             ? moment(dateWithStrippedTimezone.concat('Z')).toISOString()
             : moment(dateWithStrippedTimezone).format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT);
+    };
+
+    const onDateChange = date => {
+        if(date){
+            onChange(convertToRequiredFormat(date));
+        } else {
+            return allowClear && onChange('');
+        }
     };
 
     return (
@@ -67,13 +85,13 @@ const NexusSimpleDateTimePicker = ({
                 </label>
             }
             <TemporaryErrorBorder error={error}>
-                <>
+                <div className='nexus-c-date-picker__date-clear-wrapper'>
                     <DateTimePicker
                         locale={locale}
                         id={id}
                         defaultValue={defaultValue}
                         value={date}
-                        onChange={date => date && onChange(convertToRequiredFormat(date))}
+                        onChange={onDateChange}
                         datePickerProps={{
                             placeholder: datePlaceholder,
                             onChange: (newValue) => {
@@ -87,7 +105,8 @@ const NexusSimpleDateTimePicker = ({
                         }}
                         {...restProps}
                     />
-                </>
+                    {allowClear && <ClearButton onClear={() => onChange('')} />}
+                </div>
             </TemporaryErrorBorder>
             {error &&
                 <ErrorMessage>
@@ -105,6 +124,7 @@ NexusSimpleDateTimePicker.propTypes = {
     error: PropTypes.string,
     isSimulcast: PropTypes.bool,
     isTimestamp: PropTypes.bool,
+    allowClear: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
 };
@@ -116,6 +136,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     error: '',
     isSimulcast: true,
     isTimestamp: false,
+    allowClear: false,
 };
 
 export default NexusSimpleDateTimePicker;

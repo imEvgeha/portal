@@ -12,21 +12,27 @@ import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
+import {default as AtlaskitButton} from '@atlaskit/button';
 import {AvForm} from 'availity-reactstrap-validation';
+import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
     EDITORIAL_METADATA_PREFIX,
     EDITORIAL_METADATA_SYNOPSIS,
-    EDITORIAL_METADATA_TITLE
+    EDITORIAL_METADATA_TITLE,
+    EPISODIC_FIELDS
 } from '../../../../constants/metadata/metadataComponent';
 import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
-import {CAST, getFilteredCrewList, getFilteredCastList} from '../../../../constants/metadata/configAPI';
+import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
+
+const MOVIDA = 'Movida';
+const VZ = 'VZ';
 
 const emptyTerritory = {
     locale: null,
@@ -49,9 +55,7 @@ const emptyEditorial = {
     synopsis: null,
     copyright: null,
     awards: null,
-    seasonNumber: null,
-    episodeNumber: null,
-    seriesName: null,
+    episodic: null
 };
 
 class TitleEdit extends Component {
@@ -405,6 +409,23 @@ class TitleEdit extends Component {
         }
     }
 
+    titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
+        titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
+            this.setState({
+                isLoading: false,
+                titleForm: response.data,
+                editedForm: response.data,
+                ratingForCreate: {},
+                isEditMode: switchEditMode && !this.state.isEditMode,
+                territoryMetadataActiveTab: CURRENT_TAB,
+                editorialMetadataActiveTab: CURRENT_TAB,
+                titleRankingActiveTab: CURRENT_TAB,
+            });
+        }).catch(() => {
+            console.error('Unable to load Title Data');
+        });
+    };
+
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm || Object.keys(this.state.ratingForCreate).length !== 0) {
             this.setState({
@@ -416,20 +437,7 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.addRatingForCreateIfExist(newAdditionalFields);
-            titleService.updateTitle(newAdditionalFields).then((response) => {
-                this.setState({
-                    isLoading: false,
-                    titleForm: response.data,
-                    editedForm: response.data,
-                    ratingForCreate: {},
-                    isEditMode: !this.state.isEditMode,
-                    territoryMetadataActiveTab: CURRENT_TAB,
-                    editorialMetadataActiveTab: CURRENT_TAB,
-                    titleRankingActiveTab: CURRENT_TAB,
-                });
-            }).catch(() => {
-                console.error('Unable to load Title Data');
-            });
+            this.titleUpdate(newAdditionalFields);
         } else {
             this.setState({
                 isEditMode: !this.state.isEditMode,
@@ -593,7 +601,7 @@ class TitleEdit extends Component {
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
         let isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
-
+        let isEpisodic = EPISODIC_FIELDS.includes(targetName);
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
@@ -605,6 +613,8 @@ class TitleEdit extends Component {
         } else if (isEditorialTitle) {
             targetName = targetName.replace(EDITORIAL_METADATA_TITLE, '');
             this.updateEditorialMetadataInnerObject(edited, 'title', targetName, e.target.value);
+        } else if (isEpisodic){
+            this.updateEditorialMetadataInnerObject(edited, 'episodic', targetName, e.target.value);
         } else {
             edited[targetName] = e.target.value;
         }
@@ -686,6 +696,20 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
                 title: newTitle
+            }
+        });
+    };
+
+    handleEpisodicEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const newEpisodic = {
+            ...this.state.editorialMetadataForCreate.episodic,
+            [targetName]: e.target.value
+        };
+        this.setState({
+            editorialMetadataForCreate: {
+                ...this.state.editorialMetadataForCreate,
+                episodic: newEpisodic
             }
         });
     };
@@ -914,6 +938,41 @@ class TitleEdit extends Component {
         });
     }
 
+    renderSyncField = (name, titleModifiedAt, id, publishedAt) => {
+
+        const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
+        const buttonName = !id || !publishedAt ? 'Publish' : 'Sync';
+        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt));
+        const indicator = isDisabled ? 'success' : 'error';
+        return (<div className='nexus-c-title-edit__sync-container-field'>
+            <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
+            <div className='nexus-c-title-edit__sync-container-field-description'><b>{name}</b> Last updated: {lastUpdated}</div>
+            <AtlaskitButton appearance='primary' isDisabled={isDisabled} onClick={() => this.onSyncPublishClick(name)}>{buttonName}</AtlaskitButton>
+        </div>);
+    };
+
+    onSyncPublishClick = (name) => {
+        const syncToVz = name === VZ;
+        const syncToMovida = name === MOVIDA;
+        this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
+    };
+
+    renderSyncVzMovidaFields = () => {
+        const {legacyIds, modifiedAt} = this.state.titleForm;
+        const {vz, movida} = legacyIds || {};
+        const {vzId} = vz || {};
+        const {movidaId} = movida || {};
+        const vzPublishedAt = (vz || {}).publishedAt;
+        const movidaPublishedAt = (movida || {}).publishedAt;
+
+        return (
+            <>
+                {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
+                {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
+            </>
+        );
+    };
+
     render() {
         return (
             <EditPage>
@@ -930,9 +989,12 @@ class TitleEdit extends Component {
                                     :
                                     <Fragment>
                                         <Col>
+                                            <div className='nexus-c-title-edit__sync-container'>
+                                            {/*{this.renderSyncVzMovidaFields()}*/}
                                             <Can I="update" a="Metadata">
                                                 <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
                                             </Can>
+                                            </div>
                                         </Col>
                                     </Fragment>
                             }
@@ -964,6 +1026,7 @@ class TitleEdit extends Component {
                         titleContentType={this.state.titleForm.contentType}
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                         updatedEditorialMetadata={this.state.updatedEditorialMetadata}
+                        handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
                     />
 
                     <TerritoryMetadata

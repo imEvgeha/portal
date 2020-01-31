@@ -114,8 +114,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
                 LT: value,
                 LTE: value,
             };
-            const parsedValue = switchCase(fieldValues)(value)(criteria);
-            return parsedValue;
+            return switchCase(fieldValues)(value)(criteria);
         };
 
         const result = searchCriteria.reduce((query, field) => {
@@ -124,8 +123,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             const fieldValue = targetFieldName || fieldName;
             const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];
             const key = parseFieldNames(criteria, preparedName);
-            const value = parseFieldValue(criteria, preparedFieldValue, subFieldName);
-            query[key] = value;
+            query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
             return query;
         }, {});
 

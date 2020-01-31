@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
-import PopOutIcon from '../../assets/action-shortcut.svg';
 import MoreIcon from '../../assets/more-icon.svg';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 
@@ -40,7 +39,6 @@ const NexusTableToolbar = ({
                     Selected ({Object.keys(selectedRows).length})
                 </div>
             )}
-            <PopOutIcon fill="#A5ADBA" />
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
                     <NexusTableExportDropdown

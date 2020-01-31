@@ -28,7 +28,8 @@ import {
     updateColumnDefs
 } from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
-import {createSchemaForColoring, addCellClass} from '../../utils';
+import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
+import usePrevious from '../../../util/hooks/usePrevious';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -56,6 +57,9 @@ function MatchRightView({
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const [selectedMatchedRightIds, setSelectedMatchedRightIds] = useState([rightId, ...matchedRightIds.split(',')]);
     const [cellColoringSchema, setCellColoringSchema] = useState(); 
+    const previousMatchedRights = usePrevious(matchedRights);
+    const previousSelectedMatchedRightIds = usePrevious(selectedMatchedRightIds);
+    const [combinedGridApi, setCombinedGridApi] = useState();
 
     // DOP Integration
     useDOPIntegration(null, 'rightMatchingDOP');
@@ -77,12 +81,22 @@ function MatchRightView({
 
     // fetch combined rights
     useEffect(() => {
-        if (matchedRights.length) {
-            setCellColoringSchema(createSchemaForColoring([focusedRight, ...matchedRights], columnDefs));
-            // matchedRightId from url should be correct one.
+        if (!isEqual(previousMatchedRights, matchedRights)
+            || !isEqual(previousSelectedMatchedRightIds, selectedMatchedRightIds)
+        ) {
+            const selectedMatchRights = [focusedRight, ...matchedRights]
+                .filter(right => selectedMatchedRightIds.some(id => id === right.id));
+            const schemas = createSchemaForColoring(selectedMatchRights, columnDefs);
+            setCellColoringSchema(schemas);
             fetchCombinedRight(selectedMatchedRightIds);
         }
     }, [matchedRights, selectedMatchedRightIds]);
+
+    useEffect(() => {
+        if (combinedGridApi) {
+            combinedGridApi.redrawRows();
+        }
+    }, [cellColoringSchema]);
 
     useEffect(() => {
         if (combinedRight) {
@@ -115,6 +129,8 @@ function MatchRightView({
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);
+        } else if (type === GRID_EVENTS.READY) {
+            setCombinedGridApi(api);
         }
     };
 
@@ -138,8 +154,7 @@ function MatchRightView({
     };
 
     // rule for row (disable unselect, add strike through line)
-    const applyRowRule = (params = {}) => {
-        const {node, data, api} = params || {};
+    const applyRowRule = ({node, data, api}) => {
         const selectedIds = getSelectedRows(api).map(el => el.id);
         if (node.selected) {
             let rowClass = '';
@@ -166,7 +181,8 @@ function MatchRightView({
                 && (selectedIds[selectedIds.length - 1] !== data.id && selectedIds[0] !== data.id)
             )
         ) {
-            return addCellClass({colDef, value, schema: cellColoringSchema});
+            const schema = createColumnSchema(getSelectedRows(api), colDef.field);
+            return addCellClass({colDef, value, schema});
         }
     };
 
@@ -177,9 +193,7 @@ function MatchRightView({
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
 
     // TODO: refactor column defs
-    const updatedMatchedRightColumnDefs = cellColoringSchema 
-        ? updateColumnDefs(columnDefs, {cellClass: applyColumnRule}) 
-        : columnDefs;
+    const updatedMatchedRightColumnDefs = updateColumnDefs(columnDefs, {cellClass: applyColumnRule});
     const matchedRightColumnDefs = columnDefs.length && matchedRightRowData.length > 1
         ? [checkboxSelectionColumnDef, ...updatedMatchedRightColumnDefs] 
         : columnDefs;
@@ -188,9 +202,15 @@ function MatchRightView({
         ? updateColumnDefs(
             columnDefs, 
             {
-                cellClass: ({colDef, value}) => {
-                    return !FIELDS_WITHOUT_COLOURING.includes(colDef.field)
-                        && addCellClass({colDef, value, schema: cellColoringSchema});
+                cellClass: ({colDef, value, context}) => {
+                    const {field} = colDef || {};
+
+                    if (!FIELDS_WITHOUT_COLOURING.includes(field)) {
+                        const {values} = context[field] || {};
+                        const isCellHighlighted = values && Object.keys(values).length > 1;
+
+                        return isCellHighlighted && HIGHLIGHTED_CELL_CLASS;
+                    }
                 }
             }) 
         : columnDefs;
@@ -233,6 +253,7 @@ function MatchRightView({
                         onGridEvent={onCombinedRightGridEvent}
                         mapping={mapping}
                         domLayout="autoHeight"
+                        context={cellColoringSchema}
                     />
                 )}
             </div>

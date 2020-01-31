@@ -3,6 +3,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
+import isEmpty from 'lodash.isempty';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
@@ -12,8 +13,8 @@ import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest} from '../ingest-panel/ingestActions';
-import {getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import {filterRightsByStatus, selectIngest, deselectIngest} from '../ingest-panel/ingestActions';
+import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import {
@@ -23,14 +24,12 @@ import {
 import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import UiElements from '../../ui-elements';
+import {NexusGrid, NexusTableToolbar} from '../../ui-elements';
 import {filterBy} from '../../ui-elements/nexus-grid/utils';
 import usePrevious from '../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from './util/indicator';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
-
-const {NexusGrid, NexusTableToolbar} = UiElements;
 
 const RightsRepositoryTable = compose(
     withSideBar(),
@@ -56,6 +55,8 @@ const RightsRepository = props => {
         addRightsFilter,
         setRightsFilter,
         rightsFilter,
+        selectedAttachmentId,
+        deselectIngest
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
@@ -63,7 +64,7 @@ const RightsRepository = props => {
     const [columnApi, setColumnApi] = useState();
     const [selectedColumnApi, setSelectedColumnApi] = useState();
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
-
+    const [attachment, setAttachment] = useState();
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
@@ -75,13 +76,24 @@ const RightsRepository = props => {
     }, []);
 
     useEffect(() => {
+        if(selectedIngest && selectedAttachmentId) {
+            const {attachments} = selectedIngest;
+            const attachment = attachments.find(a => a.id === selectedAttachmentId);
+            setAttachment(attachment);
+            if (!attachment) {
+                deselectIngest();
+            }
+        }
+    }, [selectedIngest, selectedAttachmentId]);
+
+    useEffect(() => {
         const {external = {}} = rightsFilter || {};
         const {status} = external;
         if (!isEqual(previousExternalStatusFilter, status) && gridApi) {
             const filterInstance = gridApi.getFilterInstance('status');
             let values;
             if (!status || status === 'Rights') {
-                const {options} = (Array.isArray(mapping)
+                const {options = []} = (Array.isArray(mapping)
                     && mapping.find(({javaVariableName}) => javaVariableName === 'status')
                 ) || {};
                 values = options;
@@ -163,7 +175,12 @@ const RightsRepository = props => {
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && (<Ingest ingest={selectedIngest} filterByStatus={filterByStatus} />)}
+            {selectedIngest && !isEmpty(selectedIngest) && attachment && (<Ingest
+                ingest={selectedIngest}
+                deselectIngest={deselectIngest}
+                attachment={attachment}
+                filterByStatus={filterByStatus} />)
+            }
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -209,6 +226,7 @@ const mapStateToProps = () => {
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
         selectedIngest: getSelectedIngest(state),
+        selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
@@ -220,6 +238,7 @@ const mapDispatchToProps = dispatch => ({
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
+    deselectIngest: () => dispatch(deselectIngest()),
     setRightsFilter: payload => dispatch(setRightsFilter(payload))
 });
 
