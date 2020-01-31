@@ -31,8 +31,6 @@ import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/i
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 
-const {NexusGrid, NexusTableToolbar} = UiElements;
-
 const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns(),
