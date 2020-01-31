@@ -8,7 +8,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights, addRightsFilter} from './rightsActions';
+import {setSelectedRights, addRightsFilter, setRightsFilter} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
@@ -53,6 +53,7 @@ const RightsRepository = props => {
         setSelectedRights,
         selectedRights,
         addRightsFilter,
+        setRightsFilter,
         rightsFilter,
         selectedAttachmentId,
         deselectIngest
@@ -60,6 +61,8 @@ const RightsRepository = props => {
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
     const [gridApi, setGridApi] = useState();
+    const [columnApi, setColumnApi] = useState();
+    const [selectedColumnApi, setSelectedColumnApi] = useState();
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
     useEffect(() => {
@@ -139,7 +142,7 @@ const RightsRepository = props => {
         ? [actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
-    const onRightsRepositoryGridEvent = ({type, api}) => {
+    const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         switch (type) {
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
@@ -148,10 +151,24 @@ const RightsRepository = props => {
                 break;
             case GRID_EVENTS.READY:
                 setGridApi(api);
+                setColumnApi(columnApi);
                 break;
             case GRID_EVENTS.FILTER_CHANGED:
-                addRightsFilter({column: filterBy(api.getFilterModel())});
+                const column = filterBy(api.getFilterModel());
+                if (Object.keys(column).length === 0) {
+                    let filter = Object.assign({}, rightsFilter);
+                    delete filter.column;
+                    setRightsFilter(filter);
+                } else {
+                    setRightsFilter({...rightsFilter, column});
+                }
                 break;
+        }
+    };
+
+    const onSelectedRightsRepositoryGridEvent = ({type, columnApi}) => {
+        if(type === GRID_EVENTS.READY) {
+            setSelectedColumnApi(columnApi);
         }
     };
 
@@ -169,13 +186,17 @@ const RightsRepository = props => {
                 totalRows={totalCount}
                 setIsSelectedOptionActive={setIsSelectedOptionActive}
                 isSelectedOptionActive={isSelectedOptionActive}
-                selectedRows={Object.keys(selectedRights).length}
+                selectedRows={selectedRights}
+                rightsFilter={rightsFilter}
+                rightColumnApi={columnApi}
+                selectedRightColumnApi={selectedColumnApi}
             />
             <SelectedRighstRepositoryTable
                 columnDefs={updatedColumnDefsWithRedirect}
                 mapping={mapping}
                 rowData={Object.keys(selectedRights).map(key => selectedRights[key])}
                 isGridHidden={!isSelectedOptionActive}
+                onGridEvent={onSelectedRightsRepositoryGridEvent}
                 singleClickEdit
             />
             <RightsRepositoryTable
@@ -218,6 +239,7 @@ const mapDispatchToProps = dispatch => ({
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
+    setRightsFilter: payload => dispatch(setRightsFilter(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
