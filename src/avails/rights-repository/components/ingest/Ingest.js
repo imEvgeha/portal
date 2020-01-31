@@ -10,9 +10,9 @@ import './Ingest.scss';
 import Constants from '../../../ingest-panel/constants';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 
-const Ingest = ({ingest, filterByStatus}) => {
+const Ingest = ({ingest, filterByStatus, attachment}) => {
     const {attachments = [{}], ingestType, provider, received} = ingest;
-    const {link, status, ingestReport = {}} = attachments[0];
+    const {link, status, ingestReport = {}} = attachment;
     const {attachmentTypes: {EMAIL}} = Constants;
     const emails = attachments.filter(a => a.attachmentType && a.attachmentType === EMAIL);
     return ingest ? (
@@ -57,11 +57,15 @@ const Ingest = ({ingest, filterByStatus}) => {
 Ingest.propTypes = {
     ingest: PropTypes.object,
     filterByStatus: PropTypes.func,
+    deselectIngest: PropTypes.func,
+    selectedAttachmentId: PropTypes.string,
 };
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
-    filterByStatus: () => null
+    filterByStatus: () => null,
+    deselectIngest: () => null,
+    selectedAttachmentId: ''
 };
 
 export default Ingest;

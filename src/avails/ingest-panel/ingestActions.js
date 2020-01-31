@@ -1,5 +1,4 @@
 import actionTypes from './ingestActionTypes';
-import {store} from '../../index';
 
 export const fetchIngests = payload => ({
     type: actionTypes.FETCH_INGESTS,
@@ -15,9 +14,8 @@ export const filterRightsByStatus = payload => ({
     payload,
 });
 
-export const selectIngest = payload => {
-    const {selectedAttachmentId} = store.getState().avails.ingest;
-    if (selectedAttachmentId && payload && selectedAttachmentId === payload.attachmentId) {
+export const selectIngest = (payload={}) => {
+    if (payload.selectedAttachmentId && payload.selectedAttachmentId === payload.attachmentId) {
         return {
             type: actionTypes.DESELECT_INGEST
         };
@@ -28,3 +26,12 @@ export const selectIngest = payload => {
         };
     }
 };
+
+export const deselectIngest = () => ({
+    type: actionTypes.DESELECT_INGEST
+});
+
+export const uploadIngest = payload => ({
+    type: actionTypes.UPLOAD_INGEST,
+    payload,
+});

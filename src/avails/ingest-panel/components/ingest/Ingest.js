@@ -6,9 +6,9 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestReport from '../ingest-report/IngestReport';
 import './Ingest.scss';
 
-const Ingest = ({ingestType, received, provider, attachment, selected, ingestClick}) => {
+const Ingest = ({received, attachment, selected, ingestClick, inBundle}) => {
     const [showReport, setShowReport] = useState(false);
-    const { link, status, ingestReport, attachmentType = {} } = attachment;
+    const { link, status, ingestReport } = attachment;
 
     const onChevronClick = e => {
         e.stopPropagation();
@@ -16,7 +16,9 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
     };
 
     return (
-        <div className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''}`} onClick={ingestClick}>
+        <div
+            className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''} ${inBundle? 'nexus-c-avail-ingest--is-in-bundle' : ''} `}
+             onClick={ingestClick}>
             <IngestTitle link={link} />
             <div className='nexus-c-avail-ingest__details'>
                 {
@@ -39,20 +41,18 @@ const Ingest = ({ingestType, received, provider, attachment, selected, ingestCli
 };
 
 Ingest.propTypes = {
-    ingestType: PropTypes.string,
     received: PropTypes.string,
-    provider: PropTypes.string,
     attachment: PropTypes.object,
     selected: PropTypes.bool,
     ingestClick: PropTypes.func,
+    inBundle: PropTypes.bool
 };
 
 Ingest.defaultProps = {
-    ingestType: '',
     received: '',
-    provider: '',
     attachment: {},
-    selected: false
+    selected: false,
+    inBundle: false
 };
 
 export default Ingest;

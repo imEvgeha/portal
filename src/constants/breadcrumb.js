@@ -1,4 +1,4 @@
-import {gotoAvailsDashboard} from '../containers/Navbar';
+import {gotoAvailsDashboard} from '../navigation/NexusNavigation';
 import RightsURL from '../containers/avail/util/RightsURL';
 
 export const AVAILS_DASHBOARD = {name: 'Avails Dashboard', path: '/avails', search: RightsURL.search, onClick: () => gotoAvailsDashboard()};

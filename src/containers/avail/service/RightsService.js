@@ -3,12 +3,10 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import {store} from '../../../index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
+import {STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS, MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
+    ARRAY_OF_OBJECTS} from './Constants';
 
 const http = Http.create();
-
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId', 'originalRightIds'];
-const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
-const ARRAY_OF_OBJETS = ['territory'];
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -28,7 +26,7 @@ const parse = function(value, key){
         return momentToISO(value);
     }
 
-    if(ARRAY_OF_OBJETS.includes(key)) {
+    if(ARRAY_OF_OBJECTS.includes(key)) {
         return value;
     }
 
@@ -92,7 +90,7 @@ const prepareRight = function (right, keepNulls = false) {
 const parseAdvancedFilter = function (searchCriteria) {
     const rootStore = store.getState().root;
     const mappings = rootStore.availsMapping.mappings;
-    const params = {};
+    let params = {};
 
     function isQuoted(value) {
         return value[0] === '"' && value[value.length - 1] === '"';
@@ -100,20 +98,28 @@ const parseAdvancedFilter = function (searchCriteria) {
 
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-            const map = mappings.find(({queryParamName}) => queryParamName === key);
             let value = searchCriteria[key];
+
+            // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
+            if (key === 'territory') {
+                const updatedKey = `${key}Country`;
+                params[updatedKey] = value;
+                continue;
+            }
+            if (value instanceof Object) {
+                params = {
+                    ...params,
+                    ...value
+                };
+                continue;
+            }
+            const map = mappings.find(({queryParamName}) => queryParamName === key);
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
                 } else {
                     key += 'Match';
                 }
-            }
-            // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
-            if (key === 'territory') {
-                const updatedKey = `${key}Country`;
-                params[updatedKey] = value;
-                continue;
             }
             params[key] = value;
         }

@@ -9,3 +9,8 @@ export const addRightsFilter = payload => ({
     type: actionTypes.ADD_RIGHTS_FILTER,
     payload,
 });
+
+export const setRightsFilter = payload => ({
+    type: actionTypes.SET_RIGHTS_FILTER,
+    payload
+});

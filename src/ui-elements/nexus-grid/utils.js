@@ -3,7 +3,7 @@ import {parseAdvancedFilter} from '../../containers/avail/service/RightsService'
 
 // grid filter
 export const filterBy = filterObject => {
-    const ALLOWED_TYPES_OPERAND = ['equals'];
+    const ALLOWED_TYPES_OPERAND = ['equals', 'range'];
     const FILTER_TYPES = ['set'];
     if (!isEmpty(filterObject)) {
         const filteredEqualsType = Object.keys(filterObject)
@@ -14,13 +14,12 @@ export const filterBy = filterObject => {
             }, {});
         const filterParams = Object.keys(filteredEqualsType).reduce((object, name) => {
             const {filter, values, filterType} = filteredEqualsType[name] || {};
-            object[name] = FILTER_TYPES.includes(filterType) ? Array.isArray(values) && values.join(', ') : filter;
+            object[name] = FILTER_TYPES.includes(filterType) ?
+                Array.isArray(values) && values.join(', ') : filter;
             return object;
         }, {});
-        
         return parseAdvancedFilter(filterParams);
     }
-
     return {};
 };
 

@@ -6,6 +6,7 @@ import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import PanelHeader from './components/panel-header/PanelHeader';
 import Ingest from './components/ingest/Ingest';
 import Bundle from './components/bundle/Bundle';
+import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 import Constants from './constants';
@@ -66,13 +67,15 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                      ingestType={ingestType}
                                      ingestClick={() => ingestClick({
                                          availHistoryId: id,
-                                         attachmentId: excelAttachments[0].id
+                                         attachmentId: excelAttachments[0].id,
+                                         selectedAttachmentId: selectedAttachmentId
                                      })}
                                      selected={selectedIngest && (selectedIngest.id === id)}
                             />));
                     })
                 }
             </div>
+           <UploadIngestButton/>
         </div>
     );
 };
