@@ -181,11 +181,12 @@ const RightsRepository = props => {
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && !isEmpty(selectedIngest) && attachment && (<Ingest
-                ingest={selectedIngest}
-                deselectIngest={deselectIngest}
-                attachment={attachment}
-                filterByStatus={filterByStatus} />)
+            {selectedIngest && !isEmpty(selectedIngest) && attachment && (
+                <Ingest
+                    ingest={selectedIngest}
+                    deselectIngest={deselectIngest}
+                    attachment={attachment}
+                    filterByStatus={filterByStatus} />)
             }
             <NexusTableToolbar
                 title="Rights"
