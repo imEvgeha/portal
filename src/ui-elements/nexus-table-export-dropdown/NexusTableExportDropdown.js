@@ -37,7 +37,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
             }
         }
         setIsDisabled(disable);
-    }, [isSelectedOptionActive, selectedRows, totalRows])
+    }, [isSelectedOptionActive, selectedRows, totalRows]);
 
     const onAllColumnsExportClick = () => {
         if(isSelectedOptionActive) {
@@ -91,7 +91,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
                 <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
             </DropdownItemGroup>
         </DropdownMenu>;
-    }
+    };
 
     return (
         <div className='nexus-c-right-repository-export'>
