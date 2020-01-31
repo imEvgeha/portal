@@ -92,6 +92,33 @@ export const getColumnDefsWithCleanContentType = (columnDefs, data) => {
     }
 };
 
+const renderEpisodeAndSeasonNumber = params => {
+    const {data = {}} = params || {};
+    const {contentType, episodic = {}} = data || {};
+    if (contentType === 'EPISODE') {
+        return episodic.episodeNumber;
+    } else if (contentType === 'SEASON') {
+        return episodic.seasonNumber;
+    }
+};
+
+export const defineEpisodeAndSeasonNumberColumn = ({
+    headerName = '-', 
+    pinned = false,
+    lockPosition = false,
+} = {}) => {
+    const columnDef =  defineColumn({
+        headerName,
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
+        pinned,
+        lockPosition,
+        valueFormatter: renderEpisodeAndSeasonNumber,
+    });
+
+    return columnDef;
+};
+
 export const getLinkableColumnDefs = (columnDefs, location) => {
     const handleRedirect = params => createLinkableCellRenderer(params, location);
     const linkableColumnDefs = cloneDeep(columnDefs)

@@ -10,7 +10,8 @@ import {fetchTitle} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
 import {getColumnDefs} from '../../avails/title-matching/titleMatchingSelectors';
-import {getColumnDefsWithCleanContentType} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
 
 const LegacyTitleReconciliationView = ({
@@ -21,9 +22,9 @@ const LegacyTitleReconciliationView = ({
     fetchTitle,
     createColumnDefs,
 }) => {
-    const {params = {}} = match;
-
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
+    const {params = {}} = match;
+    const {title, contentType} = titleMetadata || {};
 
     // TODO: this should be generate on initial app load
     useEffect(() => {
@@ -37,14 +38,22 @@ const LegacyTitleReconciliationView = ({
         fetchTitle({id});
     }, []);
 
-    const {title, contentType} = titleMetadata || {};
-
     const handleDoneClick = values => values;
 
-    const handleDataChange = ({matchList = {}, duplicateList = {}}) => {
+    const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
         const hasItem = Object.keys(matchList).length || Object.keys(duplicateList).length;
         setIsDoneButtonDisabled(!hasItem);
     };
+
+    const handleGridEvent = ({type, columnApi}) => {
+        if (GRID_EVENTS.READY) {
+            const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
+            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex);
+        }
+    };
+
+    const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
+    const updatedColumnDefs = [episodeAndSeasonNumberColumnDef, ...columnDefs];
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">
@@ -52,8 +61,9 @@ const LegacyTitleReconciliationView = ({
             <div className="nexus-c-legacy-title-reconciliation-view__title-metadata">
                 <NexusTitle isSubTitle>{FOCUSED_TITLE}</NexusTitle>
                 <NexusGrid 
-                    columnDefs={getColumnDefsWithCleanContentType(columnDefs)}
+                    columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
+                    onGridEvent={handleGridEvent}
                     domLayout="autoHeight"
                 />
             </div>
@@ -62,10 +72,10 @@ const LegacyTitleReconciliationView = ({
             </SectionMessage>
             <CandidatesList
                 titleId={params.id}
-                columnDefs={columnDefs}
+                columnDefs={updatedColumnDefs}
                 // TODO: Capitalized variable name due to invalid BE requirement
                 queryParams={{ContentType: contentType, title}}
-                onDataChange={handleDataChange}
+                onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
                 <Button
