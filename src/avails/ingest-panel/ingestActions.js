@@ -30,3 +30,8 @@ export const selectIngest = (payload={}) => {
 export const deselectIngest = () => ({
     type: actionTypes.DESELECT_INGEST
 });
+
+export const uploadIngest = payload => ({
+    type: actionTypes.UPLOAD_INGEST,
+    payload,
+});
