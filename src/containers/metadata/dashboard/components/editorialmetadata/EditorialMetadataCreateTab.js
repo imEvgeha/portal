@@ -206,7 +206,7 @@ class EditorialMetadataCreateTab extends Component {
                             </Col>
                             <Col>
                                 <AvField type="text" id="editorialSeriesName" name={this.getNameWithPrefix('seriesName')}
-                                    onChange={this.props.handleChange}
+                                    onChange={this.props.handleEpisodicChange}
                                     validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }} />
@@ -217,7 +217,7 @@ class EditorialMetadataCreateTab extends Component {
                             </Col>
                             <Col>
                                 <AvField type="number" id="editorialSeasonNumber" name={this.getNameWithPrefix('seasonNumber')}
-                                    onChange={this.props.handleChange}
+                                    onChange={this.props.handleEpisodicChange}
                                     validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                         maxLength: { value: MAX_SEASON_LENGTH, errorMessage: `Max ${MAX_SEASON_LENGTH} digits` }
@@ -230,7 +230,7 @@ class EditorialMetadataCreateTab extends Component {
                             {this.props.titleContentType === EVENT.apiName &&
                                 <Col>
                                     <AvField type="number" id="editorialEpisodeNumber" name={this.getNameWithPrefix('episodeNumber')}
-                                        onChange={this.props.handleChange}
+                                        onChange={this.props.handleEpisodicChange}
                                         validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                             maxLength: { value: MAX_EPISODE_LENGTH, errorMessage: `Max ${MAX_EPISODE_LENGTH} digits` }
@@ -488,6 +488,7 @@ class EditorialMetadataCreateTab extends Component {
 EditorialMetadataCreateTab.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
+    handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
     handleGenreChange: PropTypes.func.isRequired,
     areFieldsRequired: PropTypes.bool.isRequired,

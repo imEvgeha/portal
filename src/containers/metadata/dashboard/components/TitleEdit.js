@@ -20,7 +20,8 @@ import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
     EDITORIAL_METADATA_PREFIX,
     EDITORIAL_METADATA_SYNOPSIS,
-    EDITORIAL_METADATA_TITLE
+    EDITORIAL_METADATA_TITLE,
+    EPISODIC_FIELDS
 } from '../../../../constants/metadata/metadataComponent';
 import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
@@ -54,9 +55,7 @@ const emptyEditorial = {
     synopsis: null,
     copyright: null,
     awards: null,
-    seasonNumber: null,
-    episodeNumber: null,
-    seriesName: null,
+    episodic: null
 };
 
 class TitleEdit extends Component {
@@ -602,7 +601,7 @@ class TitleEdit extends Component {
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
         let isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
-
+        let isEpisodic = EPISODIC_FIELDS.includes(targetName);
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
@@ -614,6 +613,8 @@ class TitleEdit extends Component {
         } else if (isEditorialTitle) {
             targetName = targetName.replace(EDITORIAL_METADATA_TITLE, '');
             this.updateEditorialMetadataInnerObject(edited, 'title', targetName, e.target.value);
+        } else if (isEpisodic){
+            this.updateEditorialMetadataInnerObject(edited, 'episodic', targetName, e.target.value);
         } else {
             edited[targetName] = e.target.value;
         }
@@ -695,6 +696,20 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
                 title: newTitle
+            }
+        });
+    };
+
+    handleEpisodicEditorialMetadataChange = (e) => {
+        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const newEpisodic = {
+            ...this.state.editorialMetadataForCreate.episodic,
+            [targetName]: e.target.value
+        };
+        this.setState({
+            editorialMetadataForCreate: {
+                ...this.state.editorialMetadataForCreate,
+                episodic: newEpisodic
             }
         });
     };
@@ -1011,6 +1026,7 @@ class TitleEdit extends Component {
                         titleContentType={this.state.titleForm.contentType}
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                         updatedEditorialMetadata={this.state.updatedEditorialMetadata}
+                        handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
                     />
 
                     <TerritoryMetadata

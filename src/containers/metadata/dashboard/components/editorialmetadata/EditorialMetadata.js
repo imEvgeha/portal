@@ -101,6 +101,7 @@ class EditorialMetadata extends Component {
                                                 areFieldsRequired={this.props.areFieldsRequired}
                                                 handleChange={this.props.handleChange}
                                                 handleTitleChange={this.props.handleTitleChange}
+                                                handleEpisodicChange={this.props.handleEpisodicChange}
                                                 editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 handleGenreChange={this.props.handleGenreChange}
@@ -143,6 +144,7 @@ EditorialMetadata.propTypes = {
     editorialMetadata: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
+    handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     areFieldsRequired: PropTypes.bool,
