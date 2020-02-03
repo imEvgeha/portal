@@ -1,0 +1,11 @@
+.ingest-upload {
+  padding: 10px 20px;
+  svg {
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+  }
+  &__input {
+    display: none;
+  }
+}

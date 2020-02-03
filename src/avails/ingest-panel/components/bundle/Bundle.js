@@ -7,7 +7,7 @@ import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
 
 
-const Bundle = ({id, ingestType, received, provider, attachments, selectedIngest, ingestClick}) => {
+const Bundle = ({id, ingestType, received, provider, attachments, selectedAttachmentId, ingestClick}) => {
     const [showIngests, setShowIngests] = useState(false);
 
     const onBundleClick = () => setShowIngests(!showIngests);
@@ -34,8 +34,9 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedIngest
                                     received={received}
                                     provider={provider}
                                     ingestType={ingestType}
-                                    ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id})}
-                                    selected={selectedIngest && (selectedIngest.id === id)}
+                                    ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
+                                    selected={selectedAttachmentId === attachment.id}
+                                    inBundle
                             />)
                     }
                 </div>
@@ -49,7 +50,7 @@ Bundle.propTypes = {
     received: PropTypes.string,
     provider: PropTypes.string,
     attachments: PropTypes.array,
-    selected: PropTypes.bool,
+    selectedAttachmentId: PropTypes.string,
     ingestClick: PropTypes.func,
 };
 
@@ -58,7 +59,7 @@ Bundle.defaultProps = {
     received: '',
     provider: '',
     attachments: [],
-    selected: false
+    selectedAttachmentId: ''
 };
 
 export default Bundle;
