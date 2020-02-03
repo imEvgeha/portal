@@ -158,7 +158,7 @@ class EditorialMetadataEditMode extends Component {
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
         const { locale, language, format, service, episodic, synopsis, title, copyright, awards,
             sasktelInventoryId, sasktelLineupId, castCrew } = updateData || this.props.data;
-        const { seriesName, seasonNumber, episodeNumber } = episodic;
+        const { seriesName, seasonNumber, episodeNumber } = episodic || {};
         const { MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
             MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
         return (
