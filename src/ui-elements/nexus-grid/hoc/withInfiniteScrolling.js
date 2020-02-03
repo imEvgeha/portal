@@ -76,12 +76,7 @@ const withInfiniteScrolling = ({
                         if ((page + 1) * size >= total) {
                             lastRow = total;
                         }
-                        // TODO: it shouldn't be here
-                        if (typeof props.onAddAdditionalField === 'function') {
-                            props.onAddAdditionalField(data, (updatedData) => successCallback(updatedData, lastRow));
-                        } else {
-                            successCallback(data, lastRow);
-                        }
+                        successCallback(data, lastRow);
 
                         // selected rows
                         if (props.selectedRows) {
