@@ -8,14 +8,19 @@ export default function useMatchAndDuplicateList() {
     const handleMatchClick = (data, repo, checked) => {
         const {id} = data || {};
         if (checked) {
-            const {VZ, MOVIDA} = constants.repository;
+            const {NEXUS, VZ, MOVIDA} = constants.repository;
             let newMatchList = {...matchList};
             if (duplicateList[id]){
                 let list = {...duplicateList};
                 delete list[id];
                 setDuplicateList(list);
             }
-
+            if (repo === NEXUS){
+                delete newMatchList[VZ];
+                delete newMatchList[MOVIDA];
+            } else {
+                delete newMatchList[NEXUS];
+            }
             newMatchList[repo] = data;
             setMatchList(newMatchList);
         }

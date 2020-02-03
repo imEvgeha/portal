@@ -24,7 +24,7 @@ const LegacyTitleReconciliationView = ({
 }) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const {params = {}} = match;
-    const {title, contentType} = titleMetadata || {};
+    const {title, contentType, releaseYear} = titleMetadata || {};
 
     // TODO: this should be generate on initial app load
     useEffect(() => {
@@ -46,7 +46,7 @@ const LegacyTitleReconciliationView = ({
     };
 
     const handleGridEvent = ({type, columnApi}) => {
-        if (GRID_EVENTS.READY) {
+        if (GRID_EVENTS.READY === type) {
             const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
             columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex);
         }
@@ -74,7 +74,7 @@ const LegacyTitleReconciliationView = ({
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
                 // TODO: Capitalized variable name due to invalid BE requirement
-                queryParams={{ContentType: contentType, title}}
+                queryParams={{ContentType: contentType, title, releaseYear}}
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
