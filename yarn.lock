@@ -8516,7 +8516,7 @@ eslint-scope@^4.0.0, eslint-scope@^4.0.3:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-"eslint-stats@github:ianvs/eslint-stats#cb1ff8251b50c7f0cb431a2b395431ebfdeb10c8":
+eslint-stats@ianvs/eslint-stats#cb1ff8251b50c7f0cb431a2b395431ebfdeb10c8:
   version "1.0.0"
   resolved "https://codeload.github.com/ianvs/eslint-stats/tar.gz/cb1ff8251b50c7f0cb431a2b395431ebfdeb10c8"
   dependencies:
@@ -9172,11 +9172,6 @@ fast-glob@^2.0.2:
     is-glob "^4.0.0"
     merge2 "^1.2.3"
     micromatch "^3.1.10"
-
-fast-json-patch@^3.0.0-1:
-  version "3.0.0-1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/fast-json-patch/-/fast-json-patch-3.0.0-1.tgz#4c68f2e7acfbab6d29d1719c44be51899c93dabb"
-  integrity sha512-6pdFb07cknxvPzCeLsFHStEy+MysPJPgZQ9LbQ/2O67unQF93SNqfdSqnPPl71YMHX+AD8gbl7iuoGFzHEdDuw==
 
 fast-json-stable-stringify@^2.0.0:
   version "2.1.0"

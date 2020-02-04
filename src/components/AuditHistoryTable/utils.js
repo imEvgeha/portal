@@ -2,7 +2,6 @@ import moment from 'moment';
 import Constants from './Constants';
 import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
-import jsonpatch from 'fast-json-patch';
 import {store} from '../../index';
 import {getDateFormatBasedOnLocale} from '../../util/Common';
 import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
@@ -94,22 +93,20 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     return styling;
 };
 
-
-
 export const formatData = data => {
     const { eventHistory, diffs } = data;
     let tableRows = eventHistory.map((dataObj, index) => {
-        const result = jsonpatch.applyPatch(dataObj, diffs[index], false, false).newDocument.message;
         const {message : {updatedBy, createdBy, lastUpdateReceivedAt}} = dataObj;
         const row = {};
         diffs[index].forEach(diff => {
             const {path, op} = diff;
             const field = path.split('/')[2];   //as path is always like '/message/field/sub-field'
+            const valueUpdated = dataObj.message[field];
             if(op === 'remove'){
                 row[field] = get(eventHistory[index-1], ['message', field], '');
                 row[`${field}Deleted`] = true;
             }else{
-                row[field] = Array.isArray(result[field]) ? [...new Set(result[field])] : result[field];
+                row[field] = Array.isArray(valueUpdated) ? [...new Set(valueUpdated)] : valueUpdated;
             }
             if(field === RATING){
                 const subField = path.split('/')[4];
