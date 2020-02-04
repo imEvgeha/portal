@@ -30,7 +30,6 @@ import {formatNumberTwoDigits} from '../../../../../util/Common';
 import uniqBy from 'lodash.uniqby';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRender';
-import ActionTooltip from './cell/ActionTooltip';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -422,8 +421,7 @@ class TitleResultTable extends React.Component {
             const actionColumn = defineColumn({
                 headerName: 'Action',
                 field: 'action',
-                cellRendererFramework: ActionCellRender,
-                tooltipComponent: 'actionTooltip',
+                cellRendererFramework: ActionCellRender
             });
             this.cols = [actionColumn, ...newCols];
         }
@@ -519,7 +517,6 @@ class TitleResultTable extends React.Component {
                     suppressDragLeaveHidesColumns={true}
                     onDragStopped={this.onColumnReordered}
                     onColumnResized={this.onColumnResized}
-                    frameworkComponents={{actionTooltip: ActionTooltip}}
 
                     rowBuffer='50'
                     rowModelType='infinite'

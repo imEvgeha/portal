@@ -10,20 +10,23 @@ function ActionCellRender({data, storeTitle}) {
 
     const [isMovidaOrVz, setIsMovidaOrVz] = useState();
 
+    //TODO: Move logic of checking if title comes from Movida or VZ to common place
     useEffect(() => {
-        const {legacyIds: movida, vz} = data || {};
-        // const {movida, vz} = legacyIds || {};
+        const {titleId, legacyIds} = data || {};
+        const {movida, vz} = legacyIds || {};
         const {movidaTitleId} = movida || {};
         const {vzTitleId} = vz || {};
-        setIsMovidaOrVz(movidaTitleId || vzTitleId);
+        setIsMovidaOrVz((movidaTitleId && movidaTitleId !== titleId) || (vzTitleId && vzTitleId !== titleId));
     }, [data]);
 
     return (
         <CustomActionsCellRenderer id={'action-' + data.id}>
             {!isMovidaOrVz &&
+            <NexusTooltip content='Legacy title reconciliation'>
                 <div>
                     <a className='nexus-c-metadata-table-action' href={`/metadata/detail/${data.id}/legacy-title-reconciliation`} onClick={() => storeTitle(data)} target='_blank'><b>Inspect</b></a>
                 </div>
+            </NexusTooltip>
             }
         </CustomActionsCellRenderer>
     );
