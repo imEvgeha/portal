@@ -1,8 +1,29 @@
+@import '../../../../styles/config.scss';
+
 .nexus-c-avails-ingest {
+  position:relative;
   display: flex;
+  background-color: #FFFFFF;
   justify-content: space-between;
   border: 1px solid #A5ADBA;
   padding: 10px;
+  &:hover {
+    .nexus-c-avails-ingest__cross-icon {
+      display: block;
+    }
+  }
+  &__cross-icon {
+    display: none;
+    position: absolute;
+    right: -13px;
+    top: -15px;
+      svg {
+        height: 25px;
+        width: 25px;
+        fill: map-get($colors, nexus-secondary-color);
+        cursor: pointer;
+      }
+  }
   &__details {
     display: flex;
     flex-direction: column;
@@ -39,8 +60,13 @@
       }
     }
   }
+  &__email {
+    margin-left: 20px;
+  }
   &__download {
     margin: 0 20px;
+  }
+  &__download, &__email {
     svg {
       height: 30px;
       width: 30px;

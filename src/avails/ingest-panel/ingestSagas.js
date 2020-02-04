@@ -7,7 +7,7 @@ import Constants from '../constants';
 import {getFiltersToSend} from './utils';
 import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
-import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
+import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
 import {uploadService} from '../../containers/avail/service/UploadService';
 import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
 import { SUCCESS_ICON, SUCCESS_TITLE } from '../../ui-elements/nexus-toast-notification/constants';
@@ -54,9 +54,9 @@ function* fetchNextPage() {
 }
 
 function* filterRightsByStatus({payload}) {
-    const queryParam = payload ? {status: payload} : {};
+    const queryParam = payload === FilterConstants.REPORT.total.value ?  undefined : {status: payload};
 
-    if (payload) {
+    if (queryParam) {
         yield put({
             type: ADD_RIGHTS_FILTER,
             payload: {external: queryParam},
@@ -80,6 +80,10 @@ function* selectIngest({payload}) {
     if (ingestId) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
         yield put(push(URL.keepEmbedded(url)));
+        yield put({
+            type: SET_RIGHTS_FILTER,
+            payload: {}
+        });
         yield put({
             type: ADD_RIGHTS_FILTER,
             payload: {external: queryParam},
@@ -124,9 +128,14 @@ function* selectIngest({payload}) {
 }
 
 function* deselectIngest() {
+    yield put({
+        type: REMOVE_RIGHTS_FILTER,
+        payload: {
+            filter: 'status',
+        }
+    });
     const url = `${window.location.pathname}`;
     yield put(push(URL.keepEmbedded(url)));
-
     yield put({
         type: REMOVE_RIGHTS_FILTER,
         payload: {
@@ -142,6 +151,7 @@ function* deselectIngest() {
     yield put({
         type: actionTypes.CLEAR_SELECTED_INGEST
     });
+
 }
 
 function* uploadIngest({payload}) {
@@ -177,8 +187,30 @@ function* uploadIngest({payload}) {
     }
 }
 
+function* downloadIngestEmail({payload}) {
+    if (!payload.id) return;
+    try {
+        const response = yield historyService.getAvailHistoryAttachment(payload.id);
+        if (response && response.data && response.data.downloadUrl) {
+            let filename = 'Unknown';
+            if (payload.link) {
+                filename = payload.link.split(/(\\|\/)/g).pop();
+            }
+            const link = document.createElement('a');
+            link.href = response.data.downloadUrl;
+            link.setAttribute('download', filename);
+            link.click();
+        }
+    } catch (error) {
+        yield put({
+            type: actionTypes.DOWNLOAD_INGEST_EMAIL_ERROR,
+        });
+    }
+}
+
 export default function* ingestWatcher() {
     yield all([
+        takeLatest(actionTypes.DOWNLOAD_INGEST_EMAIL, downloadIngestEmail),
         takeLatest(actionTypes.FETCH_INGESTS, fetchIngests),
         takeLatest(actionTypes.FETCH_NEXT_PAGE, fetchNextPage),
         takeLatest(actionTypes.FILTER_RIGHTS_BY_STATUS, filterRightsByStatus),

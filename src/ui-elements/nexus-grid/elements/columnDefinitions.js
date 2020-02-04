@@ -34,7 +34,7 @@ export const defineCheckboxSelectionColumn = ({headerName = ''} = {}) => {
     const columnDef = defineColumn({
         field: 'action',
         headerName,
-        width: 70,
+        width: 40,
         checkboxSelection: true,
         lockVisible: true
     });
@@ -53,7 +53,8 @@ export const defineButtonColumn = ({headerName = '', cellRendererFramework, cell
         colId: headerName.toLowerCase(),
         cellRendererFramework,
         cellEditorFramework,
-        editable: editable
+        editable: editable,
+        width: headerName !== ''? 100 : 40
     });
 
     return columnDef;
