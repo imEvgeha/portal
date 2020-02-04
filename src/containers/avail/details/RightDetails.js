@@ -295,12 +295,19 @@ class RightDetails extends React.Component {
 
     handleEditableSubmit(name, value, cancel) {
         const schema = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === name);
-        switch (schema.dataType) {
-            case 'date': value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
-                break;
-            case 'localdate': value = value && moment(value).isValid() ? momentToISO(value) : value;
-                break;
+        if (value === ''){
+            value = null;
+        } else {
+            switch (schema.dataType) {
+                case 'date':
+                    value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
+                    break;
+                case 'localdate':
+                    value = value && moment(value).isValid() ? momentToISO(value) : value;
+                    break;
+            }
         }
+
         if (Array.isArray(value)) {
             value = value.map(el => {
                 if (el.hasOwnProperty('name')) {
@@ -1086,15 +1093,16 @@ class RightDetails extends React.Component {
                         editedRight: {...prevState.editedRight, [name]: date}
                     }));
                 },
-                onConfirm: (value) => (
-                    !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()
+                onConfirm: () => (
+                    !error && this.handleEditableSubmit(name, this.state.editedRight[name], revertChanges) || revertChanges()
                 ),
                 defaultValue: value,
-                value,
+                value:  this.state.editedRight[name] !== undefined ?  this.state.editedRight[name] : value,
                 error,
                 required,
                 isWithInlineEdit: true,
                 isTimestamp: true,
+                allowClear: true
             };
 
             const component = showTime
