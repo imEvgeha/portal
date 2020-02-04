@@ -9,37 +9,13 @@ import CrossCircle from '../../../../assets/action-cross-circle.svg';
 import './Ingest.scss';
 import Constants from '../../../ingest-panel/constants';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
-import {historyService} from '../../../../containers/avail/service/HistoryService';
 
-const Ingest = ({ingest, filterByStatus, attachment, deselectIngest}) => {
+const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail}) => {
+
     const {attachments = [{}], ingestType, provider, received} = ingest;
     const {link, status, ingestReport = {}} = attachment;
     const {attachmentTypes: {EMAIL}} = Constants;
     const emails = attachments.filter(a => a.attachmentType && a.attachmentType === EMAIL);
-
-    const getDownloadLink = (email) => {
-        if (!email.id) return;
-
-        let filename = 'Unknown';
-        if (email.link) {
-            filename = email.link.split(/(\\|\/)/g).pop();
-        }
-
-        historyService.getAvailHistoryAttachment(email.id)
-            .then(response => {
-                if (response && response.data && response.data.downloadUrl) {
-                    const link = document.createElement('a');
-                    link.href = response.data.downloadUrl;
-                    link.setAttribute('download', filename);
-                    link.click();
-                }
-            })
-            .catch(() => {
-                this.setState({
-                    errorMessage: 'Download Failed. Url not available.'
-                });
-            });
-    }
 
     return ingest ? (
         <div className='nexus-c-avails-ingest'>
@@ -64,9 +40,9 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest}) => {
                     filterClick={filterByStatus}
                 />
                 {emails.map(email =>
-                    <div className='nexus-c-avails-ingest__email'>
+                    <div key={email.id}  className='nexus-c-avails-ingest__email'>
                         <NexusTooltip content='Download Email'>
-                            <Email key={email.id} onClick={() => getDownloadLink(email)} />
+                            <Email key={email.id} onClick={() => downloadIngestEmail(email)} />
                         </NexusTooltip>
                     </div>
                 )}
@@ -83,13 +59,15 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest}) => {
 Ingest.propTypes = {
     ingest: PropTypes.object,
     filterByStatus: PropTypes.func,
-    deselectIngest: PropTypes.func
+    deselectIngest: PropTypes.func,
+    downloadIngestEmail: PropTypes.func
 };
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
     filterByStatus: () => null,
-    deselectIngest: () => null
+    deselectIngest: () => null,
+    downloadIngestEmail: () => null
 };
 
 export default Ingest;

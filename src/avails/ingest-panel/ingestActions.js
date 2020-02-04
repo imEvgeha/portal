@@ -35,3 +35,8 @@ export const uploadIngest = payload => ({
     type: actionTypes.UPLOAD_INGEST,
     payload,
 });
+
+export const downloadEmailAttachment = payload => ({
+    type: actionTypes.DOWNLOAD_INGEST_EMAIL,
+    payload,
+});

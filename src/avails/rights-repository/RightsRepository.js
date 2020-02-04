@@ -13,7 +13,7 @@ import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest, deselectIngest} from '../ingest-panel/ingestActions';
+import {filterRightsByStatus, selectIngest, deselectIngest, downloadEmailAttachment} from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
@@ -56,7 +56,8 @@ const RightsRepository = props => {
         addRightsFilter,
         setRightsFilter,
         rightsFilter,
-        deselectIngest
+        deselectIngest,
+        downloadIngestEmail
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
@@ -185,6 +186,7 @@ const RightsRepository = props => {
                 <Ingest
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
+                    downloadIngestEmail={downloadIngestEmail}
                     attachment={attachment}
                     filterByStatus={filterByStatus} />)
             }
@@ -246,6 +248,7 @@ const mapDispatchToProps = dispatch => ({
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
+    downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload))
 });
 
