@@ -1102,7 +1102,7 @@ class RightDetails extends React.Component {
                 required,
                 isWithInlineEdit: true,
                 isTimestamp: true,
-                allowClear: true
+                allowClear: !required
             };
 
             const component = showTime
