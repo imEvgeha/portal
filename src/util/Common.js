@@ -228,7 +228,7 @@ const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeDa
 const parseSimulcast = (date = null, dateFormat) => {
     const isUTC = date && date.endsWith('Z');
     return moment(date).isValid()
-        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC ? ' (UTC)' : ''}`
+        ? `${moment(date).utc(!isUTC).format(dateFormat)}`
         : 'Invalid Date';
 };
 
