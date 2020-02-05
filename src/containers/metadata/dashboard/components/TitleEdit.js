@@ -27,6 +27,7 @@ import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
 import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
+import {URL} from '../../../../util/Common';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -990,7 +991,7 @@ class TitleEdit extends Component {
                                     <Fragment>
                                         <Col>
                                             <div className='nexus-c-title-edit__sync-container'>
-                                            {/*{this.renderSyncVzMovidaFields()}*/}
+                                            { URL.isLocalOrDevOrQA() && this.renderSyncVzMovidaFields() }
                                             <Can I="update" a="Metadata">
                                                 <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
                                             </Can>
