@@ -28,6 +28,7 @@ import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../.
 import {titleService} from '../../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../../util/Common';
 import uniqBy from 'lodash.uniqby';
+import get from 'lodash.get';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRender';
 
@@ -392,7 +393,7 @@ class TitleResultTable extends React.Component {
     onColumnReordered(e) {
         let cols = [];
         e.columnApi.getAllGridColumns().map(column => {
-            if (column.colDef.headerName !== '' && column.colDef.headerName !== 'Action') cols.push(column.colDef.field);
+            if(get(column, 'colDef.headerName', '') !== 'Action') cols.push(column.colDef.field);
         });
         this.props.resultPageUpdateColumnsOrder(cols);
     }
