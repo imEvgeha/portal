@@ -7,5 +7,5 @@ export const fetchTitle = payload => ({
 
 export const storeTitle = title => ({
     type: actionTypes.STORE_TITLE,
-    payload: {'id': title}
+    payload: {[title.id]: title}
 });

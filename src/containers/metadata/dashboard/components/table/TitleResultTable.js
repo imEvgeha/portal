@@ -418,12 +418,16 @@ class TitleResultTable extends React.Component {
                     newCols.push(colDef[acc]);
                 }
             });
-            const actionColumn = defineColumn({
-                headerName: 'Action',
-                field: 'action',
-                cellRendererFramework: ActionCellRender
-            });
-            this.cols = [actionColumn, ...newCols];
+            if(window.location.hostname.includes('local')) {
+                const actionColumn = defineColumn({
+                    headerName: 'Action',
+                    field: 'action',
+                    cellRendererFramework: ActionCellRender
+                });
+                this.cols = [actionColumn, ...newCols];
+            } else {
+                this.cols = newCols;
+            }
         }
     }
 
