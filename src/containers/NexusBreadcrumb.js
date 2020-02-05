@@ -40,13 +40,15 @@ class NexusBreadcrumb extends React.Component {
             }
         };
         return (
-            <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
-                <div style={{zIndex: '500', position: 'relative'}}>
-                    <Breadcrumb style={{position: 'relative', background: 'white'}}>
-                        {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
-                    </Breadcrumb>
-                </div>
-            </BlockUi>
+            !NexusBreadcrumb.empty() ? (
+                <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
+                    <div style={{zIndex: '500', position: 'relative'}}>
+                        <Breadcrumb style={{position: 'relative', background: 'white'}}>
+                            {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
+                        </Breadcrumb>
+                    </div>
+                </BlockUi>
+            ) : null
         );
     }
 

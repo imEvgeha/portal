@@ -80,7 +80,7 @@ const TitleMatchView = ({
     }
 
     // Taken from focused right to be able to filter title list table
-    const {title, contentType} = focusedRight || {};
+    const {title, contentType, releaseYear} = focusedRight || {};
 
     return (
         <div className="nexus-c-title-to-match">
@@ -105,7 +105,7 @@ const TitleMatchView = ({
                             columnDefs={columnDefs}
                             mergeTitles={mergeTitles}
                             // TODO: Capitalized variable name due to invalid BE requirement
-                            queryParams={{ContentType: contentType, title}}
+                            queryParams={{ContentType: contentType, title, releaseYear}}
                         />
                     </React.Fragment>
                 )

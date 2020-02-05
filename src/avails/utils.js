@@ -44,12 +44,12 @@ const repositoryCell = ({data}) => {// eslint-disable-line
     );
 };
 
-export const getRepositoryCell = () => {
+export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
     return {
         ...Constants.ADDITIONAL_COLUMN_DEF,
         colId: 'repository',
         field: 'repository',
-        headerName: 'Repository',
+        headerName,
         cellRendererFramework: repositoryCell,
     };
 };
