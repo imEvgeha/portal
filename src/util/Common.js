@@ -189,6 +189,11 @@ const URL = {
             else params.delete(key);
         });
         return params.toString();
+    },
+
+    isLocalOrDevOrQA: function() {
+        const host = window.location.hostname;
+        return host.includes('local') || host.includes('qa') || host.includes('dev');
     }
 };
 
