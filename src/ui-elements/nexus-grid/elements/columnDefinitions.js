@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
+import {createLinkableCellRenderer} from '../../../avails/utils';
 
 export const defineColumn = ({
     field = '',
@@ -34,7 +35,7 @@ export const defineCheckboxSelectionColumn = ({headerName = ''} = {}) => {
     const columnDef = defineColumn({
         field: 'action',
         headerName,
-        width: 70,
+        width: 40,
         checkboxSelection: true,
         lockVisible: true
     });
@@ -53,7 +54,8 @@ export const defineButtonColumn = ({headerName = '', cellRendererFramework, cell
         colId: headerName.toLowerCase(),
         cellRendererFramework,
         cellEditorFramework,
-        editable: editable
+        editable: editable,
+        width: headerName !== ''? 100 : 40
     });
 
     return columnDef;
@@ -89,4 +91,44 @@ export const getColumnDefsWithCleanContentType = (columnDefs, data) => {
         default:
             return clonedColumnDefs.filter(({field}) => !([FIELD.EPISODE, FIELD.SEASON].includes(field)));
     }
+};
+
+const renderEpisodeAndSeasonNumber = params => {
+    const {data = {}} = params || {};
+    const {contentType, episodic = {}} = data || {};
+    if (contentType === 'EPISODE') {
+        return episodic.episodeNumber;
+    } else if (contentType === 'SEASON') {
+        return episodic.seasonNumber;
+    }
+};
+
+export const defineEpisodeAndSeasonNumberColumn = ({
+    headerName = '-', 
+    pinned = false,
+    lockPosition = false,
+} = {}) => {
+    const columnDef =  defineColumn({
+        headerName,
+        colId: 'episodeAndSeasonNumber',
+        field: 'episodeAndSeasonNumber',
+        pinned,
+        lockPosition,
+        valueFormatter: renderEpisodeAndSeasonNumber,
+    });
+
+    return columnDef;
+};
+
+export const getLinkableColumnDefs = (columnDefs, location) => {
+    const handleRedirect = params => createLinkableCellRenderer(params, location);
+    const linkableColumnDefs = cloneDeep(columnDefs)
+        .map(e => {
+            if (e.cellRenderer) {
+                e.cellRenderer = handleRedirect;
+            }
+            return e;
+        });
+
+    return linkableColumnDefs;
 };

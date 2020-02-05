@@ -1,15 +1,17 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
+import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../ui-elements/';
-import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE} from './constants';
+import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
 import {fetchTitle} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
 import {getColumnDefs} from '../../avails/title-matching/titleMatchingSelectors';
-import {getColumnDefsWithCleanContentType} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
 
 const LegacyTitleReconciliationView = ({
@@ -20,7 +22,9 @@ const LegacyTitleReconciliationView = ({
     fetchTitle,
     createColumnDefs,
 }) => {
+    const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const {params = {}} = match;
+    const {title, contentType, releaseYear} = titleMetadata || {};
 
     // TODO: this should be generate on initial app load
     useEffect(() => {
@@ -34,7 +38,22 @@ const LegacyTitleReconciliationView = ({
         fetchTitle({id});
     }, []);
 
-    const {title, contentType} = titleMetadata || {};
+    const handleDoneClick = values => values;
+
+    const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
+        const hasItem = Object.keys(matchList).length || Object.keys(duplicateList).length;
+        setIsDoneButtonDisabled(!hasItem);
+    };
+
+    const handleGridEvent = ({type, columnApi}) => {
+        if (GRID_EVENTS.READY === type) {
+            const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
+            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex);
+        }
+    };
+
+    const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
+    const updatedColumnDefs = [episodeAndSeasonNumberColumnDef, ...columnDefs];
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">
@@ -42,8 +61,9 @@ const LegacyTitleReconciliationView = ({
             <div className="nexus-c-legacy-title-reconciliation-view__title-metadata">
                 <NexusTitle isSubTitle>{FOCUSED_TITLE}</NexusTitle>
                 <NexusGrid 
-                    columnDefs={getColumnDefsWithCleanContentType(columnDefs)}
+                    columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
+                    onGridEvent={handleGridEvent}
                     domLayout="autoHeight"
                 />
             </div>
@@ -52,10 +72,21 @@ const LegacyTitleReconciliationView = ({
             </SectionMessage>
             <CandidatesList
                 titleId={params.id}
-                columnDefs={columnDefs}
+                columnDefs={updatedColumnDefs}
                 // TODO: Capitalized variable name due to invalid BE requirement
-                queryParams={{ContentType: contentType, title}}
+                queryParams={{ContentType: contentType, title, releaseYear}}
+                onCandidatesChange={handleCandidatesChange}
             />
+            <div className="nexus-c-legacy-title-reconciliation-view__buttons">
+                <Button
+                    className="nexus-c-button"
+                    appearance="primary"
+                    onClick={handleDoneClick}
+                    isDisabled={isDoneDisabled}
+                >
+                    {SAVE_BTN}
+                </Button>
+            </div>
         </div>
     );
 };

@@ -1,8 +1,12 @@
 .nexus-c-avail-ingest {
-  width: 324px;
+  width: 350px;
   padding: 12px;
-  border-bottom: 1px solid #737E91;
+  border-bottom: 1px solid #DCDCDC;
   background: #FFFFFF;
+
+  &--is-in-bundle {
+    padding-left: 30px;
+  }
 
   &:hover {
     background: #FAFAFA;
@@ -49,7 +53,10 @@
 }
 
 .nexus-c-avail-ingest__status {
-    &--is-not-expandable {
-        margin-left: 35px;
-    }
+  width: 100%;
+
+  &--is-not-expandable {
+    margin-left: 15px;
+  }
+
 }

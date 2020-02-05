@@ -1,17 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Constants from '../../constants';
 import './IngestReport.scss';
 
 const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
-    const [activeFilter, setActiveFilter] = useState('');
+    const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
     const onFilterClick = filterKey => {
-        const key = activeFilter === filterKey ? '' : filterKey;
-        filterClick(reportFields[key] !== Constants.REPORT.total && reportFields[key]);
+        const key = activeFilter === filterKey ? 'total' : filterKey;
+        filterClick(reportFields[key].value);
         setActiveFilter(key);
     };
+
+    useEffect(() => {
+        onFilterClick('total');
+    }, [report]);
 
     const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
 
@@ -21,11 +25,11 @@ const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
                 {
                     Object.keys(reportFields).map(key => (
                         <div className='ingest-report__field' key={key}>
-                            <span className='ingest-report__field--label'>{reportFields[key]}</span>
+                            <span className='ingest-report__field--label'>{reportFields[key].label}</span>
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
                                 onClick={() => FILTERABLE_KEYS.includes(key) && onFilterClick(key)} >
-                                {reportValues[key] || ''}
+                                {reportValues[key] || 0}
                             </span>
                         </div>
                     ))

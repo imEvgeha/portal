@@ -8,16 +8,20 @@ export default {
     ],
     DATEPICKER_LABELS: ['From', 'To'],
     REPORT: {
-        total: 'Rights',
-        created: 'Created',
-        updated: 'Updated',
-        pending: 'Pending',
-        errors: 'Error',
-        fatal: 'Fatal'
+        total: { label: 'Rights', value: '' },
+        created: { label: 'New', value: 'Created' },
+        updated: { label: 'Updated', value: 'Updated' },
+        fatal: { label: 'Fatals', value: 'Fatal' },
+        pending: { label: 'Pending', value: 'Pending' },
+        errors:  { label: 'Errors', value: 'Error' },
     },
     ingestTypes: {
         EMAIL: 'Email',
         UPLOAD: 'Upload'
+    },
+    attachmentTypes: {
+        EXCEL: 'Excel',
+        EMAIL: 'Email'
     },
     filterKeys: {
         RECEIVED_FROM: 'receivedFrom',
@@ -30,5 +34,9 @@ export default {
         receivedTo: 'igReceivedTo',
         status: 'igStatus',
         provider: 'igProvider'
-    }
+    },
+    SERVICE_REGIONS: [
+        {label: 'US', value: 'US'},
+        {label: 'UK', value: 'UK'}
+    ],
 };

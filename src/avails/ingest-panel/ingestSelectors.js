@@ -17,8 +17,31 @@ export const getSelectedIngest = createSelector(
     ingest => ingest.selectedIngest,
 );
 
+export const getSelectedAttachmentId= createSelector(
+    getIngestReducer,
+    ingest => ingest.selectedAttachmentId,
+);
+
+
 export const getIngestById = createSelector(
     getIngests,
     (_, id) => id,
     (ingests, id) =>ingests.find(ingest => ingest.id === id)
+);
+
+const getRoot = state => state.root;
+
+export const getSelectValues = createSelector(
+    getRoot,
+    root => root.selectValues,
+);
+
+export const getLicensors = createSelector(
+    getSelectValues,
+    selectValues => selectValues.licensor || [],
+);
+
+export const getIsUploading = createSelector(
+    getIngestReducer,
+    ingest => ingest.isUploading,
 );
