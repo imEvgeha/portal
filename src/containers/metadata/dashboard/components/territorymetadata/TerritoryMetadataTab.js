@@ -54,7 +54,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Original Air Date: </b>
                         {originalAirDate
-                            ? parseSimulcast(originalAirDate, dateFormat)
+                            ? parseSimulcast(originalAirDate, dateFormat, false)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
@@ -63,14 +63,14 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Home Video Release Date: </b>
                         {homeVideoReleaseDate
-                            ? parseSimulcast(homeVideoReleaseDate, dateFormat)
+                            ? parseSimulcast(homeVideoReleaseDate, dateFormat, false)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
                     <Col>
                         <b>Avail Announce Date: </b>
                         {availAnnounceDate
-                            ? parseSimulcast(availAnnounceDate, dateFormat)
+                            ? parseSimulcast(availAnnounceDate, dateFormat, false)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
@@ -79,14 +79,14 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                     <Col>
                         <b>Theatrical Release Date: </b>
                         {theatricalReleaseDate
-                            ? parseSimulcast(theatricalReleaseDate, dateFormat)
+                            ? parseSimulcast(theatricalReleaseDate, dateFormat, false)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>
                     <Col>
                         <b>EST Release Date: </b>
                         {estReleaseDate
-                            ? parseSimulcast(estReleaseDate, dateFormat)
+                            ? parseSimulcast(estReleaseDate, dateFormat, false)
                             : <span style={{color: '#999'}}>Empty</span>
                         }
                     </Col>

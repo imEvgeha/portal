@@ -27,7 +27,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             return (params) => {
                 const {data = {}} = params || {};
                 const {[javaVariableName]: date} = data || {};
-                return parseSimulcast(date, dateFormat);
+                return parseSimulcast(date, dateFormat, false);
             };
         case 'territoryType':
             return (params) => {
