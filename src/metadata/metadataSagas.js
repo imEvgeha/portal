@@ -95,8 +95,8 @@ export function* getTitleReconciliation(action) {
             yield put({
                 type: actionTypes.FETCH_AND_STORE_TITLES,
                 payload: {
-                    params: {title, contentType, releaseYear},
-                    page, 
+                    params: {title, contentType, releaseYear, ids: '123'},
+                    page: page ? page + 1 : 0, 
                     size,
                 }
             });

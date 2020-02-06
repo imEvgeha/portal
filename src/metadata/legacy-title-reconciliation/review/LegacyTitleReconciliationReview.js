@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import isEqual from 'lodash.isequal';
@@ -12,6 +12,7 @@ import {
     DUPLICATE_IDS,
     MASTER_IDS,
     MERGED_ID,
+    EMPTY_VIEW,
 } from './constants';
 import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
 import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
@@ -26,7 +27,6 @@ const LegacyTitleReconciliationReview = ({
     columnDefs,
     titles,
     match,
-    titleMetadata,
     getTitleReconciliation,
 }) => {
     useEffect(() => {
@@ -38,14 +38,8 @@ const LegacyTitleReconciliationReview = ({
     useEffect(() => {
         const {params} = match;
         const {id} = params || {};
-        if (!titleMetadata) {
-            getTitleReconciliation({id});
-        }
-    },[titleMetadata]);
-
-    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',').filter(Boolean);
-    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',').filter(Boolean);
-    const newTitleId = URL.getParamIfExists(MERGED_ID);
+        getTitleReconciliation({id});
+    },[]);
 
     const handleGridEvent = ({type, columnApi}) => {
         if (GRID_EVENTS.READY === type) {
@@ -57,64 +51,78 @@ const LegacyTitleReconciliationReview = ({
     const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = [episodeAndSeasonNumberColumnDef, ...columnDefs];
 
+    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',').filter(Boolean);
+    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',').filter(Boolean);
+    const newTitleId = URL.getParamIfExists(MERGED_ID);
+
+    const duplicateRowData = titles.filter(({id}) => duplicateIds.includes(id));
+    const masterRowData = titles.filter(({id}) => masterIds.includes(id));
+    const mergedRowData = titles.filter(({id}) => newTitleId === id);
+
     return (
         <div className="nexus-c-legacy-title-reconciliation-review">
             <NexusTitle>{TITLE}</NexusTitle>
-            {!!masterIds.length && (
-                <div className="nexus-c-legacy-title-reconciliation-review__master">
-                    <NexusTitle isSubTitle>{MASTER_TABLE}</NexusTitle>
-                    <NexusGrid 
-                        columnDefs={updatedColumnDefs}
-                        rowData={titles.filter(({id}) => masterIds.includes(id))}
-                        onGridEvent={handleGridEvent}
-                        domLayout="autoHeight"
-                    />
+            {!masterIds.length && !newTitleId && !duplicateIds.length ? (
+                <div className="nexus-legacy-title-reconciliation-review__empty">
+                    {EMPTY_VIEW}
                 </div>
-            )}
-            {newTitleId && (
-                <div className="nexus-c-legacy-title-reconciliation-review__created-title">
-                    <NexusTitle isSubTitle>{CREATED_TITLE_TABLE}</NexusTitle>
-                    <NexusGrid 
-                        columnDefs={updatedColumnDefs}
-                        rowData={titles.filter(({id}) => id === newTitleId)}
-                        onGridEvent={handleGridEvent}
-                        domLayout="autoHeight"
-                    />
-                </div>
-            )}
-            {!!duplicateIds.length && (
-                <div className="nexus-c-legacy-title-reconciliation-review__duplicates">
-                    <NexusTitle isSubTitle>{DUPLICATES_TABLE}</NexusTitle>
-                    <NexusGrid 
-                        columnDefs={updatedColumnDefs}
-                        rowData={titles.filter(({id}) => duplicateIds.includes(id))}
-                        onGridEvent={handleGridEvent}
-                        domLayout="autoHeight"
-                    />
-                </div>
+            ) : (
+                <>
+                    {!!masterIds.length && (
+                        <div className="nexus-c-legacy-title-reconciliation-review__master">
+                            <NexusTitle isSubTitle>{MASTER_TABLE}</NexusTitle>
+                            <NexusGrid
+                                columnDefs={updatedColumnDefs}
+                                rowData={masterRowData}
+                                onGridEvent={handleGridEvent}
+                                domLayout="autoHeight"
+                            />
+                        </div>
+                    )}
+                    {!!newTitleId && (
+                        <div className="nexus-c-legacy-title-reconciliation-review__created-title">
+                            <NexusTitle isSubTitle>{CREATED_TITLE_TABLE}</NexusTitle>
+                            <NexusGrid
+                                columnDefs={updatedColumnDefs}
+                                rowData={mergedRowData}
+                                onGridEvent={handleGridEvent}
+                                domLayout="autoHeight"
+                            />
+                        </div>
+                    )}
+                    {!!duplicateIds.length && (
+                        <div className="nexus-c-legacy-title-reconciliation-review__duplicates">
+                            <NexusTitle isSubTitle>{DUPLICATES_TABLE}</NexusTitle>
+                            <NexusGrid
+                                columnDefs={updatedColumnDefs}
+                                rowData={duplicateRowData}
+                                onGridEvent={handleGridEvent}
+                                domLayout="autoHeight"
+                            />
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
 };
 
 LegacyTitleReconciliationReview.propsTypes = {
-    titleMetadata: PropTypes.object,
     createColumnDefs: PropTypes.func.isRequired,
+    getTitleReconciliation: PropTypes.func,
     columnDefs: PropTypes.array,
     titles: PropTypes.array,
 };
 
 LegacyTitleReconciliationReview.defaultProps = {
-    titleMetadata: null,
-    fetchTitles: null,
+    getTitleReconciliation: null,
+    columnDefs: [],
     titles: [],
 };
 
 const createMapStateToProps = () => {
-    const titleSelector = selectors.createTitleSelector();
     const titlesSelector = selectors.createTitlesSelector();
     return (state, props) => ({
-        titleMetadata: titleSelector(state, props),
         columnDefs: getColumnDefs(state),
         titles: titlesSelector(state, props), 
     });
