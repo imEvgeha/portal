@@ -9,3 +9,8 @@ export const storeTitle = title => ({
     type: actionTypes.STORE_TITLE,
     payload: {[title.id]: title}
 });
+
+export const reconcileTitles = payload => ({
+    type: actionTypes.TITLES_RECONCILE,
+    payload,
+});

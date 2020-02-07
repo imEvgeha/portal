@@ -44,7 +44,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
                 <CustomActionsCellRenderer id={id}>
                     <Checkbox
                         isChecked={duplicateList[id]}
-                        onChange={event => handleDuplicateClick(id, repo, event.currentTarget.checked)}/>
+                        onChange={event => handleDuplicateClick(data, repo, event.currentTarget.checked)}/>
                 </CustomActionsCellRenderer>
             )
         );
