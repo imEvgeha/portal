@@ -50,7 +50,8 @@ export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
         colId: 'repository',
         field: 'repository',
         headerName,
-        cellRendererFramework: repositoryCell,
+        width: 150,
+        cellRendererFramework: repositoryCell
     };
 };
 
