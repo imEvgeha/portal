@@ -4,7 +4,7 @@ import t from 'prop-types';
 
 import config from 'react-global-configuration';
 // image import
-import LoadingGif from '../../../../img/loading.gif';
+import LoadingGif from '../../../../../img/loading.gif';
 
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -19,15 +19,18 @@ import {
     resultPageSort,
     resultPageUpdate,
     resultPageUpdateColumnsOrder
-} from '../../../../stores/actions/metadata/index';
-import {titleServiceManager} from '../../service/TitleServiceManager';
+} from '../../../../../stores/actions/metadata/index';
+import {titleServiceManager} from '../../../service/TitleServiceManager';
 import {Link} from 'react-router-dom';
-import {titleMapping} from '../../service/Profile';
-import {titleSearchHelper} from '../TitleSearchHelper';
-import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
-import {titleService} from '../../service/TitleService';
-import {formatNumberTwoDigits} from '../../../../util/Common';
+import {titleMapping} from '../../../service/Profile';
+import {titleSearchHelper} from '../../TitleSearchHelper';
+import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
+import {titleService} from '../../../service/TitleService';
+import {formatNumberTwoDigits} from '../../../../../util/Common';
 import uniqBy from 'lodash.uniqby';
+import get from 'lodash.get';
+import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import ActionCellRender from './cell/ActionCellRender';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -390,7 +393,7 @@ class TitleResultTable extends React.Component {
     onColumnReordered(e) {
         let cols = [];
         e.columnApi.getAllGridColumns().map(column => {
-            if (column.colDef.headerName != '') cols.push(column.colDef.field);
+            if(get(column, 'colDef.headerName', '') !== 'Action') cols.push(column.colDef.field);
         });
         this.props.resultPageUpdateColumnsOrder(cols);
     }
@@ -416,7 +419,16 @@ class TitleResultTable extends React.Component {
                     newCols.push(colDef[acc]);
                 }
             });
-            this.cols = newCols;
+            if(window.location.hostname.includes('local')) {
+                const actionColumn = defineColumn({
+                    headerName: 'Action',
+                    field: 'action',
+                    cellRendererFramework: ActionCellRender
+                });
+                this.cols = [actionColumn, ...newCols];
+            } else {
+                this.cols = newCols;
+            }
         }
     }
 

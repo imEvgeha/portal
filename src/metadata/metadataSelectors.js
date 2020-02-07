@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 
-const getTitleId = state => {
+export const getTitleId = state => {
     const {metadata = {}} = state;
     return metadata.titleId;
 };

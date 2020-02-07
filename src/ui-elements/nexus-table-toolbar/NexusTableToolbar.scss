@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    color: map-get($colors, nexus-title-color);
+    color: map-get($colors, nexus-light-grey);
     padding-top: 20px;
 }
 
@@ -17,7 +17,7 @@
     }
 
     &--is-active {
-        color: #a5adba;
+        color: map-get($colors, nexus-title-color);
     }
 }
 
@@ -30,7 +30,7 @@
     }
 
     &--is-active {
-        color: #a5adba;
+        color: map-get($colors, nexus-title-color);
     }
 }
 

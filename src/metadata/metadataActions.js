@@ -14,3 +14,8 @@ export const getTitleReconciliation = payload => ({
     type: actionTypes.GET_TITLE_RECONCILIATION,
     payload,
 });
+
+export const storeTitle = title => ({
+    type: actionTypes.STORE_TITLE,
+    payload: {[title.id]: title}
+});

@@ -13,7 +13,7 @@ import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest, deselectIngest} from '../ingest-panel/ingestActions';
+import {filterRightsByStatus, selectIngest, deselectIngest, downloadEmailAttachment} from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
@@ -27,7 +27,7 @@ import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfinite
 import {NexusGrid, NexusTableToolbar} from '../../ui-elements';
 import {filterBy} from '../../ui-elements/nexus-grid/utils';
 import usePrevious from '../../util/hooks/usePrevious';
-import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from './util/indicator';
+import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/indicator';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 
@@ -48,6 +48,7 @@ const RightsRepository = props => {
         createRightMatchingColumnDefs,
         mapping,
         selectedIngest,
+        selectedAttachmentId,
         filterByStatus,
         ingestClick,
         setSelectedRights,
@@ -55,8 +56,8 @@ const RightsRepository = props => {
         addRightsFilter,
         setRightsFilter,
         rightsFilter,
-        selectedAttachmentId,
-        deselectIngest
+        deselectIngest,
+        downloadIngestEmail
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
@@ -65,6 +66,12 @@ const RightsRepository = props => {
     const [selectedColumnApi, setSelectedColumnApi] = useState();
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
+
+    useEffect(() => {
+        gridApi && gridApi.setFilterModel(null);
+    }, [selectedIngest, selectedAttachmentId]);
+
+
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
@@ -115,12 +122,12 @@ const RightsRepository = props => {
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         const indicator = calculateIndicatorType(data);
-        const notificationClass = indicator !== INDICATOR_RED ? '' : ' nexus-c-right-to-match-view__buttons_notification--error';
+        const notificationClass = indicator !== INDICATOR_RED ? '--success' : '--error';
         return (
             <CustomActionsCellRenderer id={id}>
                 <div>
                     <EditorMediaWrapLeftIcon/>
-                    {indicator !== INDICATOR_NON && <span className={'nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>}
+                    <span className={'nexus-c-right-to-match-view__buttons_notification  nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>
                 </div>
             </CustomActionsCellRenderer>
         );
@@ -133,7 +140,7 @@ const RightsRepository = props => {
         return columnDef;
     });
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCellEditor, editable: true});
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
@@ -175,11 +182,13 @@ const RightsRepository = props => {
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && !isEmpty(selectedIngest) && attachment && (<Ingest
-                ingest={selectedIngest}
-                deselectIngest={deselectIngest}
-                attachment={attachment}
-                filterByStatus={filterByStatus} />)
+            {selectedIngest && !isEmpty(selectedIngest) && attachment && (
+                <Ingest
+                    ingest={selectedIngest}
+                    deselectIngest={deselectIngest}
+                    downloadIngestEmail={downloadIngestEmail}
+                    attachment={attachment}
+                    filterByStatus={filterByStatus} />)
             }
             <NexusTableToolbar
                 title="Rights"
@@ -239,6 +248,7 @@ const mapDispatchToProps = dispatch => ({
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
+    downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload))
 });
 

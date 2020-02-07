@@ -26,5 +26,5 @@ export default {
         },
     ],
     REFRESH_INTERVAL: 5*1000, //5 seconds
-    PAGE_SIZE: 6,
+    PAGE_SIZE: 100,
 };

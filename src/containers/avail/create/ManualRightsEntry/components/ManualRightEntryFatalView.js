@@ -29,7 +29,7 @@ function ManualRightEntryFatalView({attachments, hidden}) {
         let errorList = [];
         attachments.forEach(attachment => {
             const {errorReports = []} = attachment;
-            errorReports.forEach(report => {
+            errorReports && errorReports.forEach(report => {
                 const {availSource = {}, validationErrors = []} = report;
                 let message = 'System could not process row: ' + availSource.availRow + '.';
                 let areFatalErrorsAppear = false;

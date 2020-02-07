@@ -8,12 +8,12 @@ export default {
     ],
     DATEPICKER_LABELS: ['From', 'To'],
     REPORT: {
-        total: 'Rights',
-        created: 'Created',
-        updated: 'Updated',
-        fatal: 'Fatals',
-        pending: 'Pending',
-        errors: 'Errors'
+        total: { label: 'Rights', value: '' },
+        created: { label: 'New', value: 'Created' },
+        updated: { label: 'Updated', value: 'Updated' },
+        fatal: { label: 'Fatals', value: 'Fatal' },
+        pending: { label: 'Pending', value: 'Pending' },
+        errors:  { label: 'Errors', value: 'Error' },
     },
     ingestTypes: {
         EMAIL: 'Email',
