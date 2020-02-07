@@ -26,17 +26,18 @@ export default function useMatchAndDuplicateList() {
         }
     };
 
-    const handleDuplicateClick = (id, name, checked) => {
+    const handleDuplicateClick = (data, repo, checked) => {
+        const {id} = data || {};
         if (checked) {
-            if (matchList[name] && matchList[name].id === id) {
+            if (matchList[repo] && matchList[repo].id === id) {
                 let list = {...matchList};
-                delete list[name];
+                delete list[repo];
                 setMatchList(list);
             }
 
             setDuplicateList({
                 ...duplicateList,
-                [id]: name
+                [id]: data
             });
             return;
         }

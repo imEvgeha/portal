@@ -6,7 +6,7 @@ import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../ui-elements/';
 import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
-import {fetchTitle} from '../metadataActions';
+import {fetchTitle, reconcileTitles} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
 import {getColumnDefs} from '../../avails/title-matching/titleMatchingSelectors';
@@ -14,15 +14,10 @@ import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/e
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
 
-const LegacyTitleReconciliationView = ({
-    titleMetadata,
-    getColumnDefs,
-    match,
-    columnDefs,
-    fetchTitle,
-    createColumnDefs,
-}) => {
+const LegacyTitleReconciliationView = ({titleMetadata, match, columnDefs,
+                                           fetchTitle, onDone, createColumnDefs}) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
+    const [selectedList, setSelectedList] = useState({});
     const {params = {}} = match;
     const {title, contentType, releaseYear} = titleMetadata || {};
 
@@ -38,11 +33,14 @@ const LegacyTitleReconciliationView = ({
         fetchTitle({id});
     }, []);
 
-    const handleDoneClick = values => values;
+    const handleDoneClick = () => {
+        onDone(selectedList);
+    };
 
     const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
-        const hasItem = Object.keys(matchList).length || Object.keys(duplicateList).length;
+        const hasItem = Object.keys(matchList).length;
         setIsDoneButtonDisabled(!hasItem);
+        setSelectedList({matchList, duplicateList});
     };
 
     const handleGridEvent = ({type, columnApi}) => {
@@ -95,6 +93,7 @@ LegacyTitleReconciliationView.propsTypes = {
     titleMetadata: PropTypes.object,
     createColumnDefs: PropTypes.func.isRequired,
     fetchTitle: PropTypes.func.isRequired,
+    onDone: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
 };
 
@@ -113,6 +112,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     fetchTitle: payload => dispatch(fetchTitle(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
+    onDone: payload => dispatch(reconcileTitles(payload)),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationView); // eslint-disable-line

@@ -31,6 +31,7 @@ import uniqBy from 'lodash.uniqby';
 import get from 'lodash.get';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRender';
+import { getRepositoryCell} from '../../../../../avails/utils';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -419,6 +420,7 @@ class TitleResultTable extends React.Component {
                     newCols.push(colDef[acc]);
                 }
             });
+            newCols.push(getRepositoryCell({headerName: 'Repository'}));
             if(window.location.hostname.includes('local')) {
                 const actionColumn = defineColumn({
                     headerName: 'Action',

@@ -31,7 +31,7 @@ const NexusDateTimePicker = ({
     const [isSimulcast, setIsSimulcast] = useState(false);
 
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
-    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, []);
+    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, [value]);
 
     // Get locale provided by intl
     const intl = useIntl();
@@ -100,7 +100,7 @@ const NexusDateTimePicker = ({
                             <div className="nexus-c-date-time-picker__read-view-container">
                                 {moment(value).isValid()
                                     ?`${getDisplayDate(value)}
-                                     ${isSimulcast && !isTimestamp ? ' (UTC)' : ''}`
+                                     ${isSimulcast ? ' (UTC)' : ''}`
                                     : <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>

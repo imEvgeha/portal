@@ -23,6 +23,11 @@ const metadataReducer = (state = initialState, action) => {
                 page: payload.page,
                 size: payload.size,
             };
+        case actionTypes.TITLES_RECONCILE_SUCCESS:
+            return {
+                ...state,
+                titles: {...state.titles, ...payload},
+            };
         default:
             return state;
     }

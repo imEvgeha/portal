@@ -181,15 +181,6 @@ export const titleService = {
     },
 
     mergeTitles: (query) => {
-        const httpReq = Http.create({
-            errorToast: {
-                description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-            },
-            successToast: {
-                description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
-                actions: [{content:'View title', onClick: onViewTitleClick}],
-            }
-        });
-        return httpReq.post(`${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`);
+        return http.post(`${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`);
     },
 };
