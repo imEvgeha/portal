@@ -52,16 +52,16 @@
 
 .nexus-c-right-to-match-view__buttons_notification {
     position: absolute;
-    bottom: 5px;
-    right: 43px;
-    padding: 2px 2px;
+    bottom: 4px;
+    right: 9px;
+    padding: 3px;
     border-radius: 50%;
     color: white;
     &--error {
         background: red;
     }
     &--success {
-        background: green;
+        background: map-get($colors, nexus-light-green);
     }
 }
 

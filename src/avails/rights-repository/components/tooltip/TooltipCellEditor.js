@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './TooltipCellEditor.scss';
-import {calculateIndicatorType, INDICATOR_NON, INDICATOR_RED} from '../../util/indicator';
+import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 
 class TooltipCellEditor extends Component {
     static propTypes = {
@@ -23,7 +23,7 @@ class TooltipCellEditor extends Component {
         switch (calculateIndicatorType(this.props.data)) {
             case INDICATOR_RED:
                 return <span>Title | No matching title <a href={`/avails/rights/${id}/title-matching`} target='_blank'><b>FIND MATCH</b></a></span>;
-            case INDICATOR_NON:
+            case INDICATOR_SUCCESS:
                 return <span>Title | Matched title</span>;
         }
     };

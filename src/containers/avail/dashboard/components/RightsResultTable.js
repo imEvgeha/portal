@@ -252,9 +252,9 @@ class RightsResultTable extends React.Component {
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
                     if(data && data[javaVariableName]){
-                        let data = data[javaVariableName];
-                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
-                        return data;
+                        let dataString = '';
+                        dataString = data[javaVariableName].map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
+                        return dataString;
                     } else return undefined;
                 }; else return null;
                 case 'territoryType' : return function({data = {}}){

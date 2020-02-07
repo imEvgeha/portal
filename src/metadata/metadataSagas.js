@@ -1,6 +1,7 @@
 import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
 import {titleService} from '../containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
+import * as selectors from './metadataSelectors';
 import get from 'lodash.get';
 import {ADD_TOAST} from '../ui-elements/nexus-toast-notification/actionTypes';
 import {
@@ -34,29 +35,29 @@ export function* fetchTitle(action) {
 }
 
 export function* fetchAndStoreTitle(action) {
-        const {titleId} = yield select(state => state.metadata);
-        const {id} = action.payload || {}; 
-        if (id && id === titleId) {
-            return;
+    const titleId = yield select(selectors.getTitleId);
+    const {id} = action.payload || {};
+    if (id && id === titleId) {
+        return;
+    }
+
+    yield fork(fetchTitle, action);
+
+    while (true) {
+        const {type, payload} = yield take([
+            actionTypes.FETCH_TITLE_SUCCESS,
+            actionTypes.FETCH_TITLE_ERROR,
+        ]);
+
+        if (type === actionTypes.FETCH_TITLE_SUCCESS) {
+            yield put({
+                type: actionTypes.STORE_TITLE,
+                payload: {[payload.id]: payload},
+            });
+
+            break;
         }
-
-        yield fork(fetchTitle, action);
-
-        while (true) {
-            const {type, payload} = yield take([
-                actionTypes.FETCH_TITLE_SUCCESS,
-                actionTypes.FETCH_TITLE_ERROR,
-            ]);
-
-            if (type === actionTypes.FETCH_TITLE_SUCCESS) {
-                yield put({
-                    type: actionTypes.STORE_TITLE,
-                    payload: {[payload.id]: payload},
-                });
-
-                break;
-            }
-        }
+    }
 }
 
 export function* reconcileTitles({payload}) {
