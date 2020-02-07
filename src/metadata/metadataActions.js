@@ -10,8 +10,8 @@ export const fetchTitles = payload => ({
     payload,
 });
 
-export const getTitleReconciliation = payload => ({
-    type: actionTypes.GET_TITLE_RECONCILIATION,
+export const getReconciliationTitles = payload => ({
+    type: actionTypes.FETCH_AND_STORE_RECONCILIATION_TITLES,
     payload,
 });
 

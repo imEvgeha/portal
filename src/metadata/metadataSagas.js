@@ -2,6 +2,7 @@ import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects'
 import {titleService} from '../containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
+import {normalizeDataForStore} from '../util/Common';
 
 export function* fetchTitle(action) {
     const {payload} = action || {};
@@ -77,26 +78,66 @@ export function* fetchAndStoreTitle(action) {
     }
 }
 
-export function* getTitleReconciliation(action) {
-    yield put({
-        type: actionTypes.FETCH_AND_STORE_TITLE,
-        payload: {id: action.payload.id},
-    });
+export function* fetchReconciliationTitles(action) {
+    const requestMethod = titleService.bulkGetTitlesWithGenres;
+
+    try {
+        yield put({
+            type: actionTypes.FETCH_RECONCILIATION_TITLES_REQUEST,
+            payload: {}
+        });
+        const {ids} = action.payload || {};
+        const body = ids.map(el => {
+            return {id: el};
+        });
+        const response = yield call(requestMethod, body);
+        const {data} = response;
+        yield put({
+            type: actionTypes.FETCH_RECONCILIATION_TITLES_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.FETCH_RECONCILIATION_TITLES_ERROR,
+            payload: null,
+            error,
+        });
+    }
+}
+
+export function* getReconciliationTitles(action) {
+    const {list, page, size} = yield select(selectors.createTitlesInfoSelector());
+    const {ids = []} = action.payload || {};
+    const titleIdsToFetch = ids.filter(id => !(Object.keys(list || {}).includes(id))) || [];
+
+    if (!titleIdsToFetch) {
+        return;
+    };
+
+    const newAction = {
+        type: action.type,
+        payload: {
+            ids: titleIdsToFetch,
+        }
+    };
+
+    yield fork(fetchReconciliationTitles, newAction);
 
     while (true) {
         const {type, payload} = yield take([
-           actionTypes.STORE_TITLE,
-           actionTypes.FETCH_TITLE_ERROR,
+            actionTypes.FETCH_RECONCILIATION_TITLES_SUCCESS,
+            actionTypes.FETCH_RECONCILIATION_TITLES_ERROR,
         ]);
 
-        if (type === actionTypes.STORE_TITLE) {
-            const {contentType, title, releaseYear} = yield select(selectors.createTitleSelector());
-            const {list, page, size} = yield select(selectors.createTitlesInfoSelector());
+        if (type === actionTypes.FETCH_RECONCILIATION_TITLES_SUCCESS) {
+            const {page, size} = yield select(selectors.createTitlesInfoSelector());
+            const data = normalizeDataForStore(payload);
+
             yield put({
-                type: actionTypes.FETCH_AND_STORE_TITLES,
+                type: actionTypes.STORE_TITLES,
                 payload: {
-                    params: {title, contentType, releaseYear, ids: '123'},
-                    page: page ? page + 1 : 0, 
+                    data,
+                    page,
                     size,
                 }
             });
@@ -108,7 +149,7 @@ export function* getTitleReconciliation(action) {
 
 export function* fetchAndStoreTitles(action) {
     const titles = yield select(selectors.getTitles);
-    if (titles && titles.length) {
+    if (titles) {
         return;
     }
 
@@ -122,13 +163,10 @@ export function* fetchAndStoreTitles(action) {
 
         if (type === actionTypes.FETCH_TITLES_SUCCESS) {
             const {page, size, data} = payload || {};
-            const normalizedData = data.reduce((obj, item) => {
-                obj[item.id] = item;
-                return obj;
-            }, {});
+
             yield put({
                 type: actionTypes.STORE_TITLES,
-                payload: {page, size, data: normalizedData},
+                payload: {page, size, data: normalizeDataForStore(data)},
             });
 
             break;
@@ -140,7 +178,7 @@ export function* metadataWatcher() {
     yield all([
         takeEvery(actionTypes.FETCH_AND_STORE_TITLE, fetchAndStoreTitle),
         takeEvery(actionTypes.FETCH_AND_STORE_TITLES, fetchAndStoreTitles),
-        takeEvery(actionTypes.GET_TITLE_RECONCILIATION, getTitleReconciliation),
+        takeEvery(actionTypes.FETCH_AND_STORE_RECONCILIATION_TITLES, getReconciliationTitles),
     ]);
 }
 
