@@ -59,7 +59,7 @@ export default {
         },
         {
             field: 'contentType',
-            headerName: 'Offer Type',
+            headerName: 'Content Type',
         },
         {
             colId: 'ratingSystem',
