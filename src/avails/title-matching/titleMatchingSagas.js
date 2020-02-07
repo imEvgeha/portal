@@ -6,8 +6,16 @@ import { createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
-import {URL} from '../../util/Common';
+import {getDomainName, URL} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
+import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
+import {
+    ERROR_ICON,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    SUCCESS_TITLE, TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
+} from '../../ui-elements/nexus-toast-notification/constants';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -83,7 +91,17 @@ function* mergeAndStoreTitles({payload}){
             const updatedRight = {coreTitleId: response.data.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
-
+        const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+                actions: [{content:'View title', onClick: () => window.open(url, '_blank')}],
+            }
+        });
         yield put({
             type: actionTypes.STORE_COMBINED_TITLE,
             payload: response.data,
@@ -94,7 +112,15 @@ function* mergeAndStoreTitles({payload}){
         });
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`)));
     } catch (e) {
-        //errors other than API failures
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+            }
+        });
     }
 }
 

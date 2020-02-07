@@ -67,7 +67,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                 <CustomActionsCellRenderer id={id}>
                     <Checkbox
                         isChecked={duplicateList[id]}
-                        onChange={({currentTarget}) => handleDuplicateClick(id, repo, currentTarget.checked)}
+                        onChange={({currentTarget}) => handleDuplicateClick(data, repo, currentTarget.checked)}
                     />
                 </CustomActionsCellRenderer>
             )
