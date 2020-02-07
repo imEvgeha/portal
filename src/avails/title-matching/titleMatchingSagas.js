@@ -6,7 +6,7 @@ import { createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
-import {getDomainName, URL} from '../../util/Common';
+import {URL} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
 import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
 import {
@@ -91,7 +91,7 @@ function* mergeAndStoreTitles({payload}){
             const updatedRight = {coreTitleId: response.data.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
-        const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
+        const url = `/metadata/detail/${response.data.id}`;
         yield put({
             type: ADD_TOAST,
             payload: {
