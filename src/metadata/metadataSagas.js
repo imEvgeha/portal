@@ -29,7 +29,6 @@ export function* fetchTitle(action) {
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_TITLE_ERROR,
-            payload: null,
             error,
         });
     }
@@ -54,7 +53,6 @@ export function* fetchTitles(action) {
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_TITLES_ERROR,
-            payload: null,
             error,
         });
     }
@@ -94,7 +92,7 @@ export function* fetchReconciliationTitles(action) {
             type: actionTypes.FETCH_RECONCILIATION_TITLES_REQUEST,
             payload: {}
         });
-        const {ids} = action.payload || {};
+        const {ids = []} = action.payload || {};
         const body = ids.map(el => {
             return {id: el};
         });
@@ -107,7 +105,6 @@ export function* fetchReconciliationTitles(action) {
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_RECONCILIATION_TITLES_ERROR,
-            payload: null,
             error,
         });
     }
@@ -183,16 +180,16 @@ export function* fetchAndStoreTitles(action) {
 }
 
 export function* reconcileTitles({payload}) {
-    const {matchList, duplicateList} = payload;
+    const {matchList = {}, duplicateList = {}} = payload || {};
     try {
         const masterIds = [];
         const masters = {};
-        Object.keys(matchList).map(key => {
+        Object.keys(matchList || {}).map(key => {
             const id = matchList[key].id;
             masterIds.push(id);
             masters[id] = matchList[key];
         });
-        const duplicateIds = Object.keys(duplicateList);
+        const duplicateIds = Object.keys(duplicateList || {});
         let query = `idsToMerge=${masterIds.join(',')}&idsToHide=${duplicateIds.join(',')}`;
         const response = yield call(titleService.mergeTitles, query);
         const newTitleId = get(response, 'data.id', '');
@@ -220,6 +217,9 @@ export function* reconcileTitles({payload}) {
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${query}`)));
     } catch (e) {
         //error handling
+        yield put({
+            type: actionTypes.TITLES_RECONCILE_ERROR,
+        });
     }
 }
 

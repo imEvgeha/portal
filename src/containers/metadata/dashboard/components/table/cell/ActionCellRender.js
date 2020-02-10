@@ -14,7 +14,8 @@ function ActionCellRender({data, storeTitle}) {
 
     useEffect(() => {
         const {id} = data || {};
-        setIsMovidaOrVz(getRepositoryName(id) === constants.MOVIDA || getRepositoryName(id) === constants.VZ);
+        const {MOVIDA, VZ} = constants.repository || {};
+        setIsMovidaOrVz(getRepositoryName(id) === MOVIDA || getRepositoryName(id) === VZ);
     }, [data]);
 
     return (

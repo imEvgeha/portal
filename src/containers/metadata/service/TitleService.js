@@ -128,7 +128,7 @@ export const titleService = {
         const GENRE_KEY = 'editorialGenres';
 
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ', ids).then(response => {
-            const {data} = response || {};
+            const {data = []} = response || {};
             const promises = data.map((title) => {
                 const {id} = title;
                 if (title[GENRE_KEY]) {
