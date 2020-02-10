@@ -20,7 +20,8 @@
 
 .nexus-c-title__sub-label {
     color: map-get($colors, nexus-title-matching-secondary-color);
-    margin: 20px 0 -10px 0;
+    // margin: 20px 0 -10px 0;
+    margin: 0;
     font-size: 16px;
 }
 

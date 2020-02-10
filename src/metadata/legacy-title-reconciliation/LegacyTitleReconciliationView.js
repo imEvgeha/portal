@@ -5,7 +5,12 @@ import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../ui-elements/';
-import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
+import {
+    TITLE,
+    SECTION_MESSAGE,
+    FOCUSED_TITLE,
+    SAVE_BTN,
+} from './constants';
 import {fetchTitle, reconcileTitles} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
@@ -14,10 +19,17 @@ import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/e
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
 
-const LegacyTitleReconciliationView = ({titleMetadata, match, columnDefs,
-                                           fetchTitle, onDone, createColumnDefs}) => {
+const LegacyTitleReconciliationView = ({
+    titleMetadata,
+    match,
+    columnDefs,
+    fetchTitle,
+    onDone,
+    createColumnDefs,
+}) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
+    const [gridApi, setGridApi] = useState();
     const {params = {}} = match;
     const {title, contentType, releaseYear} = titleMetadata || {};
 
@@ -37,14 +49,19 @@ const LegacyTitleReconciliationView = ({titleMetadata, match, columnDefs,
         onDone(selectedList);
     };
 
+    const handleClearFilterClick = () => {
+        console.log('clear filter')
+    };
+
     const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
         const hasItem = Object.keys(matchList).length;
         setIsDoneButtonDisabled(!hasItem);
         setSelectedList({matchList, duplicateList});
     };
 
-    const handleGridEvent = ({type, columnApi}) => {
+    const handleGridEvent = ({type, columnApi, api}) => {
         if (GRID_EVENTS.READY === type) {
+            setGridApi(api);
             const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
             columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex);
         }

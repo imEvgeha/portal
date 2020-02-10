@@ -5,6 +5,13 @@
     min-height: 200px;
 }
 
+.nexus-c-candidates-list__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+}
+
 .nexus-c-candidates-list__row {
     font-weight: bold;
 }
