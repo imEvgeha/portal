@@ -155,6 +155,6 @@ export const createRightById = (id) => {
             description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
         }
     });
-    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match/`);
+    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`);
 };
 
