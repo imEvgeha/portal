@@ -1,8 +1,9 @@
-import {call, put, all, takeEvery} from 'redux-saga/effects';
+import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
+import isEmpty from 'lodash.isempty';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import { createColumnDefs } from '../utils';
+import {createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
@@ -16,6 +17,8 @@ import {
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
     SUCCESS_TITLE, TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
 } from '../../ui-elements/nexus-toast-notification/constants';
+import {createAvailSelectValuesSelector} from '../../containers/avail/availSelectors';
+import {fetchAndStoreSelectItems} from '../../containers/avail/availSagas';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -58,7 +61,11 @@ function* fetchFocusedRight(requestMethod, {payload}) {
 }
 
 function* createTitleMatchingColumnDefs(){
-    try{
+    const selectItems = yield select(createAvailSelectValuesSelector());
+    try {
+        if (isEmpty(selectItems)) {
+            yield fork(fetchAndStoreSelectItems, mappings);
+        }
         const columnDefs = yield call(createColumnDefs, mappings);
         yield put({
             type: actionTypes.STORE_COLUMN_DEFS,

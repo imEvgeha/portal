@@ -49,10 +49,6 @@ const LegacyTitleReconciliationView = ({
         onDone(selectedList);
     };
 
-    const handleClearFilterClick = () => {
-        console.log('clear filter')
-    };
-
     const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
         const hasItem = Object.keys(matchList).length;
         setIsDoneButtonDisabled(!hasItem);
@@ -88,8 +84,7 @@ const LegacyTitleReconciliationView = ({
             <CandidatesList
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
-                // TODO: Capitalized variable name due to invalid BE requirement
-                queryParams={{ContentType: contentType, title, releaseYear}}
+                queryParams={{contentType, title, releaseYear}}
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
