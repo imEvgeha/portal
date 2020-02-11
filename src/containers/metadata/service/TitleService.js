@@ -19,11 +19,11 @@ const onViewTitleClick = (response) => {
 const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if(syncToVZ || syncToMovida) {
         if(syncToVZ && syncToMovida) {
-            return 'vz,movida';
+            return 'VZ,MOVIDA';
         } else if(syncToVZ) {
-            return 'vz';
+            return 'VZ';
         } else {
-            return 'movida';
+            return 'MOVIDA';
         }
     }
     return null;
@@ -90,8 +90,8 @@ export const titleService = {
     },
 
     createTitle: (title, syncToVZ, syncToMovida) => {
-        const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
+        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = legacySystemNames ? {legacySystemNames} : {};
 
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
     },
@@ -108,8 +108,8 @@ export const titleService = {
     },
 
     updateTitle: (title, syncToVZ, syncToMovida) => {
-        const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
+        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = legacySystemNames ? {legacySystemNames} : {};
 
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title, {params});
     },
