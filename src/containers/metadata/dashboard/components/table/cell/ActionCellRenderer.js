@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import './ActionCellRenderer.scss';
 import CustomActionsCellRenderer
@@ -18,13 +19,13 @@ function ActionCellRenderer({data, storeTitle}) {
     }, [data]);
 
     return (
-        <CustomActionsCellRenderer id={'action-' + data.id}>
+        <CustomActionsCellRenderer id={`action-${data && data.id}`}>
             {isMovidaOrVz &&
                 <NexusTooltip content='Legacy title reconciliation'>
                     <div>
                         <a
                             className='nexus-c-metadata-table-action'
-                            href={`/metadata/detail/${data.id}/legacy-title-reconciliation`}
+                            href={`/metadata/detail/${data && data.id}/legacy-title-reconciliation`}
                             onClick={() => storeTitle(data)}
                             target='_blank'
                         >
@@ -36,6 +37,15 @@ function ActionCellRenderer({data, storeTitle}) {
         </CustomActionsCellRenderer>
     );
 }
+
+ActionCellRenderer.propTypes = {
+    storeTitle: PropTypes.func.isRequired,
+    data: PropTypes.object,
+};
+
+ActionCellRenderer.defaultProps = {
+    data: {},
+};
 
 const mapDispatchToProps = dispatch => ({
     storeTitle: payload => dispatch(storeTitle(payload))
