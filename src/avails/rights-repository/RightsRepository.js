@@ -8,12 +8,20 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights, addRightsFilter, setRightsFilter} from './rightsActions';
-import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
+import {addRightsFilter, setRightsFilter, setSelectedRights} from './rightsActions';
+import {
+    createAvailsMappingSelector,
+    createRightMatchingColumnDefsSelector
+} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest, deselectIngest, downloadEmailAttachment} from '../ingest-panel/ingestActions';
+import {
+    deselectIngest,
+    downloadEmailAttachment,
+    filterRightsByStatus,
+    selectIngest
+} from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
@@ -30,6 +38,10 @@ import usePrevious from '../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/indicator';
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
+import {URL} from '../../util/Common';
+
+export const RIGHTS_TAB = 'RIGHTS_TAB';
+export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
     withSideBar(),
@@ -42,8 +54,7 @@ const SelectedRighstRepositoryTable = compose(
     withFilterableColumns(),
 )(NexusGrid);
 
-const RightsRepository = props => {
-    const {
+const RightsRepository = ({
         columnDefs,
         createRightMatchingColumnDefs,
         mapping,
@@ -57,13 +68,15 @@ const RightsRepository = props => {
         setRightsFilter,
         rightsFilter,
         deselectIngest,
-        downloadIngestEmail
-    } = props;
+        downloadIngestEmail,
+}) => {
     const [totalCount, setTotalCount] = useState(0);
-    const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [selectedColumnApi, setSelectedColumnApi] = useState();
+    const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
+    const [selectedGridApi, setSelectedGridApi] = useState();
+    const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
 
@@ -116,6 +129,10 @@ const RightsRepository = props => {
         }
     }, [rightsFilter, mapping]);
 
+    useEffect(() => {
+        setSelectedRepoRights(getSelectedTabRights(Object.keys(selectedRights).map(key => selectedRights[key])));
+    }, [window.location.search]);
+
     const columnDefsClone = cloneDeep(columnDefs);
     const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
@@ -145,14 +162,18 @@ const RightsRepository = props => {
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
-    const updatedColumnDefsWithRedirect = columnDefsWithRedirect.length
-        ? [actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
+    const checkboxSelectionWithHeaderColumnDef = {headerCheckboxSelection: true, ...checkboxSelectionColumnDef};
+    const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
+        ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         switch (type) {
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
+                setSelectedRepoRights(getSelectedTabRights(allSelectedRows));
+                selectedGridApi.selectAll();
+
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
@@ -173,10 +194,34 @@ const RightsRepository = props => {
         }
     };
 
-    const onSelectedRightsRepositoryGridEvent = ({type, columnApi}) => {
-        if(type === GRID_EVENTS.READY) {
-            setSelectedColumnApi(columnApi);
+    const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+        switch (type) {
+            case GRID_EVENTS.READY:
+                setSelectedGridApi(api);
+                setSelectedColumnApi(columnApi);
+                break;
+            case GRID_EVENTS.SELECTION_CHANGED:
+                const allSelectedRows = api.getSelectedRows() || [];
+                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id));
+                toUnselect.forEach(el => {
+                    const node = gridApi.getRowNode(el.id);
+                    node && node.setSelected(false);
+                });
+                break;
         }
+    };
+
+    const getSelectedTabRights = (selectedRights) => {
+        const availHistoryIdsParam = URL.getParamIfExists('availHistoryIds');
+        const ingestHistoryAttachmentIdParam = URL.getParamIfExists('ingestHistoryAttachmentId');
+
+        if(availHistoryIdsParam && ingestHistoryAttachmentIdParam) {
+            return selectedRights.filter(el => {
+                const {availHistoryIds, ingestHistoryAttachmentId} = el;
+                return isEqual(availHistoryIds.sort(), availHistoryIdsParam.split(',').sort()) && ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
+            });
+        }
+        return selectedRights;
     };
 
     return (
@@ -193,18 +238,20 @@ const RightsRepository = props => {
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
-                setIsSelectedOptionActive={setIsSelectedOptionActive}
-                isSelectedOptionActive={isSelectedOptionActive}
+                selectedRightsCount={selectedRepoRights.length}
+                setActiveTab={setActiveTab}
+                activeTab={activeTab}
                 selectedRows={selectedRights}
                 rightsFilter={rightsFilter}
+                selectedGridApi={selectedGridApi}
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
             />
             <SelectedRighstRepositoryTable
-                columnDefs={updatedColumnDefsWithRedirect}
+                columnDefs={updatedColumnDefsCheckBoxHeader}
                 mapping={mapping}
-                rowData={Object.keys(selectedRights).map(key => selectedRights[key])}
-                isGridHidden={!isSelectedOptionActive}
+                rowData={selectedRepoRights}
+                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
                 singleClickEdit
             />
@@ -215,7 +262,7 @@ const RightsRepository = props => {
                 onGridEvent={onRightsRepositoryGridEvent}
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
-                isGridHidden={isSelectedOptionActive}
+                isGridHidden={activeTab !== RIGHTS_TAB}
                 selectedRows={selectedRights}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
