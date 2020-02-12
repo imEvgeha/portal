@@ -1822,10 +1822,10 @@
     "@babel/helper-create-regexp-features-plugin" "^7.7.4"
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/polyfill@^7.4.4":
-  version "7.7.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@babel/polyfill/-/polyfill-7.7.0.tgz#e1066e251e17606ec7908b05617f9b7f8180d8f3"
-  integrity sha512-/TS23MVvo34dFmf8mwCisCbWGrfhbiWZSwBo6HkADTBhUa2Q/jWltyY/tpofz/b6/RIhqaqQcquptCirqIhOaQ==
+"@babel/polyfill@^7.8.3":
+  version "7.8.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@babel/polyfill/-/polyfill-7.8.3.tgz#2333fc2144a542a7c07da39502ceeeb3abe4debd"
+  integrity sha512-0QEgn2zkCzqGIkSWWAEmvxD7e00Nm9asTtQvi7HdlYvMhjy/J38V/1Y9ode0zEJeIuxAI0uftiAzqc7nVeWUGg==
   dependencies:
     core-js "^2.6.5"
     regenerator-runtime "^0.13.2"
@@ -13722,6 +13722,11 @@ jest-snapshot@^25.1.0:
     natural-compare "^1.4.0"
     pretty-format "^25.1.0"
     semver "^7.1.1"
+
+jest-transform-stub@^2.0.0:
+  version "2.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/jest-transform-stub/-/jest-transform-stub-2.0.0.tgz#19018b0851f7568972147a5d60074b55f0225a7d"
+  integrity sha512-lspHaCRx/mBbnm3h4uMMS3R5aZzMwyNpNIJLXj4cEsV0mIUtS4IjYJLSoyjRCtnxb6RIGJ4NL2quZzfIeNhbkg==
 
 jest-util@^20.0.3:
   version "20.0.3"
