@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import './ActionCellRender.scss';
+import './ActionCellRenderer.scss';
 import CustomActionsCellRenderer
     from '../../../../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import NexusTooltip from '../../../../../../ui-elements/nexus-tooltip/NexusTooltip';
@@ -8,21 +9,28 @@ import {storeTitle} from '../../../../../../metadata/metadataActions';
 import {getRepositoryName} from '../../../../../../avails/utils';
 import TitleSystems from '../../../../../../constants/metadata/systems';
 
-function ActionCellRender({data, storeTitle}) {
+function ActionCellRenderer({data, storeTitle}) {
 
-    const [isMovidaOrVz, setIsMovidaOrVz] = useState();
+    const [isMovidaOrVz, setIsMovidaOrVz] = useState(false);
 
     useEffect(() => {
-        const {id} = data || {};
+        const {id = ''} = data || {};
         setIsMovidaOrVz(getRepositoryName(id) === TitleSystems.MOVIDA || getRepositoryName(id) === TitleSystems.VZ);
     }, [data]);
 
     return (
-        <CustomActionsCellRenderer id={'action-' + data.id}>
+        <CustomActionsCellRenderer id={`action-${data && data.id}`}>
             {isMovidaOrVz &&
                 <NexusTooltip content='Legacy title reconciliation'>
                     <div>
-                        <a className='nexus-c-metadata-table-action' href={`/metadata/detail/${data.id}/legacy-title-reconciliation`} onClick={() => storeTitle(data)} target='_blank'><b>Inspect</b></a>
+                        <a
+                            className='nexus-c-metadata-table-action'
+                            href={`/metadata/detail/${data && data.id}/legacy-title-reconciliation`}
+                            onClick={() => storeTitle(data)}
+                            target='_blank'
+                        >
+                            Inspect
+                        </a>
                     </div>
                 </NexusTooltip>
             }
@@ -30,8 +38,17 @@ function ActionCellRender({data, storeTitle}) {
     );
 }
 
+ActionCellRenderer.propTypes = {
+    storeTitle: PropTypes.func.isRequired,
+    data: PropTypes.object,
+};
+
+ActionCellRenderer.defaultProps = {
+    data: {},
+};
+
 const mapDispatchToProps = dispatch => ({
     storeTitle: payload => dispatch(storeTitle(payload))
 });
 
-export default connect(null, mapDispatchToProps)(ActionCellRender);
+export default connect(null, mapDispatchToProps)(ActionCellRenderer);
