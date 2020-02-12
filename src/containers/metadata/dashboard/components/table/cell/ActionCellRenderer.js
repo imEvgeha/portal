@@ -7,7 +7,7 @@ import CustomActionsCellRenderer
 import NexusTooltip from '../../../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import {storeTitle} from '../../../../../../metadata/metadataActions';
 import {getRepositoryName} from '../../../../../../avails/utils';
-import constants from '../../../../../../avails/title-matching/titleMatchingConstants';
+import TitleSystems from '../../../../../../constants/metadata/systems';
 
 function ActionCellRenderer({data, storeTitle}) {
 
@@ -15,7 +15,7 @@ function ActionCellRenderer({data, storeTitle}) {
 
     useEffect(() => {
         const {id = ''} = data || {};
-        setIsMovidaOrVz(getRepositoryName(id) === constants.MOVIDA || getRepositoryName(id) === constants.VZ);
+        setIsMovidaOrVz(getRepositoryName(id) === TitleSystems.MOVIDA || getRepositoryName(id) === TitleSystems.VZ);
     }, [data]);
 
     return (

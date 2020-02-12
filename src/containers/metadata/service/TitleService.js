@@ -1,10 +1,7 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import {getDomainName, prepareSortMatrixParamTitles} from '../../../util/Common';
-import {
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
-} from '../../../ui-elements/nexus-toast-notification/constants';
+import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 
 const http = Http.create();
@@ -19,11 +16,11 @@ const onViewTitleClick = (response) => {
 const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if(syncToVZ || syncToMovida) {
         if(syncToVZ && syncToMovida) {
-            return 'vz,movida';
+            return `${TitleSystems.VZ.toUpperCase()},${TitleSystems.MOVIDA.toUpperCase()}`;
         } else if(syncToVZ) {
-            return 'vz';
+            return TitleSystems.VZ.toUpperCase();
         } else {
-            return 'movida';
+            return TitleSystems.MOVIDA.toUpperCase();
         }
     }
     return null;
@@ -90,8 +87,8 @@ export const titleService = {
     },
 
     createTitle: (title, syncToVZ, syncToMovida) => {
-        const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
+        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = legacySystemNames ? {legacySystemNames} : {};
 
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
     },
@@ -108,8 +105,8 @@ export const titleService = {
     },
 
     updateTitle: (title, syncToVZ, syncToMovida) => {
-        const triggerSyncPublishToLegacySystems = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = triggerSyncPublishToLegacySystems ? {triggerSyncPublishToLegacySystems} : {};
+        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = legacySystemNames ? {legacySystemNames} : {};
 
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title, {params});
     },
