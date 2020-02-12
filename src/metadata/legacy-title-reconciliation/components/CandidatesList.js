@@ -39,7 +39,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         const repo = getRepositoryName(id);
 
         return (
-            repo !== constants.repository.NEXUS && (
+            repo !== TitleSystems.NEXUS && (
                 <CustomActionsCellRenderer id={id} >
                     <Radio
                         name={repo}

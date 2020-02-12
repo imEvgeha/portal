@@ -36,7 +36,7 @@ const NexusTableToolbar = ({
                     `}
                     onClick={() => setIsSelectedOptionActive(true)}
                 >
-                    Selected ({Object.keys(selectedRows).length})
+                    Selected ({selectedRows.length})
                 </div>
             )}
             {hasDownloadButton && (
@@ -60,7 +60,7 @@ NexusTableToolbar.propsTypes = {
     totalRows: PropTypes.bool,
     hasSelectedTab: PropTypes.bool,
     hasDownloadButton: PropTypes.bool,
-    selectedRows: PropTypes.object.isRequired,
+    selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightColumnApi: PropTypes.object.isRequired

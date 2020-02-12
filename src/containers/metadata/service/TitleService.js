@@ -119,6 +119,40 @@ export const titleService = {
         return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ', ids);
     },
 
+    bulkGetTitlesWithGenres: (ids) => {
+        const LANGUAGES = ['English', 'en'];
+        const LOCALE = ['US'];
+        const GENRE_KEY = 'editorialGenres';
+
+        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ', ids).then(response => {
+            const {data = []} = response || {};
+            const promises = data.map((title) => {
+                const {id} = title;
+                if (title[GENRE_KEY]) {
+                    return title;
+                }
+                return titleService.getEditorialMetadataByTitleId(id)
+                    .then(({data}) => {
+                        const itemWithGenres = data.find(({locale, language}) => {
+                            return LOCALE.includes(locale) && LANGUAGES.includes(language);
+                        });
+                        if (itemWithGenres) {
+                            title[GENRE_KEY] = itemWithGenres.genres;
+                        }
+                        return title;
+                    })
+                    .catch(e => e);
+            });
+            return Promise.all(promises)
+                .then(titles => {
+                    return {
+                        data: titles,
+                        status: 200,
+                    };
+                });
+        });
+    },
+
     addTerritoryMetadata: (territoryMetadata) => {
         return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', territoryMetadata);
     },
