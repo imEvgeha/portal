@@ -1625,13 +1625,22 @@
   "required": false
 },
 {
-  "javaVariableName": "castCrew.personType",
-  "displayName": "Person Type",
-  "dataType": "string",
+  "javaVariableName": "castCrew.displayArtist",
+  "displayName": "Display Artist",
   "searchDataType": "string",
-  "queryParamName": "personType",
-  "readOnly": false,
-  "enableSearch": false,
+  "queryParamName": "displayArtist",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": false,
+  "required": false
+},
+{
+  "javaVariableName": "castCrew.featuredArtist",
+  "displayName": "Featured Artist",
+  "searchDataType": "string",
+  "queryParamName": "featuredArtist",
+  "readOnly": true,
+  "enableSearch": true,
   "enableEdit": false,
   "required": false
 },
