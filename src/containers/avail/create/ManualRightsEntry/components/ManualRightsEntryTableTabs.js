@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexus-table-tab/TableTab';
 
 import {

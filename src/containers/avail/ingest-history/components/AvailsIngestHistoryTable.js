@@ -13,7 +13,7 @@ import HistoryURL from '../../util/HistoryURL';
 // image import
 import LoadingGif from '../../../../../src/img/loading.gif';
 
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
 import {historyServiceManager} from '../HistoryServiceManager';
 

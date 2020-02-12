@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import '../Title.scss';
 import { titleService } from '../../service/TitleService';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
 import {URL} from '../../../../util/Common';
