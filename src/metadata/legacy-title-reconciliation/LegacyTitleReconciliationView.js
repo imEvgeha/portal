@@ -18,6 +18,7 @@ import {getColumnDefs} from '../../avails/title-matching/titleMatchingSelectors'
 import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
+import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,
@@ -26,6 +27,7 @@ const LegacyTitleReconciliationView = ({
     fetchTitle,
     onDone,
     createColumnDefs,
+    isMerging,
 }) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
@@ -93,6 +95,7 @@ const LegacyTitleReconciliationView = ({
                     appearance="primary"
                     onClick={handleDoneClick}
                     isDisabled={isDoneDisabled}
+                    isLoading={isMerging}
                 >
                     {SAVE_BTN}
                 </Button>
@@ -107,17 +110,22 @@ LegacyTitleReconciliationView.propsTypes = {
     fetchTitle: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
+    isMerging: PropTypes.bool,
 };
 
 LegacyTitleReconciliationView.defaultProps = {
     titleMetadata: null,
+    isMerging: false,
 };
 
 const createMapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
+    const loadingSelector = createLoadingSelector(['TITLES_RECONCILE']);
+
     return (state, props) => ({
         titleMetadata: titleSelector(state, props),
         columnDefs: getColumnDefs(state),
+        isMerging: loadingSelector(state),
     });
 };
 

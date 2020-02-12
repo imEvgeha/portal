@@ -12,7 +12,7 @@ export const createRightsSelector = () => createSelector(
 
 export const createSelectedRightsSelector = () => createSelector(
     getRightsReducer,
-    rights => rights.selected || {},
+    rights => Object.values(rights.selected || {}),
 );
 
 export const createRightsFilterSelector = () => createSelector(

@@ -237,7 +237,6 @@ const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
         : 'Invalid Date';
 };
 
-
 const formatNumberTwoDigits = (number) => {
     const n = parseInt(number);
     if(n) {
@@ -247,6 +246,17 @@ const formatNumberTwoDigits = (number) => {
         return n;
     }
     return '';
+};
+
+const normalizeDataForStore = (data) => {
+    if (Array.isArray(data)) {
+        return data.reduce((obj, item) => {
+            if (item.id) {
+                obj[item.id] = item;
+            }
+            return obj; 
+        }, {});
+    }
 };
 
 export {
@@ -269,5 +279,6 @@ export {
     minTwoDigits,
     getDateFormatBasedOnLocale,
     parseSimulcast,
-    formatNumberTwoDigits
+    formatNumberTwoDigits,
+    normalizeDataForStore,
 };

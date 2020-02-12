@@ -14,6 +14,7 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
+import TitleSystems from '../../../constants/metadata/systems';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
@@ -47,7 +48,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         const repo = getRepositoryName(id);
 
         return (
-            repo !== constants.repository.NEXUS && (
+            repo !== TitleSystems.NEXUS && (
                 <CustomActionsCellRenderer id={id} >
                     <Radio
                         name={repo}
@@ -73,7 +74,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         const {id} = data || {};
         const repo = getRepositoryName(id);
         return (
-            repo !== constants.repository.NEXUS && (
+            repo !== TitleSystems.NEXUS && (
                 <CustomActionsCellRenderer id={id}>
                     <Checkbox
                         isChecked={duplicateList[id]}
