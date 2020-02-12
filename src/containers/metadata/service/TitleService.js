@@ -1,10 +1,7 @@
 import Http from '../../../util/Http';
 import config from 'react-global-configuration';
 import {getDomainName, prepareSortMatrixParamTitles} from '../../../util/Common';
-import {
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
-} from '../../../ui-elements/nexus-toast-notification/constants';
+import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 
 const http = Http.create();
@@ -19,11 +16,11 @@ const onViewTitleClick = (response) => {
 const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if(syncToVZ || syncToMovida) {
         if(syncToVZ && syncToMovida) {
-            return 'VZ,MOVIDA';
+            return `${TitleSystems.VZ.toUpperCase()},${TitleSystems.MOVIDA.toUpperCase()}`;
         } else if(syncToVZ) {
-            return 'VZ';
+            return TitleSystems.VZ.toUpperCase();
         } else {
-            return 'MOVIDA';
+            return TitleSystems.MOVIDA.toUpperCase();
         }
     }
     return null;

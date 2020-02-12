@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import constants from '../../../avails/title-matching/titleMatchingConstants';
+import TitleSystems from '../../../constants/metadata/systems';
 
 export default function useMatchAndDuplicateList() {
     const [matchList, setMatchList] = useState({});
@@ -8,7 +8,7 @@ export default function useMatchAndDuplicateList() {
     const handleMatchClick = (data, repo, checked) => {
         const {id} = data || {};
         if (checked) {
-            const {NEXUS, VZ, MOVIDA} = constants.repository;
+            const {NEXUS, VZ, MOVIDA} = TitleSystems;
             let newMatchList = {...matchList};
             if (duplicateList[id]){
                 let list = {...duplicateList};
