@@ -22,6 +22,8 @@
         width: 25px;
         fill: map-get($colors, nexus-secondary-color);
         cursor: pointer;
+        background: #FFFFFF;
+        border-radius: 50%;
       }
   }
   &__details {
