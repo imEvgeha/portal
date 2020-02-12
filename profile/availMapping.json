@@ -44,7 +44,7 @@
   "displayName": "Status",
   "dataType": "select",
   "searchDataType": "multiselect",
-  "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged", "TakeDown"],
+  "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged"],
   "queryParamName": "status",
   "readOnly": false,
   "enableSearch": true,
@@ -1622,26 +1622,6 @@
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
-},
-{
-  "javaVariableName": "castCrew.displayArtist",
-  "displayName": "Display Artist",
-  "searchDataType": "string",
-  "queryParamName": "displayArtist",
-  "readOnly": true,
-  "enableSearch": true,
-  "enableEdit": false,
-  "required": false
-},
-{
-  "javaVariableName": "castCrew.featuredArtist",
-  "displayName": "Featured Artist",
-  "searchDataType": "string",
-  "queryParamName": "featuredArtist",
-  "readOnly": true,
-  "enableSearch": true,
-  "enableEdit": false,
   "required": false
 },
 {
