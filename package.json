@@ -3,6 +3,17 @@
   "version": "1.0.0",
   "description": "Describe bootstrap-4-nwb here",
   "private": true,
+  "jest": {
+    "setupFiles": [
+      "./src/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
+  },
   "scripts": {
     "start": "webpack-dev-server --env dev --hot --inline --open --mode development --progress --client-log-level info",
     "build": "webpack --env dev --mode development",
