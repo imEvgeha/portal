@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DOP from '../../../util/DOP';
-import Constants from '../titleMatchingConstants';
+import TitleSystems from '../../../constants/metadata/systems';
 import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -16,7 +16,7 @@ import {getDomainName, URL} from '../../../util/Common';
 import {rightsService} from '../../../containers/avail/service/RightsService';
 
 const ActionsBar = ({matchList, mergeTitles, rightId}) => {
-    const {NEXUS, MOVIDA, VZ} = Constants.repository;
+    const {NEXUS, MOVIDA, VZ} = TitleSystems;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
         matchAndCreate: false,

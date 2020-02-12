@@ -5,6 +5,7 @@ import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
 import createValueFormatter from '../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import Constants from './title-matching/titleMatchingConstants';
+import TitleSystems from '../constants/metadata/systems';
 import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getDeepValue, isObject} from '../util/Common';
 import loadingGif from '../img/loading.gif';
@@ -26,7 +27,7 @@ export function createColumnDefs(payload) {
 }
 
 export function getRepositoryName(id) {
-    const {NEXUS, MOVIDA, VZ} = Constants.repository;
+    const {NEXUS, MOVIDA, VZ} = TitleSystems;
     if (id && id.startsWith('movtitl_')) {
         return MOVIDA;
     } else if (id && id.startsWith('vztitl_')) {

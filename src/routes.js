@@ -24,6 +24,7 @@ import TitleMatchView from './avails/title-matching/TitleMatchView';
 import TitleMatchReview from './avails/title-matching/TitleMatchReview/TitleMatchReview';
 import AvailsView from './avails/AvailsView';
 import LegacyTitleReconciliationView from './metadata/legacy-title-reconciliation/LegacyTitleReconciliationView';
+import LegacyTitleReconciliationReview from './metadata/legacy-title-reconciliation/review/LegacyTitleReconciliationReview';
 
 const routes = (
     <Switch>
@@ -49,6 +50,7 @@ const routes = (
         <Route exact path="/metadata" component={canRender(MetadataDashboardContainer, 'read', 'Metadata')} />
         <Route exact path="/metadata/detail/:id" component={canRender(TitleEdit, 'read', 'Metadata')} />
         <Route exact path="/metadata/detail/:id/legacy-title-reconciliation" component={canRender(LegacyTitleReconciliationView, 'update', 'Metadata')} />
+        <Route exact path="/metadata/detail/:id/legacy-title-reconciliation/review" component={canRender(LegacyTitleReconciliationReview, 'update', 'Metadata')} />
         <Route exact path="/contractprofile" component={ContractProfile} />
         <Route exact path="/contractsearch" component={Contract} />
         <Route exact path="/Media" component={canRender(Media, 'read', 'AssetManagement')} />

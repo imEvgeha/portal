@@ -130,7 +130,7 @@ const RightsRepository = ({
     }, [rightsFilter, mapping]);
 
     useEffect(() => {
-        setSelectedRepoRights(getSelectedTabRights(Object.keys(selectedRights).map(key => selectedRights[key])));
+        setSelectedRepoRights(getSelectedTabRights(selectedRights));
     }, [window.location.search]);
 
     const columnDefsClone = cloneDeep(columnDefs);

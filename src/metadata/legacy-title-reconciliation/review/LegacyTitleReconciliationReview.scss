@@ -1,0 +1,13 @@
+@import '../../../styles/config.scss';
+
+.nexus-c-legacy-title-reconciliation-review {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.nexus-c-legacy-title-reconciliation-review__empty {
+    color: map-get($colors, nexus-title-matching-secondary-color);
+}
