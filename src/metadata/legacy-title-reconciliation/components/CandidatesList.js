@@ -12,6 +12,7 @@ import {titleService} from '../../../containers/metadata/service/TitleService';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
+import TitleSystems from '../../../constants/metadata/systems';
 import {CANDIDATES_LIST_TITLE} from '../constants';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
@@ -63,7 +64,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         const {id} = data || {};
         const repo = getRepositoryName(id);
         return (
-            repo !== constants.repository.NEXUS && (
+            repo !== TitleSystems.NEXUS && (
                 <CustomActionsCellRenderer id={id}>
                     <Checkbox
                         isChecked={duplicateList[id]}

@@ -12,6 +12,7 @@ import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/
 import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
+import TitleSystems from '../../../constants/metadata/systems';
 import useMatchAndDuplicateList from '../../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
@@ -40,7 +41,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         const {id} = data || {};
         const repo = getRepositoryName(id);
         return (
-            repo !== Constants.repository.NEXUS && (
+            repo !== TitleSystems.NEXUS && (
                 <CustomActionsCellRenderer id={id}>
                     <Checkbox
                         isChecked={duplicateList[id]}
