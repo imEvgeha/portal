@@ -33,7 +33,7 @@ const LegacyTitleReconciliationView = ({
     const [selectedList, setSelectedList] = useState({});
     const [gridApi, setGridApi] = useState();
     const {params = {}} = match;
-    const {title, contentType, releaseYear} = titleMetadata || {};
+    const {title, contentType = '', releaseYear} = titleMetadata || {};
 
     // TODO: this should be generate on initial app load
     useEffect(() => {
@@ -86,7 +86,7 @@ const LegacyTitleReconciliationView = ({
             <CandidatesList
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
-                queryParams={{contentType, title, releaseYear}}
+                queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
