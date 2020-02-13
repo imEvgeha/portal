@@ -3,25 +3,6 @@
   "version": "1.0.0",
   "description": "Describe bootstrap-4-nwb here",
   "private": true,
-  "jest": {
-    "setupFiles": [
-      "<rootDir>/src/setupTests.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|scss)$": "identity-obj-proxy",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub"
-    },
-    "testPathIgnorePatterns": [
-      "<rootDir>/webpack.test.js",
-      "\\\\node_modules\\\\"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(react-forms-processor-atlaskit)/)"
-    ]
-  },
   "scripts": {
     "start": "webpack-dev-server --env dev --hot --inline --open --mode development --progress --client-log-level info",
     "build": "webpack --env dev --mode development",
