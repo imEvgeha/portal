@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
 import MoreIcon from '../../assets/more-icon.svg';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
+import SelectedButton from './components/SelectedButton';
+import {
+    RIGHTS_SELECTED_TAB,
+    RIGHTS_TAB
+} from '../../avails/rights-repository/RightsRepository';
 
 const NexusTableToolbar = ({
     title,
     totalRows,
+    selectedRightsCount,
     hasSelectedTab,
     hasDownloadButton,
     selectedRows,
-    isSelectedOptionActive,
-    setIsSelectedOptionActive,
+    activeTab,
+    setActiveTab,
     rightsFilter,
     rightColumnApi,
     selectedRightColumnApi
@@ -22,27 +28,21 @@ const NexusTableToolbar = ({
             <div
                 className={`
                     nexus-c-table-toolbar__title 
-                    ${!isSelectedOptionActive ? 'nexus-c-table-toolbar__title--is-active' : ''}
+                    ${activeTab !== RIGHTS_SELECTED_TAB ? 'nexus-c-table-toolbar__title--is-active' : ''}
                 `}
-                onClick={() => setIsSelectedOptionActive(false)}
+                onClick={() => setActiveTab(RIGHTS_TAB)}
             >
                 {title} ({totalRows})
             </div>
-            {hasSelectedTab && (
-                <div
-                    className={`
-                        nexus-c-table-toolbar__selected-option
-                        ${isSelectedOptionActive ? 'nexus-c-table-toolbar__selected-option--is-active' : ''}
-                    `}
-                    onClick={() => setIsSelectedOptionActive(true)}
-                >
-                    Selected ({Object.keys(selectedRows).length})
-                </div>
-            )}
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
+                    <SelectedButton
+                        selectedRightsCount={selectedRightsCount}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                    />
                     <NexusTableExportDropdown
-                        isSelectedOptionActive={isSelectedOptionActive}
+                        isSelectedOptionActive={activeTab === RIGHTS_SELECTED_TAB}
                         selectedRows={selectedRows}
                         rightsFilter={rightsFilter}
                         rightColumnApi={rightColumnApi}
@@ -60,10 +60,10 @@ NexusTableToolbar.propsTypes = {
     totalRows: PropTypes.bool,
     hasSelectedTab: PropTypes.bool,
     hasDownloadButton: PropTypes.bool,
-    selectedRows: PropTypes.object.isRequired,
+    selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
-    selectedRightColumnApi: PropTypes.object.isRequired
+    selectedRightsCount: PropTypes.number
 };
 
 NexusTableToolbar.defaultProps = {

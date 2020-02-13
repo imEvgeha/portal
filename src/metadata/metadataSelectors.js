@@ -5,9 +5,19 @@ export const getTitleId = state => {
     return metadata.titleId;
 };
 
-const getTitles = state => {
+export const getTitles = state => {
     const {metadata = {}} = state;
     return metadata.titles;
+};
+
+const getTitlePageSize = state => {
+    const {metadata = {}} = state;
+    return metadata.size;
+};
+
+const getTitlePageNumber = state => {
+    const {metadata = {}} = state;
+    return metadata.page;
 };
 
 export const createTitleSelector = () => createSelector(
@@ -17,7 +27,12 @@ export const createTitleSelector = () => createSelector(
 
 export const createTitlesSelector = () => createSelector(
     getTitles,
-    titles => titles,
+    titles => Object.values(titles || {}),
 );
 
-
+export const createTitlesInfoSelector = () => createSelector(
+    [getTitles, getTitlePageNumber, getTitlePageSize],
+    (titles, page, size) => {
+        return {list: titles, page, size};
+    }
+);

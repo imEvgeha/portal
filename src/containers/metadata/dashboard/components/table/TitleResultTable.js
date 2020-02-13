@@ -30,7 +30,7 @@ import {formatNumberTwoDigits} from '../../../../../util/Common';
 import uniqBy from 'lodash.uniqby';
 import get from 'lodash.get';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import ActionCellRender from './cell/ActionCellRender';
+import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../avails/utils';
 
 const colDef = [];
