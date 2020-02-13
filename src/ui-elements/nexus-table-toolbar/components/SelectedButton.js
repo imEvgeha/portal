@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import {RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../../avails/rights-repository/RightsRepository';
@@ -27,5 +28,16 @@ function SelectedButton({activeTab, setActiveTab, selectedRightsCount}) {
         </Tooltip>
     );
 }
+
+SelectedButton.propTypes = {
+    activeTab: PropTypes.string.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
+    selectedRightsCount: PropTypes.number
+};
+
+SelectedButton.defaultProps = {
+    selectedRightsCount: 0
+};
+
 
 export default SelectedButton;

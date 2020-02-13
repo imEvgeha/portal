@@ -70,6 +70,7 @@ const RightsRepository = ({
         rightsFilter,
         deselectIngest,
         downloadIngestEmail,
+        location
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -132,7 +133,7 @@ const RightsRepository = ({
 
     useEffect(() => {
         setSelectedRepoRights(getSelectedTabRights(selectedRights));
-    }, [window.location.search]);
+    }, [location.search]);
 
     useEffect(() => {
         if(selectedGridApi && selectedRepoRights.length > 0) {
