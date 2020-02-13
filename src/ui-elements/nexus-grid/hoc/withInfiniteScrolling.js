@@ -81,7 +81,7 @@ const withInfiniteScrolling = ({
                         // selected rows
                         if (props.selectedRows) {
                             gridApi.forEachNode(rowNode => {
-                                const selectedNode = props.selectedRows.find(id => id === rowNode.id);
+                                const selectedNode = props.selectedRows.find(({id}) => id === rowNode.id);
                                 if (selectedNode) {
                                     rowNode.setSelected(true);
                                 }

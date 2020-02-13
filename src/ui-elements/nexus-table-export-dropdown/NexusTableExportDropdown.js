@@ -23,7 +23,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     useEffect(() => {
         let disable = false;
         if(isSelectedOptionActive) {
-            if (Object.keys(selectedRows).length === 0) {
+            if (selectedRows.length === 0) {
                 setTooltipContent('Select at least one right to export');
                 disable = true;
             }
@@ -42,7 +42,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     const onAllColumnsExportClick = () => {
         if(isSelectedOptionActive) {
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
-            exportService.exportAvails(Object.keys(selectedRows), allDisplayedColumns)
+            exportService.exportAvails(selectedRows.map(({id}) => id), allDisplayedColumns)
                 .then(response => downloadFile(response.data));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
@@ -55,7 +55,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     const onVisibleColumnsExportClick = () => {
         if(isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
-            exportService.exportAvails(Object.keys(selectedRows), visibleColumns)
+            exportService.exportAvails(selectedRows.map(({id}) => id), visibleColumns)
                 .then(response => downloadFile(response.data));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
@@ -108,7 +108,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
 
 NexusTableExportDropdown.propsTypes = {
     isSelectedOptionActive: PropTypes.bool,
-    selectedRows: PropTypes.object.isRequired,
+    selectedRows: PropTypes.array.isRequired,
     totalRows: PropTypes.number.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
