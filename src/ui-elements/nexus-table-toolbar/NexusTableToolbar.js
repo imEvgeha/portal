@@ -20,8 +20,7 @@ const NexusTableToolbar = ({
     setActiveTab,
     rightsFilter,
     rightColumnApi,
-    selectedRightColumnApi,
-    selectedGridApi
+    selectedRightColumnApi
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
@@ -41,7 +40,6 @@ const NexusTableToolbar = ({
                         selectedRightsCount={selectedRightsCount}
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
-                        selectedGridApi={selectedGridApi}
                     />
                     <NexusTableExportDropdown
                         isSelectedOptionActive={activeTab === RIGHTS_SELECTED_TAB}
@@ -64,7 +62,6 @@ NexusTableToolbar.propsTypes = {
     hasDownloadButton: PropTypes.bool,
     selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
-    selectedGridApi: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightsCount: PropTypes.number
 };

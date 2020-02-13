@@ -6,13 +6,10 @@ import {RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../../avails/rights-repository
 const TOOLTIP_BUTTON_UNSELECTED_MSG = 'Click to view selected items';
 const TOOLTIP_BUTTON_SELECTED_MSG = 'Click to view all items';
 
-function SelectedButton({activeTab, setActiveTab, selectedRightsCount, selectedGridApi}) {
+function SelectedButton({activeTab, setActiveTab, selectedRightsCount}) {
 
     const onClick = () => {
         if (activeTab !== RIGHTS_SELECTED_TAB) {
-            if (selectedGridApi.getDisplayedRowCount() !== selectedGridApi.getSelectedRows().length) {
-                selectedGridApi.selectAll();
-            }
             setActiveTab(RIGHTS_SELECTED_TAB);
         } else {
             setActiveTab(RIGHTS_TAB);

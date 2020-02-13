@@ -134,6 +134,12 @@ const RightsRepository = ({
         setSelectedRepoRights(getSelectedTabRights(selectedRights));
     }, [window.location.search]);
 
+    useEffect(() => {
+        if(selectedGridApi && selectedRepoRights.length > 0) {
+            selectedGridApi.selectAll();
+        }
+    }, [selectedRepoRights]);
+
     const columnDefsClone = cloneDeep(columnDefs);
     const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
@@ -163,6 +169,7 @@ const RightsRepository = ({
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
+
     const checkboxSelectionWithHeaderColumnDef = {headerCheckboxSelection: true, ...checkboxSelectionColumnDef};
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
@@ -173,7 +180,6 @@ const RightsRepository = ({
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
                 setSelectedRepoRights(getSelectedTabRights(allSelectedRows));
-                selectedGridApi.selectAll();
 
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
@@ -196,6 +202,7 @@ const RightsRepository = ({
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+        console.log({type})
         switch (type) {
             case GRID_EVENTS.READY:
                 setSelectedGridApi(api);
@@ -214,13 +221,12 @@ const RightsRepository = ({
 
     const getSelectedTabRights = (selectedRights) => {
 
-        const availHistoryIdsParam = URL.getParamIfExists(constants.AVAIL_HISTORY_ID);
         const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
 
-        if(availHistoryIdsParam && ingestHistoryAttachmentIdParam) {
+        if(ingestHistoryAttachmentIdParam) {
             return selectedRights.filter(el => {
-                const {availHistoryIds, ingestHistoryAttachmentId} = el;
-                return isEqual(availHistoryIds.sort(), availHistoryIdsParam.split(',').sort()) && ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
+                const {ingestHistoryAttachmentId} = el;
+                return ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
             });
         }
         return selectedRights;
@@ -245,7 +251,6 @@ const RightsRepository = ({
                 activeTab={activeTab}
                 selectedRows={selectedRights}
                 rightsFilter={rightsFilter}
-                selectedGridApi={selectedGridApi}
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
             />
