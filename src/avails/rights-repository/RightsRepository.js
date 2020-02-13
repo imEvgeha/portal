@@ -202,7 +202,6 @@ const RightsRepository = ({
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        console.log({type})
         switch (type) {
             case GRID_EVENTS.READY:
                 setSelectedGridApi(api);
