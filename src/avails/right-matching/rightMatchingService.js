@@ -49,7 +49,7 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         // temporary FE handling for operand 'not equal'
         const getUpdatedData = (response, excludedId) => {
             const {data = []} = response || {};
-            if (data && excludedId && data.find(({id}) => id === excludedId)) {
+            if (data && data.find(({id}) => id === excludedId)) {
                 store.dispatch(setFoundFocusRightInRightsRepository({foundFocusRightInRightsRepository: true}));
                 return data.filter(({id}) => id !== excludedId);
             }
