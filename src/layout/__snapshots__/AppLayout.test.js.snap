@@ -135,6 +135,11 @@ exports[`AppLayout should match snapshot 1`] = `
         <Route
           component={[Function]}
           exact={true}
+          path="/metadata/detail/:id/legacy-title-reconciliation/review"
+        />
+        <Route
+          component={[Function]}
+          exact={true}
           path="/contractprofile"
         />
         <Route
