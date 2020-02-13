@@ -16,7 +16,7 @@ const withFilterableColumns = ({
     filterableColumns = null,
     initialFilter = null,
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
-    prepareFilterParams = null,
+    prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues, params} = props;

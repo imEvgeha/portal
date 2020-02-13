@@ -24,7 +24,7 @@ import mappings from '../../../../profile/titleMatchingMappings';
 
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
-    withFilterableColumns({prepareFilterParams: params => params}),
+    withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 

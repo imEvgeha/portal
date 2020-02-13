@@ -26,12 +26,13 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
 const RightRepositoryNexusGrid = compose(
-    withFilterableColumns(),
     withSideBar(),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilter}),
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 

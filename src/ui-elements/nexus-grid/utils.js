@@ -2,8 +2,7 @@ import isEmpty from 'lodash.isempty';
 import {parseAdvancedFilter} from '../../containers/avail/service/RightsService';
 
 // grid filter
-export const filterBy = (filterObject, prepareFilter) => {
-    const prepareData = prepareFilter || parseAdvancedFilter;
+export const filterBy = (filterObject, prepareFilter = (params) => params) => {
     const ALLOWED_TYPES_OPERAND = ['equals', 'range'];
     const FILTER_TYPES = ['set'];
     if (!isEmpty(filterObject)) {
@@ -19,7 +18,8 @@ export const filterBy = (filterObject, prepareFilter) => {
                 Array.isArray(values) && values.join(', ') : filter;
             return object;
         }, {});
-        return prepareData(filterParams);
+        
+        return prepareFilter(filterParams);
     }
     return {};
 };
