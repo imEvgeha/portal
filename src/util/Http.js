@@ -29,7 +29,7 @@ const ERROR_MODAL = {
 const Http = {
     create: param => {
         const defaults = {
-            timeout: 60000,
+            timeout: 300000,
             headers: {'Content-Type': 'application/json'}
         };
         param = {
