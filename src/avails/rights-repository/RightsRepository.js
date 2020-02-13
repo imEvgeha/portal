@@ -39,6 +39,7 @@ import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/i
 import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 import {URL} from '../../util/Common';
+import constants from '../constants';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
@@ -212,8 +213,9 @@ const RightsRepository = ({
     };
 
     const getSelectedTabRights = (selectedRights) => {
-        const availHistoryIdsParam = URL.getParamIfExists('availHistoryIds');
-        const ingestHistoryAttachmentIdParam = URL.getParamIfExists('ingestHistoryAttachmentId');
+
+        const availHistoryIdsParam = URL.getParamIfExists(constants.AVAIL_HISTORY_ID);
+        const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
 
         if(availHistoryIdsParam && ingestHistoryAttachmentIdParam) {
             return selectedRights.filter(el => {
