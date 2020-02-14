@@ -7,6 +7,7 @@ import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '../../ui-elements/nexus-toast-notification/constants';
 import {store} from '../../index';
+import { setFoundFocusRightInRightsRepository } from './rightMatchingActions';
 
 const http = Http.create();
 
@@ -48,27 +49,23 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         // temporary FE handling for operand 'not equal'
         const getUpdatedData = (response, excludedId) => {
             const {data = []} = response || {};
-            if (data) {
-                if (excludedId) {
-                    const result = data.filter(({id}) => id !== excludedId);
-                    return result;
-                }
-
-                return data;
+            if (data && data.find(({id}) => id === excludedId)) {
+                store.dispatch(setFoundFocusRightInRightsRepository({foundFocusRightInRightsRepository: true}));
+                return data.filter(({id}) => id !== excludedId);
             }
-
-            return [];
+            return data;
         };
         const updatedData = getUpdatedData(response.data, id);
+
+        const {foundFocusRightInRightsRepository} = store.getState().rightMatching;
         const updatedResponse = {
             ...response,
             data: {
                 ...response.data,
                 data: updatedData,
-                total: updatedData.length,
+                total:  foundFocusRightInRightsRepository ? response.data.total - 1 : response.data.total,
             }
         };
-
         return updatedResponse;
     });
 };

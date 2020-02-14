@@ -20,6 +20,7 @@ const NexusGrid = ({
     handleSelectionChange,
     onGridEvent,
     isGridHidden,
+    onFilterChanged,
     ...restProps
 }) => {
 
@@ -32,6 +33,10 @@ const NexusGrid = ({
         if (typeof handleSelectionChange === 'function' && data.type === 'selectionChanged') {
             const {api,columnApi} = data;
             handleSelectionChange(api, columnApi);
+        }
+
+        if (typeof onFilterChanged === 'function' && data.type === 'filterChanged') {
+            onFilterChanged();
         }
     };
 
