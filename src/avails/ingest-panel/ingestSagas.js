@@ -16,6 +16,9 @@ const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} =
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
 
+const delay = time => new Promise(resolve => setTimeout(resolve, time));
+
+
 function* fetchIngests({payload}) {
     try {
         const filters = {};
@@ -27,6 +30,11 @@ function* fetchIngests({payload}) {
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: response.data,
+        });
+        yield call(delay, 10000);
+        yield put({
+            type: actionTypes.FETCH_INGESTS,
+            payload: getFiltersToSend(),
         });
     } catch (error) {
         yield put({
@@ -163,6 +171,11 @@ function* uploadIngest({payload}) {
         });
         const response = yield uploadService.uploadAvail(file, null, null, {...rest});
         if(response.status === 200) {
+            yield call(delay, 6500);
+            yield put({
+                type: actionTypes.FETCH_INGESTS,
+                payload: getFiltersToSend(),
+            });
             closeModal();
             yield put({
                 type: ADD_TOAST,
