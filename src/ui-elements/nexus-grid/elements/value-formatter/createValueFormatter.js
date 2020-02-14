@@ -29,10 +29,19 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 const {[javaVariableName]: date} = data || {};
                 return parseSimulcast(date, dateFormat, false);
             };
+        case 'select':
+            if (javaVariableName === 'contentType') {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    if (data && data[javaVariableName]) {
+                        return `${data[javaVariableName].slice(0, 1)}${data[javaVariableName].slice(1).toLowerCase()}`;
+                    }
+                };
+            }
         case 'territoryType':
             return (params) => {
                 const {data = {}} = params || {};
-                if (data && data[javaVariableName]) {
+                if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
                 }
             };
@@ -98,7 +107,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                             .join(', ');
                     }
                 };
-            }
+            } 
             return;
         default:
             return null;

@@ -16,6 +16,7 @@ const withFilterableColumns = ({
     filterableColumns = null,
     initialFilter = null,
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
+    prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues, params} = props;
@@ -72,12 +73,12 @@ const withFilterableColumns = ({
                 }
                 if(dataType === 'datetime') {
                     const initialFilters = {
-                      from: filters[`${columnDef.field}From`],
-                      to: filters[`${columnDef.field}To`]
+                        from: filters[`${columnDef.field}From`],
+                        to: filters[`${columnDef.field}To`]
                     };
                     columnDef.floatingFilterComponent = 'customDateFloatingFilter';
                     columnDef.filter = 'customDateFilter';
-                    columnDef.filterParams = { initialFilters };
+                    columnDef.filterParams = {initialFilters};
                 }
                 return columnDef;
             });
@@ -164,6 +165,7 @@ const withFilterableColumns = ({
                         customDateFilter: CustomDateFilter
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}
+                    prepareFilterParams={prepareFilterParams}
                 />
             ) : null
         );

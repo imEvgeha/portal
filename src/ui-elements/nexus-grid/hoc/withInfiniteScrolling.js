@@ -49,7 +49,7 @@ const withInfiniteScrolling = ({
                     object[key] = props.params[key];
                     return object;
                 }, {});
-            const filterParams = filterBy(filterModel);
+            const filterParams = filterBy(filterModel, props.prepareFilterParams);
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);

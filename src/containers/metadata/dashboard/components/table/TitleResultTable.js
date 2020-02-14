@@ -32,6 +32,7 @@ import get from 'lodash.get';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../avails/utils';
+import {URL} from '../../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -421,7 +422,7 @@ class TitleResultTable extends React.Component {
                 }
             });
             newCols.push(getRepositoryCell({headerName: 'Repository'}));
-            if(window.location.hostname.includes('local')) {
+            if (URL.isLocalOrDevOrQA()) {
                 const actionColumn = defineColumn({
                     headerName: 'Action',
                     field: 'action',
