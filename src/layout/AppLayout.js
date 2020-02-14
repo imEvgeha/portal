@@ -7,8 +7,9 @@ import Navigation from '../navigation/NexusNavigation';
 import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import DOP from '../util/DOP';
 import routes from '../routes';
+import connect from 'react-redux/lib/connect/connect';
 
-const AppLayout = ({history}) => (
+const AppLayout = ({history, pathname}) => (
     <ConnectedRouter history={history} >
         <div className="nexus-c-app-layout">
             <IfEmbedded>
@@ -18,7 +19,7 @@ const AppLayout = ({history}) => (
                 <Navigation />
             </IfEmbedded>
             <div className="nexus-c-app-layout__main">
-                <NexusBreadcrumb/>
+                {pathname !== '/avails/v2' && <NexusBreadcrumb/>}
                 {routes}
             </div>
          </div>
@@ -27,10 +28,17 @@ const AppLayout = ({history}) => (
 
 AppLayout.propTypes = {
     history: PropTypes.object,
+    pathname: PropTypes.string
 };
 
 AppLayout.defaultProps = {
     history: null,
+    pathname: ''
 };
 
-export default AppLayout;
+
+const mapStateToProps = state => {
+    return { pathname: state.router.location.pathname };
+};
+
+export default connect(mapStateToProps)(AppLayout);
