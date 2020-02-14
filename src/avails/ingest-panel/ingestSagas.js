@@ -1,4 +1,4 @@
-import {call, put, all, takeLatest, select} from 'redux-saga/effects';
+import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
 import actionTypes from './ingestActionTypes';
 import {URL} from '../../util/Common';
@@ -15,8 +15,6 @@ import { SUCCESS_ICON, SUCCESS_TITLE } from '../../ui-elements/nexus-toast-notif
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
-
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 
 function* fetchIngests({payload}) {
@@ -166,7 +164,7 @@ function* uploadIngest({payload}) {
         });
         const response = yield uploadService.uploadAvail(file, null, null, {...rest});
         if(response.status === 200) {
-            yield call(delay, 6500);
+            yield delay(6500);
             yield put({
                 type: actionTypes.FETCH_INGESTS,
                 payload: getFiltersToSend(),
