@@ -102,7 +102,7 @@ export const createColumnSchema = (list, field) => {
     const values = list.map(el => {
         // TODO: we have as avails map languageAudioTypes.language and languageAudioTypes.audoType
         // and data consists as field languageAudioTypes {Array of objects {language, audioType} )
-        if (destructedField.includes('languageAudioTypes')) {
+        if (destructedField.includes('languageAudioTypes') && Array.isArray(el['languageAudioTypes'])) {
             return el['languageAudioTypes'].map(el => el[destructedField[1]]).filter(Boolean);
         }
         return get(el, destructedField, {});
@@ -146,11 +146,18 @@ export const createSchemaForColoring = (list, columnDefs) => {
 
 export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
 
+const isMajorValue = (majorityValue, value) => {
+    const EXCLUDES_VALUES = ['{}', '[]', 'false', 'null', 'undefined', ''];
+    return (EXCLUDES_VALUES.includes(majorityValue)
+        && EXCLUDES_VALUES.includes(value))
+        || isEqual(majorityValue, value);
+};
+
 export const addCellClass = ({field, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
     const fieldValues = get(schema, ['values'], {});
     const mostCommonValue = get(schema, ['mostCommonValue'], null);
 
-    if (Object.keys(fieldValues).length && !isEqual(mostCommonValue, JSON.stringify(value))) {
+    if (Object.keys(fieldValues).length && !isMajorValue(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     };
 };
