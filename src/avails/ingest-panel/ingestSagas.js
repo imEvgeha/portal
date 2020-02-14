@@ -31,11 +31,6 @@ function* fetchIngests({payload}) {
             type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: response.data,
         });
-        yield call(delay, 10000);
-        yield put({
-            type: actionTypes.FETCH_INGESTS,
-            payload: getFiltersToSend(),
-        });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_INGESTS_ERROR,
