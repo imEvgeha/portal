@@ -147,7 +147,7 @@ export const createSchemaForColoring = (list, columnDefs) => {
 export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
 
 const isMajorValue = (majorityValue, value) => {
-    const EXCLUDES_VALUES = ['{}', '[]', 'false', 'null', 'undefined', ''];
+    const EXCLUDES_VALUES = [{}, '{}', [], '[]', false, 'false', null, 'null', ''];
     return (EXCLUDES_VALUES.includes(majorityValue)
         && EXCLUDES_VALUES.includes(value))
         || isEqual(majorityValue, value);
