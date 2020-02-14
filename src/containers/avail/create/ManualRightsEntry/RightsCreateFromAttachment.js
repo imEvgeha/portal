@@ -101,11 +101,6 @@ class RightsCreateFromAttachment extends React.Component {
         return Object.assign( {}, tabFilter.get(tab), {availHistoryIds: this.state.availHistoryId});
     };
 
-    getBulkExportSearchCriteria() {
-        const {selectedTab} = this.props;
-        return {internal: true, serviceRegion: 'UK', ...this.getCustomSearchCriteria(selectedTab)};
-    }
-
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping || prevProps.selectedTab !== this.props.selectedTab) {
             // this.getSearchCriteriaFromURLWithCustomOne();
@@ -273,7 +268,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 <TableDownloadRights
                                     getColumns={() => columns}
                                     allowDownloadFullTab={true}
-                                    exportCriteria={this.getBulkExportSearchCriteria()}
+                                    exportCriteria={this.getCustomSearchCriteria(selectedTab)}
                                     selectedTab={selectedTab}
                                     getSelected={this.getSelectedBasedOnTab}
                                 />
