@@ -63,6 +63,9 @@ const withInfiniteScrolling = ({
                 ...filterParams,
             };
 
+            if (typeof props.setLoadingFlag === 'function') {
+                props.setLoadingFlag(true);
+            }
             fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
                     const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
@@ -100,7 +103,12 @@ const withInfiniteScrolling = ({
                     gridApi.showNoRowsOverlay();
                 })
                 .catch(error => failCallback(error))
-                .finally(() => hasBeenCalledRef.current = false);
+                .finally(() => {
+                    hasBeenCalledRef.current = false;
+                    if (typeof props.setLoadingFlag === 'function') {
+                        props.setLoadingFlag(false);
+                    }
+                });
         };
 
 

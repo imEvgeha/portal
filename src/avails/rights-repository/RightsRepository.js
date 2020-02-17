@@ -8,7 +8,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {addRightsFilter, setRightsFilter, setSelectedRights} from './rightsActions';
+import {addRightsFilter, setRepositoryLoadingFlag, setRightsFilter, setSelectedRights} from './rightsActions';
 import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector
@@ -70,7 +70,9 @@ const RightsRepository = ({
         rightsFilter,
         deselectIngest,
         downloadIngestEmail,
-        location
+        location,
+        loadingFlag,
+        setRepositoryLoadingFlag
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -133,7 +135,18 @@ const RightsRepository = ({
 
     useEffect(() => {
         setSelectedRepoRights(getSelectedTabRights(selectedRights));
-    }, [location.search]);
+    }, [location.search, selectedRights]);
+
+    useEffect(()=> {
+        if(selectedGridApi) {
+            if(loadingFlag) {
+                selectedGridApi.clearFocusedCell();
+                selectedGridApi.showLoadingOverlay();
+            } else {
+                selectedGridApi.hideOverlay();
+            }
+        }
+    }, [loadingFlag]);
 
     useEffect(() => {
         if(selectedGridApi && selectedRepoRights.length > 0) {
@@ -180,8 +193,6 @@ const RightsRepository = ({
         switch (type) {
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
-                setSelectedRepoRights(getSelectedTabRights(allSelectedRows));
-
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
@@ -210,11 +221,10 @@ const RightsRepository = ({
                 break;
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
-                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id));
-                toUnselect.forEach(el => {
-                    const node = gridApi.getRowNode(el.id);
-                    node && node.setSelected(false);
-                });
+                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
+
+                const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+                nodes.forEach(node => node.setSelected(false));
                 break;
         }
     };
@@ -224,7 +234,11 @@ const RightsRepository = ({
         const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
 
         if(ingestHistoryAttachmentIdParam) {
-            return selectedRights.filter(el => {
+            let rights = selectedRights;
+            if (gridApi) {
+                rights = gridApi.getSelectedRows();
+            }
+            return rights.filter(el => {
                 const {ingestHistoryAttachmentId} = el;
                 return ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
             });
@@ -273,6 +287,7 @@ const RightsRepository = ({
                 selectedRows={selectedRights}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
+                setLoadingFlag={setRepositoryLoadingFlag}
                 singleClickEdit
             />
         </div>
@@ -284,6 +299,7 @@ const mapStateToProps = () => {
     const availsMappingSelector = createAvailsMappingSelector();
     const selectedRightsSelector = selectors.createSelectedRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
+    const isRepositoryLoadingSelector = selectors.createRepositoryLoadingFlagSelector();
 
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
@@ -292,6 +308,7 @@ const mapStateToProps = () => {
         selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
+        loadingFlag: isRepositoryLoadingSelector(state, props)
     });
 };
 
@@ -303,7 +320,8 @@ const mapDispatchToProps = dispatch => ({
     addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
     downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
-    setRightsFilter: payload => dispatch(setRightsFilter(payload))
+    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    setRepositoryLoadingFlag: payload => dispatch(setRepositoryLoadingFlag(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
