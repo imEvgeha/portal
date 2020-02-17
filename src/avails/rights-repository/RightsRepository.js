@@ -8,12 +8,11 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setSelectedRights, addRightsFilter, setRightsFilter} from './rightsActions';
 import {createRightMatchingColumnDefsSelector, createAvailsMappingSelector} from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
-import {filterRightsByStatus, selectIngest, deselectIngest, downloadEmailAttachment} from '../ingest-panel/ingestActions';
+import {filterRightsByStatus, selectIngest, deselectIngest, downloadEmailAttachment, downloadFileAttachment} from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
@@ -53,11 +52,11 @@ const RightsRepository = props => {
         ingestClick,
         setSelectedRights,
         selectedRights,
-        addRightsFilter,
         setRightsFilter,
         rightsFilter,
         deselectIngest,
-        downloadIngestEmail
+        downloadIngestEmail,
+        downloadIngestFile
     } = props;
     const [totalCount, setTotalCount] = useState(0);
     const [isSelectedOptionActive, setIsSelectedOptionActive] = useState(false);
@@ -187,6 +186,7 @@ const RightsRepository = props => {
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
                     downloadIngestEmail={downloadIngestEmail}
+                    downloadIngestFile={downloadIngestFile}
                     attachment={attachment}
                     filterByStatus={filterByStatus} />)
             }
@@ -245,11 +245,9 @@ const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
-    setSelectedRights: payload => dispatch(setSelectedRights(payload)),
-    addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
     downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
-    setRightsFilter: payload => dispatch(setRightsFilter(payload))
+    downloadIngestFile: payload  => dispatch(downloadFileAttachment(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

@@ -10,7 +10,7 @@ import './Ingest.scss';
 import Constants from '../../../ingest-panel/constants';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 
-const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail}) => {
+const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
 
     const {attachments = [{}], ingestType, provider, received} = ingest;
     const {link, status, ingestReport = {}} = attachment;
@@ -48,7 +48,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                 )}
                 <div className='nexus-c-avails-ingest__download'>
                     <NexusTooltip content='Download Attachment'>
-                        <DownloadIcon />
+                        <DownloadIcon onClick={() => downloadIngestFile(attachment)} />
                     </NexusTooltip>
                 </div>
             </div>
@@ -60,14 +60,16 @@ Ingest.propTypes = {
     ingest: PropTypes.object,
     filterByStatus: PropTypes.func,
     deselectIngest: PropTypes.func,
-    downloadIngestEmail: PropTypes.func
+    downloadIngestEmail: PropTypes.func,
+    downloadIngestFile: PropTypes.func,
 };
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
     filterByStatus: () => null,
     deselectIngest: () => null,
-    downloadIngestEmail: () => null
+    downloadIngestEmail: () => null,
+    downloadIngestFile: () => null,
 };
 
 export default Ingest;
