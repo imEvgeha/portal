@@ -1,6 +1,6 @@
 import React from 'react';
 import {BreadcrumbItem, Breadcrumb} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
@@ -17,7 +17,8 @@ const mapStateToProps = state => {
 class NexusBreadcrumb extends React.Component {
 
     static propTypes = {
-        blocking: t.bool
+        blocking: t.bool,
+        history: t.object,
     };
 
     static instance = null;
@@ -40,15 +41,15 @@ class NexusBreadcrumb extends React.Component {
             }
         };
         return (
-            !NexusBreadcrumb.empty() ? (
+            !NexusBreadcrumb.empty() && !this.props.location.pathname.endsWith('/v2') &&
                 <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
                     <div style={{zIndex: '500', position: 'relative'}}>
                         <Breadcrumb style={{position: 'relative', background: 'white'}}>
-                            {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
+                            {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem
+                                key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
                         </Breadcrumb>
                     </div>
                 </BlockUi>
-            ) : null
         );
     }
 
@@ -90,4 +91,4 @@ class NexusBreadcrumb extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, null)(NexusBreadcrumb);
+export default withRouter(connect(mapStateToProps, null)(NexusBreadcrumb));
