@@ -46,7 +46,8 @@ export default class DynamicObjectType extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue = {} } = props;
+        let { defaultValue }  = props;
+        defaultValue = defaultValue || {};
         const keys = Object.keys(defaultValue);
         const items = keys.map(key => ({ id: uniqueId(), key, data: defaultValue[key] }));
 

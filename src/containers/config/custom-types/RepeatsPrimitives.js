@@ -74,7 +74,8 @@ export default class RepeatsPrimitives extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue = [] } = props;
+        let { defaultValue} = props;
+        defaultValue = defaultValue || [];
 
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
         const items = defaultValue.map(data => ({ id: uniqueId(), data }));

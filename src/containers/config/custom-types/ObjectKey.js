@@ -62,7 +62,8 @@ export default class ObjectKey extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue = {}} = props;
+        let { defaultValue } = props;
+        defaultValue = defaultValue || {};
 
         // Map the supplied Object to an Item[] in order to give each piece of data an id for drag-and-drop
         const keys = Object.keys(defaultValue);
