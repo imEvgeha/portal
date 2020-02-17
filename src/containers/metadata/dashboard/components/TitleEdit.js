@@ -943,7 +943,7 @@ class TitleEdit extends Component {
 
     renderSyncField = (id, name, titleModifiedAt, legacyId, publishedAt) => {
 
-        const lastUpdated = !publishedAt ? 'No record exist' : (!titleModifiedAt ? publishedAt : titleModifiedAt);
+        const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
         const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
         const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt)) || getRepositoryName(id) !== TitleSystems.NEXUS;
         const indicator = isDisabled ? 'success' : 'error';
