@@ -232,7 +232,6 @@ export default class CreateEditConfigForm extends React.Component {
                         optionsHandler={this.optionsHandler}
                         onChange = {(value) => this.setState({value: value})}
                         defaultValue = {this.state.value}
-                        // value = {this.state.value}
                     >
                     <ModalFooter>
                         <Button onClick={this.props.onCancel}>Cancel</Button>
