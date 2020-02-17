@@ -16,14 +16,15 @@ if (!document.body) {
 document.body.appendChild(portal);
 
 const createFormForItem = (
+    field,
     item,
     targetIndex,
     fieldsForForm,
     formChangeHandler
 ) => {
-    const mappedFields = fieldsForForm.map(field => ({
-        ...field,
-        id: `${field.id}_${targetIndex}_FIELDS`
+    const mappedFields = fieldsForForm.map(subfield => ({
+        ...subfield,
+        id: `${field.id}[${targetIndex}]`
     }));
     return (
         <FormContext.Consumer>
@@ -73,7 +74,8 @@ export default class RepeatsPrimitives extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue } = props;
+        let { defaultValue} = props;
+        defaultValue = defaultValue || [];
 
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
         const items = defaultValue.map(data => ({ id: uniqueId(), data }));
@@ -138,6 +140,7 @@ export default class RepeatsPrimitives extends Component {
     getForms() {
         const { items } = this.state;
         const {
+            field,
             fields,
             idAttribute = 'id'
         } = this.props;
@@ -153,6 +156,7 @@ export default class RepeatsPrimitives extends Component {
                             {items.map((item, index) => {
                                 const formChangeHandler = this.createFormChangeHandler(index);
                                 const form = createFormForItem(
+                                    field,
                                     {[idAttribute]:item.data},
                                     index,
                                     fields,
@@ -206,6 +210,7 @@ export default class RepeatsPrimitives extends Component {
 
     render() {
         const {
+            field,
             label = 'Item',
             // description,
             addButtonLabel = 'Add',
@@ -216,7 +221,7 @@ export default class RepeatsPrimitives extends Component {
 
         return (
             <div>
-                <AkField label={label} name="formBuilder">
+                <AkField label={label} name="formBuilder" isRequired={field.required}>
                     {() => <div>{items.length > 0 ? this.getForms() : noItems}</div>}
                 </AkField>
                 <Button onClick={() => this.addItem()}>{addButtonLabel}</Button>

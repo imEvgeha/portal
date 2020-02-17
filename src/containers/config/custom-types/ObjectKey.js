@@ -11,14 +11,16 @@ import InlineEdit from '@atlaskit/inline-edit';
 import PropTypes from 'prop-types';
 
 const createFormForItem = (
+    field,
     item,
     targetIndex,
+    key,
     fieldsForForm,
     formChangeHandler
 ) => {
-    const mappedFields = fieldsForForm.map(field => ({
-        ...field,
-        id: `${field.id}_${targetIndex}_FIELDS`,
+    const mappedFields = fieldsForForm.map(subfield => ({
+        ...subfield,
+        id: `${field.id}.${key}.[${targetIndex}]`,
         defaultValue: fieldsForForm.length > 1 ? item[field.name]:item
     }));
     return (
@@ -60,7 +62,8 @@ export default class ObjectKey extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue } = props;
+        let { defaultValue } = props;
+        defaultValue = defaultValue || {};
 
         // Map the supplied Object to an Item[] in order to give each piece of data an id for drag-and-drop
         const keys = Object.keys(defaultValue);
@@ -152,10 +155,12 @@ export default class ObjectKey extends Component {
         this.updateItemState(items);
     }
 
-    getForm(item, index, fields, formChangeHandler, fieldName, parentId){
+    getForm(field, item, index, fields, formChangeHandler, fieldName, parentId, label){
         const form = createFormForItem(
+            field,
             item.data,
             index,
+            label,
             fields,
             formChangeHandler
         );
@@ -196,6 +201,7 @@ export default class ObjectKey extends Component {
     getForms() {
         const { items } = this.state;
         const {
+            field,
             fields,
             idAttribute,
         } = this.props;
@@ -229,7 +235,7 @@ export default class ObjectKey extends Component {
                                         {
                                             item.data.map( (data, index2) => {
                                                 const formChangeHandler = this.createSubFormChangeHandler(index, index2, fields);
-                                                return this.getForm(data, index2, fields, formChangeHandler, idAttribute, item.id);
+                                                return this.getForm(field, data, index2, fields, formChangeHandler, idAttribute, item.id, label);
                                             })
                                         }
                                         <Button onClick={() => this.addSubItem(item.id)}>{'Add'}</Button>
@@ -245,6 +251,7 @@ export default class ObjectKey extends Component {
 
     render() {
         const {
+            field,
             label,
             addButtonLabel,
             noItemsMessage
@@ -254,7 +261,7 @@ export default class ObjectKey extends Component {
 
         return (
             <div>
-                <AkField label={label} name="formBuilder">
+                <AkField label={label} name="formBuilder" isRequired={field.required}>
                     {() => <div>{items.length > 0 ? this.getForms() : noItems}</div>}
                 </AkField>
                 <div className="d-flex flex-row align-items-start">

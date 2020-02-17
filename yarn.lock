@@ -17635,10 +17635,10 @@ react-fontawesome@^1.6.1:
   dependencies:
     prop-types "^15.5.6"
 
-react-forms-processor-atlaskit@^0.0.40:
-  version "0.0.40"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-forms-processor-atlaskit/-/react-forms-processor-atlaskit-0.0.40.tgz#18b0a432a6a2989ee2b589ccf1a669ee19351338"
-  integrity sha512-1PfyP4pLtAeaixZnRqReSf3roS81FoX8bPdd2XeUP/v5XQD+i7P2NcRQD/toNYzvgWcNBKDdnIA7/ZkJsiFSVw==
+react-forms-processor-atlaskit@0.0.43:
+  version "0.0.43"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-forms-processor-atlaskit/-/react-forms-processor-atlaskit-0.0.43.tgz#9a8412ce60ed815fb1ac6b5d06638bcf03c1346b"
+  integrity sha512-d4LGc3QFhZCqKELjctCr8N8UWXQ+2D4jzQlMiBEarzAAsJwIri9+y4SZxsQXu24YQGG0mHyAakMwa+Fpkug6xw==
   dependencies:
     "@atlaskit/button" "9.0.4"
     "@atlaskit/checkbox" "7.0.0"
@@ -17653,10 +17653,10 @@ react-forms-processor-atlaskit@^0.0.40:
     "@atlaskit/tooltip" "12.0.4"
     lodash "^4.17.10"
 
-react-forms-processor@^0.0.40:
-  version "0.0.40"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-forms-processor/-/react-forms-processor-0.0.40.tgz#c3d9fdd5df227d02aa38e1243b7526b297bf2bc7"
-  integrity sha512-mMJJtG9fPwoF/tbkhYSAY5fq3VkQ/HXnXHxQSeCzAYDJym9Ay0PijkrLkBEr5LGPOeqakaHEZ+3n1PSG9xRj8Q==
+react-forms-processor@0.0.43:
+  version "0.0.43"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-forms-processor/-/react-forms-processor-0.0.43.tgz#79abada91fab5c7dcdf74a5c4510ea252fd41203"
+  integrity sha512-2fvXwiILjnsZ68zAKPMgWbViRsTQDv2sSg0Bxnce1/dOIgNGhqEZPdOv5C0B0yUyfdvARHGhXD802/rJHktN0Q==
   dependencies:
     flow-copy-source "^2.0.2"
     lodash "^4.17.10"
