@@ -28,6 +28,8 @@ import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
 import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
 import {URL} from '../../../../util/Common';
+import {getRepositoryName} from '../../../../avails/utils';
+import TitleSystems from '../../../../constants/metadata/systems';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -939,11 +941,11 @@ class TitleEdit extends Component {
         });
     }
 
-    renderSyncField = (name, titleModifiedAt, id, publishedAt) => {
+    renderSyncField = (id, name, titleModifiedAt, legacyId, publishedAt) => {
 
-        const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
-        const buttonName = !id || !publishedAt ? 'Publish' : 'Sync';
-        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt));
+        const lastUpdated = !publishedAt ? 'No record exist' : (!titleModifiedAt ? publishedAt : titleModifiedAt);
+        const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
+        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt)) || getRepositoryName(id) !== TitleSystems.NEXUS;
         const indicator = isDisabled ? 'success' : 'error';
         return (<div className='nexus-c-title-edit__sync-container-field'>
             <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
@@ -959,7 +961,7 @@ class TitleEdit extends Component {
     };
 
     renderSyncVzMovidaFields = () => {
-        const {legacyIds, modifiedAt} = this.state.titleForm;
+        const {id, legacyIds, modifiedAt} = this.state.titleForm;
         const {vz, movida} = legacyIds || {};
         const {vzId} = vz || {};
         const {movidaId} = movida || {};
@@ -968,8 +970,8 @@ class TitleEdit extends Component {
 
         return (
             <>
-                {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
-                {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
+                {this.renderSyncField(id, VZ, modifiedAt, vzId, vzPublishedAt)}
+                {this.renderSyncField(id, MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
             </>
         );
     };
