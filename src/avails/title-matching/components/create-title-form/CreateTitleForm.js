@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Form, FormFragment} from 'react-forms-processor';
-import {renderer} from 'react-forms-processor-atlaskit';
+import {renderer as akRenderer} from 'react-forms-processor-atlaskit';
 import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import {titleService} from '../../../../containers/metadata/service/TitleService';
@@ -11,6 +11,8 @@ import constants from './CreateTitleFormConstants';
 import DOP from '../../../../util/DOP';
 import './CreateTitleForm.scss';
 import {URL} from '../../../../util/Common';
+import get from 'lodash.get';
+import DelayedOptions from '../../../../containers/config/custom-types/DelayedOptions';
 
 const {
     NEW_TITLE_FORM_SCHEMA,
@@ -77,11 +79,34 @@ const CreateTitleForm = ({close, focusedRight}) => {
         });
     };
 
+    const renderer = (
+        field,
+        onChange,
+        onFieldFocus,
+        onFieldBlur
+    ) => {
+        const { defaultValue } = field;
+        if(field.hasOwnProperty('disable')) {
+            field.disabled = field.disable;
+        }
+
+        const currentValue = get(titleValue, field.id, defaultValue);
+        if(currentValue) {
+            field.defaultValue = currentValue;
+            field.value = currentValue;
+        }else{
+            delete field.defaultValue;
+            field.value = undefined;
+        }
+
+        return akRenderer(field, onChange, onFieldFocus, onFieldBlur);
+    };
+
     return (
         <div className="nexus-c-create-title-form">
             <Form
                 renderer={renderer}
-                value={titleValue}
+                defaultValue={titleValue}
                 onChange={(value, isFilled) => setTitleValue({...value, isFilled})}
             >
                 <div className="nexus-c-create-title-form__fields">
