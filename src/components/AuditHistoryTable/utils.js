@@ -8,7 +8,9 @@ import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/c
 
 const { dataTypes: {DATE, AUDIO, RATING, METHOD},
     colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD,
-    method: {MANUAL, INGEST}} = Constants;
+    method: {MANUAL, INGEST},
+    INGEST_ACCOUNTS,
+} = Constants;
 
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
@@ -40,8 +42,8 @@ export const valueFormatter = ({colId, field, dataType}) => {
             };
         case METHOD:
             return (params) => {
-                const {data, data: {availHistoryId, headerRow} = {}} = params || {};
-                return headerRow ? data[field] : (availHistoryId ? INGEST : MANUAL);
+                const {data, data: {headerRow, updatedBy} = {}} = params || {};
+                return headerRow ? data[field] : (INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL);
             };
         default:
             return (params) => {
