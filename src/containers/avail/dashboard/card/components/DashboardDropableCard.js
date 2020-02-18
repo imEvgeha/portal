@@ -63,7 +63,7 @@ export default class DashboardDropableCard extends React.Component {
     }
 
     sentUploadedFile(currentFile, files) {
-        uploadService.uploadAvail(currentFile, this.props.externalId, this.updateFileUploadedPercentage).then(() => {
+        uploadService.uploadAvail(currentFile, this.props.externalId, this.updateFileUploadedPercentage, {internal: true, serviceRegion: 'UK' }).then(() => {
             // console.log(res);
             setTimeout(() => this.uploadFiles(files), 1000);
         }).catch((e) => {

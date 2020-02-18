@@ -8,7 +8,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import './RightToMatchView.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
+import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight, setFoundFocusRightInRightsRepository} from '../rightMatchingActions';
 import * as selectors from '../rightMatchingSelectors';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -26,12 +26,13 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
 const RightRepositoryNexusGrid = compose(
-    withFilterableColumns(),
     withSideBar(),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilter}),
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 
@@ -47,6 +48,7 @@ const RightToMatchView = ({
     history,
     location,
     createNewRight,
+    setFoundFocusRightInRightsRepo,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
@@ -113,6 +115,10 @@ const RightToMatchView = ({
         setIsMatchDisabled(!selectedRows.length);
     };
 
+    const handleFilterChanged = () => {
+        setFoundFocusRightInRightsRepo({foundFocusRightInRightsRepository: false});
+    };
+
     const handleMatchClick = () => {
         if (Array.isArray(selectedRows) && selectedRows.length > 0) {
             const matchedRightIds = selectedRows.map(el => el.id).join();
@@ -173,6 +179,7 @@ const RightToMatchView = ({
                             handleSelectionChange={handleSelectionChange}
                             rowSelection="multiple"
                             suppressRowClickSelection={true}
+                            onFilterChanged={handleFilterChanged}
                         />
                 )}
             </div>
@@ -208,6 +215,7 @@ RightToMatchView.propTypes = {
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
     createNewRight: PropTypes.func,
+    setFoundFocusRightInRightsRepo: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
 };
@@ -243,7 +251,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchRightMatchingFieldSearchCriteria: payload => dispatch(fetchRightMatchingFieldSearchCriteria(payload)),
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
-    createNewRight: payload => dispatch(createNewRight(payload))
+    createNewRight: payload => dispatch(createNewRight(payload)),
+    setFoundFocusRightInRightsRepo: payload => dispatch(setFoundFocusRightInRightsRepository(payload)),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchView); // eslint-disable-line

@@ -10,12 +10,14 @@ import {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
 import usePrevious from '../../../util/hooks/usePrevious';
 import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
 import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
+import get from 'lodash.get';
 
 const withFilterableColumns = ({
     hocProps = [],
     filterableColumns = null,
     initialFilter = null,
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
+    prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues, params} = props;
@@ -72,12 +74,12 @@ const withFilterableColumns = ({
                 }
                 if(dataType === 'datetime') {
                     const initialFilters = {
-                      from: filters[`${columnDef.field}From`],
-                      to: filters[`${columnDef.field}To`]
+                        from: filters[`${columnDef.field}From`],
+                        to: filters[`${columnDef.field}To`]
                     };
                     columnDef.floatingFilterComponent = 'customDateFloatingFilter';
                     columnDef.filter = 'customDateFilter';
-                    columnDef.filterParams = { initialFilters };
+                    columnDef.filterParams = {initialFilters};
                 }
                 return columnDef;
             });
@@ -139,7 +141,8 @@ const withFilterableColumns = ({
         };
 
         const getFilterOptions = (field) => {
-            const options = selectValues ? selectValues[field] : [];
+            //TODO: refresh and show values when loaded
+            const options = get(selectValues, field, []);
             const parsedSelectValues = options.map(option => {
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution for territory fields
@@ -164,6 +167,7 @@ const withFilterableColumns = ({
                         customDateFilter: CustomDateFilter
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}
+                    prepareFilterParams={prepareFilterParams}
                 />
             ) : null
         );

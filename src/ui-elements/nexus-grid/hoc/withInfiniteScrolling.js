@@ -49,7 +49,7 @@ const withInfiniteScrolling = ({
                     object[key] = props.params[key];
                     return object;
                 }, {});
-            const filterParams = filterBy(filterModel);
+            const filterParams = filterBy(filterModel, props.prepareFilterParams);
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -76,17 +76,12 @@ const withInfiniteScrolling = ({
                         if ((page + 1) * size >= total) {
                             lastRow = total;
                         }
-                        // TODO: it shouldn't be here
-                        if (typeof props.onAddAdditionalField === 'function') {
-                            props.onAddAdditionalField(data, (updatedData) => successCallback(updatedData, lastRow));
-                        } else {
-                            successCallback(data, lastRow);
-                        }
+                        successCallback(data, lastRow);
 
                         // selected rows
                         if (props.selectedRows) {
                             gridApi.forEachNode(rowNode => {
-                                const selectedNode = props.selectedRows[rowNode.id];
+                                const selectedNode = props.selectedRows.find(({id}) => id === rowNode.id);
                                 if (selectedNode) {
                                     rowNode.setSelected(true);
                                 }

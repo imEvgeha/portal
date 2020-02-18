@@ -5,6 +5,7 @@ import isEqual from 'lodash.isequal';
 import get from 'lodash.get';
 import createValueFormatter from '../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import Constants from './title-matching/titleMatchingConstants';
+import TitleSystems from '../constants/metadata/systems';
 import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getDeepValue, isObject} from '../util/Common';
 import loadingGif from '../img/loading.gif';
@@ -26,7 +27,7 @@ export function createColumnDefs(payload) {
 }
 
 export function getRepositoryName(id) {
-    const {NEXUS, MOVIDA, VZ} = Constants.repository;
+    const {NEXUS, MOVIDA, VZ} = TitleSystems;
     if (id && id.startsWith('movtitl_')) {
         return MOVIDA;
     } else if (id && id.startsWith('vztitl_')) {
@@ -44,13 +45,14 @@ const repositoryCell = ({data}) => {// eslint-disable-line
     );
 };
 
-export const getRepositoryCell = () => {
+export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
     return {
         ...Constants.ADDITIONAL_COLUMN_DEF,
         colId: 'repository',
         field: 'repository',
-        headerName: 'Repository',
-        cellRendererFramework: repositoryCell,
+        headerName,
+        width: 150,
+        cellRendererFramework: repositoryCell
     };
 };
 
@@ -100,7 +102,7 @@ export const createColumnSchema = (list, field) => {
     const values = list.map(el => {
         // TODO: we have as avails map languageAudioTypes.language and languageAudioTypes.audoType
         // and data consists as field languageAudioTypes {Array of objects {language, audioType} )
-        if (destructedField.includes('languageAudioTypes')) {
+        if (destructedField.includes('languageAudioTypes') && Array.isArray(el['languageAudioTypes'])) {
             return el['languageAudioTypes'].map(el => el[destructedField[1]]).filter(Boolean);
         }
         return get(el, destructedField, {});
@@ -144,11 +146,18 @@ export const createSchemaForColoring = (list, columnDefs) => {
 
 export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
 
+const isMajorValue = (majorityValue, value) => {
+    const EXCLUDES_VALUES = [{}, '{}', [], '[]', false, 'false', null, 'null', ''];
+    return (EXCLUDES_VALUES.includes(majorityValue)
+        && EXCLUDES_VALUES.includes(value))
+        || isEqual(majorityValue, value);
+};
+
 export const addCellClass = ({field, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
     const fieldValues = get(schema, ['values'], {});
     const mostCommonValue = get(schema, ['mostCommonValue'], null);
 
-    if (Object.keys(fieldValues).length && !isEqual(mostCommonValue, JSON.stringify(value))) {
+    if (Object.keys(fieldValues).length && !isMajorValue(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     };
 };

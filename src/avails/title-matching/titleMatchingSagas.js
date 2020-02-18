@@ -1,13 +1,24 @@
-import {call, put, all, takeEvery} from 'redux-saga/effects';
+import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
+import isEmpty from 'lodash.isempty';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
-import { createColumnDefs } from '../utils';
+import {createColumnDefs } from '../utils';
 import mappings from '../../../profile/titleMatchingMappings';
 import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../constants/action-types';
 import Constants from './titleMatchingConstants';
 import {URL} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
+import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
+import {
+    ERROR_ICON,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    SUCCESS_TITLE, TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
+} from '../../ui-elements/nexus-toast-notification/constants';
+import {createAvailSelectValuesSelector} from '../../containers/avail/availSelectors';
+import {fetchAndStoreSelectItems} from '../../containers/avail/availSagas';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {
@@ -50,7 +61,11 @@ function* fetchFocusedRight(requestMethod, {payload}) {
 }
 
 function* createTitleMatchingColumnDefs(){
-    try{
+    const selectItems = yield select(createAvailSelectValuesSelector());
+    try {
+        if (isEmpty(selectItems)) {
+            yield fork(fetchAndStoreSelectItems, mappings);
+        }
         const columnDefs = yield call(createColumnDefs, mappings);
         yield put({
             type: actionTypes.STORE_COLUMN_DEFS,
@@ -83,7 +98,17 @@ function* mergeAndStoreTitles({payload}){
             const updatedRight = {coreTitleId: response.data.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
-
+        const url = `/metadata/detail/${response.data.id}`;
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+                actions: [{content:'View title', onClick: () => window.open(url, '_blank')}],
+            }
+        });
         yield put({
             type: actionTypes.STORE_COMBINED_TITLE,
             payload: response.data,
@@ -94,7 +119,15 @@ function* mergeAndStoreTitles({payload}){
         });
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`)));
     } catch (e) {
-        //errors other than API failures
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+            }
+        });
     }
 }
 

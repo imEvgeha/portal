@@ -41,7 +41,7 @@ class NexusBreadcrumb extends React.Component {
             }
         };
         return (
-            !this.props.location.pathname.endsWith('/v2') &&
+            !NexusBreadcrumb.empty() && !this.props.location.pathname.endsWith('/v2') &&
                 <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
                     <div style={{zIndex: '500', position: 'relative'}}>
                         <Breadcrumb style={{position: 'relative', background: 'white'}}>

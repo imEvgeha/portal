@@ -70,7 +70,7 @@ const NexusDatePicker = ({
                 </>
             }
             {isReadOnly
-                ? parseSimulcast(value, dateFormat)
+                ? parseSimulcast(value, dateFormat, false)
                 : (
                     <div className='nexus-c-date-picker__date-clear-wrapper'>
                         <DatePicker
@@ -101,7 +101,7 @@ const NexusDatePicker = ({
                     <InlineEdit
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
-                                {(moment(value).isValid() && parseSimulcast(value, dateFormat))
+                                {(moment(value).isValid() && parseSimulcast(value, dateFormat, false))
                                     || <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>

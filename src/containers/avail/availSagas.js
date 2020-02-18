@@ -55,7 +55,7 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
     }
 }
 
-export function* fetchAndStoreSelectItems(payload) {
+export function* fetchAndStoreSelectItems(payload, type) {
     const multiSelectMappings = payload.filter(el => el.searchDataType === 'multiselect' );
     const mappingsWithOptions = multiSelectMappings
         .filter(el => el.options)

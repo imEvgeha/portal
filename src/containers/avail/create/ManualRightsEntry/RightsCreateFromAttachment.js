@@ -121,7 +121,7 @@ class RightsCreateFromAttachment extends React.Component {
 
     getHistoryData() {
         if (this.state.availHistoryId) {
-            historyService.getHistory(this.state.availHistoryId)
+            historyService.getHistory(this.state.availHistoryId, true)
                 .then(res => {
                     if (res && res.data && this._isMounted) {
                         this.setState({
