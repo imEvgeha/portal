@@ -142,7 +142,7 @@ const withFilterableColumns = ({
 
         const getFilterOptions = (field) => {
             //TODO: refresh and show values when loaded
-            const options = selectValues ?  get(selectValues, field, []) : [];
+            const options = get(selectValues, field, []);
             const parsedSelectValues = options.map(option => {
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution for territory fields

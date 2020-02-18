@@ -84,12 +84,12 @@ const CreateTitleForm = ({close, focusedRight}) => {
         onFieldFocus,
         onFieldBlur
     ) => {
-        const { defaultValue } = field;
+        const { defaultValue, id, disable } = field;
         if(field.hasOwnProperty('disable')) {
-            field.disabled = field.disable;
+            field.disabled = disable;
         }
 
-        const currentValue = get(titleValue, field.id, defaultValue);
+        const currentValue = get(titleValue, id, defaultValue);
         if(currentValue) {
             field.defaultValue = currentValue;
             field.value = currentValue;
