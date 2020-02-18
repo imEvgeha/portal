@@ -42,7 +42,7 @@ export const valueFormatter = ({colId, field, dataType}) => {
             };
         case METHOD:
             return (params) => {
-                const {data, data: {availHistoryId, headerRow, updatedBy} = {}} = params || {};
+                const {data, data: {headerRow, updatedBy} = {}} = params || {};
                 return headerRow ? data[field] : (updatedBy === INGEST_METHOD_URL ? INGEST : MANUAL);
             };
         default:
