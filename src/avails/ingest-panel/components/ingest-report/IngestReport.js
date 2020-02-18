@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Constants from '../../constants';
 import './IngestReport.scss';
 
-const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
+const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) => {
     const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
@@ -19,6 +19,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
 
     const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
 
+    const fatalsUrl = `history/${ingestId}/manual-rights-entry`;
     return (
         <div className='ingest-report'>
             <div className='ingest-report__fields'>
@@ -28,7 +29,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick}) => {
                             <span className='ingest-report__field--label'>{reportFields[key].label}</span>
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
-                                onClick={() => FILTERABLE_KEYS.includes(key) && onFilterClick(key)} >
+                                onClick={() => key === 'fatal' ? window.open( fatalsUrl, '_blank') : FILTERABLE_KEYS.includes(key) && onFilterClick(key)  } >
                                 {reportValues[key] || 0}
                             </span>
                         </div>
