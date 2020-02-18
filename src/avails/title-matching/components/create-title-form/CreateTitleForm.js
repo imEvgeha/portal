@@ -12,7 +12,6 @@ import DOP from '../../../../util/DOP';
 import './CreateTitleForm.scss';
 import {URL} from '../../../../util/Common';
 import get from 'lodash.get';
-import DelayedOptions from '../../../../containers/config/custom-types/DelayedOptions';
 
 const {
     NEW_TITLE_FORM_SCHEMA,
