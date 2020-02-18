@@ -128,5 +128,6 @@ export default {
     method: {
         INGEST: 'Ingest',
         MANUAL: 'Manual'
-    }
+    },
+    INGEST_METHOD_URL: 'service-account-avails-client',
 };
