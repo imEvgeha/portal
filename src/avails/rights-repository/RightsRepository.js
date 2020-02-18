@@ -83,6 +83,7 @@ const RightsRepository = ({
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
+    const {search} = location;
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -135,7 +136,7 @@ const RightsRepository = ({
 
     useEffect(() => {
         setSelectedRepoRights(getSelectedTabRights(selectedRights));
-    }, [location.search, selectedRights]);
+    }, [search, selectedRights]);
 
     useEffect(()=> {
         if(selectedGridApi) {
@@ -284,10 +285,10 @@ const RightsRepository = ({
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
                 isGridHidden={activeTab !== RIGHTS_TAB}
-                selectedRows={selectedRights}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setLoadingFlag={setRepositoryLoadingFlag}
+                context={{selectedRows: selectedRights}}
                 singleClickEdit
             />
         </div>

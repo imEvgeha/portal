@@ -42,7 +42,7 @@ const withInfiniteScrolling = ({
         }, [gridApi, props.isDatasourceEnabled]);
 
         const getRows = (params, fetchData, gridApi) => {
-            const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
+            const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
@@ -82,9 +82,9 @@ const withInfiniteScrolling = ({
                         successCallback(data, lastRow);
 
                         // selected rows
-                        if (props.selectedRows) {
+                        if (context && context.selectedRows) {
                             gridApi.forEachNode(rowNode => {
-                                const selectedNode = props.selectedRows.find(({id}) => id === rowNode.id);
+                                const selectedNode = context.selectedRows.find(({id}) => id === rowNode.id);
                                 if (selectedNode) {
                                     rowNode.setSelected(true);
                                 }
