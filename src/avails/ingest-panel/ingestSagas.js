@@ -216,7 +216,7 @@ function* downloadIngestFile({payload}) {
         if (payload.link) {
             filename = payload.link.split(/(\\|\/)/g).pop();
         }
-        const response = yield historyService.getAvailHistoryAttachment(payload.id)
+        const response = yield historyService.getAvailHistoryAttachment(payload.id);
         if (response && response.data && response.data.downloadUrl) {
             const link = document.createElement('a');
             link.href = response.data.downloadUrl;
