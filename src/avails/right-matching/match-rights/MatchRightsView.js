@@ -30,6 +30,8 @@ import {
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import usePrevious from '../../../util/hooks/usePrevious';
+import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
+import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -50,8 +52,8 @@ function MatchRightView({
     createRightMatchingColumnDefs, 
     columnDefs, 
     mapping,
+    isMatching,
 }) {
-    const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
@@ -98,12 +100,6 @@ function MatchRightView({
         }
     }, [cellColoringSchema]);
 
-    useEffect(() => {
-        if (combinedRight) {
-            setSaveButtonDisabled(false);
-        }
-    }, [combinedRight]);
-
     // TODO:  we should handle this via router Link
     const onCancel = () => {
         const {params} = match || {};
@@ -115,7 +111,6 @@ function MatchRightView({
         const {params} = match || {};
         const {rightId, matchedRightIds} = params || {};
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
-        setSaveButtonDisabled(true);
         const payload = {
             rightIds: selectedMatchedRightIds,
             combinedRight: editedCombinedRight ? editedCombinedRight : combinedRight,
@@ -269,7 +264,8 @@ function MatchRightView({
                         className="nexus-c-button"
                         appearance="primary"
                         onClick={onSaveCombinedRight}
-                        isDisabled={saveButtonDisabled || !focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
+                        isDisabled={!focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
+                        isLoading={isMatching}
                     >
                         Save
                     </Button>
@@ -290,6 +286,7 @@ MatchRightView.propTypes = {
     fetchCombinedRight: PropTypes.func,
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
+    isMatching: PropTypes.bool,
 };
 
 MatchRightView.defaultProps = {
@@ -303,6 +300,7 @@ MatchRightView.defaultProps = {
     fetchCombinedRight: null,
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
+    isMatching: false,
 };
 
 const createMapStateToProps = () => {
@@ -311,6 +309,7 @@ const createMapStateToProps = () => {
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
+    const loadingSelector = createLoadingSelector([SAVE_COMBINED_RIGHT]);
 
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
@@ -318,6 +317,7 @@ const createMapStateToProps = () => {
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: rightMatchingMappingSelector(state, props),
+        isMatching: loadingSelector(state),
     });
 };
 
