@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Constants from '../../constants';
 import './IngestReport.scss';
+import RightsURL from '../../../../containers/avail/util/RightsURL';
 
 const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) => {
     const [activeFilter, setActiveFilter] = useState('total');
@@ -19,7 +20,6 @@ const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) 
 
     const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
 
-    const fatalsUrl = `history/${ingestId}/manual-rights-entry`;
     return (
         <div className='ingest-report'>
             <div className='ingest-report__fields'>
@@ -29,7 +29,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) 
                             <span className='ingest-report__field--label'>{reportFields[key].label}</span>
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
-                                onClick={() => key === 'fatal' ? window.open( fatalsUrl, '_blank') : FILTERABLE_KEYS.includes(key) && onFilterClick(key)  } >
+                                onClick={() => key === 'fatal' ? window.open(RightsURL.getFatalsRightsSearchUrl(ingestId), '_blank') : FILTERABLE_KEYS.includes(key) && onFilterClick(key)  } >
                                 {reportValues[key] || 0}
                             </span>
                         </div>
