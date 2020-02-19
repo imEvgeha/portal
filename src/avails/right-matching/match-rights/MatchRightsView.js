@@ -32,6 +32,15 @@ import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_C
 import usePrevious from '../../../util/hooks/usePrevious';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
 import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
+import {
+    MATCH_RIGHT_TITLE,
+    MATCH_BUTTON,
+    RIGHT_MATCHING_DOP_STORAGE,
+    MATCHED_RIGHTS,
+    COMBINED_RIGHTS,
+    SAVE_BUTTON,
+    CANCEL_BUTTON,
+} from '../rightMatchingConstants';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -64,7 +73,7 @@ function MatchRightView({
     const [combinedGridApi, setCombinedGridApi] = useState();
 
     // DOP Integration
-    useDOPIntegration(null, 'rightMatchingDOP');
+    useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -120,19 +129,21 @@ function MatchRightView({
     };
 
     const onCombinedRightGridEvent = ({type, api}) => {
+        const {CELL_VALUE_CHANGED, READY} = GRID_EVENTS;
         let result = [];
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
+        if (type === CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);
-        } else if (type === GRID_EVENTS.READY) {
+        } else if (type === READY) {
             setCombinedGridApi(api);
         }
     };
 
     const onMatchRightGridEvent = ({type, api}) => {
-        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
+        const {FIRST_DATA_RENDERED, SELECTION_CHANGED} = GRID_EVENTS;
+        if (type === FIRST_DATA_RENDERED) {
             api.selectAll();
-        } else if (type === GRID_EVENTS.SELECTION_CHANGED) {
+        } else if (type === SELECTION_CHANGED) {
             const selectedRows = api.getSelectedRows() || [];
             const selectedIds = selectedRows.map(el => el.id);
             if (!isEqual(selectedIds, selectedMatchedRightIds)) {
@@ -219,10 +230,10 @@ function MatchRightView({
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
                     <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
-                <span>Right Matching Preview</span>
+                <span>{MATCH_RIGHT_TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-match-right-view__matched">
-                <NexusTitle isSubTitle>Matched Rights</NexusTitle>
+                <NexusTitle isSubTitle>{MATCHED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <NexusGrid
                         columnDefs={matchedRightColumnDefs}
@@ -236,7 +247,7 @@ function MatchRightView({
                 )}
             </div>
             <div className="nexus-c-match-right-view__combined">
-                <NexusTitle isSubTitle>Combined Rights</NexusTitle>
+                <NexusTitle isSubTitle>{COMBINED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <CombinedRightNexusGrid
                         columnDefs={combinedRightColumnDefs}
@@ -258,7 +269,7 @@ function MatchRightView({
                         onClick={onCancel}
                         className="nexus-c-button"
                     >
-                        Cancel
+                        {CANCEL_BUTTON}
                     </Button>
                     <Button
                         className="nexus-c-button"
@@ -267,7 +278,7 @@ function MatchRightView({
                         isDisabled={!focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
                         isLoading={isMatching}
                     >
-                        Save
+                        {SAVE_BUTTON}
                     </Button>
                 </ButtonGroup>
             </div>

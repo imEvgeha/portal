@@ -45,10 +45,6 @@ const rightMatchingReducer = (state = initialState, action) => {
                 matchedRights,
             };
         case actionTypes.FETCH_COMBINED_RIGHT_SUCCESS:
-            return {
-                ...state,
-                combinedRight,
-            };
         case actionTypes.FETCH_COMBINED_RIGHT_ERROR:
             return {
                 ...state,

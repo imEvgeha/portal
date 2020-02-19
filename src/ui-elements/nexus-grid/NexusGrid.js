@@ -17,26 +17,14 @@ const NexusGrid = ({
     rowData,
     // headerHeight,
     // rowHeight,
-    handleSelectionChange,
     onGridEvent,
     isGridHidden,
-    onFilterChanged,
     ...restProps
 }) => {
 
     const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
-        }
-
-        // temporary condition
-        if (typeof handleSelectionChange === 'function' && data.type === 'selectionChanged') {
-            const {api,columnApi} = data;
-            handleSelectionChange(api, columnApi);
-        }
-
-        if (typeof onFilterChanged === 'function' && data.type === 'filterChanged') {
-            onFilterChanged();
         }
     };
 
@@ -75,7 +63,6 @@ const NexusGrid = ({
 NexusGrid.propTypes = {
     columnDefs: PropTypes.array,
     rowData: PropTypes.array,
-    handleSelectionChange: PropTypes.func,
     onGridEvent: PropTypes.func,
     // headerHeight: PropTypes.number,
     // rowHeight: PropTypes.number,
@@ -86,7 +73,6 @@ NexusGrid.propTypes = {
 NexusGrid.defaultProps = {
     columnDefs: [],
     rowData: [],
-    handleSelectionChange: null,
     onGridEvent: null,
     // headerHeight: 52,
     // rowHeight: 48,

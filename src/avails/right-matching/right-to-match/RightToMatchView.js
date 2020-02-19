@@ -27,6 +27,16 @@ import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
+import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+import {
+    RIGHT_TO_MATCH_TITLE,
+    NEW_BUTTON,
+    RIGHT_MATCHING_DOP_STORAGE,
+    FOCUSED_RIGHT,
+    RIGHTS_REPOSITORY,
+    CANCEL_BUTTON,
+    MATCH_BUTTON,
+} from '../rightMatchingConstants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -59,7 +69,7 @@ const RightToMatchView = ({
     const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
 
     // DOP Integration
-    useDOPIntegration(null, 'rightMatchingDOP');
+    useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -100,7 +110,7 @@ const RightToMatchView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button onClick={onNewRightClick}>New</Button>
+                <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
             </CustomActionsCellRenderer>
         );
     };
@@ -109,14 +119,15 @@ const RightToMatchView = ({
     const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
-    const handleSelectionChange = api => {
-        const selectedRows = api.getSelectedRows();
-        setSelectedRows(selectedRows);
-        setIsMatchDisabled(!selectedRows.length);
-    };
-
-    const handleFilterChanged = () => {
-        setFoundFocusRightInRightsRepo({foundFocusRightInRightsRepository: false});
+    const handleGridEvent = ({type, api}) => {
+        const {SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
+        if (type === SELECTION_CHANGED) {
+            const selectedRows = api.getSelectedRows();
+            setSelectedRows(selectedRows);
+            setIsMatchDisabled(!selectedRows.length);
+        } else if (type === FILTER_CHANGED) {
+            setFoundFocusRightInRightsRepo({foundFocusRightInRightsRepository: false});
+        }
     };
 
     const handleMatchClick = () => {
@@ -143,10 +154,10 @@ const RightToMatchView = ({
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
                     <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
-                <span>Right to Right Matching</span>
+                <span>{RIGHT_TO_MATCH_TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-right-to-match-view__table-header">
-                <NexusTitle isSubTitle isInline>Focused Right</NexusTitle>
+                <NexusTitle isSubTitle isInline>{FOCUSED_RIGHT}</NexusTitle>
                 <RightToMatchNavigation
                     searchParams={{availHistoryIds}}
                     focusedRightId={rightId}
@@ -166,7 +177,7 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle>
+                <NexusTitle isSubTitle>{RIGHTS_REPOSITORY} {`(${totalCount})`}</NexusTitle>
                 {fieldSearchCriteria 
                     && fieldSearchCriteria.id === rightId 
                     && (
@@ -176,10 +187,9 @@ const RightToMatchView = ({
                             setTotalCount={setTotalCount}
                             params={rightRepoParams}
                             initialFilter={fieldSearchCriteria.params}
-                            handleSelectionChange={handleSelectionChange}
+                            onGridEvent={handleGridEvent}
                             rowSelection="multiple"
                             suppressRowClickSelection={true}
-                            onFilterChanged={handleFilterChanged}
                         />
                 )}
             </div>
@@ -189,7 +199,7 @@ const RightToMatchView = ({
                         className="nexus-c-button"
                         onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
                     >
-                        Cancel
+                        {CANCEL_BUTTON}
                     </Button>
                     <Button
                         className="nexus-c-button"
@@ -197,7 +207,7 @@ const RightToMatchView = ({
                         onClick={handleMatchClick}
                         isDisabled={isMatchDisabled}
                     >
-                        Match
+                        {MATCH_BUTTON}
                     </Button>
                 </ButtonGroup>
             </div>
