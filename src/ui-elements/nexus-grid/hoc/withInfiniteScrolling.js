@@ -63,8 +63,8 @@ const withInfiniteScrolling = ({
                 ...filterParams,
             };
 
-            if (typeof props.setLoadingFlag === 'function') {
-                props.setLoadingFlag(true);
+            if (typeof props.setDataLoading === 'function') {
+                props.setDataLoading(true);
             }
             fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
@@ -105,8 +105,8 @@ const withInfiniteScrolling = ({
                 .catch(error => failCallback(error))
                 .finally(() => {
                     hasBeenCalledRef.current = false;
-                    if (typeof props.setLoadingFlag === 'function') {
-                        props.setLoadingFlag(false);
+                    if (typeof props.setDataLoading === 'function') {
+                        props.setDataLoading(false);
                     }
                 });
         };

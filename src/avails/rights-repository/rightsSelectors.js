@@ -19,8 +19,3 @@ export const createRightsFilterSelector = () => createSelector(
     getRightsReducer,
     rights => rights.filter || {},
 );
-
-export const createRepositoryLoadingFlagSelector = () => createSelector(
-    getRightsReducer,
-    rights => rights.loadingFlag,
-);

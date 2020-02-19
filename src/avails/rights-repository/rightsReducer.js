@@ -4,7 +4,6 @@ const initialState = {
     list: {},
     total: 0,
     selected: {},
-    loadingFlag: false,
     filter: {
         column: {},
         external: {},
@@ -54,11 +53,6 @@ const rightsReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 filter: payload
-            };
-        case actionTypes.SET_REPOSITORY_LOADING_FLAG:
-            return {
-                ...state,
-                loadingFlag: payload,
             };
         default:
             return state;

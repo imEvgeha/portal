@@ -8,7 +8,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {setRepositoryLoadingFlag, setRightsFilter, setSelectedRights} from './rightsActions';
+import {setRightsFilter, setSelectedRights} from './rightsActions';
 import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector
@@ -72,8 +72,6 @@ const RightsRepository = ({
         downloadIngestEmail,
         downloadIngestFile,
         location,
-        loadingFlag,
-        setRepositoryLoadingFlag
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -84,6 +82,7 @@ const RightsRepository = ({
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
+    const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
 
     useEffect(() => {
@@ -145,14 +144,14 @@ const RightsRepository = ({
 
     useEffect(()=> {
         if(selectedGridApi) {
-            if(loadingFlag) {
+            if(isRepositoryDataLoading) {
                 selectedGridApi.clearFocusedCell();
                 selectedGridApi.showLoadingOverlay();
             } else {
                 selectedGridApi.hideOverlay();
             }
         }
-    }, [loadingFlag]);
+    }, [isRepositoryDataLoading]);
 
     useEffect(() => {
         if(selectedGridApi && selectedRepoRights.length > 0) {
@@ -201,7 +200,7 @@ const RightsRepository = ({
                 const newSelectedRights = cloneDeep(selectedRights);
                 const idsToRemove = [];
                 api.forEachNode((node) => {
-                   const {data} = node;
+                   const {data = {}} = node;
                    const wasSelected = selectedRights.find(el => el.id === data.id) !== undefined;
                    if (wasSelected && !node.isSelected()) {
                        idsToRemove.push(data.id);
@@ -300,7 +299,7 @@ const RightsRepository = ({
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
-                setLoadingFlag={setRepositoryLoadingFlag}
+                setDataLoading={setIsRepositoryDataLoading}
                 context={{selectedRows: selectedRights}}
                 singleClickEdit
             />
@@ -313,7 +312,6 @@ const mapStateToProps = () => {
     const availsMappingSelector = createAvailsMappingSelector();
     const selectedRightsSelector = selectors.createSelectedRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
-    const isRepositoryLoadingSelector = selectors.createRepositoryLoadingFlagSelector();
 
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
@@ -322,7 +320,6 @@ const mapStateToProps = () => {
         selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
-        loadingFlag: isRepositoryLoadingSelector(state, props)
     });
 };
 
@@ -335,7 +332,6 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload  => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
-    setRepositoryLoadingFlag: payload => dispatch(setRepositoryLoadingFlag(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
