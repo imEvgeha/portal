@@ -180,7 +180,7 @@ class RightsURL extends React.Component {
     }
 
     static getFatalsRightsSearchUrl(availHistoryIds){
-        return `history/${availHistoryIds}/manual-rights-entry`;
+        return URL.keepEmbedded(`history/${availHistoryIds}/manual-rights-entry`);
     }
 
     static getSuccessRightsSearchUrl(availHistoryIds){

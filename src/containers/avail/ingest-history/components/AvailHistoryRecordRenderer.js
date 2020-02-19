@@ -232,17 +232,11 @@ class AvailHistoryRecordRenderer extends React.Component {
                         width: '85px'
                     }}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
-                            {ingestReport.fatal > 0 ?
-                                (<Link className={'error-link'} to={{
+                                <Link target='_blank' className={ingestReport.fatal > 0 ? 'error-link' : ''} to={{
                                     pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
                                 }}>
                                     Fatals:
-                                </Link>)
-                                :
-                                (<div>
-                                    Fatals:
-                                </div>)
-                            }
+                                </Link>
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.fatal > 0 ?

@@ -51,12 +51,14 @@ IngestReport.propTypes = {
     report: PropTypes.object,
     showErrorMessage: PropTypes.bool,
     filterClick: PropTypes.func,
+    ingestId: PropTypes.string
 };
 
 IngestReport.defaultProps = {
     report: {},
     showErrorMessage: true,
     filterClick: () => null,
+    ingestId: ''
 };
 
 export default IngestReport;

@@ -6,7 +6,7 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestReport from '../ingest-report/IngestReport';
 import './Ingest.scss';
 
-const Ingest = ({received, attachment, selected, ingestClick, inBundle}) => {
+const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId}) => {
     const [showReport, setShowReport] = useState(false);
     const { link, status, ingestReport } = attachment;
 
@@ -34,7 +34,7 @@ const Ingest = ({received, attachment, selected, ingestClick, inBundle}) => {
                 </div>
             </div>
             {
-                showReport && ingestReport && <IngestReport report={ingestReport} />
+                showReport && ingestReport && <IngestReport report={ingestReport} ingestId={ingestId} />
             }
         </div>
     );
@@ -45,14 +45,16 @@ Ingest.propTypes = {
     attachment: PropTypes.object,
     selected: PropTypes.bool,
     ingestClick: PropTypes.func,
-    inBundle: PropTypes.bool
+    inBundle: PropTypes.bool,
+    ingestId: PropTypes.string
 };
 
 Ingest.defaultProps = {
     received: '',
     attachment: {},
     selected: false,
-    inBundle: false
+    inBundle: false,
+    ingestId: ''
 };
 
 export default Ingest;

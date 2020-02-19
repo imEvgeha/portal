@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+import config from 'react-global-configuration';
 import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexus-table-tab/TableTab';
 
 import {
@@ -13,7 +14,6 @@ import {
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
-import config from 'react-global-configuration';
 
 function ManualRightEntryTableTabs({
     selectedTab,
@@ -59,7 +59,6 @@ function ManualRightEntryTableTabs({
 
     const viewJSON = () => {
         const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights?availHistoryIds=${availHistoryId}&page=0&size=10000`;
-        updateManualRightEntrySelectedTab(VIEW_JSON);
         window.open( url, '_blank');
     };
 
