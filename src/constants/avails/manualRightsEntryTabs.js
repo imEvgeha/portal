@@ -3,9 +3,11 @@ export const SUCCESS ='SUCCESS';
 export const UNMATCHED = 'UNMATCHED';
 export const ERRORS = 'ERRORS';
 export const FATAL = 'FATAL';
+export const VIEW_JSON = 'VIEW_JSON';
 
 export const tabFilter = new Map([
     [SUCCESS, {status: 'Ready,ReadyNew'}],
     [UNMATCHED, {status: 'Pending'}],
     [ERRORS, {status: 'Error'}],
+    [VIEW_JSON]
 ]);
