@@ -422,16 +422,12 @@ class TitleResultTable extends React.Component {
                 }
             });
             newCols.push(getRepositoryCell({headerName: 'Repository'}));
-            if (URL.isLocalOrDevOrQA()) {
-                const actionColumn = defineColumn({
-                    headerName: 'Action',
-                    field: 'action',
-                    cellRendererFramework: ActionCellRender
-                });
-                this.cols = [actionColumn, ...newCols];
-            } else {
-                this.cols = newCols;
-            }
+            const actionColumn = defineColumn({
+                headerName: 'Action',
+                field: 'action',
+                cellRendererFramework: ActionCellRender
+            });
+            this.cols = [actionColumn, ...newCols];
         }
     }
 
