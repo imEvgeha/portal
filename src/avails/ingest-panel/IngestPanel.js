@@ -71,6 +71,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                          selectedAttachmentId: selectedAttachmentId
                                      })}
                                      selected={selectedIngest && (selectedIngest.id === id)}
+                                     ingestId={id}
                             />));
                     })
                 }

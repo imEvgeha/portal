@@ -941,11 +941,11 @@ class TitleEdit extends Component {
         });
     }
 
-    renderSyncField = (id, name, titleModifiedAt, legacyId, publishedAt) => {
+    renderSyncField = (name, titleModifiedAt, legacyId, publishedAt) => {
 
         const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
         const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
-        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt)) || getRepositoryName(id) !== TitleSystems.NEXUS;
+        const isDisabled = moment(publishedAt).isAfter(moment(titleModifiedAt));
         const indicator = isDisabled ? 'success' : 'error';
         return (<div className='nexus-c-title-edit__sync-container-field'>
             <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
@@ -969,9 +969,10 @@ class TitleEdit extends Component {
         const movidaPublishedAt = (movida || {}).publishedAt;
 
         return (
+            id && getRepositoryName(id) === TitleSystems.NEXUS &&
             <>
-                {this.renderSyncField(id, VZ, modifiedAt, vzId, vzPublishedAt)}
-                {this.renderSyncField(id, MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
+                {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
+                {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
             </>
         );
     };

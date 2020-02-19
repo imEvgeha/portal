@@ -16,7 +16,7 @@ import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
-import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
+import {FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 import TableColumnCustomization from '../../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
@@ -58,7 +58,7 @@ class RightsCreateFromAttachment extends React.Component {
         updateManualRightsEntryColumns: t.func,
         manualRightsResultPageLoading: t.func,
         columns: t.array,
-        selected: t.array
+        selected: t.array,
     };
 
     static contextTypes = {
@@ -253,6 +253,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 createdCount={created}
                                 updatedCount={updated}
                                 historyData={this.state.historyData}
+                                availHistoryId={availHistoryId}
                                 fatalCount={fatal}/>
                             <div className='nexus-c-manual-rights-entry__actions'>
                                 <Button className='nexus-c-manual-rights-entry__button'
@@ -274,18 +275,20 @@ class RightsCreateFromAttachment extends React.Component {
                                 />
                             </div>
                         </div>
-                        <RightsResultTable
-                            fromServer={true}
-                            columns={columns}
-                            nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
-                            autoload={false}
-                            status={status}
-                            selectedTab={selectedTab}
-                            historyData={this.state.historyData}
-                            hidden={selectedTab === FATAL}
-                            searchCriteria={this.getCustomSearchCriteria(selectedTab)}
-                            onTableLoaded={this.onTableLoaded}
-                        />
+                        {selectedTab !== VIEW_JSON &&
+                            <RightsResultTable
+                                fromServer={true}
+                                columns={columns}
+                                nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
+                                autoload={false}
+                                status={status}
+                                selectedTab={selectedTab}
+                                historyData={this.state.historyData}
+                                hidden={selectedTab === FATAL}
+                                searchCriteria={this.getCustomSearchCriteria(selectedTab)}
+                                onTableLoaded={this.onTableLoaded}
+                            />
+                        }
                         <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
                     </React.Fragment>
                 }

@@ -1,0 +1,9 @@
+@import '../styles/config';
+
+.nexus-c-welcome {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: map-get($colors, nexus-title-color);
+}
