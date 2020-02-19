@@ -179,6 +179,10 @@ class RightsURL extends React.Component {
         return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'Error'));
     }
 
+    static getFatalsRightsSearchUrl(availHistoryIds){
+        return `history/${availHistoryIds}/manual-rights-entry`;
+    }
+
     static getSuccessRightsSearchUrl(availHistoryIds){
         return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'ReadyNew,Ready'));
     }

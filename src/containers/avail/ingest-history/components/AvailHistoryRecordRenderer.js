@@ -193,7 +193,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                         width: '85px'
                     }}>
                         <div style={{display: 'flex', flex: 1}}><u><b>
-                            {ingestReport.fatal + ingestReport.errors > 0 ?
+                            {ingestReport.errors > 0 ?
                                 (<Link className={'error-link'} to={{
                                     pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
@@ -208,17 +208,52 @@ class AvailHistoryRecordRenderer extends React.Component {
                             }
                         </b></u></div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
-                            {ingestReport.fatal + ingestReport.errors > 0 ?
+                            {ingestReport.errors > 0 ?
                                 (<Link className={'error-link'} to={{
                                     pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
                                     state: data
                                 }}>
-                                    {ingestReport.fatal + ingestReport.errors}
+                                    {ingestReport.errors}
                                 </Link>)
                                 :
                                 (<div>
-                                    {ingestReport.fatal + ingestReport.errors}
+                                    {ingestReport.errors}
+                                </div>)
+                            }
+                        </div>
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: '10px',
+                        lineHeight: '30px',
+                        alignItems: 'center',
+                        width: '85px'
+                    }}>
+                        <div style={{display: 'flex', flex: 1}}><u><b>
+                            {ingestReport.fatal > 0 ?
+                                (<Link className={'error-link'} to={{
+                                    pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
+                                }}>
+                                    Fatals:
+                                </Link>)
+                                :
+                                (<div>
+                                    Fatals:
+                                </div>)
+                            }
+                        </b></u></div>
+                        <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
+                            {ingestReport.fatal > 0 ?
+                                (<Link target='_blank' className={'error-link'} to={{
+                                    pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
+                                }}>
+                                    {ingestReport.fatal}
+                                </Link>)
+                                :
+                                (<div>
+                                    {ingestReport.fatal}
                                 </div>)
                             }
                         </div>
