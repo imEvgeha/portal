@@ -28,6 +28,8 @@ import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
 import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
 import {URL} from '../../../../util/Common';
+import {getRepositoryName} from '../../../../avails/utils';
+import TitleSystems from '../../../../constants/metadata/systems';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -939,10 +941,10 @@ class TitleEdit extends Component {
         });
     }
 
-    renderSyncField = (name, titleModifiedAt, id, publishedAt) => {
+    renderSyncField = (name, titleModifiedAt, legacyId, publishedAt) => {
 
         const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
-        const buttonName = !id || !publishedAt ? 'Publish' : 'Sync';
+        const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
         const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt));
         const indicator = isDisabled ? 'success' : 'error';
         return (<div className='nexus-c-title-edit__sync-container-field'>
@@ -959,7 +961,7 @@ class TitleEdit extends Component {
     };
 
     renderSyncVzMovidaFields = () => {
-        const {legacyIds, modifiedAt} = this.state.titleForm;
+        const {id, legacyIds, modifiedAt} = this.state.titleForm;
         const {vz, movida} = legacyIds || {};
         const {vzId} = vz || {};
         const {movidaId} = movida || {};
@@ -967,6 +969,7 @@ class TitleEdit extends Component {
         const movidaPublishedAt = (movida || {}).publishedAt;
 
         return (
+            id && getRepositoryName(id) === TitleSystems.NEXUS &&
             <>
                 {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
                 {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}

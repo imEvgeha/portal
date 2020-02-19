@@ -8,7 +8,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {addRightsFilter, setRepositoryLoadingFlag, setRightsFilter, setSelectedRights} from './rightsActions';
+import {setRepositoryLoadingFlag, setRightsFilter, setSelectedRights} from './rightsActions';
 import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector
@@ -19,6 +19,7 @@ import Ingest from './components/ingest/Ingest';
 import {
     deselectIngest,
     downloadEmailAttachment,
+    downloadFileAttachment,
     filterRightsByStatus,
     selectIngest
 } from '../ingest-panel/ingestActions';
@@ -65,11 +66,11 @@ const RightsRepository = ({
         ingestClick,
         setSelectedRights,
         selectedRights,
-        addRightsFilter,
         setRightsFilter,
         rightsFilter,
         deselectIngest,
         downloadIngestEmail,
+        downloadIngestFile,
         location,
         loadingFlag,
         setRepositoryLoadingFlag
@@ -266,6 +267,7 @@ const RightsRepository = ({
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
                     downloadIngestEmail={downloadIngestEmail}
+                    downloadIngestFile={downloadIngestFile}
                     attachment={attachment}
                     filterByStatus={filterByStatus} />)
             }
@@ -329,9 +331,9 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
-    addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
     downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
+    downloadIngestFile: payload  => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
     setRepositoryLoadingFlag: payload => dispatch(setRepositoryLoadingFlag(payload))
 });

@@ -182,7 +182,7 @@ function MatchRightView({
             )
         ) {
             const schema = createColumnSchema(getSelectedRows(api), colDef.field);
-            return addCellClass({colDef, value, schema});
+            return addCellClass({field: colDef.field, value, schema});
         }
     };
 

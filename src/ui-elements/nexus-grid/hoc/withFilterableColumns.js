@@ -10,6 +10,7 @@ import {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
 import usePrevious from '../../../util/hooks/usePrevious';
 import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
 import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
+import get from 'lodash.get';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -140,7 +141,8 @@ const withFilterableColumns = ({
         };
 
         const getFilterOptions = (field) => {
-            const options = selectValues ? selectValues[field] : [];
+            //TODO: refresh and show values when loaded
+            const options = get(selectValues, field, []);
             const parsedSelectValues = options.map(option => {
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution for territory fields

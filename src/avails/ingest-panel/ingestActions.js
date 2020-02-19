@@ -40,3 +40,8 @@ export const downloadEmailAttachment = payload => ({
     type: actionTypes.DOWNLOAD_INGEST_EMAIL,
     payload,
 });
+
+export const downloadFileAttachment = payload => ({
+    type: actionTypes.DOWNLOAD_INGEST_FILE,
+    payload,
+});

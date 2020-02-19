@@ -214,9 +214,32 @@ function* downloadIngestEmail({payload}) {
     }
 }
 
+function* downloadIngestFile({payload}) {
+    if (!payload.id) return;
+
+    let filename = 'Unknown';
+    try {
+        if (payload.link) {
+            filename = payload.link.split(/(\\|\/)/g).pop();
+        }
+        const response = yield historyService.getAvailHistoryAttachment(payload.id);
+        if (response && response.data && response.data.downloadUrl) {
+            const link = document.createElement('a');
+            link.href = response.data.downloadUrl;
+            link.setAttribute('download', filename);
+            link.click();
+        }
+    } catch (error) {
+        yield put({
+            type: actionTypes.DOWNLOAD_INGEST_FILE_ERROR,
+        });
+    }
+}
+
 export default function* ingestWatcher() {
     yield all([
         takeLatest(actionTypes.DOWNLOAD_INGEST_EMAIL, downloadIngestEmail),
+        takeLatest(actionTypes.DOWNLOAD_INGEST_FILE, downloadIngestFile),
         takeLatest(actionTypes.FETCH_INGESTS, fetchIngests),
         takeLatest(actionTypes.FETCH_NEXT_PAGE, fetchNextPage),
         takeLatest(actionTypes.FILTER_RIGHTS_BY_STATUS, filterRightsByStatus),
