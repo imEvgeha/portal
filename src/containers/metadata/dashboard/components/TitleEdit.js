@@ -945,7 +945,7 @@ class TitleEdit extends Component {
 
         const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
         const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
-        const isDisabled = moment(publishedAt).isBefore(moment(titleModifiedAt));
+        const isDisabled = moment(publishedAt).isAfter(moment(titleModifiedAt));
         const indicator = isDisabled ? 'success' : 'error';
         return (<div className='nexus-c-title-edit__sync-container-field'>
             <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
