@@ -1,8 +1,7 @@
-import './DashboardContainer.scss';
-
 import React from 'react';
+import t from 'prop-types';
 import {connect} from 'react-redux';
-import {IfEmbedded} from '../../../util/Common';
+import './DashboardContainer.scss';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
@@ -18,7 +17,6 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
-import t from 'prop-types';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
@@ -166,30 +164,28 @@ class DashboardContainer extends React.Component {
         return (
             <div>
                 <RightsURL/>
-                <IfEmbedded value={false}>
-                    <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
-                        <div>
-                            <table style={{width: '100%'}}>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
-                                                onSearch={this.handleAvailsFreeTextSearch}/>
-                                        </td>
-                                        <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
-                                            <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
-                                                id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
-                                                <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
+                    <div>
+                        <table style={{width: '100%'}}>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
+                                            onSearch={this.handleAvailsFreeTextSearch}/>
+                                    </td>
+                                    <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
+                                        <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
+                                            id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
+                                            <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    {<AdvancedSearchPanel location={this.props.location}  hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
-                    {!this.props.showSearchResults && <DashboardTab/>}
-                </IfEmbedded>
+                </div>
+                {<AdvancedSearchPanel location={this.props.location}  hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
+                {!this.props.showSearchResults && <DashboardTab/>}
                 {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
             </div>
         );

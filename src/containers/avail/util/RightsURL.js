@@ -242,7 +242,7 @@ class RightsURL extends React.Component {
     }
 
     static get availsDashboardUrl(){
-        return URL.keepEmbedded('/avails');
+        return '/avails';
     }
 
     static get search(){
