@@ -101,7 +101,6 @@ function ManualRightEntryTableTabs({
                 Fatal ({fatalCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab
-                isActive={selectedTab === VIEW_JSON}
                 onClick={() => viewJSON()}
             >
                 View JSON
