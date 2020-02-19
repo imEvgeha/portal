@@ -135,8 +135,12 @@ const RightsRepository = ({
     }, [rightsFilter, mapping]);
 
     useEffect(() => {
-        setSelectedRepoRights(getSelectedTabRights(selectedRights));
-    }, [search, selectedRights]);
+        let rights = selectedRights;
+        if (gridApi) {
+            rights = gridApi.getSelectedRows();
+        }
+        setSelectedRepoRights(getSelectedTabRights(rights));
+    }, [search, selectedRights, gridApi]);
 
     useEffect(()=> {
         if(selectedGridApi) {
@@ -193,7 +197,18 @@ const RightsRepository = ({
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         switch (type) {
             case GRID_EVENTS.SELECTION_CHANGED:
-                const allSelectedRows = api.getSelectedRows() || [];
+                const newSelectedRights = cloneDeep(selectedRights);
+                const idsToRemove = [];
+                api.forEachNode((node) => {
+                   const {data} = node;
+                   const wasSelected = selectedRights.find(el => el.id === data.id) !== undefined;
+                   if (wasSelected && !node.isSelected()) {
+                       idsToRemove.push(data.id);
+                   } else if (!wasSelected && node.isSelected()) {
+                       newSelectedRights.push(data);
+                   }
+                });
+                const allSelectedRows =  newSelectedRights.filter(el => !idsToRemove.includes(el.id));
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
@@ -235,11 +250,7 @@ const RightsRepository = ({
         const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
 
         if(ingestHistoryAttachmentIdParam) {
-            let rights = selectedRights;
-            if (gridApi) {
-                rights = gridApi.getSelectedRows();
-            }
-            return rights.filter(el => {
+            return selectedRights.filter(el => {
                 const {ingestHistoryAttachmentId} = el;
                 return ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
             });
