@@ -1,12 +1,10 @@
 import React from 'react';
+import './Welcome.scss';
 
-export default class Welcome extends React.Component {
+const Welcome = () => (
+    <div className="nexus-c-welcome">
+        <h1>Nexus Portal</h1>
+    </div>
+);
 
-    render() {
-        return (
-            <div>
-
-            </div>
-        );
-    }
-}
+export default Welcome;

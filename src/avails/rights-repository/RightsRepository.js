@@ -71,8 +71,8 @@ const RightsRepository = ({
         deselectIngest,
         downloadIngestEmail,
         downloadIngestFile,
-        location
-    }) => {
+        location,
+}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
@@ -82,6 +82,8 @@ const RightsRepository = ({
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
+    const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
+    const {search} = location;
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -133,8 +135,23 @@ const RightsRepository = ({
     }, [rightsFilter, mapping]);
 
     useEffect(() => {
-        setSelectedRepoRights(getSelectedTabRights(selectedRights));
-    }, [location.search]);
+        let rights = selectedRights;
+        if (gridApi) {
+            rights = gridApi.getSelectedRows();
+        }
+        setSelectedRepoRights(getSelectedTabRights(rights));
+    }, [search, selectedRights, gridApi]);
+
+    useEffect(()=> {
+        if(selectedGridApi) {
+            if(isRepositoryDataLoading) {
+                selectedGridApi.clearFocusedCell();
+                selectedGridApi.showLoadingOverlay();
+            } else {
+                selectedGridApi.hideOverlay();
+            }
+        }
+    }, [isRepositoryDataLoading]);
 
     useEffect(() => {
         if(selectedGridApi && selectedRepoRights.length > 0) {
@@ -180,9 +197,18 @@ const RightsRepository = ({
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         switch (type) {
             case GRID_EVENTS.SELECTION_CHANGED:
-                const allSelectedRows = api.getSelectedRows() || [];
-                setSelectedRepoRights(getSelectedTabRights(allSelectedRows));
-
+                const newSelectedRights = cloneDeep(selectedRights);
+                const idsToRemove = [];
+                api.forEachNode((node) => {
+                   const {data = {}} = node;
+                   const wasSelected = selectedRights.find(el => el.id === data.id) !== undefined;
+                   if (wasSelected && !node.isSelected()) {
+                       idsToRemove.push(data.id);
+                   } else if (!wasSelected && node.isSelected()) {
+                       newSelectedRights.push(data);
+                   }
+                });
+                const allSelectedRows =  newSelectedRights.filter(el => !idsToRemove.includes(el.id));
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
@@ -211,11 +237,10 @@ const RightsRepository = ({
                 break;
             case GRID_EVENTS.SELECTION_CHANGED:
                 const allSelectedRows = api.getSelectedRows() || [];
-                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id));
-                toUnselect.forEach(el => {
-                    const node = gridApi.getRowNode(el.id);
-                    node && node.setSelected(false);
-                });
+                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
+
+                const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+                nodes.forEach(node => node.setSelected(false));
                 break;
         }
     };
@@ -272,9 +297,10 @@ const RightsRepository = ({
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
                 isGridHidden={activeTab !== RIGHTS_TAB}
-                selectedRows={selectedRights}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
+                setDataLoading={setIsRepositoryDataLoading}
+                context={{selectedRows: selectedRights}}
                 singleClickEdit
             />
         </div>
@@ -301,9 +327,11 @@ const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
+    setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
     downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload  => dispatch(downloadFileAttachment(payload)),
+    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

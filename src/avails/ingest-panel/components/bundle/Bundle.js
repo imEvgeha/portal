@@ -37,6 +37,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
                                     ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
                                     selected={selectedAttachmentId === attachment.id}
                                     inBundle
+                                    ingestId={id}
                             />)
                     }
                 </div>
@@ -52,6 +53,7 @@ Bundle.propTypes = {
     attachments: PropTypes.array,
     selectedAttachmentId: PropTypes.string,
     ingestClick: PropTypes.func,
+    ingestId: PropTypes.string
 };
 
 Bundle.defaultProps = {
@@ -59,7 +61,8 @@ Bundle.defaultProps = {
     received: '',
     provider: '',
     attachments: [],
-    selectedAttachmentId: ''
+    selectedAttachmentId: '',
+    ingestId: ''
 };
 
 export default Bundle;

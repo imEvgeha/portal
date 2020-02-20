@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+import config from 'react-global-configuration';
 import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexus-table-tab/TableTab';
 
 import {
@@ -8,7 +9,8 @@ import {
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS
+    SUCCESS,
+    VIEW_JSON
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
@@ -20,7 +22,8 @@ function ManualRightEntryTableTabs({
     createdCount,
     updatedCount,
     fatalCount,
-    historyData
+    historyData,
+    availHistoryId
 }) {
     // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
     // if component gets unmounted during call execution to prevent setting state on an unmounted component
@@ -52,6 +55,11 @@ function ManualRightEntryTableTabs({
         if(!isNaN(totalRightsCount) && !isNaN(fatalCount)) {
             return `${totalRightsCount}/${totalRightsCount + fatalCount}`;
         }
+    };
+
+    const viewJSON = () => {
+        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights?availHistoryIds=${availHistoryId}&page=0&size=10000`;
+        window.open( url, '_blank');
     };
 
     return (
@@ -92,6 +100,11 @@ function ManualRightEntryTableTabs({
             >
                 Fatal ({fatalCount})
             </ManualRightEntryTab>
+            <ManualRightEntryTab
+                onClick={() => viewJSON()}
+            >
+                View JSON
+            </ManualRightEntryTab>
         </TabContainer>
     );
 }
@@ -104,7 +117,8 @@ ManualRightEntryTableTabs.propTypes = {
     fatalCount: PropTypes.number,
     createdCount: PropTypes.number,
     updatedCount: PropTypes.number,
-    historyData: PropTypes.object
+    historyData: PropTypes.object,
+    availHistoryId:  PropTypes.string,
 };
 
 const mapStateToProps = state => {
