@@ -72,7 +72,7 @@ const withFilterableColumns = ({
                     columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     columnDef.filterParams = setFilterParams(dataType, columnDef.field);
 
-                    if (dataType === 'datetime' || dateType === 'time' || dateType === 'localdate') {
+                    if (dataType === 'datetime' || dataType === 'time' || dataType === 'localdate') {
                         const initialFilters = {
                             from: filters[`${columnDef.field}From`],
                             to: filters[`${columnDef.field}To`]

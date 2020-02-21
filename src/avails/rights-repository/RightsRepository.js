@@ -90,7 +90,7 @@ const RightsRepository = ({
         gridApi && gridApi.setFilterModel(null);
     }, [selectedIngest, selectedAttachmentId]);
 
-
+    // TODO: create column defs on app loading
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
@@ -102,7 +102,7 @@ const RightsRepository = ({
     }, []);
 
     useEffect(() => {
-        if(selectedIngest && selectedAttachmentId) {
+        if (selectedIngest && selectedAttachmentId) {
             const {attachments} = selectedIngest;
             const attachment = attachments.find(a => a.id === selectedAttachmentId);
             setAttachment(attachment);
@@ -143,6 +143,15 @@ const RightsRepository = ({
         setSelectedRepoRights(getSelectedTabRights(rights));
     }, [search, selectedRights, gridApi]);
 
+    useEffect(() => {
+        if (!isEqual(previousActiveTab, activeTab) && previousActiveTab === RIGHTS_SELECTED_TAB) {
+            const allSelectedRows = selectedGridApi.getSelectedRows() || [];
+            const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
+            const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+            nodes.forEach(node => node.setSelected(false));
+        }
+    }, [activeTab]);
+
     useEffect(()=> {
         if (selectedGridApi) {
             if (isRepositoryDataLoading) {
@@ -160,15 +169,6 @@ const RightsRepository = ({
         }
     }, [selectedRepoRights]);
 
-    useEffect(() => {
-        if (!isEqual(previousActiveTab, activeTab) && previousActiveTab === RIGHTS_SELECTED_TAB) {
-            const allSelectedRows = selectedGridApi.getSelectedRows() || [];
-            const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
-            const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
-            nodes.forEach(node => node.setSelected(false));
-        }
-    }, [activeTab]);
-
     const columnDefsClone = cloneDeep(columnDefs);
     const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
@@ -180,7 +180,7 @@ const RightsRepository = ({
             <CustomActionsCellRenderer id={id}>
                 <div>
                     <EditorMediaWrapLeftIcon/>
-                    <span className={'nexus-c-right-to-match-view__buttons_notification  nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>
+                    <span className={`nexus-c-right-to-match-view__buttons_notification  nexus-c-right-to-match-view__buttons_notification${notificationClass}`}/>
                 </div>
             </CustomActionsCellRenderer>
         );
