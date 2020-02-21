@@ -84,6 +84,7 @@ const RightsRepository = ({
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
+    const previousActiveTab = usePrevious(activeTab);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -143,8 +144,8 @@ const RightsRepository = ({
     }, [search, selectedRights, gridApi]);
 
     useEffect(()=> {
-        if(selectedGridApi) {
-            if(isRepositoryDataLoading) {
+        if (selectedGridApi) {
+            if (isRepositoryDataLoading) {
                 selectedGridApi.clearFocusedCell();
                 selectedGridApi.showLoadingOverlay();
             } else {
@@ -154,10 +155,19 @@ const RightsRepository = ({
     }, [isRepositoryDataLoading]);
 
     useEffect(() => {
-        if(selectedGridApi && selectedRepoRights.length > 0) {
+        if (selectedGridApi && selectedRepoRights.length > 0) {
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights]);
+
+    useEffect(() => {
+        if (!isEqual(previousActiveTab, activeTab) && previousActiveTab === RIGHTS_SELECTED_TAB) {
+            const allSelectedRows = selectedGridApi.getSelectedRows() || [];
+            const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
+            const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+            nodes.forEach(node => node.setSelected(false));
+        }
+    }, [activeTab]);
 
     const columnDefsClone = cloneDeep(columnDefs);
     const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
@@ -189,7 +199,7 @@ const RightsRepository = ({
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
-    const checkboxSelectionWithHeaderColumnDef = {headerCheckboxSelection: true, ...checkboxSelectionColumnDef};
+    const checkboxSelectionWithHeaderColumnDef = {headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true, ...checkboxSelectionColumnDef};
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
@@ -230,26 +240,15 @@ const RightsRepository = ({
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        switch (type) {
-            case GRID_EVENTS.READY:
-                setSelectedGridApi(api);
-                setSelectedColumnApi(columnApi);
-                break;
-            case GRID_EVENTS.SELECTION_CHANGED:
-                const allSelectedRows = api.getSelectedRows() || [];
-                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
-
-                const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
-                nodes.forEach(node => node.setSelected(false));
-                break;
+        if (type === GRID_EVENTS.READY) {
+            setSelectedGridApi(api);
+            setSelectedColumnApi(columnApi);
         }
     };
 
     const getSelectedTabRights = (selectedRights) => {
-
         const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
-
-        if(ingestHistoryAttachmentIdParam) {
+        if (ingestHistoryAttachmentIdParam) {
             return selectedRights.filter(el => {
                 const {ingestHistoryAttachmentId} = el;
                 return ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
@@ -261,15 +260,16 @@ const RightsRepository = ({
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && !isEmpty(selectedIngest) && attachment && (
+            {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
                     downloadIngestEmail={downloadIngestEmail}
                     downloadIngestFile={downloadIngestFile}
                     attachment={attachment}
-                    filterByStatus={filterByStatus} />)
-            }
+                    filterByStatus={filterByStatus} 
+                />
+            )}
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -284,6 +284,7 @@ const RightsRepository = ({
             <SelectedRighstRepositoryTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 mapping={mapping}
+                rowSelection="multiple"
                 rowData={selectedRepoRights}
                 isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
                 onGridEvent={onSelectedRightsRepositoryGridEvent}

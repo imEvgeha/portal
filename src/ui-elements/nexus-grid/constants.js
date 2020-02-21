@@ -29,6 +29,9 @@ const FILTERABLE_DATA_TYPES = [
     'territoryType',
     'year',
     'duration',
+    'date',
+    'datetime',
+    'localdate'
 ];
 const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {

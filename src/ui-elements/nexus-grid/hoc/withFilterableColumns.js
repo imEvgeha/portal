@@ -71,15 +71,16 @@ const withFilterableColumns = ({
                 if (isFilterable) {
                     columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     columnDef.filterParams = setFilterParams(dataType, columnDef.field);
-                }
-                if(dataType === 'datetime') {
-                    const initialFilters = {
-                        from: filters[`${columnDef.field}From`],
-                        to: filters[`${columnDef.field}To`]
-                    };
-                    columnDef.floatingFilterComponent = 'customDateFloatingFilter';
-                    columnDef.filter = 'customDateFilter';
-                    columnDef.filterParams = {initialFilters};
+
+                    if (dataType === 'datetime' || dateType === 'time' || dateType === 'localdate') {
+                        const initialFilters = {
+                            from: filters[`${columnDef.field}From`],
+                            to: filters[`${columnDef.field}To`]
+                        };
+                        columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                        columnDef.filter = 'customDateFilter';
+                        columnDef.filterParams = {initialFilters};
+                    }
                 }
                 return columnDef;
             });
