@@ -1,0 +1,13 @@
+export const RIGHT_MATCHING_TITLE = 'Right Matching'; 
+export const RIGHT_TO_MATCH_TITLE = 'Right to Right Matching';
+export const MATCH_RIGHT_TITLE = 'Right Matching Preview';
+export const RIGHTS_REPOSITORY = 'Rights Repository';
+export const MATCHED_RIGHTS = 'Matched Rights';
+export const COMBINED_RIGHTS = 'Combined Rights';
+export const FOCUSED_RIGHT = 'Focused Right';
+export const FOCUS_BUTTON = 'Focus';
+export const MATCH_BUTTON = 'Match';
+export const CANCEL_BUTTON = 'Cancel';
+export const NEW_BUTTON = 'New';
+export const SAVE_BUTTON = 'Save';
+export const RIGHT_MATCHING_DOP_STORAGE = 'rightMatchingDOP';
