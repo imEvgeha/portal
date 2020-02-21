@@ -19,6 +19,7 @@ import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/e
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
 import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
+import {getRepositoryCell} from '../../avails/utils';
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,
@@ -66,7 +67,11 @@ const LegacyTitleReconciliationView = ({
     };
 
     const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = [episodeAndSeasonNumberColumnDef, ...columnDefs];
+    const updatedColumnDefs = [
+        getRepositoryCell({headerName: 'Repository'}),
+        episodeAndSeasonNumberColumnDef,
+        ...columnDefs
+    ];
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">
