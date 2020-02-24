@@ -1,4 +1,3 @@
-
 export const INDICATOR_RED = 'INDICATOR_RED';
 export const INDICATOR_SUCCESS = 'INDICATOR_SUCCESS';
 

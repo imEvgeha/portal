@@ -146,7 +146,9 @@ const RightsRepository = ({
     useEffect(() => {
         if (!isEqual(previousActiveTab, activeTab) && previousActiveTab === RIGHTS_SELECTED_TAB) {
             const allSelectedRows = selectedGridApi.getSelectedRows() || [];
-            const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id)).map(({id}) => id);
+            const toUnselect = selectedRepoRights
+                .filter(el => !allSelectedRows.map(({id}) => id).includes(el.id))
+                .map(({id}) => id);
             const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
             nodes.forEach(node => node.setSelected(false));
         }
@@ -180,7 +182,10 @@ const RightsRepository = ({
             <CustomActionsCellRenderer id={id}>
                 <div>
                     <EditorMediaWrapLeftIcon/>
-                    <span className={`nexus-c-right-to-match-view__buttons_notification  nexus-c-right-to-match-view__buttons_notification${notificationClass}`}/>
+                    <span className={`
+                        nexus-c-right-to-match-view__buttons_notification
+                        nexus-c-right-to-match-view__buttons_notification${notificationClass}
+                    `} />
                 </div>
             </CustomActionsCellRenderer>
         );
@@ -194,18 +199,29 @@ const RightsRepository = ({
     });
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
-    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCellEditor, editable: true});
+    const actionMatchingButtonColumnDef = defineButtonColumn({
+        cellRendererFramework: createMatchingButtonCellRenderer,
+        cellEditorFramework: TooltipCellEditor,
+        editable: true
+    });
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
-    const checkboxSelectionWithHeaderColumnDef = {headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true, ...checkboxSelectionColumnDef};
+    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
+        headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+    });
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         switch (type) {
+            case GRID_EVENTS.READY:
+                setGridApi(api);
+                setColumnApi(columnApi);
+                break;
             case GRID_EVENTS.SELECTION_CHANGED:
                 const newSelectedRights = cloneDeep(selectedRights);
                 const idsToRemove = [];
@@ -222,19 +238,15 @@ const RightsRepository = ({
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
-            case GRID_EVENTS.READY:
-                setGridApi(api);
-                setColumnApi(columnApi);
-                break;
             case GRID_EVENTS.FILTER_CHANGED:
                 const column = filterBy(api.getFilterModel());
-                if (Object.keys(column).length === 0) {
-                    let filter = Object.assign({}, rightsFilter);
+                if (Object.keys(column || {}).length === 0) {
+                    let filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
-                } else {
-                    setRightsFilter({...rightsFilter, column});
+                    break;
                 }
+                setRightsFilter({...rightsFilter, column});
                 break;
         }
     };
@@ -283,26 +295,26 @@ const RightsRepository = ({
             />
             <SelectedRighstRepositoryTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                mapping={mapping}
+                singleClickEdit
                 rowSelection="multiple"
+                mapping={mapping}
                 rowData={selectedRepoRights}
                 isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
-                singleClickEdit
             />
             <RightsRepositoryTable
                 columnDefs={updatedColumnDefs}
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                singleClickEdit
+                context={{selectedRows: selectedRights}}
                 mapping={mapping}
                 setTotalCount={setTotalCount}
                 onGridEvent={onRightsRepositoryGridEvent}
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsRepositoryDataLoading}
-                context={{selectedRows: selectedRights}}
-                singleClickEdit
             />
         </div>
     );
