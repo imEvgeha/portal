@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import t from 'prop-types';
 import {validateDate} from '../../util/Validation';
+import {store} from '../../index';
 
 const FIRST_DELIMETER_POSITION = 2;
 const SECOUND_DELIMETER_POSITION = 5;
@@ -21,6 +22,7 @@ class NexusDatePicker extends Component {
 
     prevRawInput = '';
     prevDate = null;
+
 
     constructor(props) {
         super(props);
@@ -76,9 +78,9 @@ class NexusDatePicker extends Component {
         this.setValid(true);
     }
 
-    handleOnBlur() {
+    handleOnBlur(locale = 'en') {
         this.setState({dirty: true, open: false});
-        if (this.refDatePicker.current.input.value && !validateDate(this.refDatePicker.current.input.value)) {
+        if (this.refDatePicker.current.input.value && !validateDate(this.refDatePicker.current.input.value, locale)) {
             this.setValid(false);
         }
     }
@@ -134,12 +136,14 @@ class NexusDatePicker extends Component {
     }
 
     render() {
+        const {locale} = store.getState().localeReducer;
+
         return (
             <DatePicker
                 ref={this.refDatePicker}
                 className={this.state.invalidDate ? 'text-danger' : ''}
                 id={this.props.id}
-                placeholderText={'mm/dd/yyyy'}
+                placeholderText={'Enter date'}
                 selected={this.props.date ? moment(this.props.date) : null}
                 showYearDropdown
                 showMonthDropdown
@@ -147,11 +151,12 @@ class NexusDatePicker extends Component {
                 allowSameDay={true}
                 onChange={this.handleChange}
                 onChangeRaw={(event) => this.handleChangeRaw(event.target.value)}
-                onBlur={this.handleOnBlur}
+                onBlur={() => this.handleOnBlur(locale)}
                 todayButton={'Today'}
                 disabled={this.props.disabled}
                 customInput={<input onKeyPress={this.props.handleKeyPress} />}
                 onClickOutside={this.handleClickOutside}
+                locale={locale}
             />
         );
     }
