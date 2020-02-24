@@ -23,7 +23,8 @@ export default class RightsResultsTable extends React.Component {
 
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
-        const dateFormat = `${getDateFormatBasedOnLocale(locale)} ${TIMESTAMP_FORMAT}`;
+        const dateFormat = getDateFormatBasedOnLocale(locale);
+        const timestampDateFormat= `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
         let formatter = (column) => {
             const {
@@ -35,13 +36,11 @@ export default class RightsResultsTable extends React.Component {
                 case 'localdate' :
                 case 'datetime' : return ({data = {}}) => {
                     const {[javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
+                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
                 };
-                case 'date' : return function(params){
-                    if((params.data && params.data[javaVariableName]) && moment(String(params.data[javaVariableName]).substr(0, 10)).isValid()) {
-                        return moment(params.data[javaVariableName].toString().substr(0, 10)).format('L');
-                    }
-                    return;
+                case 'date' : return ({data = {}}) => {
+                    const {[javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function(params){
                     if(params.data && params.data[javaVariableName]){
