@@ -8,7 +8,7 @@ import {downloadFile} from '../../util/Common';
 import * as selectors from '../../avails/right-matching/rightMatchingSelectors';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, mapping}) {
+function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) {
 
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -39,10 +39,17 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         setIsDisabled(disable);
     }, [isSelectedOptionActive, selectedRows, totalRows]);
 
+    const getSelectedRightIds = () => {
+        return selectedRightGridApi.getRenderedNodes().map((node) => {
+            const {data = {}} = node;
+            return data.id;
+        });
+    };
+
     const onAllColumnsExportClick = () => {
         if(isSelectedOptionActive) {
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
-            exportService.exportAvails(selectedRows.map(({id}) => id), allDisplayedColumns)
+            exportService.exportAvails(getSelectedRightIds(), allDisplayedColumns)
                 .then(response => downloadFile(response.data));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
@@ -55,7 +62,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     const onVisibleColumnsExportClick = () => {
         if(isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
-            exportService.exportAvails(selectedRows.map(({id}) => id), visibleColumns)
+            exportService.exportAvails(getSelectedRightIds(), visibleColumns)
                 .then(response => downloadFile(response.data));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
