@@ -23,7 +23,6 @@ class NexusDatePicker extends Component {
     prevRawInput = '';
     prevDate = null;
 
-
     constructor(props) {
         super(props);
         this.state = {

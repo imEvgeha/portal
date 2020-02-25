@@ -24,7 +24,7 @@ export default class RightsResultsTable extends React.Component {
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
         const dateFormat = getDateFormatBasedOnLocale(locale);
-        const timestampDateFormat= `${dateFormat} ${TIMESTAMP_FORMAT}`;
+        const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
         let formatter = (column) => {
             const {
