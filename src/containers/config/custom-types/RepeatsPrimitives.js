@@ -24,7 +24,7 @@ const createFormForItem = (
 ) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
-        id: `${field.id}[${targetIndex}]`
+        id: `${field.id}[${item.id}]`
     }));
     return (
         <FormContext.Consumer>
