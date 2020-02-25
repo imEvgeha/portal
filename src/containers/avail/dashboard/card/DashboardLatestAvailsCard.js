@@ -16,10 +16,6 @@ import './DashboardLatestAvailsCard.scss';
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
 const DashboardLatestAvailsCard = ({push}) => {
-    // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
-    // if component gets unmounted during call execution to prevent setting state on an unmounted component
-    let _isMounted = false;
-
     let tableData = [];
     let table = null;
     let refresh = null;
@@ -32,13 +28,11 @@ const DashboardLatestAvailsCard = ({push}) => {
     const dateFormat = `${getDateFormatBasedOnLocale(locale)} HH:mm`;
 
     useEffect(() => {
-        _isMounted = true;
         getData();
         if(refresh === null){
             refresh = setInterval(getData, REFRESH_INTERVAL);
         }
         return () => {
-            _isMounted = false;
             if (refresh !== null) {
                 clearInterval(refresh);
                 refresh = null;
