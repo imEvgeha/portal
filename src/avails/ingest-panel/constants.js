@@ -39,4 +39,9 @@ export default {
         {label: 'US', value: 'US'},
         {label: 'UK', value: 'UK'}
     ],
+    TEMPLATES: [
+        {label: 'Use International Template', value: 'International'},
+        {label: 'Use US Template', value: 'US Master'},
+        {label: 'Use Studio Template', value: 'Studio'}
+    ],
 };

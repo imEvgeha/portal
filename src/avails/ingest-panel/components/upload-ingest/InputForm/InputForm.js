@@ -2,40 +2,37 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import {Checkbox} from '@atlaskit/checkbox';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {getLicensors, getIsUploading} from '../../../ingestSelectors';
 import {uploadIngest} from '../../../ingestActions';
 import constants from '../../../constants';
 import './InputForm.scss';
+import { RadioGroup } from '@atlaskit/radio';
 
-const {SERVICE_REGIONS} = constants;
+const {SERVICE_REGIONS, TEMPLATES} = constants;
+export const Studio = 'Studio';
+export const USMaster = 'US Master';
+export const International = 'International';
 
 const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
-    const [uploadDisabled, setUploadDisabled] = useState(true);
-    const [internal, setInternal] = useState(false);
+    const [template, setTemplate] = useState(TEMPLATES[0].value);
     const [licensor, setLicensor] = useState('');
     const [serviceRegion, setServiceRegion] = useState('');
 
-    useEffect(() => {
-        setLicensor(internal);
-    }, [internal]);
 
     useEffect(() => {
-        updateUploadStatus();
-        const serviceRegions = get(licensor, 'value.servicingRegions', []);
-        if(serviceRegions.length === 1) {
-            const name = serviceRegions[0].servicingRegionName;
-            setServiceRegion({label: name, value: name});
-        } else {
-            setServiceRegion('');
+        if(template === Studio) {
+            const serviceRegions = get(licensor, 'value.servicingRegions', []);
+            if (serviceRegions.length === 1) {
+                const name = serviceRegions[0].servicingRegionName;
+                setServiceRegion({label: name, value: name});
+            } else {
+                setServiceRegion('');
+            }
         }
     }, [licensor]);
 
-    useEffect(() => {
-        updateUploadStatus();
-    }, [serviceRegion]);
 
     const updateUploadStatus = () => {
         if(licensor && serviceRegion) {
@@ -51,9 +48,11 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
             file,
             closeModal
         };
-        if(internal) {
+        if(template !== Studio) {
             params.internal = true;
+            params.internalTemplateType = template;
         } else{
+            params.internal = false;
             params.licensor = get(licensor, 'value.value', '');
         }
         uploadIngest(params);
@@ -70,6 +69,13 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
         },
         menuPortalTarget: document.body
     };
+    const onTemplateChange = (event) => {
+        setTemplate(event.target.value);
+        setLicensor('');
+        event.target.value === USMaster ? setServiceRegion({label: 'US', value: 'US'}) : setServiceRegion('');
+    };
+
+    const uploadDisabled = !(serviceRegion && (template === Studio? licensor : true));
     return (
         <div className='manual-ingest-config'>
             <div className='manual-ingest-config__grid'>
@@ -79,9 +85,12 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                 </div>
                 <Button onClick={browseClick} className='manual-ingest-config__grid--browse'>Browse</Button>
             </div>
-            <div className='manual-ingest-config__internal'>
-                <Checkbox onChange={e => setInternal(get(e, 'currentTarget.checked', false))}/>
-                <span>Use Internal Template</span>
+            <div className='manual-ingest-config__templates'>
+                <RadioGroup
+                    options={TEMPLATES}
+                    onChange={onTemplateChange}
+                    defaultValue={TEMPLATES[0].value}
+                />
             </div>
             <div className='manual-ingest-config__grid'>
                 <div className='manual-ingest-config--licensor'>
@@ -91,8 +100,8 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setLicensor}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={internal}
-                        placeholder={internal ? 'N/A' : 'Select'}
+                        isDisabled={template !== Studio}
+                        placeholder={template !== Studio ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
                 </div>
@@ -103,7 +112,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setServiceRegion}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={!licensor}
+                        isDisabled={template === USMaster}
                         placeholder='Select'
                         {...selectProps}
                     />
