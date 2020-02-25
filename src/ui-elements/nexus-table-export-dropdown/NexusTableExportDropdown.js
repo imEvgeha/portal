@@ -40,10 +40,12 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     }, [isSelectedOptionActive, selectedRows, totalRows]);
 
     const getSelectedRightIds = () => {
-        return selectedRightGridApi.getRenderedNodes().map((node) => {
+        const ids = [];
+        selectedRightGridApi.forEachNodeAfterFilter((node) => {
             const {data = {}} = node;
-            return data.id;
+            ids.push(data.id);
         });
+        return ids;
     };
 
     const onAllColumnsExportClick = () => {
