@@ -81,7 +81,6 @@ const TitleMatchView = ({
 
     // Taken from focused right to be able to filter title list table
     const {title, contentType = '', releaseYear} = focusedRight || {};
-    console.log(focusedRight, 'right')
 
     return (
         <div className="nexus-c-title-to-match">
