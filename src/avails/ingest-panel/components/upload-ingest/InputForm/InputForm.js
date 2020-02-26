@@ -110,7 +110,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setServiceRegion}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={template === USMASTER}
+                        isDisabled={template === USMASTER || (template === STUDIO && !licensor)}
                         placeholder='Select'
                         {...selectProps}
                     />
