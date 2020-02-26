@@ -117,7 +117,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                 </div>
             </div>
             <div className='manual-ingest-config__grid'>
-                <Button onClick={closeModal}>Cancel</Button>
+                <Button isDisabled={isUploading} onClick={closeModal}>Cancel</Button>
                 <Button
                     onClick={uploadHandler}
                     className={uploadDisabled ? '' : 'btn-primary'}
