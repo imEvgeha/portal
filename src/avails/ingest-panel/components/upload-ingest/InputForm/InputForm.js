@@ -69,7 +69,8 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
     const onTemplateChange = (event) => {
         setTemplate(event.target.value);
         setLicensor('');
-        event.target.value === USMASTER ? setServiceRegion({label: 'US', value: 'US'}) : setServiceRegion('');
+        const serviceRegionValue = event.target.value === USMASTER && {label: 'US', value: 'US'};
+        setServiceRegion(serviceRegionValue);
     };
 
     const uploadDisabled = !(serviceRegion && (template === STUDIO? licensor : true));
