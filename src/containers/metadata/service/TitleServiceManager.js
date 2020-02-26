@@ -23,7 +23,9 @@ export const titleServiceManager = {
 
     // Temporary solution - pick between 2 title APIs for fetching titles
     smartSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        if (isEmpty(searchCriteria)) {
+        const isSeachCriteriaEmpty = isEmpty(searchCriteria)
+            || Object.values(searchCriteria).every(v => ['', null, undefined].includes(v));
+        if (isSeachCriteriaEmpty) {
             return titleService.advancedSearch(searchCriteria, page, pageSize, sortedParams);
         } 
         return titleService.freeTextSearchWithGenres(searchCriteria, page, pageSize, sortedParams);
