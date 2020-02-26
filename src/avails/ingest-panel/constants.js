@@ -44,4 +44,7 @@ export default {
         {label: 'Use US Template', value: 'US Master'},
         {label: 'Use Studio Template', value: 'Studio'}
     ],
+    STUDIO: 'Studio',
+    USMASTER:'US Master',
+    INTERNATIONAL: 'International'
 };

@@ -10,10 +10,7 @@ import constants from '../../../constants';
 import './InputForm.scss';
 import { RadioGroup } from '@atlaskit/radio';
 
-const {SERVICE_REGIONS, TEMPLATES} = constants;
-export const Studio = 'Studio';
-export const USMaster = 'US Master';
-export const International = 'International';
+const {SERVICE_REGIONS, TEMPLATES, USMASTER, STUDIO} = constants;
 
 const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
     const [template, setTemplate] = useState(TEMPLATES[0].value);
@@ -22,7 +19,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
 
 
     useEffect(() => {
-        if(template === Studio) {
+        if(template === STUDIO) {
             const serviceRegions = get(licensor, 'value.servicingRegions', []);
             if (serviceRegions.length === 1) {
                 const name = serviceRegions[0].servicingRegionName;
@@ -48,7 +45,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
             file,
             closeModal
         };
-        if(template !== Studio) {
+        if(template !== STUDIO) {
             params.internal = true;
             params.internalTemplateType = template;
         } else{
@@ -72,10 +69,10 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
     const onTemplateChange = (event) => {
         setTemplate(event.target.value);
         setLicensor('');
-        event.target.value === USMaster ? setServiceRegion({label: 'US', value: 'US'}) : setServiceRegion('');
+        event.target.value === USMASTER ? setServiceRegion({label: 'US', value: 'US'}) : setServiceRegion('');
     };
 
-    const uploadDisabled = !(serviceRegion && (template === Studio? licensor : true));
+    const uploadDisabled = !(serviceRegion && (template === STUDIO? licensor : true));
     return (
         <div className='manual-ingest-config'>
             <div className='manual-ingest-config__grid'>
@@ -100,8 +97,8 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setLicensor}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== Studio}
-                        placeholder={template !== Studio ? 'N/A' : 'Select'}
+                        isDisabled={template !== STUDIO}
+                        placeholder={template !== STUDIO ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
                 </div>
@@ -112,7 +109,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setServiceRegion}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={template === USMaster}
+                        isDisabled={template === USMASTER}
                         placeholder='Select'
                         {...selectProps}
                     />
