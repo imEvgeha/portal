@@ -16,6 +16,7 @@ import {
 } from './constants';
 import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
 import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
+import {getRepositoryCell} from '../../../avails/utils';
 import * as selectors from '../../metadataSelectors';
 import {getReconciliationTitles} from '../../metadataActions';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
@@ -54,7 +55,11 @@ const LegacyTitleReconciliationReview = ({
     };
 
     const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = [episodeAndSeasonNumberColumnDef, ...columnDefs];
+    const updatedColumnDefs = [
+        getRepositoryCell({headerName: 'Repository'}),
+        episodeAndSeasonNumberColumnDef,
+        ...columnDefs
+    ];
 
     const duplicateRowData = titles.filter(({id}) => duplicateIds.includes(id));
     const masterRowData = titles.filter(({id}) => masterIds.includes(id));
