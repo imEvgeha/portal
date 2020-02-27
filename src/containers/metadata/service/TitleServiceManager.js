@@ -2,6 +2,7 @@ import isEmpty from 'lodash.isempty';
 import {store} from '../../../index';
 import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/metadata/index';
 import {titleService} from './TitleService';
+import {EXCLUDED_INITIAL_FILTER_VALUES} from '../../../ui-elements/nexus-grid/constants';
 
 export const titleServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements
@@ -24,7 +25,7 @@ export const titleServiceManager = {
     // Temporary solution - pick between 2 title APIs for fetching titles
     smartSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const isSeachCriteriaEmpty = isEmpty(searchCriteria)
-            || Object.values(searchCriteria).every(v => ['', null, undefined].includes(v));
+            || Object.values(searchCriteria).every(v => EXCLUDED_INITIAL_FILTER_VALUES.includes(v));
         if (isSeachCriteriaEmpty) {
             return titleService.advancedSearch(searchCriteria, page, pageSize, sortedParams);
         } 
