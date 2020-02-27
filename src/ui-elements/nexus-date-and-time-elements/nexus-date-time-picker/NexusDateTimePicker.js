@@ -29,7 +29,7 @@ const NexusDateTimePicker = ({
     ...restProps
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(value);
 
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, [value]);
