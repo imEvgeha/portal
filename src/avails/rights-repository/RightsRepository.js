@@ -57,21 +57,21 @@ const SelectedRighstRepositoryTable = compose(
 )(NexusGrid);
 
 const RightsRepository = ({
-        columnDefs,
-        createRightMatchingColumnDefs,
-        mapping,
-        selectedIngest,
-        selectedAttachmentId,
-        filterByStatus,
-        ingestClick,
-        setSelectedRights,
-        selectedRights,
-        setRightsFilter,
-        rightsFilter,
-        deselectIngest,
-        downloadIngestEmail,
-        downloadIngestFile,
-        location,
+    columnDefs,
+    createRightMatchingColumnDefs,
+    mapping,
+    selectedIngest,
+    selectedAttachmentId,
+    filterByStatus,
+    ingestClick,
+    setSelectedRights,
+    selectedRights,
+    setRightsFilter,
+    rightsFilter,
+    deselectIngest,
+    downloadIngestEmail,
+    downloadIngestFile,
+    location,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -85,6 +85,7 @@ const RightsRepository = ({
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
     const previousActiveTab = usePrevious(activeTab);
+    const [selectedFilter, setSelectedFilter] = useState({});
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -146,11 +147,7 @@ const RightsRepository = ({
     useEffect(() => {
         if (!isEqual(previousActiveTab, activeTab) && previousActiveTab === RIGHTS_SELECTED_TAB) {
             const allSelectedRows = selectedGridApi.getSelectedRows() || [];
-            const toUnselect = selectedRepoRights
-                .filter(el => !allSelectedRows.map(({id}) => id).includes(el.id))
-                .map(({id}) => id);
-            const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
-            nodes.forEach(node => node.setSelected(false));
+            toggleRightSelection(allSelectedRows);
         }
     }, [activeTab]);
 
@@ -255,7 +252,23 @@ const RightsRepository = ({
         if (type === GRID_EVENTS.READY) {
             setSelectedGridApi(api);
             setSelectedColumnApi(columnApi);
+        } else if (type === GRID_EVENTS.ROW_DATA_CHANGED) {
+            api.setFilterModel(selectedFilter);
         }
+    };
+
+    const handleRefreshClick = () => {
+        setSelectedFilter(selectedGridApi.getFilterModel());
+        const allSelectedRows = selectedGridApi.getSelectedRows();
+        toggleRightSelection(allSelectedRows);
+    };
+
+    const toggleRightSelection = (selectedRows = []) => {
+        const toUnselect = selectedRepoRights
+            .filter(el => !selectedRows.map(({id}) => id).includes(el.id))
+            .map(({id}) => id);
+        const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+        nodes.forEach(node => node.setSelected(false));
     };
 
     const getSelectedTabRights = (selectedRights) => {
@@ -271,6 +284,9 @@ const RightsRepository = ({
 
     return (
         <div className="nexus-c-rights-repository">
+            {activeTab === RIGHTS_SELECTED_TAB && (
+                <button onClick={handleRefreshClick}>Refresh</button>
+            )}
             <RightsRepositoryHeader />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest

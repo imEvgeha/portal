@@ -96,6 +96,7 @@ const withFilterableColumns = ({
                 GRID_EVENTS.FIRST_DATA_RENDERED,
                 GRID_EVENTS.SELECTION_CHANGED,
                 GRID_EVENTS.FILTER_CHANGED,
+                GRID_EVENTS.ROW_DATA_CHANGED,
             ];
 
             if (type === GRID_EVENTS.READY) {
