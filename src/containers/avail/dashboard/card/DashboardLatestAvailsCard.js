@@ -87,7 +87,7 @@ const DashboardLatestAvailsCard = ({push}) => {
     ];
 
     const getData = () => {
-        _isMounted && historyService.advancedSearch(
+        historyService.advancedSearch(
             advancedHistorySearchHelper.prepareAdvancedHistorySearchCall({}),
                 0,
                 PAGE_SIZE,
