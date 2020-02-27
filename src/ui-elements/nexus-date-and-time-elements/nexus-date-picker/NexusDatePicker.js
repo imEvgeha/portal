@@ -77,7 +77,9 @@ const NexusDatePicker = ({
                             id={id}
                             locale={locale}
                             placeholder={dateFormat}
-                            onChange={onDateChange}
+                            onChange={date => {
+                                isWithInlineEdit ? setDate(date) : onDateChange(date);
+                            }}
                             defaultValue={moment(value).isValid() ? value : ''}
                             value={date}
                             {...restProps}
@@ -110,7 +112,7 @@ const NexusDatePicker = ({
                         )}
                         editView={() => DatePickerComponent(false)}
                         defaultValue={moment(value).isValid() ? value : ''}
-                        onConfirm={onConfirm}
+                        onConfirm={() => onConfirm(date)}
                         readViewFitContainerWidth
                         {...restProps}
                     />
