@@ -1093,8 +1093,8 @@ class RightDetails extends React.Component {
                         editedRight: {...prevState.editedRight, [name]: date}
                     }));
                 },
-                onConfirm: () => (
-                    !error && this.handleEditableSubmit(name, this.state.editedRight[name], revertChanges) || revertChanges()
+                onConfirm: (date) => (
+                    !error && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
                 ),
                 defaultValue: value,
                 value:  this.state.editedRight[name] !== undefined ?  this.state.editedRight[name] : value,
