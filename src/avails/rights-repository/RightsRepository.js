@@ -243,14 +243,13 @@ const RightsRepository = ({
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED} = GRID_EVENTS;
+        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
                 setSelectedGridApi(api);
                 setSelectedColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED:
-                setSelectedFilter(selectedGridApi.getFilterModel());
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
                 const toUnselect = selectedRepoRights
                     .map(({id}) => id)
@@ -260,6 +259,9 @@ const RightsRepository = ({
                 break;
             case ROW_DATA_CHANGED:
                 api.setFilterModel(selectedFilter);
+                break;
+            case FILTER_CHANGED:
+                setSelectedFilter(api.getFilterModel());
                 break;
         }
     };
