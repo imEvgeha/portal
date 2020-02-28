@@ -108,7 +108,7 @@ const NexusSimpleDateTimePicker = ({
                         times = {TIMES}
                         {...restProps}
                     />
-                    {allowClear && <ClearButton onClear={() => onChange('')} />}
+                    {allowClear && <ClearButton onClear={() => {setDate(''); onChange('');}} />}
                 </div>
             </TemporaryErrorBorder>
             {error &&

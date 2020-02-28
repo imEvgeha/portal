@@ -47,7 +47,7 @@ const NexusDatePicker = ({
     const onDateChange = date => {
         if(date){
             setDate(date);
-            onChange(isTimestamp
+            !isWithInlineEdit && onChange(isTimestamp
                 ? moment(date).toISOString()
                 : `${moment(date).format(isSimulcast
                     ? SIMULCAST_DATE_FORMAT
@@ -76,9 +76,7 @@ const NexusDatePicker = ({
                             id={id}
                             locale={locale}
                             placeholder={dateFormat}
-                            onChange={date => {
-                                isWithInlineEdit ? setDate(date) : onDateChange(date);
-                            }}
+                            onChange={onDateChange}
                             defaultValue={moment(value).isValid() ? value : ''}
                             value={date}
                             {...restProps}
