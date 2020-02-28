@@ -1,8 +1,10 @@
 import moment from 'moment';
+import {getDateFormatBasedOnLocale} from './Common';
 const datePattern = new RegExp('[0-9]{2}[\\/][0-9]{2}[\\/][0-9]{4}');
 
-function validateDate(date) {
-    return date && ('' + date).length === 10 && datePattern.test('' + date) && moment(date, 'MM/DD/YYYY').isValid();
+function validateDate(date, locale='en') {
+    const dateFormat = getDateFormatBasedOnLocale(locale);
+    return date && ('' + date).length === 10 && datePattern.test('' + date) && moment(date, dateFormat).isValid();
 }
 
 function rangeValidation(name, displayName, date, avail) {
