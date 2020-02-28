@@ -242,7 +242,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <UploadIngestButton externalId={externalId}/>
+                            <UploadIngestButton externalId={externalId}  ingestData={this.state.historyData} />
                         </Can>
                     </div>
                 </div>

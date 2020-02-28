@@ -1,9 +1,14 @@
+@import '../../../../../styles/config';
+
 .manual-ingest-config {
   display: flex;
   flex-direction: column;
   min-height: 250px;
   overflow: hidden;
   font-size: 14px;
+  label[data-testid=disabled--radio-label] {
+    color: map-get($colors, nexus-light-grey);
+  }
   &__grid {
     display: grid;
     align-items: center;

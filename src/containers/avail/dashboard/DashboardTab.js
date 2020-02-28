@@ -1,5 +1,4 @@
 import React from 'react';
-import DashboardDropableCard from './card/components/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
 import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';

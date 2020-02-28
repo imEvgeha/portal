@@ -7,7 +7,7 @@ import './UploadIngestButton.scss';
 
 const TITLE = 'Avail Ingest';
 
-const UploadIngestButton = ({externalId}) => {
+const UploadIngestButton = ({externalId, ingestData}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -29,6 +29,8 @@ const UploadIngestButton = ({externalId}) => {
 
     const buildForm = () => (
         <InputForm
+            externalId={externalId}
+            ingestData={ingestData}
             closeModal={closeModal}
             file={file}
             browseClick={browseClick}/>
