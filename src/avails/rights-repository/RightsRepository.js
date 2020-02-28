@@ -300,6 +300,7 @@ const RightsRepository = ({
                 rightsFilter={rightsFilter}
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
+                selectedRightGridApi={selectedGridApi}
             />
             <SelectedRighstRepositoryTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}

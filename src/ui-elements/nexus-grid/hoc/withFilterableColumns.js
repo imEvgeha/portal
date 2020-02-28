@@ -5,12 +5,20 @@ import omit from 'lodash.omit';
 import cloneDeep from 'lodash.clonedeep';
 import {createAvailSelectValuesSelector} from '../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../util/Common';
-import {GRID_EVENTS, DEFAULT_HOC_PROPS, FILTERABLE_DATA_TYPES,
-    FILTER_TYPE, DEFAULT_FILTER_PARAMS, NOT_FILTERABLE_COLUMNS} from '../constants';
+import {
+    GRID_EVENTS,
+    DEFAULT_HOC_PROPS,
+    FILTERABLE_DATA_TYPES,
+    FILTER_TYPE,
+    DEFAULT_FILTER_PARAMS,
+    NOT_FILTERABLE_COLUMNS,
+    EXCLUDED_INITIAL_FILTER_VALUES,
+} from '../constants';
 import usePrevious from '../../../util/hooks/usePrevious';
 import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
 import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
 import get from 'lodash.get';
+import pickBy from 'lodash.pickby';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -24,7 +32,7 @@ const withFilterableColumns = ({
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
-        const filters = props.initialFilter || initialFilter || {};
+        const filters = pickBy(props.initialFilter || initialFilter || {}, val => !(EXCLUDED_INITIAL_FILTER_VALUES.includes(val)));
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
         const previousFilters = usePrevious(filters);
