@@ -144,13 +144,6 @@ const RightsRepository = ({
         setSelectedRepoRights(getSelectedTabRights(rights));
     }, [search, selectedRights, gridApi]);
 
-    useEffect(() => {
-        if (!isEqual(previousActiveTab, activeTab) && previousActiveTab === RIGHTS_SELECTED_TAB) {
-            const allSelectedRows = selectedGridApi.getSelectedRows() || [];
-            toggleRightSelection(allSelectedRows);
-        }
-    }, [activeTab]);
-
     useEffect(()=> {
         if (selectedGridApi) {
             if (isRepositoryDataLoading) {
@@ -214,12 +207,13 @@ const RightsRepository = ({
         : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
-            case GRID_EVENTS.READY:
+            case READY:
                 setGridApi(api);
                 setColumnApi(columnApi);
                 break;
-            case GRID_EVENTS.SELECTION_CHANGED:
+            case SELECTION_CHANGED:
                 const newSelectedRights = cloneDeep(selectedRights);
                 const idsToRemove = [];
                 api.forEachNode((node) => {
@@ -231,11 +225,11 @@ const RightsRepository = ({
                        newSelectedRights.push(data);
                    }
                 });
-                const allSelectedRows =  newSelectedRights.filter(el => !idsToRemove.includes(el.id));
+                const allSelectedRows = newSelectedRights.filter(el => !idsToRemove.includes(el.id));
                 const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
-            case GRID_EVENTS.FILTER_CHANGED:
+            case FILTER_CHANGED:
                 const column = filterBy(api.getFilterModel());
                 if (Object.keys(column || {}).length === 0) {
                     let filter = {...rightsFilter};
@@ -249,26 +243,25 @@ const RightsRepository = ({
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        if (type === GRID_EVENTS.READY) {
-            setSelectedGridApi(api);
-            setSelectedColumnApi(columnApi);
-        } else if (type === GRID_EVENTS.ROW_DATA_CHANGED) {
-            api.setFilterModel(selectedFilter);
+        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED} = GRID_EVENTS;
+        switch (type) {
+            case READY:
+                setSelectedGridApi(api);
+                setSelectedColumnApi(columnApi);
+                break;
+            case SELECTION_CHANGED:
+                setSelectedFilter(selectedGridApi.getFilterModel());
+                const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
+                const toUnselect = selectedRepoRights
+                    .map(({id}) => id)
+                    .filter(selectediRepoId => !allSelectedRowsIds.includes(selectediRepoId));
+                const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+                nodes.forEach(node => node.setSelected(false));
+                break;
+            case ROW_DATA_CHANGED:
+                api.setFilterModel(selectedFilter);
+                break;
         }
-    };
-
-    const handleRefreshClick = () => {
-        setSelectedFilter(selectedGridApi.getFilterModel());
-        const allSelectedRows = selectedGridApi.getSelectedRows();
-        toggleRightSelection(allSelectedRows);
-    };
-
-    const toggleRightSelection = (selectedRows = []) => {
-        const toUnselect = selectedRepoRights
-            .filter(el => !selectedRows.map(({id}) => id).includes(el.id))
-            .map(({id}) => id);
-        const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
-        nodes.forEach(node => node.setSelected(false));
     };
 
     const getSelectedTabRights = (selectedRights) => {
@@ -284,9 +277,6 @@ const RightsRepository = ({
 
     return (
         <div className="nexus-c-rights-repository">
-            {activeTab === RIGHTS_SELECTED_TAB && (
-                <button onClick={handleRefreshClick}>Refresh</button>
-            )}
             <RightsRepositoryHeader />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
