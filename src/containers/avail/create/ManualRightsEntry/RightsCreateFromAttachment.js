@@ -6,7 +6,6 @@ import { profileService } from '../../service/ProfileService';
 import { historyService } from '../../service/HistoryService';
 import { URL } from '../../../../util/Common';
 import { Can } from '../../../../ability';
-import DashboardDropableCard from '../../dashboard/card/components/DashboardDropableCard';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
@@ -25,6 +24,8 @@ import {
     updateManualRightsEntryColumns
 } from '../../../../stores/actions/avail/manualRightEntry';
 import TableDownloadRights from '../../../../ui-elements/nexus-table-download-rights/TableDownload';
+import UploadIngestButton
+    from '../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
@@ -241,7 +242,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <DashboardDropableCard externalId={externalId} status={status}/>
+                            <UploadIngestButton ingestData={this.state.historyData} />
                         </Can>
                     </div>
                 </div>

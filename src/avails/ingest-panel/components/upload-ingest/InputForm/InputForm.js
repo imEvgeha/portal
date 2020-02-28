@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
+import isEmpty from 'lodash.isempty';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {getLicensors, getIsUploading} from '../../../ingestSelectors';
@@ -10,16 +11,30 @@ import constants from '../../../constants';
 import './InputForm.scss';
 import { RadioGroup } from '@atlaskit/radio';
 
-const {SERVICE_REGIONS, TEMPLATES, USMASTER, STUDIO} = constants;
+const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, STUDIO, INTERNATIONAL} } = constants;
+const US = 'US';
 
-const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
-    const [template, setTemplate] = useState(TEMPLATES[0].value);
-    const [licensor, setLicensor] = useState('');
-    const [serviceRegion, setServiceRegion] = useState('');
+const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
+    const templates = [
+        {label: 'Use International Template', value: INTERNATIONAL,
+            disabled: !isEmpty(ingestData) && ingestData.ingestType === EMAIL, testId: !isEmpty(ingestData) && ingestData.ingestType === EMAIL && 'disabled'},
+        {label: 'Use US Template', value: USMASTER,
+            disabled: !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.serviceRegion !== US),
+            testId: !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.serviceRegion !== US) && 'disabled'},
+        {label: 'Use Studio Template', value: STUDIO,
+            disabled:  !isEmpty(ingestData) && ingestData.ingestType === UPLOAD, testId:  !isEmpty(ingestData) && ingestData.ingestType === UPLOAD && 'disabled'}
+    ];
+
+
+    const initialTemplate = templates.find(t => !t.disabled);
+    const [template, setTemplate] = useState(initialTemplate.value);
+    const getLicensor = template === STUDIO && ingestData.licensor && {label: ingestData.licensor , value:  {value: ingestData.licensor} };
+    const [licensor, setLicensor] = useState(getLicensor);
+    const [serviceRegion, setServiceRegion] = useState( ingestData.serviceRegion && {label: ingestData.serviceRegion, value: ingestData.serviceRegion} );
 
 
     useEffect(() => {
-        if(template === STUDIO) {
+        if(template === STUDIO && !ingestData) {
             const serviceRegions = get(licensor, 'value.servicingRegions', []);
             if (serviceRegions.length === 1) {
                 const name = serviceRegions[0].servicingRegionName;
@@ -31,13 +46,6 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
     }, [licensor]);
 
 
-    const updateUploadStatus = () => {
-        if(licensor && serviceRegion) {
-            setUploadDisabled(false);
-        } else {
-            setUploadDisabled(true);
-        }
-    };
 
     const uploadHandler = () => {
         const params = {
@@ -45,6 +53,9 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
             file,
             closeModal
         };
+        if(ingestData.externalId) {
+            params.externalId = ingestData.externalId;
+        }
         if(template !== STUDIO) {
             params.internal = true;
             params.internalTemplateType = template;
@@ -67,10 +78,11 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
         menuPortalTarget: document.body
     };
     const onTemplateChange = (event) => {
-        setTemplate(event.target.value);
-        setLicensor('');
-        const serviceRegionValue = event.target.value === USMASTER && {label: 'US', value: 'US'};
-        setServiceRegion(serviceRegionValue);
+        const selectedTemplate = event.target.value;
+        setTemplate(selectedTemplate);
+        const serviceRegionValue = selectedTemplate === USMASTER && {label: US, value: US};
+        !ingestData.externalId && setServiceRegion(serviceRegionValue);
+        selectedTemplate !== STUDIO && setLicensor('');
     };
 
     const uploadDisabled = !(serviceRegion && (template === STUDIO? licensor : true));
@@ -85,9 +97,9 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
             </div>
             <div className='manual-ingest-config__templates'>
                 <RadioGroup
-                    options={TEMPLATES}
+                    options={templates}
                     onChange={onTemplateChange}
-                    defaultValue={TEMPLATES[0].value}
+                    defaultValue={initialTemplate.value}
                 />
             </div>
             <div className='manual-ingest-config__grid'>
@@ -98,7 +110,7 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setLicensor}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== STUDIO}
+                        isDisabled={template !== STUDIO || ingestData.licensor}
                         placeholder={template !== STUDIO ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
@@ -110,14 +122,14 @@ const InputForm = ({closeModal, file, browseClick, licensors, uploadIngest, isUp
                         onChange={setServiceRegion}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={template === USMASTER || (template === STUDIO && !licensor)}
+                        isDisabled={ingestData.serviceRegion || template === USMASTER || (template === STUDIO && !licensor)}
                         placeholder='Select'
                         {...selectProps}
                     />
                 </div>
             </div>
             <div className='manual-ingest-config__grid'>
-                <Button onClick={closeModal}>Cancel</Button>
+                <Button isDisabled={isUploading} onClick={closeModal}>Cancel</Button>
                 <Button
                     onClick={uploadHandler}
                     className={uploadDisabled ? '' : 'btn-primary'}

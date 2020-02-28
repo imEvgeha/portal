@@ -58,7 +58,7 @@ function ManualRightEntryTableTabs({
     };
 
     const viewJSON = () => {
-        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights?availHistoryIds=${availHistoryId}&page=0&size=10000`;
+        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/avails/ingest/history/${availHistoryId}?appendErrorReports=true`;
         window.open( url, '_blank');
     };
 
