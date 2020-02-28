@@ -7,7 +7,7 @@ import './UploadIngestButton.scss';
 
 const TITLE = 'Avail Ingest';
 
-const UploadIngestButton = ({externalId, ingestData}) => {
+const UploadIngestButton = ({ingestData}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -29,7 +29,6 @@ const UploadIngestButton = ({externalId, ingestData}) => {
 
     const buildForm = () => (
         <InputForm
-            externalId={externalId}
             ingestData={ingestData}
             closeModal={closeModal}
             file={file}
@@ -55,7 +54,7 @@ const UploadIngestButton = ({externalId, ingestData}) => {
                    type="file"
                    accept={config.get('avails.upload.extensions')}
                    ref={inputRef} onInput={handleUpload}/>
-            {externalId ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
+            {ingestData ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
                 : <Add onClick={inputClick} />
             }
         </div>

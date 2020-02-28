@@ -14,7 +14,7 @@ import { RadioGroup } from '@atlaskit/radio';
 const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, STUDIO, INTERNATIONAL} } = constants;
 const US = 'US';
 
-const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading, externalId}) => {
+const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
     const templates = [
         {label: 'Use International Template', value: INTERNATIONAL,
             disabled: !isEmpty(ingestData) && ingestData.ingestType === EMAIL, testId: !isEmpty(ingestData) && ingestData.ingestType === EMAIL && 'disabled'},
@@ -53,8 +53,8 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
             file,
             closeModal
         };
-        if(externalId) {
-            params.externalId = externalId;
+        if(ingestData.externalId) {
+            params.externalId = ingestData.externalId;
         }
         if(template !== STUDIO) {
             params.internal = true;
@@ -81,7 +81,7 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
         const selectedTemplate = event.target.value;
         setTemplate(selectedTemplate);
         const serviceRegionValue = selectedTemplate === USMASTER && {label: US, value: US};
-        !externalId && setServiceRegion(serviceRegionValue);
+        !ingestData.externalId && setServiceRegion(serviceRegionValue);
         selectedTemplate !== STUDIO && setLicensor('');
     };
 
