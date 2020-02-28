@@ -63,6 +63,8 @@ const NexusDateTimePicker = ({
                             <NexusSimpleDateTimePicker
                                 id={id}
                                 onChange={(date) => {
+                                    // Don't use onChange if the component is with InlineEdit
+                                    // onConfirm will handle changes
                                     isWithInlineEdit ? setDate(date) : onChange(date);
                                 }}
                                 value={value || ''}

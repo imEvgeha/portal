@@ -374,6 +374,8 @@ class RightDetails extends React.Component {
                 NexusBreadcrumb.pop();
                 NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
+
+                // Clear the state for editedRight, since the change was already applied
                 this.setState((prevState) => {
                     const {editedRight = {}} = prevState;
                     delete editedRight[name];

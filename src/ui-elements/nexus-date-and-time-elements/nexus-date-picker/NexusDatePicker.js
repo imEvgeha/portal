@@ -11,7 +11,7 @@ import './NexusDatePicker.scss';
 import {
     RELATIVE_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
-    METADATA_RELATIVE_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
@@ -47,19 +47,23 @@ const NexusDatePicker = ({
     const onDateChange = date => {
         if(date){
             setDate(date);
-            !isWithInlineEdit && onChange(isTimestamp
-                ? moment(date).toISOString()
-                : `${moment(date).format(isSimulcast
-                    ? SIMULCAST_DATE_FORMAT
-                    : RELATIVE_FORMAT)
-                }`);
+            // Don't use onChange if the component has InlineEdit
+            // onConfirm will handle changes
+            !isWithInlineEdit && onChange(
+                isTimestamp
+                    ? moment(date).toISOString()
+                    : `${moment(date).format(isSimulcast
+                        ? SIMULCAST_DATE_FORMAT
+                        : RELATIVE_FORMAT)
+                    }`
+            );
         } else {
             setDate('');
             onChange('');
         }
     };
 
-    const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : METADATA_RELATIVE_DATE_FORMAT;
+    const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
     const DatePickerComponent = (isReadOnly) => (
         <>

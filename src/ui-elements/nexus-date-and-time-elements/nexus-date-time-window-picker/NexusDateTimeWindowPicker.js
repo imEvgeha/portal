@@ -13,7 +13,7 @@ import {
     FILL_DATE,
     FILL_DATE_TIME,
     SIMULCAST_DATE_FORMAT,
-    METADATA_RELATIVE_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
     RELATIVE_DATE_FORMAT,
 } from '../constants';
 import CustomIntlProvider from '../../../layout/CustomIntlProvider';
@@ -85,7 +85,7 @@ const NexusDateTimeWindowPicker = ({
         }
         let endDateWithFilledTime = moment(date).valueOf() + (isUsingTime ? FILL_DATE_TIME : FILL_DATE);
 
-        const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : METADATA_RELATIVE_DATE_FORMAT;
+        const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
         if (isTimestamp) {
             endDateWithFilledTime = moment(endDateWithFilledTime).toISOString();
