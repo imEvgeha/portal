@@ -96,7 +96,6 @@ const NexusSimpleDateTimePicker = ({
                         datePickerProps={{
                             placeholder: datePlaceholder,
                             onChange: (newValue) => {
-                                // TODO: Check why is value here instead of newValue
                                 !moment(value).isValid()
                                     ? onChange(convertToRequiredFormat(newValue))
                                     : onChange(convertToRequiredFormat(newValue + date.slice(10)));
