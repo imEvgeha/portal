@@ -96,6 +96,7 @@ const NexusSimpleDateTimePicker = ({
                         datePickerProps={{
                             placeholder: datePlaceholder,
                             onChange: (newValue) => {
+                                // TODO: Check why is value here instead of newValue
                                 !moment(value).isValid()
                                     ? onChange(convertToRequiredFormat(newValue))
                                     : onChange(convertToRequiredFormat(newValue + date.slice(10)));
@@ -103,12 +104,19 @@ const NexusSimpleDateTimePicker = ({
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
+                            onChange: (time = '') => {
+                                const [hours, minutes] = time.split(':');
+                                if (hours && minutes) {
+                                    const mergedDate = moment(date || undefined).hours(Number(hours)).minutes(Number(minutes));
+                                    onChange(convertToRequiredFormat(mergedDate));
+                                }
+                            },
                         }}
                         timeIsEditable
                         times = {TIMES}
                         {...restProps}
                     />
-                    {allowClear && <ClearButton onClear={() => {setDate(''); onChange('');}} />}
+                    {allowClear && <ClearButton onClear={() => {setDate(''); onDateChange('');}} />}
                 </div>
             </TemporaryErrorBorder>
             {error &&
