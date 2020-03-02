@@ -54,7 +54,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                         name={repo}
                         isChecked={matchList[repo] && matchList[repo].id === id}
                         onChange={({target}) => handleMatchClick(data, repo, target.checked)}
-                        isDisabled={!gridApi}
                     />
                 </CustomActionsCellRenderer>
             )
