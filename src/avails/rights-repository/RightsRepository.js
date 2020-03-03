@@ -182,7 +182,7 @@ const RightsRepository = ({
     };
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
-        if(columnDef.cellRenderer) {
+        if (columnDef.cellRenderer) {
             columnDef.cellRenderer = handleRightRedirect;
         }
         return columnDef;
@@ -261,6 +261,9 @@ const RightsRepository = ({
                 api.setFilterModel(selectedFilter);
                 break;
             case FILTER_CHANGED:
+                console.log(api.getSelectedRows())
+                const column = filterBy(api.getFilterModel());
+                console.log(column, 'column')
                 setSelectedFilter(api.getFilterModel());
                 break;
         }
