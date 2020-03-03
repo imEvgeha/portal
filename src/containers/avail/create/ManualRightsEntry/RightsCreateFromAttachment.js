@@ -6,7 +6,6 @@ import { profileService } from '../../service/ProfileService';
 import { historyService } from '../../service/HistoryService';
 import { URL } from '../../../../util/Common';
 import { Can } from '../../../../ability';
-import DashboardDropableCard from '../../dashboard/card/components/DashboardDropableCard';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
@@ -16,7 +15,7 @@ import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
-import {FATAL, tabFilter} from '../../../../constants/avails/manualRightsEntryTabs';
+import {FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 import TableColumnCustomization from '../../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
@@ -25,6 +24,8 @@ import {
     updateManualRightsEntryColumns
 } from '../../../../stores/actions/avail/manualRightEntry';
 import TableDownloadRights from '../../../../ui-elements/nexus-table-download-rights/TableDownload';
+import UploadIngestButton
+    from '../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
 
@@ -58,7 +59,7 @@ class RightsCreateFromAttachment extends React.Component {
         updateManualRightsEntryColumns: t.func,
         manualRightsResultPageLoading: t.func,
         columns: t.array,
-        selected: t.array
+        selected: t.array,
     };
 
     static contextTypes = {
@@ -121,7 +122,7 @@ class RightsCreateFromAttachment extends React.Component {
 
     getHistoryData() {
         if (this.state.availHistoryId) {
-            historyService.getHistory(this.state.availHistoryId)
+            historyService.getHistory(this.state.availHistoryId, true)
                 .then(res => {
                     if (res && res.data && this._isMounted) {
                         this.setState({
@@ -241,7 +242,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <DashboardDropableCard externalId={externalId} status={status}/>
+                            <UploadIngestButton ingestData={this.state.historyData} />
                         </Can>
                     </div>
                 </div>
@@ -253,6 +254,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 createdCount={created}
                                 updatedCount={updated}
                                 historyData={this.state.historyData}
+                                availHistoryId={availHistoryId}
                                 fatalCount={fatal}/>
                             <div className='nexus-c-manual-rights-entry__actions'>
                                 <Button className='nexus-c-manual-rights-entry__button'
@@ -274,18 +276,20 @@ class RightsCreateFromAttachment extends React.Component {
                                 />
                             </div>
                         </div>
-                        <RightsResultTable
-                            fromServer={true}
-                            columns={columns}
-                            nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
-                            autoload={false}
-                            status={status}
-                            selectedTab={selectedTab}
-                            historyData={this.state.historyData}
-                            hidden={selectedTab === FATAL}
-                            searchCriteria={this.getCustomSearchCriteria(selectedTab)}
-                            onTableLoaded={this.onTableLoaded}
-                        />
+                        {selectedTab !== VIEW_JSON &&
+                            <RightsResultTable
+                                fromServer={true}
+                                columns={columns}
+                                nav={{ back: 'manual-rights-entry', params: { availHistoryId } }}
+                                autoload={false}
+                                status={status}
+                                selectedTab={selectedTab}
+                                historyData={this.state.historyData}
+                                hidden={selectedTab === FATAL}
+                                searchCriteria={this.getCustomSearchCriteria(selectedTab)}
+                                onTableLoaded={this.onTableLoaded}
+                            />
+                        }
                         <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
                     </React.Fragment>
                 }

@@ -29,7 +29,7 @@ const ERROR_MODAL = {
 const Http = {
     create: param => {
         const defaults = {
-            timeout: 60000,
+            timeout: 300000,
             headers: {'Content-Type': 'application/json'}
         };
         param = {
@@ -83,7 +83,7 @@ const Http = {
                     const {response: {status, data = {}, config: {url = '', method = ''} = {}} } = error;
                     let description;
                     if(ACCESS_DENIED.codes.includes(status)){
-                        description = `Status: ${status},\nURI: ${url},\nMethod: ${method}.toUpperCase()`;
+                        description = `Status: ${status},\nURI: ${url},\nMethod: ${method.toUpperCase()}`;
                         errorModal.open(ACCESS_DENIED.title, () => {}, {description});
                     } else{
                         if(defaultErrorHandling){

@@ -29,9 +29,10 @@ const NexusDateTimePicker = ({
     ...restProps
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
+    const [date, setDate] = useState(value);
 
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
-    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, []);
+    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, [value]);
 
     // Get locale provided by intl
     const intl = useIntl();
@@ -61,7 +62,11 @@ const NexusDateTimePicker = ({
                         <div className="nexus-c-date-time-picker__date-time">
                             <NexusSimpleDateTimePicker
                                 id={id}
-                                onChange={onChange}
+                                onChange={(date) => {
+                                    // Don't use onChange if the component is with InlineEdit
+                                    // onConfirm will handle changes
+                                    isWithInlineEdit ? setDate(date) : onChange(date);
+                                }}
                                 value={value || ''}
                                 isSimulcast={isSimulcast}
                                 isTimestamp={isTimestamp}
@@ -100,7 +105,7 @@ const NexusDateTimePicker = ({
                             <div className="nexus-c-date-time-picker__read-view-container">
                                 {moment(value).isValid()
                                     ?`${getDisplayDate(value)}
-                                     ${isSimulcast && !isTimestamp ? ' (UTC)' : ''}`
+                                     ${isSimulcast ? ' (UTC)' : ''}`
                                     : <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>
@@ -109,17 +114,15 @@ const NexusDateTimePicker = ({
                         )}
                         editView={() => DatePicker(false)}
                         defaultValue={value || ''}
-                        onConfirm={date => {
-                            let newDate = date;
+                        onConfirm={() => {
                             // As per requirement, timestamps are in ISO format
                             // and other dates take shorter format with no milliseconds
                             // where Simulcast(UTC) dates are with 'Z' at the end
                             if (isTimestamp) {
-                                newDate = moment(date).toISOString();
+                                onConfirm(moment(date).toISOString()); //YYYY-MM-DD[T]HH:mm:ss.SSS[Z]
                             } else {
-                                newDate = isSimulcast ? date : date.slice(0, -1);
+                                onConfirm(isSimulcast ? date : date.slice(0, -1)); //YYY-MM-DD[T]HH:mm:ss(Z)
                             }
-                            onConfirm(newDate);
                         }}
                         readViewFitContainerWidth
                         {...restProps}

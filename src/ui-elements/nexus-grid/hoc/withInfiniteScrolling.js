@@ -42,14 +42,14 @@ const withInfiniteScrolling = ({
         }, [gridApi, props.isDatasourceEnabled]);
 
         const getRows = (params, fetchData, gridApi) => {
-            const {startRow, successCallback, failCallback, filterModel, sortModel} = params || {};
+            const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
                     object[key] = props.params[key];
                     return object;
                 }, {});
-            const filterParams = filterBy(filterModel);
+            const filterParams = filterBy(filterModel, props.prepareFilterParams);
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -63,6 +63,9 @@ const withInfiniteScrolling = ({
                 ...filterParams,
             };
 
+            if (typeof props.setDataLoading === 'function') {
+                props.setDataLoading(true);
+            }
             fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
                     const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
@@ -76,17 +79,12 @@ const withInfiniteScrolling = ({
                         if ((page + 1) * size >= total) {
                             lastRow = total;
                         }
-                        // TODO: it shouldn't be here
-                        if (typeof props.onAddAdditionalField === 'function') {
-                            props.onAddAdditionalField(data, (updatedData) => successCallback(updatedData, lastRow));
-                        } else {
-                            successCallback(data, lastRow);
-                        }
+                        successCallback(data, lastRow);
 
                         // selected rows
-                        if (props.selectedRows) {
+                        if (context && context.selectedRows) {
                             gridApi.forEachNode(rowNode => {
-                                const selectedNode = props.selectedRows[rowNode.id];
+                                const selectedNode = context.selectedRows.find(({id}) => id === rowNode.id);
                                 if (selectedNode) {
                                     rowNode.setSelected(true);
                                 }
@@ -105,7 +103,12 @@ const withInfiniteScrolling = ({
                     gridApi.showNoRowsOverlay();
                 })
                 .catch(error => failCallback(error))
-                .finally(() => hasBeenCalledRef.current = false);
+                .finally(() => {
+                    hasBeenCalledRef.current = false;
+                    if (typeof props.setDataLoading === 'function') {
+                        props.setDataLoading(false);
+                    }
+                });
         };
 
 

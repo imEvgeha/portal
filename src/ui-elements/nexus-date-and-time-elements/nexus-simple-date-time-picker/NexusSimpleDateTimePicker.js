@@ -10,7 +10,8 @@ import {
     TIME_PLACEHOLDER,
     ATLASKIT_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
-    RELATIVE_DATE_FORMAT
+    RELATIVE_DATE_FORMAT,
+    TIMES
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
@@ -102,10 +103,19 @@ const NexusSimpleDateTimePicker = ({
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
+                            onChange: (time = '') => {
+                                const [hours, minutes] = time.split(':');
+                                if (hours && minutes) {
+                                    const mergedDate = moment(date || undefined).hours(Number(hours)).minutes(Number(minutes));
+                                    onChange(convertToRequiredFormat(mergedDate));
+                                }
+                            },
                         }}
+                        timeIsEditable
+                        times = {TIMES}
                         {...restProps}
                     />
-                    {allowClear && <ClearButton onClear={() => onChange('')} />}
+                    {allowClear && <ClearButton onClear={() => {setDate(''); onDateChange('');}} />}
                 </div>
             </TemporaryErrorBorder>
             {error &&

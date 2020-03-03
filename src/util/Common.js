@@ -189,6 +189,11 @@ const URL = {
             else params.delete(key);
         });
         return params.toString();
+    },
+
+    isLocalOrDevOrQA: function() {
+        const host = window.location.hostname;
+        return host.includes('local') || host.includes('qa') || host.includes('dev');
     }
 };
 
@@ -225,13 +230,12 @@ const minTwoDigits = n => `${n < 10 ? '0' : ''}${n}`;
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
 
 // Attach (UTC) to date, if it is simulcast
-const parseSimulcast = (date = null, dateFormat) => {
+const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
     const isUTC = date && date.endsWith('Z');
     return moment(date).isValid()
-        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC ? ' (UTC)' : ''}`
+        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC && isTimeVisible? ' (UTC)' : ''}`
         : 'Invalid Date';
 };
-
 
 const formatNumberTwoDigits = (number) => {
     const n = parseInt(number);
@@ -242,6 +246,17 @@ const formatNumberTwoDigits = (number) => {
         return n;
     }
     return '';
+};
+
+const normalizeDataForStore = (data) => {
+    if (Array.isArray(data)) {
+        return data.reduce((obj, item) => {
+            if (item.id) {
+                obj[item.id] = item;
+            }
+            return obj; 
+        }, {});
+    }
 };
 
 export {
@@ -264,5 +279,6 @@ export {
     minTwoDigits,
     getDateFormatBasedOnLocale,
     parseSimulcast,
-    formatNumberTwoDigits
+    formatNumberTwoDigits,
+    normalizeDataForStore,
 };

@@ -14,7 +14,34 @@ export const filterRightsByStatus = payload => ({
     payload,
 });
 
-export const selectIngest = payload => ({
-    type: actionTypes.SELECT_INGEST,
+export const selectIngest = (payload={}) => {
+    if (payload.selectedAttachmentId && payload.selectedAttachmentId === payload.attachmentId) {
+        return {
+            type: actionTypes.DESELECT_INGEST
+        };
+    } else {
+        return {
+            type: actionTypes.SELECT_INGEST,
+            payload,
+        };
+    }
+};
+
+export const deselectIngest = () => ({
+    type: actionTypes.DESELECT_INGEST
+});
+
+export const uploadIngest = payload => ({
+    type: actionTypes.UPLOAD_INGEST,
+    payload,
+});
+
+export const downloadEmailAttachment = payload => ({
+    type: actionTypes.DOWNLOAD_INGEST_EMAIL,
+    payload,
+});
+
+export const downloadFileAttachment = payload => ({
+    type: actionTypes.DOWNLOAD_INGEST_FILE,
     payload,
 });

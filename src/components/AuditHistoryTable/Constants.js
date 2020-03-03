@@ -59,7 +59,7 @@ export default {
         },
         {
             field: 'contentType',
-            headerName: 'Offer Type',
+            headerName: 'Content Type',
         },
         {
             colId: 'ratingSystem',
@@ -128,5 +128,8 @@ export default {
     method: {
         INGEST: 'Ingest',
         MANUAL: 'Manual'
-    }
+    },
+    INGEST_ACCOUNTS: [
+        'service-account-avails-client',
+    ],
 };

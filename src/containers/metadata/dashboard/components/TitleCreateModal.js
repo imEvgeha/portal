@@ -418,7 +418,7 @@ class TitleCreate extends React.Component {
                                         </Col>
                                     </Row> : null
                                     }
-                                    {/*{this.renderSyncCheckBoxes()}*/}
+                                    { this.renderSyncCheckBoxes() }
                                     {
                                         this.state.loading ?
                                             <Progress striped color="success" value="100">Creating...</Progress>

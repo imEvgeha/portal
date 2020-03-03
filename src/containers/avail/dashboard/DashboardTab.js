@@ -1,5 +1,4 @@
 import React from 'react';
-import DashboardDropableCard from './card/components/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
 import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
@@ -50,9 +49,6 @@ class DashboardTab extends React.Component {
         return (
             <div className={'dashboard-tab'}>
                 <div className="row">
-                    <Can I="create" a="Avail">
-                        <DashboardDropableCard/>
-                    </Can>
                     {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
                     <Can I="create" a="Avail">
                         <DashboardCard title="Create New Edit Version" action={this.createRight} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-right'}/>

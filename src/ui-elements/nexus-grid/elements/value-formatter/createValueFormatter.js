@@ -27,12 +27,21 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             return (params) => {
                 const {data = {}} = params || {};
                 const {[javaVariableName]: date} = data || {};
-                return parseSimulcast(date, dateFormat);
+                return parseSimulcast(date, dateFormat, false);
             };
+        case 'select':
+            if (javaVariableName === 'contentType') {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    if (data && data[javaVariableName]) {
+                        return `${data[javaVariableName].slice(0, 1)}${data[javaVariableName].slice(1).toLowerCase()}`;
+                    }
+                };
+            }
         case 'territoryType':
             return (params) => {
                 const {data = {}} = params || {};
-                if (data && data[javaVariableName]) {
+                if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
                 }
             };
@@ -41,7 +50,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 return (params) => {
                     const {data = {}} = params || {};
                     const key = javaVariableName.split('.')[1];
-                    if (data['castCrew']) {
+                    if (data && data['castCrew']) {
                         if (key === 'director') {
                             return data['castCrew']
                                 .filter(({personType}) => personType.toLowerCase() === DIRECTOR.toLowerCase())
@@ -58,7 +67,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName === 'ratings') {
                 return (params) => {
                     const {data = {}} = params || {};
-                    if (data[javaVariableName]) {
+                    if (data && data[javaVariableName]) {
                         return data[javaVariableName]
                             .map(({ratingSystem, rating}) => `${ratingSystem ? ratingSystem : 'Empty'} ${rating ? rating : 'Empty'}`)
                             .join(', ');
@@ -67,7 +76,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName && javaVariableName.startsWith('externalIds')) {
                 return (params) => {
                     const {data = {}} = params || {};
-                    const {externalIds} = data;
+                    const {externalIds} = data || {};
                     const key = javaVariableName.split('.')[1];
                     if (externalIds && externalIds[key]) {
                         return externalIds[key];
@@ -75,7 +84,8 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 };
             } else if (javaVariableName === 'system') {
                 return (params) => {
-                    const {data: {id, legacyIds = {}} = {}} = params || {};
+                    const {data = {}} = params || {};
+                    const {id, legacyIds = {}} = data || {};
                     const {movida, vz} = legacyIds || {};
                     const {movidaTitleId} = movida || {};
                     const {vzTitleId} = vz || {};
@@ -91,13 +101,13 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
             } else if (javaVariableName === 'editorialGenres') {
                 return (params) => {
                     const {data = {}} = params || {};
-                    if (data[javaVariableName]) {
+                    if (data && data[javaVariableName]) {
                         return data[javaVariableName]
                             .map(({genre}) => genre)
                             .join(', ');
                     }
                 };
-            }
+            } 
             return;
         default:
             return null;

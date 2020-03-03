@@ -4,8 +4,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    color: map-get($colors, nexus-title-color);
-    padding-top: 20px;
+    color: map-get($colors, nexus-light-grey);
 }
 
 .nexus-c-table-toolbar__title {
@@ -17,7 +16,7 @@
     }
 
     &--is-active {
-        color: #a5adba;
+        color: map-get($colors, nexus-title-color);
     }
 }
 
@@ -30,7 +29,7 @@
     }
 
     &--is-active {
-        color: #a5adba;
+        color: map-get($colors, nexus-title-color);
     }
 }
 

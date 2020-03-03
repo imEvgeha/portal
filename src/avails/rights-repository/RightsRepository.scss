@@ -4,5 +4,21 @@
   flex-grow: 1;
   height: 100%;
   min-height: 400px;
-  padding: 48px 24px;
+  padding: 24px;
+  padding-bottom: 0;
+
+  .nexus-c-custom-actions-cell-renderer svg {
+    max-width: initial;
+  }
+}
+
+.nexus-c-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .nexus-c-rights-repository & {
+        min-width: 100px;
+        font-size: 14px;
+    }
 }

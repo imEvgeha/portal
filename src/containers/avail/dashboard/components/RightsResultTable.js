@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -20,7 +20,8 @@ import connect from 'react-redux/es/connect/connect';
 import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRightsResultPageLoading, manualRightsResultPageSort, updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
-import isEqual from 'lodash.isequal';
+import {getLocale} from '../../../../stores/selectors/localization/localeSelector';
+import {TIMESTAMP_FORMAT} from '../../../../ui-elements/nexus-date-and-time-elements/constants';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -44,6 +45,7 @@ let mapStateToProps = state => {
         columnsOrder: state.manualRightsEntry.session.columns,
         columnsSize: state.manualRightsEntry.session.columnsSize,
         showSelectedAvails: state.dashboard.showSelectedAvails,
+        locale: getLocale(state),
     };
 };
 
@@ -80,14 +82,16 @@ class RightsResultTable extends React.Component {
         searchCriteria: PropTypes.object,
         onTableLoaded: PropTypes.func,
         historyData: PropTypes.object,
-        status: PropTypes.string
+        status: PropTypes.string,
+        locale: PropTypes.string,
     };
 
     static defaultProps = {
         autoload: true,
         autoRefresh: 0,
         mode: defaultMode,
-        searchCriteria: {}
+        searchCriteria: {},
+        locale: 'en-us',
     };
 
     table = null;
@@ -236,25 +240,26 @@ class RightsResultTable extends React.Component {
                 javaVariableName,
             } = column || {};
 
-            const dateFormat = `${getDateFormatBasedOnLocale('en')} HH:mm`;
+            const {locale = 'en'} = this.props;
+
+            const dateFormat = getDateFormatBasedOnLocale(locale);
+            const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
             switch (dataType) {
                 case 'localdate' :
                 case 'datetime' : return ({data = {}}) => {
                     const {[column.javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
+                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
                 };
-                case 'date' : return function({data = {}}){
-                    if((data && data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
-                        return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
-                    }
-                    else return undefined;
+                case 'date' : return ({data = {}}) => {
+                    const {[column.javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
                     if(data && data[javaVariableName]){
-                        let data = data[javaVariableName];
-                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
-                        return data;
+                        let dataString = '';
+                        dataString = data[javaVariableName].map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
+                        return dataString;
                     } else return undefined;
                 }; else return null;
                 case 'territoryType' : return function({data = {}}){
@@ -685,8 +690,6 @@ class RightsResultTable extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
-
-import {Component} from 'react';
 
 mapStateToProps = state => {
     return {
