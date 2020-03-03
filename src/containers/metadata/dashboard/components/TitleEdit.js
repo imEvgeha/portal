@@ -27,7 +27,6 @@ import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../ability';
 import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
-import {URL} from '../../../../util/Common';
 import {getRepositoryName} from '../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 
@@ -943,9 +942,9 @@ class TitleEdit extends Component {
 
     renderSyncField = (name, titleModifiedAt, legacyId, publishedAt) => {
 
-        const lastUpdated = !publishedAt ? 'No record exist' : titleModifiedAt;
+        const lastUpdated = !publishedAt ? 'No record exist' : publishedAt;
         const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
-        const isDisabled = moment(publishedAt).isAfter(moment(titleModifiedAt));
+        const isDisabled = !!publishedAt && moment(publishedAt).isSameOrAfter(titleModifiedAt);
         const indicator = isDisabled ? 'success' : 'error';
         return (<div className='nexus-c-title-edit__sync-container-field'>
             <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
@@ -994,7 +993,7 @@ class TitleEdit extends Component {
                                     <Fragment>
                                         <Col>
                                             <div className='nexus-c-title-edit__sync-container'>
-                                            { URL.isLocalOrDevOrQA() && this.renderSyncVzMovidaFields() }
+                                            { this.renderSyncVzMovidaFields() }
                                             <Can I="update" a="Metadata">
                                                 <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
                                             </Can>

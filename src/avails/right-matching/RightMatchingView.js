@@ -18,6 +18,7 @@ import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
 import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
+import {RIGHT_MATCHING_TITLE, FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE} from './rightMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
@@ -33,7 +34,7 @@ const RightMatchingView = ({
     }) => {
     const [totalCount, setTotalCount] = useState();
     // DOP integration
-    useDOPIntegration(totalCount, 'rightMatchingDOP');
+    useDOPIntegration(totalCount, RIGHT_MATCHING_DOP_STORAGE);
 
     // TODO: refactor this
     useEffect(() => {
@@ -54,7 +55,7 @@ const RightMatchingView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button onClick={() => onFocusButtonClick(id)}>Focus</Button>
+                <Button onClick={() => onFocusButtonClick(id)}>{FOCUS_BUTTON}</Button>
             </CustomActionsCellRenderer>
         );
     };
@@ -78,7 +79,7 @@ const RightMatchingView = ({
     return (
         <div className="nexus-c-right-matching-view">
             <NexusTitle>
-                Right Matching {!!totalCount && `(${totalCount})`}
+                {RIGHT_MATCHING_TITLE} {!!totalCount && `(${totalCount})`}
             </NexusTitle>
             <NexusGridWithInfiniteScrolling
                 columnDefs={updatedColumnDefs}

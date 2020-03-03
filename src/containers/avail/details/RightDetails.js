@@ -374,6 +374,13 @@ class RightDetails extends React.Component {
                 NexusBreadcrumb.pop();
                 NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
+
+                // Clear the state for editedRight, since the change was already applied
+                this.setState((prevState) => {
+                    const {editedRight = {}} = prevState;
+                    delete editedRight[name];
+                    return {editedRight};
+                });
             })
             .catch(() => {
                 this.setState({
@@ -1059,7 +1066,7 @@ class RightDetails extends React.Component {
         const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted) => {
             let ref;
 
-            const {flatRight} = this.state;
+            const {flatRight = {}, editedRight = {}} = this.state;
             const validate = (date) => {
                 if (!date && required) {
                     return 'Mandatory Field. Date cannot be empty';
@@ -1093,11 +1100,15 @@ class RightDetails extends React.Component {
                         editedRight: {...prevState.editedRight, [name]: date}
                     }));
                 },
-                onConfirm: () => (
-                    !error && this.handleEditableSubmit(name, this.state.editedRight[name], revertChanges) || revertChanges()
+                onConfirm: (date) => (
+                    !error && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
                 ),
                 defaultValue: value,
-                value:  this.state.editedRight[name] !== undefined ?  this.state.editedRight[name] : value,
+                value:  (
+                    editedRight[name] !== undefined
+                        ?  editedRight[name]
+                        : value
+                ),
                 error,
                 required,
                 isWithInlineEdit: true,
