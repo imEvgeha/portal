@@ -176,7 +176,7 @@ export class EndpointContainer extends Component {
                     data[index] = response.data;
                     this.setState({ data, currentRecord: null });
                 }
-                ).catch(() => this.setState({ currentRecord: null }));
+                );
         } else {
             configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal)
                 .then(response => {
@@ -187,7 +187,7 @@ export class EndpointContainer extends Component {
                     }
                     this.setState(prevState => ({ data, total: prevState.total + 1, currentRecord: null }));
                 }
-                ).catch(() => this.setState({ currentRecord: null }));
+                );
         }
 
     }
