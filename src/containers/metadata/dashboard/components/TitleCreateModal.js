@@ -8,7 +8,6 @@ import { titleService } from '../../service/TitleService';
 import connect from 'react-redux/es/connect/connect';
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
-import {URL} from '../../../../util/Common';
 
 class TitleCreate extends React.Component {
 
@@ -419,7 +418,7 @@ class TitleCreate extends React.Component {
                                         </Col>
                                     </Row> : null
                                     }
-                                    { URL.isLocalOrDevOrQA() && this.renderSyncCheckBoxes() }
+                                    { this.renderSyncCheckBoxes() }
                                     {
                                         this.state.loading ?
                                             <Progress striped color="success" value="100">Creating...</Progress>
