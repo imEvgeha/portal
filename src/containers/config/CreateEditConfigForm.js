@@ -63,7 +63,8 @@ export default class CreateEditConfigForm extends React.Component {
         const noItemsMessage = misc.noItemsMessage;
         const idAttribute = misc.idAttribute;
 
-        const currentValue = get(this.state.value, field.id, defaultValue);
+        const currentValue = get(value, field.name, value) || get(this.state.value, field.id, defaultValue );
+
         if(currentValue) {
             field.defaultValue = currentValue;
             field.value = currentValue;
