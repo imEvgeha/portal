@@ -20,11 +20,12 @@ const createFormForItem = (
     item,
     targetIndex,
     fieldsForForm,
-    formChangeHandler
+    formChangeHandler,
+    key
 ) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
-        id: `${field.id}[${item.id}]`
+        id: `${field.id}[${targetIndex}]#${key}`
     }));
     return (
         <FormContext.Consumer>
@@ -160,7 +161,8 @@ export default class RepeatsPrimitives extends Component {
                                     {[idAttribute]:item.data},
                                     index,
                                     fields,
-                                    formChangeHandler
+                                    formChangeHandler,
+                                    item.id
                                 );
                                 return (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
