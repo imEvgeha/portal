@@ -5,6 +5,7 @@ const GRID_EVENTS = {
     CELL_VALUE_CHANGED: 'cellValueChanged',
     FIRST_DATA_RENDERED: 'firstDataRendered',
     FILTER_CHANGED: 'filterChanged',
+    ROW_DATA_CHANGED: 'rowDataChanged',
 };
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;
@@ -29,6 +30,9 @@ const FILTERABLE_DATA_TYPES = [
     'territoryType',
     'year',
     'duration',
+    'date',
+    'datetime',
+    'localdate'
 ];
 const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {

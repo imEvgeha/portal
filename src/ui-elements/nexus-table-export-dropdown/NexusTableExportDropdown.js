@@ -89,8 +89,9 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
-    const renderDropdown = () => {
-        return <DropdownMenu
+    const renderDropdown = () => (
+        <DropdownMenu
+            className="nexus-c-button"
             trigger="Export"
             triggerType="button"
             triggerButtonProps={{isDisabled: isDisabled}}
@@ -99,18 +100,17 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
                 <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
                 <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
             </DropdownItemGroup>
-        </DropdownMenu>;
-    };
+        </DropdownMenu>
+    );
 
     return (
         <div className='nexus-c-right-repository-export'>
-            {isDisabled &&
+            {isDisabled ? (
                 <NexusTooltip
                     content={tooltipContent}
                     children={renderDropdown()}
                 />
-            }
-            {!isDisabled && renderDropdown()}
+            ) : renderDropdown()}
         </div>
     );
 }

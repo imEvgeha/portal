@@ -79,15 +79,16 @@ const withFilterableColumns = ({
                 if (isFilterable) {
                     columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
                     columnDef.filterParams = setFilterParams(dataType, columnDef.field);
-                }
-                if(dataType === 'datetime') {
-                    const initialFilters = {
-                        from: filters[`${columnDef.field}From`],
-                        to: filters[`${columnDef.field}To`]
-                    };
-                    columnDef.floatingFilterComponent = 'customDateFloatingFilter';
-                    columnDef.filter = 'customDateFilter';
-                    columnDef.filterParams = {initialFilters};
+
+                    if (dataType === 'datetime' || dataType === 'time' || dataType === 'localdate') {
+                        const initialFilters = {
+                            from: filters[`${columnDef.field}From`],
+                            to: filters[`${columnDef.field}To`]
+                        };
+                        columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                        columnDef.filter = 'customDateFilter';
+                        columnDef.filterParams = {initialFilters};
+                    }
                 }
                 return columnDef;
             });
@@ -103,6 +104,7 @@ const withFilterableColumns = ({
                 GRID_EVENTS.FIRST_DATA_RENDERED,
                 GRID_EVENTS.SELECTION_CHANGED,
                 GRID_EVENTS.FILTER_CHANGED,
+                GRID_EVENTS.ROW_DATA_CHANGED,
             ];
 
             if (type === GRID_EVENTS.READY) {
