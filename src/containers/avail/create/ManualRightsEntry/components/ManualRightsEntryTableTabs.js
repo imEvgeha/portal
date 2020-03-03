@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import config from 'react-global-configuration';
@@ -27,7 +27,8 @@ function ManualRightEntryTableTabs({
 }) {
     // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
     // if component gets unmounted during call execution to prevent setting state on an unmounted component
-    let _isMounted = true;
+    const ref = useRef(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     const [totalRightsCount, setTotalRightsCount] = useState();
     const [successCount, setSuccessCount] = useState();
@@ -36,18 +37,20 @@ function ManualRightEntryTableTabs({
 
     // Effect hook that acts as a componentDidMount and componentWillUnmount, to set the _isMounted flag accordingly
     useEffect(() => {
-        return () => {_isMounted = false;};
+        ref.current = true;
+        setIsMounted(true);
+        return () => (ref.current = false);
     }, []);
 
     useEffect(() => {
         rightsService.advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
-            .then(response => _isMounted && setTotalRightsCount(response.data.total));
+            .then(response => isMounted && setTotalRightsCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
-            .then(response => _isMounted && setSuccessCount(response.data.total));
+            .then(response => isMounted && setSuccessCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(UNMATCHED), 0, 1)
-            .then(response => _isMounted && setPendingCount(response.data.total));
+            .then(response => isMounted && setPendingCount(response.data.total));
         rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
-            .then(response => _isMounted && setErrorsCount(response.data.total));
+            .then(response => isMounted && setErrorsCount(response.data.total));
     }, [historyData]);
 
     const getCustomTotalCount = () => {
