@@ -11,7 +11,7 @@ import './NexusDatePicker.scss';
 import {
     RELATIVE_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
-    METADATA_RELATIVE_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
@@ -26,7 +26,7 @@ const NexusDatePicker = ({
     error,
     label,
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
-    isMetadata, // TODO: Temporary flag for metadata, since they accept off-spec date format; PORT-1027
+    isReturningTime,
     allowClear,
     ...restProps
 }) => {
@@ -47,20 +47,23 @@ const NexusDatePicker = ({
     const onDateChange = date => {
         if(date){
             setDate(date);
-            onChange(isTimestamp
-                ? moment(date).toISOString()
-                : `${moment(date).format(isSimulcast
-                    ? SIMULCAST_DATE_FORMAT
-                    : RELATIVE_FORMAT)
-                }`);
+            // Don't use onChange if the component has InlineEdit
+            // onConfirm will handle changes
+            !isWithInlineEdit && onChange(
+                isTimestamp
+                    ? moment(date).toISOString()
+                    : `${moment(date).format(isSimulcast
+                        ? SIMULCAST_DATE_FORMAT
+                        : RELATIVE_FORMAT)
+                    }`
+            );
         } else {
             setDate('');
             onChange('');
         }
     };
 
-    // TODO: Temporary; PORT-1027
-    const RELATIVE_FORMAT = isMetadata ? METADATA_RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT;
+    const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
     const DatePickerComponent = (isReadOnly) => (
         <>
@@ -110,7 +113,7 @@ const NexusDatePicker = ({
                         )}
                         editView={() => DatePickerComponent(false)}
                         defaultValue={moment(value).isValid() ? value : ''}
-                        onConfirm={onConfirm}
+                        onConfirm={() => onConfirm(date)}
                         readViewFitContainerWidth
                         {...restProps}
                     />
@@ -129,7 +132,7 @@ NexusDatePicker.propTypes = {
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     hideLabel: PropTypes.bool,
-    isMetadata: PropTypes.bool,
+    isReturningTime: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -144,7 +147,7 @@ NexusDatePicker.defaultProps = {
     isReadOnly: false,
     isTimestamp: false,
     hideLabel: false,
-    isMetadata: false,
+    isReturningTime: true,
     onConfirm: () => null,
     allowClear: false,
 };

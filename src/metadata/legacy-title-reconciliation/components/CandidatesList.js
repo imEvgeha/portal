@@ -11,7 +11,7 @@ import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../../avails/utils';
+import {getRepositoryName, createLinkableCellRenderer} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 import TitleSystems from '../../../constants/metadata/systems';
@@ -54,7 +54,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                         name={repo}
                         isChecked={matchList[repo] && matchList[repo].id === id}
                         onChange={({target}) => handleMatchClick(data, repo, target.checked)}
-                        isDisabled={!gridApi}
                     />
                 </CustomActionsCellRenderer>
             )
@@ -128,7 +127,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                     columnDefs={[
                         matchButton,
                         duplicateButton,
-                        getRepositoryCell({headerName: 'System'}),
                         ...updatedColumnDefs,
                     ]}
                     rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}

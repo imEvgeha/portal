@@ -1,6 +1,7 @@
 import {TITLES_RECONCILE} from '../../metadata/metadataActionTypes';
+import {SAVE_COMBINED_RIGHT} from '../../avails/right-matching/rightMatchingActionTypes';
 
-const WHITE_LIST = [TITLES_RECONCILE];
+const WHITE_LIST = [TITLES_RECONCILE, SAVE_COMBINED_RIGHT];
 const ACTION_STATES = ['REQUEST', 'SUCCESS', 'FAILURE', 'ERROR'];
 
 const loadingReducer = (state = {}, action) => {

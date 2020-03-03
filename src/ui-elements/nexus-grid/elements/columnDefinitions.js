@@ -31,13 +31,14 @@ export const defineColumn = ({
     return columnDef;
 };
 
-export const defineCheckboxSelectionColumn = ({headerName = ''} = {}) => {
+export const defineCheckboxSelectionColumn = ({headerName = '', ...rest} = {}) => {
     const columnDef = defineColumn({
         field: 'action',
         headerName,
         width: 40,
         checkboxSelection: true,
-        lockVisible: true
+        lockVisible: true,
+        ...rest,
     });
 
     return columnDef;

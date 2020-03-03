@@ -242,19 +242,18 @@ class RightsResultTable extends React.Component {
 
             const {locale = 'en'} = this.props;
 
-            const dateFormat = `${getDateFormatBasedOnLocale(locale)} ${TIMESTAMP_FORMAT}`;
+            const dateFormat = getDateFormatBasedOnLocale(locale);
+            const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
             switch (dataType) {
                 case 'localdate' :
                 case 'datetime' : return ({data = {}}) => {
                     const {[column.javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
+                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
                 };
-                case 'date' : return function({data = {}}){
-                    if((data && data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
-                        return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
-                    }
-                    else return undefined;
+                case 'date' : return ({data = {}}) => {
+                    const {[column.javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
                     if(data && data[javaVariableName]){

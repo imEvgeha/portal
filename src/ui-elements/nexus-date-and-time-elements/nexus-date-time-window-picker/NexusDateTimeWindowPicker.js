@@ -13,7 +13,7 @@ import {
     FILL_DATE,
     FILL_DATE_TIME,
     SIMULCAST_DATE_FORMAT,
-    METADATA_RELATIVE_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
     RELATIVE_DATE_FORMAT,
 } from '../constants';
 import CustomIntlProvider from '../../../layout/CustomIntlProvider';
@@ -23,7 +23,7 @@ const NexusDateTimeWindowPicker = ({
     labels,
     isUsingTime,
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
-    isMetadata, // TODO: Temporary flag for metadata, since they accept off-spec date format; PORT-1027
+    isReturningTime,
     onChange,
     onChangeAny,
     startDateTimePickerProps,
@@ -85,8 +85,7 @@ const NexusDateTimeWindowPicker = ({
         }
         let endDateWithFilledTime = moment(date).valueOf() + (isUsingTime ? FILL_DATE_TIME : FILL_DATE);
 
-        // TODO: Temporary; PORT-1027
-        const RELATIVE_FORMAT = isMetadata ? METADATA_RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT;
+        const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
         if (isTimestamp) {
             endDateWithFilledTime = moment(endDateWithFilledTime).toISOString();
@@ -170,7 +169,7 @@ const NexusDateTimeWindowPicker = ({
                                 onChange={handleChangeEndDate}
                                 error={endDateError}
                                 allowClear={allowClear}
-                                isMetadata={isMetadata}
+                                isReturningTime={isReturningTime}
                                 {...endDateTimePickerProps}
                             />
                         )
@@ -200,7 +199,7 @@ NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
     labels: PropTypes.array,    //example: ['From', 'To']
     isTimestamp: PropTypes.bool,
-    isMetadata: PropTypes.bool,
+    isReturningTime: PropTypes.bool,
     onChange: PropTypes.func,
     onChangeAny: PropTypes.func,     //when any date is changed (returns blank dates as well)
     isUsingTime: PropTypes.bool.isRequired,
@@ -217,7 +216,7 @@ NexusDateTimeWindowPicker.defaultProps = {
     label: '',
     labels: [],
     isTimestamp: true,
-    isMetadata: false,
+    isReturningTime: true,
     onChangeAny: () => null,
     onChange: () => null,
     allowClear: false
