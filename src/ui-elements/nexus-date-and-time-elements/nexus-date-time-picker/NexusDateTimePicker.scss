@@ -1,13 +1,12 @@
 .nexus-c-date-time-picker {
-    display: grid;
-    grid-template-columns: 7fr 4fr;
-    grid-template-rows: minmax(0, auto) 1fr;
-    grid-column-gap: 50px;
-    align-items: start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 
     & > * {
         grid-row: -1;
     }
+
     .nexus-c-nexus-grid & {
         display: flex;
         flex-direction: column;
@@ -15,9 +14,12 @@
     }
 }
 
-.nexus-c-date-time-picker__label {
-    grid-row: 1;
-    grid-column: 1/-1;
+.nexus-c-date-time-picker__date-time {
+    flex-grow: 2
+}
+
+.nexus-c-date-time-picker__type-select {
+    flex-grow: 1;
 }
 
 .read-view-container__placeholder {
