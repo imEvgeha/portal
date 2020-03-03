@@ -306,6 +306,7 @@ const RightsRepository = ({
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit
                 rowSelection="multiple"
+                suppressRowClickSelection={true}
                 mapping={mapping}
                 rowData={selectedRepoRights}
                 isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
