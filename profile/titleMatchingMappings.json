@@ -56,18 +56,6 @@
     "required": false
   },
   {
-    "javaVariableName": "licensor",
-    "displayName": "Licensor",
-    "dataType": "select",
-    "searchDataType": "multiselect",
-    "configEndpoint": "/licensors",
-    "queryParamName": "licensor",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
     "javaVariableName": "editorialGenres",
     "displayName": "Genres",
     "dataType": "string",
