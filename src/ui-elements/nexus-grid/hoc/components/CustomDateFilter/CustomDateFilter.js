@@ -9,6 +9,7 @@ import './CustomDateFilter.scss';
 
 export class CustomDateFilter extends React.Component {
     constructor(props) {
+        console.log('test', props)
         super(props);
         this.state = {
             dates: {
@@ -23,22 +24,23 @@ export class CustomDateFilter extends React.Component {
         const {filterChangedCallback} = this.props;
         const {startDate, endDate} = this.state.dates;
         const keys = Object.keys(dateRange);
-        if(keys.includes('startDate') && (dateRange.startDate !== startDate)){
+        if (keys.includes('startDate') && (dateRange.startDate !== startDate)){
             const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : true;
             this.setState({ dates: {
-                    startDate: dateRange.startDate,
-                    endDate
-                }}, () => (!dateRange.startDate || needUpdate) && filterChangedCallback());
+                startDate: dateRange.startDate,
+                endDate
+            }}, () => (!dateRange.startDate || needUpdate) && filterChangedCallback());
         } else if (keys.includes('endDate') && (dateRange.endDate !== endDate)){
             const needUpdate = startDate ? moment(dateRange.endDate).isAfter(startDate) : true;
             this.setState({ dates: {
-                    endDate: dateRange.endDate,
-                    startDate
-                }}, () => (!dateRange.endDate || needUpdate) && filterChangedCallback());
+                endDate: dateRange.endDate,
+                startDate
+            }}, () => (!dateRange.endDate || needUpdate) && filterChangedCallback());
         }
     };
 
     setModel = dates => {
+        console.log(dates, 'dates')
         this.onChange(dates);
     };
 
@@ -58,9 +60,19 @@ export class CustomDateFilter extends React.Component {
         return startDate || endDate;
     };
 
+    doesFilterPass = (params) => {
+        const {startDate, endDate} = this.state.dates;
+        const {field} = this.props.colDef;
+        const fieldValue = params.data[field];
+        const isAfterStartDate = startDate ? moment(fieldValue).isAfter(startDate) : true;
+        const isBeforeEndDate = endDate ? moment(fieldValue).isBefore(endDate) : true;
+        return isAfterStartDate && isBeforeEndDate;
+    }
+
     render (){
         const {colDef: {field}} = this.props;
         const {startDate, endDate} = this.state.dates;
+
         return (
             <div className='nexus-c-custom-date-range-filter'>
                 <NexusDateTimeWindowPicker

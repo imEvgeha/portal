@@ -98,24 +98,28 @@ const withFilterableColumns = ({
                             break;
                         case SELECT:
                         case MULTISELECT:
+                            columnDef.filter = SET;
+                            columnDef.filterParams = {
+                                ...DEFAULT_FILTER_PARAMS,
+                                values: getFilterOptions(field),
+                            };
+                            break;
                         case TERRITORY: 
                             columnDef.filter = SET;
                             columnDef.filterParams = {
                                 ...DEFAULT_FILTER_PARAMS,
                                 values: getFilterOptions(field),
                             };
-                            if (columnDef.field === 'territory') {
-                                columnDef.keyCreator = params => {
-                                    const countries = params.value.map(({country}) => country);
-                                    return countries.join(', ');
-                                };
-                            }
+                            columnDef.keyCreator = params => {
+                                const countries = params.value.map(({country}) => country);
+                                return countries;
+                            };
                             break;
                         case DATE:
                         case DATE_TIME:
                         case LOCAL_DATE:
-                            const from = filters[`${field}From`];
-                            const to = filters[`${field}To`];
+                            const from = filters[field] && filters[field][`${field}From`];
+                            const to = filters[field] && filters[field][`${field}To`];
                             const initialFilters = {
                                 ...(from && {from}),
                                 ...(to && {to})
@@ -126,7 +130,7 @@ const withFilterableColumns = ({
                                 // TODO; check is this neccessary
                                 ...DEFAULT_FILTER_PARAMS,
                                 filterOptions: ['inRange'],
-                                // 
+                                //
                                 initialFilters,
                             };
                             break;

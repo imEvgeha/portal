@@ -261,9 +261,6 @@ const RightsRepository = ({
                 api.setFilterModel(selectedFilter);
                 break;
             case FILTER_CHANGED:
-                console.log(api.getSelectedRows())
-                const column = filterBy(api.getFilterModel());
-                console.log(column, 'column')
                 setSelectedFilter(api.getFilterModel());
                 break;
         }
