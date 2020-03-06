@@ -113,7 +113,7 @@ class TitleEditMode extends Component {
                                               onChange={this.props.handleChangeSeries}
                                               required={this.state.isSeriesCompleted}
                                               value={episodic.seriesTitleName}
-                                          />
+                                            />
                                         </Col>
                                     </Row>
                                     <Row>
@@ -140,7 +140,7 @@ class TitleEditMode extends Component {
                                 },
                                 maxLength: { value: constants.MAX_SEASON_LENGTH }
                               }}
-                                            />
+                                              />
                                           </FormGroup>
                                         </Col>
                                         <Fragment>
@@ -170,7 +170,7 @@ class TitleEditMode extends Component {
                                     },
                                     maxLength: { value: constants.MAX_EPISODE_LENGTH }
                                   }}
-                                                />
+                                                  />
                                               </FormGroup>
                                             </Col>
                           ) : null}
@@ -192,7 +192,7 @@ class TitleEditMode extends Component {
                                                 id='titleSeasonID'
                                                 placeholder="Enter Season ID"
                                                 onChange={e => this.props.handleChangeEpisodic(e)}
-                                            />
+                                              />
                                               <Fragment>
                                                 <Row>
                                                   <Col>
@@ -214,7 +214,7 @@ class TitleEditMode extends Component {
                                         errorMessage: 'Please enter a number!'
                                       }
                                     }}
-                                                  />
+                                                    />
                                                 </Col>
                                               </Row>
                                             </Fragment>

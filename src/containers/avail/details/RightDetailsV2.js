@@ -366,7 +366,7 @@ class RightDetails extends React.Component {
                         }}
                         required={required}
                         isReadOnly={readOnly}
-                    />)
+                     />)
                 ),
                 datetime: renderFieldTemplate(
                     name,
@@ -390,7 +390,7 @@ class RightDetails extends React.Component {
                         }}
                         required={required}
                         isReadOnly={readOnly}
-                    />)
+                     />)
                 ),
                 territoryType: renderTerritoryField(
                     jvName,

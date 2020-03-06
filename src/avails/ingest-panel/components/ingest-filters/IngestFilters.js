@@ -43,6 +43,7 @@ const IngestFilters = ({onFiltersChange}) => {
             <div className='ingest-filters__row1'>
                 <div className='ingest-filters__section'>
                     Provider
+                    {' '}
                     <input
                         placeholder='Enter Provider'
                         value={filters.provider}

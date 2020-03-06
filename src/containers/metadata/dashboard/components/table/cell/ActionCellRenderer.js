@@ -28,6 +28,7 @@ function ActionCellRenderer({data, storeTitle}) {
                             href={`/metadata/detail/${data && data.id}/legacy-title-reconciliation`}
                             onClick={() => storeTitle(data)}
                             target='_blank'
+                            rel='noopener noreferrer'
                         >
                             Inspect
                         </a>
