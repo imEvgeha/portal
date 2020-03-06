@@ -58,9 +58,6 @@ module.exports = {
         // Prevent using Array index in key props
         'react/no-array-index-key': 'off',
 
-        // Prevent passing children as props
-        'react/no-children-prop': 'off',
-
         // Prevent usage of dangerous JSX properties
         'react/no-danger': 'off',
 
@@ -78,9 +75,6 @@ module.exports = {
 
         // Prevent direct mutation of this.state
         'react/no-direct-mutation-state': 'off',
-
-        // Prevent usage of findDOMNode
-        'react/no-find-dom-node': 'off',
 
         // Prevent usage of isMounted
         'react/no-is-mounted': 'off',

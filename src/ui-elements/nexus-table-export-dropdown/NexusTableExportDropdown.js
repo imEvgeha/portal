@@ -108,8 +108,9 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
             {isDisabled ? (
                 <NexusTooltip
                     content={tooltipContent}
-                    children={renderDropdown()}
-                />
+                >
+                    {renderDropdown()}
+                </NexusTooltip>
             ) : renderDropdown()}
         </div>
     );
