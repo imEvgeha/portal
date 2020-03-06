@@ -222,6 +222,7 @@ class PersonList extends React.Component {
 }
 
 PersonList.propTypes = {
+    isMultiColumn: PropTypes.bool,
     persons: PropTypes.array,
     removePerson: PropTypes.func,
     loadOptionsPerson: PropTypes.any,

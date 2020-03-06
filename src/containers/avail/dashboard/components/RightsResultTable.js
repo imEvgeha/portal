@@ -59,6 +59,7 @@ let mapDispatchToProps = {
 
 class RightsResultTable extends React.Component {
     static propTypes = {
+        autoload: PropTypes.bool,
         availsMapping: PropTypes.any,
         tabPage: PropTypes.object,
         tabPageSort: PropTypes.array,

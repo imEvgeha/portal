@@ -103,7 +103,6 @@ RightMatchingView.propTypes = {
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
-    mapping: [],
     match: {},
     history: {},
     location: {},

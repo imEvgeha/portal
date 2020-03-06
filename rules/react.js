@@ -31,9 +31,6 @@ module.exports = {
         // Forbid "button" element without an explicit "type" attribute
         'react/button-has-type': 'off',
 
-        // Prevent extraneous defaultProps on components
-        'react/default-props-match-prop-types': ['off', {allowRequiredDefaults: false}],
-
         // Rule enforces consistent usage of destructuring assignment in component
         'react/destructuring-assignment': 'off',
 
