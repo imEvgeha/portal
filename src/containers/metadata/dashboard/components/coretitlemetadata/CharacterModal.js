@@ -55,29 +55,29 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
         <Modal isOpen={isModalOpen} toggle={toggle}>
             <ModalHeader toggle={toggle}>{modalType} Character Name</ModalHeader>
             <ModalBody>
-            <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
-            <CustomInput
-                readOnly
-                placeholder="Display Name"
-                name="displayName"
-                disabled={true}
-                value={selectedPerson && selectedPerson.displayName}
-            />
-            <CustomLabel isError={isInvalid} htmlFor="characterName">Character Name</CustomLabel>
-            <CustomInput        
-                isError={isInvalid}
-                onChange={value => handleChange(value)}
-                placeholder="Character Name"
-                name="characterName"
-                value={characterName}
-            />
-            {isInvalid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
+                <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
+                <CustomInput
+                    readOnly
+                    placeholder="Display Name"
+                    name="displayName"
+                    disabled={true}
+                    value={selectedPerson && selectedPerson.displayName}
+                />
+                <CustomLabel isError={isInvalid} htmlFor="characterName">Character Name</CustomLabel>
+                <CustomInput        
+                    isError={isInvalid}
+                    onChange={value => handleChange(value)}
+                    placeholder="Character Name"
+                    name="characterName"
+                    value={characterName}
+                />
+                {isInvalid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
             </ModalBody>
             <ModalFooter>
-                <Button onClick={handleSubmit} appearance={'primary'} isDisabled={isEmpty(characterName)}> 
+                <Button onClick={handleSubmit} appearance="primary" isDisabled={isEmpty(characterName)}> 
                     OK
                 </Button>
-                <Button onClick={toggle} appearance={'danger'}>
+                <Button onClick={toggle} appearance="danger">
                     Cancel
                 </Button>
             </ModalFooter>

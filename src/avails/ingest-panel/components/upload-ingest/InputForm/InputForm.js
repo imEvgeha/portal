@@ -135,7 +135,8 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
                     className={uploadDisabled ? '' : 'btn-primary'}
                     isLoading={isUploading}
                     isDisabled={uploadDisabled}
-                >Upload</Button>
+                >Upload
+                </Button>
             </div>
         </div>
     );

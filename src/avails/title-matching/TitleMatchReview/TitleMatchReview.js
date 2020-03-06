@@ -146,7 +146,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
-                title={'Title Matching Review'}
+                title="Title Matching Review"
                 onNavigationClick={navigateToMatchPreview}
             />
             {

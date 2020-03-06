@@ -24,15 +24,27 @@ function Tabs(props) {
 
     return (
         <TabContainer>
-            <SelectRightsTab isActive={props.selectedTerritoriesTab === ALL_RIGHTS}
-                             onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHTS)}>All Right ({allRightCount})</SelectRightsTab>
-            <SelectRightsTab isActive={props.selectedTerritoriesTab === INCOMING}
-                             onClick={() => props.updateFilterSelectedTerritories(INCOMING)}>Incoming ({incomingCount})</SelectRightsTab>
-            <SelectRightsTab isActive={props.selectedTerritoriesTab === SELECTED}
-                             onClick={() => props.updateFilterSelectedTerritories(SELECTED)}>Selected ({selectedCount})</SelectRightsTab>
-            <SelectRightsTab isActive={props.selectedTerritoriesTab === PENDING_SELECTION}
-                             isDisabled={props.promotedRightsCount === 0}
-                             onClick={() => props.updateFilterSelectedTerritories(PENDING_SELECTION)}>Pending selection ({props.promotedRightsCount})</SelectRightsTab>
+            <SelectRightsTab
+                isActive={props.selectedTerritoriesTab === ALL_RIGHTS}
+                onClick={() => props.updateFilterSelectedTerritories(ALL_RIGHTS)}
+            >All Right ({allRightCount})
+            </SelectRightsTab>
+            <SelectRightsTab
+                isActive={props.selectedTerritoriesTab === INCOMING}
+                onClick={() => props.updateFilterSelectedTerritories(INCOMING)}
+            >Incoming ({incomingCount})
+            </SelectRightsTab>
+            <SelectRightsTab
+                isActive={props.selectedTerritoriesTab === SELECTED}
+                onClick={() => props.updateFilterSelectedTerritories(SELECTED)}
+            >Selected ({selectedCount})
+            </SelectRightsTab>
+            <SelectRightsTab
+                isActive={props.selectedTerritoriesTab === PENDING_SELECTION}
+                isDisabled={props.promotedRightsCount === 0}
+                onClick={() => props.updateFilterSelectedTerritories(PENDING_SELECTION)}
+            >Pending selection ({props.promotedRightsCount})
+            </SelectRightsTab>
         </TabContainer>
     );
 }

@@ -62,7 +62,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     if(!firstName) firstName = filename;
 
                     return (
-                       <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick = {() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className={'far fa-file-alt'}></i></a></div>
+                        <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick={() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className="far fa-file-alt"></i></a></div>
                     );
                 }
             }).filter( elem=> {
@@ -83,7 +83,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     }
                     <div style={{display: 'flex'}}><b>Received:</b> &nbsp; {data.received ? moment(data.received).format('llll'):''} </div>
                 </div>
-                <div style={{display: 'flex', flex:0.5, minWidth:'30px'}}/>
+                <div style={{display: 'flex', flex:0.5, minWidth:'30px'}} />
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'182px'}}>
                     <div style={{display: 'flex'}}><b>Received By:</b> &nbsp; {data.ingestType} </div>
                     <div title={'ID: ' + data.id} style={{display: 'flex inline'}}><b>Status:</b> &nbsp;
@@ -96,15 +96,15 @@ class AvailHistoryRecordRenderer extends React.Component {
                                  case 'MANUAL':
                                     return <span title={data.errorDetails} style={{ color: 'gold'}}><i className="fas fa-circle"> </i></span>;
                                  case 'PENDING':
-                                    return <img src={LoadingElipsis}/>;
+                                    return <img src={LoadingElipsis} />;
                                  default:
                                     return data.status;
                                  }
                         })()}
                     </div>
                 </div>
-                <div style={{display: 'flex', flex:1, minWidth:'30px'}}/>
-                {ingestReport &&
+                <div style={{display: 'flex', flex:1, minWidth:'30px'}} />
+                {ingestReport && (
                 <div style={{display: 'flex', paddingLeft: '10px', lineHeight: '30px', width: '345px'}}>
                     <div style={{
                         display: 'flex',
@@ -113,35 +113,48 @@ class AvailHistoryRecordRenderer extends React.Component {
                         lineHeight: '30px',
                         alignItems: 'center',
                         width: '125px'
-                    }}>
+                    }}
+                    >
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {ingestReport.total > 0 ?
-                                (<Link to={{
+                                (
+                                    <Link to={{
                                     pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getRightsSearchUrl(data.id).split('?')[1],
                                     state: data
-                                }}>
-                                    Total Avails:
-                                </Link>)
+                                }}
+                                    >
+                                        Total Avails:
+                                    </Link>
+)
                                 :
-                                (<div>
-                                    Total Avails:
-                                </div>)
+                                (
+                                    <div>
+                                        Total Avails:
+                                    </div>
+)
                             }
-                        </b></u></div>
+                                                                   </b>
+                                                                </u>
+                        </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.total > 0 ?
-                                (<Link to={{
+                                (
+                                    <Link to={{
                                     pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getRightsSearchUrl(data.id).split('?')[1],
                                     state: data
-                                }}>
-                                    {ingestReport.total}
-                                </Link>)
+                                }}
+                                    >
+                                        {ingestReport.total}
+                                    </Link>
+)
                                 :
-                                (<div>
-                                    {ingestReport.total}
-                                </div>)
+                                (
+                                    <div>
+                                        {ingestReport.total}
+                                    </div>
+)
                             }
                         </div>
                     </div>
@@ -152,35 +165,48 @@ class AvailHistoryRecordRenderer extends React.Component {
                         lineHeight: '30px',
                         alignItems: 'center',
                         width: '95px'
-                    }}>
+                    }}
+                    >
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {ingestReport.success > 0 ?
-                                (<Link to={{
+                                (
+                                    <Link to={{
                                     pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[1],
                                     state: data
-                                }}>
-                                    Success:
-                                </Link>)
+                                }}
+                                    >
+                                        Success:
+                                    </Link>
+)
                                 :
-                                (<div>
-                                    Success:
-                                </div>)
+                                (
+                                    <div>
+                                        Success:
+                                    </div>
+)
                             }
-                        </b></u></div>
+                                                                   </b>
+                                                                </u>
+                        </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.success > 0 ?
-                                (<Link to={{
+                                (
+                                    <Link to={{
                                     pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[1],
                                     state: data
-                                }}>
-                                    {ingestReport.success}
-                                </Link>)
+                                }}
+                                    >
+                                        {ingestReport.success}
+                                    </Link>
+)
                                 :
-                                (<div>
-                                    {ingestReport.success}
-                                </div>)
+                                (
+                                    <div>
+                                        {ingestReport.success}
+                                    </div>
+)
                             }
                         </div>
                     </div>
@@ -191,35 +217,52 @@ class AvailHistoryRecordRenderer extends React.Component {
                         lineHeight: '30px',
                         alignItems: 'center',
                         width: '85px'
-                    }}>
+                    }}
+                    >
                         <div style={{display: 'flex', flex: 1}}><u><b>
                             {ingestReport.errors > 0 ?
-                                (<Link className={'error-link'} to={{
+                                (
+                                    <Link
+                                        className="error-link"
+                                        to={{
                                     pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
                                     state: data
-                                }}>
-                                    Errors:
-                                </Link>)
+                                }}
+                                    >
+                                        Errors:
+                                    </Link>
+)
                                 :
-                                (<div>
-                                    Errors:
-                                </div>)
+                                (
+                                    <div>
+                                        Errors:
+                                    </div>
+)
                             }
-                        </b></u></div>
+                                                                   </b>
+                                                                </u>
+                        </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.errors > 0 ?
-                                (<Link className={'error-link'} to={{
+                                (
+                                    <Link
+                                        className="error-link"
+                                        to={{
                                     pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
                                     search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
                                     state: data
-                                }}>
-                                    {ingestReport.errors}
-                                </Link>)
+                                }}
+                                    >
+                                        {ingestReport.errors}
+                                    </Link>
+)
                                 :
-                                (<div>
-                                    {ingestReport.errors}
-                                </div>)
+                                (
+                                    <div>
+                                        {ingestReport.errors}
+                                    </div>
+)
                             }
                         </div>
                     </div>
@@ -230,32 +273,43 @@ class AvailHistoryRecordRenderer extends React.Component {
                         lineHeight: '30px',
                         alignItems: 'center',
                         width: '85px'
-                    }}>
+                    }}
+                    >
                         <div style={{display: 'flex', flex: 1}}><u><b>
-                                <Link target='_blank' className={ingestReport.fatal > 0 ? 'error-link' : ''} to={{
+                            <Link
+                                target='_blank'
+                                className={ingestReport.fatal > 0 ? 'error-link' : ''}
+                                to={{
                                     pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
-                                }}>
-                                    Fatals:
-                                </Link>
-                        </b></u></div>
+                                }}
+                            >
+                                Fatals:
+                            </Link>
+                                                                   </b>
+                                                                </u>
+                        </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
-                                <Link target='_blank' className={ingestReport.fatal > 0 ? 'error-link' : ''} to={{
+                            <Link
+                                target='_blank'
+                                className={ingestReport.fatal > 0 ? 'error-link' : ''}
+                                to={{
                                     pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
-                                }}>
-                                    {ingestReport.fatal}
-                                </Link>
+                                }}
+                            >
+                                {ingestReport.fatal}
+                            </Link>
                         </div>
                     </div>
                 </div>
-                }
-                    <div style={{display: 'flex', flex:1}}/>
-                    <div style={{display: 'flex', width:'274px', verticalAlign: 'middle !important'}}>
-                        {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
-                        {!email && <div key={email} style={{width: '40px', display:'inline-block'}}></div>}
-                        <div style={{width: '224px', display:'inline-block', whiteSpace: 'normal'}}>
-                            {atts}
-                        </div>
+              )}
+                <div style={{display: 'flex', flex:1}} />
+                <div style={{display: 'flex', width:'274px', verticalAlign: 'middle !important'}}>
+                    {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
+                    {!email && <div key={email} style={{width: '40px', display:'inline-block'}}></div>}
+                    <div style={{width: '224px', display:'inline-block', whiteSpace: 'normal'}}>
+                        {atts}
                     </div>
+                </div>
             </div>
         );
     }

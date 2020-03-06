@@ -8,7 +8,7 @@ const IngestTitle = ({link}) => {
     return (
         <div className='nexus-c-ingest-title'>
             <div className='nexus-c-ingest-title__details'>
-                <File className='nexus-c-ingest-title__type'/>
+                <File className='nexus-c-ingest-title__type' />
                 <span title={fileName} className='nexus-c-ingest-title__filename'>{fileName}</span>
             </div>
         </div>

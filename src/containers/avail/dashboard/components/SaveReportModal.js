@@ -56,18 +56,23 @@ class CustomModal extends React.Component {
 
     render() {
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={'nx-stylish'} fade={false} backdrop={false}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className="nx-stylish" fade={false} backdrop={false}>
                 <ModalHeader toggle={this.toggle}>Save report</ModalHeader>
                 <ModalBody>
                     <div className="form-group">
                         <label
-                            htmlFor="dashboard-avails-report-name-text">Report name</label>
-                        <input type="text" className="form-control"
-                               id="dashboard-avails-report-name-text"
-                               placeholder="Enter report name"
-                               value={this.state.reportName}
-                               onChange={this.handleInputChange}
-                               onKeyPress={this._handleKeyPress}/>
+                            htmlFor="dashboard-avails-report-name-text"
+                        >Report name
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="dashboard-avails-report-name-text"
+                            placeholder="Enter report name"
+                            value={this.state.reportName}
+                            onChange={this.handleInputChange}
+                            onKeyPress={this._handleKeyPress}
+                        />
                     </div>
                 </ModalBody>
                 <ModalFooter>
@@ -96,7 +101,7 @@ export const saveReportModal = {
             }
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<CustomModal {...props}/>, wrapper);
+        render(<CustomModal {...props} />, wrapper);
         const cleanup = function () {
             unmountComponentAtNode(wrapper);
             return setTimeout(function () {

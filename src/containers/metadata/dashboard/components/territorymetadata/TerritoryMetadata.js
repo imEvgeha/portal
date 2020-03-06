@@ -54,18 +54,19 @@ class TerritoryMetadata extends Component {
                 </Row>
                 <div className='tab'>
                     {
-                        this.props.isEditMode ?
+                        this.props.isEditMode ? (
                             <React.Fragment>
-                                <FontAwesome className={'tablinks add-local'} name="plus-circle" id={'createTerritoryMetadata'} onClick={() => this.props.addTerritoryMetadata(this.props.createTerritoryTab)} key={this.props.createTerritoryTab} size="lg" />
-                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createTerritoryMetadata'} toggle={this.toggle}>
+                                <FontAwesome className="tablinks add-local" name="plus-circle" id="createTerritoryMetadata" onClick={() => this.props.addTerritoryMetadata(this.props.createTerritoryTab)} key={this.props.createTerritoryTab} size="lg" />
+                                <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createTerritoryMetadata" toggle={this.toggle}>
                                     Create Territory Metadata
                                 </Tooltip>
                             </React.Fragment>
+                          )
                             : null
                     }
                     {
                         this.props.territory && this.props.territory.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{this.getLanguageByCode(item.locale, COUNTRY)}</b></span>;
+                            return <span className="tablinks" style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{this.getLanguageByCode(item.locale, COUNTRY)}</b></span>;
                         })
                     }
                 </div>
@@ -80,19 +81,21 @@ class TerritoryMetadata extends Component {
                                                 <TerritoryMetadataTab getLanguageByCode={this.getLanguageByCode} key={i} data={item} />
                                             </Col>
                                         </Row>
-                                    </TabPane>);
+                                    </TabPane>
+);
                             }) :
-                            !this.props.isEditMode ?
+                            !this.props.isEditMode ? (
                                 <Row>
                                     <Col>
                                         <Alert color="primary">
                                             <FontAwesome name="info" /> <b>No territory metadata.</b>
                                         </Alert>
                                     </Col>
-                                </Row> : null
+                                </Row>
+                              ) : null
                     }
                     {
-                        this.props.isEditMode ?
+                        this.props.isEditMode ? (
                             <Fragment>
                                 <TabPane tabId={this.props.createTerritoryTab}>
                                     <Row>
@@ -123,10 +126,12 @@ class TerritoryMetadata extends Component {
                                                         />
                                                     </Col>
                                                 </Row>
-                                            </TabPane>);
+                                            </TabPane>
+);
                                     })
                                 }
                             </Fragment>
+                          )
                             : null
                     }
                 </TabContent>

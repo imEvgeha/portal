@@ -6,7 +6,7 @@ import RightsRepository from './rights-repository/RightsRepository';
 const AvailsView = ({location}) => (
     <div className="nexus-c-avails-view">
         <IngestPanel />
-        <RightsRepository location={location}/>
+        <RightsRepository location={location} />
     </div>
 );
 

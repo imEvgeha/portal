@@ -46,14 +46,16 @@ const IngestFilters = ({onFiltersChange}) => {
                     <input
                         placeholder='Enter Provider'
                         value={filters.provider}
-                        onChange={e => onFilterChange(PROVIDER, e.target.value)}/>
+                        onChange={e => onFilterChange(PROVIDER, e.target.value)}
+                    />
                 </div>
                 <div className='ingest-filters__section'>
                     Avail Status
                     <Select
                         options={Constants.STATUS_LIST}
                         value={filters.status}
-                        onChange={value => onFilterChange(STATUS, value)}/>
+                        onChange={value => onFilterChange(STATUS, value)}
+                    />
                 </div>
             </div>
             <div className='ingest-filters__row2'>
@@ -67,13 +69,15 @@ const IngestFilters = ({onFiltersChange}) => {
                         id:'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate
                     }}
                     onChangeAny={onDateChange}
-                    labels={Constants.DATEPICKER_LABELS}/>
+                    labels={Constants.DATEPICKER_LABELS}
+                />
             </div>
             <div className='ingest-filters__actions'>
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
                     className={`ingest-filters__actions--apply ${isApplyActive ? 'ingest-filters__actions--active' : ''}`}
-                    onClick={applyFilters}>
+                    onClick={applyFilters}
+                >
                     Apply Filter
                 </Button>
             </div>

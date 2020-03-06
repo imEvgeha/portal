@@ -105,14 +105,16 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         }
 
         render() {
-            return <WrappedComponent
-                {...this.props}
-                {...this.state.rowsProps}
-                colDef={this.state.cols}
-                setTable={this.setTable}
-                getRowNodeId={data => data.id}
-                rowData={this.state.originalData}
-            />;
+            return (
+                <WrappedComponent
+                    {...this.props}
+                    {...this.state.rowsProps}
+                    colDef={this.state.cols}
+                    setTable={this.setTable}
+                    getRowNodeId={data => data.id}
+                    rowData={this.state.originalData}
+                />
+);
         }
     }
 

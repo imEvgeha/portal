@@ -59,18 +59,19 @@ class Rating extends Component {
                 }
                 <div className='tab'>
                     {
-                        this.props.isEditMode ?
+                        this.props.isEditMode ? (
                             <React.Fragment>
-                                <FontAwesome className={'tablinks add-local'} name="plus-circle" id={'createRatings'} onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
-                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createRatings'} toggle={this.toggle}>
+                                <FontAwesome className="tablinks add-local" name="plus-circle" id="createRatings" onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
+                                <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createRatings" toggle={this.toggle}>
                                     Create Rating
                                 </Tooltip>
                             </React.Fragment>
+                          )
                             : null
                     }
                     {
                         this.props.ratings && this.props.ratings.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{(item.ratingSystem ? item.ratingSystem : 'Empty') + ' ' + (item.rating ? item.rating : 'Empty')}</b></span>;
+                            return <span className="tablinks" style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{(item.ratingSystem ? item.ratingSystem : 'Empty') + ' ' + (item.rating ? item.rating : 'Empty')}</b></span>;
                         })
                     }
                 </div>
@@ -85,11 +86,12 @@ class Rating extends Component {
                                                 <RatingReadTab getAdvisoryNameByCode={this.getAdvisoryNameByCode} key={i} data={item} />
                                             </Col>
                                         </Row>
-                                    </TabPane>);
+                                    </TabPane>
+);
                             }) : null
                     }
                     {
-                        this.props.isEditMode ?
+                        this.props.isEditMode ? (
                             <Fragment>
                                 <TabPane tabId={this.props.createRatingTab}>
                                     <Row>
@@ -125,13 +127,16 @@ class Rating extends Component {
                                                             advisoryCodeList={this.state.advisoryCodeList}
                                                             getAdvisoryNameByCode={this.getAdvisoryNameByCode}
                                                             key={i}
-                                                            data={item} />
+                                                            data={item}
+                                                        />
                                                     </Col>
                                                 </Row>
-                                            </TabPane>);
+                                            </TabPane>
+);
                                     })
                                 }
                             </Fragment>
+                          )
                             : null
                     }
                 </TabContent>

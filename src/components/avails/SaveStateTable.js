@@ -19,24 +19,26 @@ export default function withRedux(WrappedComponent){
         };
 
         render(){
-            return <WrappedComponent
-                {...this.props}
+            return (
+                <WrappedComponent
+                    {...this.props}
 
-                availTabPageLoading = {this.props.availTabPageLoading}
+                    availTabPageLoading={this.props.availTabPageLoading}
 
-                availsMapping = {store.getState().root.availsMapping}
+                    availsMapping={store.getState().root.availsMapping}
 
-                availTabPageSort = {store.getState().dashboard.session.availTabPageSort}
-                resultPageSort = {(sort) => store.dispatch(resultPageSort(sort))}
+                    availTabPageSort={store.getState().dashboard.session.availTabPageSort}
+                    resultPageSort={(sort) => store.dispatch(resultPageSort(sort))}
 
-                availTabPageSelection = {store.getState().dashboard.session.availTabPageSelection}
-                resultPageSelect = {(selection) => store.dispatch(resultPageSelect(selection))}
+                    availTabPageSelection={store.getState().dashboard.session.availTabPageSelection}
+                    resultPageSelect={(selection) => store.dispatch(resultPageSelect(selection))}
 
-                promotedRightsFullData = {store.getState().dopReducer.session.promotedRightsFullData}
+                    promotedRightsFullData={store.getState().dopReducer.session.promotedRightsFullData}
 
-                columnsOrder = {store.getState().dashboard.session.columns}
-                updateColumnsOrder = {(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
-            />;
+                    columnsOrder={store.getState().dashboard.session.columns}
+                    updateColumnsOrder={(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
+                />
+);
         }
     });
 }

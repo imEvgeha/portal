@@ -109,7 +109,7 @@ class Dashboard extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className={'use-material-dashboard-pro-react'}>
+            <div className="use-material-dashboard-pro-react">
                 <h3>Media Search Results Cards</h3>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12} item={true}>
@@ -118,65 +118,69 @@ class Dashboard extends React.Component {
                                 <h4 className={classes.cardIconTitle}>Filters</h4>
                             </CardHeader>
                             <CardBody>
-                                    <GridContainer xs={12} item={true}>
-                                        <GridItem xs={12} item={true}>
-                                            <TagsInput
-                                                value={this.props.keywordFilters}
-                                                onChange={this.onAddKeywordFilter}
-                                                tagProps={{ className: 'react-tagsinput-tag info' }}
-                                                inputProps={{ placeholder: 'Search' }}
-                                            />
-                                        </GridItem>
-                                        {this.props.loadedFilters ? (
+                                <GridContainer xs={12} item={true}>
+                                    <GridItem xs={12} item={true}>
+                                        <TagsInput
+                                            value={this.props.keywordFilters}
+                                            onChange={this.onAddKeywordFilter}
+                                            tagProps={{ className: 'react-tagsinput-tag info' }}
+                                            inputProps={{ placeholder: 'Search' }}
+                                        />
+                                    </GridItem>
+                                    {this.props.loadedFilters ? (
                                             this.props.loadedFilters.map( (val, index) => (
                                                 <GridItem xs={12} sm={6} md={2} lg={2} key={index}>
                                                     <FormControl
                                                         fullWidth
                                                         className={classes.selectFormControl}
                                                     >
-                                                    <InputLabel
-                                                        htmlFor={val.multiSelect ? 'multiple-select' : 'simple-select'}
-                                                        className={classes.selectLabel}>
-                                                        {val.filterDisplayName}
-                                                    </InputLabel>
-                                                    <Select
-                                                        multiple={val.multiSelect}
-                                                        value={this.props.selectedFilters[val.filterSearchParameter] ? this.props.selectedFilters[val.filterSearchParameter] : []}
-                                                        onChange={(e) => this.handleMultiple(val.filterSearchParameter, e)}
-                                                        MenuProps={{
+                                                        <InputLabel
+                                                            htmlFor={val.multiSelect ? 'multiple-select' : 'simple-select'}
+                                                            className={classes.selectLabel}
+                                                        >
+                                                            {val.filterDisplayName}
+                                                        </InputLabel>
+                                                        <Select
+                                                            multiple={val.multiSelect}
+                                                            value={this.props.selectedFilters[val.filterSearchParameter] ? this.props.selectedFilters[val.filterSearchParameter] : []}
+                                                            onChange={(e) => this.handleMultiple(val.filterSearchParameter, e)}
+                                                            MenuProps={{
                                                             className: classes.selectMenu
                                                         }}
-                                                        classes={{
+                                                            classes={{
                                                             select: classes.select
                                                         }}
-                                                        inputProps={{
+                                                            inputProps={{
                                                             name: val.multiSelect ? 'multipleSelect' : 'simpleSelect',
                                                             id: val.multiSelect ? 'multiple-select' : 'simple-select'
                                                         }}
-                                                    >
-                                                        {val.values.map((flt)=>(
-                                                            <MenuItem key={flt} value={flt}
-                                                                      classes={{
+                                                        >
+                                                            {val.values.map((flt)=>(
+                                                                <MenuItem
+                                                                    key={flt}
+                                                                    value={flt}
+                                                                    classes={{
                                                                           root: classes.selectMenuItem,
                                                                           selected: val.multiSelect ? classes.selectMenuItemSelectedMultiple : classes.selectMenuItemSelected
-                                                                      }}>
-                                                                {flt}
-                                                            </MenuItem>
+                                                                      }}
+                                                                >
+                                                                    {flt}
+                                                                </MenuItem>
                                                         ))}
-                                                    </Select>
+                                                        </Select>
                                                     </FormControl>
                                                 </GridItem>
                                             ))
                                         ) : ''}
-                                        <GridItem xs={12}>
-                                            <Button color="info" round onClick={this.onSubmitSearch}>Submit</Button>
-                                        </GridItem>
-                                    </GridContainer>
+                                    <GridItem xs={12}>
+                                        <Button color="info" round onClick={this.onSubmitSearch}>Submit</Button>
+                                    </GridItem>
+                                </GridContainer>
                             </CardBody>
                         </Card>
 
                         {this.props.searchResults.length > 0 ? (
-                            this.props.searchResults.map( (essence, key) =>
+                            this.props.searchResults.map( (essence, key) => (
                                 <GridContainer key={key}>
                                     <GridItem xs={12} sm={12} md={12} lg={12}>
                                         <Card>
@@ -194,17 +198,20 @@ class Dashboard extends React.Component {
                                                 <CardBody>
                                                     <GridContainer xs={12}>
                                                         {key.summary.map((summary, index) =>
-                                                            (<GridItem xs={6} sm={6} md={4} lg={4} key={index}>
+                                                            (
+                                                                <GridItem xs={6} sm={6} md={4} lg={4} key={index}>
                                                                     <p>{summary.key} {summary.value}</p>
                                                                 </GridItem>
                                                             )
                                                         )}
                                                     </GridContainer>
                                                 </CardBody>
-                                            </Card>))}
+                                            </Card>
+))}
                                     </GridItem>
 
                                 </GridContainer>
+                              )
 
                             )
 

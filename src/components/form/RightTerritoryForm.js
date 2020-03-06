@@ -37,7 +37,7 @@ class RightTerritoryForm extends React.Component {
                         onClose={this.props.onClose}
                         components={{
                             Container: ({ children, className }) => (
-                                <Form onSubmit={data => this.onSubmit(data)} >
+                                <Form onSubmit={data => this.onSubmit(data)}>
                                     {({ formProps }) => (
                                         <ModalBody>
                                             <form {...formProps} className={className}>
@@ -54,7 +54,8 @@ class RightTerritoryForm extends React.Component {
                             options={this.props.options}
                             isEdit={this.props.isEdit}
                             existingTerritoryList={this.props.existingTerritoryList}
-                            territoryIndex={this.props.territoryIndex} />
+                            territoryIndex={this.props.territoryIndex}
+                        />
                         <ModalFooter>
                             <Button appearance="default" onClick={this.props.onClose}>
                                 Cancel

@@ -66,11 +66,11 @@ class AvailIngestHistoryContainer extends React.Component {
     render() {
         return (
             <div>
-                <HistoryURL/>
-                {<AdvancedHistorySearchPanel onSearch={this.handleHistoryAdvancedSearch}/>}
+                <HistoryURL />
+                <AdvancedHistorySearchPanel onSearch={this.handleHistoryAdvancedSearch} />
                 <div id="avail-ingest-history-result-table">
-                    <div className={'container-fluid'}>
-                        <AvailsIngestHistoryTable/>
+                    <div className="container-fluid">
+                        <AvailsIngestHistoryTable />
                     </div>
                 </div>
             </div>

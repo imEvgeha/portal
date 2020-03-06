@@ -7,10 +7,11 @@ import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import {fetchRightsHistory} from './rightHistoryActions';
 import AuditHistoryTable from '../../components/AuditHistoryTable/AuditHistoryTable';
 
-const SPINNER =
+const SPINNER = (
     <div style={{textAlign: 'center'}}>
-        <Spinner size="medium"/>
-    </div>;
+        <Spinner size="medium" />
+    </div>
+  );
 
 function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistory}) {
 
@@ -31,7 +32,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
         return (
             <div>
                 {selectedAvails.map((avail, index) => (
-                        <AuditHistoryTable key={avail.id} focusedRight={avail} data={rightsEventHistory[index]} />
+                    <AuditHistoryTable key={avail.id} focusedRight={avail} data={rightsEventHistory[index]} />
                     )
                 )}
             </div>
@@ -54,7 +55,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
 
     return (
         (selectedAvails.length > 0) && (
-            <a href={'#'} onClick={openHistoryModal}>
+            <a href="#" onClick={openHistoryModal}>
                 <span className='nx-container-margin table-top-text'>
                     View History
                 </span>

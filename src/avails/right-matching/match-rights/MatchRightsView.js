@@ -228,7 +228,7 @@ function MatchRightView({
         <div className="nexus-c-match-right-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
                 </Link>
                 <span>{MATCH_RIGHT_TITLE}</span>
             </NexusTitle>

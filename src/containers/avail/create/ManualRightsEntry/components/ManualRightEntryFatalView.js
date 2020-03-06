@@ -55,11 +55,11 @@ function ManualRightEntryFatalView({attachments, hidden}) {
 
     return (
         <React.Fragment>
-            {!hidden &&
+            {!hidden && (
             <div ref={containerRef} style={{height: viewHeight}} className='nexus-c-manual-rights-entry__fatal_view'>
                 {getRows()}
             </div>
-            }
+          )}
         </React.Fragment>
     );
 }

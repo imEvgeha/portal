@@ -251,17 +251,19 @@ export default class RightsResultsTable extends React.Component {
                 return(
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            title={error}
+                            className={highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                        >
                             {arrayTypeFieldValue || String(content)}
                         </div>
-                        {highlighted &&
+                        {highlighted && (
                         <div
-                            style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                            <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                            style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                        >
+                            <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
                         </div>
-                        }
+                      )}
                     </Link>
                 );
             }
@@ -270,7 +272,7 @@ export default class RightsResultsTable extends React.Component {
             if (params.data){
                 return '';
             }
-            return <img src={LoadingGif}/>;
+            return <img src={LoadingGif} />;
         }
     }
 

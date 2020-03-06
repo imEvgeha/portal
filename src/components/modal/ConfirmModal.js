@@ -53,7 +53,7 @@ class Confirm extends React.Component{
         if (this.props.description) {
             modalBody = (
                 <ModalBody
-                    style = {this.props.scrollable ? {overflowY:'scroll', height:'calc(100vh - 220px)'} : null}
+                    style={this.props.scrollable ? {overflowY:'scroll', height:'calc(100vh - 220px)'} : null}
                 >
                     {this.props.description}
                 </ModalBody>
@@ -86,7 +86,7 @@ export const confirmModal = {
             reject: () => { cleanup();onCancel();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<Confirm {...props}/>, wrapper);
+        render(<Confirm {...props} />, wrapper);
         const cleanup = function() {
             unmountComponentAtNode(wrapper);
             return setTimeout(function() {

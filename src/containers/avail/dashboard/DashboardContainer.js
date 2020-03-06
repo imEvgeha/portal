@@ -163,19 +163,27 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <RightsURL/>
+                <RightsURL />
                 <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
-                                            onSearch={this.handleAvailsFreeTextSearch}/>
+                                        <FreeTextSearch
+                                            disabled={this.props.showAdvancedSearch}
+                                            containerId="dashboard-avails"
+                                            onSearch={this.handleAvailsFreeTextSearch}
+                                        />
                                     </td>
                                     <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
-                                        <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
-                                            id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
+                                        <button
+                                            className="btn btn-outline-secondary advanced-search-btn"
+                                            style={{height: '40px'}}
+                                            title="Advanced search"
+                                            id="dashboard-avails-advanced-search-btn"
+                                            onClick={this.toggleAdvancedSearch}
+                                        >
                                             <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
                                         </button>
                                     </td>
@@ -184,9 +192,9 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                <AdvancedSearchPanel location={this.props.location}  hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>
-                {!this.props.showSearchResults && <DashboardTab/>}
-                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
+                <AdvancedSearchPanel location={this.props.location} hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch} />
+                {!this.props.showSearchResults && <DashboardTab />}
+                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab />}
             </div>
         );
     }

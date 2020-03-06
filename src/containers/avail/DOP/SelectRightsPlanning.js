@@ -90,19 +90,20 @@ class SelectRightsPlanning extends Component {
 
         return (
             <div>
-                <SelectRightsDOPConnector/>
+                <SelectRightsDOPConnector />
                 {availsMapping && (
                     <RightsResultsTable
                         availsMapping={availsMapping}
-                        mode={'selectRightsMode'}
+                        mode="selectRightsMode"
                         disableEdit={true}
                         hidden={this.props.selectedTerritoriesTab === PENDING_SELECTION}
                     />
                 )}
                 {availsMapping && (
-                    <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
-                                                hidden={this.props.selectedTerritoriesTab !== PENDING_SELECTION}
-                                                disableEdit={true}
+                    <SelectedRightsResultsTable
+                        availsMapping={this.props.availsMapping}
+                        hidden={this.props.selectedTerritoriesTab !== PENDING_SELECTION}
+                        disableEdit={true}
                     />
                 )}
             </div>

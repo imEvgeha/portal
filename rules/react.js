@@ -173,35 +173,13 @@ module.exports = {
         // Enforce boolean attributes notation in JSX
         'react/jsx-boolean-value': 'off',
 
-        // Detect missing inline elements spacing
-        'react/jsx-child-element-spacing': 'off',
-
-        // Validate closing bracket location in JSX
-        'react/jsx-closing-bracket-location': ['off', 'tag-aligned'],
-
-        // Validate closing tag location in JSX
-        'react/jsx-closing-tag-location': 'off',
-
-        // Enforce or disallow spaces inside of curly braces in JSX attributes and expressions
-        'react/jsx-curly-spacing': ['off', 'never', {allowMultiline: true}],
-
-        // Enforce or disallow spaces around equal signs in JSX attributes
-        'react/jsx-equals-spacing': ['off', 'never'],
-
         // Restrict file extensions that may contain JSX
         'react/jsx-filename-extension': ['off', {extensions: ['.js']}],
 
-        // Enforce position of the first prop in JSX
-        'react/jsx-first-prop-new-line': ['off', 'multiline-multiprop'],
 
         // Enforce event handler naming conventions in JSX
         'react/jsx-handler-names': 'off',
 
-        // Validate JSX indentation
-        'react/jsx-indent': ['off', 4],
-
-        // Validate props indentation in JSX
-        'react/jsx-indent-props': ['off', 4],
 
         // Validate JSX has key prop when in array or iterator
         'react/jsx-key': 'off',
@@ -210,17 +188,7 @@ module.exports = {
         'react/jsx-max-depth': 'off',
 
         // Limit maximum of props on a single line in JSX
-        'react/jsx-max-props-per-line': ['off', {maximum: 1, when: 'multiline'}],
-
-        // Prevent usage of .bind() and arrow functions in JSX props
-        'react/jsx-no-bind': [
-            'off',
-            {
-                ignoreRefs: true,
-                allowArrowFunctions: true,
-                allowBind: false,
-            },
-        ],
+        'react/jsx-props-no-spreading': ['off', {maximum: 1, when: 'multiline'}],
 
         // Prevent comments from being inserted as text nodes
         'react/jsx-no-comment-textnodes': 'off',
@@ -231,23 +199,14 @@ module.exports = {
         // Prevent usage of unwrapped JSX strings
         'react/jsx-no-literals': 'off',
 
-        // Prevent usage of unsafe target='_blank'
-        'react/jsx-no-target-blank': 'off',
-
         // Disallow undeclared variables in JSX
         'react/jsx-no-undef': 'off',
 
         // Limit to one expression per line in JSX
         'react/jsx-one-expression-per-line': 'off',
 
-        // Enforce curly braces or disallow unnecessary curly braces in JSX
-        'react/jsx-curly-brace-presence': ['off', {props: 'never', children: 'never'}],
-
         // Enforce PascalCase for user-defined JSX components
         'react/jsx-pascal-case': ['off', {allowAllCaps: true, ignore: []}],
-
-        // Disallow multiple spaces between inline JSX props
-        'react/jsx-props-no-multi-spaces': 'off',
 
         // Enforce default props alphabetical sorting
         'react/jsx-sort-default-props': 'off',
@@ -259,33 +218,11 @@ module.exports = {
         // off in favor of jsx-tag-spacing
         'react/jsx-space-before-closing': 'off',
 
-        // Validate whitespace in and around the JSX opening and closing brackets
-        'react/jsx-tag-spacing': [
-            'off',
-            {
-                closingSlash: 'never',
-                beforeSelfClosing: 'always',
-                afterOpening: 'never',
-                beforeClosing: 'never',
-            },
-        ],
-
         // Prevent React to be incorrectly marked as unused
         'react/jsx-uses-react': 'off',
 
         // Prevent variables used in JSX to be incorrectly marked as unused
         'react/jsx-uses-vars': 'off',
-
-        // Prevent missing parentheses around multilines JSX
-        'react/jsx-wrap-multilines': ['off', {
-            'declaration': 'parens-new-line',
-            'assignment': 'parens-new-line',
-            'return': 'parens-new-line',
-            'arrow': 'parens-new-line',
-            'condition': 'parens-new-line',
-            'logical': 'parens-new-line',
-            'prop': 'parens-new-line',
-        }],
 
         // Checks rules of Hooks
         'react-hooks/rules-of-hooks': 'off',

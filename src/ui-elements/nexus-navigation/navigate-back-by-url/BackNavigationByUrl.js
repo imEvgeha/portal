@@ -8,7 +8,7 @@ import {backArrowColor} from '../../../constants/avails/constants';
 const BackNavigationByUrl = ({title, onNavigationClick}) => (
     <NexusTitle>
         <span className="nexus-c-right-to-match-view__link" onClick={onNavigationClick}>
-            <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
+            <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
         </span>
         <span>{title}</span>
     </NexusTitle>

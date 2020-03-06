@@ -105,11 +105,11 @@ const NexusDateTimeWindowPicker = ({
     return (
         <CustomIntlProvider>
             <div className="nexus-c-date-time-window-picker">
-                {label &&
+                {label && (
                 <div className="nexus-c-date-time-window-picker__label">
                     {label}
                 </div>
-                }
+              )}
                 <div className="nexus-c-date-time-window-picker__start-date">
                     {
                         !!labels.length && (
@@ -175,7 +175,7 @@ const NexusDateTimeWindowPicker = ({
                         )
                     }
                 </div>
-                {(!isTimestamp && isUsingTime) &&
+                {(!isTimestamp && isUsingTime) && (
                 <div className="nexus-c-date-time-picker__type-select">
                     <label className="nexus-c-date-time-picker__label">
                         Select Type
@@ -189,7 +189,7 @@ const NexusDateTimeWindowPicker = ({
                         onChange={type => setIsSimulcast(type.value)}
                     />
                 </div>
-                }
+              )}
             </div>
         </CustomIntlProvider>
     );

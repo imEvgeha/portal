@@ -49,18 +49,19 @@ class EditorialMetadata extends Component {
                 </Row>
                 <div className='tab'>
                     {
-                        this.props.isEditMode ?
+                        this.props.isEditMode ? (
                             <React.Fragment>
-                                <FontAwesome className={'tablinks add-local'} id={'createEditorialMetadata'} name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
-                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createEditorialMetadata'} toggle={this.toggle}>
+                                <FontAwesome className="tablinks add-local" id="createEditorialMetadata" name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
+                                <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createEditorialMetadata" toggle={this.toggle}>
                                     Create Editorial Metadata
                                 </Tooltip>
                             </React.Fragment>
+                          )
                             : null
                     }
                     {
                         this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '') + ' ' + (item.service ? item.service : '')}</b></span>;
+                            return <span className="tablinks" style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '') + ' ' + (item.service ? item.service : '')}</b></span>;
                         })
                     }
                 </div>
@@ -75,22 +76,26 @@ class EditorialMetadata extends Component {
                                                 <EditorialMetadataTab
                                                     titleContentType={this.props.titleContentType}
                                                     getLanguageByCode={this.getLanguageByCode}
-                                                    key={i} data={item} />
+                                                    key={i}
+                                                    data={item}
+                                                />
                                             </Col>
                                         </Row>
-                                    </TabPane>);
+                                    </TabPane>
+);
                             }) :
-                            !this.props.isEditMode ?
+                            !this.props.isEditMode ? (
                                 <Row>
                                     <Col>
                                         <Alert color="primary">
                                             <FontAwesome name="info" /> <b>No editorial metadata.</b>
                                         </Alert>
                                     </Col>
-                                </Row> : null
+                                </Row>
+                              ) : null
                     }
                     {
-                        this.props.isEditMode ?
+                        this.props.isEditMode ? (
                             <Fragment>
                                 <TabPane tabId={this.props.createEditorialTab}>
                                     <Row>
@@ -106,7 +111,8 @@ class EditorialMetadata extends Component {
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 handleGenreChange={this.props.handleGenreChange}
                                                 handleEditorialCastCrewCreate={this.props.handleEditorialCastCrewCreate}
-                                                titleContentType={this.props.titleContentType} />
+                                                titleContentType={this.props.titleContentType}
+                                            />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -124,13 +130,17 @@ class EditorialMetadata extends Component {
                                                             handleEditorialCastCrew={this.props.handleEditorialCastCrew}
                                                             handleGenreEditChange={this.props.handleGenreEditChange}
                                                             updatedEditorialMetadata={this.props.updatedEditorialMetadata}
-                                                            key={i} data={item} />
+                                                            key={i}
+                                                            data={item}
+                                                        />
                                                     </Col>
                                                 </Row>
-                                            </TabPane>);
+                                            </TabPane>
+);
                                     })
                                 }
                             </Fragment>
+                          )
                             : null
                     }
                 </TabContent>

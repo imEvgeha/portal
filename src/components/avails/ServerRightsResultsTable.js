@@ -133,13 +133,15 @@ class ServerRightsResultsTable extends RightsResultsTable {
 
     render(){
         const {WrappedComponent} = this.props;
-        return <WrappedComponent
-            {...this.props}
-            {...this.state.rowsProps}
-            colDef = {this.state.cols}
-            setTable={this.setTable}
-            getRowNodeId={data => data.id}
-        />;
+        return (
+            <WrappedComponent
+                {...this.props}
+                {...this.state.rowsProps}
+                colDef={this.state.cols}
+                setTable={this.setTable}
+                getRowNodeId={data => data.id}
+            />
+);
     }
 }
 

@@ -131,21 +131,23 @@ export default class DynamicObjectType extends Component {
                         return (
                             <Expander
                                 key={`exp_${item.id}`}
-                                label={<InlineEdit
-                                    defaultValue={label}
-                                    editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact/>}
-                                    readView={() => (label)}
-                                    onConfirm={value => this.saveKeyName(item, value)}
-                                    validate={value => this.checkKeyName(item, value)}
-                                    isRequired
-                                    isCompact
-                                    hideActionButtons
-                                />}
+                                label={(
+                                    <InlineEdit
+                                        defaultValue={label}
+                                        editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact />}
+                                        readView={() => (label)}
+                                        onConfirm={value => this.saveKeyName(item, value)}
+                                        validate={value => this.checkKeyName(item, value)}
+                                        isRequired
+                                        isCompact
+                                        hideActionButtons
+                                    />
+)}
                                 remove={() => {
                                     this.removeItem(item.id);
                                 }}
                             >
-                            {form}
+                                {form}
                             </Expander>
                         );
                     })}
@@ -171,13 +173,14 @@ export default class DynamicObjectType extends Component {
                 </AkField>
                 <div className="d-flex flex-row align-items-start">
                     <Textfield
-                       value={keyName}
-                       onChange={(e) =>  this.onKeyNameChange(e.target.value)}
-                       placeholder='Input key name...'
+                        value={keyName}
+                        onChange={(e) =>  this.onKeyNameChange(e.target.value)}
+                        placeholder='Input key name...'
                     />
                     <Button
                         isDisabled={keyName.trim().length === 0 || items.find(({key}) => key === keyName) != null}
-                        onClick={() => this.addItem()}>{addButtonLabel}
+                        onClick={() => this.addItem()}
+                    >{addButtonLabel}
                     </Button>
                 </div>
             </div>

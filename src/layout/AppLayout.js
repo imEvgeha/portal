@@ -9,7 +9,7 @@ import DOP from '../util/DOP';
 import routes from '../routes';
 
 const AppLayout = ({history}) => (
-    <ConnectedRouter history={history} >
+    <ConnectedRouter history={history}>
         <div className="nexus-c-app-layout">
             <IfEmbedded>
                 <DOP />
@@ -21,7 +21,7 @@ const AppLayout = ({history}) => (
                 <NexusBreadcrumb />
                 {routes}
             </div>
-         </div>
+        </div>
     </ConnectedRouter>
 );
 

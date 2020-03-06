@@ -20,7 +20,7 @@ const createFormForItem = (
                 return (
                     <Form
                         parentContext={context}
-                        key={'FIELD_0'}
+                        key="FIELD_0"
                         defaultFields={mappedFields}
                         renderer={renderer}
                         value={item}

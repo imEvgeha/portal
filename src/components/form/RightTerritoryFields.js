@@ -95,7 +95,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
 
             <Field label="DATE SELECTED" name="dateSelected" defaultValue={isEdit ? returnValidData('dateSelected') && existingTerritoryList[territoryIndex]['dateSelected'] ? existingTerritoryList[territoryIndex]['dateSelected'] : '' : ''}>
                 {({ fieldProps }) => (
-                    <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" {...fieldProps} dateFormat={'DD/MM/YYYY'} />
+                    <DatePicker id="datepicker" placeholder="DD/MM/YYYY" {...fieldProps} dateFormat="DD/MM/YYYY" />
                 )}
             </Field>
 

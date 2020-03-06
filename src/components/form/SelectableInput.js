@@ -136,16 +136,21 @@ class SelectableInput extends Component {
 
     render() {
         const renderTextField = (name, displayName) => {
-            return (<div key={name} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
-                <input type="text" className="form-control"
-                    id={this.props.id + '-text'}
-                    placeholder={'Enter ' + displayName}
-                    name={name.value}
-                    ref={this.refInput}
-                    value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                    onChange={this.handleInputChange}
-                    onKeyPress={this._handleKeyPress}/>
-            </div>);
+            return (
+                <div key={name} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id={this.props.id + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name.value}
+                        ref={this.refInput}
+                        value={this.props.value && this.props.value.value ? this.props.value.value : ''}
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                    />
+                </div>
+);
         };
 
         const innerValidate = (val, ctx, input, cb) => {
@@ -157,87 +162,99 @@ class SelectableInput extends Component {
         };
 
         const renderIntegerField = (name, displayName) => {
-            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
-                <AvForm>
-                    <AvField
-                        id={this.props.id + '-text'}
-                        placeholder={'Enter ' + displayName}
-                        name={name.value}
-                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                        onChange={this.handleInputChange}
-                        onKeyPress={this._handleKeyPress}
-                        type="text"
-                        validate={{async: innerValidate, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}}}
-                    />
-                </AvForm>
-            </div>);
+            return (
+                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                    <AvForm>
+                        <AvField
+                            id={this.props.id + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            name={name.value}
+                            value={this.props.value && this.props.value.value ? this.props.value.value : ''}
+                            onChange={this.handleInputChange}
+                            onKeyPress={this._handleKeyPress}
+                            type="text"
+                            validate={{async: innerValidate, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}}}
+                        />
+                    </AvForm>
+                </div>
+);
         };
 
         const renderYearField = (name, displayName) => {
-            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
-                <AvForm>
-                    <AvField
-                        id={this.props.id + '-text'}
-                        placeholder={'Enter ' + displayName}
-                        name={name.value}
-                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                        onChange={this.handleInputChange}
-                        onKeyPress={this._handleKeyPress}
-                        type="text"
-                        validate={{async: innerValidate, pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}}}
-                    />
-                </AvForm>
-            </div>);
+            return (
+                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                    <AvForm>
+                        <AvField
+                            id={this.props.id + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            name={name.value}
+                            value={this.props.value && this.props.value.value ? this.props.value.value : ''}
+                            onChange={this.handleInputChange}
+                            onKeyPress={this._handleKeyPress}
+                            type="text"
+                            validate={{async: innerValidate, pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}}}
+                        />
+                    </AvForm>
+                </div>
+);
         };
 
         const renderDoubleField = (name, displayName) => {
-            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
-                <AvForm>
-                    <AvField
-                        id={this.props.id + '-text'}
-                        placeholder={'Enter ' + displayName}
-                        name={name.value}
-                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                        onChange={(e, val) => this.handleInputChange(e, val.replace(',','.'))}
-                        onKeyPress={this._handleKeyPress}
-                        type="text"
-                        validate={{async: innerValidate, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}}
-                    />
-                </AvForm>
-            </div>);
+            return (
+                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                    <AvForm>
+                        <AvField
+                            id={this.props.id + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            name={name.value}
+                            value={this.props.value && this.props.value.value ? this.props.value.value : ''}
+                            onChange={(e, val) => this.handleInputChange(e, val.replace(',','.'))}
+                            onKeyPress={this._handleKeyPress}
+                            type="text"
+                            validate={{async: innerValidate, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}}
+                        />
+                    </AvForm>
+                </div>
+);
         };
 
         const renderTimeField = (name, displayName) => {
-            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
-                <AvForm>
-                    <AvField
-                        id={this.props.id + '-text'}
-                        placeholder={'Enter ' + displayName}
-                        name={name.value}
-                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                        onChange={this.handleInputChange}
-                        onKeyPress={this._handleKeyPress}
-                        type="text"
-                        validate={{async: innerValidate, pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
-                        errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
-                    />
-                </AvForm>
-            </div>);
+            return (
+                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                    <AvForm>
+                        <AvField
+                            id={this.props.id + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            name={name.value}
+                            value={this.props.value && this.props.value.value ? this.props.value.value : ''}
+                            onChange={this.handleInputChange}
+                            onKeyPress={this._handleKeyPress}
+                            type="text"
+                            validate={{async: innerValidate, pattern: {value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/}}}
+                            errorMessage="Please enter a valid time! (00:00:00 - 23:59:59)"
+                        />
+                    </AvForm>
+                </div>
+);
         };
 
         const renderBooleanField = (name, displayName) => {
-            return (<div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
-                <select className="form-control"
+            return (
+                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                    <select
+                        className="form-control"
                         id={this.props.id + '-boolean'}
                         name={name.value}
                         placeholder={'Enter ' + displayName}
-                        value={this.props.value && this.props.value.value ? this.props.value.value : '' }
-                        onChange={this.handleInputChange}>
-                    <option value="">None selected</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                </select>
-            </div>);
+                        value={this.props.value && this.props.value.value ? this.props.value.value : ''}
+                        onChange={this.handleInputChange}
+                    >
+                        <option value="">None selected</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+);
         };
 
         const renderRangeDurationField = (name, displayName) => {
@@ -253,7 +270,8 @@ class SelectableInput extends Component {
                     onToDurationChange={(value) => this.handleChange('to', value)}
                     onInvalid={this.handleInvalid}
                     handleKeyPress={this._handleKeyPress}
-                />);
+                />
+);
         };
 
         const renderRangeDatepicker = (selected, displayName, showTime) => {
@@ -321,7 +339,8 @@ class SelectableInput extends Component {
                     id={this.props.id + '-select'}
                     key={name.value}
                     style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
-                    className="react-select-container">
+                    className="react-select-container"
+                >
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
@@ -346,7 +365,7 @@ class SelectableInput extends Component {
                             return placeholderButtonLabel;
                         }}
                         options={allOptions}
-                        value = {this.props.value.options || []}
+                        value={this.props.value.options || []}
                         onChange={this.handleOptionsChange}
                         onInputChange={(selectableInput, event) => {
                             //The 'set-value' action, set selectableInput to empty when user click on SelectAll checkbox
@@ -391,26 +410,34 @@ class SelectableInput extends Component {
                         value={this.props.selected}
                         placeholder={this.props.placeholder}
                         options={this.props.options}
-                    > </Select>
+                    > 
+                    </Select>
                 </div>
-                { this.props.selected &&
+                { this.props.selected && (
                 <div style={{margin: '0 2px 16px'}}>
                     {renderSelectedInput()}
                 </div>
-                }
-                { this.props.selected &&
+              )}
+                { this.props.selected && (
                 <div style={{margin: '0 0 16px'}}>
-                    <Button outline color="secondary"
-                            id={this.props.id + '-add-btn'}
-                            onClick={this.props.onSave}
-                            disabled={this.state.invalid || !this.isAnyValueSpecified()}
-                            style={{width: '80px'}}>{this.props.saveText || 'add' }</Button>
+                    <Button
+                        outline
+                        color="secondary"
+                        id={this.props.id + '-add-btn'}
+                        onClick={this.props.onSave}
+                        disabled={this.state.invalid || !this.isAnyValueSpecified()}
+                        style={{width: '80px'}}
+                    >{this.props.saveText || 'add' }
+                    </Button>
                 </div>
-                }
-                {   this.props.dataType === 'duration' &&
-                    <span title={'* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'}
-                          style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span>
-                }
+              )}
+                {   this.props.dataType === 'duration' && (
+                    <span
+                        title={'* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'}
+                        style={{color: 'grey'}}
+                    >&nbsp;&nbsp;<i className="far fa-question-circle"></i>
+                    </span>
+                  )}
             </div>
         );
     }

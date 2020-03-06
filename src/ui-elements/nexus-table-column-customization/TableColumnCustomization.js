@@ -114,14 +114,16 @@ export default function TableColumnCustomization({availsMapping, columns, update
 
     const buildCheckBox = (key, onChange) => {
         const data = hideShowColumns[key];
-        return (<Checkbox
-            key={key}
-            id={data.id}
-            name={data.id}
-            label={data.label}
-            onChange={() => onChange(key)}
-            isChecked={data.checked}
-        />);
+        return (
+            <Checkbox
+                key={key}
+                id={data.id}
+                name={data.id}
+                label={data.label}
+                onChange={() => onChange(key)}
+                isChecked={data.checked}
+            />
+);
     };
 
     const buildConfigAndOpenModal = () => {
@@ -131,7 +133,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
         setModalStyle({width: 'small'});
     };
 
-    return (<div className='nexus-column-customization__icon-button' onClick={buildConfigAndOpenModal}><AppSwitcherIcon size='large'/></div>);
+    return (<div className='nexus-column-customization__icon-button' onClick={buildConfigAndOpenModal}><AppSwitcherIcon size='large' /></div>);
 }
 
 TableColumnCustomization.propTypes = {

@@ -20,7 +20,8 @@ function SelectedButton({activeTab, setActiveTab, selectedRightsCount}) {
     return (
         <Tooltip
             content={activeTab === RIGHTS_SELECTED_TAB ? TOOLTIP_BUTTON_SELECTED_MSG : TOOLTIP_BUTTON_UNSELECTED_MSG}
-            position='top'>
+            position='top'
+        >
             <Button
                 className="nexus-c-button"
                 isSelected={activeTab === RIGHTS_SELECTED_TAB}

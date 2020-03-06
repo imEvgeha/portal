@@ -150,20 +150,24 @@ const withRightsResultsTable = BaseComponent => {
                     if (data && data.highlightedFields) {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
-                    let cellVisualContent = <Fragment>
-                        <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                            {String(content)}
-                        </div>
-                        {highlighted && (
+                    let cellVisualContent = (
+                        <Fragment>
                             <div
-                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                                title={error}
+                                className={highlighted ? 'font-weight-bold' : ''}
+                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                            >
+                                {String(content)}
+                            </div>
+                            {highlighted && (
+                            <div
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                            >
+                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
                             </div>
                         )}
-                    </Fragment>;
+                        </Fragment>
+);
                     if(props.disableEdit){
                         return (
                             <div> {cellVisualContent} </div>
@@ -180,7 +184,7 @@ const withRightsResultsTable = BaseComponent => {
                 return val;
             } 
 
-            return data ? '' : <img src={LoadingGif}/>;
+            return data ? '' : <img src={LoadingGif} />;
         };
 
         // style cell

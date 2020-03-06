@@ -71,7 +71,7 @@ export const alertModal = {
             accept: () => { cleanup();onApprove();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<AlertModal {...props}/>, wrapper);
+        render(<AlertModal {...props} />, wrapper);
         const cleanup = function() {
             unmountComponentAtNode(wrapper);
             return setTimeout(function() {

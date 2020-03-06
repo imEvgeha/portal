@@ -455,7 +455,8 @@ class TitleResultTable extends React.Component {
                     <Link to={'metadata/detail/' + params.data.id}>
                         <div
                             title={error}
-                            style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}>
+                            style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}
+                        >
                             {content}
                         </div>
                     </Link>

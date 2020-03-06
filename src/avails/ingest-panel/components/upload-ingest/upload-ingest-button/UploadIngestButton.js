@@ -32,7 +32,8 @@ const UploadIngestButton = ({ingestData}) => {
             ingestData={ingestData}
             closeModal={closeModal}
             file={file}
-            browseClick={browseClick}/>
+            browseClick={browseClick}
+        />
     );
 
     const handleUpload = (e) => {
@@ -50,10 +51,13 @@ const UploadIngestButton = ({ingestData}) => {
 
     return (
         <div className='ingest-upload'>
-            <input className='ingest-upload__input'
-                   type="file"
-                   accept={config.get('avails.upload.extensions')}
-                   ref={inputRef} onInput={handleUpload}/>
+            <input
+                className='ingest-upload__input'
+                type="file"
+                accept={config.get('avails.upload.extensions')}
+                ref={inputRef}
+                onInput={handleUpload}
+            />
             {ingestData ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
                 : <Add onClick={inputClick} />
             }

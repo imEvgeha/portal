@@ -119,7 +119,7 @@ const NexusCheckboxSelectOption = props => {
             {...updatedProps}
         >
             <div className="nexus-c-checkbox-select__checkbox">
-            {value === '*' 
+                {value === '*' 
                 && selectProps 
                 && Array.isArray(selectProps.value) 
                 && selectProps.value.length > 0 

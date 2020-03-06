@@ -99,7 +99,7 @@ const RightToMatchNavigation = ({
         navigationData && navigationData.currentPosition ? (
             <div className='nexus-c-right-to-match-navigation'>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onPreviousRightClick}>
-                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
+                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
                 </div>
                 <span className="nexus-c-right-to-match-navigation__data">
                     {isSpinnerRunning 
@@ -108,7 +108,7 @@ const RightToMatchNavigation = ({
                     }
                 </span>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
-                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
+                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
                 </div>
             </div>
         ) : null 

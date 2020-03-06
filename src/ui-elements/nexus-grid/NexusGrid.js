@@ -44,7 +44,8 @@ const NexusGrid = ({
             nexus-c-nexus-grid
             nexus-c-nexus-grid--overflow
             ${isAutoHeight(restProps) ? 'nexus-c-nexus-grid--auto-height' : ''}
-        `}>
+        `}
+        >
             <AgGridReact
                 columnDefs={columnDefs}
                 getContextMenuItems={getContextMenuItems}

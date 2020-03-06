@@ -92,13 +92,13 @@ class FixRights extends React.Component {
         const RightsResultsTable = withRedux(withColumnsReorder(withServerSorting(withRights(ResultsTable))));
         return (
             <div>
-                {this.props.availsMapping &&
+                {this.props.availsMapping && (
                 <RightsResultsTable
-                    availsMapping = {this.props.availsMapping}
-                    onDataLoaded = {this.parseLoadedData}
+                    availsMapping={this.props.availsMapping}
+                    onDataLoaded={this.parseLoadedData}
                     nav={{ back: 'fix-errors', params: { availHistoryId: this.state.availHistoryId } }}
                 />
-                }
+              )}
             </div>
         );
     }

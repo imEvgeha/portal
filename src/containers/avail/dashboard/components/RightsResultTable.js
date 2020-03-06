@@ -581,17 +581,19 @@ class RightsResultTable extends React.Component {
                 return(
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
-                        title= {error}
-                        className = {highlighted ? 'font-weight-bold' : ''}
-                        style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            title={error}
+                            className={highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                        >
                             {String(content)}
                         </div>
-                        {highlighted &&
+                        {highlighted && (
                             <div
-                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                            >
+                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
                             </div>
-                        }
+                          )}
                     </Link>
                 );
             }
@@ -600,7 +602,7 @@ class RightsResultTable extends React.Component {
             if(params.data){
                 return '';
             }else {
-                return <img src={LoadingGif}/>;
+                return <img src={LoadingGif} />;
             }
         }
     }
@@ -654,7 +656,7 @@ class RightsResultTable extends React.Component {
         return(
             <div>
                 <div
-                    className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
+                    className={'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
                     style={{
                         height: this.state.height + 'px',
                         width: '100%'
@@ -666,11 +668,11 @@ class RightsResultTable extends React.Component {
 
                         getRowNodeId={data => data.id}
 
-                        defaultColDef = {this.state.defaultColDef}
-                        columnDefs= {this.state.cols}
-                        suppressDragLeaveHidesColumns= {true}
-                        onDragStopped = {this.onColumnReordered}
-                        onColumnResized = {this.onColumnResized}
+                        defaultColDef={this.state.defaultColDef}
+                        columnDefs={this.state.cols}
+                        suppressDragLeaveHidesColumns={true}
+                        onDragStopped={this.onColumnReordered}
+                        onColumnResized={this.onColumnResized}
 
                         onBodyScroll={this.onScroll}
 
@@ -734,7 +736,7 @@ class CheckBoxHeaderInternal extends Component {
         const atLeastOneVisibleSelected = !this.props.tabPageSelection.selectNone;
 
         return (
-            <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
+            <span className="ag-selection-checkbox" onClick={this.onCheckBoxClick}>
                 <span className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
                 <span className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}> </span>
                 <span className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !allVisibleSelected ? '' : 'ag-hidden'}`}> </span>

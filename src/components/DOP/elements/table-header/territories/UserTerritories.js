@@ -61,13 +61,14 @@ function UserTerritories(props) {
                 </div>
             </Popup>
             <IconExplorerLink onClick={toggleModal}>
-                <ShortcutIcon  size='small'/>
+                <ShortcutIcon size='small' />
             </IconExplorerLink>
             <ToggleButton
-                value={ props.useSelectedTerritories }
-                onToggle={(useSelectedTerritories) => props.updateUseSelectedTerritories(!useSelectedTerritories)} />
+                value={props.useSelectedTerritories}
+                onToggle={(useSelectedTerritories) => props.updateUseSelectedTerritories(!useSelectedTerritories)}
+            />
 
-            <UserTerritoriesModal isOpen={userTerritoriesModalOpen} toggle={toggleModal}/>
+            <UserTerritoriesModal isOpen={userTerritoriesModalOpen} toggle={toggleModal} />
 
         </div>
     );

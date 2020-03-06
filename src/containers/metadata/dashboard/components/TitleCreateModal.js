@@ -321,29 +321,39 @@ class TitleCreate extends React.Component {
                     <ModalBody>
                         <Row>
                             {/*<Col xs="4">*/}
-                                {/*<img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa20%20text%20%7B%20fill%3A%23444%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa20%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23666%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247.3203125%22%20y%3D%22218.3%22%3ESecond%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Slide" />*/}
+                            {/*<img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa20%20text%20%7B%20fill%3A%23444%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa20%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23666%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247.3203125%22%20y%3D%22218.3%22%3ESecond%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Slide" />*/}
                             {/*</Col>*/}
                             <Col>
                                 <Container>
                                     <Row>
                                         <Col>
                                             <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
-                                            <AvField name="title" errorMessage="Please enter a valid title!" id="title" value={this.state.titleForm.title} placeholder="Enter Title" onChange={this.handleChange} validate={{
+                                            <AvField
+                                                name="title"
+                                                errorMessage="Please enter a valid title!"
+                                                id="title"
+                                                value={this.state.titleForm.title}
+                                                placeholder="Enter Title"
+                                                onChange={this.handleChange}
+                                                validate={{
                                                 required: { errorMessage: 'Field cannot be empty!' },
                                                 maxLength: { value: MAX_TITLE_LENGTH }
-                                            }} />
+                                            }}
+                                            />
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
                                             <Label for="contentType">Content Type<span style={{ color: 'red' }}>*</span></Label>
-                                            <AvField type="select"
+                                            <AvField
+                                                type="select"
                                                 name="contentType"
                                                 required
                                                 value={this.state.titleForm.contentType}
                                                 onChange={this.handleSelect}
-                                                errorMessage="Field cannot be empty!">
-                                                <option value={''}>Select Content Type</option>
+                                                errorMessage="Field cannot be empty!"
+                                            >
+                                                <option value="">Select Content Type</option>
                                                 <option value={MOVIE.apiName}>{MOVIE.name}</option>
                                                 <option value={SERIES.apiName}>{SERIES.name}</option>
                                                 <option value={SEASON.apiName}>{SEASON.name}</option>
@@ -355,24 +365,41 @@ class TitleCreate extends React.Component {
                                         </Col>
                                     </Row>
                                     {
-                                        !this.state.seriesChecked ?
+                                        !this.state.seriesChecked ? (
                                             <Row>
                                                 <Col>
                                                     <Label for="titleSeriesName">Series{this.state.isSeriesCompleted ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                                    <AvField type="text" name="seriesTitleName" disabled={this.state.seriesChecked} value={this.state.titleForm.episodic.seriesTitleName} id="titleSeriesName" placeholder={'Enter Series Name'} errorMessage="Field cannot be empty!"
-                                                        onChange={this.handleChangeSeries} required={this.state.isSeriesCompleted}
+                                                    <AvField
+                                                        type="text"
+                                                        name="seriesTitleName"
+                                                        disabled={this.state.seriesChecked}
+                                                        value={this.state.titleForm.episodic.seriesTitleName}
+                                                        id="titleSeriesName"
+                                                        placeholder="Enter Series Name"
+                                                        errorMessage="Field cannot be empty!"
+                                                        onChange={this.handleChangeSeries}
+                                                        required={this.state.isSeriesCompleted}
                                                     />
                                                 </Col>
                                             </Row>
+                                          )
                                             : null
                                     }
                                     {
-                                        !this.state.seasonChecked ?
+                                        !this.state.seasonChecked ? (
                                             <Row>
                                                 <Col>
                                                     <FormGroup>
                                                         <Label for="titleSeasonNumber">Season{this.state.isSeasonNumberRequired ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                                        <AvField type="number" name="seasonNumber" disabled={this.state.seasonChecked} value={this.state.titleForm.episodic.seasonNumber} id="titleSeasonNumber" placeholder={'Enter Season Number'} errorMessage="Please enter a valid season number!" onChange={this.handleChangeSeasonNumber}
+                                                        <AvField
+                                                            type="number"
+                                                            name="seasonNumber"
+                                                            disabled={this.state.seasonChecked}
+                                                            value={this.state.titleForm.episodic.seasonNumber}
+                                                            id="titleSeasonNumber"
+                                                            placeholder="Enter Season Number"
+                                                            errorMessage="Please enter a valid season number!"
+                                                            onChange={this.handleChangeSeasonNumber}
                                                             validate={{
                                                                 maxLength: { value: MAX_SEASON_LENGTH },
                                                                 required: { value: this.state.isSeasonNumberRequired, errorMessage: 'Field cannot be empty!'}
@@ -381,31 +408,45 @@ class TitleCreate extends React.Component {
                                                     </FormGroup>
                                                 </Col>
                                                 {
-                                                    !this.state.episodeChecked ?
-                                                        <React.Fragment>
-                                                            <Col>
-                                                                <FormGroup>
-                                                                    <Label for="titleEpisodeNumber">Episode{this.state.isEpisodeNumberRequired ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                                                    <AvField type="number" name="episodeNumber" value={this.state.titleForm.episodic.episodeNumber} disabled={this.state.episodeChecked} id="titleEpisodeNumber" errorMessage="Please enter a valid episode number!" placeholder={'Enter Episode Number'} onChange={this.handleChangeEpisodic} 
+                                                    !this.state.episodeChecked ? (
+                                                        <Col>
+                                                            <FormGroup>
+                                                                <Label for="titleEpisodeNumber">Episode{this.state.isEpisodeNumberRequired ? <span style={{ color: 'red' }}>*</span> : null}</Label>
+                                                                <AvField
+                                                                    type="number"
+                                                                    name="episodeNumber"
+                                                                    value={this.state.titleForm.episodic.episodeNumber}
+                                                                    disabled={this.state.episodeChecked}
+                                                                    id="titleEpisodeNumber"
+                                                                    errorMessage="Please enter a valid episode number!"
+                                                                    placeholder="Enter Episode Number"
+                                                                    onChange={this.handleChangeEpisodic} 
                                                                     validate={{
                                                                         maxLength: { value: MAX_EPISODE_LENGTH },
                                                                         required: { value: this.state.isEpisodeNumberRequired, errorMessage: 'Field cannot be empty!'}
-                                                                    }}/>
-                                                                </FormGroup>
-                                                            </Col>
-                                                        </React.Fragment>
+                                                                    }}
+                                                                />
+                                                            </FormGroup>
+                                                        </Col>
+                                                      )
                                                         : null
                                                 }
                                             </Row>
+                                          )
                                             : null
                                     }
-                                    { this.state.titleForm.contentType !== SEASON.apiName ? <Row style={{marginTop: '15px'}}>
-                                        <Col>
-                                            <Label for="titleReleaseYear">Release
-                                                Year{!this.state.isReleaseYearRequired ? null :
-                                                    <span style={{color: 'red'}}>*</span>}</Label>
-                                            <AvField name="releaseYear" errorMessage="Please enter a valid year!"
-                                                     id="titleReleaseYear" validate={{
+                                    { this.state.titleForm.contentType !== SEASON.apiName ? (
+                                        <Row style={{marginTop: '15px'}}>
+                                            <Col>
+                                                <Label for="titleReleaseYear">Release
+                                                    Year{!this.state.isReleaseYearRequired ? null :
+                                                    <span style={{color: 'red'}}>*</span>}
+                                                </Label>
+                                                <AvField
+                                                    name="releaseYear"
+                                                    errorMessage="Please enter a valid year!"
+                                                    id="titleReleaseYear"
+                                                    validate={{
                                                 required: {
                                                     value: this.state.isReleaseYearRequired,
                                                     errorMessage: 'Field cannot be empty!'
@@ -413,10 +454,14 @@ class TitleCreate extends React.Component {
                                                 pattern: {value: '^[0-9]+$'},
                                                 minLength: {value: MAX_RELEASE_YEAR_LENGTH},
                                                 maxLength: {value: MAX_RELEASE_YEAR_LENGTH}
-                                            }} placeholder="Enter Release Year" value={this.state.titleForm.releaseYear}
-                                                     onChange={this.handleChange}/>
-                                        </Col>
-                                    </Row> : null
+                                            }}
+                                                    placeholder="Enter Release Year"
+                                                    value={this.state.titleForm.releaseYear}
+                                                    onChange={this.handleChange}
+                                                />
+                                            </Col>
+                                        </Row>
+) : null
                                     }
                                     { this.renderSyncCheckBoxes() }
                                     {
@@ -430,17 +475,17 @@ class TitleCreate extends React.Component {
                     </ModalBody>
                     <ModalFooter>
                         {
-                            this.state.errorMessage &&
+                            this.state.errorMessage && (
                             <div className="nx-stylish list-group">
                                 <h5 style={{ marginTop: '25px' }}><Alert color={this.state.isFailed ? 'danger' : 'success'}>{this.state.errorMessage}</Alert></h5>
                             </div>
-                        }
+                          )}
                         <Button id="titleCancelBtn" onClick={this.toggle} color="primary">Cancel</Button>
                         <Button id="titleSaveBtn" color="primary">Save</Button>
                     </ModalFooter>
 
                 </AvForm>
-            </Modal >
+            </Modal>
         );
     }
 }

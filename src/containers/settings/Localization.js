@@ -50,13 +50,13 @@ const Localization = ({changeLocale}) => {
                 <div className="nexus-c-settings-localization__preview-text">
                     Preview
                 </div>
-                    <NexusDateTimePicker
-                        onChange={() => {/* Empty because it's just for preview */}}
-                        id="date"
-                        value="2018-04-30T00:00:00.000Z"
-                        isWithInlineEdit={true}
-                        onConfirm={() => {/* Empty because it's just for preview */}}
-                    />
+                <NexusDateTimePicker
+                    onChange={() => {/* Empty because it's just for preview */}}
+                    id="date"
+                    value="2018-04-30T00:00:00.000Z"
+                    isWithInlineEdit={true}
+                    onConfirm={() => {/* Empty because it's just for preview */}}
+                />
             </div>
         </div>
     );

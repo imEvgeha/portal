@@ -187,21 +187,23 @@ export class SelectionTable extends React.Component {
 
     render() {
         const {SelectionWrappedComponent} = this.props;
-        return <SelectionWrappedComponent
-            {...this.props}
-            colDef={this.state.colDef}
-            columns={this.state.columns}
-            setTable={this.setTable}
+        return (
+            <SelectionWrappedComponent
+                {...this.props}
+                colDef={this.state.colDef}
+                columns={this.state.columns}
+                setTable={this.setTable}
 
-            onDataLoaded={this.onDataLoaded}
+                onDataLoaded={this.onDataLoaded}
 
-            rowSelection="multiple"
-            onSelectionChanged={this.onSelectionChanged}
-            suppressRowClickSelection={true}
-            onBodyScroll={this.onScroll}
+                rowSelection="multiple"
+                onSelectionChanged={this.onSelectionChanged}
+                suppressRowClickSelection={true}
+                onBodyScroll={this.onScroll}
 
-            staticDataLoaded={this.staticDataLoaded}
-        />;
+                staticDataLoaded={this.staticDataLoaded}
+            />
+);
     }
 }
 
@@ -253,7 +255,7 @@ class CheckBoxHeaderInternal extends Component {
         const atLeastOneVisibleSelected = !this.props.availTabPageSelection.selectNone;
 
         return (
-            <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
+            <span className="ag-selection-checkbox" onClick={this.onCheckBoxClick}>
                 <span className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
                 <span className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}> </span>
                 <span className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !allVisibleSelected ? '' : 'ag-hidden'}`}> </span>

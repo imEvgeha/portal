@@ -474,26 +474,30 @@ class RightDetails extends React.Component {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
             const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             return (
-                <div key={name}
+                <div
+                    key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
                         backgroundColor: hasValidationError ? '#f2dede' : '#fff',
                         color: hasValidationError ? '#a94442' : null,
                         border: 'none',
                         position: 'relative', display: 'block', padding: '0.75rem 1.25rem', marginBottom: '-1px',
-                    }}>
+                    }}
+                >
                     <div className="row">
                         <div className="col-4">{displayName}
                             {required ? <span className="text-danger">*</span> : ''}
                             :
-                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {highlighted ? <span title="* fields in bold are original values provided by the studios" style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                             {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                         </div>
                         <div
                             onClick={this.onFieldClicked}
                             className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
-                            id={'right-detail-' + name + '-field'}>
-                            <div className="editable-field-content"
+                            id={'right-detail-' + name + '-field'}
+                        >
+                            <div
+                                className="editable-field-content"
                                 onClick={highlighted ? () => this.onEditableClick(ref) : null}
                             >
                                 {content}
@@ -562,10 +566,14 @@ class RightDetails extends React.Component {
             const ref = React.createRef();
             let priorityError = null;
             if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let handleValueChange = (newVal) => {
@@ -637,17 +645,19 @@ class RightDetails extends React.Component {
                     validate={validate}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, convert(value), cancel)}
                     showError={false}
-                    helperComponent={<AvForm>
-                        <AvField
-                            value={value}
-                            name={name}
-                            placeholder={'Enter ' + displayName}
-                            onChange={(e) => { handleValueChange(e.target.value); }}
-                            type="text"
-                            validate={{ ...modifiedValidation, async: innerValidate }}
-                            errorMessage={errorMessage}
-                        />
-                    </AvForm>}
+                    helperComponent={(
+                        <AvForm>
+                            <AvField
+                                value={value}
+                                name={name}
+                                placeholder={'Enter ' + displayName}
+                                onChange={(e) => { handleValueChange(e.target.value); }}
+                                type="text"
+                                validate={{ ...modifiedValidation, async: innerValidate }}
+                                errorMessage={errorMessage}
+                            />
+                        </AvForm>
+)}
                 />
             ));
         };
@@ -677,10 +687,14 @@ class RightDetails extends React.Component {
         const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let ref;
@@ -713,13 +727,15 @@ class RightDetails extends React.Component {
                     displayName={displayName}
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({ display }) => display == value).server, cancel)}
-                    helperComponent={<Select
-                        name={name}
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={options}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
+                    helperComponent={(
+                        <Select
+                            name={name}
+                            placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                            options={options}
+                            value={val}
+                            onChange={handleOptionsChange}
+                        />
+)}
                 />
             ));
         };
@@ -727,10 +743,14 @@ class RightDetails extends React.Component {
         const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let ref;
@@ -788,14 +808,16 @@ class RightDetails extends React.Component {
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
-                    helperComponent={<Select
-                        name={name}
-                        isSearchable
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={options}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
+                    helperComponent={(
+                        <Select
+                            name={name}
+                            isSearchable
+                            placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                            options={options}
+                            value={val}
+                            onChange={handleOptionsChange}
+                        />
+)}
                 />
             ));
         };
@@ -803,10 +825,14 @@ class RightDetails extends React.Component {
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
             let priorityError = null;
             if (error && !name.includes('affiliate') && !name.includes('languageAudioTypes')) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let ref;
@@ -894,9 +920,10 @@ class RightDetails extends React.Component {
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
-                    helperComponent={<ReactMultiSelectCheckboxes
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
+                    helperComponent={(
+                        <ReactMultiSelectCheckboxes
+                            placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                            getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
                             if (value && value.length > 0) {
                                 return (
                                     <div
@@ -917,10 +944,11 @@ class RightDetails extends React.Component {
                             }
                             return placeholderButtonLabel;
                         }}
-                        options={allOptions}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
+                            options={allOptions}
+                            value={val}
+                            onChange={handleOptionsChange}
+                        />
+)}
                 />
             ));
         };
@@ -1033,14 +1061,14 @@ class RightDetails extends React.Component {
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
                     showError={false}
-                    helperComponent={
+                    helperComponent={(
                         <TerritoryField
                             territory={territories}
                             name={name}
                             onRemoveClick={(territory) => deleteTerritory(territory)}
                             onAddClick={this.toggleAddRightTerritoryForm}
                             onTagClick={(i) => this.toggleRightTerritoryForm(i)}
-                            renderChildren={() =>
+                            renderChildren={() => (
                                 <React.Fragment>
                                     <div style={{position: 'absolute', right: '10px'}}>
                                         <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
@@ -1054,11 +1082,11 @@ class RightDetails extends React.Component {
                                         isEdit={this.state.isEdit}
                                         options={options}
                                     />
-                                </React.Fragment>}
+                                </React.Fragment>
+                              )}
                         />
-
-
-                    } />
+                      )}
+                />
 
             ));
         };
@@ -1264,28 +1292,28 @@ class RightDetails extends React.Component {
 
         return (
             <div style={{ position: 'relative' }}>
-                <ManualRightsEntryDOPConnector/>
+                <ManualRightsEntryDOPConnector />
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
-                        this.state.errorMessage &&
+                        this.state.errorMessage && (
                         <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{ top: '-20px', zIndex: '1000', height: '25px' }}>
                             <Label id='right-edit-error-message'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
-                    }
+                      )}
                     <div className="nx-stylish row mt-3 mx-5">
-                        <div className={'nx-stylish list-group col-12'} style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
+                        <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
+                    {this.props.availsMapping && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <div className="mt-4 mx-5 px-5">
                                 <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
-                    }
+                      )}
                 </BlockUi>
             </div>
         );

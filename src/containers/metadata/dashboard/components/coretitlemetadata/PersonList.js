@@ -111,7 +111,8 @@ class PersonList extends React.Component {
                     <PersonListContainer
                         title={this.props.personHeader}
                         label={this.props.personLabel}
-                        htmlFor={this.props.personHtmlFor}>
+                        htmlFor={this.props.personHtmlFor}
+                    >
                         <div style={{ marginTop: '5px', border: !this.state.isPersonValid ? '2px solid red' : null, borderRadius: '3px', width: '97%' }}>
                             <UserPicker
                                 id={this.props.personHtmlFor}
@@ -137,64 +138,67 @@ class PersonList extends React.Component {
                                     {(provided, snapshot) => (
                                         <div
                                             ref={provided.innerRef}
-                                            {...provided.droppableProps}>
-                                        <DroppableContent
-                                            isDragging={snapshot.isDraggingOver}
+                                            {...provided.droppableProps}
                                         >
-                                            {this.props.persons &&
+                                            <DroppableContent
+                                                isDragging={snapshot.isDraggingOver}
+                                            >
+                                                {this.props.persons &&
                                                 this.props.persons.map((person, i) => {
                                                     return (
                                                         <Draggable key={uid(person.id, i)} draggableId={person.id} index={i}>
                                                             {(provided, snapshot) => (
                                                                 <div                                       
                                                                     ref={provided.innerRef}
-                                                                    {...provided.draggableProps}>
+                                                                    {...provided.draggableProps}
+                                                                >
                                                                     <DraggableContent
                                                                         isDragging={snapshot.isDragging}
                                                                     >                       
-                                                                                    <Row>
-                                                                                        <CustomColumn xs={!this.props.isMultiColumn ? 10 : 5}>
-                                                                                            <CustomEllipsis>
-                                                                                            <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px'}} />
-                                                                                            {this.props.showPersonType && (
-                                                                                                <PersonListFlag>
-                                                                                                <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
-                                                                                                </PersonListFlag>
+                                                                        <Row>
+                                                                            <CustomColumn xs={!this.props.isMultiColumn ? 10 : 5}>
+                                                                                <CustomEllipsis>
+                                                                                    <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px'}} />
+                                                                                    {this.props.showPersonType && (
+                                                                                    <PersonListFlag>
+                                                                                        <span style={{ marginLeft: '10px' }}><Lozenge appearance="default">{this.props.getFormatTypeName(person.personType)}</Lozenge></span>
+                                                                                    </PersonListFlag>
                                                                                             )}
-                                                                                            <CustomEllipsis isInline={true} title={person.displayName}>{person.displayName}</CustomEllipsis>
-                                                                                            </CustomEllipsis>
-                                                                                        </CustomColumn>
-                                                                                        {this.props.isMultiColumn ? (
-                                                                                            <CustomColumn xs={5}>                                                                                            
-                                                                                            <CustomEllipsis style={{width: '100%'}}>
-                                                                                            <ListText style={{width: '100%'}}>
-                                                                                                <PersonListFlag>
-                                                                                                    <span style={{ marginLeft: '10px' }}><Lozenge appearance={'default'}>CHARACTER</Lozenge></span>
-                                                                                                </PersonListFlag>
-                                                                                                    {
-                                                                                                        person.characterName ? 
+                                                                                    <CustomEllipsis isInline={true} title={person.displayName}>{person.displayName}</CustomEllipsis>
+                                                                                </CustomEllipsis>
+                                                                            </CustomColumn>
+                                                                            {this.props.isMultiColumn ? (
+                                                                                <CustomColumn xs={5}>                                                                                            
+                                                                                    <CustomEllipsis style={{width: '100%'}}>
+                                                                                        <ListText style={{width: '100%'}}>
+                                                                                            <PersonListFlag>
+                                                                                                <span style={{ marginLeft: '10px' }}><Lozenge appearance="default">CHARACTER</Lozenge></span>
+                                                                                            </PersonListFlag>
+                                                                                            {
+                                                                                                        person.characterName ? (
                                                                                                             <ListItemText isEditMode onClick={() => this.setSelectedPerson(i, 'edit')} title={person.characterName}>
                                                                                                                 {person.characterName}
                                                                                                             </ListItemText>
+                                                                                                          )
                                                                                                         : <CustomAddButton onClick={() => this.setSelectedPerson(i, 'add')}>Add</CustomAddButton>
                                                                                                     }
-                                                                                            </ListText>
-                                                                                            </CustomEllipsis>
-                                                                                        </CustomColumn>
+                                                                                        </ListText>
+                                                                                    </CustomEllipsis>
+                                                                                </CustomColumn>
                                                                                         ) : null}
-                                                                                        <CustomColumn xs={2}>
-                                                                                            <CustomDeleteButton onClick={() => this.props.removePerson(person)} name="times" />
-                                                                                            <CustomDragButton name="bars"  {...provided.dragHandleProps} />
-                                                                                        </CustomColumn>
-                                                                                    </Row>    
+                                                                            <CustomColumn xs={2}>
+                                                                                <CustomDeleteButton onClick={() => this.props.removePerson(person)} name="times" />
+                                                                                <CustomDragButton name="bars" {...provided.dragHandleProps} />
+                                                                            </CustomColumn>
+                                                                        </Row>    
                                                                     </DraggableContent>
                                                                 </div>
                                                             )}
                                                         </Draggable>
                                                     );
                                                 })}
-                                            {provided.placeholder}
-                                        </DroppableContent>
+                                                {provided.placeholder}
+                                            </DroppableContent>
                                         </div>
                                     )}
                                 </Droppable>

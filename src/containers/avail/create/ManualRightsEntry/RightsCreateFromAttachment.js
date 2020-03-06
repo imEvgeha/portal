@@ -174,9 +174,11 @@ class RightsCreateFromAttachment extends React.Component {
                 return (
                     <NexusTooltip key={i} content={ATTACHMENT_TOOLTIP}>
                         <div className={icon ? 'nexus-c-manual-rights-entry__attachment--icon' : ''}>
-                            <a href="#"
-                               onClick = {() => this.getDownloadLink(e)}>
-                                {icon ? (<i className={icon}/>) : (this.formatAttachmentName(e.link))}
+                            <a
+                                href="#"
+                                onClick={() => this.getDownloadLink(e)}
+                            >
+                                {icon ? (<i className={icon} />) : (this.formatAttachmentName(e.link))}
                             </a>
                             <span className='separator'>{arr.length - 1 === i ? '' : ','}</span>
                         </div>
@@ -215,7 +217,7 @@ class RightsCreateFromAttachment extends React.Component {
         const {availsMapping, selectedTab, columns} = this.props;
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
-                <ManualRightsEntryDOPConnector/>
+                <ManualRightsEntryDOPConnector />
                 <div className='nexus-c-manual-rights-entry__description'>
                     <div>
                         <div><h3>Manual Rights Entry</h3></div>
@@ -246,7 +248,7 @@ class RightsCreateFromAttachment extends React.Component {
                         </Can>
                     </div>
                 </div>
-                {availsMapping &&
+                {availsMapping && (
                     <React.Fragment>
                         <div className='nexus-c-manual-rights-entry__table_header'>
                             <ManualRightEntryTableTabs
@@ -255,11 +257,14 @@ class RightsCreateFromAttachment extends React.Component {
                                 updatedCount={updated}
                                 historyData={this.state.historyData}
                                 availHistoryId={availHistoryId}
-                                fatalCount={fatal}/>
+                                fatalCount={fatal}
+                            />
                             <div className='nexus-c-manual-rights-entry__actions'>
-                                <Button className='nexus-c-manual-rights-entry__button'
-                                        id="right-create"
-                                        onClick={this.createRight}>
+                                <Button
+                                    className='nexus-c-manual-rights-entry__button'
+                                    id="right-create"
+                                    onClick={this.createRight}
+                                >
                                     Create Right
                                 </Button>
                                 <TableColumnCustomization
@@ -276,7 +281,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 />
                             </div>
                         </div>
-                        {selectedTab !== VIEW_JSON &&
+                        {selectedTab !== VIEW_JSON && (
                             <RightsResultTable
                                 fromServer={true}
                                 columns={columns}
@@ -289,10 +294,10 @@ class RightsCreateFromAttachment extends React.Component {
                                 searchCriteria={this.getCustomSearchCriteria(selectedTab)}
                                 onTableLoaded={this.onTableLoaded}
                             />
-                        }
-                        <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL}/>
+                          )}
+                        <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL} />
                     </React.Fragment>
-                }
+                  )}
             </div>
         );
     }

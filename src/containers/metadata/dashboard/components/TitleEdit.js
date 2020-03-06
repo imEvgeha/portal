@@ -347,38 +347,40 @@ class TitleEdit extends Component {
     }
 
     editMode = () => {
-        return <TitleEditMode
-            handleAddCharacterName={this.handleAddCharacterName}
-            castAndCrewReorder={this.reOrderedCastCrewArray}
-            titleRankingActiveTab={this.state.titleRankingActiveTab}
-            toggleTitleRating={this.toggleTitleRating}
-            addTitleRatingTab={this.addTitleRatingTab}
-            areRatingFieldsRequired={this.state.areRatingFieldsRequired}
-            createRatingTab={CREATE_TAB}
-            handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
-            ratingObjectForCreate={this.state.ratingForCreate}
-            handleRatingEditChange={this.handleRatingEditChange}
-            handleRatingCreateChange={this.handleRatingCreateChange}
+        return (
+            <TitleEditMode
+                handleAddCharacterName={this.handleAddCharacterName}
+                castAndCrewReorder={this.reOrderedCastCrewArray}
+                titleRankingActiveTab={this.state.titleRankingActiveTab}
+                toggleTitleRating={this.toggleTitleRating}
+                addTitleRatingTab={this.addTitleRatingTab}
+                areRatingFieldsRequired={this.state.areRatingFieldsRequired}
+                createRatingTab={CREATE_TAB}
+                handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
+                ratingObjectForCreate={this.state.ratingForCreate}
+                handleRatingEditChange={this.handleRatingEditChange}
+                handleRatingCreateChange={this.handleRatingCreateChange}
 
-            removeCastCrew={this.removeCastCrew}
-            addCastCrew={this.addCastCrew}
+                removeCastCrew={this.removeCastCrew}
+                addCastCrew={this.addCastCrew}
 
-            handleChangeEpisodic={this.handleChangeEpisodic}
-            handleOnExternalIds={this.handleOnExternalIds}
-            handleOnLegacyIds={this.handleOnLegacyIds}
-            handleChangeSeries={this.handleChangeSeries}
+                handleChangeEpisodic={this.handleChangeEpisodic}
+                handleOnExternalIds={this.handleOnExternalIds}
+                handleOnLegacyIds={this.handleOnLegacyIds}
+                handleChangeSeries={this.handleChangeSeries}
 
-            keyPressed={this.handleKeyDown}
+                keyPressed={this.handleKeyDown}
 
-            data={this.state.titleForm}
-            episodic={this.state.titleForm.episodic}
-            editedTitle={this.state.editedForm}
+                data={this.state.titleForm}
+                episodic={this.state.titleForm.episodic}
+                editedTitle={this.state.editedForm}
 
-            ratings={this.state.editedForm.ratings}
+                ratings={this.state.editedForm.ratings}
 
-            handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
-            handleOnChangeEdit={this.handleOnChangeEdit}
-        />;
+                handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
+                handleOnChangeEdit={this.handleOnChangeEdit}
+            />
+);
     };
 
     removeBooleanQuotes = (newAdditionalFields, fieldName) => {
@@ -946,11 +948,13 @@ class TitleEdit extends Component {
         const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
         const isDisabled = !!publishedAt && moment(publishedAt).isSameOrAfter(titleModifiedAt);
         const indicator = isDisabled ? 'success' : 'error';
-        return (<div className='nexus-c-title-edit__sync-container-field'>
-            <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
-            <div className='nexus-c-title-edit__sync-container-field-description'><b>{name}</b> Last updated: {lastUpdated}</div>
-            <AtlaskitButton appearance='primary' isDisabled={isDisabled} onClick={() => this.onSyncPublishClick(name)}>{buttonName}</AtlaskitButton>
-        </div>);
+        return (
+            <div className='nexus-c-title-edit__sync-container-field'>
+                <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator} />
+                <div className='nexus-c-title-edit__sync-container-field-description'><b>{name}</b> Last updated: {lastUpdated}</div>
+                <AtlaskitButton appearance='primary' isDisabled={isDisabled} onClick={() => this.onSyncPublishClick(name)}>{buttonName}</AtlaskitButton>
+            </div>
+);
     };
 
     onSyncPublishClick = (name) => {
@@ -968,11 +972,12 @@ class TitleEdit extends Component {
         const movidaPublishedAt = (movida || {}).publishedAt;
 
         return (
-            id && getRepositoryName(id) === TitleSystems.NEXUS &&
+            id && getRepositoryName(id) === TitleSystems.NEXUS && (
             <>
                 {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
                 {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
             </>
+          )
         );
     };
 
@@ -984,23 +989,22 @@ class TitleEdit extends Component {
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
                             {
-                                this.state.isEditMode ?
+                                this.state.isEditMode ? (
                                     <Fragment>
                                         <Button className="float-right" id="btnSave" color="primary" style={{ marginRight: '10px' }}>Save</Button>
                                         <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
                                     </Fragment>
-                                    :
-                                    <Fragment>
+                                  )
+                                    : (
                                         <Col>
                                             <div className='nexus-c-title-edit__sync-container'>
-                                            { this.renderSyncVzMovidaFields() }
-                                            <Can I="update" a="Metadata">
-                                                <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
-                                            </Can>
+                                                { this.renderSyncVzMovidaFields() }
+                                                <Can I="update" a="Metadata">
+                                                    <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
+                                                </Can>
                                             </div>
                                         </Col>
-                                    </Fragment>
-                            }
+                                  )}
                         </Col>
                     </Row>
                     {
@@ -1046,7 +1050,8 @@ class TitleEdit extends Component {
                         handleChangeDate={this.handleTerritoryMetadataDateChange}
                         handleEditChange={this.handleTerritoryMetadataEditChange}
                         handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
-                        isEditMode={this.state.isEditMode} />
+                        isEditMode={this.state.isEditMode}
+                    />
                 </AvForm>
             </EditPage>
         );

@@ -19,28 +19,33 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
                 <div className='nexus-c-avail-bundle__details'>
                     <span
                         className={`nexus-c-avail-bundle__chevron nexus-c-avail-bundle__chevron--is-${showIngests ? 'opened' : 'closed' }`}
-                        onClick={onBundleClick}>
-                        <Chevron/>
+                        onClick={onBundleClick}
+                    >
+                        <Chevron />
                     </span>
                     <IngestStatus date={received} />
                 </div>
             </div>
             {
-                showIngests && <div className='nexus-c-avail-bundle__ingests'>
+                showIngests && (
+                <div className='nexus-c-avail-bundle__ingests'>
                     {
-                        attachments.map((attachment) =>
-                            <Ingest key={attachment.id}
-                                    attachment={attachment}
-                                    received={received}
-                                    provider={provider}
-                                    ingestType={ingestType}
-                                    ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
-                                    selected={selectedAttachmentId === attachment.id}
-                                    inBundle
-                                    ingestId={id}
-                            />)
+                        attachments.map((attachment) => (
+                            <Ingest
+                                key={attachment.id}
+                                attachment={attachment}
+                                received={received}
+                                provider={provider}
+                                ingestType={ingestType}
+                                ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
+                                selected={selectedAttachmentId === attachment.id}
+                                inBundle
+                                ingestId={id}
+                            />
+                          ))
                     }
                 </div>
+)
             }
         </div>
     );

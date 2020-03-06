@@ -17,7 +17,7 @@ const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
                 <div className='ingest-header__actions'>
                     <div onClick={toggleFilters}>
                         {
-                            showFilters ? <FilterSolidIcon/> : <FilterIcon/>
+                            showFilters ? <FilterSolidIcon /> : <FilterIcon />
                         }
                     </div>
                 </div>

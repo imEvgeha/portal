@@ -111,7 +111,7 @@ class TableHeader extends React.Component {
             <div style={{marginLeft: '20px', marginBottom: '10px', display: 'flex', paddingLeft: '10px', paddingRight: '10px',  justifyContent: 'space-between'}}>
 
                 <div style={{display: 'flex'}}>
-                    <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection}/>
+                    <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection} />
 
                     <Tabs />
                 </div>

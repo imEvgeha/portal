@@ -77,16 +77,18 @@ export default function withColumnsReorder(WrappedComponent){
         }
 
         render(){
-            return <WrappedComponent
-                {...this.props}
-                defaultColDef={{...this.props.defaultColDef, resizable:true}}
-                setTable={this.setTable}
-                columns={this.state.columns}
-                columnsSize={this.state.columnsSize}
-                suppressDragLeaveHidesColumns= {true}
-                onDragStopped = {this.onColumnReordered}
-                onColumnResized = {this.onColumnResized}
-            />;
+            return (
+                <WrappedComponent
+                    {...this.props}
+                    defaultColDef={{...this.props.defaultColDef, resizable:true}}
+                    setTable={this.setTable}
+                    columns={this.state.columns}
+                    columnsSize={this.state.columnsSize}
+                    suppressDragLeaveHidesColumns={true}
+                    onDragStopped={this.onColumnReordered}
+                    onColumnResized={this.onColumnResized}
+                />
+);
         }
     };
 }

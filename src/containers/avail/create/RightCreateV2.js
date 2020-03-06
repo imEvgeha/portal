@@ -297,9 +297,11 @@ class RightCreate extends React.Component {
                 }
                 const element = fieldMapping(dataType, javaVariableName, displayName, required, value);
                 const wrappedElement = (
-                    <div key={`${name}-${index}`}
-                         className="list-group-item-action"
-                         style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}>
+                    <div
+                        key={`${name}-${index}`}
+                        className="list-group-item-action"
+                        style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}
+                    >
                         <div className="row">
                             <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:
                                 {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
@@ -317,8 +319,10 @@ class RightCreate extends React.Component {
         return (
             <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
-                    <div className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
-                         style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                    <div
+                        className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
+                        style={{top:'-20px', zIndex:'1000', height:'25px'}}
+                    >
                         <Label id="right-create-error-message">
                             {this.state && this.state.errorMessage}
                         </Label>
@@ -328,14 +332,14 @@ class RightCreate extends React.Component {
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                    <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                    {this.props.availsMapping && (
+                    <div style={{display:'flex', justifyContent: 'flex-end'}}>
                         <div className="mt-4 mx-5">
                             <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
                             <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                         </div>
                     </div>
-                    }
+                  )}
                 </BlockUi>
             </div>
         );

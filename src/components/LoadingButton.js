@@ -21,8 +21,10 @@ export default class LoadingButton extends React.Component {
       classes += ` ${className}`;
     }
     disabled = disabled || loading;
-    return <button className={classes} disabled={disabled} {...props}>
-      {loading && <Icon name="spinner" spin/>} {children}
-    </button>;
+    return (
+        <button className={classes} disabled={disabled} {...props}>
+            {loading && <Icon name="spinner" spin />} {children}
+        </button>
+);
   }
 }

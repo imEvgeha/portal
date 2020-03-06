@@ -68,7 +68,7 @@ export default function TableDownloadRights({getColumns, getSelected, allowDownl
     };
 
     return (
-        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large'/></div>
+        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large' /></div>
     );
 }
 

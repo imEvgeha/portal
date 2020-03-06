@@ -171,11 +171,12 @@ const RightsRepository = ({
         return (
             <CustomActionsCellRenderer id={id}>
                 <div>
-                    <EditorMediaWrapLeftIcon/>
+                    <EditorMediaWrapLeftIcon />
                     <span className={`
                         nexus-c-right-to-match-view__buttons_notification
                         nexus-c-right-to-match-view__buttons_notification${notificationClass}
-                    `} />
+                    `}
+                    />
                 </div>
             </CustomActionsCellRenderer>
         );

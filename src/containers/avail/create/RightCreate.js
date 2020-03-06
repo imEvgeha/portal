@@ -321,9 +321,11 @@ class RightCreate extends React.Component {
     render() {
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
             return (
-                <div key={name}
-                   className="list-group-item-action"
-                    style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}>
+                <div
+                    key={name}
+                    className="list-group-item-action"
+                    style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}
+                >
                     <div className="row">
                         <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:
                             {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
@@ -339,12 +341,12 @@ class RightCreate extends React.Component {
         const renderStringField = (name, displayName, required, value, tooltip) => {
             return renderFieldTemplate(name, displayName, required, tooltip, (
                 <div>
-                    <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange}/>
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange} />
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
@@ -376,21 +378,21 @@ class RightCreate extends React.Component {
                 <div>
                     <AvForm>
                         <AvField
-                                value={value}
-                                name={name}
-                                id={'right-create-' + name + '-text'}
-                                placeholder={'Enter ' + displayName}
-                                onChange={(ev, val) => {this.handleChange(ev, Number(val));}}
-                                type="text"
-                                validate={{number: true, async: validate}}
-                                errorMessage={validation.pattern.errorMessage}
+                            value={value}
+                            name={name}
+                            id={'right-create-' + name + '-text'}
+                            placeholder={'Enter ' + displayName}
+                            onChange={(ev, val) => {this.handleChange(ev, Number(val));}}
+                            type="text"
+                            validate={{number: true, async: validate}}
+                            errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
@@ -432,11 +434,11 @@ class RightCreate extends React.Component {
                             errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
@@ -478,11 +480,11 @@ class RightCreate extends React.Component {
                             errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
@@ -524,11 +526,11 @@ class RightCreate extends React.Component {
                             errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
@@ -599,11 +601,11 @@ class RightCreate extends React.Component {
                         value={value}
                         onChange={handleOptionsChange}
                     />
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
@@ -644,23 +646,25 @@ class RightCreate extends React.Component {
                         value={val}
                         onChange={handleOptionsChange}
                     />
-                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text &&
+                    {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                     <small className="text-danger m-2">
                         {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
                     </small>
-                    }
+                  )}
                 </div>
             ));
         };
 
         const renderBooleanField = (name, displayName, required, value) => {
             return renderFieldTemplate(name, displayName, required, null, (
-                <select className="form-control"
-                        name={name}
-                        id={'right-create-' + name + '-select'}
-                        placeholder={'Enter ' + displayName}
-                        value={value}
-                        onChange={this.handleBooleanChange}>
+                <select
+                    className="form-control"
+                    name={name}
+                    id={'right-create-' + name + '-select'}
+                    placeholder={'Enter ' + displayName}
+                    value={value}
+                    onChange={this.handleBooleanChange}
+                >
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
@@ -689,14 +693,16 @@ class RightCreate extends React.Component {
                 <TerritoryField
                     territory={this.right.territory}
                     name={name}
-                    onRemoveClick={ (terr) => this.handleDeleteObjectFromArray(terr.country, 'territory', 'country')}
+                    onRemoveClick={(terr) => this.handleDeleteObjectFromArray(terr.country, 'territory', 'country')}
                     onAddClick={this.toggleRightTerritoryForm}
-                    renderChildren={() => <React.Fragment>
-                        <div style={{position: 'absolute', right: '10px'}}>
-                            <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
-                        </div>
-                        <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />
-                    </React.Fragment>}
+                    renderChildren={() => (
+                        <React.Fragment>
+                            <div style={{position: 'absolute', right: '10px'}}>
+                                <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
+                            </div>
+                            <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />
+                        </React.Fragment>
+)}
                     mappingErrorMessage={this.mappingErrorMessage}
                 />
             ));
@@ -775,8 +781,10 @@ class RightCreate extends React.Component {
         return(
             <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
-                    <div className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
-                         style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                    <div
+                        className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
+                        style={{top:'-20px', zIndex:'1000', height:'25px'}}
+                    >
                         <Label id="right-create-error-message">
                             {this.state && this.state.errorMessage}
                         </Label>
@@ -786,14 +794,14 @@ class RightCreate extends React.Component {
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                        <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                    {this.props.availsMapping && (
+                        <div style={{display:'flex', justifyContent: 'flex-end'}}>
                             <div className="mt-4 mx-5">
                                 <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
                                 <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
-                    }
+                      )}
                 </BlockUi>
             </div>
         );

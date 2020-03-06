@@ -110,79 +110,82 @@ class RatingCreateTab extends Component {
         } = this.state.ratingsForCreate;
         return (
             <div id="ratingCreate">
-                <Fragment>
-                    <Row style={{ padding: '15px' }}>
-                        <Col md={3}>
-                            <b>Rating System<span style={{ color: 'red' }}>*</span></b>
-                            <AvField type="select"
-                                name="ratingSystem"
-                                id="titleRatingSystem"
-                                required={this.props.areRatingFieldsRequired}
-                                onChange={(e) => this.handleRatingSystemChange(e)}
-                                errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Rating System</option>
-                                {
+                <Row style={{ padding: '15px' }}>
+                    <Col md={3}>
+                        <b>Rating System<span style={{ color: 'red' }}>*</span></b>
+                        <AvField
+                            type="select"
+                            name="ratingSystem"
+                            id="titleRatingSystem"
+                            required={this.props.areRatingFieldsRequired}
+                            onChange={(e) => this.handleRatingSystemChange(e)}
+                            errorMessage="Field cannot be empty!"
+                        >
+                            <option value="">Select Rating System</option>
+                            {
                                     this.props.configRatingSystem && this.props.configRatingSystem.value.map((item, i) => {
                                         return <option key={i} value={item.value}>{item.value}</option>;
                                     })
                                 }
-                            </AvField>
-                        </Col>
-                        <Col md={3}>
-                            <b>Ratings<span style={{ color: 'red' }}>*</span></b>
-                            <AvField type="select"
-                                name="rating"
-                                id="titleRatings"
-                                value={rating ? rating : ''}
-                                required={this.props.areRatingFieldsRequired}
-                                onChange={(e) => this.handleRatingsChange(e)}
-                                errorMessage="Field cannot be empty!">
-                                <option value={''}>Select Rating</option>
-                                {
+                        </AvField>
+                    </Col>
+                    <Col md={3}>
+                        <b>Ratings<span style={{ color: 'red' }}>*</span></b>
+                        <AvField
+                            type="select"
+                            name="rating"
+                            id="titleRatings"
+                            value={rating ? rating : ''}
+                            required={this.props.areRatingFieldsRequired}
+                            onChange={(e) => this.handleRatingsChange(e)}
+                            errorMessage="Field cannot be empty!"
+                        >
+                            <option value="">Select Rating</option>
+                            {
                                     this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === ratingSystem).map((item, i) => {
                                         return <option key={i} value={item.name}>{item.name}</option>;
                                     })
                                 }
-                            </AvField>
-                            {this.state.isRatingExist && (<AvField type="text" name="validation" validate={{ required: { value: this.state.isRatingExist, errorMessage: 'Rating already exists!' } }} hidden />)}
-                        </Col>
-                        <Col md={6}>
-                            <b>Advisory Codes</b>
-                            <Select
-                                name="advisoriesCode"
-                                value={this.props.ratingObjectForCreate.advisoriesCode && this.props.ratingObjectForCreate.advisoriesCode.map(e => {
+                        </AvField>
+                        {this.state.isRatingExist && (<AvField type="text" name="validation" validate={{ required: { value: this.state.isRatingExist, errorMessage: 'Rating already exists!' } }} hidden />)}
+                    </Col>
+                    <Col md={6}>
+                        <b>Advisory Codes</b>
+                        <Select
+                            name="advisoriesCode"
+                            value={this.props.ratingObjectForCreate.advisoriesCode && this.props.ratingObjectForCreate.advisoriesCode.map(e => {
                                     return { value: e, label: this.props.getAdvisoryNameByCode(e) };
                                 })}
-                                onChange={(e) => this.handleAdvisoryCodesChange(e)}
-                                isMulti
-                                placeholder='Select Advisory Code'
-                                options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
+                            onChange={(e) => this.handleAdvisoryCodesChange(e)}
+                            isMulti
+                            placeholder='Select Advisory Code'
+                            options={this.props.configAdvisoryCode && this.props.configAdvisoryCode.value.filter(e => e.ratingSystem === ratingSystem)
                                     .map(e => {
                                         return { value: e.code, label: e.name };
                                     })}
-                            />
-                        </Col>
-                    </Row>
+                        />
+                    </Col>
+                </Row>
 
-                    <Row style={{ padding: '15px' }}>
-                        <Col>
-                            <b>Advisories{this.state.isAdvisoryRequired ? <span style={{ color: 'red' }}>*</span> : null}</b>
-                            <AvField
-                                type="text"
-                                value={advisoriesFreeText ? advisoriesFreeText : ''}
-                                placeholder="Enter Advisories"
-                                id="tittleAdvisories"
-                                name="advisoriesFreeText"
-                                required={this.state.isAdvisoryRequired}
-                                onChange={(e) => this.handleAdvisoriesChange(e)}
-                                errorMessage="Field cannot be empty!" 
-                                validate={{
+                <Row style={{ padding: '15px' }}>
+                    <Col>
+                        <b>Advisories{this.state.isAdvisoryRequired ? <span style={{ color: 'red' }}>*</span> : null}</b>
+                        <AvField
+                            type="text"
+                            value={advisoriesFreeText ? advisoriesFreeText : ''}
+                            placeholder="Enter Advisories"
+                            id="tittleAdvisories"
+                            name="advisoriesFreeText"
+                            required={this.state.isAdvisoryRequired}
+                            onChange={(e) => this.handleAdvisoriesChange(e)}
+                            errorMessage="Field cannot be empty!" 
+                            validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Advisories. Max 500 symbols.' }
-                                }} />
-                                <span style={{float:'right', color: advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText)  : 0}/500 char</span>
-                        </Col>
-                    </Row>
-                </Fragment>
+                                }}
+                        />
+                        <span style={{float:'right', color: advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText) === 500 ? 'red' : '#111' : '#111', fontSize: '13px'}}>{advisoriesFreeText ? this.handleFieldLength(advisoriesFreeText)  : 0}/500 char</span>
+                    </Col>
+                </Row>
             </div>
         );
     }

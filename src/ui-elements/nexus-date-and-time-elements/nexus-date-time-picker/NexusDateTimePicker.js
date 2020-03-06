@@ -50,11 +50,11 @@ const NexusDateTimePicker = ({
 
     const DatePicker = (isReadOnly) => (
         <div className="nexus-c-date-time-picker">
-            {!hideLabel && label &&
+            {!hideLabel && label && (
                 <div className="nexus-c-date-time-picker__label">
                     {label}
                 </div>
-            }
+              )}
             {isReadOnly && !isViewModeDisabled
                 ? getDisplayDate(value)
                 : (
@@ -106,9 +106,11 @@ const NexusDateTimePicker = ({
                                 {moment(value).isValid()
                                     ?`${getDisplayDate(value)}
                                      ${isSimulcast ? ' (UTC)' : ''}`
-                                    : <div className="read-view-container__placeholder">
-                                        {`Enter ${label}`}
-                                    </div>
+                                    : (
+                                        <div className="read-view-container__placeholder">
+                                            {`Enter ${label}`}
+                                        </div>
+)
                                 }
                             </div>
                         )}

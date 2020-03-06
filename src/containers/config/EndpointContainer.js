@@ -221,25 +221,25 @@ export class EndpointContainer extends Component {
         return (
             <DataContainer>
                 <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
-                    {canCreate && this.state.currentRecord === null &&
-                        <CustomButton onClick = {this.onNewRecord}>
+                    {canCreate && this.state.currentRecord === null && (
+                        <CustomButton onClick={this.onNewRecord}>
                             <FontAwesome
 
-                                    name='plus'
-                                    style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
-                                    color='#111'
-                                />
+                                name='plus'
+                                style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
+                                color='#111'
+                            />
                             Add
                         </CustomButton>
-                    }
+                      )}
 
-                <div style={{clear: 'both'}} />
+                    <div style={{clear: 'both'}} />
                 </TextHeader>
-                {this.state.currentRecord &&
+                {this.state.currentRecord && (
                     <DataBody>
-                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label = {this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label={this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
-                }
+                  )}
                 <DataBody>
                     <CustomContainer left>
                         <QuickSearch
@@ -258,11 +258,12 @@ export class EndpointContainer extends Component {
                                     return (
                                         <ListItem key={i}>
                                             {
-                                                canUpdate ?
-                                                    <a href="#" className={'text-truncate'} onClick={() => this.onEditRecord(item)}>
+                                                canUpdate ? (
+                                                    <a href="#" className="text-truncate" onClick={() => this.onEditRecord(item)}>
                                                         {label}
                                                     </a>
-                                                : <span className={'text-truncate'}>{label}</span>
+                                                  )
+                                                : <span className="text-truncate">{label}</span>
                                             }
                                             <Can I="delete" a="ConfigUI">
                                                 <FontAwesome

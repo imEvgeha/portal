@@ -114,25 +114,28 @@ class SearchResultsTab extends React.Component {
     render() {
         return (
             <div id="dashboard-result-table">
-                <div className={'container-fluid'}>
+                <div className="container-fluid">
                     <div className="row justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginLeft: '15px'}}>
-                            <span className="table-top-text" id={'dashboard-result-number'} style={{paddingTop: '10px'}}>
-                                Results: <Total/>
+                            <span className="table-top-text" id="dashboard-result-number" style={{paddingTop: '10px'}}>
+                                Results: <Total />
                             </span>
-                            <Selected toggleShowSelected = {this.toggleShowSelected}/>
+                            <Selected toggleShowSelected={this.toggleShowSelected} />
                             <RightViewHistory />
-                            {this.props.showSelectedAvails &&
-                                <a href={'#'} onClick={this.toggleShowSelected}><span
-                                    className={'nx-container-margin table-top-text'}
-                                    id={'dashboard-go-to-filter'}>Back to search</span></a>
-                            }
-                            <Clear clearAllSelected={() => {this.clearAllSelected && this.clearAllSelected(); }}/>
+                            {this.props.showSelectedAvails && (
+                                <a href="#" onClick={this.toggleShowSelected}><span
+                                    className="nx-container-margin table-top-text"
+                                    id="dashboard-go-to-filter"
+                                                                              >Back to search
+                                                                              </span>
+                                </a>
+                              )}
+                            <Clear clearAllSelected={() => {this.clearAllSelected && this.clearAllSelected(); }} />
                         </div>
-                        <div  style={{marginRight: '15px'}}>
+                        <div style={{marginRight: '15px'}}>
                             <IfEmbedded value={false}>
                                 <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
-                                    <span className="align-self-center" >Selected report:</span>
+                                    <span className="align-self-center">Selected report:</span>
                                     <Reports
                                         onChange={this.handleChangeReport}
                                         reportName={this.props.reportName}
@@ -151,16 +154,18 @@ class SearchResultsTab extends React.Component {
                         </div>
                     </div>
                     <div>
-                        <RightsResultsTable availsMapping = {this.props.availsMapping}
+                        <RightsResultsTable
+                            availsMapping={this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
-                            onDataLoaded = {this.storeData}
+                            onDataLoaded={this.storeData}
                         />
                     </div>
                     <div>
-                        <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
+                        <SelectedRightsResultsTable
+                            availsMapping={this.props.availsMapping}
                             setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
                             hidden={!this.props.showSelectedAvails}
-                            isAvailSelectedTab ={true}
+                            isAvailSelectedTab={true}
                         />
                     </div>
 
@@ -192,10 +197,12 @@ class ReportsInternal extends Component {
 
     render(){
         return (
-            <select className="form-control border-0 d-inline"
-                    id={'dashboard-avails-report-select'}
-                    onChange={this.props.onChange}
-                    value={this.props.reportName}>
+            <select
+                className="form-control border-0 d-inline"
+                id="dashboard-avails-report-select"
+                onChange={this.props.onChange}
+                value={this.props.reportName}
+            >
                 <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
                 {
                     configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
@@ -243,14 +250,23 @@ class SelectedInternal extends Component {
 
     render(){
         if(this.props.showSelectedAvails){
-            return <span
-                className={'nx-container-margin table-top-text'}
-                id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span>;
+            return (
+                <span
+                    className="nx-container-margin table-top-text"
+                    id="dashboard-selected-avails-number"
+                >Selected items: {this.props.availTabPageSelected.length}
+                </span>
+);
         }else {
             if (this.props.availTabPageSelected.length) {
-                return <a href={'#'} onClick={this.props.toggleShowSelected}><span
-                    className={'nx-container-margin table-top-text'}
-                    id={'dashboard-selected-avails-number'}>Selected items: {this.props.availTabPageSelected.length}</span></a>;
+                return (
+                    <a href="#" onClick={this.props.toggleShowSelected}><span
+                        className="nx-container-margin table-top-text"
+                        id="dashboard-selected-avails-number"
+                                                                        >Selected items: {this.props.availTabPageSelected.length}
+                    </span>
+                    </a>
+);
             }
         }
         return '';
@@ -276,9 +292,14 @@ class ClearInternal extends Component {
 
     render(){
         if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
-        return (<a href={'#'} onClick={this.props.clearAllSelected}><span
-            className={'nx-container-margin table-top-text'}
-            id={'dashboard-clear-all-selected'}>Clear All</span></a>);
+        return (
+            <a href="#" onClick={this.props.clearAllSelected}><span
+                className="nx-container-margin table-top-text"
+                id="dashboard-clear-all-selected"
+                                                              >Clear All
+            </span>
+            </a>
+);
         else return '';
     }
 }

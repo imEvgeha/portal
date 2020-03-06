@@ -181,7 +181,7 @@ export default class ObjectKey extends Component {
                 <div
                     key={`exp_${item.id}`}
                 >
-                    <i className="fas fa-times-circle" onClick={() => this.removeSubItem(parentId, item.id)} style={{float:'right'}}/>
+                    <i className="fas fa-times-circle" onClick={() => this.removeSubItem(parentId, item.id)} style={{float:'right'}} />
                     {form}
                 </div>
             );
@@ -216,18 +216,21 @@ export default class ObjectKey extends Component {
                         >
                             {items.map((item, index) => {
                                 const label = item.key;
-                                return (<Expander
+                                return (
+                                    <Expander
                                         key={`exp_${item.id}`}
-                                        label={<InlineEdit
-                                            defaultValue={label}
-                                            editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact/>}
-                                            readView={() => (label)}
-                                            onConfirm={value => this.saveKeyName(item, value)}
-                                            validate={value => this.checkKeyName(item, value)}
-                                            isRequired
-                                            isCompact
-                                            hideActionButtons
-                                        />}
+                                        label={(
+                                            <InlineEdit
+                                                defaultValue={label}
+                                                editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact />}
+                                                readView={() => (label)}
+                                                onConfirm={value => this.saveKeyName(item, value)}
+                                                validate={value => this.checkKeyName(item, value)}
+                                                isRequired
+                                                isCompact
+                                                hideActionButtons
+                                            />
+)}
                                         remove={() => {
                                             this.removeItem(item.id);
                                         }}
@@ -238,8 +241,9 @@ export default class ObjectKey extends Component {
                                                 return this.getForm(field, data, index2, fields, formChangeHandler, idAttribute, item.id, label);
                                             })
                                         }
-                                        <Button onClick={() => this.addSubItem(item.id)}>{'Add'}</Button>
-                                    </Expander>);
+                                        <Button onClick={() => this.addSubItem(item.id)}>Add</Button>
+                                    </Expander>
+);
                             })}
                             {provided.placeholder}
                         </div>
@@ -272,7 +276,8 @@ export default class ObjectKey extends Component {
                     />
                     <Button
                         isDisabled={keyName.trim().length === 0 || items.find(({key}) => key === keyName) != null}
-                        onClick={this.addItem}>{addButtonLabel}
+                        onClick={this.addItem}
+                    >{addButtonLabel}
                     </Button>
                 </div>
             </div>

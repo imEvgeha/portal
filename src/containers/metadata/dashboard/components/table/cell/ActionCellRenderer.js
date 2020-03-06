@@ -20,7 +20,7 @@ function ActionCellRenderer({data, storeTitle}) {
 
     return (
         <CustomActionsCellRenderer id={`action-${data && data.id}`}>
-            {isMovidaOrVz &&
+            {isMovidaOrVz && (
                 <NexusTooltip content='Legacy title reconciliation'>
                     <div>
                         <a
@@ -33,7 +33,7 @@ function ActionCellRenderer({data, storeTitle}) {
                         </a>
                     </div>
                 </NexusTooltip>
-            }
+              )}
         </CustomActionsCellRenderer>
     );
 }

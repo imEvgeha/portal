@@ -20,7 +20,7 @@ export function BulkActionButton(props) {
                 <DropdownItem onClick={props.onBulkUnPromote}>Unselect</DropdownItem>
                 <DropdownItem onClick={props.onBulkIgnore}>Ignore</DropdownItem>
                 <DropdownItem onClick={props.onBulkUnIgnore}>Unignore</DropdownItem>
-                <DropdownItem divider/>
+                <DropdownItem divider />
                 <DropdownItem onClick={props.onClearSelection}>Clear Selection</DropdownItem>
             </DropdownMenu>
         </Dropdown>

@@ -79,7 +79,8 @@ const NexusNavigation = ({history, profileInfo}) => {
         <ThemeProvider theme={theme => ({
             ...theme,
             mode: customThemeMode
-        })}>
+        })}
+        >
             <GlobalNav
                 itemComponent={ItemComponent}
                 primaryItems={navigationPrimaryItems(selectedItem, handleClick)}

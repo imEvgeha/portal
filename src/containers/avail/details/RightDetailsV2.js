@@ -282,15 +282,17 @@ class RightDetails extends React.Component {
             // const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             // TODO: Use AtlasKit icons; Remove inline css
             return (
-                <div key={name}
+                <div
+                    key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
-                    }}>
+                    }}
+                >
                     <div className="row">
                         <div className="col-4">{displayName}
                             {required ? <span className="text-danger">*</span> : ''}
                             :
-                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {highlighted ? <span title="* fields in bold are original values provided by the studios" style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                             {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
                         </div>
                         <div className="col-8">
@@ -425,25 +427,25 @@ class RightDetails extends React.Component {
             <div style={{ position: 'relative' }}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
-                        this.state.errorMessage &&
+                        this.state.errorMessage && (
                         <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{ top: '-20px', zIndex: '1000', height: '25px' }}>
                             <Label id='right-edit-error-message'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
-                    }
+                      )}
                     <div className="nx-stylish row mt-3 mx-5">
-                        <div className={'nx-stylish list-group col-12'} style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
+                        <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
+                    {this.props.availsMapping && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <div className="mt-4 mx-5 px-5">
                                 <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
-                    }
+                      )}
                 </BlockUi>
             </div>
         );

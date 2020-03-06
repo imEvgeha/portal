@@ -26,7 +26,7 @@ class CoreMetadataReadOnlyMode extends Component {
         return (
             <Fragment>
                 {
-                    this.props.data.castCrew && this.props.data.castCrew.length > 0 ?
+                    this.props.data.castCrew && this.props.data.castCrew.length > 0 ? (
                         <Row style={{ marginTop: '15px' }}>
                             <Col>
                                 <Card id='cardContainer'>
@@ -75,17 +75,18 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {this.props.data.castCrew &&
                                                 getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
                                                     <PersonListReadOnly 
-                                                            key={i}
-                                                            showPersonType={true} 
-                                                            person={crew} 
-                                                            getFormatTypeName={getFormatTypeName} 
-                                                        />
+                                                        key={i}
+                                                        showPersonType={true} 
+                                                        person={crew} 
+                                                        getFormatTypeName={getFormatTypeName}
+                                                    />
                                                 ))}
                                         </ListGroup>
                                     </CardBody>
                                 </Card>
                             </Col>
                         </Row>
+                      )
                         : null
                 }
                 <Row style={{ marginTop: '10px' }}>
@@ -98,170 +99,199 @@ class CoreMetadataReadOnlyMode extends Component {
                 </Row>
                 <Row style={{ marginTop: '10px' }}>
                     {
-                        this.props.data.awards && this.props.data.awards.length > 0 ?
+                        this.props.data.awards && this.props.data.awards.length > 0 ? (
                             <Col>
                                 <FormGroup>
                                     <Alert color='light'><b>Awards: </b> {this.props.data.awards}</Alert>
                                 </FormGroup>
                             </Col>
+                          )
                             : null
                     }
                 </Row>
                 <Row style={{ marginTop: '10px' }}>
                     {
-                        this.props.data.imdbLink && this.props.data.imdbLink.length > 0 ?
+                        this.props.data.imdbLink && this.props.data.imdbLink.length > 0 ? (
                             <Col>
                                 <FormGroup>
                                     <Alert color='light' style={{wordWrap: 'break-word'}}><b>IMDb Link: </b> {this.props.data.imdbLink}</Alert>
                                 </FormGroup>
                             </Col>
+                          )
                             : null
                     }
                 </Row>
-                {externalIds || legacyIds ?
+                {externalIds || legacyIds ? (
                     <Fragment>
                         <hr />
                         <h4>External IDs</h4>
                         <div id="coreMetadataEditMode">
-                            {  externalIds &&
+                            {  externalIds && (
                                 <Fragment>
-                                    { (externalIds.eidrLevel1 ||  externalIds.tmsId) &&
-                                            <Row style={{ marginTop: '10px' }}>
-                                                {
-                                                    externalIds.eidrLevel1 ?
+                                    { (externalIds.eidrLevel1 ||  externalIds.tmsId) && (
+                                    <Row style={{ marginTop: '10px' }}>
+                                        {
+                                                    externalIds.eidrLevel1 ? (
                                                         <Col>
-                                                            <Alert color='light' ><b style={{ color: '#000' }}>EIDR Level 1: </b> {externalIds ? externalIds.eidrLevel1 : null}</Alert>
-                                                        </Col> : null
+                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Level 1: </b> {externalIds ? externalIds.eidrLevel1 : null}</Alert>
+                                                        </Col>
+                                                      ) : null
                                                 }
-                                                {
-                                                    externalIds.tmsId ?
+                                        {
+                                                    externalIds.tmsId ? (
                                                         <Col>
                                                             <Alert color='light'><b style={{ color: '#000' }}>TMS ID: </b> {externalIds ? externalIds.tmsId : null}</Alert>
-                                                        </Col> : null
+                                                        </Col>
+                                                      ) : null
                                                 }
-                                            </Row>
-                                    }
-                                    {(externalIds.eidrLevel2 || externalIds.xfinityMovieId) &&
+                                    </Row>
+                                          )}
+                                    {(externalIds.eidrLevel2 || externalIds.xfinityMovieId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.eidrLevel2 ?
+                                                externalIds.eidrLevel2 ? (
                                                     <Col>
                                                         <Alert color='light'><b style={{color: '#000'}}>EIDR Level
-                                                            2: </b> {externalIds ? externalIds.eidrLevel2 : null}
+                                                            2: 
+                                                        </b> {externalIds ? externalIds.eidrLevel2 : null}
                                                         </Alert>
-                                                    </Col> : null
+                                                    </Col>
+                                                  ) : null
                                             }
                                             {
-                                                externalIds.xfinityMovieId ?
+                                                externalIds.xfinityMovieId ? (
                                                     <Col>
                                                         <Alert color='light'><b style={{color: '#000'}}>Xfinity Movie
-                                                            ID: </b> {externalIds ? externalIds.xfinityMovieId : null}
+                                                            ID: 
+                                                        </b> {externalIds ? externalIds.xfinityMovieId : null}
                                                         </Alert>
-                                                    </Col> : null
+                                                    </Col>
+                                                  ) : null
                                             }
                                         </Row>
-                                    }
-                                    {(externalIds.dmaId || externalIds.licensorTitleId) &&
+                                      )}
+                                    {(externalIds.dmaId || externalIds.licensorTitleId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.dmaId ?
+                                                externalIds.dmaId ? (
                                                     <Col>
                                                         <Alert color='light'><b style={{color: '#000'}}>DMA
-                                                            ID: </b> {externalIds ? externalIds.dmaId : null}
+                                                            ID: 
+                                                        </b> {externalIds ? externalIds.dmaId : null}
                                                         </Alert>
-                                                    </Col> : null
+                                                    </Col>
+                                                  ) : null
                                             }
                                             {
-                                                externalIds.licensorTitleId ?
+                                                externalIds.licensorTitleId ? (
                                                     <Col>
                                                         <Alert color='light'><b style={{color: '#000'}}>Licensor Title
-                                                            ID:</b> {externalIds ? externalIds.licensorTitleId : null}
+                                                            ID:
+                                                        </b> {externalIds ? externalIds.licensorTitleId : null}
                                                         </Alert>
-                                                    </Col> : null
+                                                    </Col>
+                                                  ) : null
                                             }
                                         </Row>
-                                    }
-                                    {(externalIds.isan || externalIds.overrideMsvAssociationId) &&
+                                      )}
+                                    {(externalIds.isan || externalIds.overrideMsvAssociationId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.isan ?
+                                                externalIds.isan ? (
                                                     <Col>
                                                         <Alert color='light'><b
-                                                            style={{color: '#000'}}>ISAN: </b> {externalIds ? externalIds.isan : null}
+                                                            style={{color: '#000'}}
+                                                                             >ISAN: 
+                                                        </b> {externalIds ? externalIds.isan : null}
                                                         </Alert>
-                                                    </Col> : null
+                                                    </Col>
+                                                  ) : null
                                             }
                                             {
-                                                externalIds.overrideMsvAssociationId ?
+                                                externalIds.overrideMsvAssociationId ? (
                                                     <Col>
                                                         <Alert color='light'><b style={{color: '#000'}}>Override MSV
                                                             Association
-                                                            ID: </b> {externalIds ? externalIds.overrideMsvAssociationId : null}
+                                                            ID: 
+                                                        </b> {externalIds ? externalIds.overrideMsvAssociationId : null}
                                                         </Alert>
-                                                    </Col> : null
+                                                    </Col>
+                                                  ) : null
                                             }
                                         </Row>
-                                    }
+                                      )}
                                 </Fragment>
-                            }
-                            {((externalIds && externalIds.alid) || (legacyIds && legacyIds.vz)) &&
+                              )}
+                            {((externalIds && externalIds.alid) || (legacyIds && legacyIds.vz)) && (
                                 <Row style={{ marginTop: '10px' }}>
                                     {
-                                        externalIds && externalIds.alid ?
+                                        externalIds && externalIds.alid ? (
                                             <Col>
                                                 <Alert color='light'><b style={{ color: '#000' }}>ALID: </b> {externalIds ? externalIds.alid : null}</Alert>
-                                            </Col> : null
+                                            </Col>
+                                          ) : null
                                     }
                                     {
-                                        legacyIds && legacyIds.vz ?
+                                        legacyIds && legacyIds.vz ? (
                                             <Col>
                                                 <Alert color='light'><b style={{ color: '#000' }}>VZ Title ID: </b> {legacyIds.vz.vzTitleId ? legacyIds.vz.vzTitleId : null}</Alert>
-                                            </Col> : null
+                                            </Col>
+                                          ) : null
                                     }
                                 </Row>
-                            }
-                            {((externalIds && externalIds.cid) || (legacyIds && legacyIds.movida)) &&
+                              )}
+                            {((externalIds && externalIds.cid) || (legacyIds && legacyIds.movida)) && (
                                 <Row style={{marginTop: '10px'}}>
                                     {
-                                        externalIds && externalIds.cid ?
+                                        externalIds && externalIds.cid ? (
                                             <Col>
                                                 <Alert color='light'><b style={{color: '#000'}}>C
-                                                    ID: </b> {externalIds ? externalIds.cid : null}
+                                                    ID: 
+                                                                     </b> {externalIds ? externalIds.cid : null}
                                                 </Alert>
-                                            </Col> : null
+                                            </Col>
+                                          ) : null
                                     }
                                     {
-                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaId ?
+                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaId ? (
                                             <Col>
                                                 <Alert color='light'><b style={{color: '#000'}}>Movida
-                                                    ID: </b> {legacyIds.movida.movidaId ? legacyIds.movida.movidaId : null}
+                                                    ID: 
+                                                                     </b> {legacyIds.movida.movidaId ? legacyIds.movida.movidaId : null}
                                                 </Alert>
-                                            </Col> : null
+                                            </Col>
+                                          ) : null
                                     }
                                 </Row>
-                            }
-                            {((externalIds && externalIds.isrc) || (legacyIds && legacyIds.movida)) &&
+                              )}
+                            {((externalIds && externalIds.isrc) || (legacyIds && legacyIds.movida)) && (
                                 <Row style={{marginTop: '10px'}}>
                                     {
-                                        externalIds && externalIds.isrc ?
+                                        externalIds && externalIds.isrc ? (
                                             <Col>
                                                 <Alert color='light'><b
-                                                    style={{color: '#000'}}>ISRC: </b> {externalIds ? externalIds.isrc : null}
+                                                    style={{color: '#000'}}
+                                                                     >ISRC: 
+                                                                     </b> {externalIds ? externalIds.isrc : null}
                                                 </Alert>
-                                            </Col> : null
+                                            </Col>
+                                          ) : null
                                     }
                                     {
-                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaTitleId ?
+                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaTitleId ? (
                                             <Col>
                                                 <Alert color='light'><b style={{color: '#000'}}>Movida Title
-                                                    ID: </b> {legacyIds.movida.movidaTitleId ? legacyIds.movida.movidaTitleId : null}
+                                                    ID: 
+                                                                     </b> {legacyIds.movida.movidaTitleId ? legacyIds.movida.movidaTitleId : null}
                                                 </Alert>
-                                            </Col> : null
+                                            </Col>
+                                          ) : null
                                     }
                                 </Row>
-                            }
+                              )}
                         </div>
                     </Fragment>
+                  )
                     : null
                 }
             </Fragment>

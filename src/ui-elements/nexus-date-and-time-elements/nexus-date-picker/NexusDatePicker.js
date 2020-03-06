@@ -67,11 +67,11 @@ const NexusDatePicker = ({
 
     const DatePickerComponent = (isReadOnly) => (
         <>
-            {!hideLabel && label &&
+            {!hideLabel && label && (
                 <>
                     {label}
                 </>
-            }
+              )}
             {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)
                 : (
@@ -85,15 +85,15 @@ const NexusDatePicker = ({
                             value={date}
                             {...restProps}
                         />
-                        {allowClear && <ClearButton onClear={() => onDateChange('')}/>}
+                        {allowClear && <ClearButton onClear={() => onDateChange('')} />}
                     </div>
                 )
             }
-            {error &&
+            {error && (
                 <ErrorMessage>
                     {error}
                 </ErrorMessage>
-            }
+              )}
         </>
     );
 
@@ -105,9 +105,11 @@ const NexusDatePicker = ({
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
                                 {(moment(value).isValid() && parseSimulcast(value, dateFormat, false))
-                                    || <div className="read-view-container__placeholder">
+                                    || (
+                                    <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>
+)
                                 }
                             </div>
                         )}

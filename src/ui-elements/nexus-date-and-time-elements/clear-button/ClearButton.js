@@ -5,7 +5,7 @@ import './ClearButton.scss';
 
 const ClearButton = ({onClear}) => (
     <div className='nexus-c-clear-button' onClick={onClear}>
-        <EditorCloseIcon size='medium'/>
+        <EditorCloseIcon size='medium' />
     </div>
 );
 
