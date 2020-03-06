@@ -497,7 +497,6 @@ TitleEditMode.propTypes = {
   ratings: PropTypes.array,
   addCastCrew: PropTypes.func,
   removeCastCrew: PropTypes.func,
-  handleOnChangeTitleDuration: PropTypes.func,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,

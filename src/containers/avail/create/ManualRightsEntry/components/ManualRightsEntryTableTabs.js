@@ -9,8 +9,7 @@ import {
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS,
-    VIEW_JSON
+    SUCCESS
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
@@ -114,7 +113,6 @@ function ManualRightEntryTableTabs({
 ManualRightEntryTableTabs.propTypes = {
     selectedTab: PropTypes.string,
     updateManualRightEntrySelectedTab: PropTypes.func,
-    promotedRightsCount: PropTypes.number,
     getCustomSearchCriteria: PropTypes.func.isRequired,
     fatalCount: PropTypes.number,
     createdCount: PropTypes.number,

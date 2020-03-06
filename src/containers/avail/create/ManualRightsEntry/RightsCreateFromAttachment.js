@@ -37,13 +37,11 @@ const mapStateToProps = () => {
         availsMapping: state.root.availsMapping,
         selectedTab: manualRightsEntrySelectedTabSelector(state, props),
         columns: manualRightsEntryColumnsSelector(state, props),
-        selected: manualRightSelectedSelector(state,props)
     });
 };
 
 const mapDispatchToProps = (dispatch) => ({
     updateManualRightsEntryColumns: payload => dispatch(updateManualRightsEntryColumns(payload)),
-    manualRightsResultPageLoading: payload => dispatch(manualRightsResultPageLoading(payload))
 });
 
 class RightsCreateFromAttachment extends React.Component {
@@ -57,9 +55,7 @@ class RightsCreateFromAttachment extends React.Component {
         availsMapping: t.any,
         selectedTab: t.string,
         updateManualRightsEntryColumns: t.func,
-        manualRightsResultPageLoading: t.func,
         columns: t.array,
-        selected: t.array,
     };
 
     static contextTypes = {

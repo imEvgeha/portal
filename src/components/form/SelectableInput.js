@@ -30,7 +30,6 @@ class SelectableInput extends Component {
         dataType: t.string,
         value: t.object,
         selected: t.object,
-        disabled: t.bool,
 
         options: t.array,
 

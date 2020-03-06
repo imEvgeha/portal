@@ -53,9 +53,6 @@ class DashboardContainer extends React.Component {
     static propTypes = {
         searchCriteria: t.any,
         searchFormUseAdvancedSearch: t.func,
-        resultPageLoading: t.func,
-        resultPageSort: t.func,
-        resultPageUpdate: t.func,
         resultPageSelect: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,

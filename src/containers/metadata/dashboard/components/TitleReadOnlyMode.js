@@ -258,8 +258,6 @@ class TitleReadOnlyMode extends Component {
 
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
-    episodic: PropTypes.object,
-    addBooleanQuotes: PropTypes.func,
     toggleTitleRating: PropTypes.func,
     activeTab: PropTypes.any
 };

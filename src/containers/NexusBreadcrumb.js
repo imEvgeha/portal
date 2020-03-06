@@ -18,7 +18,6 @@ class NexusBreadcrumb extends React.Component {
 
     static propTypes = {
         blocking: t.bool,
-        history: t.object,
     };
 
     static instance = null;

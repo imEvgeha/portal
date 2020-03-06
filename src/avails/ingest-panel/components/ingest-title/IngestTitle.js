@@ -16,15 +16,11 @@ const IngestTitle = ({link}) => {
 };
 
 IngestTitle.propTypes = {
-    provider: PropTypes.string,
     link: PropTypes.string,
-    ingestType: PropTypes.string,
 };
 
 IngestTitle.defaultProps = {
-    provider: '',
     link: '',
-    ingestType: '',
 };
 
 export default IngestTitle;

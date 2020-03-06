@@ -41,7 +41,6 @@ class RightDetails extends React.Component {
         selectValues: PropTypes.object,
         availsMapping: PropTypes.any,
         match: PropTypes.any,
-        location: PropTypes.any,
         blocking: PropTypes.bool,
     };
 
@@ -49,7 +48,6 @@ class RightDetails extends React.Component {
         selectValues: null,
         availsMapping: null,
         match: {},
-        location: {},
         blocking: null,
     };
 

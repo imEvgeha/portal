@@ -5,13 +5,9 @@ import './DashboardContainer.scss';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
-    resultPageLoading,
-    resultPageSort,
-    resultPageUpdate,
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
-    searchFormUpdateAdvancedSearchCriteria,
     resultPageShowSelected,
     searchFormUpdateTextSearch
 } from '../../../stores/actions/avail/dashboard';
@@ -31,19 +27,14 @@ const mapStateToProps = state => {
         showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
-        currentSearchCriteria: state.dashboard.session.searchCriteria,
     };
 };
 
 const mapDispatchToProps = {
-    resultPageLoading,
-    resultPageSort,
-    resultPageUpdate,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
     resultPageShowSelected,
-    searchFormUpdateAdvancedSearchCriteria,
     searchFormUpdateTextSearch
 };
 
@@ -51,16 +42,10 @@ class DashboardContainer extends React.Component {
     static propTypes = {
         availsMapping: t.any,
         searchCriteria: t.any,
-        currentSearchCriteria: t.any,
-        resultPageLoading: t.func,
-        resultPageSort: t.func,
-        resultPageUpdate: t.func,
         searchFormUpdateTextSearch: t.func,
         searchFormShowAdvancedSearch: t.func,
         searchFormShowSearchResults: t.func,
         searchFormSetAdvancedSearchCriteria: t.func,
-        searchFormUpdateAdvancedSearchCriteria: t.func,
-        selected: t.array,
         showAdvancedSearch: t.bool,
         showSearchResults: t.bool,
         location: t.object,

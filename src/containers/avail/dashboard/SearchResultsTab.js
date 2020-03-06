@@ -192,7 +192,6 @@ mapStateToProps = state => {
 class ReportsInternal extends Component {
 
     static propTypes = {
-        reports: t.array,
         onChange: t.func,
         reportName: t.string
     };

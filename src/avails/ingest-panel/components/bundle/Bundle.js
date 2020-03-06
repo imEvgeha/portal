@@ -58,7 +58,6 @@ Bundle.propTypes = {
     attachments: PropTypes.array,
     selectedAttachmentId: PropTypes.string,
     ingestClick: PropTypes.func,
-    ingestId: PropTypes.string
 };
 
 Bundle.defaultProps = {
@@ -66,8 +65,7 @@ Bundle.defaultProps = {
     received: '',
     provider: '',
     attachments: [],
-    selectedAttachmentId: '',
-    ingestId: ''
+    selectedAttachmentId: ''
 };
 
 export default Bundle;

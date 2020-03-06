@@ -1,7 +1,6 @@
 import React from 'react';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
-import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
 import connect from 'react-redux/es/connect/connect';
 import t from 'prop-types';
 import {Can} from '../../../../src/ability';
@@ -10,23 +9,10 @@ import './DashboardContainer.scss';
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
-        availsMapping: state.root.availsMapping,
     };
-};
-
-const mapDispatchToProps = {
-    resultPageLoading,
-    resultPageSort,
-    resultPageUpdate
 };
 
 class DashboardTab extends React.Component {
-    static propTypes = {
-        availsMapping: t.any,
-        resultPageLoading: t.func,
-        resultPageSort: t.func,
-        resultPageUpdate: t.func
-    };
 
     static contextTypes = {
         router: t.object
@@ -64,4 +50,4 @@ class DashboardTab extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardTab);
+export default connect(mapStateToProps, null)(DashboardTab);

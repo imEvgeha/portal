@@ -611,7 +611,6 @@ EditorialMetadataEditMode.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleGenreEditChange: PropTypes.func.isRequired,
     data: PropTypes.object,
-    validSubmit: PropTypes.func.isRequired,
     titleContentType: PropTypes.string,
     updatedEditorialMetadata: PropTypes.array,
     configLanguage: PropTypes.object,

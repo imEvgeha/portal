@@ -15,12 +15,4 @@ const CheckboxCellRenderer = (props) => {
     );
 };
 
-CheckboxCellRenderer.propTypes = {
-    id: PropTypes.string,
-};
-
-CheckboxCellRenderer.defaultProps = {
-    id: null,
-};
-
 export default CheckboxCellRenderer;

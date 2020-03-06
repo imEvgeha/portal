@@ -493,15 +493,8 @@ class TitleCreate extends React.Component {
 TitleCreate.propTypes = {
     toggle: PropTypes.func.isRequired,
     display: PropTypes.bool.isRequired,
-    className: PropTypes.string,
-    territoryMetadata: PropTypes.object
+    className: PropTypes.string
 };
 
 
-const mapStateToProps = state => {
-    return {
-        territoryMetadata: state.territoryMetadata,
-    };
-};
-
-export default connect(mapStateToProps, null)(TitleCreate);
+export default connect(null, null)(TitleCreate);

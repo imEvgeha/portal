@@ -14,7 +14,6 @@ import './TitleResultTable.scss';
 
 import connect from 'react-redux/es/connect/connect';
 import {
-    resultPageLoading,
     resultPageSelect,
     resultPageSort,
     resultPageUpdate,
@@ -45,11 +44,9 @@ let mapStateToProps = state => {
     return {
         titleTabPage: state.titleReducer.titleTabPage,
         titleTabPageSort: state.titleReducer.session.titleTabPageSort,
-        useAdvancedSearch: state.titleReducer.session.useAdvancedSearch,
         freeTextSearch: state.titleReducer.freeTextSearch,
         titleTabPageSelection: state.titleReducer.session.titleTabPageSelection,
         titleTabPageLoading: state.titleReducer.titleTabPageLoading,
-        titleMapping: state.root.titleMapping,
         columnsOrder: state.titleReducer.session.columns,
         columnsSize: state.titleReducer.session.columnsSize
     };
@@ -59,23 +56,18 @@ let mapDispatchToProps = {
     resultPageUpdate,
     resultPageSort,
     resultPageSelect,
-    resultPageLoading,
     resultPageUpdateColumnsOrder
 };
 
 class TitleResultTable extends React.Component {
     static propTypes = {
-        titleMapping: t.any,
         titleTabPage: t.object,
         titleTabPageSort: t.array,
-        useAdvancedSearch: t.bool,
-        freeTextSearch: t.object,
         titleTabPageSelection: t.object,
         titleTabPageLoading: t.bool,
         resultPageUpdate: t.func,
         resultPageSort: t.func,
         resultPageSelect: t.func,
-        resultPageLoading: t.func,
         columnsOrder: t.array,
         columnsSize: t.object,
         resultPageUpdateColumnsOrder: t.func

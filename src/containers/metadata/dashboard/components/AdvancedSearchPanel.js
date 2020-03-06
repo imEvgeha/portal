@@ -17,7 +17,6 @@ import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metada
 const mapStateToProps = state => {
     return {
         titleTabPage: state.titleReducer.titleTabPage,
-        reportName: state.titleReducer.session.reportName,
         searchCriteria: state.titleReducer.session.advancedSearchCriteria,
     };
 };
@@ -36,7 +35,6 @@ class AdvancedSearchPanel extends React.Component {
         searchFormUpdateAdvancedSearchCriteria: t.func,
         onToggleAdvancedSearch: t.func,
         hide: t.bool,
-        reportName: t.string,
     };
 
     constructor(props) {

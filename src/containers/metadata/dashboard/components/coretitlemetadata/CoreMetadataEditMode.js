@@ -33,10 +33,7 @@ import PersonList from './PersonList';
 
 const mapStateToProps = state => {
   return {
-    configCastAndCrew: state.titleReducer.configData.find(e => e.key === configFields.CAST_AND_CREW),
-    configRatingSystem: state.titleReducer.configData.find(e => e.key === configFields.RATING_SYSTEM),
     configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
-    configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
   };
 };
 
@@ -442,18 +439,13 @@ CoreMetadataEditMode.propTypes = {
   handleOnExternalIds: PropTypes.func,
   handleOnLegacyIds: PropTypes.func,
 
-  isCrewModalOpen: PropTypes.bool,
   removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
   addCastCrew: PropTypes.func,
 
   ratings: PropTypes.array,
 
-  configCastAndCrew: PropTypes.object,
-  configRatingSystem: PropTypes.object,
   configRatings: PropTypes.object,
-  configAdvisoryCode: PropTypes.object,
-
   handleRatingSystemValue: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
   handleAdvisoryCodeChange: PropTypes.func,
