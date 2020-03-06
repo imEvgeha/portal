@@ -123,7 +123,7 @@ export default class RepeatsPrimitives extends Component {
         );
     }
 
-    onDragEnd(result) {
+    onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -147,7 +147,7 @@ export default class RepeatsPrimitives extends Component {
         } = this.props;
 
         return (
-            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+            <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
                         <div
