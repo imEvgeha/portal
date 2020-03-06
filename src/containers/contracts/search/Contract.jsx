@@ -41,67 +41,66 @@ class Dashboard extends React.Component {
             let arr = [];
             for (let i = 0; i < 13; i++) {
                 arr = arr.concat({
-                    product: <div className={classes.imgContainer}>
-                        <Button justIcon color="twitter">
-                            <Description />
-                        </Button>
-                    </div>,
-                    platform: <span>
-            <a href="#" className={classes.tdNameAnchor}>
-              Contract
-    </a>
-            <br />
-            <small className={classes.tdNameSmall}>
-              {'ID 123456'} <br />
-                {'Offer Types: TVOD'} </small>
-          </span>,
-                    availibility: <div>
-                        <small className={classes.tdNameSmall}>
-                            {'Licensor: Disney'} <br />
-                            {'Exclusivity: None'} <br />
-                            {'Region: LATAM'}
-                        </small>
-                    </div>,
-                    type: <span>
-            <small className={classes.tdNameSmall}>
-              {'Format: SD'} <br />
-                {'Start Date: 1/1/19'} <br />
-                {'End Date: 1/1/19'}
-            </small>
-          </span>,
-                    actions: <span>
-            <h4 className={classes.cardIconTitle}>
-
-              <span className={classes.successText}>
+                    product:
+    <div className={classes.imgContainer}>
+        <Button justIcon color="twitter">
+            <Description />
+        </Button>
+    </div>,
+                    platform:
+    <span>
+        <a href="#" className={classes.tdNameAnchor}>
+            Contract
+        </a>
+        <br />
+        <small className={classes.tdNameSmall}>
+            ID 123456<br />Offer Types: TVOD
+        </small>
+    </span>,
+                                    availibility:
+    <div>
+        <small className={classes.tdNameSmall}>
+            Licensor: Disney<br />Exclusivity: None <br />Region: LATAM
+        </small>
+    </div>,
+                                    type:
+    <span>
+        <small className={classes.tdNameSmall}>
+            Format: SD <br />Start Date: 1/1/19 <br />End Date: 1/1/19
+        </small>
+    </span>, actions:
+    <span>
+        <h4 className={classes.cardIconTitle}>
+            <span className={classes.successText}>
                 <Check className={classes.upArrowCardCategory} /> Valid
-</span>
-            </h4>
-            <div className={classes.buttonGroup}>
-              <Button
-                  color="info"
-                  size="sm"
-                  round
-                  className={classes.firstButton}
-              >
+            </span>
+        </h4>
+        <div className={classes.buttonGroup}>
+            <Button
+                color="info"
+                size="sm"
+                round
+                className={classes.firstButton}
+            >
                 <Remove className={classes.icon} />
-              </Button>
-              <Button
-                  color="info"
-                  size="sm"
-                  round
-                  className={classes.lastButton}
-              >
+            </Button>
+            <Button
+                color="info"
+                size="sm"
+                round
+                className={classes.lastButton}
+            >
                 <Add className={classes.icon} />
-              </Button>
-            </div>
-          </span>
+            </Button>
+        </div>
+    </span>
                 });
             }
             return arr;
         };
 
         return (
-            <div className={'use-material-dashboard-pro-react'}>
+            <div className="use-material-dashboard-pro-react">
                 <h3>Contract Search Results Cards</h3>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>

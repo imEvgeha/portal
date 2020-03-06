@@ -87,7 +87,7 @@ class UserProfile extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className={'use-material-dashboard-pro-react'}>
+            <div className="use-material-dashboard-pro-react">
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                         <Card product className={classes.cardHover}>
@@ -98,11 +98,11 @@ class UserProfile extends React.Component {
                             </CardHeader>
                             <CardBody profile>
                                 <div className={classes.cardHoverUnder}>
-                                    <Button color="rose" simple >
+                                    <Button color="rose" simple>
                                         <ZoomIn className={classes.underChartIcons} />
                                         View
                                     </Button>
-                                    <Button color="rose" simple >
+                                    <Button color="rose" simple>
                                         <CloudDownload className={classes.underChartIcons} />
                                         Download PDF
                                     </Button>
@@ -435,7 +435,7 @@ class UserProfile extends React.Component {
                                         <br /><br />
                                         <InputLabel className={classes.label}>Formats</InputLabel><br />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(1)}
@@ -453,14 +453,14 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="SD"
                                         />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(2)}
@@ -478,14 +478,14 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="HD"
                                         />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(3)}
@@ -503,14 +503,14 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="3D"
                                         />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(4)}
@@ -528,7 +528,7 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
