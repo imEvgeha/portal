@@ -56,12 +56,10 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
     const getLegacyData = (item) => {
         const {legacyIds, modifiedAt} = item;
         const {vz, movida} = legacyIds || {};
-        const {vzId} = vz || {};
-        const {movidaId} = movida || {};
         const vzPublishedAt = (vz || {}).publishedAt;
         const movidaPublishedAt = (movida || {}).publishedAt;
 
-        return {vzId, vzPublishedAt, movidaId, movidaPublishedAt, modifiedAt};
+        return {vzPublishedAt, movidaPublishedAt, modifiedAt};
     };
 
     const getIsDisabled = (publishedAt, modifiedAt) => {
@@ -69,7 +67,6 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
     };
 
     const renderSyncField = (name, lastUpdated, isDisabled) => {
-        // const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
         const buttonName = moment(lastUpdated).isValid() ? 'Sync' : 'Publish';
         const indicator = isDisabled ? 'success' : 'error';
         return (
