@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, {Fragment} from 'react';
+import React from 'react';
 import t from 'prop-types';
 
 
@@ -213,9 +213,7 @@ class IfEmbedded extends React.Component {
 
     render() {
         return (
-            <Fragment>
-                {URL.isEmbedded() === this.props.value && this.props.children}
-            </Fragment>
+            <> {URL.isEmbedded() === this.props.value && this.props.children} </>
         );
     }
 }

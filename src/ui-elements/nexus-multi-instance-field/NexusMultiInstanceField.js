@@ -150,8 +150,7 @@ const NexusMultiInstanceField = ({
     };
 
     const MultiInstanceField = (isReadOnly) => (
-        <>
-            {isReadOnly
+        <> {isReadOnly
                 ? (
                     <div className="nexus-c-multi-instance-field__tag-group">
                         {items.map((item) => (

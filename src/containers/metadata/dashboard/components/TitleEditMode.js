@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -97,9 +97,8 @@ class TitleEditMode extends Component {
                         </Col>
                     </Row>
                     {contentType !== MOVIE.apiName && contentType !== SERIES.apiName && contentType !== ADVERTISEMENT.apiName ? (
-                        <Fragment>
-                            {this.props.data.episodic !== null ? (
-                                <Fragment>
+                        <> {this.props.data.episodic !== null ? (
+                                <>
                                     <Row>
                                         <Col>
                                             <Label for='titleSeriesName'>Series</Label>
@@ -143,7 +142,6 @@ class TitleEditMode extends Component {
                                               />
                                             </FormGroup>
                                         </Col>
-                                        <Fragment>
                                             {contentType !== SEASON.apiName ? (
                                               <Col>
                                                 <FormGroup>
@@ -174,7 +172,6 @@ class TitleEditMode extends Component {
                                                 </FormGroup>
                                               </Col>
                           ) : null}
-                                        </Fragment>
                                     </Row>
                                     <Row>
                                         {contentType === SEASON.apiName ? (
@@ -193,7 +190,6 @@ class TitleEditMode extends Component {
                                                 placeholder="Enter Season ID"
                                                 onChange={e => this.props.handleChangeEpisodic(e)}
                                               />
-                                              <Fragment>
                                                 <Row>
                                                   <Col>
                                                     <Label for='totalNumberOfEpisodes'>
@@ -217,7 +213,6 @@ class TitleEditMode extends Component {
                                                     />
                                                   </Col>
                                                 </Row>
-                                              </Fragment>
                                             </Col>
                         ) : (
                             <Col>
@@ -238,9 +233,9 @@ class TitleEditMode extends Component {
                             </Col>
                           )}
                                     </Row>
-                                </Fragment>
+                                </>
                   ) : null}
-                        </Fragment>
+                        </>
               ) :
                   contentType === SEASON.apiName ?
                   (
@@ -355,7 +350,7 @@ class TitleEditMode extends Component {
                         </Col>
                         {
                   contentType === EPISODE.apiName ? (
-                      <Fragment>
+                      <>
                           <Col>
                               <Label for='titleEpisodeCount'>
                                   Episode Count
@@ -404,7 +399,7 @@ class TitleEditMode extends Component {
                                   <option value={false}>No</option>
                               </Input>
                           </Col>
-                      </Fragment>
+                      </>
                   ) : null
                 }
                     </Row>

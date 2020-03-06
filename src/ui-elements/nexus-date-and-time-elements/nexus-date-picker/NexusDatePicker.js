@@ -68,9 +68,7 @@ const NexusDatePicker = ({
     const DatePickerComponent = (isReadOnly) => (
         <>
             {!hideLabel && label && (
-                <>
-                    {label}
-                </>
+                <> {label} </>
               )}
             {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)
@@ -98,8 +96,7 @@ const NexusDatePicker = ({
     );
 
     return (
-        <>
-            {isWithInlineEdit && !isReadOnly
+        <> {isWithInlineEdit && !isReadOnly
                 ? (
                     <InlineEdit
                         readView={() => (

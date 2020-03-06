@@ -97,8 +97,7 @@ const NexusDateTimePicker = ({
     );
 
     return (
-        <>
-            {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
+        <> {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
                 ? (
                     <InlineEdit
                         readView={() => (
