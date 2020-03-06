@@ -115,27 +115,29 @@ class AvailHistoryRecordRenderer extends React.Component {
                         width: '125px'
                     }}
                     >
-                        <div style={{display: 'flex', flex: 1}}><u><b>
-                            {ingestReport.total > 0 ?
-                                (
-                                    <Link to={{
-                                    pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
-                                    search: RightsURL.getRightsSearchUrl(data.id).split('?')[1],
-                                    state: data
-                                }}
-                                    >
-                                        Total Avails:
-                                    </Link>
-)
-                                :
-                                (
-                                    <div>
-                                        Total Avails:
-                                    </div>
-)
-                            }
-                                                                   </b>
-                                                                </u>
+                        <div style={{display: 'flex', flex: 1}}>
+                            <u>
+                                <b>
+                                    {ingestReport.total > 0 ?
+                                        (
+                                            <Link to={{
+                                            pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
+                                            search: RightsURL.getRightsSearchUrl(data.id).split('?')[1],
+                                            state: data
+                                        }}
+                                            >
+                                                Total Avails:
+                                            </Link>
+        )
+                                        :
+                                        (
+                                            <div>
+                                                Total Avails:
+                                            </div>
+        )
+                                    }
+                                </b>
+                            </u>
                         </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.total > 0 ?
@@ -167,27 +169,29 @@ class AvailHistoryRecordRenderer extends React.Component {
                         width: '95px'
                     }}
                     >
-                        <div style={{display: 'flex', flex: 1}}><u><b>
-                            {ingestReport.success > 0 ?
-                                (
-                                    <Link to={{
-                                    pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
-                                    search: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[1],
-                                    state: data
-                                }}
-                                    >
-                                        Success:
-                                    </Link>
-)
-                                :
-                                (
-                                    <div>
-                                        Success:
-                                    </div>
-)
-                            }
-                                                                   </b>
-                                                                </u>
+                        <div style={{display: 'flex', flex: 1}}>
+                            <u>
+                                <b>
+                                    {ingestReport.success > 0 ?
+                                        (
+                                            <Link to={{
+                                            pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
+                                            search: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[1],
+                                            state: data
+                                        }}
+                                            >
+                                                Success:
+                                            </Link>
+        )
+                                        :
+                                        (
+                                            <div>
+                                                Success:
+                                            </div>
+        )
+                                    }
+                                </b>
+                            </u>
                         </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.success > 0 ?
@@ -219,29 +223,31 @@ class AvailHistoryRecordRenderer extends React.Component {
                         width: '85px'
                     }}
                     >
-                        <div style={{display: 'flex', flex: 1}}><u><b>
-                            {ingestReport.errors > 0 ?
-                                (
-                                    <Link
-                                        className="error-link"
-                                        to={{
-                                    pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
-                                    search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
-                                    state: data
-                                }}
-                                    >
-                                        Errors:
-                                    </Link>
-)
-                                :
-                                (
-                                    <div>
-                                        Errors:
-                                    </div>
-)
-                            }
-                                                                   </b>
-                                                                </u>
+                        <div style={{display: 'flex', flex: 1}}>
+                            <u>
+                                <b>
+                                    {ingestReport.errors > 0 ?
+                                    (
+                                        <Link
+                                            className="error-link"
+                                            to={{
+                                        pathname: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[0],
+                                        search: RightsURL.getErrorRightsSearchUrl(data.id).split('?')[1],
+                                        state: data
+                                    }}
+                                        >
+                                            Errors:
+                                        </Link>
+    )
+                                    :
+                                    (
+                                        <div>
+                                            Errors:
+                                        </div>
+    )
+                                }
+                                </b>
+                            </u>
                         </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             {ingestReport.errors > 0 ?
@@ -275,18 +281,20 @@ class AvailHistoryRecordRenderer extends React.Component {
                         width: '85px'
                     }}
                     >
-                        <div style={{display: 'flex', flex: 1}}><u><b>
-                            <Link
-                                target='_blank'
-                                className={ingestReport.fatal > 0 ? 'error-link' : ''}
-                                to={{
-                                    pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
-                                }}
-                            >
-                                Fatals:
-                            </Link>
-                                                                   </b>
-                                                                </u>
+                        <div style={{display: 'flex', flex: 1}}>
+                            <u>
+                                <b>
+                                    <Link
+                                        target='_blank'
+                                        className={ingestReport.fatal > 0 ? 'error-link' : ''}
+                                        to={{
+                                            pathname: RightsURL.getFatalsRightsSearchUrl(data.id)
+                                        }}
+                                    >
+                                        Fatals:
+                                    </Link>
+                                </b>
+                            </u>
                         </div>
                         <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                             <Link

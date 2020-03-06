@@ -123,11 +123,13 @@ class SearchResultsTab extends React.Component {
                             <Selected toggleShowSelected={this.toggleShowSelected} />
                             <RightViewHistory />
                             {this.props.showSelectedAvails && (
-                                <a href="#" onClick={this.toggleShowSelected}><span
-                                    className="nx-container-margin table-top-text"
-                                    id="dashboard-go-to-filter"
-                                                                              >Back to search
-                                                                              </span>
+                                <a href="#" onClick={this.toggleShowSelected}>
+                                    <span
+                                        className="nx-container-margin table-top-text"
+                                        id="dashboard-go-to-filter"
+                                    >
+                                        Back to search
+                                    </span>
                                 </a>
                               )}
                             <Clear clearAllSelected={() => {this.clearAllSelected && this.clearAllSelected(); }} />
