@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class CheckboxCellEditor extends Component {
     static propTypes = {
-        value: PropTypes.boolean,
+        value: PropTypes.bool,
     }; 
 
     static defaultProps = {
