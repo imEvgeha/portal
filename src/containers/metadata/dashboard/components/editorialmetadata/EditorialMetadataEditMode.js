@@ -467,7 +467,8 @@ class EditorialMetadataEditMode extends Component {
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
                         <b>Long Synopsis</b>
-                    </Col>                        <Col>
+                    </Col>
+                    <Col>
                         <AvField
                             type="text"
                             id="editorialLongSynopsis"

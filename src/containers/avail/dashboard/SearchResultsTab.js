@@ -260,11 +260,12 @@ class SelectedInternal extends Component {
         }else {
             if (this.props.availTabPageSelected.length) {
                 return (
-                    <a href="#" onClick={this.props.toggleShowSelected}><span
-                        className="nx-container-margin table-top-text"
-                        id="dashboard-selected-avails-number"
-                                                                        >Selected items: {this.props.availTabPageSelected.length}
-                    </span>
+                    <a href="#" onClick={this.props.toggleShowSelected}>
+                        <span
+                            className="nx-container-margin table-top-text"
+                            id="dashboard-selected-avails-number"
+                        >Selected items: {this.props.availTabPageSelected.length}
+                        </span>
                     </a>
 );
             }
@@ -293,11 +294,13 @@ class ClearInternal extends Component {
     render(){
         if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
         return (
-            <a href="#" onClick={this.props.clearAllSelected}><span
-                className="nx-container-margin table-top-text"
-                id="dashboard-clear-all-selected"
-                                                              >Clear All
-            </span>
+            <a href="#" onClick={this.props.clearAllSelected}>
+                <span
+                    className="nx-container-margin table-top-text"
+                    id="dashboard-clear-all-selected"
+                >
+                    Clear All
+                </span>
             </a>
 );
         else return '';

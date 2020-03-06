@@ -141,7 +141,7 @@ class TitleEditMode extends Component {
                                 maxLength: { value: constants.MAX_SEASON_LENGTH }
                               }}
                                               />
-                                          </FormGroup>
+                                            </FormGroup>
                                         </Col>
                                         <Fragment>
                                             {contentType !== SEASON.apiName ? (
@@ -171,8 +171,8 @@ class TitleEditMode extends Component {
                                     maxLength: { value: constants.MAX_EPISODE_LENGTH }
                                   }}
                                                   />
-                                              </FormGroup>
-                                            </Col>
+                                                </FormGroup>
+                                              </Col>
                           ) : null}
                                         </Fragment>
                                     </Row>
@@ -198,7 +198,7 @@ class TitleEditMode extends Component {
                                                   <Col>
                                                     <Label for='totalNumberOfEpisodes'>
                                                       Episodes
-                                  </Label>
+                                                    </Label>
 
                                                     <AvField
                                                       type='number'
@@ -215,10 +215,10 @@ class TitleEditMode extends Component {
                                       }
                                     }}
                                                     />
-                                                </Col>
-                                              </Row>
-                                            </Fragment>
-                                          </Col>
+                                                  </Col>
+                                                </Row>
+                                              </Fragment>
+                                            </Col>
                         ) : (
                             <Col>
                                 <Label for='titleEpisodeID'>Episode ID</Label>
