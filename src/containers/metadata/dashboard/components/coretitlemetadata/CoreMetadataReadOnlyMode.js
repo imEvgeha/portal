@@ -151,9 +151,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {
                                                 externalIds.eidrLevel2 ? (
                                                     <Col>
-                                                        <Alert color='light'><b style={{color: '#000'}}>EIDR Level
-                                                            2: 
-                                                                             </b> {externalIds ? externalIds.eidrLevel2 : null}
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                EIDR Level 2:
+                                                            </b> {externalIds ? externalIds.eidrLevel2 : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -161,9 +162,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {
                                                 externalIds.xfinityMovieId ? (
                                                     <Col>
-                                                        <Alert color='light'><b style={{color: '#000'}}>Xfinity Movie
-                                                            ID: 
-                                                                             </b> {externalIds ? externalIds.xfinityMovieId : null}
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                Xfinity Movie ID:
+                                                            </b> {externalIds ? externalIds.xfinityMovieId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -175,9 +177,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {
                                                 externalIds.dmaId ? (
                                                     <Col>
-                                                        <Alert color='light'><b style={{color: '#000'}}>DMA
-                                                            ID: 
-                                                                             </b> {externalIds ? externalIds.dmaId : null}
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                DMA ID:
+                                                            </b> {externalIds ? externalIds.dmaId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -185,9 +188,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {
                                                 externalIds.licensorTitleId ? (
                                                     <Col>
-                                                        <Alert color='light'><b style={{color: '#000'}}>Licensor Title
-                                                            ID:
-                                                                             </b> {externalIds ? externalIds.licensorTitleId : null}
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                Licensor Title ID:
+                                                            </b> {externalIds ? externalIds.licensorTitleId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -199,10 +203,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {
                                                 externalIds.isan ? (
                                                     <Col>
-                                                        <Alert color='light'><b
-                                                            style={{color: '#000'}}
-                                                                             >ISAN: 
-                                                                             </b> {externalIds ? externalIds.isan : null}
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                ISAN:
+                                                            </b> {externalIds ? externalIds.isan : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -210,10 +214,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                             {
                                                 externalIds.overrideMsvAssociationId ? (
                                                     <Col>
-                                                        <Alert color='light'><b style={{color: '#000'}}>Override MSV
-                                                            Association
-                                                            ID: 
-                                                                             </b> {externalIds ? externalIds.overrideMsvAssociationId : null}
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                Override MSV Association ID:
+                                                            </b> {externalIds ? externalIds.overrideMsvAssociationId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -245,9 +249,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         externalIds && externalIds.cid ? (
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>C
-                                                    ID: 
-                                                                     </b> {externalIds ? externalIds.cid : null}
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        C ID:
+                                                    </b> {externalIds ? externalIds.cid : null}
                                                 </Alert>
                                             </Col>
                                           ) : null
@@ -255,9 +260,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         legacyIds && legacyIds.movida && legacyIds.movida.movidaId ? (
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Movida
-                                                    ID: 
-                                                                     </b> {legacyIds.movida.movidaId ? legacyIds.movida.movidaId : null}
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        Movida ID:
+                                                    </b> {legacyIds.movida.movidaId ? legacyIds.movida.movidaId : null}
                                                 </Alert>
                                             </Col>
                                           ) : null
@@ -269,10 +275,11 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         externalIds && externalIds.isrc ? (
                                             <Col>
-                                                <Alert color='light'><b
-                                                    style={{color: '#000'}}
-                                                                     >ISRC: 
-                                                                     </b> {externalIds ? externalIds.isrc : null}
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        ISRC:
+                                                    </b>
+                                                    {externalIds ? externalIds.isrc : null}
                                                 </Alert>
                                             </Col>
                                           ) : null
@@ -280,9 +287,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                     {
                                         legacyIds && legacyIds.movida && legacyIds.movida.movidaTitleId ? (
                                             <Col>
-                                                <Alert color='light'><b style={{color: '#000'}}>Movida Title
-                                                    ID: 
-                                                                     </b> {legacyIds.movida.movidaTitleId ? legacyIds.movida.movidaTitleId : null}
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        Movida Title ID:
+                                                    </b> {legacyIds.movida.movidaTitleId ? legacyIds.movida.movidaTitleId : null}
                                                 </Alert>
                                             </Col>
                                           ) : null

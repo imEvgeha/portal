@@ -98,28 +98,28 @@ class TitleEditMode extends Component {
                     </Row>
                     {contentType !== MOVIE.apiName && contentType !== SERIES.apiName && contentType !== ADVERTISEMENT.apiName ? (
                         <> {this.props.data.episodic !== null ? (
-                                <>
-                                    <Row>
-                                        <Col>
-                                            <Label for='titleSeriesName'>Series</Label>
+                            <>
+                                <Row>
+                                    <Col>
+                                        <Label for='titleSeriesName'>Series</Label>
+                                        <AvField
+                                            readOnly
+                                            type='text'
+                                            name='seriesTitleName'
+                                            id='titleSeriesName'
+                                            placeholder="Enter Series Name"
+                                            errorMessage='Field cannot be empty!'
+                                            onChange={this.props.handleChangeSeries}
+                                            required={this.state.isSeriesCompleted}
+                                            value={episodic.seriesTitleName}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormGroup>
+                                            <Label for='titleSeasonNumber'>Season{contentType === EPISODE.apiName || contentType === SEASON.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
                                             <AvField
-                                              readOnly
-                                              type='text'
-                                              name='seriesTitleName'
-                                              id='titleSeriesName'
-                                              placeholder="Enter Series Name"
-                                              errorMessage='Field cannot be empty!'
-                                              onChange={this.props.handleChangeSeries}
-                                              required={this.state.isSeriesCompleted}
-                                              value={episodic.seriesTitleName}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <FormGroup>
-                                              <Label for='titleSeasonNumber'>Season{contentType === EPISODE.apiName || contentType === SEASON.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                              <AvField
                                                 type='number'
                                                 name='seasonNumber'
                                                 errorMessage='Please enter a valid season number!'
@@ -139,14 +139,14 @@ class TitleEditMode extends Component {
                                 },
                                 maxLength: { value: constants.MAX_SEASON_LENGTH }
                               }}
-                                              />
-                                            </FormGroup>
-                                        </Col>
-                                            {contentType !== SEASON.apiName ? (
-                                              <Col>
-                                                <FormGroup>
-                                                  <Label for='titleEpisodeNumber'>Episode{contentType === EPISODE.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
-                                                  <AvField
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                    {contentType !== SEASON.apiName ? (
+                                        <Col>
+                                            <FormGroup>
+                                                <Label for='titleEpisodeNumber'>Episode{contentType === EPISODE.apiName ? <span style={{ color: 'red' }}>*</span> : null}</Label>
+                                                <AvField
                                                     type='number'
                                                     name='episodeNumber'
                                                     errorMessage='Please enter a valid episode number!'
@@ -168,16 +168,16 @@ class TitleEditMode extends Component {
                                     },
                                     maxLength: { value: constants.MAX_EPISODE_LENGTH }
                                   }}
-                                                  />
-                                                </FormGroup>
-                                              </Col>
+                                                />
+                                            </FormGroup>
+                                        </Col>
                           ) : null}
-                                    </Row>
-                                    <Row>
-                                        {contentType === SEASON.apiName ? (
-                                            <Col>
-                                              <Label for='titleSeasonID'>Season ID</Label>
-                                              <AvField
+                                </Row>
+                                <Row>
+                                    {contentType === SEASON.apiName ? (
+                                        <Col>
+                                            <Label for='titleSeasonID'>Season ID</Label>
+                                            <AvField
                                                 type='text'
                                                 name='seasonId'
                                                 value={
@@ -189,21 +189,21 @@ class TitleEditMode extends Component {
                                                 id='titleSeasonID'
                                                 placeholder="Enter Season ID"
                                                 onChange={e => this.props.handleChangeEpisodic(e)}
-                                              />
-                                                <Row>
-                                                  <Col>
+                                            />
+                                            <Row>
+                                                <Col>
                                                     <Label for='totalNumberOfEpisodes'>
-                                                      Episodes
+                                                        Episodes
                                                     </Label>
 
                                                     <AvField
-                                                      type='number'
-                                                      name='totalNumberOfEpisodes'
-                                                      id='totalNumberOfEpisodes'
-                                                      onChange={e => this.props.handleOnChangeEdit(e)}
-                                                      value={totalNumberOfEpisodes}
-                                                      placeholder='Episodes'
-                                                      validate={{
+                                                        type='number'
+                                                        name='totalNumberOfEpisodes'
+                                                        id='totalNumberOfEpisodes'
+                                                        onChange={e => this.props.handleOnChangeEdit(e)}
+                                                        value={totalNumberOfEpisodes}
+                                                        placeholder='Episodes'
+                                                        validate={{
                                       max: { value: constants.MAX_NUMBER_OF_EPISODES, errorMessage: 'Please enter a valid episode number!' },
                                       pattern: {
                                         value: '^[0-9]+$',
@@ -211,9 +211,9 @@ class TitleEditMode extends Component {
                                       }
                                     }}
                                                     />
-                                                  </Col>
-                                                </Row>
-                                            </Col>
+                                                </Col>
+                                            </Row>
+                                        </Col>
                         ) : (
                             <Col>
                                 <Label for='titleEpisodeID'>Episode ID</Label>
@@ -232,8 +232,8 @@ class TitleEditMode extends Component {
                                 />
                             </Col>
                           )}
-                                    </Row>
-                                </>
+                                </Row>
+                            </>
                   ) : null}
                         </>
               ) :
