@@ -4,7 +4,6 @@ import loadingGif from '../../../../img/loading.gif';
 
 export default function createLoadingCellRenderer(params) {
     const {data, colDef, valueFormatted} = params;
-    console.log(params, 'create')
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
     }

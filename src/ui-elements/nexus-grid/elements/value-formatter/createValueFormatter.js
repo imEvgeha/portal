@@ -37,15 +37,6 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                         return `${data[javaVariableName].slice(0, 1)}${data[javaVariableName].slice(1).toLowerCase()}`;
                     }
                 };
-        } 
-        case 'multiselect':
-            if (javaVariableName === 'languageAudioTypes.language') {
-                return (params) => {
-                    const {data = {}} = params || {};
-                    if (data && Array.isArray(data['languageAudioTypes'])) {
-                        return data['languageAudioTypes'].map(({language}) => language).filter(Boolean).join(', ');
-                    }
-                };
             }
         case 'territoryType':
             return (params) => {

@@ -9,7 +9,6 @@ import './CustomDateFilter.scss';
 
 export class CustomDateFilter extends React.Component {
     constructor(props) {
-        console.log('test', props)
         super(props);
         this.state = {
             dates: {
@@ -40,7 +39,6 @@ export class CustomDateFilter extends React.Component {
     };
 
     setModel = dates => {
-        console.log(dates, 'dates')
         this.onChange(dates);
     };
 
