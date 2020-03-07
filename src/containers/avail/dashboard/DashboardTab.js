@@ -42,9 +42,7 @@ class DashboardTab extends React.Component {
                     {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                     {<DashboardLatestAvailsCard push={this.context.router.history.push} />}
                 </div>
-                <div className="row">
-
-                </div>
+                <div className="row" />
             </div>
         );
     }

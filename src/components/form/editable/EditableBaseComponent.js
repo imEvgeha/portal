@@ -201,13 +201,13 @@ class EditableBaseComponent extends Component {
                                     disabled={this.state.submitStatus}
                                     onClick={() => this.submit(this.state.value)}
                                     color="success"
-                                ><i className="fa fa-check"></i>
+                                ><i className="fa fa-check" />
                                 </Button>
                                 <Button
                                     className="dPButton"
                                     onClick={this.handleCancelHelperComponent}
                                     color="danger"
-                                ><i className="fa fa-times"></i>
+                                ><i className="fa fa-times" />
                                 </Button>
                             </div>
                             {

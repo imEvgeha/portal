@@ -157,8 +157,7 @@ class AdvancedHistorySearchPanel extends React.Component {
                             onChange={this.handleStateSelect}
                             options={options}
                             value={options.filter(option => option.value === this.props.searchCriteria.status)}
-                        > 
-                        </Select>
+                         />
                     </div>
                 </div>
                 <div>

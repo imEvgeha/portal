@@ -62,7 +62,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     if(!firstName) firstName = filename;
 
                     return (
-                        <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick={() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className="far fa-file-alt"></i></a></div>
+                        <div key={counter++} style={{display:'inline-block', width:'32px', boxSizing: 'border-box'}}><a href="#" onClick={() => this.getDownloadLink(attachment)} title={filename} style={{color:'#A9A9A9', fontSize:'30px', verticalAlign: 'middle'}}><i className="far fa-file-alt" /></a></div>
                     );
                 }
             }).filter( elem=> {
@@ -312,8 +312,8 @@ class AvailHistoryRecordRenderer extends React.Component {
               )}
                 <div style={{display: 'flex', flex:1}} />
                 <div style={{display: 'flex', width:'274px', verticalAlign: 'middle !important'}}>
-                    {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope"></i></a>}
-                    {!email && <div key={email} style={{width: '40px', display:'inline-block'}}></div>}
+                    {email && <a href="#" onClick={()=> this.getDownloadLink(email)} key={email} style={{color:'#A9A9A9', fontSize: '30px', verticalAlign: 'middle', height:'100%', width:'40px', display:'inline-block'}}><i className="far fa-envelope" /></a>}
+                    {!email && <div key={email} style={{width: '40px', display:'inline-block'}} />}
                     <div style={{width: '224px', display:'inline-block', whiteSpace: 'normal'}}>
                         {atts}
                     </div>

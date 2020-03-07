@@ -409,8 +409,7 @@ class SelectableInput extends Component {
                         value={this.props.selected}
                         placeholder={this.props.placeholder}
                         options={this.props.options}
-                    > 
-                    </Select>
+                     />
                 </div>
                 { this.props.selected && (
                 <div style={{margin: '0 2px 16px'}}>
@@ -434,7 +433,7 @@ class SelectableInput extends Component {
                     <span
                         title={'* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'}
                         style={{color: 'grey'}}
-                    >&nbsp;&nbsp;<i className="far fa-question-circle"></i>
+                    >&nbsp;&nbsp;<i className="far fa-question-circle" />
                     </span>
                   )}
             </div>

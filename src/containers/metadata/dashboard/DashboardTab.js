@@ -27,9 +27,7 @@ class DashboardTab extends React.Component {
                     </Can>
                     {/*<DashboardCard title="Title Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
                 </div>
-                <div className="row">
-
-                </div>
+                <div className="row" />
             </div>
         );
     }

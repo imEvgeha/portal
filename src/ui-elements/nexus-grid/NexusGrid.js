@@ -58,8 +58,7 @@ const NexusGrid = ({
                 onRowDataChanged={handleGridEvent}
                 onFilterChanged={handleGridEvent}
                 {...restProps}
-            >
-            </AgGridReact> 
+             /> 
         </div> 
     );
 };

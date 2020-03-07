@@ -488,8 +488,8 @@ class RightDetails extends React.Component {
                         <div className="col-4">{displayName}
                             {required ? <span className="text-danger">*</span> : ''}
                             :
-                            {highlighted ? <span title="* fields in bold are original values provided by the studios" style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
-                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {highlighted ? <span title="* fields in bold are original values provided by the studios" style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
+                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
                         </div>
                         <div
                             onClick={this.onFieldClicked}
@@ -502,7 +502,7 @@ class RightDetails extends React.Component {
                             >
                                 {content}
                             </div>
-                            <span className="edit-icon" style={{ color: 'gray' }}><i className="fas fa-pen"></i></span>
+                            <span className="edit-icon" style={{ color: 'gray' }}><i className="fas fa-pen" /></span>
                         </div>
                     </div>
                 </div>

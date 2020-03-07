@@ -592,7 +592,7 @@ class RightsResultTable extends React.Component {
                             <div
                                 style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
                             >
-                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                             </div>
                           )}
                     </Link>
@@ -684,8 +684,7 @@ class RightsResultTable extends React.Component {
                         headerHeight='52'
                         rowHeight='48'
 
-                    >
-                    </AgGridReact>
+                     />
                 </div>
             </div>
         );

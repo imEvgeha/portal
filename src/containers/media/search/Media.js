@@ -190,7 +190,7 @@ class Dashboard extends React.Component {
                                                 </CardText>
                                             </CardHeader>
                                             <CardBody>
-                                                <p></p>
+                                                <p />
                                             </CardBody>
                                         </Card>
                                         {essence.essences.map((key, index) => (

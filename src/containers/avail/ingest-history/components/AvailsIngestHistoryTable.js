@@ -211,8 +211,7 @@ class AvailsIngestHistoryTable extends React.Component {
                             rowHeight='70'
 
                             suppressHorizontalScroll={true}
-                        >
-                        </AgGridReact>
+                         />
 
                     </div>
                 </div>

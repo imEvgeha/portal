@@ -536,8 +536,7 @@ class TitleResultTable extends React.Component {
                     headerHeight='52'
                     rowHeight='48'
 
-                >
-                </AgGridReact>
+                 />
 
             </div>
         );

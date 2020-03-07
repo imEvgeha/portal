@@ -71,8 +71,7 @@ export default class ResultsTable extends React.Component {
                     columnDefs={this.props.colDef}
                     headerHeight='52'
                     rowHeight='48'
-                >
-                </AgGridReact>
+                 />
             </div>
         );
     }

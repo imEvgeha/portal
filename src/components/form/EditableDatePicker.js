@@ -150,13 +150,13 @@ class EditableDatePicker extends Component {
                                     disabled={this.state.submitStatus}
                                     onClick={() => this.submit(this.state.date)}
                                     color="success"
-                                ><i className="fa fa-check"></i>
+                                ><i className="fa fa-check" />
                                 </Button>
                                 <Button
                                     className="dPButton"
                                     onClick={this.handleCancelDatePicker}
                                     color="danger"
-                                ><i className="fa fa-times"></i>
+                                ><i className="fa fa-times" />
                                 </Button>
                             </div>
                             {
