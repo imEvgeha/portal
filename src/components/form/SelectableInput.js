@@ -409,7 +409,7 @@ class SelectableInput extends Component {
                         value={this.props.selected}
                         placeholder={this.props.placeholder}
                         options={this.props.options}
-                     />
+                    />
                 </div>
                 { this.props.selected && (
                 <div style={{margin: '0 2px 16px'}}>

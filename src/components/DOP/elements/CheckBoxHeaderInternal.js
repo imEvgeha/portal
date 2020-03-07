@@ -79,16 +79,13 @@ class CheckBoxHeaderInternal extends Component {
             <span className="ag-selection-checkbox" onClick={this.onCheckBoxClick}>
                 <span
                     className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && selectAll ? '' : 'ag-hidden'}`}
-                >
-                </span>
+                />
                 <span
                     className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}
-                >
-                </span>
+                />
                 <span
                     className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !selectAll ? '' : 'ag-hidden'}`}
-                >
-                </span>
+                />
             </span>
         );
     }

@@ -683,8 +683,7 @@ class RightsResultTable extends React.Component {
 
                         headerHeight='52'
                         rowHeight='48'
-
-                     />
+                    />
                 </div>
             </div>
         );

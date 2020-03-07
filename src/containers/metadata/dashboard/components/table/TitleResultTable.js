@@ -535,8 +535,7 @@ class TitleResultTable extends React.Component {
                     suppressRowClickSelection={true}
                     headerHeight='52'
                     rowHeight='48'
-
-                 />
+                />
 
             </div>
         );
