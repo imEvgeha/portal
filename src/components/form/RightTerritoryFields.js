@@ -18,7 +18,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
     };
 
     const removeExistingOptions = () => {
-        return existingTerritoryList ? options.filter(x => !existingTerritoryList.find(y => y.country === x.label)) : options;
+        return existingTerritoryList ? options.filter(x => !existingTerritoryList.find(y => y.country === x.value)) : options;
     };
 
     const getValidationState = (error, valid) => {
