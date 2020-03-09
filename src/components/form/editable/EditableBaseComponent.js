@@ -48,7 +48,7 @@ class EditableBaseComponent extends Component {
         this.cancel = this.cancel.bind(this);
     }
 
-    componentDidUpdate(prevProps) {withFilteredRights.js;
+    componentDidUpdate(prevProps) {
         if (prevProps.value != this.props.value) {
             // dirty fix for territory field
             if (this.props.displayName === 'Territory' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {

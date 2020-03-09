@@ -23,6 +23,9 @@ import RightViewHistory from '../../../avails/right-history-view/RightHistoryVie
 import TableColumnCustomization from '../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
 import TableDownloadRights from '../../../ui-elements/nexus-table-download-rights/TableDownload';
 import {Clear} from './ClearInternal';
+import {Selected} from './SelectedInternal';
+import {Total} from './TotalInternal';
+import {Reports} from './ReportsInternal';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
@@ -176,104 +179,5 @@ class SearchResultsTab extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
-
-import {Component} from 'react';
 import {compose} from 'redux';
-
-//--------------------------------------
-
-mapStateToProps = state => {
-    return {
-        reports: state.root.reports
-    };
-};
-class ReportsInternal extends Component {
-
-    static propTypes = {
-        onChange: t.func,
-        reportName: t.string
-    };
-
-    render(){
-        return (
-            <select
-                className="form-control border-0 d-inline"
-                id="dashboard-avails-report-select"
-                onChange={this.props.onChange}
-                value={this.props.reportName}
-            >
-                <option value="">{this.props.reportName === '' ? 'No Report Selected' : 'Default Report'}</option>
-                {
-                    configurationService.getReportsNames().map((reportName) => (<option key={reportName} value={reportName}>{reportName}</option>))
-                }
-            </select>
-        );
-    }
-}
-let Reports = connect(mapStateToProps, null)(ReportsInternal);
-
-//--------------------------------------
-
-mapStateToProps = state => {
-    return {
-        total: state.dashboard.availTabPage.total
-    };
-};
-class TotalInternal extends Component {
-
-    static propTypes = {
-        total: t.number
-    };
-
-    render(){
-        return this.props.total;
-    }
-}
-let Total = connect(mapStateToProps, null)(TotalInternal);
-
-//--------------------------------------
-
-mapStateToProps = state => {
-    return {
-        availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
-        showSelectedAvails: state.dashboard.showSelectedAvails,
-    };
-};
-class SelectedInternal extends Component {
-
-    static propTypes = {
-        showSelectedAvails: t.bool,
-        availTabPageSelected: t.array,
-        toggleShowSelected: t.func
-    };
-
-    render(){
-        if(this.props.showSelectedAvails){
-            return (
-                <span
-                    className="nx-container-margin table-top-text"
-                    id="dashboard-selected-avails-number"
-                >Selected items: {this.props.availTabPageSelected.length}
-                </span>
-);
-        }else {
-            if (this.props.availTabPageSelected.length) {
-                return (
-                    <a href="#" onClick={this.props.toggleShowSelected}>
-                        <span
-                            className="nx-container-margin table-top-text"
-                            id="dashboard-selected-avails-number"
-                        >Selected items: {this.props.availTabPageSelected.length}
-                        </span>
-                    </a>
-);
-            }
-        }
-        return '';
-    }
-}
-let Selected = connect(mapStateToProps, null)(SelectedInternal);
-
-//--------------------------------------
-
 
