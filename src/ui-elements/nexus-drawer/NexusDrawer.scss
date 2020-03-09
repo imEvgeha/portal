@@ -1,42 +1,51 @@
 @import '../../styles/config';
 
+$sizes: full, narrow, extended, medium, wide;
+$positions: left, right;
+
 .nexus-c-drawer {
   position: absolute;
   top: 0;
   height: 100%;
-  background-color: red;
+  background-color: map-get($colors, nexus-white);
   z-index: map-get($app-layout, z-index-above-overlay);
   transition: transform 200ms ease-in;
 
-  &--is-right {
-    right: 0;
-  }
+  // Creates classes for each combination of positions and sizes
+  @each $position in $positions {
+    @each $size in $sizes {
+      // Move the drawer off-screen based on position and width
+      &--is-#{$position}#{&}--is-#{$size}-width {
+        #{$position}: -#{map-get($app-layout, drawer-width-#{$size})};
+      }
 
-  &--is-left {
-    left: -400px;
-  }
+      // Set drawer widths
+      &--is-#{$size}-width {
+        width: map-get($app-layout, drawer-width-#{$size});
+      }
 
-  &--is-small-width {
-    width: 200px;
-
-    & .nexus-c-drawer--is-open {
-      transform: translateX(-200px);
+      // When drawer is open, apply transformation based on position and size
+      &--is-#{$size}-width#{&}--is-open {
+        &.nexus-c-drawer--is-right {
+          // If the drawer is on the right side, we want it moving to the left side
+          transform: translateX(-#{map-get($app-layout, drawer-width-#{$size})});
+        }
+        &.nexus-c-drawer--is-left {
+          // If the drawer is on the left side, we want it moving to the right side
+          transform: translateX(map-get($app-layout, drawer-width-#{$size}));
+        }
+      }
     }
   }
+}
 
-  &--is-medium-width {
-    width: 400px;
+.nexus-c-drawer__close-btn {
+  position: absolute;
+  top: 0;
 
-    & .nexus-c-drawer--is-open {
-      transform: translateX(400px);
-    }
-  }
-
-  &--is-large-width {
-    width: 600px;
-
-    & .nexus-c-drawer--is-open {
-      transform: translateX(-600px);
+  @each $position in $positions {
+    &--is-#{$position} {
+      #{$position}: 0;
     }
   }
 }
