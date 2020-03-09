@@ -14,8 +14,7 @@ class CustomModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: true,
-            reportName: props.reportName
+            modal: true
         };
 
         this.toggle = this.toggle.bind(this);

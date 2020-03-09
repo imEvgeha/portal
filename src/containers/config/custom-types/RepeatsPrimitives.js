@@ -81,7 +81,6 @@ export default class RepeatsPrimitives extends Component {
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
         const items = defaultValue.map(data => ({ id: uniqueId(), data }));
         this.state = {
-            value: defaultValue,
             items
         };
     }

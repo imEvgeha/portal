@@ -70,7 +70,6 @@ export default class ObjectKey extends Component {
         const items = keys.map(key => ({ id: uniqueId(), key, data: defaultValue[key].map(val => {return {id: uniqueId(), data: val};}) }));
         this.getForm = this.getForm.bind(this);
         this.state = {
-            value: defaultValue,
             keyName: '',
             items
         };

@@ -52,7 +52,6 @@ export default class DynamicObjectType extends Component {
         const items = keys.map(key => ({ id: uniqueId(), key, data: defaultValue[key] }));
 
         this.state = {
-            value: defaultValue,
             keyName: '',
             items
         };

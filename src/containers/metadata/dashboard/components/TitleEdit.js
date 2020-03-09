@@ -68,7 +68,6 @@ class TitleEdit extends Component {
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
             titleRankingActiveTab: CURRENT_TAB,
-            invalidBoxOffice: false,
             areTerritoryMetadataFieldsRequired: false,
             areEditorialMetadataFieldsRequired: false,
             areRatingFieldsRequired: false,
@@ -80,8 +79,7 @@ class TitleEdit extends Component {
             editorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
-            ratingForCreate: {},
-            advisoriesCode: null
+            ratingForCreate: {}
         };
     }
 
@@ -189,13 +187,6 @@ class TitleEdit extends Component {
         });
     };
 
-    handleOnChangeTitleDuration = (duration) => {
-        this.setState({
-            ...this.state.editedForm,
-            duration: duration
-        });
-    };
-
     handleChangeSeries = (e) => {
         const newEpisodic = {
             ...this.state.editedForm.episodic,
@@ -282,16 +273,6 @@ class TitleEdit extends Component {
         });
     };
 
-    handleAdvisoryCodeChange = (advisoriesCode) => {
-        let newRatingForCreate = {
-            ...this.state.ratingForCreate,
-            advisoriesCode: advisoriesCode
-        };
-        this.setState({
-            ratingForCreate: newRatingForCreate
-        });
-    };
-
     toggleTitleRating = (tab) => {
         this.setState({
             titleRankingActiveTab: tab,
@@ -356,7 +337,6 @@ class TitleEdit extends Component {
                 addTitleRatingTab={this.addTitleRatingTab}
                 areRatingFieldsRequired={this.state.areRatingFieldsRequired}
                 createRatingTab={CREATE_TAB}
-                handleAdvisoryCodeChange={this.handleAdvisoryCodeChange}
                 ratingObjectForCreate={this.state.ratingForCreate}
                 handleRatingEditChange={this.handleRatingEditChange}
                 handleRatingCreateChange={this.handleRatingCreateChange}
@@ -376,8 +356,6 @@ class TitleEdit extends Component {
                 editedTitle={this.state.editedForm}
 
                 ratings={this.state.editedForm.ratings}
-
-                handleOnChangeTitleDuration={this.handleOnChangeTitleDuration}
                 handleOnChangeEdit={this.handleOnChangeEdit}
             />
 );
@@ -416,7 +394,6 @@ class TitleEdit extends Component {
     titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
         titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
             this.setState({
-                isLoading: false,
                 titleForm: response.data,
                 editedForm: response.data,
                 ratingForCreate: {},
@@ -432,9 +409,6 @@ class TitleEdit extends Component {
 
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm || Object.keys(this.state.ratingForCreate).length !== 0) {
-            this.setState({
-                isLoading: true
-            });
             let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');

@@ -31,7 +31,6 @@ import get from 'lodash.get';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../avails/utils';
-import {URL} from '../../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -79,7 +78,6 @@ class TitleResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: config.get('title.page.size'),
-            cols: [],
             defaultColDef: {
                 sortable: true,
                 resizable: true,

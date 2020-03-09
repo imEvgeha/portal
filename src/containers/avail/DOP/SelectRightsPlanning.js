@@ -31,7 +31,6 @@ class SelectRightsPlanning extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isPendingSelectionHide: true,
             rightsFilteredBy: {}
         };
     }
@@ -57,12 +56,7 @@ class SelectRightsPlanning extends Component {
 
         if (selectedTerritoriesTab !== PENDING_SELECTION) {
             this.setState({
-                isPendingSelectionHide: true,
                 rightsFilteredBy: filterBy
-            });
-        } else {
-            this.setState({
-                isPendingSelectionHide: false
             });
         }
     };

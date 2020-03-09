@@ -75,7 +75,6 @@ class RightDetails extends React.Component {
         this.state = {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
-            isRightTerritoryEditFormOpen: false,
             territoryIndex: null,
             isEdit: false,
             editedRight: {},
@@ -255,7 +254,6 @@ class RightDetails extends React.Component {
                             })
                         ];
 
-                        const castCrews = castCrew;
 
                         this.setState({
                             right: res.data,
@@ -263,7 +261,6 @@ class RightDetails extends React.Component {
                             territory: territories,
                             affiliates,
                             affiliatesExclude,
-                            castCrews,
                             languageAudioTypesLanguage,
                             languageAudioTypesAudioType,
                         });

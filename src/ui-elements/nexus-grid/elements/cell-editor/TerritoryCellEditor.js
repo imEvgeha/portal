@@ -16,13 +16,11 @@ class TerritoryCellEditor extends Component {
     static propTypes = {
         options: PropTypes.array,
         value: PropTypes.array,
-        isOpen: PropTypes.bool
     };
 
     static defaultProps = {
         options: [],
-        value: null,
-        isOpen: false
+        value: null
     };
 
     static contextType = NexusModalContext;
@@ -31,7 +29,6 @@ class TerritoryCellEditor extends Component {
         super(props);
         this.state = {
             value: props.value,
-            isOpen: props.isOpen,
             territoryIndex: null
         };
     }

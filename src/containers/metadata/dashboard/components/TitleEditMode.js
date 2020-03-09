@@ -467,7 +467,6 @@ class TitleEditMode extends Component {
                 handleOnLegacyIds={this.props.handleOnLegacyIds}
                 removeCastCrew={this.props.removeCastCrew}
                 ratings={this.props.ratings}
-                handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
                 ratingObjectForCreate={this.props.ratingObjectForCreate}
                 addCastCrew={this.props.addCastCrew}
                 editedTitle={this.props.editedTitle}
@@ -499,7 +498,6 @@ TitleEditMode.propTypes = {
   removeCastCrew: PropTypes.func,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
-  handleAdvisoryCodeChange: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
   areRatingFieldsRequired: PropTypes.bool,
   castAndCrewReorder: PropTypes.func,

@@ -99,7 +99,6 @@ class Rating extends Component {
                                             <RatingCreateTab
                                                 handleRatingCreateChange={this.props.handleRatingCreateChange}
                                                 areRatingFieldsRequired={this.props.areRatingFieldsRequired}
-                                                handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
                                                 ratingObjectForCreate={this.props.ratingObjectForCreate}
                                                 configRatings={this.props.configRatings}
                                                 handleRatingSystemValue={this.handleRatingSystemValue}
@@ -156,7 +155,6 @@ Rating.propTypes = {
     configRatings: PropTypes.object,
     configRatingSystem: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
-    handleAdvisoryCodeChange: PropTypes.func,
     ratingObjectForCreate: PropTypes.object,
     areRatingFieldsRequired: PropTypes.bool,
     handleRatingCreateChange: PropTypes.func

@@ -36,9 +36,6 @@ class AvailHistoryRecordRenderer extends React.Component {
             }
         })
         .catch(() => {
-            this.setState({
-                errorMessage: 'Download Failed. Url not available.'
-            });
         });
     }
 

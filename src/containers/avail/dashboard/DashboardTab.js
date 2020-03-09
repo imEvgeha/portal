@@ -18,15 +18,6 @@ class DashboardTab extends React.Component {
         router: t.object
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            ingestedCount: '-'
-        };
-
-    }
-
     createRight = () => {
         this.context.router.history.push('/avails/rights/create');
     };

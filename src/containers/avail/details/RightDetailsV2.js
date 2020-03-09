@@ -62,12 +62,8 @@ class RightDetails extends React.Component {
 
         this.state = {
             errorMessage: '',
-            isRightTerritoryFormOpen: false,
-            isRightTerritoryEditFormOpen: false,
             editedRight: {},
             flatRight: {},
-            territoryIndex: null,
-            isEdit: false,
         };
     }
 
@@ -167,15 +163,9 @@ class RightDetails extends React.Component {
                                 return obj;
                         })];
 
-                        const castCrews = castCrew;
-
                         this.setState({
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
-                            territory: territories,
-                            affiliates,
-                            affiliatesExclude,
-                            castCrews,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });

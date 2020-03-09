@@ -126,7 +126,6 @@ class CoreMetadataEditMode extends Component {
                     isEditMode={true}
                     ratings={this.props.ratings}
                     areRatingFieldsRequired={this.props.areRatingFieldsRequired}
-                    handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
                     ratingObjectForCreate={this.props.ratingObjectForCreate}
                     filteredRatings={this.state.ratings}
                     activeTab={this.props.titleRankingActiveTab}
@@ -448,7 +447,6 @@ CoreMetadataEditMode.propTypes = {
   configRatings: PropTypes.object,
   handleRatingSystemValue: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
-  handleAdvisoryCodeChange: PropTypes.func,
   areRatingFieldsRequired: PropTypes.bool,
   castAndCrewReorder: PropTypes.func,
 

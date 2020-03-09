@@ -92,8 +92,7 @@ export class EndpointContainer extends Component {
             searchValue: '',
             isLoading: false,
             currentRecord: null,
-            pageSize: defaultPageSize,
-            isModalOpen: false
+            pageSize: defaultPageSize
         };
 
         this.keyInputTimeout = 0;

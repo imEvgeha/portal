@@ -11,7 +11,6 @@ class DashboardTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ingestedCount: '-',
             modalBox: null
         };
 
