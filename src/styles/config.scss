@@ -2,6 +2,7 @@ $app-layout: (
     content-min-width: 300px,
     content-max-width: 1370px,
     content-padding-horizontal: 20px,
+    z-index-above-overlay: 501,
 );
 
 $colors: (

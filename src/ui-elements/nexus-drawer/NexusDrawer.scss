@@ -1,0 +1,42 @@
+@import '../../styles/config';
+
+.nexus-c-drawer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: red;
+  z-index: map-get($app-layout, z-index-above-overlay);
+  transition: transform 200ms ease-in;
+
+  &--is-right {
+    right: 0;
+  }
+
+  &--is-left {
+    left: -400px;
+  }
+
+  &--is-small-width {
+    width: 200px;
+
+    & .nexus-c-drawer--is-open {
+      transform: translateX(-200px);
+    }
+  }
+
+  &--is-medium-width {
+    width: 400px;
+
+    & .nexus-c-drawer--is-open {
+      transform: translateX(400px);
+    }
+  }
+
+  &--is-large-width {
+    width: 600px;
+
+    & .nexus-c-drawer--is-open {
+      transform: translateX(-600px);
+    }
+  }
+}
