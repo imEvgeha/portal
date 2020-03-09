@@ -22,6 +22,7 @@ import {
 import RightViewHistory from '../../../avails/right-history-view/RightHistoryView';
 import TableColumnCustomization from '../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
 import TableDownloadRights from '../../../ui-elements/nexus-table-download-rights/TableDownload';
+import {Clear} from './ClearInternal';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
@@ -275,33 +276,4 @@ let Selected = connect(mapStateToProps, null)(SelectedInternal);
 
 //--------------------------------------
 
-mapStateToProps = state => {
-    return {
-        availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
-        showSelectedAvails: state.dashboard.showSelectedAvails,
-    };
-};
-class ClearInternal extends Component {
 
-    static propTypes = {
-        showSelectedAvails: t.bool,
-        availTabPageSelected: t.array,
-        clearAllSelected: t.func
-    };
-
-    render(){
-        if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
-        return (
-            <a href="#" onClick={this.props.clearAllSelected}>
-                <span
-                    className="nx-container-margin table-top-text"
-                    id="dashboard-clear-all-selected"
-                >
-                    Clear All
-                </span>
-            </a>
-);
-        else return '';
-    }
-}
-let Clear = connect(mapStateToProps, null)(ClearInternal);
