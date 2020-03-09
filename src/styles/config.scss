@@ -3,6 +3,11 @@ $app-layout: (
     content-max-width: 1370px,
     content-padding-horizontal: 20px,
     z-index-above-overlay: 501,
+    drawer-width-extended: 95vw,
+    drawer-width-full: 100vw,
+    drawer-width-medium: 480px,
+    drawer-width-narrow: 360px,
+    drawer-width-wide: 600px,
 );
 
 $colors: (
