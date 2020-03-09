@@ -28,8 +28,6 @@ export default class RangeDuration extends React.Component {
         this.state = {
             invalidStartDuration: '',
             invalidEndDuration: '',
-            prevFromDuration: null,
-            prevToDuration: null,
             invalidRange: ''
         };
         this.handleChangeStartDuration = this.handleChangeStartDuration.bind(this);

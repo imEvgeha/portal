@@ -6,7 +6,6 @@ import t from 'prop-types';
 class CustomModal extends React.Component {
 
     static propTypes = {
-        reportName: t.string,
         reject: t.func,
         resolve: t.func,
     };

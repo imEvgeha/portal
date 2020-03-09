@@ -58,9 +58,6 @@ class SearchResultsTab extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            reportsName:configurationService.getReportsNames(),
-        };
         this.toggleShowSelected = this.toggleShowSelected.bind(this);
         this.handleChangeReport = this.handleChangeReport.bind(this);
     }

@@ -5,6 +5,7 @@ export default function withSelection(SelectionWrappedComponent) {
     return (props) => <SelectionTable SelectionWrappedComponent={SelectionWrappedComponent} {...props} />;
 }
 
+/* eslint react/no-unused-state: 0 */  // --> OFF
 export class SelectionTable extends React.Component {
 
     constructor(props) {
@@ -21,7 +22,6 @@ export class SelectionTable extends React.Component {
         const uniqueColumns = props.columns ? [...new Set([CHECKBOX_HEADER, ...props.columns])] : [CHECKBOX_HEADER];
 
         this.state = {
-            rowsProps: this.props.rowsProps,
             table: null,
             colDef: [],
             selected: this.props.availTabPageSelection && this.props.availTabPageSelection.selected ? this.props.availTabPageSelection.selected : [],

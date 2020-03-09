@@ -34,8 +34,7 @@ class SelectIgnoreCell extends Component {
         super(props);
         const isIgnored = props.node.data && props.node.data.status === 'Ready';
         this.state = {
-            isIgnored,
-            isLoading: false
+            isIgnored
         };
     }
 

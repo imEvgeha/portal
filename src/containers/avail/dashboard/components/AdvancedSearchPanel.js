@@ -63,7 +63,6 @@ class AdvancedSearchPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            reportName: '',
             selected: null,
             value: null,
             blink: null,

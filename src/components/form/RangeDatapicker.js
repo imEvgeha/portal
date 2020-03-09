@@ -23,8 +23,6 @@ export default class RangeDatapicker extends React.Component {
         this.state = {
             invalidStartDate: '',
             invalidEndDate: '',
-            prevFromDate: null,
-            prevToDate: null,
             invalidRange: ''
         };
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);

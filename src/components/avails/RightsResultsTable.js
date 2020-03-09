@@ -84,6 +84,7 @@ export default class RightsResultsTable extends React.Component {
         }else{
             newCols = Object.keys(newColDef).map((key) => newColDef[key]);
         }
+        // eslint-disable-next-line react/no-unused-state
         this.setState({colDef: newColDef, cols: newCols});
     }
 

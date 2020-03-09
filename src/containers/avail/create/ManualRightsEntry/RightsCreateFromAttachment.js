@@ -70,6 +70,7 @@ class RightsCreateFromAttachment extends React.Component {
         this.state = {
             availHistoryId: this.props.match.params.availHistoryIds,
             historyData: {},
+            // eslint-disable-next-line react/no-unused-state
             table: null
         };
     }
@@ -153,9 +154,6 @@ class RightsCreateFromAttachment extends React.Component {
                 }
             })
             .catch(() => {
-                this.setState({
-                    errorMessage: ERROR_MESSAGE
-                });
             });
     }
 
@@ -189,6 +187,7 @@ class RightsCreateFromAttachment extends React.Component {
     };
 
     onTableLoaded = (table) => {
+        // eslint-disable-next-line react/no-unused-state
         this.setState({ table });
     };
 

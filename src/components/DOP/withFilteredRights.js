@@ -31,7 +31,6 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                 datasource: props.autoload ? {rowCount: null, getRows: this.getRows} : null,
             };
             this.state = {
-                colDef: props.colDef,
                 rowsProps,
                 cols: [],
                 pageSize: config.get('avails.page.size'),
@@ -52,7 +51,6 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
 
             if (!isEqual(prevProps.colDef, colDef) || !isEqual(prevProps.columns, columns)) {
                 this.setState({
-                    colDef, 
                     cols: refreshColumns(colDef)
                 });
             }
