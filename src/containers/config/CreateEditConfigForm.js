@@ -24,16 +24,6 @@ import {Field as AkField} from '@atlaskit/form';
 
 export default class CreateEditConfigForm extends React.Component {
 
-    static propTypes = {
-        label: PropTypes.string,
-        value: PropTypes.any,
-        schema: PropTypes.array,
-        onCancel: PropTypes.func,
-        onSubmit: PropTypes.func,
-        onRemoveItem: PropTypes.func,
-        displayName: PropTypes.string
-    };
-
     constructor(props) {
         super(props);
         this.state={

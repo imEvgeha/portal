@@ -42,23 +42,6 @@ const mapDispatchToProps = {
 const ignoreForCloseable = ['invalid'];
 
 class AdvancedSearchPanel extends React.Component {
-    static propTypes = {
-        searchCriteria: t.object,
-        availTabPage: t.object,
-        availTabPageSort: t.array,
-        onSearch: t.func,
-        searchFormUpdateAdvancedSearchCriteria: t.func,
-        onToggleAdvancedSearch: t.func,
-        hide: t.bool,
-        reportName: t.string,
-        availsMapping: t.object,
-        columns: t.array,
-        historyCache: t.object,
-        setHistoryCache: t.func,
-        location: t.object,
-        bulkExportAvailable: t.bool,
-        resultPageSetBulkExport: t.func
-    };
 
     constructor(props) {
         super(props);
@@ -523,5 +506,23 @@ class AdvancedSearchPanel extends React.Component {
         );
     }
 }
+
+AdvancedSearchPanel.propTypes = {
+    searchCriteria: t.object,
+    availTabPage: t.object,
+    availTabPageSort: t.array,
+    onSearch: t.func,
+    searchFormUpdateAdvancedSearchCriteria: t.func,
+    onToggleAdvancedSearch: t.func,
+    hide: t.bool,
+    reportName: t.string,
+    availsMapping: t.object,
+    columns: t.array,
+    historyCache: t.object,
+    setHistoryCache: t.func,
+    location: t.object,
+    bulkExportAvailable: t.bool,
+    resultPageSetBulkExport: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);

@@ -40,26 +40,6 @@ const mapStateToProps = state => {
 };
 
 class RightDetails extends React.Component {
-    static propTypes = {
-        selectValues: PropTypes.object,
-        availsMapping: PropTypes.any,
-        match: PropTypes.any,
-        location: PropTypes.any,
-        blocking: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        selectValues: null,
-        availsMapping: null,
-        match: {},
-        location: {},
-        blocking: null,
-    };
-
-    static contextTypes = {
-        router: PropTypes.object,
-    }
-
     refresh = null;
 
     constructor(props) {
@@ -1316,6 +1296,26 @@ class RightDetails extends React.Component {
             </div>
         );
     }
+}
+
+RightDetails.propTypes = {
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    match: PropTypes.any,
+    location: PropTypes.any,
+    blocking: PropTypes.bool,
+};
+
+RightDetails.defaultProps = {
+    selectValues: null,
+    availsMapping: null,
+    match: {},
+    location: {},
+    blocking: null,
+};
+
+RightDetails.contextTypes = {
+    router: PropTypes.object,
 }
 
 export default connect(mapStateToProps)(RightDetails);

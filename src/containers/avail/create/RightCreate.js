@@ -37,17 +37,6 @@ const mapStateToProps = state => {
 
 class RightCreate extends React.Component {
 
-    static propTypes = {
-        selectValues: t.object,
-        availsMapping: t.any,
-        blocking: t.bool,
-        match: t.object
-    };
-
-    static contextTypes = {
-        router: t.object
-    }
-
     constructor(props) {
         super(props);
 
@@ -806,6 +795,17 @@ class RightCreate extends React.Component {
             </div>
         );
     }
+}
+
+RightCreate.propTypes = {
+    selectValues: t.object,
+    availsMapping: t.any,
+    blocking: t.bool,
+    match: t.object
+};
+
+RightCreate.contextTypes = {
+    router: t.object
 }
 
 export default connect(mapStateToProps, null)(RightCreate);
