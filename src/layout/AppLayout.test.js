@@ -11,9 +11,5 @@ describe('AppLayout', () => {
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
     });
-    // TODO: Temporary test to see if CI works
-    it('should not fail test that tests if failing tests stop deployment', () => {
-        throw new Error('it failed, yay!');
-    });
 });
 

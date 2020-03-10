@@ -20,7 +20,7 @@ exports[`AppLayout should match snapshot 1`] = `
     <div
       className="nexus-c-app-layout__main"
     >
-      <Connect(NexusBreadcrumb) />
+      <withRouter(Connect(NexusBreadcrumb)) />
       <Switch>
         <Route
           component={[Function]}
