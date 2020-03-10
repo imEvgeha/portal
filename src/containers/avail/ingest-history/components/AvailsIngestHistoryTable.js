@@ -38,15 +38,6 @@ let mapDispatchToProps = {
 
 class AvailsIngestHistoryTable extends React.Component {
 
-    static propTypes = {
-        searchCriteria: t.object,
-        advancedSearchCriteria: t.object,
-        availHistoryLoading: t.bool,
-        resultPageHistoryUpdate: t.func,
-        searchFormSetHistorySearchCriteria: t.func,
-        searchFormUpdateAdvancedHistorySearchCriteria: t.func
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -222,5 +213,14 @@ class AvailsIngestHistoryTable extends React.Component {
         );
     }
 }
+
+AvailsIngestHistoryTable.propTypes = {
+    searchCriteria: t.object,
+    advancedSearchCriteria: t.object,
+    availHistoryLoading: t.bool,
+    resultPageHistoryUpdate: t.func,
+    searchFormSetHistorySearchCriteria: t.func,
+    searchFormUpdateAdvancedHistorySearchCriteria: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailsIngestHistoryTable);

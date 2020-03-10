@@ -9,12 +9,12 @@ let mapStateToProps = state => {
 };
 class TotalInternal extends Component {
 
-    static propTypes = {
-        total: t.number
-    };
-
     render(){
         return this.props.total;
     }
 }
+
+TotalInternal.propTypes = {
+    total: t.number
+};
 export let Total = connect(mapStateToProps, null)(TotalInternal);

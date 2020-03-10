@@ -10,10 +10,6 @@ import RightsURL from '../../util/RightsURL';
 
 class AvailHistoryRecordRenderer extends React.Component {
 
-    static propTypes = {
-        data: t.object,
-    };
-
     constructor(props) {
         super(props);
     }
@@ -312,5 +308,9 @@ class AvailHistoryRecordRenderer extends React.Component {
         );
     }
 }
+
+AvailHistoryRecordRenderer.propTypes = {
+    data: t.object,
+};
 
 export default AvailHistoryRecordRenderer;

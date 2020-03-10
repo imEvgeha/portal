@@ -6,10 +6,6 @@ import {URL} from '../../../util/Common';
 class HistoryURL extends React.Component {
     static instance = null;
 
-    static contextTypes = {
-        router: t.object
-    }
-
     componentDidMount() {
         HistoryURL.instance = this;
     }
@@ -93,6 +89,10 @@ class HistoryURL extends React.Component {
             HistoryURL.instance.context.router.history.push(url);
         }
     }
+}
+
+HistoryURL.contextTypes = {
+    router: PropTypes.object,
 }
 
 export default HistoryURL;

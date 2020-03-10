@@ -8,13 +8,14 @@ let mapStateToProps = state => {
         showSelectedAvails: state.dashboard.showSelectedAvails,
     };
 };
-class SelectedInternal extends Component {
 
-    static propTypes = {
-        showSelectedAvails: t.bool,
-        availTabPageSelected: t.array,
-        toggleShowSelected: t.func
-    };
+SelectedInternal.propTypes = {
+    showSelectedAvails: t.bool,
+    availTabPageSelected: t.array,
+    toggleShowSelected: t.func
+};
+
+class SelectedInternal extends Component {
 
     render(){
         if(this.props.showSelectedAvails){

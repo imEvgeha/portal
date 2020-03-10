@@ -26,10 +26,6 @@ const mapDispatchToProps = {
 };
 
 class AvailIngestHistoryContainer extends React.Component {
-    static propTypes = {
-        location: t.object,
-        searchFormSetAdvancedHistorySearchCriteria: t.func
-    };
 
     constructor(props) {
         super(props);
@@ -77,5 +73,10 @@ class AvailIngestHistoryContainer extends React.Component {
         );
     }
 }
+
+AvailIngestHistoryContainer.propTypes = {
+    location: t.object,
+    searchFormSetAdvancedHistorySearchCriteria: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailIngestHistoryContainer);

@@ -28,18 +28,18 @@ const mapDispatchToProps = {
     searchFormSetAdvancedSearchCriteria,
 };
 
+FixRights.propTypes = {
+    availsMapping: t.object,
+    searchFormSetAdvancedSearchCriteria: t.func,
+    location: t.object,
+    match: t.object
+};
+
+FixRights.contextTypes = {
+    router: t.object
+}
+
 class FixRights extends React.Component {
-
-    static propTypes = {
-        availsMapping: t.object,
-        searchFormSetAdvancedSearchCriteria: t.func,
-        location: t.object,
-        match: t.object
-    };
-
-    static contextTypes = {
-        router: t.object
-    }
 
     constructor(props) {
         super(props);

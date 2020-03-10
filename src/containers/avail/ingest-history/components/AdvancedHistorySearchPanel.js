@@ -24,12 +24,6 @@ const mapDispatchToProps = {
 };
 
 class AdvancedHistorySearchPanel extends React.Component {
-    static propTypes = {
-        searchCriteria: t.object,
-        onSearch: t.func,
-        searchFormUpdateAdvancedHistorySearchCriteria: t.func,
-        searchFormSetHistorySearchCriteria : t.func
-    };
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter' && !this.state.invalidForm) {
@@ -186,5 +180,12 @@ class AdvancedHistorySearchPanel extends React.Component {
         );
     }
 }
+
+AdvancedHistorySearchPanel.propTypes = {
+    searchCriteria: t.object,
+    onSearch: t.func,
+    searchFormUpdateAdvancedHistorySearchCriteria: t.func,
+    searchFormSetHistorySearchCriteria : t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedHistorySearchPanel);

@@ -12,12 +12,6 @@ const DOP_POP_UP_TITLE = 'Select rights planning';
 const DOP_POP_UP_MESSAGE = 'No rights selected';
 
 class SelectRightsDOPConnector extends Component {
-    static propTypes = {
-        promotedRights: PropTypes.array,
-        updatePromotedRights: PropTypes.func
-    };
-
-    static contextType = NexusModalContext;
 
     constructor(props) {
         super(props);
@@ -130,5 +124,12 @@ const mapDispatchToProps = (dispatch) => ({
     updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
     updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload)),
 });
+
+SelectRightsDOPConnector.propTypes = {
+    promotedRights: PropTypes.array,
+    updatePromotedRights: PropTypes.func
+};
+
+SelectRightsDOPConnector.contextType = NexusModalContext;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsDOPConnector);
