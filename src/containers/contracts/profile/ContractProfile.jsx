@@ -47,11 +47,8 @@ const style = {
 class UserProfile extends React.Component {
 
     state = {
-        checkedA: true,
-        checkedB: false,
         checked: [1, 2],
         simpleSelect: '2',
-        multipleSelect: [],
         tags: ['Horror', 'Sci-Fi', 'Metadata']
     };
 
@@ -73,9 +70,6 @@ class UserProfile extends React.Component {
 
     handleSimple = event => {
         this.setState({ [event.target.name]: event.target.value });
-    };
-    handleMultiple = event => {
-        this.setState({ multipleSelect: event.target.value });
     };
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
