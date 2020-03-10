@@ -17,7 +17,7 @@ import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-varia
 import PersonListReadOnly from '../coretitlemetadata/PersonListReadOnly';
 import './EditorialMetadata.scss';
 
-const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
+function EditorialMetadataTab({data, titleContentType, getLanguageByCode}) {
 
     const { episodic, locale, language, format, service, genres, synopsis, castCrew,
         copyright, awards, sasktelInventoryId, sasktelLineupId } = data;
@@ -25,9 +25,9 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
     const {seriesName, seasonNumber, episodeNumber} = episodic || {};
     const {description, shortDescription, longDescription } = synopsis || {};
 
-    const emptySpan = () => {
+    function emptySpan() {
         return <span className='metadata-empty-value'>Empty</span>;
-    };
+    }
 
     return (
         <div id="editorialMetadataTabs">
@@ -168,7 +168,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
             </Row>
         </div>
     );
-};
+}
 
 EditorialMetadataTab.propTypes = {
     data: PropTypes.object,

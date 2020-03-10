@@ -56,7 +56,7 @@ const SelectedRighstRepositoryTable = compose(
     withFilterableColumns(),
 )(NexusGrid);
 
-const RightsRepository = ({
+function RightsRepository({
     columnDefs,
     createRightMatchingColumnDefs,
     mapping,
@@ -72,7 +72,7 @@ const RightsRepository = ({
     downloadIngestEmail,
     downloadIngestFile,
     location,
-}) => {
+}) {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
@@ -329,7 +329,7 @@ const RightsRepository = ({
             />
         </div>
     );
-};
+}
 
 const mapStateToProps = () => {
     const rightMatchingColumnDefsSelector = createRightMatchingColumnDefsSelector();

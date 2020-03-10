@@ -9,13 +9,11 @@ import Button from '@atlaskit/button';
 import PropTypes from 'prop-types';
 
 
-const createFormForItem = (
-    field,
+function createFormForItem(field,
     item,
     targetIndex,
     fieldsForForm,
-    formChangeHandler
-) => {
+    formChangeHandler) {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
         id: `${field.id}[${targetIndex}].${subfield.id}`,
@@ -40,7 +38,7 @@ const createFormForItem = (
             }}
         </FormContext.Consumer>
     );
-};
+}
 
 export default class DynamicObjectType extends Component {
     constructor(props) {

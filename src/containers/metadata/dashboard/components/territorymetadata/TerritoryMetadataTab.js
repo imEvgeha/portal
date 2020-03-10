@@ -6,7 +6,7 @@ import {useIntl} from 'react-intl';
 import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../util/Common';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
-const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
+function TerritoryMetadataTab({data, getLanguageByCode}) {
     const {
         locale,
         boxOffice,
@@ -86,7 +86,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
             </Container>
         </div>
     );
-};
+}
 
 TerritoryMetadataTab.propTypes = {
     data: PropTypes.object,
@@ -95,7 +95,9 @@ TerritoryMetadataTab.propTypes = {
 
 TerritoryMetadataTab.defaultProps = {
     data: {},
-    getLanguageByCode: () => null,
+    getLanguageByCode: function() {
+  return null;
+},
 };
 
 export default TerritoryMetadataTab;

@@ -46,7 +46,7 @@ const RightRepositoryNexusGrid = compose(
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 
-const RightToMatchView = ({
+function RightToMatchView({
     match,
     columnDefs,
     mapping,
@@ -59,7 +59,7 @@ const RightToMatchView = ({
     location,
     createNewRight,
     setFoundFocusRightInRightsRepo,
-}) => {
+}) {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
     const [selectedRows, setSelectedRows] = useState([]);
@@ -213,7 +213,7 @@ const RightToMatchView = ({
             </div>
         </div>
     );
-};
+}
 
 RightToMatchView.propTypes = {
     history: PropTypes.object,

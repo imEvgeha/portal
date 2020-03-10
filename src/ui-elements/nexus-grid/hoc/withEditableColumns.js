@@ -35,7 +35,7 @@ const withEditableColumns = ({
     editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES,
     notEditableColumns = DEFAULT_NOT_EDITABLE_COLUMNS,
 } = {}) => WrappedComponent => {
-    const ComposedComponent = props => {
+    function ComposedComponent(props) {
         const {columnDefs, mapping, selectValues} = props;
         const previousSelectValues = usePrevious(selectValues);
         const previousColumnDefs = usePrevious(columnDefs);
@@ -138,7 +138,7 @@ const withEditableColumns = ({
                 columnDefs={editableColumnDefs}
             />
         );
-    };
+    }
 
     const createMapStateToProps = () => {
         const availSelectValuesSelector = createAvailSelectValuesSelector();

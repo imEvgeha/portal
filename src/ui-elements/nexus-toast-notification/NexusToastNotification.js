@@ -23,7 +23,7 @@ const icons = {
     [ERROR_ICON]: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
 };
 
-const NexusToastNotification = ({toasts}) => {
+function NexusToastNotification({toasts}) {
     const {removeToast} = useContext(NexusToastNotificationContext);
     const {setIsOverlayActive} = useContext(NexusOverlayContext);
     useEffect(() => {
@@ -49,7 +49,7 @@ const NexusToastNotification = ({toasts}) => {
             })}
         </FlagGroup>
     );
-};
+}
 
 NexusToastNotification.propTypes = {
     toasts: PropTypes.array,

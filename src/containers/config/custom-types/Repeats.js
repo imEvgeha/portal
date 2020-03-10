@@ -8,13 +8,11 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
 
-const createFormForItem = (
-    field,
+function createFormForItem(field,
     item,
     targetIndex,
     fieldsForForm,
-    formChangeHandler
-) => {
+    formChangeHandler) {
 
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
@@ -39,7 +37,7 @@ const createFormForItem = (
             }}
         </FormContext.Consumer>
     );
-};
+}
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);

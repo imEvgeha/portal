@@ -7,7 +7,9 @@ import {rightServiceManager} from '../../containers/avail/service/RightServiceMa
 import {getLocale} from '../../stores/selectors/localization/localeSelector';
 
 export default function withRights(WrappedComponent) {
-    return (props) => <ServerRightsResultsTableConnected WrappedComponent={WrappedComponent} {...props} />;
+    return function(props) {
+  return <ServerRightsResultsTableConnected WrappedComponent={WrappedComponent} {...props} />;
+};
 }
 
 class ServerRightsResultsTable extends RightsResultsTable {

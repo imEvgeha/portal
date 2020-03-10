@@ -4,7 +4,9 @@ import {CHECKBOX_HEADER} from '../../constants/customColumnHeaders';
 import {CheckBoxHeader} from './CheckBoxHeaderInternal';
 
 export default function withSelection(SelectionWrappedComponent) {
-    return (props) => <SelectionTable SelectionWrappedComponent={SelectionWrappedComponent} {...props} />;
+    return function(props) {
+  return <SelectionTable SelectionWrappedComponent={SelectionWrappedComponent} {...props} />;
+};
 }
 
 /* eslint react/no-unused-state: 0 */  // --> OFF

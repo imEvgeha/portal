@@ -5,7 +5,7 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './NexusTag.scss';
 
 
-const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
+function NexusTag({value, text, tagState, onClick, onRemove}) {
 
     const [defaultTooltipContent, setDefaultContent] = useState();
 
@@ -63,7 +63,7 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
             </span>
         </NexusTooltip>
     );
-};
+}
 
 NexusTag.propTypes = {
     value: PropTypes.object.isRequired,
@@ -75,8 +75,12 @@ NexusTag.propTypes = {
 
 NexusTag.defaultProps = {
     tagState: '',
-    onClick: () => null,
-    onRemove: () => null,
+    onClick: function() {
+  return null;
+},
+    onRemove: function() {
+  return null;
+},
 };
 
 export default NexusTag;

@@ -23,19 +23,21 @@ const customThemeMode = modeGenerator({
     },
 });
 
-const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
+function ItemComponent({dropdownItems: DropdownItems, ...itemProps}) {
     const {id} = itemProps;
     const abilityLocationName = idToAbilityNameMap[id];
 
     if (DropdownItems) {
-        const ItemWithDropdown = () => (
-            <GlobalItemWithDropdown
-                trigger={({isOpen}) => (
-                    <GlobalItem isSelected={isOpen} {...itemProps} />
+        function ItemWithDropdown() {
+  return (
+      <GlobalItemWithDropdown
+          trigger={({isOpen}) => (
+              <GlobalItem isSelected={isOpen} {...itemProps} />
                 )}
-                items={<DropdownItems />}
-            />
-        );
+          items={<DropdownItems />}
+      />
+);
+}
         return (
             abilityLocationName
                 ? (
@@ -55,9 +57,9 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
             )
             : <GlobalItem {...itemProps} />
     );
-};
+}
 
-const NexusNavigation = ({history, profileInfo}) => {
+function NexusNavigation({history, profileInfo}) {
     const [selectedItem, setSelectedItem] = useState('');
 
     useEffect(() => setSelectedItem(history.location.pathname.split('/')[1]), []);
@@ -67,13 +69,15 @@ const NexusNavigation = ({history, profileInfo}) => {
         setSelectedItem(destination);
     };
 
-    const AccountDropdownItems = () => (
-        <DropdownItemGroup title={profileInfo.name || 'Profile'}>
-            <DropdownItem onClick={keycloak.instance.logout}>
-                Log out
-            </DropdownItem>
-        </DropdownItemGroup>
-    );
+    function AccountDropdownItems() {
+  return (
+      <DropdownItemGroup title={profileInfo.name || 'Profile'}>
+          <DropdownItem onClick={keycloak.instance.logout}>
+              Log out
+          </DropdownItem>
+      </DropdownItemGroup>
+);
+}
 
     return (
         <ThemeProvider theme={theme => ({
@@ -94,14 +98,16 @@ const NexusNavigation = ({history, profileInfo}) => {
                     },
                     {
                         // eslint-disable-next-line react/prop-types
-                        component: ({onClick}) => (
-                            <Avatar
-                                borderColor="transparent"
-                                size="medium"
-                                name={profileInfo.name}
-                                onClick={onClick}
-                            />
-                        ),
+                        component: function({onClick}) {
+  return (
+      <Avatar
+          borderColor="transparent"
+          size="medium"
+          name={profileInfo.name}
+          onClick={onClick}
+      />
+);
+},
                         dropdownItems: AccountDropdownItems,
                         id: 'profile',
                         icon: null,
@@ -110,7 +116,7 @@ const NexusNavigation = ({history, profileInfo}) => {
             />
         </ThemeProvider>
     );
-};
+}
 
 NexusNavigation.propTypes = {
     profileInfo: PropTypes.object,

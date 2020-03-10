@@ -102,7 +102,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
         updateColumnsOrder(cols);
     };
 
-    const buildModalContent = (config) => {
+    function buildModalContent(config) {
         const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
         for (let key in config) {
             if (key === SELECT_ALL) continue;
@@ -110,9 +110,9 @@ export default function TableColumnCustomization({availsMapping, columns, update
         }
 
         return (<div> {options} </div>);
-    };
+    }
 
-    const buildCheckBox = (key, onChange) => {
+    function buildCheckBox(key, onChange) {
         const data = hideShowColumns[key];
         return (
             <Checkbox
@@ -124,7 +124,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
                 isChecked={data.checked}
             />
 );
-    };
+    }
 
     const buildConfigAndOpenModal = () => {
         createConfigForColumnCustomization();

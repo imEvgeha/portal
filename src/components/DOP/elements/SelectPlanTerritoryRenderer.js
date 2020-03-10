@@ -2,7 +2,7 @@ import React from 'react';
 import t from 'prop-types';
 import {connect} from 'react-redux';
 
-const SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
+function SelectPlanTerritoryRenderer({node, promotedRights}) {
     const right = promotedRights.find(el => el.rightId === node.id);
     const territories = right && right.territories;
     let result = territories && territories.join(', ');
@@ -15,7 +15,7 @@ const SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
             {result} 
         </div>
     );
-};
+}
 
 SelectPlanTerritoryRenderer.propTypes = {
     node: t.object,

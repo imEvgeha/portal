@@ -15,7 +15,7 @@ const SELECTION_DELAY = 5;
 const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
-const NexusGrid = ({
+function NexusGrid({
     columnDefs,
     rowData,
     // headerHeight,
@@ -23,7 +23,7 @@ const NexusGrid = ({
     onGridEvent,
     isGridHidden,
     ...restProps
-}) => {
+}) {
 
     const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
@@ -61,7 +61,7 @@ const NexusGrid = ({
             /> 
         </div> 
     );
-};
+}
 
 NexusGrid.propTypes = {
     columnDefs: PropTypes.array,

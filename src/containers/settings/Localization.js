@@ -9,7 +9,7 @@ import {setLocale} from '../../stores/actions/localization/setLocale';
 import { TextHeader } from '../../components/navigation/CustomNavigationElements';
 import NexusDateTimePicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 
-const Localization = ({changeLocale}) => {
+function Localization({changeLocale}) {
 
     const getLocale = () => {
         const localStorageValue = localStorage.getItem('localization');
@@ -60,7 +60,7 @@ const Localization = ({changeLocale}) => {
             </div>
         </div>
     );
-};
+}
 
 Localization.propTypes = {
     changeLocale: PropTypes.func

@@ -4,7 +4,7 @@ import {TIMESTAMP_FORMAT} from '../../../nexus-date-and-time-elements/constants'
 import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/Common';
 import {store} from '../../../../index';
 
-const createValueFormatter = ({dataType, javaVariableName}) => {
+function createValueFormatter({dataType, javaVariableName}) {
     const {locale} = store.getState().localeReducer;
 
     // Create date placeholder based on locale
@@ -112,7 +112,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
         default:
             return null;
     }
-};
+}
 
 export default createValueFormatter;
 

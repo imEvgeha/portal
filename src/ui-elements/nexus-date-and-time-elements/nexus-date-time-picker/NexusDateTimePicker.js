@@ -15,7 +15,7 @@ import {
     TIMESTAMP_FORMAT,
 } from '../constants';
 
-const NexusDateTimePicker = ({
+function NexusDateTimePicker({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
@@ -27,7 +27,7 @@ const NexusDateTimePicker = ({
     label,
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     ...restProps
-}) => {
+}) {
     const [isSimulcast, setIsSimulcast] = useState(false);
     const [date, setDate] = useState(value);
 
@@ -48,14 +48,15 @@ const NexusDateTimePicker = ({
         return moment(date).utc(!hasUTCTag).format(dateFormat);
     };
 
-    const DatePicker = (isReadOnly) => (
-        <div className="nexus-c-date-time-picker">
-            {!hideLabel && label && (
-                <div className="nexus-c-date-time-picker__label">
-                    {label}
-                </div>
+    function DatePicker(isReadOnly) {
+  return (
+      <div className="nexus-c-date-time-picker">
+          {!hideLabel && label && (
+          <div className="nexus-c-date-time-picker__label">
+              {label}
+          </div>
               )}
-            {isReadOnly && !isViewModeDisabled
+          {isReadOnly && !isViewModeDisabled
                 ? getDisplayDate(value)
                 : (
                     <>
@@ -92,8 +93,9 @@ const NexusDateTimePicker = ({
                         )}
                     </>
                 )}
-        </div>
-    );
+      </div>
+);
+}
 
     return (
         <> {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
@@ -130,7 +132,7 @@ const NexusDateTimePicker = ({
                 : DatePicker(isReadOnly)}
         </>
     );
-};
+}
 
 NexusDateTimePicker.propTypes = {
     label: PropTypes.string,
@@ -153,7 +155,9 @@ NexusDateTimePicker.defaultProps = {
     isViewModeDisabled: false,
     isTimestamp: false,
     hideLabel: false,
-    onConfirm: () => null,
+    onConfirm: function() {
+  return null;
+},
 };
 
 export default NexusDateTimePicker;

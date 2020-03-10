@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Folder from '../../../../assets/folder.svg';
 import './BundleTitle.scss';
 
-const BundleTitle = ({provider, totalAttachments}) => {
+function BundleTitle({provider, totalAttachments}) {
     return (
         <div className='nexus-c-bundle-title'>
             <div className='nexus-c-bundle-title__details'>
@@ -14,7 +14,7 @@ const BundleTitle = ({provider, totalAttachments}) => {
             </div>
         </div>
     );
-};
+}
 
 BundleTitle.propTypes = {
     provider: PropTypes.string,

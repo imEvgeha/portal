@@ -11,7 +11,7 @@ import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 import Constants from './constants';
 
-const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) => {
+function IngestPanel({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) {
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
@@ -85,7 +85,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
             <UploadIngestButton />
         </div>
     );
-};
+}
 
 IngestPanel.propTypes = {
     ingests: PropTypes.array,
@@ -102,9 +102,15 @@ IngestPanel.defaultProps = {
     totalIngests: 0,
     selectedIngest: {},
     selectedAttachmentId: '',
-    onFiltersChange: () => null,
-    fetchNextPage: () => null,
-    ingestClick: () => null,
+    onFiltersChange: function() {
+  return null;
+},
+    fetchNextPage: function() {
+  return null;
+},
+    ingestClick: function() {
+  return null;
+},
 };
 
 const mapStateToProps = () => {

@@ -15,7 +15,7 @@ import {
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
-const NexusDatePicker = ({
+function NexusDatePicker({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
@@ -29,7 +29,7 @@ const NexusDatePicker = ({
     isReturningTime,
     allowClear,
     ...restProps
-}) => {
+}) {
     const [date, setDate] = useState(value || '');
     const [isSimulcast, setIsSimulcast] = useState(false);
 
@@ -65,12 +65,13 @@ const NexusDatePicker = ({
 
     const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
-    const DatePickerComponent = (isReadOnly) => (
-        <>
-            {!hideLabel && label && (
-                <> {label} </>
+    function DatePickerComponent(isReadOnly) {
+  return (
+      <>
+          {!hideLabel && label && (
+          <> {label} </>
               )}
-            {isReadOnly
+          {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)
                 : (
                     <div className='nexus-c-date-picker__date-clear-wrapper'>
@@ -86,13 +87,14 @@ const NexusDatePicker = ({
                         {allowClear && <ClearButton onClear={() => onDateChange('')} />}
                     </div>
                 )}
-            {error && (
-                <ErrorMessage>
-                    {error}
-                </ErrorMessage>
+          {error && (
+          <ErrorMessage>
+              {error}
+          </ErrorMessage>
               )}
-        </>
-    );
+      </>
+);
+}
 
     return (
         <> {isWithInlineEdit && !isReadOnly
@@ -118,7 +120,7 @@ const NexusDatePicker = ({
                 : DatePickerComponent(isReadOnly)}
         </>
     );
-};
+}
 
 NexusDatePicker.propTypes = {
     label: PropTypes.string,
@@ -144,7 +146,9 @@ NexusDatePicker.defaultProps = {
     isTimestamp: false,
     hideLabel: false,
     isReturningTime: true,
-    onConfirm: () => null,
+    onConfirm: function() {
+  return null;
+},
     allowClear: false,
 };
 

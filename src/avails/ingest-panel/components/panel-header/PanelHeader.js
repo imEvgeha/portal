@@ -6,7 +6,7 @@ import FilterIcon from '../../../../assets/filter.svg';
 import IngestFilters from '../ingest-filters/IngestFilters';
 import './PanelHeader.scss';
 
-const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
+function PanelHeader({toggleFilters, onFiltersChange, showFilters}) {
     return (
         <>
             <div className='ingest-header'>
@@ -27,7 +27,7 @@ const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
             }
         </>
     );
-};
+}
 
 PanelHeader.propTypes = {
     toggleFilters: PropTypes.func,
@@ -36,8 +36,12 @@ PanelHeader.propTypes = {
 };
 
 PanelHeader.defaultProps = {
-    toggleFilters: () => null,
-    onFiltersChange: () => null,
+    toggleFilters: function() {
+  return null;
+},
+    onFiltersChange: function() {
+  return null;
+},
     showFilters: false,
 };
 

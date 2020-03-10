@@ -1,7 +1,7 @@
 import React from 'react';
 import {components} from 'react-select';
 
-const NexusCheckboxSelectValueContainer = ({children, ...props}) => {
+function NexusCheckboxSelectValueContainer({children, ...props}) {
     const currentValues = props.getValue();
     let toBeRendered = children;
     if (currentValues.some(val => val.value === '*')) {
@@ -15,6 +15,6 @@ const NexusCheckboxSelectValueContainer = ({children, ...props}) => {
             {toBeRendered}
         </components.ValueContainer>
     );
-};
+}
 
 export default NexusCheckboxSelectValueContainer;

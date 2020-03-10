@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
-const NexusTooltip = ({content, children, ...restProps}) => {
+function NexusTooltip({content, children, ...restProps}) {
     return (
         <Tooltip
             content={content}
@@ -10,7 +10,7 @@ const NexusTooltip = ({content, children, ...restProps}) => {
             {children}
         </Tooltip>
     );
-};
+}
 
 NexusTooltip.defaultProps = {
     content: null,

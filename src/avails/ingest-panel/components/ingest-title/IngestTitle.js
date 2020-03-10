@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import File from '../../../../assets/file.svg';
 import './IngestTitle.scss';
 
-const IngestTitle = ({link}) => {
+function IngestTitle({link}) {
     const fileName = link.split('/').pop();
     return (
         <div className='nexus-c-ingest-title'>
@@ -13,7 +13,7 @@ const IngestTitle = ({link}) => {
             </div>
         </div>
     );
-};
+}
 
 IngestTitle.propTypes = {
     link: PropTypes.string,

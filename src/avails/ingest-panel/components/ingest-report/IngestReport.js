@@ -4,7 +4,7 @@ import Constants from '../../constants';
 import './IngestReport.scss';
 import RightsURL from '../../../../containers/avail/util/RightsURL';
 
-const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) => {
+function IngestReport({report, showErrorMessage = true, filterClick, ingestId}) {
     const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
@@ -46,7 +46,7 @@ const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) 
             }
         </div>
     );
-};
+}
 
 IngestReport.propTypes = {
     report: PropTypes.object,
@@ -58,7 +58,9 @@ IngestReport.propTypes = {
 IngestReport.defaultProps = {
     report: {},
     showErrorMessage: true,
-    filterClick: () => null,
+    filterClick: function() {
+  return null;
+},
     ingestId: ''
 };
 

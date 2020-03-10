@@ -7,7 +7,7 @@ import './UploadIngestButton.scss';
 
 const TITLE = 'Avail Ingest';
 
-const UploadIngestButton = ({ingestData}) => {
+function UploadIngestButton({ingestData}) {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -27,14 +27,16 @@ const UploadIngestButton = ({ingestData}) => {
         inputClick();
     };
 
-    const buildForm = () => (
-        <InputForm
-            ingestData={ingestData}
-            closeModal={closeModal}
-            file={file}
-            browseClick={browseClick}
-        />
-    );
+    function buildForm() {
+  return (
+      <InputForm
+          ingestData={ingestData}
+          closeModal={closeModal}
+          file={file}
+          browseClick={browseClick}
+      />
+);
+}
 
     const handleUpload = (e) => {
         const {files} = e.target;
@@ -62,6 +64,6 @@ const UploadIngestButton = ({ingestData}) => {
                 : <Add onClick={inputClick} />}
         </div>
     );
-};
+}
 
 export default UploadIngestButton;

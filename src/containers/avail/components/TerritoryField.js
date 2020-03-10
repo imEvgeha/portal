@@ -20,7 +20,7 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
         ));
     };
 
-    const getAddButton = () => {
+    function getAddButton() {
         return (
             <CustomFieldAddText
                 onClick={onAddClick}
@@ -29,7 +29,7 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
                 Add...
             </CustomFieldAddText>
         );
-    };
+    }
 
     return (
         <div className='nexus-c-territory-field'>
@@ -59,8 +59,12 @@ TerritoryField.propTypes = {
 
 TerritoryField.defaultProps = {
     territory: [],
-    renderChildren: () => null,
-    onTagClick: () => null,
+    renderChildren: function() {
+  return null;
+},
+    onTagClick: function() {
+  return null;
+},
     mappingErrorMessage: {},
     isTableMode: false
 };

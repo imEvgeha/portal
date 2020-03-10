@@ -3,12 +3,10 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Field as AkField } from '@atlaskit/form';
 import PropTypes from 'prop-types';
 
-const createFormForItem = (
-    field,
+function createFormForItem(field,
     item,
     fieldsForForm,
-    formChangeHandler
-) => {
+    formChangeHandler) {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
         id: `${field.id}.${subfield.id}`
@@ -32,7 +30,7 @@ const createFormForItem = (
             }}
         </FormContext.Consumer>
     );
-};
+}
 
 export default class ObjectType extends Component {
     constructor(props) {

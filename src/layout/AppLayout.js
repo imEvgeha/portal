@@ -8,22 +8,24 @@ import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import DOP from '../util/DOP';
 import routes from '../routes';
 
-const AppLayout = ({history}) => (
-    <ConnectedRouter history={history}>
-        <div className="nexus-c-app-layout">
-            <IfEmbedded>
-                <DOP />
-            </IfEmbedded>
-            <IfEmbedded value={false}>
-                <Navigation />
-            </IfEmbedded>
-            <div className="nexus-c-app-layout__main">
-                <NexusBreadcrumb />
-                {routes}
-            </div>
-        </div>
-    </ConnectedRouter>
+function AppLayout({history}) {
+  return (
+      <ConnectedRouter history={history}>
+          <div className="nexus-c-app-layout">
+              <IfEmbedded>
+                  <DOP />
+              </IfEmbedded>
+              <IfEmbedded value={false}>
+                  <Navigation />
+              </IfEmbedded>
+              <div className="nexus-c-app-layout__main">
+                  <NexusBreadcrumb />
+                  {routes}
+              </div>
+          </div>
+      </ConnectedRouter>
 );
+}
 
 AppLayout.propTypes = {
     history: PropTypes.object,

@@ -10,14 +10,14 @@ import * as selectors from '../../../rightMatchingSelectors';
 import {URL, minTwoDigits} from '../../../../../util/Common';
 import {RIGHT_PAGE_SIZE} from '../../../../../constants/rightFetching';
 
-const RightToMatchNavigation = ({
+function RightToMatchNavigation({
     searchParams, 
     focusedRightId, 
     fetchRightMatchDataUntilFindId, 
     rightMatchPageData, 
     availHistoryIds, 
     history
-}) => {
+}) {
     const [navigationData, setNavigationData] = useState({
         previousId: null,
         currentPosition: null,
@@ -112,7 +112,7 @@ const RightToMatchNavigation = ({
             </div>
         ) : null 
     );
-};
+}
 
 RightToMatchNavigation.propTypes = {
     focusedRightId: PropTypes.string,

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 
-const CheckboxCellRenderer = (props) => {
+function CheckboxCellRenderer(props) {
     const onChange = value => {
     };
 
@@ -13,6 +13,6 @@ const CheckboxCellRenderer = (props) => {
             name="nexus-c-checkbox-cell-renderer"
         />
     );
-};
+}
 
 export default CheckboxCellRenderer;

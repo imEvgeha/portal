@@ -7,7 +7,7 @@ import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
 
 
-const Bundle = ({id, ingestType, received, provider, attachments, selectedAttachmentId, ingestClick}) => {
+function Bundle({id, ingestType, received, provider, attachments, selectedAttachmentId, ingestClick}) {
     const [showIngests, setShowIngests] = useState(false);
 
     const onBundleClick = () => setShowIngests(!showIngests);
@@ -49,7 +49,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
             }
         </div>
     );
-};
+}
 
 Bundle.propTypes = {
     ingestType: PropTypes.string,

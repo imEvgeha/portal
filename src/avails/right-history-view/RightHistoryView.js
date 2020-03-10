@@ -28,7 +28,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
         }
     }, [rightsEventHistory]);
 
-    const buildContent = () => {
+    function buildContent() {
         return (
             <div>
                 {selectedAvails.map((avail, index) => (
@@ -37,7 +37,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
                 )}
             </div>
         );
-    };
+    }
 
     const openHistoryModal = () => {
         const ids = selectedAvails.map(e => e.id);

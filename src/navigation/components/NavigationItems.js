@@ -7,7 +7,9 @@ import {AVAILS, METADATA, MEDIA} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => [
     {
-        component: () => <NexusNavIcon />,
+        component: function() {
+  return <NexusNavIcon />;
+},
         id: 'logo',
     },
     {
