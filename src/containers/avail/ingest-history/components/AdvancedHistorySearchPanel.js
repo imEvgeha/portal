@@ -4,7 +4,7 @@ import {
     searchFormUpdateAdvancedHistorySearchCriteria,
     searchFormSetHistorySearchCriteria
 } from '../../../../stores/actions/avail/history';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';

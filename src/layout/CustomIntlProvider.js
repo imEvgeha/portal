@@ -1,5 +1,5 @@
 import React from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {IntlProvider} from 'react-intl';
 
