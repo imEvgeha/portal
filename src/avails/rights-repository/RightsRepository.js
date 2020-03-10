@@ -182,7 +182,7 @@ const RightsRepository = ({
     };
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
-        if(columnDef.cellRenderer) {
+        if (columnDef.cellRenderer) {
             columnDef.cellRenderer = handleRightRedirect;
         }
         return columnDef;

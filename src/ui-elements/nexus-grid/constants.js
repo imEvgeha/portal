@@ -41,15 +41,27 @@ const DEFAULT_FILTER_PARAMS = {
     debounceMs: 1000,
 };
 const FILTER_TYPE = {
-    string: 'agTextColumnFilter',
-    duration: 'agTextColumnFilter',
-    integer: 'agNumberColumnFilter',
-    double: 'agNumberColumnFilter',
-    year: 'agNumberColumnFilter',
-    select: 'agSetColumnFilter',
-    multiselect: 'agSetColumnFilter',
-    territoryType: 'agSetColumnFilter',
+    BOOLEAN: 'boolean',
+    STRING: 'string',
+    DURATION: 'duration',
+    INTEGER: 'integer',
+    DOUBLE: 'double',
+    YEAR: 'year',
+    SELECT: 'select',
+    MULTISELECT: 'multiselect',
+    TERRITORY: 'territoryType',
+    DATE: 'date',
+    LOCAL_DATE: 'localdate',
+    DATE_TIME: 'datetime',
 };
+
+const AG_GRID_COLUMN_FILTER = {
+    TEXT: 'agTextColumnFilter',
+    NUMBER: 'agNumberColumnFilter',
+    SET: 'agSetColumnFilter',
+    CUSTOM_DATE: 'customDateFilter',
+};
+
 const DATEPICKER_LABELS = ['From', 'To'];
 
 const EXCLUDED_INITIAL_FILTER_VALUES = [null, '', undefined];
@@ -69,6 +81,7 @@ export {
     ROW_BUFFER,
     ROW_MODEL_TYPE,
     EXCLUDED_INITIAL_FILTER_VALUES,
+    AG_GRID_COLUMN_FILTER,
 };
 
 
