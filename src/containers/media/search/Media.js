@@ -65,9 +65,6 @@ const mapDispatchToProps = {
 
 
 class Dashboard extends React.Component {
-    state = {
-    };
-
 
     componentDidMount = () => {
         mediaSearchService.getFilters()
