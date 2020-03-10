@@ -8,7 +8,7 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import './RightsRepository.scss';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
-import {addRightsFilter, setRightsFilter, setSelectedRights} from './rightsActions';
+import {setRightsFilter, setSelectedRights} from './rightsActions';
 import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector
@@ -19,6 +19,7 @@ import Ingest from './components/ingest/Ingest';
 import {
     deselectIngest,
     downloadEmailAttachment,
+    downloadFileAttachment,
     filterRightsByStatus,
     selectIngest
 } from '../ingest-panel/ingestActions';
@@ -56,21 +57,21 @@ const SelectedRighstRepositoryTable = compose(
 )(NexusGrid);
 
 const RightsRepository = ({
-        columnDefs,
-        createRightMatchingColumnDefs,
-        mapping,
-        selectedIngest,
-        selectedAttachmentId,
-        filterByStatus,
-        ingestClick,
-        setSelectedRights,
-        selectedRights,
-        addRightsFilter,
-        setRightsFilter,
-        rightsFilter,
-        deselectIngest,
-        downloadIngestEmail,
-        location
+    columnDefs,
+    createRightMatchingColumnDefs,
+    mapping,
+    selectedIngest,
+    selectedAttachmentId,
+    filterByStatus,
+    ingestClick,
+    setSelectedRights,
+    selectedRights,
+    setRightsFilter,
+    rightsFilter,
+    deselectIngest,
+    downloadIngestEmail,
+    downloadIngestFile,
+    location,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -81,12 +82,16 @@ const RightsRepository = ({
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
     const [attachment, setAttachment] = useState();
+    const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
+    const {search} = location;
+    const previousActiveTab = usePrevious(activeTab);
+    const [selectedFilter, setSelectedFilter] = useState({});
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
     }, [selectedIngest, selectedAttachmentId]);
 
-
+    // TODO: create column defs on app loading
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
@@ -98,7 +103,7 @@ const RightsRepository = ({
     }, []);
 
     useEffect(() => {
-        if(selectedIngest && selectedAttachmentId) {
+        if (selectedIngest && selectedAttachmentId) {
             const {attachments} = selectedIngest;
             const attachment = attachments.find(a => a.id === selectedAttachmentId);
             setAttachment(attachment);
@@ -132,11 +137,26 @@ const RightsRepository = ({
     }, [rightsFilter, mapping]);
 
     useEffect(() => {
-        setSelectedRepoRights(getSelectedTabRights(selectedRights));
-    }, [location.search]);
+        let rights = selectedRights;
+        if (gridApi) {
+            rights = gridApi.getSelectedRows();
+        }
+        setSelectedRepoRights(getSelectedTabRights(rights));
+    }, [search, selectedRights, gridApi]);
+
+    useEffect(()=> {
+        if (selectedGridApi) {
+            if (isRepositoryDataLoading) {
+                selectedGridApi.clearFocusedCell();
+                selectedGridApi.showLoadingOverlay();
+            } else {
+                selectedGridApi.hideOverlay();
+            }
+        }
+    }, [isRepositoryDataLoading]);
 
     useEffect(() => {
-        if(selectedGridApi && selectedRepoRights.length > 0) {
+        if (selectedGridApi && selectedRepoRights.length > 0) {
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights]);
@@ -152,7 +172,10 @@ const RightsRepository = ({
             <CustomActionsCellRenderer id={id}>
                 <div>
                     <EditorMediaWrapLeftIcon/>
-                    <span className={'nexus-c-right-to-match-view__buttons_notification  nexus-c-right-to-match-view__buttons_notification' + notificationClass}/>
+                    <span className={`
+                        nexus-c-right-to-match-view__buttons_notification
+                        nexus-c-right-to-match-view__buttons_notification${notificationClass}
+                    `} />
                 </div>
             </CustomActionsCellRenderer>
         );
@@ -166,64 +189,86 @@ const RightsRepository = ({
     });
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
-    const actionMatchingButtonColumnDef = defineButtonColumn({cellRendererFramework: createMatchingButtonCellRenderer, cellEditorFramework: TooltipCellEditor, editable: true});
+    const actionMatchingButtonColumnDef = defineButtonColumn({
+        cellRendererFramework: createMatchingButtonCellRenderer,
+        cellEditorFramework: TooltipCellEditor,
+        editable: true
+    });
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
-    const checkboxSelectionWithHeaderColumnDef = {headerCheckboxSelection: true, ...checkboxSelectionColumnDef};
+    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
+        headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+    });
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
-            case GRID_EVENTS.SELECTION_CHANGED:
-                const allSelectedRows = api.getSelectedRows() || [];
-                setSelectedRepoRights(getSelectedTabRights(allSelectedRows));
-
-                const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
-                setSelectedRights(payload);
-                break;
-            case GRID_EVENTS.READY:
+            case READY:
                 setGridApi(api);
                 setColumnApi(columnApi);
                 break;
-            case GRID_EVENTS.FILTER_CHANGED:
+            case SELECTION_CHANGED:
+                const newSelectedRights = cloneDeep(selectedRights);
+                const idsToRemove = [];
+                api.forEachNode((node) => {
+                   const {data = {}} = node;
+                   const wasSelected = selectedRights.find(el => el.id === data.id) !== undefined;
+                   if (wasSelected && !node.isSelected()) {
+                       idsToRemove.push(data.id);
+                   } else if (!wasSelected && node.isSelected()) {
+                       newSelectedRights.push(data);
+                   }
+                });
+                const allSelectedRows = newSelectedRights.filter(el => !idsToRemove.includes(el.id));
+                const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
+                setSelectedRights(payload);
+                break;
+            case FILTER_CHANGED:
                 const column = filterBy(api.getFilterModel());
-                if (Object.keys(column).length === 0) {
-                    let filter = Object.assign({}, rightsFilter);
+                if (Object.keys(column || {}).length === 0) {
+                    let filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
-                } else {
-                    setRightsFilter({...rightsFilter, column});
+                    break;
                 }
+                setRightsFilter({...rightsFilter, column});
                 break;
         }
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
-            case GRID_EVENTS.READY:
+            case READY:
                 setSelectedGridApi(api);
                 setSelectedColumnApi(columnApi);
                 break;
-            case GRID_EVENTS.SELECTION_CHANGED:
-                const allSelectedRows = api.getSelectedRows() || [];
-                const toUnselect = selectedRepoRights.filter(el => !allSelectedRows.map(({id}) => id).includes(el.id));
-                toUnselect.forEach(el => {
-                    const node = gridApi.getRowNode(el.id);
-                    node && node.setSelected(false);
-                });
+            case SELECTION_CHANGED:
+                const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
+                const toUnselect = selectedRepoRights
+                    .map(({id}) => id)
+                    .filter(selectediRepoId => !allSelectedRowsIds.includes(selectediRepoId));
+                const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+                nodes.forEach(node => node.setSelected(false));
+                break;
+            case ROW_DATA_CHANGED:
+                api.setFilterModel(selectedFilter);
+                break;
+            case FILTER_CHANGED:
+                setSelectedFilter(api.getFilterModel());
                 break;
         }
     };
 
     const getSelectedTabRights = (selectedRights) => {
-
         const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
-
-        if(ingestHistoryAttachmentIdParam) {
+        if (ingestHistoryAttachmentIdParam) {
             return selectedRights.filter(el => {
                 const {ingestHistoryAttachmentId} = el;
                 return ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
@@ -235,14 +280,16 @@ const RightsRepository = ({
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
-            {selectedIngest && !isEmpty(selectedIngest) && attachment && (
+            {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
                     downloadIngestEmail={downloadIngestEmail}
+                    downloadIngestFile={downloadIngestFile}
                     attachment={attachment}
-                    filterByStatus={filterByStatus} />)
-            }
+                    filterByStatus={filterByStatus} 
+                />
+            )}
             <NexusTableToolbar
                 title="Rights"
                 totalRows={totalCount}
@@ -253,27 +300,31 @@ const RightsRepository = ({
                 rightsFilter={rightsFilter}
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
+                selectedRightGridApi={selectedGridApi}
             />
             <SelectedRighstRepositoryTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
+                singleClickEdit
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
                 mapping={mapping}
                 rowData={selectedRepoRights}
                 isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
-                singleClickEdit
             />
             <RightsRepositoryTable
                 columnDefs={updatedColumnDefs}
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                singleClickEdit
+                context={{selectedRows: selectedRights}}
                 mapping={mapping}
                 setTotalCount={setTotalCount}
                 onGridEvent={onRightsRepositoryGridEvent}
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
                 isGridHidden={activeTab !== RIGHTS_TAB}
-                selectedRows={selectedRights}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
-                singleClickEdit
+                setDataLoading={setIsRepositoryDataLoading}
             />
         </div>
     );
@@ -300,10 +351,10 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
-    addRightsFilter: payload => dispatch(addRightsFilter(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
     downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
-    setRightsFilter: payload => dispatch(setRightsFilter(payload))
+    downloadIngestFile: payload  => dispatch(downloadFileAttachment(payload)),
+    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

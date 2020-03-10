@@ -5,7 +5,12 @@ import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../ui-elements/';
-import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
+import {
+    TITLE,
+    SECTION_MESSAGE,
+    FOCUSED_TITLE,
+    SAVE_BTN,
+} from './constants';
 import {fetchTitle, reconcileTitles} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
@@ -14,6 +19,7 @@ import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/e
 import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
 import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
+import {getRepositoryCell} from '../../avails/utils';
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,
@@ -26,8 +32,9 @@ const LegacyTitleReconciliationView = ({
 }) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
+    const [gridApi, setGridApi] = useState();
     const {params = {}} = match;
-    const {title, contentType, releaseYear} = titleMetadata || {};
+    const {title, contentType = '', releaseYear} = titleMetadata || {};
 
     // TODO: this should be generate on initial app load
     useEffect(() => {
@@ -51,15 +58,20 @@ const LegacyTitleReconciliationView = ({
         setSelectedList({matchList, duplicateList});
     };
 
-    const handleGridEvent = ({type, columnApi}) => {
+    const handleGridEvent = ({type, columnApi, api}) => {
         if (GRID_EVENTS.READY === type) {
+            setGridApi(api);
             const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
             columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex);
         }
     };
 
     const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = [episodeAndSeasonNumberColumnDef, ...columnDefs];
+    const updatedColumnDefs = [
+        getRepositoryCell({headerName: 'Repository'}),
+        episodeAndSeasonNumberColumnDef,
+        ...columnDefs
+    ];
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">
@@ -79,8 +91,7 @@ const LegacyTitleReconciliationView = ({
             <CandidatesList
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
-                // TODO: Capitalized variable name due to invalid BE requirement
-                queryParams={{ContentType: contentType, title, releaseYear}}
+                queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">

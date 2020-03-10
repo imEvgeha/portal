@@ -182,9 +182,11 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
+
         if (redirectPath) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
+
         yield put({
             type: ADD_TOAST,
             payload: {

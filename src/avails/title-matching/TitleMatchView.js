@@ -80,7 +80,7 @@ const TitleMatchView = ({
     }
 
     // Taken from focused right to be able to filter title list table
-    const {title, contentType, releaseYear} = focusedRight || {};
+    const {title, contentType = '', releaseYear} = focusedRight || {};
 
     return (
         <div className="nexus-c-title-to-match">
@@ -100,12 +100,13 @@ const TitleMatchView = ({
                         <SectionMessage>
                             <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
                         </SectionMessage>
+                        <br />
                         <TitlesList
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
                             mergeTitles={mergeTitles}
-                            // TODO: Capitalized variable name due to invalid BE requirement
-                            queryParams={{ContentType: contentType, title, releaseYear}}
+                            // TODO: Capitalized first letter of contentType value to be checed inside drop down ag grid
+                            queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
                         />
                     </React.Fragment>
                 )

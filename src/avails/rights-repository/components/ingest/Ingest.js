@@ -10,9 +10,9 @@ import './Ingest.scss';
 import Constants from '../../../ingest-panel/constants';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 
-const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail}) => {
+const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
 
-    const {attachments = [{}], ingestType, provider, received} = ingest;
+    const {attachments = [{}], ingestType, provider, received, id} = ingest;
     const {link, status, ingestReport = {}} = attachment;
     const {attachmentTypes: {EMAIL}} = Constants;
     const emails = attachments.filter(a => a.attachmentType && a.attachmentType === EMAIL);
@@ -38,6 +38,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                     report={ingestReport}
                     showErrorMessage={false}
                     filterClick={filterByStatus}
+                    ingestId={id}
                 />
                 {emails.map(email =>
                     <div key={email.id}  className='nexus-c-avails-ingest__email'>
@@ -48,7 +49,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                 )}
                 <div className='nexus-c-avails-ingest__download'>
                     <NexusTooltip content='Download Attachment'>
-                        <DownloadIcon />
+                        <DownloadIcon onClick={() => downloadIngestFile(attachment)} />
                     </NexusTooltip>
                 </div>
             </div>
@@ -60,14 +61,16 @@ Ingest.propTypes = {
     ingest: PropTypes.object,
     filterByStatus: PropTypes.func,
     deselectIngest: PropTypes.func,
-    downloadIngestEmail: PropTypes.func
+    downloadIngestEmail: PropTypes.func,
+    downloadIngestFile: PropTypes.func,
 };
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
     filterByStatus: () => null,
     deselectIngest: () => null,
-    downloadIngestEmail: () => null
+    downloadIngestEmail: () => null,
+    downloadIngestFile: () => null,
 };
 
 export default Ingest;

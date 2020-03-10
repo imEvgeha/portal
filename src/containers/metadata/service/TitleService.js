@@ -32,7 +32,7 @@ export const titleService = {
         const params = {};
         for (let key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                params[key] = searchCriteria[key];
+                params[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
             }
         }
         return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles/search' + prepareSortMatrixParamTitles(sortedParams), {params: {...params, page: page, size: pageSize}});

@@ -4,24 +4,33 @@ import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
+import Button from '@atlaskit/button';
 import './CandidatesList.scss';
 import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
 import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import {titleService} from '../../../containers/metadata/service/TitleService';
+import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../../avails/utils';
+import {getRepositoryName, createLinkableCellRenderer} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
+import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 import TitleSystems from '../../../constants/metadata/systems';
-import {CANDIDATES_LIST_TITLE} from '../constants';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
+import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
+import mappings from '../../../../profile/titleMatchingMappings';
 
-const NexusGridWithInfiniteScrolling = compose(withInfiniteScrolling({fetchData: titleService.freeTextSearchWithGenres}))(NexusGrid);
+const NexusGridWithInfiniteScrolling = compose(
+    withSideBar(),
+    withFilterableColumns(),
+    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
+)(NexusGrid);
 
 const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
     const [totalCount, setTotalCount] = useState(0);
+    const [gridApi, setGridApi] = useState();
     const {
         matchList,
         handleMatchClick,
@@ -86,28 +95,44 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
 
     const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
 
-    const handleGridEvent = ({type, columnApi}) => {
+    const handleGridEvent = ({type, api, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
+            setGridApi(api);
             const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
             columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 3); // +3 indicates pinned columns on the left side
         }
     };
 
+    const handleClearFilterClick = () => {
+        if (gridApi) {
+            gridApi.setFilterModel();
+        }
+    };
+
     return (
         <div className="nexus-c-candidates-list">
-            <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
+            <div className="nexus-c-candidates-list__header">
+                <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
+                <Button
+                    className="nexus-c-button"
+                    onClick={handleClearFilterClick}
+                    isDisabled={!gridApi}
+                >
+                    {CLEAR_FILTER}
+                </Button>
+            </div>
             {queryParams.title && (
                 <NexusGridWithInfiniteScrolling
                     onGridEvent={handleGridEvent}
                     columnDefs={[
                         matchButton,
                         duplicateButton,
-                        getRepositoryCell({headerName: 'System'}),
                         ...updatedColumnDefs,
                     ]}
                     rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
                     setTotalCount={setTotalCount}
-                    params={queryParams}
+                    initialFilter={queryParams}
+                    mapping={mappings}
                 />
             )}
         </div>

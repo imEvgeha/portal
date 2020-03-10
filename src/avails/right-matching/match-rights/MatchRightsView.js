@@ -30,6 +30,17 @@ import {
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import usePrevious from '../../../util/hooks/usePrevious';
+import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
+import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
+import {
+    MATCH_RIGHT_TITLE,
+    MATCH_BUTTON,
+    RIGHT_MATCHING_DOP_STORAGE,
+    MATCHED_RIGHTS,
+    COMBINED_RIGHTS,
+    SAVE_BUTTON,
+    CANCEL_BUTTON,
+} from '../rightMatchingConstants';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -50,8 +61,8 @@ function MatchRightView({
     createRightMatchingColumnDefs, 
     columnDefs, 
     mapping,
+    isMatching,
 }) {
-    const [saveButtonDisabled, setSaveButtonDisabled] =  useState(false);
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
@@ -62,7 +73,7 @@ function MatchRightView({
     const [combinedGridApi, setCombinedGridApi] = useState();
 
     // DOP Integration
-    useDOPIntegration(null, 'rightMatchingDOP');
+    useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -98,12 +109,6 @@ function MatchRightView({
         }
     }, [cellColoringSchema]);
 
-    useEffect(() => {
-        if (combinedRight) {
-            setSaveButtonDisabled(false);
-        }
-    }, [combinedRight]);
-
     // TODO:  we should handle this via router Link
     const onCancel = () => {
         const {params} = match || {};
@@ -115,7 +120,6 @@ function MatchRightView({
         const {params} = match || {};
         const {rightId, matchedRightIds} = params || {};
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
-        setSaveButtonDisabled(true);
         const payload = {
             rightIds: selectedMatchedRightIds,
             combinedRight: editedCombinedRight ? editedCombinedRight : combinedRight,
@@ -125,19 +129,21 @@ function MatchRightView({
     };
 
     const onCombinedRightGridEvent = ({type, api}) => {
+        const {CELL_VALUE_CHANGED, READY} = GRID_EVENTS;
         let result = [];
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
+        if (type === CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);
-        } else if (type === GRID_EVENTS.READY) {
+        } else if (type === READY) {
             setCombinedGridApi(api);
         }
     };
 
     const onMatchRightGridEvent = ({type, api}) => {
-        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
+        const {FIRST_DATA_RENDERED, SELECTION_CHANGED} = GRID_EVENTS;
+        if (type === FIRST_DATA_RENDERED) {
             api.selectAll();
-        } else if (type === GRID_EVENTS.SELECTION_CHANGED) {
+        } else if (type === SELECTION_CHANGED) {
             const selectedRows = api.getSelectedRows() || [];
             const selectedIds = selectedRows.map(el => el.id);
             if (!isEqual(selectedIds, selectedMatchedRightIds)) {
@@ -182,7 +188,7 @@ function MatchRightView({
             )
         ) {
             const schema = createColumnSchema(getSelectedRows(api), colDef.field);
-            return addCellClass({colDef, value, schema});
+            return addCellClass({field: colDef.field, value, schema});
         }
     };
 
@@ -224,10 +230,10 @@ function MatchRightView({
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
                     <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
                 </Link>
-                <span>Right Matching Preview</span>
+                <span>{MATCH_RIGHT_TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-match-right-view__matched">
-                <NexusTitle isSubTitle>Matched Rights</NexusTitle>
+                <NexusTitle isSubTitle>{MATCHED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <NexusGrid
                         columnDefs={matchedRightColumnDefs}
@@ -241,7 +247,7 @@ function MatchRightView({
                 )}
             </div>
             <div className="nexus-c-match-right-view__combined">
-                <NexusTitle isSubTitle>Combined Rights</NexusTitle>
+                <NexusTitle isSubTitle>{COMBINED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <CombinedRightNexusGrid
                         columnDefs={combinedRightColumnDefs}
@@ -263,15 +269,16 @@ function MatchRightView({
                         onClick={onCancel}
                         className="nexus-c-button"
                     >
-                        Cancel
+                        {CANCEL_BUTTON}
                     </Button>
                     <Button
                         className="nexus-c-button"
                         appearance="primary"
                         onClick={onSaveCombinedRight}
-                        isDisabled={saveButtonDisabled || !focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
+                        isDisabled={!focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
+                        isLoading={isMatching}
                     >
-                        Save
+                        {SAVE_BUTTON}
                     </Button>
                 </ButtonGroup>
             </div>
@@ -290,6 +297,7 @@ MatchRightView.propTypes = {
     fetchCombinedRight: PropTypes.func,
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
+    isMatching: PropTypes.bool,
 };
 
 MatchRightView.defaultProps = {
@@ -303,6 +311,7 @@ MatchRightView.defaultProps = {
     fetchCombinedRight: null,
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
+    isMatching: false,
 };
 
 const createMapStateToProps = () => {
@@ -311,6 +320,7 @@ const createMapStateToProps = () => {
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
+    const loadingSelector = createLoadingSelector([SAVE_COMBINED_RIGHT]);
 
     return (state, props) => ({
         focusedRight: focusedRightSelector(state, props),
@@ -318,6 +328,7 @@ const createMapStateToProps = () => {
         combinedRight: combinedRightSelector(state, props),
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: rightMatchingMappingSelector(state, props),
+        isMatching: loadingSelector(state),
     });
 };
 

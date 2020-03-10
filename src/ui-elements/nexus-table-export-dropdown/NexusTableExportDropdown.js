@@ -8,7 +8,7 @@ import {downloadFile} from '../../util/Common';
 import * as selectors from '../../avails/right-matching/rightMatchingSelectors';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, mapping}) {
+function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) {
 
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -39,10 +39,19 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         setIsDisabled(disable);
     }, [isSelectedOptionActive, selectedRows, totalRows]);
 
+    const getSelectedRightIds = () => {
+        const ids = [];
+        selectedRightGridApi.forEachNodeAfterFilter((node) => {
+            const {data = {}} = node;
+            ids.push(data.id);
+        });
+        return ids;
+    };
+
     const onAllColumnsExportClick = () => {
         if(isSelectedOptionActive) {
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
-            exportService.exportAvails(selectedRows.map(({id}) => id), allDisplayedColumns)
+            exportService.exportAvails(getSelectedRightIds(), allDisplayedColumns)
                 .then(response => downloadFile(response.data));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
@@ -55,7 +64,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     const onVisibleColumnsExportClick = () => {
         if(isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
-            exportService.exportAvails(selectedRows.map(({id}) => id), visibleColumns)
+            exportService.exportAvails(getSelectedRightIds(), visibleColumns)
                 .then(response => downloadFile(response.data));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
@@ -80,8 +89,9 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
-    const renderDropdown = () => {
-        return <DropdownMenu
+    const renderDropdown = () => (
+        <DropdownMenu
+            className="nexus-c-button"
             trigger="Export"
             triggerType="button"
             triggerButtonProps={{isDisabled: isDisabled}}
@@ -90,18 +100,17 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
                 <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
                 <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
             </DropdownItemGroup>
-        </DropdownMenu>;
-    };
+        </DropdownMenu>
+    );
 
     return (
         <div className='nexus-c-right-repository-export'>
-            {isDisabled &&
+            {isDisabled ? (
                 <NexusTooltip
                     content={tooltipContent}
                     children={renderDropdown()}
                 />
-            }
-            {!isDisabled && renderDropdown()}
+            ) : renderDropdown()}
         </div>
     );
 }
@@ -112,6 +121,7 @@ NexusTableExportDropdown.propsTypes = {
     totalRows: PropTypes.number.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
+    selectedRightGridApi: PropTypes.object.isRequired,
     selectedRightColumnApi: PropTypes.object.isRequired,
     mapping: PropTypes.object.isRequired
 };

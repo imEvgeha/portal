@@ -20,7 +20,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
 
     // Get locale provided by intl
     const intl = useIntl();
-    const {globalLocale = 'en-US'} = intl || {};
+    const {locale: globalLocale = 'en-US'} = intl || {};
 
     const dateFormat = getDateFormatBasedOnLocale(globalLocale);
 
