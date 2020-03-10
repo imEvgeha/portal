@@ -12,7 +12,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TitleResultTable.scss';
 
 
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {
     resultPageLoading,
     resultPageSelect,

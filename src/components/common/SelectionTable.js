@@ -206,7 +206,7 @@ export class SelectionTable extends React.Component {
 }
 
 import {Component} from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import {CHECKBOX_HEADER} from '../../constants/customColumnHeaders';
 

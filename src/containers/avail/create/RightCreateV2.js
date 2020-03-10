@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import BlockUi from 'react-block-ui';
 import {Button, Label} from 'reactstrap';
 

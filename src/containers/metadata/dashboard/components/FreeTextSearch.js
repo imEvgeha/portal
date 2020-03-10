@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {searchFormUpdateTextSearch} from '../../../../stores/actions/metadata/index';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 const mapDispatchToProps = {
     searchFormUpdateTextSearch
