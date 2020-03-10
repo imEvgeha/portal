@@ -16,10 +16,6 @@ const mapStateToProps = state => {
 
 class NexusBreadcrumb extends React.Component {
 
-    static propTypes = {
-        blocking: t.bool,
-    };
-
     static instance = null;
     static content = [];
 
@@ -94,5 +90,9 @@ class NexusBreadcrumb extends React.Component {
         return NexusBreadcrumb.content.length === 0;
     }
 }
+
+NexusBreadcrumb.propTypes = {
+    blocking: t.bool,
+};
 
 export default withRouter(connect(mapStateToProps, null)(NexusBreadcrumb));

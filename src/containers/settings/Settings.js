@@ -17,15 +17,6 @@ import * as selectors from './settingsSelectors';
 
 class Settings extends Component {
 
-    static propTypes = {
-        fetchConfigApiEndpoints: PropTypes.func.isRequired,
-        configEndpoints: PropTypes.array,
-    };
-
-    static defaultProps = {
-        configEndpoints: null,
-    };
-
     static getDerivedStateFromProps(props, state) {
         if (props.configEndpoints && props.configEndpoints.length > 0 && !state.selectedApi) {
             return {
@@ -134,6 +125,15 @@ class Settings extends Component {
         );
     }
 }
+
+Settings.propTypes = {
+    fetchConfigApiEndpoints: PropTypes.func.isRequired,
+    configEndpoints: PropTypes.array,
+};
+
+Settings.defaultProps = {
+    configEndpoints: null,
+};
 
 const createMapStateToProps = () => {
     const settingsConfigEndpointsSelector = selectors.createSettingsEndpointsSelector();

@@ -25,10 +25,7 @@ import {uid} from 'react-uid';
 
 
 class PersonList extends React.Component {
-    static defaultProps = {
-        showPersonType: false,
-        isMultiColumn: false
-    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -236,6 +233,11 @@ PersonList.propTypes = {
     addPerson: PropTypes.func,
     onReOrder: PropTypes.func,
     handleAddCharacterName: PropTypes.func
+};
+
+PersonList.defaultProps = {
+    showPersonType: false,
+    isMultiColumn: false
 };
 
 export default PersonList;

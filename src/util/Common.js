@@ -198,15 +198,6 @@ const URL = {
 };
 
 class IfEmbedded extends React.Component {
-    static propTypes = {
-        children: t.any,
-        value:t.bool
-    }
-
-    static defaultProps = {
-        value: true
-    }
-
     constructor(props) {
         super(props);
     }
@@ -218,6 +209,14 @@ class IfEmbedded extends React.Component {
     }
 }
 
+IfEmbedded.propTypes = {
+    children: t.any,
+    value:t.bool
+}
+
+IfEmbedded.defaultProps = {
+    value: true
+}
 const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? cases[key] : defaultCase;
 
 const getDomainName = () => window && window.location.origin.toString();

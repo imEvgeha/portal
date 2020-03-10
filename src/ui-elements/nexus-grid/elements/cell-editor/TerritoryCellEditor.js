@@ -13,15 +13,6 @@ import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMu
 import {NexusModalContext} from '../../../../ui-elements/nexus-modal/NexusModal';
 
 class TerritoryCellEditor extends Component {
-    static propTypes = {
-        options: PropTypes.array,
-        value: PropTypes.array,
-    };
-
-    static defaultProps = {
-        options: [],
-        value: null
-    };
 
     static contextType = NexusModalContext;
 
@@ -69,6 +60,16 @@ class TerritoryCellEditor extends Component {
         );
     }
 }
+
+TerritoryCellEditor.propTypes = {
+    options: PropTypes.array,
+    value: PropTypes.array,
+};
+
+TerritoryCellEditor.defaultProps = {
+    options: [],
+    value: null
+};
 
 export default TerritoryCellEditor;
 

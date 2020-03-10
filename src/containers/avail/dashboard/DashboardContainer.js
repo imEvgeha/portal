@@ -39,19 +39,6 @@ const mapDispatchToProps = {
 };
 
 class DashboardContainer extends React.Component {
-    static propTypes = {
-        availsMapping: t.any,
-        searchCriteria: t.any,
-        searchFormUpdateTextSearch: t.func,
-        searchFormShowAdvancedSearch: t.func,
-        searchFormShowSearchResults: t.func,
-        searchFormSetAdvancedSearchCriteria: t.func,
-        showAdvancedSearch: t.bool,
-        showSearchResults: t.bool,
-        location: t.object,
-        match: t.object,
-        resultPageShowSelected: t.func
-    };
 
     static contextTypes = {
         router: t.object
@@ -184,5 +171,19 @@ class DashboardContainer extends React.Component {
         );
     }
 }
+
+DashboardContainer.propTypes = {
+    availsMapping: t.any,
+    searchCriteria: t.any,
+    searchFormUpdateTextSearch: t.func,
+    searchFormShowAdvancedSearch: t.func,
+    searchFormShowSearchResults: t.func,
+    searchFormSetAdvancedSearchCriteria: t.func,
+    showAdvancedSearch: t.bool,
+    showSearchResults: t.bool,
+    location: t.object,
+    match: t.object,
+    resultPageShowSelected: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

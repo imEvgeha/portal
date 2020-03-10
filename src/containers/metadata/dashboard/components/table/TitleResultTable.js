@@ -59,18 +59,6 @@ let mapDispatchToProps = {
 };
 
 class TitleResultTable extends React.Component {
-    static propTypes = {
-        titleTabPage: t.object,
-        titleTabPageSort: t.array,
-        titleTabPageSelection: t.object,
-        titleTabPageLoading: t.bool,
-        resultPageUpdate: t.func,
-        resultPageSort: t.func,
-        resultPageSelect: t.func,
-        columnsOrder: t.array,
-        columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func
-    };
 
     table = null;
 
@@ -539,5 +527,18 @@ class TitleResultTable extends React.Component {
         );
     }
 }
+
+TitleResultTable.propTypes = {
+    titleTabPage: t.object,
+    titleTabPageSort: t.array,
+    titleTabPageSelection: t.object,
+    titleTabPageLoading: t.bool,
+    resultPageUpdate: t.func,
+    resultPageSort: t.func,
+    resultPageSelect: t.func,
+    columnsOrder: t.array,
+    columnsSize: t.object,
+    resultPageUpdateColumnsOrder: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleResultTable);
