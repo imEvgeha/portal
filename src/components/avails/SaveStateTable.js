@@ -1,5 +1,5 @@
 import React from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import {resultPageSelect, resultPageSort, resultPageUpdateColumnsOrder} from '../../stores/actions/avail/dashboard';
 import {store} from '../../index';

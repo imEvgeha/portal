@@ -5,7 +5,7 @@ import {
     setHistoryCache,
     resultPageSetBulkExport
 } from '../../../../stores/actions/avail/dashboard';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
