@@ -28,7 +28,6 @@ class RightTerritoryForm extends React.Component {
     };
 
     render() {
-
         return (
             <ModalTransition>
                 {this.props.isOpen && (
@@ -53,7 +52,7 @@ class RightTerritoryForm extends React.Component {
                         <RightTerritoryFields
                             options={this.props.options}
                             isEdit={this.props.isEdit}
-                            existingTerritoryList={this.props.existingTerritoryList}
+                            existingTerritoryList={this.props.existingTerritoryList || this.props.data}
                             territoryIndex={this.props.territoryIndex} />
                         <ModalFooter>
                             <Button appearance="default" onClick={this.props.onClose}>
