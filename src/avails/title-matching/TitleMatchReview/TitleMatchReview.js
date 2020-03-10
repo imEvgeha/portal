@@ -151,26 +151,26 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             />
             {
                 !!titles.length && (
-                    <React.Fragment>
+                    <>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
                             columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
-                    </React.Fragment>
+                    </>
                 )
             }
             {
                 !!mergedTitles[0].id && (
-                    <React.Fragment>
+                    <>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
                             columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />
-                    </React.Fragment>
+                    </>
                 )
             }
         </div>

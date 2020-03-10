@@ -106,7 +106,7 @@ class PersonList extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <>
                 <Col>
                     <PersonListContainer
                         title={this.props.personHeader}
@@ -216,7 +216,7 @@ class PersonList extends React.Component {
                     modalType={this.state.modalType}
                     data={this.props.data}
                 />
-            </React.Fragment>
+            </>
         );
     }
 }

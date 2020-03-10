@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
@@ -151,7 +151,7 @@ const withRightsResultsTable = BaseComponent => {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
                     let cellVisualContent = (
-                        <Fragment>
+                        <>
                             <div
                                 title={error}
                                 className={highlighted ? 'font-weight-bold' : ''}
@@ -166,7 +166,7 @@ const withRightsResultsTable = BaseComponent => {
                                 <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                             </div>
                         )}
-                        </Fragment>
+                        </>
 );
                     if(props.disableEdit){
                         return (

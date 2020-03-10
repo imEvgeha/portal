@@ -55,12 +55,12 @@ class TerritoryMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ? (
-                            <React.Fragment>
+                            <>
                                 <FontAwesome className="tablinks add-local" name="plus-circle" id="createTerritoryMetadata" onClick={() => this.props.addTerritoryMetadata(this.props.createTerritoryTab)} key={this.props.createTerritoryTab} size="lg" />
                                 <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createTerritoryMetadata" toggle={this.toggle}>
                                     Create Territory Metadata
                                 </Tooltip>
-                            </React.Fragment>
+                            </>
                           )
                             : null
                     }
@@ -96,7 +96,7 @@ class TerritoryMetadata extends Component {
                     }
                     {
                         this.props.isEditMode ? (
-                            <Fragment>
+                            <>
                                 <TabPane tabId={this.props.createTerritoryTab}>
                                     <Row>
                                         <Col>
@@ -130,7 +130,7 @@ class TerritoryMetadata extends Component {
 );
                                     })
                                 }
-                            </Fragment>
+                            </>
                           )
                             : null
                     }

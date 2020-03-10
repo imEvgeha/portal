@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
@@ -64,7 +64,7 @@ class TitleReadOnlyMode extends Component {
                                 <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                             </Col>
                         </Row>
-                        <Fragment>
+                        <>
                             <Row>
                                 {seriesTitleName && (
                                 <Col>
@@ -112,7 +112,7 @@ class TitleReadOnlyMode extends Component {
                                         )
                                     }
                             </Row>
-                        </Fragment>
+                        </>
                         <Row>
                             {
                                     totalNumberOfSeasons && (

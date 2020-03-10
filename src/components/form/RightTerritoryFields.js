@@ -44,7 +44,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
     };
     
     return (
-        <React.Fragment>
+        <>
             <Field
                 label="COUNTRY"
                 isRequired
@@ -59,7 +59,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 }
             >
                 {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
-                    <React.Fragment>
+                    <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
@@ -75,7 +75,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                             options={removeExistingOptions()}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
-                    </React.Fragment>
+                    </>
                 )}
 
             </Field>
@@ -113,7 +113,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 }
             >
                 {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
-                    <React.Fragment>
+                    <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
@@ -142,7 +142,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                             ]}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
-                    </React.Fragment>
+                    </>
                 )}
             </Field>
             <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit ? returnValidData('vuContractId') && existingTerritoryList[territoryIndex]['vuContractId'].length > 0 && existingTerritoryList[territoryIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
@@ -157,7 +157,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 )}
 
             </Field>
-        </React.Fragment>
+        </>
     );
 }
 

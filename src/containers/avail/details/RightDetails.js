@@ -1066,7 +1066,7 @@ class RightDetails extends React.Component {
                             onAddClick={this.toggleAddRightTerritoryForm}
                             onTagClick={(i) => this.toggleRightTerritoryForm(i)}
                             renderChildren={() => (
-                                <React.Fragment>
+                                <>
                                     <div style={{position: 'absolute', right: '10px'}}>
                                         <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
                                     </div>
@@ -1079,7 +1079,7 @@ class RightDetails extends React.Component {
                                         isEdit={this.state.isEdit}
                                         options={options}
                                     />
-                                </React.Fragment>
+                                </>
                               )}
                         />
                       )}

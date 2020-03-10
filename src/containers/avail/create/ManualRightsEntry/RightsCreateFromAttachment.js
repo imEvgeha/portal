@@ -244,7 +244,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                 </div>
                 {availsMapping && (
-                    <React.Fragment>
+                    <>
                         <div className='nexus-c-manual-rights-entry__table_header'>
                             <ManualRightEntryTableTabs
                                 getCustomSearchCriteria={this.getCustomSearchCriteria}
@@ -291,7 +291,7 @@ class RightsCreateFromAttachment extends React.Component {
                             />
                           )}
                         <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL} />
-                    </React.Fragment>
+                    </>
                   )}
             </div>
         );

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import t from 'prop-types';
 import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
@@ -964,10 +964,10 @@ class TitleEdit extends Component {
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
                             {
                                 this.state.isEditMode ? (
-                                    <Fragment>
+                                    <>
                                         <Button className="float-right" id="btnSave" color="primary" style={{ marginRight: '10px' }}>Save</Button>
                                         <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
-                                    </Fragment>
+                                    </>
                                   )
                                     : (
                                         <Col>

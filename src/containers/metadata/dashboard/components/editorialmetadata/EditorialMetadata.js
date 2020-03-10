@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Row, Col, Container, TabContent, TabPane, Alert, Tooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
@@ -50,12 +50,12 @@ class EditorialMetadata extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ? (
-                            <React.Fragment>
+                            <>
                                 <FontAwesome className="tablinks add-local" id="createEditorialMetadata" name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
                                 <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createEditorialMetadata" toggle={this.toggle}>
                                     Create Editorial Metadata
                                 </Tooltip>
-                            </React.Fragment>
+                            </>
                           )
                             : null
                     }
@@ -96,7 +96,7 @@ class EditorialMetadata extends Component {
                     }
                     {
                         this.props.isEditMode ? (
-                            <Fragment>
+                            <>
                                 <TabPane tabId={this.props.createEditorialTab}>
                                     <Row>
                                         <Col>
@@ -139,7 +139,7 @@ class EditorialMetadata extends Component {
 );
                                     })
                                 }
-                            </Fragment>
+                            </>
                           )
                             : null
                     }

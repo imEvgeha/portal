@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
     FormGroup,
     Alert,
@@ -24,7 +24,7 @@ class CoreMetadataReadOnlyMode extends Component {
     render() {
         const {legacyIds, externalIds} = this.props.data;
         return (
-            <Fragment>
+            <>
                 {
                     this.props.data.castCrew && this.props.data.castCrew.length > 0 ? (
                         <Row style={{ marginTop: '15px' }}>
@@ -122,12 +122,12 @@ class CoreMetadataReadOnlyMode extends Component {
                     }
                 </Row>
                 {externalIds || legacyIds ? (
-                    <Fragment>
+                    <>
                         <hr />
                         <h4>External IDs</h4>
                         <div id="coreMetadataEditMode">
                             {  externalIds && (
-                                <Fragment>
+                                <>
                                     { (externalIds.eidrLevel1 ||  externalIds.tmsId) && (
                                     <Row style={{ marginTop: '10px' }}>
                                         {
@@ -224,7 +224,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }
                                         </Row>
                                       )}
-                                </Fragment>
+                                </>
                               )}
                             {((externalIds && externalIds.alid) || (legacyIds && legacyIds.vz)) && (
                                 <Row style={{ marginTop: '10px' }}>
@@ -298,10 +298,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                 </Row>
                               )}
                         </div>
-                    </Fragment>
+                    </>
                   )
                     : null}
-            </Fragment>
+            </>
         );
     }
 }

@@ -59,12 +59,12 @@ class Rating extends Component {
                 <div className='tab'>
                     {
                         this.props.isEditMode ? (
-                            <React.Fragment>
+                            <>
                                 <FontAwesome className="tablinks add-local" name="plus-circle" id="createRatings" onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
                                 <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createRatings" toggle={this.toggle}>
                                     Create Rating
                                 </Tooltip>
-                            </React.Fragment>
+                            </>
                           )
                             : null
                     }
@@ -91,7 +91,7 @@ class Rating extends Component {
                     }
                     {
                         this.props.isEditMode ? (
-                            <Fragment>
+                            <>
                                 <TabPane tabId={this.props.createRatingTab}>
                                     <Row>
                                         <Col>
@@ -133,7 +133,7 @@ class Rating extends Component {
 );
                                     })
                                 }
-                            </Fragment>
+                            </>
                           )
                             : null
                     }

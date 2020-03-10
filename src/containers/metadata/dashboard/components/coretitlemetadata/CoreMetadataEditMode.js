@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   FormGroup,
   Label,
@@ -82,7 +82,7 @@ class CoreMetadataEditMode extends Component {
 
   render() {
     return (
-        <Fragment>
+        <>
             <Row>
                 <Col>
                     <PersonList
@@ -418,7 +418,7 @@ class CoreMetadataEditMode extends Component {
                     </Col>
                 </Row>
             </div>
-        </Fragment>
+        </>
     );
   }
 }
