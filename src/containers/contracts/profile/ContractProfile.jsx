@@ -426,8 +426,8 @@ class UserProfile extends React.Component {
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <br /><br />
-                                        <InputLabel className={classes.label}>Formats</InputLabel><br />
+                                        <br /> <br />
+                                        <InputLabel className={classes.label}>Formats</InputLabel> <br />
                                         <FormControlLabel
                                             control={(
                                                 <Checkbox
@@ -528,7 +528,7 @@ class UserProfile extends React.Component {
                                             }}
                                             label="4K"
                                         />
-                                        <br /><br />
+                                        <br /> <br />
                                         <InputLabel className={classes.label}>Start Date</InputLabel>
                                         <br />
                                         <FormControl fullWidth>
@@ -537,7 +537,7 @@ class UserProfile extends React.Component {
                                                 inputProps={{ placeholder: 'Date Picker Here' }}
                                             />
                                         </FormControl>
-                                        <br /><br />
+                                        <br /> <br />
                                         <InputLabel className={classes.label}>End Date</InputLabel>
                                         <br />
                                         <FormControl fullWidth>
