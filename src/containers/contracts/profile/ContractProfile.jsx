@@ -562,7 +562,7 @@ class UserProfile extends React.Component {
                   <PermIdentity />
                 </CardIcon> */}
                                 <h4 className={classes.cardIconTitle}>
-                                    Metadata<small></small>
+                                    Metadata
                                 </h4>
                             </CardHeader>
                             <CardBody>
