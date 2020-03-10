@@ -167,9 +167,9 @@ class AdvancedSearchPanel extends React.Component {
             const onChange = () => { this.setState({exportAll: !this.state.exportAll});};
             const option = (
                 <div key='exportAll'>
-                    <br /><input type='checkbox' name='buck_export_all' style={{marginRight: '8px'}} onChange={onChange} />Export all Fields
+                    <br /> <input type='checkbox' name='buck_export_all' style={{marginRight: '8px'}} onChange={onChange} />Export all Fields
                 </div>
-);
+            );
             const options = [`You have ${this.props.availTabPage.total} avails for download.`, option];
             confirmModal.open('Confirm download',
                 () => {

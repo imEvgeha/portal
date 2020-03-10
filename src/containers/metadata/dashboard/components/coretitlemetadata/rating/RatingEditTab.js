@@ -110,7 +110,7 @@ class RatingEditTab extends Component {
             <div id="ratingCreate">
                 <Row style={{ padding: '15px' }}>
                     <Col md={3}>
-                        <b>Rating System<span style={{ color: 'red' }}>*</span></b>
+                        <b> Rating System<span style={{ color: 'red' }}>*</span></b>
                         <AvField
                             type="select"
                             name="ratingSystem"
@@ -129,7 +129,7 @@ class RatingEditTab extends Component {
                         </AvField>
                     </Col>
                     <Col md={3}>
-                        <b>Ratings<span style={{ color: 'red' }}>*</span></b>
+                        <b> Ratings<span style={{ color: 'red' }}>*</span></b>
                         <AvField
                             type="select"
                             name="rating"

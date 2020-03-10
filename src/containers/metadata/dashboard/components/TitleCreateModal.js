@@ -327,6 +327,7 @@ class TitleCreate extends React.Component {
                                 <Container>
                                     <Row>
                                         <Col>
+                                            {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
                                             <Label for="title">Title<span style={{ color: 'red' }}>*</span></Label>
                                             <AvField
                                                 name="title"
@@ -344,6 +345,7 @@ class TitleCreate extends React.Component {
                                     </Row>
                                     <Row>
                                         <Col>
+                                            {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
                                             <Label for="contentType">Content Type<span style={{ color: 'red' }}>*</span></Label>
                                             <AvField
                                                 type="select"

@@ -21,7 +21,7 @@ class TerritoryMetadataCreateTab extends Component {
             <AvField
                 type="select"
                 name="locale"
-                label={<span>Locale<span style={{ color: 'red' }}>*</span></span>}
+                label={<span> Locale<span style={{ color: 'red' }}>*</span></span>}
                 id="territoryLocal"
                 required={this.props.isRequired}
                 onChange={this.props.handleChange}

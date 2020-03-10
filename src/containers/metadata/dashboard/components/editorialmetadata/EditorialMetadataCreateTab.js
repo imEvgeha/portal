@@ -129,7 +129,7 @@ class EditorialMetadataCreateTab extends Component {
             <div id="editorialMetadataCreate">
                 <Row style={{ padding: '15px' }}>
                     <Col>
-                        <b>Locale<span style={{ color: 'red' }}>*</span></b>
+                        <b> Locale<span style={{ color: 'red' }}>*</span></b>
                     </Col>
                     <Col md={2}>
                         <AvField
@@ -149,7 +149,7 @@ class EditorialMetadataCreateTab extends Component {
                         </AvField>
                     </Col>
                     <Col>
-                        <b>Language<span style={{ color: 'red' }}>*</span></b>
+                        <b> Language<span style={{ color: 'red' }}>*</span></b>
                     </Col>
                     <Col md={2}>
                         <AvField

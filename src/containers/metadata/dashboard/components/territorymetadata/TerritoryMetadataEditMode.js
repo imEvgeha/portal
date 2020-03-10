@@ -27,7 +27,7 @@ class TerritoryMetadataEditMode extends Component {
                     <AvForm onValidSubmit={this.props.validSubmit}>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <span>Locale</span><br />
+                                <span>Locale</span> <br />
                                 {this.props.data.locale ? <b>{this.props.getLanguageByCode(this.props.data.locale, COUNTRY)}</b> : <span style={{ color: '#999' }}>Empty</span>}
                             </Col>
                             <Col>

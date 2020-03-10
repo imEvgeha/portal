@@ -69,7 +69,7 @@ class TitleReadOnlyMode extends Component {
                                 {seriesTitleName && (
                                 <Col>
                                     <Alert color="light" id="titleSeriesName">
-                                        <b>Series: </b><a href={seriesLink} className="linked-data">{seriesTitleName}</a>
+                                        <b>Series: </b> <a href={seriesLink} className="linked-data">{seriesTitleName}</a>
                                     </Alert>
                                 </Col>
 )}
@@ -77,7 +77,7 @@ class TitleReadOnlyMode extends Component {
                                        seasonNumber && (
                                        <Col>
                                            <Alert color="light" id="titleSeasonNumber">
-                                               <b>Season Number: </b><a href={seasonLink} className="linked-data">{seasonNumber}</a>
+                                               <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
                                            </Alert>
                                        </Col>
                                        )
