@@ -421,7 +421,8 @@ class RightDetails extends React.Component {
                                 {this.state.errorMessage}
                             </Label>
                         </div>
-                      )}
+                      )
+}
                     <div className="nx-stylish row mt-3 mx-5">
                         <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
                             {renderFields}

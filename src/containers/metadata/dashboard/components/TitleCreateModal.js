@@ -461,8 +461,7 @@ class TitleCreate extends React.Component {
                                                 />
                                             </Col>
                                         </Row>
-) : null
-                                    }
+) : null}
                                     { this.renderSyncCheckBoxes() }
                                     {
                                         this.state.loading ?
@@ -479,7 +478,8 @@ class TitleCreate extends React.Component {
                             <div className="nx-stylish list-group">
                                 <h5 style={{ marginTop: '25px' }}><Alert color={this.state.isFailed ? 'danger' : 'success'}>{this.state.errorMessage}</Alert></h5>
                             </div>
-                          )}
+                          )
+}
                         <Button id="titleCancelBtn" onClick={this.toggle} color="primary">Cancel</Button>
                         <Button id="titleSaveBtn" color="primary">Save</Button>
                     </ModalFooter>

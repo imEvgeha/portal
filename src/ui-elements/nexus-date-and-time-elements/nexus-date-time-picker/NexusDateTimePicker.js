@@ -91,8 +91,7 @@ const NexusDateTimePicker = ({
                             </div>
                         )}
                     </>
-                )
-            }
+                )}
         </div>
     );
 
@@ -109,8 +108,7 @@ const NexusDateTimePicker = ({
                                         <div className="read-view-container__placeholder">
                                             {`Enter ${label}`}
                                         </div>
-)
-                                }
+)}
                             </div>
                         )}
                         editView={() => DatePicker(false)}
@@ -129,8 +127,7 @@ const NexusDateTimePicker = ({
                         {...restProps}
                     />
                 )
-                : DatePicker(isReadOnly)
-            }
+                : DatePicker(isReadOnly)}
         </>
     );
 };

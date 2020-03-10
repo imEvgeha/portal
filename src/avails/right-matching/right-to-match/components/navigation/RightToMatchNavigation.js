@@ -104,8 +104,7 @@ const RightToMatchNavigation = ({
                 <span className="nexus-c-right-to-match-navigation__data">
                     {isSpinnerRunning 
                         ? <Spinner size="small" />
-                        : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`
-                    }
+                        : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`}
                 </span>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
                     <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />

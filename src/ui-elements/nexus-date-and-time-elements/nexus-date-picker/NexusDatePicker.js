@@ -85,8 +85,7 @@ const NexusDatePicker = ({
                         />
                         {allowClear && <ClearButton onClear={() => onDateChange('')} />}
                     </div>
-                )
-            }
+                )}
             {error && (
                 <ErrorMessage>
                     {error}
@@ -106,8 +105,7 @@ const NexusDatePicker = ({
                                     <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>
-)
-                                }
+)}
                             </div>
                         )}
                         editView={() => DatePickerComponent(false)}
@@ -117,8 +115,7 @@ const NexusDatePicker = ({
                         {...restProps}
                     />
                 )
-                : DatePickerComponent(isReadOnly)
-            }
+                : DatePickerComponent(isReadOnly)}
         </>
     );
 };

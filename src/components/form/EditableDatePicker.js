@@ -164,7 +164,8 @@ class EditableDatePicker extends Component {
                                 <small className="text-danger m-2" style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>
-                              )}
+                              )
+}
                         </div>
                       )
                         :

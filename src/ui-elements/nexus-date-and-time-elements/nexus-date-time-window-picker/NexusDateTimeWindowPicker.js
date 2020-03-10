@@ -139,8 +139,7 @@ const NexusDateTimeWindowPicker = ({
                                 allowClear={allowClear}
                                 {...startDateTimePickerProps}
                             />
-                        )
-                    }
+                        )}
                 </div>
                 <div className="nexus-c-date-time-window-picker__end-date">
                     {
@@ -172,8 +171,7 @@ const NexusDateTimeWindowPicker = ({
                                 isReturningTime={isReturningTime}
                                 {...endDateTimePickerProps}
                             />
-                        )
-                    }
+                        )}
                 </div>
                 {(!isTimestamp && isUsingTime) && (
                 <div className="nexus-c-date-time-picker__type-select">

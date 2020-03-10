@@ -76,8 +76,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                     {data.ingestType === 'Email' ?
                         (<div style={{display: 'flex', maxWidth:'100%'}}><b>Provider:</b> &nbsp; {data.provider} </div>)
                         :
-                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Document Name:</b> &nbsp; <div style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}} title={firstName}>{firstName}</div> </div>)
-                    }
+                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Document Name:</b> &nbsp; <div style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}} title={firstName}>{firstName}</div> </div>)}
                     <div style={{display: 'flex'}}><b>Received:</b> &nbsp; {data.received ? moment(data.received).format('llll'):''} </div>
                 </div>
                 <div style={{display: 'flex', flex:0.5, minWidth:'30px'}} />
@@ -131,8 +130,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                             <div>
                                                 Total Avails:
                                             </div>
-        )
-                                    }
+        )}
                                 </b>
                             </u>
                         </div>
@@ -153,8 +151,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                     <div>
                                         {ingestReport.total}
                                     </div>
-)
-                            }
+)}
                         </div>
                     </div>
                     <div style={{
@@ -185,8 +182,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                             <div>
                                                 Success:
                                             </div>
-        )
-                                    }
+        )}
                                 </b>
                             </u>
                         </div>
@@ -207,8 +203,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                     <div>
                                         {ingestReport.success}
                                     </div>
-)
-                            }
+)}
                         </div>
                     </div>
                     <div style={{
@@ -241,8 +236,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                         <div>
                                             Errors:
                                         </div>
-    )
-                                }
+    )}
                                 </b>
                             </u>
                         </div>
@@ -265,8 +259,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                     <div>
                                         {ingestReport.errors}
                                     </div>
-)
-                            }
+)}
                         </div>
                     </div>
                     <div style={{

@@ -59,8 +59,7 @@ const UploadIngestButton = ({ingestData}) => {
                 onInput={handleUpload}
             />
             {ingestData ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
-                : <Add onClick={inputClick} />
-            }
+                : <Add onClick={inputClick} />}
         </div>
     );
 };

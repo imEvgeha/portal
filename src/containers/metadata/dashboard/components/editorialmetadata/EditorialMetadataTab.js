@@ -43,8 +43,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                     <Col md={3}><b>Series Name: </b> {seriesName || emptySpan()}</Col>
                     <Col md={3}><b>Season Number: </b> {seasonNumber || emptySpan()}</Col>
                     {titleContentType === EPISODE.apiName &&
-                    <Col md={3}><b>Episode Number: </b> {episodeNumber || emptySpan()}</Col>
-                    }
+                    <Col md={3}><b>Episode Number: </b> {episodeNumber || emptySpan()}</Col>}
                 </Row>
               )}
             <Row>

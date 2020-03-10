@@ -189,8 +189,7 @@ const NexusMultiInstanceField = ({
                             </Button>
                         </div>
                     </div>
-                )
-            }
+                )}
         </>
     );
 
@@ -221,8 +220,7 @@ const NexusMultiInstanceField = ({
                         defaultValue={[]}
                     />
 )
-                : MultiInstanceField(isReadOnly)
-            }
+                : MultiInstanceField(isReadOnly)}
             {inlineEdit}
         </>
     );

@@ -978,7 +978,8 @@ class TitleEdit extends Component {
                                                 </Can>
                                             </div>
                                         </Col>
-                                  )}
+                                  )
+}
                         </Col>
                     </Row>
                     {

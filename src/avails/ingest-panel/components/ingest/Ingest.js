@@ -30,7 +30,8 @@ const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId
                     >
                         <Chevron />
                     </span>
-                  )}
+                  )
+}
                 <div className={`nexus-c-avail-ingest__status nexus-c-avail-ingest__status--is-${ingestReport ? 'expandable' : 'not-expandable'}`}>
                     <IngestStatus date={received} status={status} />
                 </div>

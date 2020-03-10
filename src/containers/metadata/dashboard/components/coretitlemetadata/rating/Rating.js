@@ -55,8 +55,7 @@ class Rating extends Component {
             <Container fluid id="ratingContainer" style={{ marginTop: '30px' }}>
                 {this.props.ratings && this.props.ratings.length > 0 || this.props.isEditMode ?
                     <h4>Ratings</h4>
-                    : null
-                }
+                    : null}
                 <div className='tab'>
                     {
                         this.props.isEditMode ? (

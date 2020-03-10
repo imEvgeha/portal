@@ -300,8 +300,7 @@ class CoreMetadataReadOnlyMode extends Component {
                         </div>
                     </Fragment>
                   )
-                    : null
-                }
+                    : null}
             </Fragment>
         );
     }

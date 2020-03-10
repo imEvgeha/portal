@@ -159,8 +159,7 @@ class TitleEditMode extends Component {
                                                     id='titleEpisodeNumber'
                                                     placeholder="Enter Episode Number"
                                                     onChange={e =>
-                                    this.props.handleChangeEpisodic(e)
-                                  }
+                                    this.props.handleChangeEpisodic(e)}
                                                     validate={{
                                     required: {
                                       value: contentType === EPISODE.apiName ? true : false,
@@ -258,8 +257,7 @@ class TitleEditMode extends Component {
                           </Col>
                       </Row>
                   )
-                  : null
-              }
+                  : null}
                     <Row>
                         <Col>
                             <Label for='duration'>Duration</Label>
@@ -367,8 +365,7 @@ class TitleEditMode extends Component {
                                   id='titleEpisodeCount'
                                   placeholder="Enter Episode Count"
                                   onChange={e =>
-                            this.props.handleChangeEpisodic(e)
-                          }
+                            this.props.handleChangeEpisodic(e)}
                               />
                           </Col>
                           <Col>
