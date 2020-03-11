@@ -139,10 +139,18 @@ const RightsRepository = ({
     useEffect(() => {
         let rights = selectedRights;
         if (gridApi) {
-            rights = gridApi.getSelectedRows();
+            const selectedIds = selectedRights.map(({id}) => id);
+            const loadedSelectedRights = [];
+            gridApi.forEachNode((node) => {
+                const {data={}} = node;
+                if(selectedIds.includes(data.id)){
+                    loadedSelectedRights.push(data);
+                }
+            });
+            rights = loadedSelectedRights;
         }
         setSelectedRepoRights(getSelectedTabRights(rights));
-    }, [search, selectedRights, gridApi]);
+    }, [search, selectedRights, gridApi, isRepositoryDataLoading]);
 
     useEffect(()=> {
         if (selectedGridApi) {
@@ -253,7 +261,7 @@ const RightsRepository = ({
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
                 const toUnselect = selectedRepoRights
                     .map(({id}) => id)
-                    .filter(selectediRepoId => !allSelectedRowsIds.includes(selectediRepoId));
+                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
                 const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
                 nodes.forEach(node => node.setSelected(false));
                 break;
