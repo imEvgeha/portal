@@ -56,7 +56,7 @@
     "connected-react-router": "5.0.1",
     "copy-webpack-plugin": "^4.5.2",
     "eslint": "^5.7.0",
-    "eslint-config-nexus-react-app": "^1.0.4",
+    "eslint-config-nexus-react-app": "1.0.5",
     "eslint-loader": "^2.1.1",
     "eslint-nibble": "^5.1.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
