@@ -12,9 +12,7 @@ import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
-import {default as AtlaskitButton} from '@atlaskit/button';
 import {AvForm} from 'availity-reactstrap-validation';
-import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
@@ -29,12 +27,10 @@ import {Can} from '../../../../ability';
 import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
 import {getRepositoryName} from '../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
+import PublishVzMovida from './publish/PublishVzMovida';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
-
-const MOVIDA = 'Movida';
-const VZ = 'VZ';
 
 const emptyTerritory = {
     locale: null,
@@ -59,6 +55,8 @@ const emptyEditorial = {
     awards: null,
     episodic: null
 };
+
+const {MOVIDA, VZ} = TitleSystems;
 
 class TitleEdit extends Component {
     constructor(props) {
@@ -938,19 +936,6 @@ class TitleEdit extends Component {
         this.setState({
             editedForm: reOrderedCastCrewList
         });
-    }
-
-    renderSyncField = (name, titleModifiedAt, legacyId, publishedAt) => {
-
-        const lastUpdated = !publishedAt ? 'No record exist' : publishedAt;
-        const buttonName = !legacyId || !publishedAt ? 'Publish' : 'Sync';
-        const isDisabled = !!publishedAt && moment(publishedAt).isSameOrAfter(titleModifiedAt);
-        const indicator = isDisabled ? 'success' : 'error';
-        return (<div className='nexus-c-title-edit__sync-container-field'>
-            <span className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
-            <div className='nexus-c-title-edit__sync-container-field-description'><b>{name}</b> Last updated: {lastUpdated}</div>
-            <AtlaskitButton appearance='primary' isDisabled={isDisabled} onClick={() => this.onSyncPublishClick(name)}>{buttonName}</AtlaskitButton>
-        </div>);
     };
 
     onSyncPublishClick = (name) => {
@@ -959,24 +944,9 @@ class TitleEdit extends Component {
         this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
     };
 
-    renderSyncVzMovidaFields = () => {
-        const {id, legacyIds, modifiedAt} = this.state.titleForm;
-        const {vz, movida} = legacyIds || {};
-        const {vzId} = vz || {};
-        const {movidaId} = movida || {};
-        const vzPublishedAt = (vz || {}).publishedAt;
-        const movidaPublishedAt = (movida || {}).publishedAt;
-
-        return (
-            id && getRepositoryName(id) === TitleSystems.NEXUS &&
-            <>
-                {this.renderSyncField(VZ, modifiedAt, vzId, vzPublishedAt)}
-                {this.renderSyncField(MOVIDA, modifiedAt, movidaId, movidaPublishedAt)}
-            </>
-        );
-    };
-
     render() {
+        const {titleForm, territory, editorialMetadata} = this.state;
+        const {id} = titleForm || {};
         return (
             <EditPage>
 
@@ -993,7 +963,7 @@ class TitleEdit extends Component {
                                     <Fragment>
                                         <Col>
                                             <div className='nexus-c-title-edit__sync-container'>
-                                            { this.renderSyncVzMovidaFields() }
+                                            {id && getRepositoryName(id) === TitleSystems.NEXUS && <PublishVzMovida coreTitle={titleForm} editorialMetadataList={editorialMetadata} territoryMetadataList={territory} onSyncPublishClick={this.onSyncPublishClick}/>}
                                             <Can I="update" a="Metadata">
                                                 <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
                                             </Can>
@@ -1016,7 +986,7 @@ class TitleEdit extends Component {
                         addEditorialMetadata={this.addEditorialMetadata}
                         createEditorialTab={CREATE_TAB}
                         handleSubmit={this.handleEditorialMetadataSubmit}
-                        editorialMetadata={this.state.editorialMetadata}
+                        editorialMetadata={editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
                         handleGenreChange={this.handleEditorialMetadataGenreChange}
                         handleTitleChange={this.handleTitleEditorialMetadataChange}
@@ -1026,7 +996,7 @@ class TitleEdit extends Component {
                         isEditMode={this.state.isEditMode}
                         handleEditorialCastCrew={this.handleEditorialCastCrew}
                         handleEditorialCastCrewCreate={this.handleEditorialCastCrewCreate}
-                        titleContentType={this.state.titleForm.contentType}
+                        titleContentType={titleForm.contentType}
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                         updatedEditorialMetadata={this.state.updatedEditorialMetadata}
                         handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
@@ -1040,7 +1010,7 @@ class TitleEdit extends Component {
                         addTerritoryMetadata={this.addTerritoryMetadata}
                         createTerritoryTab={CREATE_TAB}
                         handleSubmit={this.handleTerritoryMetadataSubmit}
-                        territory={this.state.territory}
+                        territory={territory}
                         territories={this.state.territories}
                         handleChange={this.handleTerritoryMetadataChange}
                         handleChangeDate={this.handleTerritoryMetadataDateChange}
