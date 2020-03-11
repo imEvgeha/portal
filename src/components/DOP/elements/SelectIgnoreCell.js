@@ -10,25 +10,6 @@ const selectedColor = '#D7D7D7';
 const ignoredColor = '#FFFFFF';
 
 class SelectIgnoreCell extends Component {
-    static propTypes = {
-        node: t.object,
-        promotedRights: t.array,
-        promotedRightsFullData: t.array,
-        updatePromotedRights: t.func,
-        updatePromotedRightsFullData: t.func,
-        useSelectedTerritories: t.bool,
-        selectedTerritories: t.array
-    };
-
-    static defaultProps = {
-        node: null,
-        promotedRights: [],
-        promotedRightsFullData: [],
-        updatePromotedRights: null,
-        updatePromotedRightsFullData: null,
-        useSelectedTerritories: false,
-        selectedTerritories: []
-    }
 
     constructor(props) {
         super(props);
@@ -137,5 +118,25 @@ const mapDispatchToProps = (dispatch) => ({
     updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
     updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload))
 });
+
+SelectIgnoreCell.propTypes = {
+    node: t.object,
+    promotedRights: t.array,
+    promotedRightsFullData: t.array,
+    updatePromotedRights: t.func,
+    updatePromotedRightsFullData: t.func,
+    useSelectedTerritories: t.bool,
+    selectedTerritories: t.array
+};
+
+SelectIgnoreCell.defaultProps = {
+    node: null,
+    promotedRights: [],
+    promotedRightsFullData: [],
+    updatePromotedRights: null,
+    updatePromotedRightsFullData: null,
+    useSelectedTerritories: false,
+    selectedTerritories: []
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectIgnoreCell);

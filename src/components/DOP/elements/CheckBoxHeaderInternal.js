@@ -2,13 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class CheckBoxHeaderInternal extends Component {
-    static propTypes = {
-        api: PropTypes.object,
-    };
-
-    static defaultProps = {
-        api: null,
-    };
 
     constructor(props) {
         super(props);
@@ -90,5 +83,13 @@ class CheckBoxHeaderInternal extends Component {
         );
     }
 }
+
+CheckBoxHeaderInternal.propTypes = {
+    api: PropTypes.object,
+};
+
+CheckBoxHeaderInternal.defaultProps = {
+    api: null,
+};
 
 export default CheckBoxHeaderInternal;

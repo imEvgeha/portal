@@ -15,12 +15,6 @@ export default function withRights(WrappedComponent) {
 class ServerRightsResultsTable extends RightsResultsTable {
 
 
-    static defaultProps = {
-        autoload: true,
-        autoRefresh: 0,
-        locale: 'en-us',
-    };
-
     constructor(props) {
         super(props);
 
@@ -151,4 +145,9 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
 });
 
+ServerRightsResultsTable.defaultProps = {
+    autoload: true,
+    autoRefresh: 0,
+    locale: 'en-us',
+};
 const ServerRightsResultsTableConnected = connect(mapStateToProps)(ServerRightsResultsTable);

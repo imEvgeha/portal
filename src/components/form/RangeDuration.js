@@ -6,23 +6,6 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 export default class RangeDuration extends React.Component {
 
-    static defaultProps = {
-        validateRange: true
-    }
-
-    static propTypes = {
-        id: t.string,
-        value: t.object,
-        displayName: t.string,
-        disabled: t.bool,
-        onFromDurationChange: t.func,
-        onToDurationChange: t.func,
-        onInvalid: t.func,
-        handleKeyPress: t.func,
-        hideLabel: t.bool,
-        validateRange: t.bool
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -152,3 +135,20 @@ export default class RangeDuration extends React.Component {
         );
     }
 }
+
+RangeDuration.defaultProps = {
+    validateRange: true
+};
+
+RangeDuration.propTypes = {
+    id: t.string,
+    value: t.object,
+    displayName: t.string,
+    disabled: t.bool,
+    onFromDurationChange: t.func,
+    onToDurationChange: t.func,
+    onInvalid: t.func,
+    handleKeyPress: t.func,
+    hideLabel: t.bool,
+    validateRange: t.bool
+};

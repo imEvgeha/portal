@@ -51,15 +51,6 @@ const mapDispatchToProps = {
 
 class SearchResultsTab extends React.Component {
 
-    static propTypes = {
-        reportName: t.string,
-        availsMapping: t.object,
-        resultPageUpdateColumnsOrder: t.func,
-        resultPageShowSelected: t.func,
-        showSelectedAvails: t.bool,
-        avails: t.array
-    };
-
     constructor(props) {
         super(props);
         this.toggleShowSelected = this.toggleShowSelected.bind(this);
@@ -178,6 +169,14 @@ class SearchResultsTab extends React.Component {
     }
 }
 
+SearchResultsTab.propTypes = {
+    reportName: t.string,
+    availsMapping: t.object,
+    resultPageUpdateColumnsOrder: t.func,
+    resultPageShowSelected: t.func,
+    showSelectedAvails: t.bool,
+    avails: t.array
+};
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 import {compose} from 'redux';
 

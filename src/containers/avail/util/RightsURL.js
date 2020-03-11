@@ -11,9 +11,6 @@ class RightsURL extends React.Component {
 
     static instance = null;
 
-    static contextTypes = {
-        router: t.object
-    }
 
     componentDidMount() {
         RightsURL.instance = this;
@@ -270,5 +267,7 @@ class RightsURL extends React.Component {
         }
     }
 }
-
+RightsURL.contextTypes = {
+    router: t.object
+};
 export default RightsURL;

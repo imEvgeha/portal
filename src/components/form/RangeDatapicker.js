@@ -6,17 +6,6 @@ import moment from 'moment';
 import {momentToISO} from '../../util/Common';
 
 export default class RangeDatapicker extends React.Component {
-    static propTypes = {
-        id: t.string,
-        value: t.object,
-        displayName: t.string,
-        disabled: t.bool,
-        onFromDateChange: t.func,
-        onToDateChange: t.func,
-        onInvalid: t.func,
-        handleKeyPress: t.func,
-        hideLabel: t.bool
-    };
 
     constructor(props) {
         super(props);
@@ -129,3 +118,15 @@ export default class RangeDatapicker extends React.Component {
         );
     }
 }
+
+RangeDatapicker.propTypes = {
+    id: t.string,
+    value: t.object,
+    displayName: t.string,
+    disabled: t.bool,
+    onFromDateChange: t.func,
+    onToDateChange: t.func,
+    onInvalid: t.func,
+    handleKeyPress: t.func,
+    hideLabel: t.bool
+};

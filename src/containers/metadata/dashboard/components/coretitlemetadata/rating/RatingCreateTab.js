@@ -1,10 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
+// eslint-disable-next-line react/no-unsafe
 class RatingCreateTab extends Component {
     constructor(props) {
         super(props);

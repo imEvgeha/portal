@@ -10,11 +10,6 @@ let mapStateToProps = state => {
 };
 class ReportsInternal extends Component {
 
-    static propTypes = {
-        onChange: t.func,
-        reportName: t.string
-    };
-
     render(){
         return (
             <select
@@ -31,4 +26,9 @@ class ReportsInternal extends Component {
         );
     }
 }
+
+ReportsInternal.propTypes = {
+    onChange: t.func,
+    reportName: t.string
+};
 export let Reports = connect(mapStateToProps, null)(ReportsInternal);

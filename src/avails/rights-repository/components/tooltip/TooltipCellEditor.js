@@ -4,14 +4,6 @@ import './TooltipCellEditor.scss';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 
 class TooltipCellEditor extends Component {
-    static propTypes = {
-        data: PropTypes.object,
-    };
-
-    static defaultProps = {
-        data: {},
-    };
-
     isPopup = () => true;
 
     getValue = () => this.props.data;
@@ -37,5 +29,12 @@ class TooltipCellEditor extends Component {
     }
 }
 
+TooltipCellEditor.propTypes = {
+    data: PropTypes.object,
+};
+
+TooltipCellEditor.defaultProps = {
+    data: {},
+};
 export default TooltipCellEditor;
 

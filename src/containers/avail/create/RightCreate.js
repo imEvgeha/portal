@@ -806,6 +806,6 @@ RightCreate.propTypes = {
 
 RightCreate.contextTypes = {
     router: t.object
-}
+};
 
 export default connect(mapStateToProps, null)(RightCreate);

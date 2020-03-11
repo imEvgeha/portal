@@ -1316,6 +1316,6 @@ RightDetails.defaultProps = {
 
 RightDetails.contextTypes = {
     router: PropTypes.object,
-}
+};
 
 export default connect(mapStateToProps)(RightDetails);

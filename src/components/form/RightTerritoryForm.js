@@ -11,13 +11,6 @@ import {getProperTerritoryFormValues} from './utils';
 // TODO: write this from scratch
 // component rerender 11 times
 class RightTerritoryForm extends React.Component {
-    static propTypes = {
-        isEdit: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        isEdit: false,
-    };
 
     onSubmit = data => {
         let properValues = getProperTerritoryFormValues(data, this.props.isEdit, this.props.existingTerritoryList, this.props.territoryIndex);
@@ -78,6 +71,10 @@ RightTerritoryForm.propTypes = {
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
     existingTerritoryList: PropTypes.array
+};
+
+RightTerritoryForm.defaultProps = {
+    isEdit: false,
 };
 
 export default RightTerritoryForm;

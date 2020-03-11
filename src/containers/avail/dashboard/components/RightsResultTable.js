@@ -59,42 +59,6 @@ let mapDispatchToProps = {
 };
 
 class RightsResultTable extends React.Component {
-    static propTypes = {
-        autoload: PropTypes.bool,
-        availsMapping: PropTypes.any,
-        tabPage: PropTypes.object,
-        tabPageSort: PropTypes.array,
-        tabPageSelection: PropTypes.object,
-        tabPageLoading: PropTypes.bool,
-        manualRightsResultPageUpdate: PropTypes.func,
-        manualRightsResultPageSort: PropTypes.func,
-        manualRightsResultPageSelect: PropTypes.func,
-        manualRightsResultPageLoading: PropTypes.func,
-        columnsOrder: PropTypes.array,
-        columns: PropTypes.array,
-        columnsSize: PropTypes.object,
-        updateManualRightsEntryColumns: PropTypes.func,
-        showSelectedAvails: PropTypes.bool,
-        fromServer: PropTypes.bool,
-        hidden: PropTypes.bool,
-        nav: PropTypes.object,
-        autoRefresh: PropTypes.number,
-        mode: PropTypes.string,
-        selectedTab: PropTypes.string,
-        searchCriteria: PropTypes.object,
-        onTableLoaded: PropTypes.func,
-        historyData: PropTypes.object,
-        status: PropTypes.string,
-        locale: PropTypes.string,
-    };
-
-    static defaultProps = {
-        autoload: true,
-        autoRefresh: 0,
-        mode: defaultMode,
-        searchCriteria: {},
-        locale: 'en-us',
-    };
 
     table = null;
 
@@ -690,6 +654,41 @@ class RightsResultTable extends React.Component {
         );
     }
 }
+RightsResultTable.propTypes = {
+    autoload: PropTypes.bool,
+    availsMapping: PropTypes.any,
+    tabPage: PropTypes.object,
+    tabPageSort: PropTypes.array,
+    tabPageSelection: PropTypes.object,
+    tabPageLoading: PropTypes.bool,
+    manualRightsResultPageUpdate: PropTypes.func,
+    manualRightsResultPageSort: PropTypes.func,
+    manualRightsResultPageSelect: PropTypes.func,
+    manualRightsResultPageLoading: PropTypes.func,
+    columnsOrder: PropTypes.array,
+    columns: PropTypes.array,
+    columnsSize: PropTypes.object,
+    updateManualRightsEntryColumns: PropTypes.func,
+    showSelectedAvails: PropTypes.bool,
+    fromServer: PropTypes.bool,
+    hidden: PropTypes.bool,
+    nav: PropTypes.object,
+    autoRefresh: PropTypes.number,
+    mode: PropTypes.string,
+    selectedTab: PropTypes.string,
+    searchCriteria: PropTypes.object,
+    onTableLoaded: PropTypes.func,
+    historyData: PropTypes.object,
+    status: PropTypes.string,
+    locale: PropTypes.string,
+};
 
+RightsResultTable.defaultProps = {
+    autoload: true,
+    autoRefresh: 0,
+    mode: defaultMode,
+    searchCriteria: {},
+    locale: 'en-us',
+};
 export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
 

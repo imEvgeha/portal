@@ -33,17 +33,6 @@ const mapStateToProps = state => {
 // TODO: Way too many renders
 class RightCreate extends React.Component {
 
-    static propTypes = {
-        selectValues: PropTypes.object,
-        availsMapping: PropTypes.any,
-        blocking: PropTypes.bool,
-        match: PropTypes.object
-    };
-
-    static contextTypes = {
-        router: PropTypes.object
-    };
-
     constructor(props) {
         super(props);
 
@@ -345,5 +334,14 @@ class RightCreate extends React.Component {
         );
     }
 }
+RightCreate.propTypes = {
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    blocking: PropTypes.bool,
+    match: PropTypes.object
+};
 
+RightCreate.contextTypes = {
+    router: PropTypes.object
+};
 export default connect(mapStateToProps, null)(RightCreate);

@@ -7,15 +7,6 @@ import withRightsResultsTable from './withRightsResultsTable';
 
 const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent => {
     class ComposedComponent extends Component {
-        static propTypes = {
-            autoload: PropTypes.bool,
-            autoRefresh: PropTypes.number,
-        }
-
-        static defaultProps = {
-            autoload: true,
-            autoRefresh: 0,
-        }
 
         constructor(props) {
             super(props);
@@ -134,4 +125,13 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
     return withRightsResultsTable(ComposedComponent);
 };
 
+withFilteredRights.propTypes = {
+    autoload: PropTypes.bool,
+    autoRefresh: PropTypes.number,
+};
+
+withFilteredRights.defaultProps = {
+    autoload: true,
+    autoRefresh: 0,
+};
 export default withFilteredRights;

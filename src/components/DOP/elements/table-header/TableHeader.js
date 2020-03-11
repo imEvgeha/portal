@@ -11,16 +11,6 @@ import UserTerritories from './territories/UserTerritories';
 
 class TableHeader extends React.Component {
 
-    static propTypes = {
-        table: t.object,
-        promotedRights: t.array,
-        promotedRightsFullData: t.array,
-        updatePromotedRights: t.func,
-        updatePromotedRightsFullData: t.func,
-        selectedTerritories: t.array,
-        useSelectedTerritories: t.bool,
-    };
-
     constructor(props) {
         super(props);
     }
@@ -135,6 +125,16 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     updatePromotedRights,
     updatePromotedRightsFullData
+};
+
+TableHeader.propTypes = {
+    table: t.object,
+    promotedRights: t.array,
+    promotedRightsFullData: t.array,
+    updatePromotedRights: t.func,
+    updatePromotedRightsFullData: t.func,
+    selectedTerritories: t.array,
+    useSelectedTerritories: t.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableHeader);

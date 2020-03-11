@@ -11,10 +11,6 @@ const withLocalRights = (selectedType) => WrappedComponent => {
 
     class LocalRightsResultsTable extends RightsResultsTable {
 
-        static defaultProps = {
-            autoRefresh: 0
-        }
-
         constructor(props) {
             super(props);
 
@@ -121,4 +117,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
     return LocalRightsResultsTable;
 };
 
+withLocalRights.defaultProps = {
+    autoRefresh: 0
+};
 export default withLocalRights;

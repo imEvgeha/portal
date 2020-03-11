@@ -10,15 +10,6 @@ const SECOUND_DELIMETER_POSITION = 5;
 
 class NexusDatePicker extends Component {
 
-    static propTypes = {
-        date: t.any,
-        id: t.string,
-        disabled: t.bool,
-
-        onChange: t.func,
-        handleKeyPress: t.func,
-        onInvalid: t.func,
-    };
 
     prevRawInput = '';
     prevDate = null;
@@ -160,5 +151,16 @@ class NexusDatePicker extends Component {
         );
     }
 }
+
+NexusDatePicker.propTypes = {
+    date: t.any,
+    id: t.string,
+    disabled: t.bool,
+
+    onChange: t.func,
+    handleKeyPress: t.func,
+    onInvalid: t.func,
+};
+
 
 export default NexusDatePicker;

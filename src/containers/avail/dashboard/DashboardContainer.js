@@ -40,10 +40,6 @@ const mapDispatchToProps = {
 
 class DashboardContainer extends React.Component {
 
-    static contextTypes = {
-        router: t.object
-    }
-
     constructor(props) {
         super(props);
         this.state = {};
@@ -184,6 +180,10 @@ DashboardContainer.propTypes = {
     location: t.object,
     match: t.object,
     resultPageShowSelected: t.func
+};
+
+DashboardContainer.contextTypes = {
+    router: t.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

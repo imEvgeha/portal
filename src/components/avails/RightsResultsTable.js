@@ -9,17 +9,6 @@ import {isObject} from '../../util/Common';
 import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
 
 export default class RightsResultsTable extends React.Component {
-    static propTypes = {
-        nav: PropTypes.object,
-        columnsSize: PropTypes.object,
-        columns: PropTypes.array
-    };
-
-    static defaultProps = {
-        nav: null,
-        columnsSize: null,
-        columns: null,
-    };
 
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
@@ -300,4 +289,14 @@ export default class RightsResultsTable extends React.Component {
         }
     }
 }
+RightsResultsTable.propTypes = {
+    nav: PropTypes.object,
+    columnsSize: PropTypes.object,
+    columns: PropTypes.array
+};
 
+RightsResultsTable.defaultProps = {
+    nav: null,
+    columnsSize: null,
+    columns: null,
+};

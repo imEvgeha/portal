@@ -7,28 +7,6 @@ import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
 
 class EditableBaseComponent extends Component {
 
-    static propTypes = {
-        helperComponent: t.object,
-        validate: t.func,
-        value: t.oneOfType([t.string, t.array, t.number]),
-        displayName: t.string,
-        disabled: t.bool,
-        onChange: t.func,
-        priorityDisplay: t.any,
-        showError: t.bool,
-        isArrayOfObject: t.bool,
-        onCancel: t.func,
-        originalFieldList: t.array
-    };
-
-    static defaultProps = {
-        value: null,
-        showError: true,
-        isArrayOfObject: false,
-        onCancel: null,
-        originalFieldList: []
-    }
-
     constructor(props) {
         super(props);
 
@@ -226,4 +204,25 @@ class EditableBaseComponent extends Component {
     }
 }
 
+EditableBaseComponent.propTypes = {
+    helperComponent: t.object,
+    validate: t.func,
+    value: t.oneOfType([t.string, t.array, t.number]),
+    displayName: t.string,
+    disabled: t.bool,
+    onChange: t.func,
+    priorityDisplay: t.any,
+    showError: t.bool,
+    isArrayOfObject: t.bool,
+    onCancel: t.func,
+    originalFieldList: t.array
+};
+
+EditableBaseComponent.defaultProps = {
+    value: null,
+    showError: true,
+    isArrayOfObject: false,
+    onCancel: null,
+    originalFieldList: []
+};
 export default EditableBaseComponent;

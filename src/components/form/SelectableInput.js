@@ -18,27 +18,6 @@ const mapStateToProps = state => {
 
 class SelectableInput extends Component {
 
-    static propTypes = {
-        selectValues: t.object,
-        currentCriteria: t.object,
-
-        id: t.string,
-        saveText: t.string,
-        placeholder: t.string,
-
-        displayName: t.string,
-        dataType: t.string,
-        value: t.object,
-        selected: t.object,
-
-        options: t.array,
-
-        onSelect: t.func,
-        onChange: t.func,
-        onSave: t.func,
-
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -441,4 +420,24 @@ class SelectableInput extends Component {
     }
 }
 
+SelectableInput.propTypes = {
+    selectValues: t.object,
+    currentCriteria: t.object,
+
+    id: t.string,
+    saveText: t.string,
+    placeholder: t.string,
+
+    displayName: t.string,
+    dataType: t.string,
+    value: t.object,
+    selected: t.object,
+
+    options: t.array,
+
+    onSelect: t.func,
+    onChange: t.func,
+    onSave: t.func,
+
+};
 export default connect(mapStateToProps, null)(SelectableInput);

@@ -93,6 +93,6 @@ class HistoryURL extends React.Component {
 
 HistoryURL.contextTypes = {
     router: PropTypes.object,
-}
+};
 
 export default HistoryURL;

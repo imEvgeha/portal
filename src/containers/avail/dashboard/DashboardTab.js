@@ -14,10 +14,6 @@ const mapStateToProps = state => {
 
 class DashboardTab extends React.Component {
 
-    static contextTypes = {
-        router: t.object
-    }
-
     createRight = () => {
         this.context.router.history.push('/avails/rights/create');
     };
@@ -38,5 +34,9 @@ class DashboardTab extends React.Component {
         );
     }
 }
+
+DashboardTab.contextTypes = {
+    router: t.object
+};
 
 export default connect(mapStateToProps, null)(DashboardTab);

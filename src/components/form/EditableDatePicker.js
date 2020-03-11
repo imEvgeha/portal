@@ -7,16 +7,6 @@ import {INVALID_DATE} from '../../constants/messages';
 
 class EditableDatePicker extends Component {
 
-    static propTypes = {
-        validate: t.func,
-        value: t.string,
-        displayName: t.string,
-        disabled: t.bool,
-        onChange: t.func,
-        priorityDisplay: t.any,
-        showTime: t.bool
-    };
-
     constructor(props) {
         const vodDate = props.value;
         super(props);
@@ -175,5 +165,15 @@ class EditableDatePicker extends Component {
         );
     }
 }
+
+EditableDatePicker.propTypes = {
+    validate: t.func,
+    value: t.string,
+    displayName: t.string,
+    disabled: t.bool,
+    onChange: t.func,
+    priorityDisplay: t.any,
+    showTime: t.bool
+};
 
 export default EditableDatePicker;

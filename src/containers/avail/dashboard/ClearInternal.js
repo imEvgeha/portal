@@ -10,12 +10,6 @@ let mapStateToProps = state => {
 };
 class ClearInternal extends Component {
 
-    static propTypes = {
-        showSelectedAvails: t.bool,
-        availTabPageSelected: t.array,
-        clearAllSelected: t.func
-    };
-
     render(){
         if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
             return (
@@ -31,4 +25,11 @@ class ClearInternal extends Component {
         else return '';
     }
 }
+
+ClearInternal.propTypes = {
+    showSelectedAvails: t.bool,
+    availTabPageSelected: t.array,
+    clearAllSelected: t.func
+};
+
 export let Clear = connect(mapStateToProps, null)(ClearInternal);

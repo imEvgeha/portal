@@ -5,11 +5,6 @@ import t from 'prop-types';
 
 class CustomModal extends React.Component {
 
-    static propTypes = {
-        reject: t.func,
-        resolve: t.func,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -81,7 +76,10 @@ class CustomModal extends React.Component {
         );
     }
 }
-
+CustomModal.propTypes = {
+    reject: t.func,
+    resolve: t.func,
+};
 export const saveReportModal = {
     open: (onApprove, onCancel, options) => {
         if (options == null) {

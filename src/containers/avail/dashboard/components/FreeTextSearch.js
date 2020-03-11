@@ -16,14 +16,6 @@ const mapDispatchToProps = {
 
 class FreeTextSearch extends React.Component {
 
-    static propTypes = {
-        searchFormUpdateTextSearch: t.func,
-        onSearch: t.func,
-        containerId: t.string,
-        disabled: t.bool,
-        freeTextSearch: t.object
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -90,4 +82,11 @@ class FreeTextSearch extends React.Component {
     }
 }
 
+FreeTextSearch.propTypes = {
+    searchFormUpdateTextSearch: t.func,
+    onSearch: t.func,
+    containerId: t.string,
+    disabled: t.bool,
+    freeTextSearch: t.object
+};
 export default connect(mapStateToProps, mapDispatchToProps)(FreeTextSearch);

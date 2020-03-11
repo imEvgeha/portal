@@ -9,10 +9,6 @@ let mapStateToProps = state => {
 };
 
 class CheckBoxHeaderInternal extends Component {
-    static propTypes = {
-        tabPageSelection: PropTypes.object,
-        api: PropTypes.object
-    };
 
     constructor(props) {
         super(props);
@@ -54,4 +50,8 @@ class CheckBoxHeaderInternal extends Component {
     }
 }
 
+CheckBoxHeaderInternal.propTypes = {
+    tabPageSelection: PropTypes.object,
+    api: PropTypes.object
+};
 export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);

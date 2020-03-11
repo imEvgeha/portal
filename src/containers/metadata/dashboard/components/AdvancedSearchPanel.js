@@ -28,14 +28,6 @@ const mapDispatchToProps = {
 const ignoreForCloseable = ['rowInvalid'];
 
 class AdvancedSearchPanel extends React.Component {
-    static propTypes = {
-        searchCriteria: t.object,
-        titleTabPage: t.object,
-        onSearch: t.func,
-        searchFormUpdateAdvancedSearchCriteria: t.func,
-        onToggleAdvancedSearch: t.func,
-        hide: t.bool,
-    };
 
     constructor(props) {
         super(props);
@@ -285,4 +277,12 @@ class AdvancedSearchPanel extends React.Component {
     }
 }
 
+AdvancedSearchPanel.propTypes = {
+    searchCriteria: t.object,
+    titleTabPage: t.object,
+    onSearch: t.func,
+    searchFormUpdateAdvancedSearchCriteria: t.func,
+    onToggleAdvancedSearch: t.func,
+    hide: t.bool,
+};
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);

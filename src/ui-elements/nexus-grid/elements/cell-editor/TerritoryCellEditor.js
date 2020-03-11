@@ -14,8 +14,6 @@ import {NexusModalContext} from '../../../../ui-elements/nexus-modal/NexusModal'
 
 class TerritoryCellEditor extends Component {
 
-    static contextType = NexusModalContext;
-
     constructor(props) {
         super(props);
         this.state = {
@@ -70,6 +68,8 @@ TerritoryCellEditor.defaultProps = {
     options: [],
     value: null
 };
+
+TerritoryCellEditor.contextType = NexusModalContext;
 
 export default TerritoryCellEditor;
 

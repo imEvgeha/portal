@@ -13,13 +13,6 @@ import {CHECKBOX_HEADER, PLAN_TERRITORY_HEADER, SELECT_IGNORE_HEADER} from '../.
 export default function withSelectIgnoreMark(WrappedComponent) {
     // anti-pattern: we should use composition not inheritance inside React apps
     class ComposedComponent extends SelectionTable {
-        static propTypes = {
-            ...WrappedComponent.propTypes,
-        }
-
-        static defaultProps = {
-            ...WrappedComponent.propTypes,
-        }
 
         static getDerivedStateFromProps(props, state) {
             if (Array.isArray(props.columns) && props.columns.length !== state.columns.length) {
@@ -165,7 +158,13 @@ export default function withSelectIgnoreMark(WrappedComponent) {
             );
         }
     }
+    ComposedComponent.propTypes = {
+        ...WrappedComponent.propTypes,
+    };
 
+    ComposedComponent.defaultProps = {
+        ...WrappedComponent.propTypes,
+    };
     const mapStateToProps = ({dopReducer, root}) => ({
         availsMapping: root.availsMapping,
         promotedRights: dopReducer.session.promotedRights,

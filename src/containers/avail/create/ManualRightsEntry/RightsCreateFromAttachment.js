@@ -49,18 +49,6 @@ class RightsCreateFromAttachment extends React.Component {
     // if component gets unmounted during call execution to prevent setting state on an unmounted component
     _isMounted = false;
 
-    static propTypes = {
-        match: t.object,
-        location: t.object,
-        availsMapping: t.any,
-        selectedTab: t.string,
-        updateManualRightsEntryColumns: t.func,
-        columns: t.array,
-    };
-
-    static contextTypes = {
-        router: t.object
-    };
 
     constructor(props) {
         super(props);
@@ -297,5 +285,16 @@ class RightsCreateFromAttachment extends React.Component {
         );
     }
 }
+RightsCreateFromAttachment.propTypes = {
+    match: t.object,
+    location: t.object,
+    availsMapping: t.any,
+    selectedTab: t.string,
+    updateManualRightsEntryColumns: t.func,
+    columns: t.array,
+};
 
+RightsCreateFromAttachment.contextTypes = {
+    router: t.object
+};
 export default connect(mapStateToProps, mapDispatchToProps)(RightsCreateFromAttachment);

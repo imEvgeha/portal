@@ -4,18 +4,6 @@ import {Button} from 'reactstrap';
 
 export default class CloseableBtn extends Component {
 
-    static propTypes = {
-        title: t.string,
-        id: t.string,
-        value: t.string,
-        disabled: t.bool,
-        highlighted: t.bool,
-        style: t.object,
-
-        onClick: t.func,
-        onClose: t.func,
-    };
-
     constructor(props) {
         super(props);
         this.state = {};
@@ -56,3 +44,15 @@ export default class CloseableBtn extends Component {
         );
     }
 }
+
+CloseableBtn.propTypes = {
+    title: t.string,
+    id: t.string,
+    value: t.string,
+    disabled: t.bool,
+    highlighted: t.bool,
+    style: t.object,
+
+    onClick: t.func,
+    onClose: t.func,
+};

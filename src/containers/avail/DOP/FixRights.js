@@ -37,7 +37,7 @@ FixRights.propTypes = {
 
 FixRights.contextTypes = {
     router: t.object
-}
+};
 
 class FixRights extends React.Component {
 

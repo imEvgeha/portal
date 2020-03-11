@@ -6,14 +6,6 @@ import t from 'prop-types';
 
 class AlertModal extends React.Component{
 
-    static propTypes = {
-        description: t.string,
-        className: t.string,
-        message: t.string,
-        buttonLabel: t.string,
-        accept: t.func
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -23,11 +15,6 @@ class AlertModal extends React.Component{
         this.toggle = this.toggle.bind(this);
         this.accept = this.accept.bind(this);
     }
-
-    static defaultProps = {
-        ...Component.defaultProps,
-        buttonLabel: 'Ok',
-    };
 
     toggle() {
         this.setState({
@@ -79,6 +66,19 @@ export const alertModal = {
             });
         };
     }
+};
+
+AlertModal.propTypes = {
+    description: t.string,
+    className: t.string,
+    message: t.string,
+    buttonLabel: t.string,
+    accept: t.func
+};
+
+AlertModal.defaultProps = {
+    ...Component.defaultProps,
+    buttonLabel: 'Ok',
 };
 
 export default AlertModal;

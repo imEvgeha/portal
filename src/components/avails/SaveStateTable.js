@@ -14,10 +14,6 @@ export default function withRedux(WrappedComponent){
 
     return connect(mapStateToProps, null)(class extends React.Component {
 
-        static propTypes = {
-            availTabPageLoading: t.bool,
-        };
-
         render(){
             return (
                 <WrappedComponent
@@ -42,3 +38,6 @@ export default function withRedux(WrappedComponent){
         }
     });
 }
+withRedux.propTypes = {
+    availTabPageLoading: t.bool,
+};
