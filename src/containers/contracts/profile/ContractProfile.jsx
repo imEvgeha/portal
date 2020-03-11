@@ -45,12 +45,15 @@ const style = {
 };
 
 class UserProfile extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: [1, 2],
+            simpleSelect: '2',
+            tags: ['Horror', 'Sci-Fi', 'Metadata']
+        };
+    }
 
-    state = {
-        checked: [1, 2],
-        simpleSelect: '2',
-        tags: ['Horror', 'Sci-Fi', 'Metadata']
-    };
 
     handleToggle(value) {
         const { checked } = this.state;
