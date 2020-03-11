@@ -31,8 +31,6 @@ const style = {
 };
 
 class Dashboard extends React.Component {
-    state = {
-    };
 
     render() {
         const { classes } = this.props;

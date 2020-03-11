@@ -9,12 +9,6 @@ let mapStateToProps = state => {
     };
 };
 
-SelectedInternal.propTypes = {
-    showSelectedAvails: t.bool,
-    availTabPageSelected: t.array,
-    toggleShowSelected: t.func
-};
-
 class SelectedInternal extends Component {
 
     render(){
@@ -42,4 +36,11 @@ class SelectedInternal extends Component {
         return '';
     }
 }
+
+SelectedInternal.propTypes = {
+    showSelectedAvails: t.bool,
+    availTabPageSelected: t.array,
+    toggleShowSelected: t.func
+};
+
 export let Selected = connect(mapStateToProps, null)(SelectedInternal);

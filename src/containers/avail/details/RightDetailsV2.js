@@ -35,24 +35,6 @@ const mapStateToProps = state => {
     };
 };
 
-RightDetails.propTypes = {
-    selectValues: PropTypes.object,
-    availsMapping: PropTypes.any,
-    match: PropTypes.any,
-    blocking: PropTypes.bool,
-};
-
-RightDetails.defaultProps = {
-    selectValues: null,
-    availsMapping: null,
-    match: {},
-    blocking: null,
-};
-
-RightDetails.contextTypes = {
-    router: PropTypes.object,
-};
-
 // TODO: Way too many renders
 class RightDetails extends React.Component {
 
@@ -441,5 +423,23 @@ class RightDetails extends React.Component {
         );
     }
 }
+
+RightDetails.propTypes = {
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    match: PropTypes.any,
+    blocking: PropTypes.bool,
+};
+
+RightDetails.defaultProps = {
+    selectValues: null,
+    availsMapping: null,
+    match: {},
+    blocking: null,
+};
+
+RightDetails.contextTypes = {
+    router: PropTypes.object,
+};
 
 export default connect(mapStateToProps)(RightDetails);
