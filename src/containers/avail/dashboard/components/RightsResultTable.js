@@ -16,7 +16,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './RightsResultTable.scss';
 
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRightsResultPageLoading, manualRightsResultPageSort, updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
