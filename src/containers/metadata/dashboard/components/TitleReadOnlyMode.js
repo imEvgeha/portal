@@ -31,6 +31,7 @@ class TitleReadOnlyMode extends Component {
             seasonPremiere,
             seasonFinale,
             contentType,
+            contentSubType,
             originalLanguage,
             episodic,
             parentIds
@@ -65,6 +66,15 @@ class TitleReadOnlyMode extends Component {
                                     <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                                 </Col>
                             </Row>
+                            {contentSubType && (
+                                <Row>
+                                    <Col>
+                                        <Alert color="light" id="titleSeriesName">
+                                            <b>Content SubType: </b>{contentSubType.substring(0, 1).toUpperCase() + contentSubType.substring(1, contentSubType.length).toLowerCase()}
+                                        </Alert>
+                                    </Col>
+                                </Row>
+                            )}
                             <Fragment>
                                 <Row>
                                     {seriesTitleName && (
