@@ -68,18 +68,10 @@ Ingest.propTypes = {
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
-    filterByStatus: () => {
-  return null;
-},
-    deselectIngest: () => {
-  return null;
-},
-    downloadIngestEmail: () => {
-  return null;
-},
-    downloadIngestFile: () => {
-  return null;
-},
+    filterByStatus: () => null,
+    deselectIngest: () => null,
+    downloadIngestEmail: () => null,
+    downloadIngestFile: () => null,
 };
 
 export default Ingest;

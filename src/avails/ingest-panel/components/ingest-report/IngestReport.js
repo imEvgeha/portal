@@ -58,9 +58,7 @@ IngestReport.propTypes = {
 IngestReport.defaultProps = {
     report: {},
     showErrorMessage: true,
-    filterClick: () => {
-  return null;
-},
+    filterClick: () => null,
     ingestId: ''
 };
 

@@ -102,15 +102,9 @@ IngestPanel.defaultProps = {
     totalIngests: 0,
     selectedIngest: {},
     selectedAttachmentId: '',
-    onFiltersChange: () => {
-  return null;
-},
-    fetchNextPage: () => {
-  return null;
-},
-    ingestClick: () => {
-  return null;
-},
+    onFiltersChange: () => null,
+    fetchNextPage: () => null,
+    ingestClick: () => null,
 };
 
 const mapStateToProps = () => {

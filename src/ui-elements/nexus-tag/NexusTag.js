@@ -75,12 +75,8 @@ NexusTag.propTypes = {
 
 NexusTag.defaultProps = {
     tagState: '',
-    onClick: () => {
-  return null;
-},
-    onRemove: () => {
-  return null;
-},
+    onClick: () => null,
+    onRemove: () => null,
 };
 
 export default NexusTag;

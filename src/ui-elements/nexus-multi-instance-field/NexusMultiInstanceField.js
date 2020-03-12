@@ -244,9 +244,7 @@ NexusMultiInstanceField.defaultProps = {
     existingItems: [],
     isWithInlineEdit: false,
     isReadOnly: false,
-    onConfirm: () => {
-  return null;
-},
+    onConfirm: () => null,
     isUsingModal: true,
     specialCreate: false
 };

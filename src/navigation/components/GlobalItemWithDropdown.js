@@ -25,9 +25,7 @@ GlobalItemWithDropdown.propTypes = {
 
 GlobalItemWithDropdown.defaultProps = {
     items: {},
-    trigger: () => {
-  return null;
-},
+    trigger: () => null,
 };
 
 export default GlobalItemWithDropdown;

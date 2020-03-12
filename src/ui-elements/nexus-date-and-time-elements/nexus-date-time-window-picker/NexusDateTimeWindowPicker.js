@@ -215,12 +215,8 @@ NexusDateTimeWindowPicker.defaultProps = {
     labels: [],
     isTimestamp: true,
     isReturningTime: true,
-    onChangeAny: () => {
-  return null;
-},
-    onChange: () => {
-  return null;
-},
+    onChangeAny: () => null,
+    onChange: () => null,
     allowClear: false
 };
 

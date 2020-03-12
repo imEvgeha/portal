@@ -115,9 +115,7 @@ TitlesList.propTypes = {
 
 TitlesList.defaultProps = {
     columnDefs: [],
-    mergeTitles: () => {
-  return null;
-},
+    mergeTitles: () => null,
     queryParams: {},
 };
 

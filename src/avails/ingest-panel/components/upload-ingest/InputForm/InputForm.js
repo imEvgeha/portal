@@ -153,12 +153,8 @@ InputForm.propTypes = {
 
 InputForm.defaultProps = {
     licensors: [],
-    uploadIngest: () => {
-  return null;
-},
-    browseClick: () => {
-  return null;
-},
+    uploadIngest: () => null,
+    browseClick: () => null,
     file: {},
     isUploading: false
 };

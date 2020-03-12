@@ -159,9 +159,7 @@ DashboardLatestAvailsCard.propTypes = {
 };
 
 DashboardLatestAvailsCard.defaultProps = {
-    push: () => {
-  return null;
-},
+    push: () => null,
 };
 
 export default DashboardLatestAvailsCard;

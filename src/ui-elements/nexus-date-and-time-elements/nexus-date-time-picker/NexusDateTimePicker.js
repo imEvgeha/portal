@@ -157,9 +157,7 @@ NexusDateTimePicker.defaultProps = {
     isViewModeDisabled: false,
     isTimestamp: false,
     hideLabel: false,
-    onConfirm: () => {
-  return null;
-},
+    onConfirm: () => null,
 };
 
 export default NexusDateTimePicker;

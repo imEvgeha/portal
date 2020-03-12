@@ -36,12 +36,8 @@ PanelHeader.propTypes = {
 };
 
 PanelHeader.defaultProps = {
-    toggleFilters: () => {
-  return null;
-},
-    onFiltersChange: () => {
-  return null;
-},
+    toggleFilters: () => null,
+    onFiltersChange: () => null,
     showFilters: false,
 };
 

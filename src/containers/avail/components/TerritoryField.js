@@ -59,12 +59,8 @@ TerritoryField.propTypes = {
 
 TerritoryField.defaultProps = {
     territory: [],
-    renderChildren: () => {
-  return null;
-},
-    onTagClick: () => {
-  return null;
-},
+    renderChildren: () => null,
+    onTagClick: () => null,
     mappingErrorMessage: {},
     isTableMode: false
 };

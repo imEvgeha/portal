@@ -149,9 +149,7 @@ CandidatesList.propTypes = {
 CandidatesList.defaultProps = {
     queryParams: {},
     columnDefs: [],
-    onCandidatesChange: () => {
-  return null;
-},
+    onCandidatesChange: () => null,
 };
 
 export default CandidatesList;

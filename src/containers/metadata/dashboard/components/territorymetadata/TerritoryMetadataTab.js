@@ -95,9 +95,7 @@ TerritoryMetadataTab.propTypes = {
 
 TerritoryMetadataTab.defaultProps = {
     data: {},
-    getLanguageByCode: () => {
-  return null;
-},
+    getLanguageByCode: () => null,
 };
 
 export default TerritoryMetadataTab;
