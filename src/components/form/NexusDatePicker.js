@@ -135,7 +135,7 @@ class NexusDatePicker extends Component {
     }
 
     render() {
-        const {locale} = store.getState().localeReducer;
+        const {locale} = store.getState().locale;
 
         return (
             <DatePicker

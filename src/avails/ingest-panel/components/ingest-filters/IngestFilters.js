@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select/Select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
-import {NexusDateTimeWindowPicker} from '../../../../ui-elements';
+import {NexusDateTimeWindowPicker} from '../../../../ui/elements';
 import Constants from '../../constants';
 import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';

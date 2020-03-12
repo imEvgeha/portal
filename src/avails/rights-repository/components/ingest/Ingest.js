@@ -8,7 +8,7 @@ import Email from '../../../../assets/email.svg';
 import CrossCircle from '../../../../assets/action-cross-circle.svg';
 import './Ingest.scss';
 import Constants from '../../../ingest-panel/constants';
-import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
+import {NexusTooltip} from '../../../../ui/elements/';
 
 const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
 

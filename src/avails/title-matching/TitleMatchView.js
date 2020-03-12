@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
+import {
+    NexusGrid,
+    NexusTitle,
+} from '../../ui/elements/';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';

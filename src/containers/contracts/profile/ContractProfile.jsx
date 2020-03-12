@@ -35,7 +35,7 @@ import extendedFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/mat
 import regularFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/regularFormsStyle.js';
 import dashboardStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/dashboardStyle.js';
 
-import avatar from '../../../img/contract.png';
+import avatar from '../../../assets/img/contract.png';
 
 const style = {
     ...userProfileStyles,

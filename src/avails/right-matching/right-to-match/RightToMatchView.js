@@ -7,27 +7,38 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import './RightToMatchView.scss';
-import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight, setFoundFocusRightInRightsRepository} from '../rightMatchingActions';
-import * as selectors from '../rightMatchingSelectors';
-import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {getRightToMatchList} from '../rightMatchingService';
-import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
-import {URL} from '../../../util/Common';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineCheckboxSelectionColumn,
     defineActionButtonColumn
-} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
-import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
+} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withToasts from '../../../ui/toast/hoc/withToasts';
+import {
+    NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+} from '../../../ui/toast/constants';
+import {
+    WARNING_TITLE,
+    WARNING_ICON
+} from '../../../ui/elements/nexus-toast-notification/constants';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import {
+    createRightMatchingColumnDefs,
+    createNewRight,
+    fetchRightMatchingFieldSearchCriteria,
+    fetchAndStoreFocusedRight,
+    setFoundFocusRightInRightsRepository
+} from '../rightMatchingActions';
+import * as selectors from '../rightMatchingSelectors';
+import {getRightToMatchList} from '../rightMatchingService';
+import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
+import {URL} from '../../../util/Common';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
-import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
-import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {
     RIGHT_TO_MATCH_TITLE,
     NEW_BUTTON,
@@ -58,12 +69,13 @@ const RightToMatchView = ({
     history,
     location,
     createNewRight,
+    addToast,
+    removeToast,
     setFoundFocusRightInRightsRepo,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
     const [selectedRows, setSelectedRows] = useState([]);
-    const {addToast, removeToast} = useContext(NexusToastNotificationContext);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
@@ -72,10 +84,11 @@ const RightToMatchView = ({
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
-        if (!columnDefs.length) {
+        // TODO: refactor this - unnecessary call
+        if (!columnDefs.length || !mapping) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
         fetchFocusedRight(rightId);
@@ -99,7 +112,7 @@ const RightToMatchView = ({
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
             icon: WARNING_ICON,
             actions: [
-                {content:'Cancel', onClick: removeToast},
+                {content:'Cancel', onClick: () => removeToast()},
                 {content:'OK', onClick: onDeclareNewRight}
             ],
             isWithOverlay: true,
@@ -115,7 +128,9 @@ const RightToMatchView = ({
         );
     };
 
-    const actionNewButtonColumnDef = defineActionButtonColumn({field: 'buttons', cellRendererFramework: createNewButtonCellRenderer});
+    const actionNewButtonColumnDef = defineActionButtonColumn({
+        field: 'buttons', cellRendererFramework: createNewButtonCellRenderer
+    });
     const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
@@ -216,29 +231,27 @@ const RightToMatchView = ({
 };
 
 RightToMatchView.propTypes = {
-    history: PropTypes.object,
-    match: PropTypes.object,
-    location: PropTypes.object,
     fieldSearchCriteria: PropTypes.object,
     focusedRight: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
     createNewRight: PropTypes.func,
+    addToast: PropTypes.func,
+    removeToast: PropTypes.func,
     setFoundFocusRightInRightsRepo: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
 };
 
 RightToMatchView.defaultProps = {
-    match: {},
-    history: null,
-    location: {},
     fieldSearchCriteria: null,
     focusedRight: null,
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
     createNewRight: null,
+    addToast: () => null,
+    removeToast: () => null,
     columnDefs: [],
     mapping: [],
 };
@@ -249,11 +262,11 @@ const createMapStateToProps = () => {
     const fieldSearchCriteriaSelector = selectors.createFieldSearchCriteriaSelector();
     const focusedRightSelector = selectors.createFocusedRightSelector();
 
-    return (state, props) => ({
-        columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: availsMappingSelector(state, props),
-        fieldSearchCriteria: fieldSearchCriteriaSelector(state, props),
-        focusedRight: focusedRightSelector(state, props),
+    return (state) => ({
+        columnDefs: rightMatchingColumnDefsSelector(state),
+        mapping: availsMappingSelector(state),
+        fieldSearchCriteria: fieldSearchCriteriaSelector(state),
+        focusedRight: focusedRightSelector(state),
     });
 };
 
@@ -265,5 +278,8 @@ const mapDispatchToProps = (dispatch) => ({
     setFoundFocusRightInRightsRepo: payload => dispatch(setFoundFocusRightInRightsRepository(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchView); // eslint-disable-line
+export default compose(
+    withToasts,
+    connect(createMapStateToProps, mapDispatchToProps) // eslint-disable-line
+)(RightToMatchView);
 

@@ -4,21 +4,21 @@ import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
-import {NexusTitle, NexusGrid} from '../../ui-elements/';
+import {NexusTitle, NexusGrid} from '../../ui/elements/';
 import {
     TITLE,
     SECTION_MESSAGE,
     FOCUSED_TITLE,
     SAVE_BTN,
 } from './constants';
+import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
+import {defineEpisodeAndSeasonNumberColumn} from '../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
 import {fetchTitle, reconcileTitles} from '../metadataActions';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import * as selectors from '../metadataSelectors';
 import {getColumnDefs} from '../../avails/title-matching/titleMatchingSelectors';
-import {defineEpisodeAndSeasonNumberColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
-import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
 import CandidatesList from './components/CandidatesList';
-import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
 import {getRepositoryCell} from '../../avails/utils';
 
 const LegacyTitleReconciliationView = ({

@@ -10,14 +10,12 @@ import SelectRightsPlanning  from './containers/avail/DOP/SelectRightsPlanning';
 import AvailIngestHistoryContainer from './containers/avail/ingest-history/AvailIngestHistoryContainer';
 import MetadataDashboardContainer from './containers/metadata/dashboard/DashboardContainer';
 import {canRender} from './ability';
-import Welcome from './containers/Welcome';
 import TitleEdit from './containers/metadata/dashboard/components/TitleEdit';
 import ContractProfile from './containers/contracts/profile/ContractProfile.jsx';
 import Contract from './containers/contracts/search/Contract.jsx';
 import Media from './containers/media/search/Media.js';
 import Settings from './containers/settings/Settings';
 import RightMatchingView from './avails/right-matching/RightMatchingView';
-import NotFound from './static-page-view/NotFound';
 import RightToMatchView from './avails/right-matching/right-to-match/RightToMatchView';
 import MatchRightView from './avails/right-matching/match-rights/MatchRightsView';
 import TitleMatchView from './avails/title-matching/TitleMatchView';
@@ -25,6 +23,8 @@ import TitleMatchReview from './avails/title-matching/TitleMatchReview/TitleMatc
 import AvailsView from './avails/AvailsView';
 import LegacyTitleReconciliationView from './metadata/legacy-title-reconciliation/LegacyTitleReconciliationView';
 import LegacyTitleReconciliationReview from './metadata/legacy-title-reconciliation/review/LegacyTitleReconciliationReview';
+import Welcome from './static-pages/Welcome';
+import NotFound from './static-pages/NotFound';
 
 const routes = (
     <Switch>

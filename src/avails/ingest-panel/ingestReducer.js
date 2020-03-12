@@ -1,10 +1,11 @@
-import actionTypes from './ingestActionTypes';
+import * as actionTypes from './ingestActionTypes';
 
 const initialState = {
-    ingests: [],
-    totalIngests: 0,
-    selectedIngest: null,
-    isUploading: false,
+    list: {},
+    page: 0,
+    size: 0,
+    total: 0,
+    selectedIngestId: null,
     selectedAttachmentId: null
 };
 
@@ -13,24 +14,22 @@ const ingestReducer = (state = initialState, action = {}) => {
     switch(type) {
         case actionTypes.FETCH_INGESTS_SUCCESS:
             return {
-            ...state,
-            ingests: payload.data,
-            totalIngests: payload.total
-        };
+                ...state,
+                list: payload.data,
+                total: payload.total,
+            };
         case actionTypes.FETCH_NEXT_PAGE_SUCCESS:
             return {
-            ...state,
-            ingests: state.ingests.concat(payload)
-        };
+                ...state,
+                list: {
+                    ...state.list,
+                    ...payload
+                }
+            };
         case actionTypes.UPDATE_SELECTED_INGEST:
             return {
             ...state,
-            selectedIngest: payload
-        };
-        case actionTypes.IS_UPLOADING:
-            return {
-            ...state,
-            isUploading: payload
+            selectedIngestId: payload.id,
         };
         case actionTypes.UPDATE_SELECTED_ATTACHMENT_ID:
             return {
@@ -41,7 +40,7 @@ const ingestReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 selectedAttachmentId: null,
-                selectedIngest: null
+                selectedIngestId: null,
             };
         default:
             return state;

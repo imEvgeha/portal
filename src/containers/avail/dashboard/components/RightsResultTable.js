@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 import config from 'react-global-configuration';
 
 // image import
-import LoadingGif from '../../../../img/loading.gif';
+import LoadingGif from '../../../../assets/img/loading.gif';
 
 import RightsURL from '../../util/RightsURL';
 
@@ -21,7 +21,7 @@ import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRights
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
 import {getLocale} from '../../../../stores/selectors/localization/localeSelector';
-import {TIMESTAMP_FORMAT} from '../../../../ui-elements/nexus-date-and-time-elements/constants';
+import {TIMESTAMP_FORMAT} from '../../../../ui/elements/nexus-date-and-time-elements/constants';
 
 const colDef = [];
 let registeredOnSelect= false;

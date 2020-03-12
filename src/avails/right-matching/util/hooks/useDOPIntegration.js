@@ -1,7 +1,7 @@
 import {useEffect, useContext} from 'react';
 import useLocalStorage from '../../../../util/hooks/useLocalStorage';
 import DOP from '../../../../util/DOP';
-import {NexusModalContext} from '../../../../ui-elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '../../../../ui/elements/nexus-modal/NexusModal';
 
 const DOP_POP_UP_TITLE = 'Right Matching';
 const DOP_POP_UP_MESSAGE = 'Please, keep in mind not all rights have been matched!';

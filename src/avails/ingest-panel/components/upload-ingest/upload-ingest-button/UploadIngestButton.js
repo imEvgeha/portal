@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import config from 'react-global-configuration';
 import Add from '../../../../../assets/action-add.svg';
-import {NexusModalContext} from '../../../../../ui-elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import InputForm from '../InputForm/InputForm';
 import './UploadIngestButton.scss';
 

@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import './ActionCellRenderer.scss';
-import CustomActionsCellRenderer
-    from '../../../../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import NexusTooltip from '../../../../../../ui-elements/nexus-tooltip/NexusTooltip';
+import CustomActionsCellRenderer from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {NexusTooltip} from '../../../../../../ui/elements/';
 import {storeTitle} from '../../../../../../metadata/metadataActions';
 import {getRepositoryName} from '../../../../../../avails/utils';
 import TitleSystems from '../../../../../../constants/metadata/systems';

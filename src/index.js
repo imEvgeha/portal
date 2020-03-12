@@ -28,7 +28,7 @@ axios.get('/config.json').then(response => {
     );
 });
 
-import React from 'react';
+import React, {Fragment} from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 
@@ -41,10 +41,10 @@ import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
-import NexusToastNotificationProvider from './ui-elements/nexus-toast-notification/NexusToastNotificationProvider';
-import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
-import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
+import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
+import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
+import Toast from './ui/toast/Toast';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
@@ -56,11 +56,12 @@ const app = (
     <Provider store={store}>
         <CustomIntlProvider>
             <NexusOverlayProvider>
-                <NexusToastNotificationProvider>
-                    <NexusModalProvider>
+                <NexusModalProvider>
+                    <>
+                        <Toast />
                         <AppLayout history={history} />
-                    </NexusModalProvider>
-                </NexusToastNotificationProvider>
+                    </>
+                </NexusModalProvider>
             </NexusOverlayProvider>
         </CustomIntlProvider>
     </Provider>

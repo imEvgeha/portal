@@ -6,7 +6,7 @@ import { Label } from '@atlaskit/field-base';
 import Lozenge from '@atlaskit/lozenge';
 import PersonListContainer from './PersonListContainer';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import DefaultUserIcon from '../../../../../img/default-user.png';
+import DefaultUserIcon from '../../../../../assets/img/default-user.png';
 import CharacterModal from './CharacterModal';
 import { Row, Col } from 'reactstrap';
 import { 

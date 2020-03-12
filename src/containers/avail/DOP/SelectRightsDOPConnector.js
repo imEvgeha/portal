@@ -6,7 +6,7 @@ import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import DOP from '../../../util/DOP';
 import {rightsService} from '../service/RightsService';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
-import {NexusModalContext} from '../../../ui-elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 
 const DOP_POP_UP_TITLE = 'Select rights planning';
 const DOP_POP_UP_MESSAGE = 'No rights selected';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
+import {NexusTag} from '../../../ui/elements/';
 import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './TerritoryField.scss';

@@ -1,8 +1,9 @@
 const APP_STATE = 'nexusState';
+const APP_STATE_VERSION = '1.0';
 
 export const loadAppState = () => {
     try {
-        const serializedState = localStorage.getItem(APP_STATE);
+        const serializedState = localStorage.getItem(`${APP_STATE}-${APP_STATE_VERSION}`);
         if (serializedState === null) {
             return undefined;
         }
@@ -15,6 +16,6 @@ export const loadAppState = () => {
 export const saveAppState = state => {
     try {
         const serializedState = JSON.stringify(state);
-        localStorage.setItem(APP_STATE, serializedState);
+        localStorage.setItem(`${APP_STATE}-${APP_STATE_VERSION}`, serializedState);
     } catch (e) {}
 };

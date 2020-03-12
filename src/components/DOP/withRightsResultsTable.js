@@ -5,8 +5,8 @@ import {useIntl} from 'react-intl';
 import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
-import LoadingGif from '../../img/loading.gif';
-import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
+import LoadingGif from '../../assets/img/loading.gif';
+import {TIMESTAMP_FORMAT} from '../../ui/elements/nexus-date-and-time-elements/constants';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
