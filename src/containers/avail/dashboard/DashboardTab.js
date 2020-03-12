@@ -1,7 +1,7 @@
 import React from 'react';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import {Can} from '../../../../src/ability';
 import './DashboardContainer.scss';

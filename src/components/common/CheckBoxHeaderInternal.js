@@ -1,6 +1,6 @@
 import React from 'react';
 import {Component} from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 
 let mapStateToProps = state => {
