@@ -13,7 +13,7 @@ import {getProperTerritoryFormValues} from './utils';
 class RightTerritoryForm extends React.Component {
 
     onSubmit = data => {
-        let properValues = getProperTerritoryFormValues(data, this.props.isEdit, this.props.existingTerritoryList, this.props.territoryIndex);
+        const properValues = getProperTerritoryFormValues(data, this.props.isEdit, this.props.existingTerritoryList, this.props.territoryIndex);
         if (properValues) {
             this.props.onSubmit(properValues);
             this.props.onClose();

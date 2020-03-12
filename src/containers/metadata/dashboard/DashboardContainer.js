@@ -139,7 +139,7 @@ class DashboardContainer extends React.Component {
     }
 
     cleanSelection() {
-        let titleTabPageSelection = {
+        const titleTabPageSelection = {
             selected: this.props.selected,
             selectAll: false
         };

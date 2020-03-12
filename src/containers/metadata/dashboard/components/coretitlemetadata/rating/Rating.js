@@ -28,7 +28,7 @@ class Rating extends Component {
 
     getAdvisoryNameByCode = (code) => {
         if (this.props.configAdvisoryCode) {
-            let found = this.props.configAdvisoryCode.value.find(e => e.code === code);
+            const found = this.props.configAdvisoryCode.value.find(e => e.code === code);
             if (found) {
                 return found.name;
             }
@@ -44,7 +44,7 @@ class Rating extends Component {
 
     handleRatingSystemValue = (e) => {
         const rating = e.target.value;
-        let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
+        const newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
         this.setState({
             filteredRatings: newRatings
         });

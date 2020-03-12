@@ -24,7 +24,7 @@ class RatingCreateTab extends Component {
     }
 
     handleRatingSystemChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.ratingsForCreate,
             ratingSystem: newValue.target.value,
             rating: null,
@@ -51,7 +51,7 @@ class RatingCreateTab extends Component {
 
 
     handleRatingsChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.ratingsForCreate,
             rating: newValue.target.value
         };
@@ -74,7 +74,7 @@ class RatingCreateTab extends Component {
     };
 
     handleAdvisoryCodesChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.ratingsForCreate,
             advisoriesCode: newValue.map(e => e.value)
         };
@@ -87,7 +87,7 @@ class RatingCreateTab extends Component {
     };
 
     handleAdvisoriesChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.ratingsForCreate,
             advisoriesFreeText: newValue.target.value
         };

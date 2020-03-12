@@ -7,7 +7,7 @@ import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
 
 
-let Bundle = ({id, ingestType, received, provider, attachments, selectedAttachmentId, ingestClick}) => {
+const Bundle = ({id, ingestType, received, provider, attachments, selectedAttachmentId, ingestClick}) => {
     const [showIngests, setShowIngests] = useState(false);
 
     const onBundleClick = () => setShowIngests(!showIngests);

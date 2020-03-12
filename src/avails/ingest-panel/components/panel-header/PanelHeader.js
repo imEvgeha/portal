@@ -6,7 +6,7 @@ import FilterIcon from '../../../../assets/filter.svg';
 import IngestFilters from '../ingest-filters/IngestFilters';
 import './PanelHeader.scss';
 
-let PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
+const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
     return (
         <>
             <div className='ingest-header'>

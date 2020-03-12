@@ -18,7 +18,7 @@ import {
 } from '../constants';
 import CustomIntlProvider from '../../../layout/CustomIntlProvider';
 
-let NexusDateTimeWindowPicker = ({
+const NexusDateTimeWindowPicker = ({
     label,
     labels,
     isUsingTime,

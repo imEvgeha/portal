@@ -10,7 +10,7 @@ import * as selectors from '../../../rightMatchingSelectors';
 import {URL, minTwoDigits} from '../../../../../util/Common';
 import {RIGHT_PAGE_SIZE} from '../../../../../constants/rightFetching';
 
-let RightToMatchNavigation = ({
+const RightToMatchNavigation = ({
     searchParams, 
     focusedRightId, 
     fetchRightMatchDataUntilFindId, 
@@ -65,7 +65,7 @@ let RightToMatchNavigation = ({
         let navigationData = null;
         loop:
             for (let i = 0; i < pages.length; i++) {
-                let items = rightMatchPageData.pages[pages[i]];
+                const items = rightMatchPageData.pages[pages[i]];
                 for (let j = 0; j < items.length; j++) {
                     if (items[j] === focusedRightId) {
                         const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);

@@ -9,7 +9,7 @@ import {storeTitle} from '../../../../../../metadata/metadataActions';
 import {getRepositoryName} from '../../../../../../avails/utils';
 import TitleSystems from '../../../../../../constants/metadata/systems';
 
-let ActionCellRenderer = ({data, storeTitle}) => {
+const ActionCellRenderer = ({data, storeTitle}) => {
 
     const [isMovidaOrVz, setIsMovidaOrVz] = useState(false);
 

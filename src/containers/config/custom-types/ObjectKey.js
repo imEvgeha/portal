@@ -10,7 +10,7 @@ import Textfield  from '@atlaskit/textfield';
 import InlineEdit from '@atlaskit/inline-edit';
 import PropTypes from 'prop-types';
 
-let createFormForItem = (field,
+const createFormForItem = (field,
     item,
     targetIndex,
     key,
@@ -89,8 +89,8 @@ export default class ObjectKey extends Component {
     }
 
     addSubItem(itemId){
-        let { items } = this.state;
-        let item = items.find(({id}) => id === itemId);
+        const { items } = this.state;
+        const item = items.find(({id}) => id === itemId);
         if(item){
             item.data.push({id: uniqueId(), data: {}});
         }
@@ -106,8 +106,8 @@ export default class ObjectKey extends Component {
     }
 
     removeSubItem(itemId, subId) {
-        let { items } = this.state;
-        let item = items.find(({id}) => id === itemId);
+        const { items } = this.state;
+        const item = items.find(({id}) => id === itemId);
         if(item){
             item.data = item.data.filter(subItem => subItem.id !== subId);
         }

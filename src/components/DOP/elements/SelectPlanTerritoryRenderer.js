@@ -2,7 +2,7 @@ import React from 'react';
 import t from 'prop-types';
 import {connect} from 'react-redux';
 
-let SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
+const SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
     const right = promotedRights.find(el => el.rightId === node.id);
     const territories = right && right.territories;
     let result = territories && territories.join(', ');

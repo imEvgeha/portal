@@ -15,7 +15,7 @@ import {
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
-let NexusDatePicker = ({
+const NexusDatePicker = ({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
@@ -65,7 +65,7 @@ let NexusDatePicker = ({
 
     const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
-    let DatePickerComponent = (isReadOnly) => {
+    const DatePickerComponent = (isReadOnly) => {
   return (
       <>
           {!hideLabel && label && (

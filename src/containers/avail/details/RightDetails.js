@@ -140,7 +140,7 @@ class RightDetails extends React.Component {
                         const affiliates = [
                             ...affiliateList,
                             ...affiliateErrors.map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateErrors[index];
@@ -169,7 +169,7 @@ class RightDetails extends React.Component {
                         const affiliatesExclude = [
                             ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateExcludeErrors[index];
@@ -211,7 +211,7 @@ class RightDetails extends React.Component {
                             ...languageAudioTypesErrors
                             .filter(({fieldName}) => fieldName.includes('.language'))
                             .map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = languageAudioTypesErrors[index];
@@ -225,7 +225,7 @@ class RightDetails extends React.Component {
                             ...languageAudioTypesErrors
                                 .filter(({fieldName}) => fieldName.includes('.audioType'))
                                 .map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = languageAudioTypesErrors[index];
@@ -311,7 +311,7 @@ class RightDetails extends React.Component {
     }
 
     flattenRight(right) {
-        let rightCopy = {};
+        const rightCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
@@ -332,7 +332,7 @@ class RightDetails extends React.Component {
             onError();
             return;
         }
-        let updatedRight = { [name]: value };
+        const updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
                 updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
@@ -376,7 +376,7 @@ class RightDetails extends React.Component {
         const value = target.newValue ? target.newValue.trim() : '';
 
         for (let i = 0; i < this.props.availsMapping.mappings.length; i++) {
-            let mapping = this.props.availsMapping.mappings[i];
+            const mapping = this.props.availsMapping.mappings[i];
             if (mapping.javaVariableName === field) {
                 const isOriginRightIdRequired = field === 'originalRightId' && this.state.right.temporaryPriceReduction === true && this.state.right.status === 'Ready';
                 if (mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
@@ -553,7 +553,7 @@ class RightDetails extends React.Component {
 );
             }
 
-            let handleValueChange = (newVal) => {
+            const handleValueChange = (newVal) => {
                 const error = validate(newVal);
                 if (error) {
                     ref.current.handleInvalid(newVal, error);
@@ -682,12 +682,12 @@ class RightDetails extends React.Component {
                 this.fields[name] = ref = React.createRef();
             }
 
-            let options = [{ server: null, value: 1, label: 'Select...', display: null },
+            const options = [{ server: null, value: 1, label: 'Select...', display: null },
             { server: false, value: 2, label: 'false', display: 'false' },
             { server: true, value: 3, label: 'true', display: 'true' }];
             const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
 
-            let handleOptionsChange = (option) => {
+            const handleOptionsChange = (option) => {
                 ref.current.handleChange(option.display);
                 setTimeout(() => {
                     this.setState({});
@@ -745,7 +745,7 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
 
-            let onCancel = () => {
+            const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
                     this.setState({});
@@ -767,7 +767,7 @@ class RightDetails extends React.Component {
                 }
             }
 
-            let handleOptionsChange = (option) => {
+            const handleOptionsChange = (option) => {
                 ref.current.handleChange(option.value ? option.value : null);
                 setTimeout(() => {
                     this.setState({});
@@ -837,7 +837,7 @@ class RightDetails extends React.Component {
 
             //fields with enpoints (these have ids)
             const filterKeys = Object.keys(this.state.flatRight).filter((key) => this.props.availsMapping.mappings.find((x) => x.javaVariableName === key).configEndpoint);
-            let filters = filterKeys.map((key) => {
+            const filters = filterKeys.map((key) => {
                 if (this.state.flatRight[key] && this.props.selectValues[key]) {
                     const filt = (Array.isArray(this.state.flatRight[key]) ? this.state.flatRight[key] : [this.state.flatRight[key]]).map(val => {
                         const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
@@ -871,14 +871,14 @@ class RightDetails extends React.Component {
                 val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
             }
 
-            let onCancel = () => {
+            const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
             };
 
-            let handleOptionsChange = (selectedOptions) => {
+            const handleOptionsChange = (selectedOptions) => {
                 const selVal = selectedOptions.map(({ value }) => value);
                 ref.current.handleChange(selVal ? selVal : null);
                 setTimeout(() => {
@@ -961,14 +961,14 @@ class RightDetails extends React.Component {
                 };
             });
 
-            let onCancel = () => {
+            const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
             };
 
-            let addTerritory = (option) => {
+            const addTerritory = (option) => {
                 const {territoryIndex, isEdit} = this.state;
                 const item = {
                     ...option,
@@ -989,7 +989,7 @@ class RightDetails extends React.Component {
 
              };
 
-            let deleteTerritory = (territory) => {
+            const deleteTerritory = (territory) => {
                 const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id && e.country !== territory.country);
                 ref.current.handleChange(newArray);
                 setTimeout(() => {
@@ -1002,9 +1002,9 @@ class RightDetails extends React.Component {
                 const originalFieldNames = mappings.filter(el => el.javaVariableName.startsWith('territory.'))
                     .map(mapping => mapping.javaVariableName.split('.')[1]);
 
-                let formattedList = [];
+                const formattedList = [];
                 list.forEach(el => {
-                    let territory = Object.assign({}, el);
+                    const territory = Object.assign({}, el);
                     Object.keys(territory).forEach(key => {
                         if(originalFieldNames.findIndex(name => name === key) < 0) {
                             delete territory[key];
@@ -1018,7 +1018,7 @@ class RightDetails extends React.Component {
             const territories = removeTerritoryNotOriginalFields(selectedVal)
                 .map(territory => {
                     const {vuContractId} = territory;
-                    let mappedTerritory = Object.assign({}, territory);
+                    const mappedTerritory = Object.assign({}, territory);
                     if(Array.isArray(vuContractId) && vuContractId.length > 0) {
                         mappedTerritory.vuContractId = vuContractId.join(', ');
                     }

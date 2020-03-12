@@ -56,11 +56,11 @@ class SelectRightsDOPConnector extends Component {
         Promise.all(promotedRights.map(right => {
             return rightsService.get(right.rightId).then(response => {
                 if(response.data.territory && Array.isArray(response.data.territory)){
-                    let availableTerritories = response.data.territory.filter(({selected}) => !selected);
-                    let toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
+                    const availableTerritories = response.data.territory.filter(({selected}) => !selected);
+                    const toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
                     if(toChangeTerritories.length > 0){
-                        let toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
-                        let newTerritories = response.data.territory.
+                        const toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
+                        const newTerritories = response.data.territory.
                         map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
                         // newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
                         return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
@@ -74,7 +74,7 @@ class SelectRightsDOPConnector extends Component {
                 return null;
             });
         })).then(result => {
-            let newDopInfo = result.filter(a => a);
+            const newDopInfo = result.filter(a => a);
             this.setState({isSendingData : false, isConfirmOpen : false});
             updatePromotedRights([]);
             updatePromotedRightsFullData([]);

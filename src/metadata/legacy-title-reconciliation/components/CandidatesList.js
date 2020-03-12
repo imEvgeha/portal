@@ -28,7 +28,7 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 
-let CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
+const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const {

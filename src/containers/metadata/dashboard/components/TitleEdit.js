@@ -101,7 +101,7 @@ class TitleEdit extends Component {
             const titleForm = response.data;
             this.setState({ titleForm, editedForm: titleForm });
             if (titleForm.parentIds) {
-                let parent = titleForm.parentIds.find((e) => e.contentType === 'SERIES');
+                const parent = titleForm.parentIds.find((e) => e.contentType === 'SERIES');
                 if (parent) {
                     this.loadParentTitle(parent.id);
                 }
@@ -114,8 +114,8 @@ class TitleEdit extends Component {
     loadParentTitle(parentId) {
         titleService.getTitleById(parentId).then((response) => {
             const parentTitleForm = response.data;
-            let newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
-            let newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
+            const newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
+            const newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
             this.setState({
                 titleForm: newTitleForm,
                 editedForm: newTitleForm
@@ -229,10 +229,10 @@ class TitleEdit extends Component {
      * @param legacyId
      */
     handleOnLegacyIds = (legacyId) => {
-        let newLegacyIds = { ...this.state.editedForm.legacyIds };
-        for (let field in legacyId) {
-            let inner = { ...newLegacyIds[field] };
-            for (let innerField in legacyId[field]) {
+        const newLegacyIds = { ...this.state.editedForm.legacyIds };
+        for (const field in legacyId) {
+            const inner = { ...newLegacyIds[field] };
+            for (const innerField in legacyId[field]) {
                 inner[innerField] = legacyId[field][innerField];
             }
             newLegacyIds[field] = inner;
@@ -254,7 +254,7 @@ class TitleEdit extends Component {
     handleRatingEditChange = (e, data) => {
         let newRatings = [e];
         if (this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
-            let index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
+            const index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
             if (index >= 0) {
                 newRatings = this.state.editedForm.ratings.slice();
                 newRatings[index] = e;
@@ -290,9 +290,9 @@ class TitleEdit extends Component {
     };
 
     handleAddCharacterName = (id, newData) => {
-        let castCrew = this.state.editedForm.castCrew;
+        const castCrew = this.state.editedForm.castCrew;
         this.state.editedForm.castCrew.splice(id, 1, newData);
-        let editedForm = {
+        const editedForm = {
             ...this.state.editedForm,
             castCrew
         };
@@ -302,9 +302,9 @@ class TitleEdit extends Component {
     }
 
     handleAddEditorialCharacterName = (id, newData) => {
-        let castCrew = this.state.editorialMetadataForCreate.castCrew;
+        const castCrew = this.state.editorialMetadataForCreate.castCrew;
         this.state.editorialMetadataForCreate.castCrew.splice(id, 1, newData);
-        let editorialMetadataForCreate = {
+        const editorialMetadataForCreate = {
             ...this.state.editorialMetadataForCreate,
             castCrew
         };
@@ -319,7 +319,7 @@ class TitleEdit extends Component {
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
         }
-        let newCastCrew =  edited.castCrew;
+        const newCastCrew =  edited.castCrew;
         edited.castCrew.splice(id, 1, newData);
         edited.castCrew = newCastCrew;
         this.updateEditedEditorialMetadata(edited, parentId);
@@ -371,14 +371,14 @@ class TitleEdit extends Component {
 
     addRatingForCreateIfExist = (newAdditionalFields) => {
         if (Object.keys(this.state.ratingForCreate).length !== 0) {
-            let newAdvisoryCodes = [];
+            const newAdvisoryCodes = [];
             if (this.state.ratingForCreate.advisoriesCode) {
                 for (let i = 0; i < this.state.ratingForCreate.advisoriesCode.length; i++) {
                     newAdvisoryCodes.push(this.state.ratingForCreate.advisoriesCode[i]);
                 }
             }
 
-            let newRating = JSON.parse(JSON.stringify(this.state.ratingForCreate));
+            const newRating = JSON.parse(JSON.stringify(this.state.ratingForCreate));
             newRating.advisoriesCode = newAdvisoryCodes;
 
             if (newAdditionalFields.ratings === null) {
@@ -407,7 +407,7 @@ class TitleEdit extends Component {
 
     handleTitleOnSave = () => {
         if (this.state.titleForm !== this.state.editedForm || Object.keys(this.state.ratingForCreate).length !== 0) {
-            let newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
+            const newAdditionalFields = this.getAdditionalFieldsWithoutEmptyField();
             this.removeBooleanQuotes(newAdditionalFields, 'seasonPremiere');
             this.removeBooleanQuotes(newAdditionalFields, 'animated');
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
@@ -431,7 +431,7 @@ class TitleEdit extends Component {
         let edited = this.state.updatedTerritories.find(e => e.id === data.id);
         if (edited) {
             edited[e.target.name] = e.target.value;
-            let newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
+            const newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
             newOne.push(edited);
             this.setState({
                 updatedTerritories: newOne
@@ -449,7 +449,7 @@ class TitleEdit extends Component {
         let edited = this.state.updatedTerritories.find(e => e.id === data.id);
         if (edited) {
             edited[name] = value;
-            let newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
+            const newOne = this.state.updatedTerritories.filter((el) => el.id !== data.id);
             newOne.push(edited);
             this.setState({
                 updatedTerritories: newOne
@@ -497,7 +497,7 @@ class TitleEdit extends Component {
 
     addTerritoryMetadata = (tab) => {
         //Default value for TerritoryType. COUNTRY
-        let newTerritory = {...this.state.territories, territoryType: COUNTRY};
+        const newTerritory = {...this.state.territories, territoryType: COUNTRY};
         this.setState({
             territoryMetadataActiveTab: tab,
             areTerritoryMetadataFieldsRequired: true,
@@ -522,8 +522,8 @@ class TitleEdit extends Component {
                 estReleaseDate: t.estReleaseDate || null,
             };
             titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
-                let list = [].concat(this.state.territory);
-                let foundIndex = list.findIndex(x => x.id === response.data.id);
+                const list = [].concat(this.state.territory);
+                const foundIndex = list.findIndex(x => x.id === response.data.id);
                 list[foundIndex] = response.data;
                 this.setState({
                     territory: list
@@ -575,9 +575,9 @@ class TitleEdit extends Component {
      */
     handleEditorialMetadataEditChange = (e, data) => {
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
-        let isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
-        let isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
-        let isEpisodic = EPISODIC_FIELDS.includes(targetName);
+        const isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
+        const isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
+        const isEpisodic = EPISODIC_FIELDS.includes(targetName);
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
@@ -610,7 +610,7 @@ class TitleEdit extends Component {
     };
 
     updateEditedEditorialMetadata = (edited, id) => {
-        let newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== id);
+        const newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== id);
         newOne.push(edited);
         this.setState({
             updatedEditorialMetadata: newOne
@@ -621,14 +621,14 @@ class TitleEdit extends Component {
         if (edited[objectName]) {
             edited[objectName][objectField] = objectFieldValue;
         } else {
-            let newObject = {};
+            const newObject = {};
             newObject[objectField] = objectFieldValue;
             edited[objectName] = newObject;
         }
     };
 
     handleEditorialMetadataChange = (e) => {
-        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
@@ -638,7 +638,7 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataGenreChange = (e) => {
-        let newEditorialMetadataForCreate = {
+        const newEditorialMetadataForCreate = {
             ...this.state.editorialMetadataForCreate,
             genres: e.map(i => { return { id: i.id, genre: i.genre }; })
         };
@@ -649,7 +649,7 @@ class TitleEdit extends Component {
     };
 
     handleSynopsisEditorialMetadataChange = (e) => {
-        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newSynopsis = {
             ...this.state.editorialMetadataForCreate.synopsis,
             [targetName]: e.target.value
@@ -663,7 +663,7 @@ class TitleEdit extends Component {
     };
 
     handleTitleEditorialMetadataChange = (e) => {
-        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newTitle = {
             ...this.state.editorialMetadataForCreate.title,
             [targetName]: e.target.value
@@ -677,7 +677,7 @@ class TitleEdit extends Component {
     };
 
     handleEpisodicEditorialMetadataChange = (e) => {
-        let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const newEpisodic = {
             ...this.state.editorialMetadataForCreate.episodic,
             [targetName]: e.target.value
@@ -720,8 +720,8 @@ class TitleEdit extends Component {
     handleEditorialMetadataOnSave = () => {
         this.state.updatedEditorialMetadata.forEach(e => {
             titleService.updateEditorialMetadata(e).then((response) => {
-                let list = [].concat(this.state.editorialMetadata);
-                let foundIndex = list.findIndex(x => x.id === response.data.id);
+                const list = [].concat(this.state.editorialMetadata);
+                const foundIndex = list.findIndex(x => x.id === response.data.id);
                 list[foundIndex] = response.data;
                 this.setState({
                     editorialMetadata: list
@@ -735,7 +735,7 @@ class TitleEdit extends Component {
         });
 
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
-            let newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
+            const newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
             titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
                 this.cleanEditorialMetadata();
@@ -756,7 +756,7 @@ class TitleEdit extends Component {
         if (!edited) {
             edited = JSON.parse(JSON.stringify(originalData));
         }
-        let newEditorial = {
+        const newEditorial = {
             ...edited,
             castCrew
         };
@@ -765,7 +765,7 @@ class TitleEdit extends Component {
     }
 
     handleEditorialCastCrewCreate = (castCrew, originalData) => {
-        let newEditorial = {
+        const newEditorial = {
             ...originalData,
             castCrew
         };
@@ -775,8 +775,8 @@ class TitleEdit extends Component {
     }
 
     getEditorialMetadataWithoutEmptyField() {
-        let editorial = {};
-        for (let editorialField in this.state.editorialMetadataForCreate) {
+        const editorial = {};
+        for (const editorialField in this.state.editorialMetadataForCreate) {
             if (editorialField === 'title') {
                 editorial[editorialField] = this.getEpisodicSubObjectWithoutEmptyFields('title');
             }
@@ -794,9 +794,9 @@ class TitleEdit extends Component {
     }
 
     getEpisodicSubObjectWithoutEmptyFields(subField) {
-        let subObject = {};
+        const subObject = {};
         let doAddSubObject = false;
-        for (let field in this.state.editorialMetadataForCreate[subField]) {
+        for (const field in this.state.editorialMetadataForCreate[subField]) {
             if (this.state.editorialMetadataForCreate[subField][field]) {
                 subObject[field] = this.state.editorialMetadataForCreate[subField][field];
                 doAddSubObject = true;
@@ -809,8 +809,8 @@ class TitleEdit extends Component {
     }
 
     getAdditionalFieldsWithoutEmptyField() {
-        let additionalFields = {};
-        for (let fields in this.state.editedForm) {
+        const additionalFields = {};
+        for (const fields in this.state.editedForm) {
             if (fields === 'externalIds') {
                 additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
             }
@@ -827,9 +827,9 @@ class TitleEdit extends Component {
     }
 
     getAdditionalFieldsWithoutEmptyFields(subField) {
-        let subObject = {};
+        const subObject = {};
         let doAddSubObject = false;
-        for (let field in this.state.editedForm[subField]) {
+        for (const field in this.state.editedForm[subField]) {
             if (this.state.editedForm[subField][field]) {
                 subObject[field] = this.state.editedForm[subField][field];
                 doAddSubObject = true;
@@ -871,7 +871,7 @@ class TitleEdit extends Component {
             castCrewArray = [...castCrewArray, ...this.state.editedForm.castCrew];
         }
 
-        let updateEditForm = {
+        const updateEditForm = {
             ...this.state.editedForm,
             castCrew: castCrewArray
         };
@@ -881,10 +881,10 @@ class TitleEdit extends Component {
     };
 
     removeCastCrew = removeCastCrew => {
-        let cast = this.state.editedForm.castCrew.filter(cast => {            
+        const cast = this.state.editedForm.castCrew.filter(cast => {            
             return cast.id !== removeCastCrew.id;
         });
-        let updateEditForm = {
+        const updateEditForm = {
             ...this.state.editedForm,
             castCrew: cast
         };
@@ -904,8 +904,8 @@ class TitleEdit extends Component {
             crewList = orderedArray;
         }
         
-        let castAndCrewList = [...castList, ...crewList];
-        let reOrderedCastCrewList = {
+        const castAndCrewList = [...castList, ...crewList];
+        const reOrderedCastCrewList = {
             ...this.state.editedForm,
             castCrew: castAndCrewList
         };

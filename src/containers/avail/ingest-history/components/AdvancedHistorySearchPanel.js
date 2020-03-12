@@ -72,7 +72,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     validateState(invalidState) {
-        for (let key of Object.keys(invalidState)) {
+        for (const key of Object.keys(invalidState)) {
             if (invalidState[key]) { return false; }
         }
         return true;
@@ -125,11 +125,11 @@ class AdvancedHistorySearchPanel extends React.Component {
 );
         };
 
-        let searchFields = [];
+        const searchFields = [];
         searchFields.push(renderTextField('provider', 'Provider'));
         searchFields.push(renderRangeDatepicker('received', 'Avail Delivery Date'));
 
-        let options = [
+        const options = [
             { value: '', label: 'ALL' },
             { value: 'PENDING', label: 'PENDING' },
             { value: 'MANUAL', label: 'MANUAL' },

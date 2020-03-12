@@ -35,7 +35,7 @@ const SelectedRightsResultsTable = compose(
     withServerSorting,
     withLocalRights(AVAILS_SELECTION))(ResultsTable);
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         showSelectedAvails: state.dashboard.showSelectedAvails,
         reportName: state.dashboard.session.reportName,
@@ -59,7 +59,7 @@ class SearchResultsTab extends React.Component {
 
     storeData = (response) => {
         store.dispatch(resultPageLoading(false));
-        let updatedResult = {
+        const updatedResult = {
             pages: 0,
             avails: [],
             pageSize: 1,

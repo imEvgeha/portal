@@ -18,7 +18,7 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import { RIGHTS_FIX } from '../../../constants/breadcrumb';
 
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
     };
@@ -77,7 +77,7 @@ class FixRights extends React.Component {
         }
         const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
         params.push('invalid=true');
-        let criteria = RightsURL.ArraytoFilter(params);
+        const criteria = RightsURL.ArraytoFilter(params);
         this.props.searchFormSetAdvancedSearchCriteria(criteria);
         rightSearchHelper.advancedSearch(criteria, false);
     }

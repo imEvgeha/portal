@@ -43,8 +43,8 @@ class PersonList extends React.Component {
     };
 
     validateAndAddPerson = (personJSON) => {
-        let person = JSON.parse(personJSON);
-        let isValid = this.isSelectedPersonValid(person);
+        const person = JSON.parse(personJSON);
+        const isValid = this.isSelectedPersonValid(person);
         if (isValid) {
             this.props.addPerson(person);
             this.setState({
@@ -91,7 +91,7 @@ class PersonList extends React.Component {
     }
 
     setSelectedPerson = (id, type) => {       
-        let modalType = type === 'add' ? 'Add' : 'Edit'; 
+        const modalType = type === 'add' ? 'Add' : 'Edit'; 
         const selectedPerson = this.props.persons && this.props.persons[id];
         this.toggleModal();
         this.setState({

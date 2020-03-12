@@ -5,7 +5,7 @@ import './ManualRightEntryFatalView.scss';
 
 const SEVERITY_TYPE_FATAL = 'Fatal';
 
-let ManualRightEntryFatalView = ({attachments, hidden}) => {
+const ManualRightEntryFatalView = ({attachments, hidden}) => {
 
     const [errorList, setErrorList] = useState([]);
     const [viewHeight, setViewHeight] = useState();
@@ -26,7 +26,7 @@ let ManualRightEntryFatalView = ({attachments, hidden}) => {
     }, [attachments]);
 
     const getListOfFatalErrors = () => {
-        let errorList = [];
+        const errorList = [];
         attachments.forEach(attachment => {
             const {errorReports = []} = attachment;
             errorReports && errorReports.forEach(report => {

@@ -49,7 +49,7 @@ export default class ResultsTable extends React.Component {
     }
 
     updateWindowDimensions() {
-        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        const offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         this.setState({ height: window.innerHeight - offsetTop - 10});
     }
 

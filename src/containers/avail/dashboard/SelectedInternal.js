@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import t from 'prop-types';
 import {connect} from 'react-redux';
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         showSelectedAvails: state.dashboard.showSelectedAvails,
@@ -43,4 +43,4 @@ SelectedInternal.propTypes = {
     toggleShowSelected: t.func
 };
 
-export let Selected = connect(mapStateToProps, null)(SelectedInternal);
+export const Selected = connect(mapStateToProps, null)(SelectedInternal);

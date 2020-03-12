@@ -114,7 +114,7 @@ class TitleCreate extends React.Component {
     onSubmit = () => {
         this.setState({ loading: true, errorMessage: '' });
 
-        let title = this.getTitleWithoutEmptyField();
+        const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
         titleService.createTitle(title, isSyncVZ, isSyncMovida).then(() => {
             this.form && this.form.reset();
@@ -130,8 +130,8 @@ class TitleCreate extends React.Component {
     };
 
     getTitleWithoutEmptyField() {
-        let title = {};
-        for(let titleField in this.state.titleForm) {
+        const title = {};
+        for(const titleField in this.state.titleForm) {
             if(titleField === 'episodic') {
                 title[titleField] = this.getEpisodicWithoutEmptyFields();
             }
@@ -146,9 +146,9 @@ class TitleCreate extends React.Component {
     }
 
     getEpisodicWithoutEmptyFields() {
-        let episodic = {};
+        const episodic = {};
         let doAddEpisodic = false;
-        for(let episodicField in this.state.titleForm.episodic) {
+        for(const episodicField in this.state.titleForm.episodic) {
             if(this.state.titleForm.episodic[episodicField]) {
                 episodic[episodicField] = this.state.titleForm.episodic[episodicField];
                 doAddEpisodic = true;

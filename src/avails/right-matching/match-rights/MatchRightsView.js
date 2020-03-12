@@ -48,7 +48,7 @@ const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
 
-let MatchRightView = ({
+const MatchRightView = ({
     history,
     match,
     focusedRight,
@@ -130,7 +130,7 @@ let MatchRightView = ({
 
     const onCombinedRightGridEvent = ({type, api}) => {
         const {CELL_VALUE_CHANGED, READY} = GRID_EVENTS;
-        let result = [];
+        const result = [];
         if (type === CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);

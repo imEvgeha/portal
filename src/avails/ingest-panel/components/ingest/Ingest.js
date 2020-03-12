@@ -6,7 +6,7 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestReport from '../ingest-report/IngestReport';
 import './Ingest.scss';
 
-let Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId}) => {
+const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId}) => {
     const [showReport, setShowReport] = useState(false);
     const { link, status, ingestReport } = attachment;
 

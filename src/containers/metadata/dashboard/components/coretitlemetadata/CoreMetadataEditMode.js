@@ -48,7 +48,7 @@ class CoreMetadataEditMode extends Component {
 
   handleRatingSystemValue = (e) => {
     const rating = e.target.value;
-    let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
+    const newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
     this.setState({
       ratings: newRatings
     });
@@ -56,12 +56,12 @@ class CoreMetadataEditMode extends Component {
   };
 
   handleMovidaLegacyIds(e) {
-    let movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
+    const movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
     this.props.handleOnLegacyIds(movidaLegacyId);
   }
 
   handleVzLegacyIds(e) {
-    let vzLegacyId = { vz: { [e.target.name]: e.target.value } };
+    const vzLegacyId = { vz: { [e.target.name]: e.target.value } };
     this.props.handleOnLegacyIds(vzLegacyId);
   }
 

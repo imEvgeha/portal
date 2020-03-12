@@ -3,7 +3,7 @@ import './AvailsView.scss';
 import IngestPanel from './ingest-panel/IngestPanel';
 import RightsRepository from './rights-repository/RightsRepository';
 
-let AvailsView = ({location}) => {
+const AvailsView = ({location}) => {
   return (
       <div className="nexus-c-avails-view">
           <IngestPanel />

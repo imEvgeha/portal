@@ -15,7 +15,7 @@ if (!document.body) {
 }
 document.body.appendChild(portal);
 
-let createFormForItem = (field,
+const createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,

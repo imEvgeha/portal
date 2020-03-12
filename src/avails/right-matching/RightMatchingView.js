@@ -24,7 +24,7 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
 )(NexusGrid);
 
-let RightMatchingView = ({
+const RightMatchingView = ({
         createRightMatchingColumnDefs,
         columnDefs,
         history,
@@ -63,7 +63,7 @@ let RightMatchingView = ({
     // TODO: refactor this
     const storeData = (page, data) => {
         if (storeRightMatchDataWithIds) {
-            let pages = {};
+            const pages = {};
             pages[page] = data.data.map(e => e.id);
             const rightMatchPageData = {pages, total: data.total};
             storeRightMatchDataWithIds({rightMatchPageData});

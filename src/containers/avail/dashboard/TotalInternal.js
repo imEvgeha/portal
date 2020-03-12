@@ -2,7 +2,7 @@ import {Component} from 'react';
 import t from 'prop-types';
 import {connect} from 'react-redux';
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         total: state.dashboard.availTabPage.total
     };
@@ -17,4 +17,4 @@ class TotalInternal extends Component {
 TotalInternal.propTypes = {
     total: t.number
 };
-export let Total = connect(mapStateToProps, null)(TotalInternal);
+export const Total = connect(mapStateToProps, null)(TotalInternal);

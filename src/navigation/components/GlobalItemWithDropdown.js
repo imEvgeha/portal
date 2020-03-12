@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {DropdownMenuStateless} from '@atlaskit/dropdown-menu';
 import PropTypes from 'prop-types';
 
-let GlobalItemWithDropdown = ({items, trigger: Trigger}) => {
+const GlobalItemWithDropdown = ({items, trigger: Trigger}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (

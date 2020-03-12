@@ -6,7 +6,7 @@ import {store} from '../../index';
 
 export default function withRedux(WrappedComponent){
 
-    let mapStateToProps = state => {
+    const mapStateToProps = state => {
         return {
             availTabPageLoading: state.dashboard.availTabPageLoading
         };

@@ -14,7 +14,7 @@ import './NexusMultiInstanceField.scss';
 
 const PLACEHOLDER = 'Add...';
 
-let NexusMultiInstanceField = ({
+const NexusMultiInstanceField = ({
     schema,
     existingItems,
     keyForTagLabel,
@@ -149,7 +149,7 @@ let NexusMultiInstanceField = ({
         }
     };
 
-    let MultiInstanceField = (isReadOnly) => {
+    const MultiInstanceField = (isReadOnly) => {
   return (
       <> {isReadOnly
                 ? (

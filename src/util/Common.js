@@ -50,7 +50,7 @@ function isObject(item) {
 }
 
 function isObjectEmpty(obj) {
-    for(let key in obj) {
+    for(const key in obj) {
         if(obj.hasOwnProperty(key))
             return false;
     }
@@ -81,7 +81,7 @@ function prepareSortMatrixParamTitles(sortedParams) {
     return matrix;
 }
 function mergeDeep(target, source) {
-    let output = Object.assign({}, target);
+    const output = Object.assign({}, target);
     if (isObject(target) && isObject(source)) {
         Object.keys(source).forEach(key => {
             if (isObject(source[key])) {
@@ -136,9 +136,9 @@ const URL = {
     getParamIfExists: function (name, defaultValue = ''){
         let toReturn = defaultValue;
         if (this.search()){
-            let query = this.search().substring(1);
-            let params = query.split('&');
-            let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
+            const query = this.search().substring(1);
+            const params = query.split('&');
+            const param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
             if(param){
                 toReturn =  param.split('=')[1];
             }
@@ -183,7 +183,7 @@ const URL = {
 
     updateQueryParam: values => {     //values = {date: '12/12/12'}
         const search = window.location.search.substring(1);
-        let params =  new URLSearchParams(search);
+        const params =  new URLSearchParams(search);
         Object.keys(values).forEach(key => {
             if(values[key]) params.set(key, values[key]);
             else params.delete(key);

@@ -7,7 +7,7 @@ import Constants from '../../constants';
 import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
-let IngestFilters = ({onFiltersChange}) => {
+const IngestFilters = ({onFiltersChange}) => {
     const {filterKeys: {PROVIDER, STATUS}, STATUS_LIST} = Constants;
 
     const [filters, setFilters] = useState(getInitialFilters());

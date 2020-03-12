@@ -15,7 +15,7 @@ export default class RightsResultsTable extends React.Component {
         const dateFormat = getDateFormatBasedOnLocale(locale);
         const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
-        let formatter = (column) => {
+        const formatter = (column) => {
             const {
                 dataType,
                 javaVariableName,

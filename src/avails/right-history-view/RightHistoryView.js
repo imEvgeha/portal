@@ -13,7 +13,7 @@ const SPINNER = (
     </div>
   );
 
-let RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
+const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
 
     const [opened, setOpened] = useState(false);
 

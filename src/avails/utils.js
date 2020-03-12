@@ -74,7 +74,7 @@ export const createLinkableCellRenderer = (params, location = '/metadata/detail/
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
-        let displayValue = `
+        const displayValue = `
         <div class="nexus-c-create-loading-cell-renderer">
             <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
                 ${String(content)}

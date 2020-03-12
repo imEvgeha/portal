@@ -13,7 +13,7 @@ import {getRepositoryCell} from '../../utils';
 import DOP from '../../../util/DOP';
 import './TitleMatchReview.scss';
 
-let TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
+const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
     const [mergedTitles, setMergedTitles] = useState([combinedTitle]);
 
@@ -26,7 +26,7 @@ let TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDef
     const getTitle = id => {
         return new Promise((resolve, reject) => {
             return titleService.getTitleById(id).then((response) => {
-                let title = response.data;
+                const title = response.data;
                 titleService.getEditorialMetadataByTitleId(id).then(({data}) => {
                     const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
                     if(founded) {
@@ -41,7 +41,7 @@ let TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDef
     };
 
     const setCombinedTitleParents = (merged) => {
-        let getTitles = [];
+        const getTitles = [];
         if(merged.parentIds && merged.parentIds.length){
             merged.parentIds.forEach(parent => {
                 getTitles.push(getTitle(parent.id));
@@ -53,10 +53,10 @@ let TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDef
     };
 
     const setParents = (list, merged) => {
-        let titleList = [...list];
-        let getTitles = [];
+        const titleList = [...list];
+        const getTitles = [];
         let indexTrack = 0;
-        let track = {};
+        const track = {};
         list.forEach(title => {
             if(title.parentIds && title.parentIds.length){
                 title.parentIds.forEach((parent, i) => {

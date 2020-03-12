@@ -19,7 +19,7 @@ const withRightsResultsTable = BaseComponent => {
     // const defaultMode = 'defaultMode';
     const selectRightMode = 'selectRightsMode';
 
-    let ComposedComponent = (props) => {
+    const ComposedComponent = (props) => {
         // Get locale provided by intl
         const intl = useIntl();
         const {locale = 'en-US'} = intl || {};
@@ -30,7 +30,7 @@ const withRightsResultsTable = BaseComponent => {
         // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
-            let formatter = (column) => {
+            const formatter = (column) => {
                 const {dataType, javaVariableName} = column;
                 switch (dataType) {
                     case 'localdate':
@@ -150,7 +150,7 @@ const withRightsResultsTable = BaseComponent => {
                     if (data && data.highlightedFields) {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
-                    let cellVisualContent = (
+                    const cellVisualContent = (
                         <>
                             <div
                                 title={error}

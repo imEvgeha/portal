@@ -8,7 +8,7 @@ import {downloadFile} from '../../util/Common';
 import * as selectors from '../../avails/right-matching/rightMatchingSelectors';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-let NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) => {
+const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) => {
 
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -75,7 +75,7 @@ let NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows
     };
 
     const getAllDisplayedColumns = (columnApi) => {
-        let allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
+        const allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
         mappingColumnNames.forEach(mapCol => {
             if(!allDisplayedColumns.includes(mapCol)) {
                 allDisplayedColumns.push(mapCol);
@@ -89,7 +89,7 @@ let NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows
         return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
-    let renderDropdown = () => {
+    const renderDropdown = () => {
   return (
       <DropdownMenu
           className="nexus-c-button"

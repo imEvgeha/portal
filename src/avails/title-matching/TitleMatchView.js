@@ -22,7 +22,7 @@ import './TitleMatchView.scss';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
-let TitleMatchView = ({
+const TitleMatchView = ({
     match,
     fetchFocusedRight,
     createColumnDefs,
@@ -68,7 +68,7 @@ let TitleMatchView = ({
         }
     }, [columnDefs]);
 
-    let deepCloneRightColumnDefs = cloneDeep(rightColumns);
+    const deepCloneRightColumnDefs = cloneDeep(rightColumns);
     let updatedRightColumnDefs;
 
     if (focusedRight && focusedRight.contentType === 'Episode') {

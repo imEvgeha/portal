@@ -8,7 +8,7 @@ import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import DOP from '../util/DOP';
 import routes from '../routes';
 
-let AppLayout = ({history}) => {
+const AppLayout = ({history}) => {
   return (
       <ConnectedRouter history={history}>
           <div className="nexus-c-app-layout">

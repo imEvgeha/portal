@@ -121,9 +121,9 @@ export class EndpointContainer extends Component {
     }
 
     calculatePageSize = () => {
-        let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        let windowViewPort = (h) / 10;
-        let staticSectionVH = windowViewPort > 90 ? 5 : windowViewPort > 50 ? 20 : 30;
+        const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        const windowViewPort = (h) / 10;
+        const staticSectionVH = windowViewPort > 90 ? 5 : windowViewPort > 50 ? 20 : 30;
         let numberOfItems = Math.ceil((defaultPageSize * (windowViewPort - staticSectionVH)) / 100);
         numberOfItems = numberOfItems <= 0 ? 1 : numberOfItems;
         this.setState({
@@ -170,8 +170,8 @@ export class EndpointContainer extends Component {
         if (newVal.id) {
             configService.update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal)
                 .then(response => {
-                    let data = this.state.data.slice(0);
-                    let index = data.findIndex(item => item.id === newVal.id);
+                    const data = this.state.data.slice(0);
+                    const index = data.findIndex(item => item.id === newVal.id);
                     data[index] = response.data;
                     this.setState({ data, currentRecord: null });
                 }
@@ -179,7 +179,7 @@ export class EndpointContainer extends Component {
         } else {
             configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal)
                 .then(response => {
-                    let data = this.state.data.slice(0);
+                    const data = this.state.data.slice(0);
                     data.unshift(response.data);
                     if(cache[selectedApi.urls['CRUD']]) {     
                         cache[selectedApi.urls['CRUD']] = data;
@@ -214,8 +214,8 @@ export class EndpointContainer extends Component {
 
     render() {        
         const {selectedApi} = this.props;
-        let canUpdate = can('update', 'ConfigUI');
-        let canCreate = can('create', 'ConfigUI');
+        const canUpdate = can('update', 'ConfigUI');
+        const canCreate = can('create', 'ConfigUI');
 
         return (
             <DataContainer>

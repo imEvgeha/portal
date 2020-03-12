@@ -24,7 +24,7 @@ class EditorialMetadata extends Component {
 
     getLanguageByCode = (code) => {
         if (this.props.configLanguage) {
-            let found = this.props.configLanguage.value.find(e => e.languageCode === code);
+            const found = this.props.configLanguage.value.find(e => e.languageCode === code);
             if (found) {
                 return found.languageName;
             }

@@ -7,7 +7,7 @@ import {rightServiceManager} from '../../../../containers/avail/service/RightSer
 import {tabFilter} from '../../../../constants/DOP/tabFilter';
 import {SelectRightsTab, TabContainer} from '../../../../ui-elements/nexus-table-tab/TableTab';
 
-let Tabs = (props) => {
+const Tabs = (props) => {
 
     const [allRightCount, setAllRightCount] = useState();
     const [incomingCount, setIncomingCount] = useState();

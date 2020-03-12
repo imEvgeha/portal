@@ -15,7 +15,7 @@ import {
     TIMESTAMP_FORMAT,
 } from '../constants';
 
-let NexusDateTimePicker = ({
+const NexusDateTimePicker = ({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
@@ -48,7 +48,7 @@ let NexusDateTimePicker = ({
         return moment(date).utc(!hasUTCTag).format(dateFormat);
     };
 
-    let DatePicker = (isReadOnly) => {
+    const DatePicker = (isReadOnly) => {
   return (
       <>
           {!hideLabel && label && (

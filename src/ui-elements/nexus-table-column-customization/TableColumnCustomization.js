@@ -30,10 +30,10 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
     }, [hideShowColumns]);
 
     const createConfigForColumnCustomization = () => {
-        let config = {};
+        const config = {};
         availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
             if (column.javaVariableName === 'title') return '';
-            let checked = columns.indexOf(column.javaVariableName) > -1;
+            const checked = columns.indexOf(column.javaVariableName) > -1;
 
             config[column.javaVariableName] = {
                 id: column.id,
@@ -52,7 +52,7 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
 
     const isAllSelected = (config) => {
         let allSelected = true;
-        for (let key in config) {
+        for (const key in config) {
             if (key === SELECT_ALL) continue;
             allSelected = allSelected && config[key].checked;
         }
@@ -60,15 +60,15 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
     };
 
     const toggleColumn = (id) => {
-        let newHideShowColumns = {...hideShowColumns};
+        const newHideShowColumns = {...hideShowColumns};
         newHideShowColumns[id].checked = !newHideShowColumns[id].checked;
         newHideShowColumns[SELECT_ALL].checked = isAllSelected(newHideShowColumns);
         setHideShowColumns(newHideShowColumns);
     };
 
     const toggleSelectAll = (selectAllKey) => {
-        let newHideShowColumns = {...hideShowColumns};
-        let newValue = !newHideShowColumns[selectAllKey].checked;
+        const newHideShowColumns = {...hideShowColumns};
+        const newValue = !newHideShowColumns[selectAllKey].checked;
         newHideShowColumns[selectAllKey].checked = newValue;
 
         availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
@@ -79,11 +79,11 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
     };
 
     const saveColumns = () => {
-        let cols = columns.slice();
+        const cols = columns.slice();
         //remove all hidden columns
         Object.keys(hideShowColumns).map(key => {
             if (hideShowColumns[key].checked === false) {
-                let position = cols.indexOf(key);
+                const position = cols.indexOf(key);
                 if (position > -1) {
                     cols.splice(position, 1);
                 }
@@ -92,7 +92,7 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         //add new visible columns
         Object.keys(hideShowColumns).map(key => {
             if (hideShowColumns[key].checked === true) {
-                let position = cols.indexOf(key);
+                const position = cols.indexOf(key);
                 if (position === -1) {
                     cols.push(key);
                 }
@@ -104,7 +104,7 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
 
     const buildModalContent = (config) => {
         const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
-        for (let key in config) {
+        for (const key in config) {
             if (key === SELECT_ALL) continue;
             options.push(buildCheckBox(key, toggleColumn));
         }

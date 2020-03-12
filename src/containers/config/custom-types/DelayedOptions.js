@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import get from 'lodash.get';
 
-let DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
+const DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
     const items = get(field, 'options[0].items', []);
     if(!items.includes(field.value)){
         const val = items.find(option => JSON.stringify(option.value) === JSON.stringify(field.value));

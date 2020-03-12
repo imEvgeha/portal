@@ -76,9 +76,9 @@ class RightCreate extends React.Component {
 
     checkRight(name, value, setNewValue) {
         if(!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
-            let validationError = this.validateField(name, value, this.right);
+            const validationError = this.validateField(name, value, this.right);
 
-            let errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
+            const errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
             this.mappingErrorMessage[name] = errorMessage;
 
             if (!validationError) {
@@ -106,7 +106,7 @@ class RightCreate extends React.Component {
         }
 
         if(setNewValue){
-            let newRight = {...this.right, [name]: value};
+            const newRight = {...this.right, [name]: value};
             this.right = newRight;
             this.setState({});
         }
@@ -125,7 +125,7 @@ class RightCreate extends React.Component {
     }
 
     isAnyErrors() {
-        for (let [, value] of Object.entries(this.mappingErrorMessage)) {
+        for (const [, value] of Object.entries(this.mappingErrorMessage)) {
             if(value.date || value.range || value.text || value.inner || value.pair) {
                 return true;
             }
@@ -203,7 +203,7 @@ class RightCreate extends React.Component {
     };
 
     initMappingErrors = (mappings) => {
-        let mappingErrorMessage = {};
+        const mappingErrorMessage = {};
         mappings.map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 inner: '',

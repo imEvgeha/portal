@@ -8,7 +8,7 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
 
-let createFormForItem = (field,
+const createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,

@@ -15,7 +15,7 @@ import {
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
-let NexusSimpleDateTimePicker = ({
+const NexusSimpleDateTimePicker = ({
     label,
     id,
     value,

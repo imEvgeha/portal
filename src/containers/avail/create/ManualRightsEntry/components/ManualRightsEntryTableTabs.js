@@ -14,7 +14,7 @@ import {
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
-let ManualRightEntryTableTabs = ({
+const ManualRightEntryTableTabs = ({
     selectedTab,
     updateManualRightEntrySelectedTab,
     getCustomSearchCriteria,

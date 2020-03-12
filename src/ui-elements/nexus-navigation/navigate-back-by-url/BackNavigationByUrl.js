@@ -5,7 +5,7 @@ import './BackNavigationByUrl.scss';
 import NexusTitle from '../../nexus-title/NexusTitle';
 import {backArrowColor} from '../../../constants/avails/constants';
 
-let BackNavigationByUrl = ({title, onNavigationClick}) => {
+const BackNavigationByUrl = ({title, onNavigationClick}) => {
   return (
       <NexusTitle>
           <span className="nexus-c-right-to-match-view__link" onClick={onNavigationClick}>

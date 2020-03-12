@@ -21,7 +21,7 @@ import CandidatesList from './components/CandidatesList';
 import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
 import {getRepositoryCell} from '../../avails/utils';
 
-let LegacyTitleReconciliationView = ({
+const LegacyTitleReconciliationView = ({
     titleMetadata,
     match,
     columnDefs,

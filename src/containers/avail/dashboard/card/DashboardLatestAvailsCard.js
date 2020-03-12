@@ -15,7 +15,7 @@ import './DashboardLatestAvailsCard.scss';
 
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
-let DashboardLatestAvailsCard = ({push}) => {
+const DashboardLatestAvailsCard = ({push}) => {
     let tableData = [];
     let table = null;
     let refresh = null;
@@ -40,7 +40,7 @@ let DashboardLatestAvailsCard = ({push}) => {
         };
     });
 
-    let statusIcon = (params) => {
+    const statusIcon = (params) => {
         const {value, valueFormatted, data: {errorDetails}} = params;
         return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
     };

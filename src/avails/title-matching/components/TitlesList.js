@@ -26,7 +26,7 @@ const TitleRepositoriesTable = compose(
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 
-let TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
+const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const [totalCount, setTotalCount] = useState(0);
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
 

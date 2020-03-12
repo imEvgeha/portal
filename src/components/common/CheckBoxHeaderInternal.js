@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {connect} from 'react-redux';
 import t from 'prop-types';
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availTabPageSelection: state.dashboard.session.availTabPageSelection
     };
@@ -55,6 +55,6 @@ CheckBoxHeaderInternal.propTypes = {
     availTabPageSelection: t.object,
     api: t.object,
 };
-export let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
+export const CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
 
 

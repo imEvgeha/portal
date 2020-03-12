@@ -3,7 +3,7 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Field as AkField } from '@atlaskit/form';
 import PropTypes from 'prop-types';
 
-let createFormForItem = (field,
+const createFormForItem = (field,
     item,
     fieldsForForm,
     formChangeHandler) => {

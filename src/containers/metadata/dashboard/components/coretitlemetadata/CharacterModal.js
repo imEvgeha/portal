@@ -5,7 +5,7 @@ import { CustomInput, CustomLabel } from './CustomComponents';
 import { ErrorMessage } from '@atlaskit/form';
 import Button from '@atlaskit/button';
 
-let CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data, selectedId}) => {
+const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data, selectedId}) => {
     const [characterName, setCharacterName] = useState('');
     const [isInvalid, setIsInvalid] = useState(false);
     const [error, setError] = useState(null);

@@ -3,7 +3,7 @@ import t from 'prop-types';
 import {configurationService} from '../service/ConfigurationService';
 import {connect} from 'react-redux';
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         reports: state.root.reports
     };
@@ -31,4 +31,4 @@ ReportsInternal.propTypes = {
     onChange: t.func,
     reportName: t.string
 };
-export let Reports = connect(mapStateToProps, null)(ReportsInternal);
+export const Reports = connect(mapStateToProps, null)(ReportsInternal);

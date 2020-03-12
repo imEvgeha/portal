@@ -103,7 +103,7 @@ class RightsURL extends React.Component {
 
     static isAdvancedFilter(url) {
         if(!url) return false;
-        let params = url.substring(1).split('&');
+        const params = url.substring(1).split('&');
         let isAdvanced = false;
         params.forEach(param => {
             const field = param.split('=')[0];
@@ -248,14 +248,14 @@ class RightsURL extends React.Component {
 
     static get search(){
         let url = window.location.pathname;
-        let searchP = window.location.search;
-        let params=[];
+        const searchP = window.location.search;
+        const params=[];
         if(!url.startsWith('/avails')) return  URL.keepEmbedded(searchP);
         url = url.replace('/avails', '');
         if(url.startsWith('/history')){
             url = url.replace('/history', '');
             if(url.startsWith('/')){
-                let val= url.split('/')[1];
+                const val= url.split('/')[1];
                 params.push('availHistoryIds=' + val);
                 url = url.replace('/' + val, '');
             }

@@ -6,7 +6,7 @@ import {cellStyling, formatData, valueFormatter} from './utils';
 import RulesEngineInfo from './components/RulesEngineInfo';
 import './AuditHistoryTable.scss';
 
-let AuditHistoryTable = ({data, focusedRight}) => {
+const AuditHistoryTable = ({data, focusedRight}) => {
     const [auditData, setAuditData] = useState([]);
     const [columnDefs, setColumnDefs] = useState([]);
     const { columns, SEPARATION_ROW, HEADER_ROW } = Constants;

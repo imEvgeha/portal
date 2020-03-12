@@ -2,7 +2,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-export let BulkActionButton = (props) => {
+export const BulkActionButton = (props) => {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 

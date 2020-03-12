@@ -14,7 +14,7 @@ const onViewTitleClick = (response) => {
     window.open(url, '_blank');
 };
 
-let getSyncQueryParams = (syncToVZ, syncToMovida) => {
+const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if(syncToVZ || syncToMovida) {
         if(syncToVZ && syncToMovida) {
             return `${TitleSystems.VZ.toUpperCase()},${TitleSystems.MOVIDA.toUpperCase()}`;
@@ -31,7 +31,7 @@ export const titleService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        for (let key in searchCriteria) {
+        for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 params[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
             }
@@ -78,7 +78,7 @@ export const titleService = {
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        for (let key in searchCriteria) {
+        for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 params[key] = searchCriteria[key];
             }

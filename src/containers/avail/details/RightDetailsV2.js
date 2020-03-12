@@ -112,7 +112,7 @@ class RightDetails extends React.Component {
                         const affiliates = [
                             ...affiliateList,
                             ...affiliateErrors.map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.errors = affiliateErrors[index];
                                 // obj.id = el.index;
@@ -139,7 +139,7 @@ class RightDetails extends React.Component {
                         const affiliatesExclude = [
                             ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 obj.errors = affiliateExcludeErrors[index];
                                 // obj.id = error.index;
@@ -163,7 +163,7 @@ class RightDetails extends React.Component {
     };
 
     flattenRight(right) {
-        let rightCopy = {};
+        const rightCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
@@ -201,7 +201,7 @@ class RightDetails extends React.Component {
             });
         }
 
-        let updatedRight = { [name]: value };
+        const updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
                 updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
@@ -212,7 +212,7 @@ class RightDetails extends React.Component {
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
             .then(res => {
-                let editedRight = res.data;
+                const editedRight = res.data;
                 this.setState({
                     right: res.data,
                     flatRight: this.flattenRight(res.data),
@@ -276,7 +276,7 @@ class RightDetails extends React.Component {
 
         const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             const {flatRight = {}} = this.state;
-            let selectedVal = flatRight[name] || value;
+            const selectedVal = flatRight[name] || value;
 
             // TODO: Extract when prepping data for the whole component; To be fixed on RightDetails refactor
             const prepData = (name) => {

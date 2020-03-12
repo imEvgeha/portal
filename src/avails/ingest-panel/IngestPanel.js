@@ -11,7 +11,7 @@ import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 import Constants from './constants';
 
-let IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) => {
+const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) => {
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {

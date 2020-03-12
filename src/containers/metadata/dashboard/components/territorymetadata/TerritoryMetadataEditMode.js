@@ -16,7 +16,7 @@ class TerritoryMetadataEditMode extends Component {
     };
 
     shouldComponentUpdate(nextProps) {
-        let differentData = this.props.data !== nextProps.data;
+        const differentData = this.props.data !== nextProps.data;
         return differentData;
     }
 

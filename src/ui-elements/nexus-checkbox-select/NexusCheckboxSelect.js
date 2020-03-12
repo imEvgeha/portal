@@ -9,7 +9,7 @@ const selectAll = {
     value: '*'
 };
 
-let NexusCheckboxSelect = ({
+const NexusCheckboxSelect = ({
     onCheckboxSelectChange,
     options,
     defaultValues,

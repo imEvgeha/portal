@@ -71,7 +71,7 @@ export default class CreateEditConfigForm extends React.Component {
                     addButtonLabel={addButtonLabel}
                     label={label}
                     onChange={value => {
-                        let val = singleField && Array.isArray(value)?
+                        const val = singleField && Array.isArray(value)?
                             value.map((v) => isObject(v)?v[idAttribute]:v)
                             : value;
                         onChange(id, val);
@@ -161,7 +161,7 @@ export default class CreateEditConfigForm extends React.Component {
     };
 
     optionsHandler(fieldId, fields) {
-        let field = fields.find(({id}) => id === fieldId);
+        const field = fields.find(({id}) => id === fieldId);
         if(field){
             if((field.type === 'select' || field.type === 'multiselect') && field.source){
                 if(cache[field.source.url] === undefined){

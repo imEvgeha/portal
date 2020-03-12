@@ -5,7 +5,7 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './NexusTag.scss';
 
 
-let NexusTag = ({value, text, tagState, onClick, onRemove}) => {
+const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
 
     const [defaultTooltipContent, setDefaultContent] = useState();
 

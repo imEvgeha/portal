@@ -56,7 +56,7 @@ const SelectedRighstRepositoryTable = compose(
     withFilterableColumns(),
 )(NexusGrid);
 
-let RightsRepository = ({
+const RightsRepository = ({
     columnDefs,
     createRightMatchingColumnDefs,
     mapping,
@@ -233,7 +233,7 @@ let RightsRepository = ({
             case FILTER_CHANGED:
                 const column = filterBy(api.getFilterModel());
                 if (Object.keys(column || {}).length === 0) {
-                    let filter = {...rightsFilter};
+                    const filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
                     break;

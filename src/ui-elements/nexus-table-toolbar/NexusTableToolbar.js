@@ -9,7 +9,7 @@ import {
     RIGHTS_TAB
 } from '../../avails/rights-repository/RightsRepository';
 
-let NexusTableToolbar = ({
+const NexusTableToolbar = ({
     title,
     totalRows,
     selectedRightsCount,

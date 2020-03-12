@@ -23,12 +23,12 @@ const customThemeMode = modeGenerator({
     },
 });
 
-let ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
+const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     const {id} = itemProps;
     const abilityLocationName = idToAbilityNameMap[id];
 
     if (DropdownItems) {
-        let ItemWithDropdown = () => {
+        const ItemWithDropdown = () => {
   return (
       <GlobalItemWithDropdown
           trigger={({isOpen}) => (
@@ -59,7 +59,7 @@ let ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     );
 };
 
-let NexusNavigation = ({history, profileInfo}) => {
+const NexusNavigation = ({history, profileInfo}) => {
     const [selectedItem, setSelectedItem] = useState('');
 
     useEffect(() => setSelectedItem(history.location.pathname.split('/')[1]), []);
@@ -69,7 +69,7 @@ let NexusNavigation = ({history, profileInfo}) => {
         setSelectedItem(destination);
     };
 
-    let AccountDropdownItems = () => {
+    const AccountDropdownItems = () => {
   return (
       <DropdownItemGroup title={profileInfo.name || 'Profile'}>
           <DropdownItem onClick={keycloak.instance.logout}>

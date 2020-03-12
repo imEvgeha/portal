@@ -23,7 +23,7 @@ import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {URL} from '../../../util/Common';
 
-let LegacyTitleReconciliationReview = ({
+const LegacyTitleReconciliationReview = ({
     createColumnDefs,
     columnDefs,
     titles,

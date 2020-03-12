@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const {MOVIDA, VZ} = TitleSystems;
 
-let PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataList, onSyncPublishClick}) => {
+const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataList, onSyncPublishClick}) => {
 
     const [vzLastUpdated, setVzLastUpdated] = useState();
     const [movidaLastUpdated, setMovidaLastUpdated] = useState();
@@ -66,7 +66,7 @@ let PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataList,
         return !!publishedAt && moment(publishedAt).isSameOrAfter(modifiedAt);
     };
 
-    let renderSyncField = (name, lastUpdated, isDisabled) => {
+    const renderSyncField = (name, lastUpdated, isDisabled) => {
         const buttonName = moment(lastUpdated).isValid() ? 'Sync' : 'Publish';
         const indicator = isDisabled ? 'success' : 'error';
         return (

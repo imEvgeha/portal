@@ -53,7 +53,7 @@ class EditorialMetadataEditMode extends Component {
     }
 
     componentDidMount() {
-        let newGenres = this.props.data.genres ? this.props.data.genres : [];
+        const newGenres = this.props.data.genres ? this.props.data.genres : [];
         this.setState({
             genres: newGenres
         });
@@ -80,9 +80,9 @@ class EditorialMetadataEditMode extends Component {
 
 
     shouldComponentUpdate(nextProps) {
-        let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
-        let differentData = this.props.data !== nextProps.data;
-        let differentUpdatedData = this.props.updatedEditorialMetadata.filter(e => e.id === this.props.data.id) !== nextProps.updatedEditorialMetadata.filter(e => e.id === nextProps.data.id);
+        const differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
+        const differentData = this.props.data !== nextProps.data;
+        const differentUpdatedData = this.props.updatedEditorialMetadata.filter(e => e.id === this.props.data.id) !== nextProps.updatedEditorialMetadata.filter(e => e.id === nextProps.data.id);
         return differentData || differentTitleContentType || differentUpdatedData;
     }
 
@@ -149,7 +149,7 @@ class EditorialMetadataEditMode extends Component {
             crewList = orderedArray;
         }
 
-        let castAndCrewList = [...castList, ...crewList];
+        const castAndCrewList = [...castList, ...crewList];
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
     }
 

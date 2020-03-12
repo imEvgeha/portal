@@ -68,7 +68,7 @@ class SelectableInput extends Component {
     handleOptionsChange(selectedOptions) {
         const {options = []} = this.props.value || {};
         const {selectableInput} = this.state;
-        let filteredOptions = selectedOptions.filter(option => this.filterOption(option, selectableInput, options));
+        const filteredOptions = selectedOptions.filter(option => this.filterOption(option, selectableInput, options));
         this.props.onChange({...this.props.value, options: filteredOptions});
     }
 
@@ -294,7 +294,7 @@ class SelectableInput extends Component {
                 options  = this.props.selectValues[this.props.selected.field];
             }
 
-            let filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
+            const filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
             let filteredOptions = options;
 
             filters.forEach(filter => {

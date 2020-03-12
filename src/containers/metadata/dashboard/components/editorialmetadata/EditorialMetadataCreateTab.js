@@ -48,9 +48,9 @@ class EditorialMetadataCreateTab extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        let differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
-        let differentEditorialMetadataForCreate = this.props.editorialMetadataForCreate !== nextProps.editorialMetadataForCreate;
-        let differentFieldsRequired = this.props.areFieldsRequired !== nextProps.areFieldsRequired;
+        const differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
+        const differentEditorialMetadataForCreate = this.props.editorialMetadataForCreate !== nextProps.editorialMetadataForCreate;
+        const differentFieldsRequired = this.props.areFieldsRequired !== nextProps.areFieldsRequired;
 
         return differentEditorialMetadataForCreate || differentTitleContentType || differentFieldsRequired;
     }
@@ -117,7 +117,7 @@ class EditorialMetadataCreateTab extends Component {
             crewList = orderedArray;
         }
 
-        let castAndCrewList = [...castList, ...crewList];
+        const castAndCrewList = [...castList, ...crewList];
         this.props.handleEditorialCastCrewCreate(castAndCrewList, this.props.editorialMetadataForCreate);
     }
 

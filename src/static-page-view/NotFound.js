@@ -1,7 +1,7 @@
 import React from 'react';
 import './NotFound.scss';
 
-let NotFound = () => {
+const NotFound = () => {
   return (
       <div className="nexus-c-not-found">
           <h2>Not Found</h2>

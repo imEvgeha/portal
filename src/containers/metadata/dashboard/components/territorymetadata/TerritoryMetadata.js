@@ -28,7 +28,7 @@ class TerritoryMetadata extends Component {
     getLanguageByCode = (code, type) => {
         if(type === COUNTRY) {
             if (this.props.configCountry) {
-                let found = this.props.configCountry.value.find(e => e.countryCode === code);
+                const found = this.props.configCountry.value.find(e => e.countryCode === code);
                 if (found) {
                     return found.countryName;
                 }

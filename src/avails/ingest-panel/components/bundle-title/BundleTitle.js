@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Folder from '../../../../assets/folder.svg';
 import './BundleTitle.scss';
 
-let BundleTitle = ({provider, totalAttachments}) => {
+const BundleTitle = ({provider, totalAttachments}) => {
     return (
         <div className='nexus-c-bundle-title'>
             <div className='nexus-c-bundle-title__details'>

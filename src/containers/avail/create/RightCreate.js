@@ -108,7 +108,7 @@ class RightCreate extends React.Component {
     }
 
     handleDeleteObjectFromArray = (value, name, subField) => {
-        let newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
+        const newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
         this.checkRight(name, newRight, true);
     }
 
@@ -125,9 +125,9 @@ class RightCreate extends React.Component {
 
     checkRight(name, value, setNewValue) {
         if(!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
-            let validationError = this.validateField(name, value, this.right);
+            const validationError = this.validateField(name, value, this.right);
 
-            let errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
+            const errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
             this.mappingErrorMessage[name] = errorMessage;
 
             if (!validationError) {
@@ -155,7 +155,7 @@ class RightCreate extends React.Component {
         }
 
         if(setNewValue){
-            let newRight = {...this.right, [name]: value};
+            const newRight = {...this.right, [name]: value};
             this.right = newRight;
             this.setState({});
         }
@@ -210,7 +210,7 @@ class RightCreate extends React.Component {
     }
 
     isAnyErrors() {
-        for (let [, value] of Object.entries(this.mappingErrorMessage)) {
+        for (const [, value] of Object.entries(this.mappingErrorMessage)) {
             if(value.date || value.range || value.text || value.inner || value.pair) {
                 return true;
             }
@@ -287,7 +287,7 @@ class RightCreate extends React.Component {
     }
 
     initMappingErrors = (mappings) => {
-        let mappingErrorMessage = {};
+        const mappingErrorMessage = {};
         mappings.filter(({dataType}) => dataType).map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 inner: '',
@@ -535,7 +535,7 @@ class RightCreate extends React.Component {
                 const map = this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key);
                 return map && map.configEndpoint;
             });
-            let filters = filterKeys.map((key) => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
+            const filters = filterKeys.map((key) => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
 
             let filteredOptions = options;
             filters.map(filter => {
@@ -553,7 +553,7 @@ class RightCreate extends React.Component {
                 }
             ];
 
-            let handleOptionsChange = (selectedOptions) => {
+            const handleOptionsChange = (selectedOptions) => {
                 this.checkRight(name, selectedOptions, true);
             };
 
@@ -617,7 +617,7 @@ class RightCreate extends React.Component {
                 }
             }
 
-            let handleOptionsChange = (option) => {
+            const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
 
@@ -726,7 +726,7 @@ class RightCreate extends React.Component {
         if(this.props.availsMapping) {
             this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
                 if(mapping.enableEdit && !mapping.readOnly){
-                    let required = mapping.required;
+                    const required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';
                     const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
                     if(cannotCreate){

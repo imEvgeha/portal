@@ -9,7 +9,7 @@ import Button from '@atlaskit/button';
 import PropTypes from 'prop-types';
 
 
-let createFormForItem = (field,
+const createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,

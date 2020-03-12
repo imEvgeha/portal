@@ -7,7 +7,7 @@ import { Container } from 'reactstrap';
 import { PersonListFlag, ListText, CustomRow, CustomColumn, CustomEllipsis, ListItemText } from './CustomComponents';
 
 
-let PersonListReadOnly = ({ showPersonType, getFormatTypeName, person, columnName }) => {
+const PersonListReadOnly = ({ showPersonType, getFormatTypeName, person, columnName }) => {
     
     return (
         <Container>

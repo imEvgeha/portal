@@ -4,7 +4,7 @@ import './RightsRepositoryHeader.scss';
 import RightsIcon from '../../../assets/rights.svg';
 import MoreIcon from '../../../assets/more-icon.svg';
 
-let RightsRepositoryHeader = ({title}) => {
+const RightsRepositoryHeader = ({title}) => {
   return (
       <div className="nexus-c-rights-repository-header">
           <div className='nexus-c-rights-repository-header__title'>

@@ -103,7 +103,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     selected = selected.concat(this.state.selected);
             }
 
-            let nodesToUpdate = selected
+            const nodesToUpdate = selected
                 .filter(x => !this.state.selected.includes(x))
                 .concat(this.state.selected.filter(x => !selected.includes(x)))
                 .map(i => this.state.table.api.getRowNode(i.id));

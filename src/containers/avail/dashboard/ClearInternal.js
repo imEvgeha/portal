@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import t from 'prop-types';
 import {connect} from 'react-redux';
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availTabPageSelected: state.dashboard.session.availTabPageSelection.selected,
         showSelectedAvails: state.dashboard.showSelectedAvails,
@@ -32,4 +32,4 @@ ClearInternal.propTypes = {
     clearAllSelected: t.func
 };
 
-export let Clear = connect(mapStateToProps, null)(ClearInternal);
+export const Clear = connect(mapStateToProps, null)(ClearInternal);

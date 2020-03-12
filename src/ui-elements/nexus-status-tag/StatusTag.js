@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Constants from './Constants';
 import './StatusTag.scss';
 
-let StatusTag = ({status}) => {
+const StatusTag = ({status}) => {
     return (
         <div className={`nexus-status-tag ${status.toLowerCase()}`}>
             {Constants[status]}

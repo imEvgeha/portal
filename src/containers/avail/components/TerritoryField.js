@@ -5,7 +5,7 @@ import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './TerritoryField.scss';
 
-let TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
+const TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
 
     const getTerritories = () => {
         return territory.map((terr, i) => (
@@ -20,7 +20,7 @@ let TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, r
         ));
     };
 
-    let getAddButton = () => {
+    const getAddButton = () => {
         return (
             <CustomFieldAddText
                 onClick={onAddClick}

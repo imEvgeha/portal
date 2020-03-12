@@ -46,7 +46,7 @@ const RightRepositoryNexusGrid = compose(
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 
-let RightToMatchView = ({
+const RightToMatchView = ({
     match,
     columnDefs,
     mapping,

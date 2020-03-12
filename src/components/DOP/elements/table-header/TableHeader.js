@@ -25,8 +25,8 @@ class TableHeader extends React.Component {
 
     onBulkPromote = () => {
         const {promotedRights, updatePromotedRights, promotedRightsFullData, updatePromotedRightsFullData, table} = this.props;
-        let toPromote = [];
-        let toPromoteFullData = [];
+        const toPromote = [];
+        const toPromoteFullData = [];
         table.api.getSelectedNodes().forEach(node => {
             const isPromotable = this.getPromotableStatus(node);
             if (isPromotable && !this.isPromoted(node)) {

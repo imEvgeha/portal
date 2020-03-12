@@ -77,7 +77,7 @@ class AdvancedSearchPanel extends React.Component {
         }
         const searchCriteria = {};
 
-        let sortedFields = this.getSortedFieldsToShow();
+        const sortedFields = this.getSortedFieldsToShow();
         let position = 0;
         sortedFields.forEach((field) => {
             if (field.name !== name) {
@@ -148,7 +148,7 @@ class AdvancedSearchPanel extends React.Component {
 
     getFieldsToShow() {
         const nonEmptyFields = [];
-        for (let key of Object.keys(this.props.searchCriteria) ) {
+        for (const key of Object.keys(this.props.searchCriteria) ) {
             const field = this.props.searchCriteria[key];
             if (field) {
                 field.name = key;

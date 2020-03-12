@@ -78,7 +78,7 @@ const populate = function(key, value, location){
 };
 
 const prepareRight = function (right, keepNulls = false) {
-    let rightCopy = {};
+    const rightCopy = {};
     Object.keys(right).forEach(key => {
         if(keepNulls || isNotEmpty(right[key])){
             populate(key, right[key], rightCopy);

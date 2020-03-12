@@ -6,7 +6,7 @@ import {useIntl} from 'react-intl';
 import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../util/Common';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
 
-let TerritoryMetadataTab = ({data, getLanguageByCode}) => {
+const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
     const {
         locale,
         boxOffice,

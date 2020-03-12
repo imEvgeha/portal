@@ -15,7 +15,7 @@ import {
 import {getDomainName, URL} from '../../../util/Common';
 import {rightsService} from '../../../containers/avail/service/RightsService';
 
-let ActionsBar = ({matchList, mergeTitles, rightId}) => {
+const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,

@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
 
     onSubmitSearch = async (e) => {
         e.preventDefault();
-        let filter = {
+        const filter = {
             queryTerms: this.props.keywordFilters,
             filters: Object.keys(this.props.selectedFilters).map((key) => {return {'filterName' : key, 'filterValues' : this.props.selectedFilters[key]};}).filter(filt => filt.filterValues)
         };

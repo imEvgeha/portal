@@ -19,7 +19,7 @@ import {historyServiceManager} from '../HistoryServiceManager';
 
 
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availHistoryPage: state.history.availHistoryPage,
         availHistoryLoading: state.history.availHistoryLoading,
@@ -30,7 +30,7 @@ let mapStateToProps = state => {
 
 
 
-let mapDispatchToProps = {
+const mapDispatchToProps = {
     resultPageHistoryUpdate,
     searchFormSetHistorySearchCriteria,
     searchFormUpdateAdvancedHistorySearchCriteria,

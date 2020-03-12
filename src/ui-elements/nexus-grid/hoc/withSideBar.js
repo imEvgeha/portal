@@ -26,7 +26,7 @@ const DEAFULT_TOOL_PANELS = [
 const defaultSideBar = {toolPanels: DEAFULT_TOOL_PANELS};
 
 const withSideBar = (sideBar = defaultSideBar) => WrappedComponent =>{
-    let ComposedComponent = (props) => {
+    const ComposedComponent = (props) => {
         return (
             <WrappedComponent
                 {...props}

@@ -71,7 +71,7 @@ class HistoryURL extends React.Component {
     static saveHistoryAdvancedFilterUrl(filter){
         const searchParams = this.FilterToObj(filter);
 
-        let toReturn = '/avails/history';
+        const toReturn = '/avails/history';
 
         const params = [];
         Object.keys(searchParams).forEach(key => {

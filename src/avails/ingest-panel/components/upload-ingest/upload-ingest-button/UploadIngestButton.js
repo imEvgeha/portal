@@ -7,7 +7,7 @@ import './UploadIngestButton.scss';
 
 const TITLE = 'Avail Ingest';
 
-let UploadIngestButton = ({ingestData}) => {
+const UploadIngestButton = ({ingestData}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);

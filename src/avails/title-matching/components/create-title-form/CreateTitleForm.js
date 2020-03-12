@@ -19,7 +19,7 @@ const {
     NEW_TITLE_LABEL_SUBMIT,
 } = constants;
 
-let CreateTitleForm = ({close, focusedRight}) => {
+const CreateTitleForm = ({close, focusedRight}) => {
     // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
     const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;

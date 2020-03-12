@@ -1,7 +1,7 @@
 import React from 'react';
 import './Welcome.scss';
 
-let Welcome = () => {
+const Welcome = () => {
   return (
       <div className="nexus-c-welcome">
           <h1>Nexus Portal</h1>

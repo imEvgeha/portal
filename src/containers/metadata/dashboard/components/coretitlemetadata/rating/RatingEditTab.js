@@ -25,7 +25,7 @@ class RatingEditTab extends Component {
     }
 
     handleRatingSystemChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.updatedRating,
             ratingSystem: newValue.target.value,
             rating: null,
@@ -51,7 +51,7 @@ class RatingEditTab extends Component {
     };
 
     handleRatingsChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.updatedRating,
             rating: newValue.target.value
         };
@@ -64,7 +64,7 @@ class RatingEditTab extends Component {
     };
 
     handleAdvisoryCodesChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.updatedRating,
             advisoriesCode: newValue.map(e => e.value)
         };
@@ -77,7 +77,7 @@ class RatingEditTab extends Component {
     };
 
     handleAdvisoriesChange = (newValue) => {
-        let newRating = {
+        const newRating = {
             ...this.state.updatedRating,
             advisoriesFreeText: newValue.target.value
         };

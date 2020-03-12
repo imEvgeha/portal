@@ -4,7 +4,7 @@ import Constants from '../../constants';
 import './IngestReport.scss';
 import RightsURL from '../../../../containers/avail/util/RightsURL';
 
-let IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) => {
+const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) => {
     const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};

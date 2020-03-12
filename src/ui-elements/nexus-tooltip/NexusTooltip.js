@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
-let NexusTooltip = ({content, children, ...restProps}) => {
+const NexusTooltip = ({content, children, ...restProps}) => {
     return (
         <Tooltip
             content={content}
