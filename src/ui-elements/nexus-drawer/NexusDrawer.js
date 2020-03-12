@@ -27,7 +27,7 @@ const NexusDrawer = ({
                 <Blanket
                     isTinted={isOpen}
                     canClickThrough={false}
-                    onBlanketClicked={() => onClose()}
+                    onBlanketClicked={onClose}
                 />
             )}
             <div
