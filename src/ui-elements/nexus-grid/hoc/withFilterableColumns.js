@@ -13,6 +13,7 @@ import {
     DEFAULT_FILTER_PARAMS,
     NOT_FILTERABLE_COLUMNS,
     EXCLUDED_INITIAL_FILTER_VALUES,
+    AG_GRID_COLUMN_FILTER,
 } from '../constants';
 import usePrevious from '../../../util/hooks/usePrevious';
 import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
@@ -73,21 +74,69 @@ const withFilterableColumns = ({
             const copiedColumnDefs = cloneDeep(columnDefs);
             const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
                 const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
+                const {field} = columnDef;
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType)
                     && (columns ? columns.includes(columnDef.field) : true)
                     && !excludedFilterColumns.includes(columnDef.field);
-                if (isFilterable) {
-                    columnDef.filter = switchCase(FILTER_TYPE)('agTextColumnFilter')(dataType);
-                    columnDef.filterParams = setFilterParams(dataType, columnDef.field);
 
-                    if (dataType === 'datetime' || dataType === 'time' || dataType === 'localdate') {
-                        const initialFilters = {
-                            from: filters[`${columnDef.field}From`],
-                            to: filters[`${columnDef.field}To`]
-                        };
-                        columnDef.floatingFilterComponent = 'customDateFloatingFilter';
-                        columnDef.filter = 'customDateFilter';
-                        columnDef.filterParams = {initialFilters};
+                if (isFilterable) {
+                    const {TEXT, NUMBER, SET, CUSTOM_DATE} = AG_GRID_COLUMN_FILTER;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, SELECT, MULTISELECT, TERRITORY, DATE, LOCAL_DATE, DATE_TIME} = FILTER_TYPE;
+
+                    switch (dataType) {
+                        case BOOLEAN:
+                            columnDef.filter = TEXT;
+                            columnDef.filterParams = {
+                                ...DEFAULT_FILTER_PARAMS,
+                                values: [false, true]
+                            };
+                            break;
+                        case INTEGER:
+                        case DOUBLE:
+                        case YEAR: 
+                            columnDef.filter = NUMBER;
+                            break;
+                        case SELECT:
+                        case MULTISELECT:
+                            columnDef.filter = SET;
+                            columnDef.filterParams = {
+                                ...DEFAULT_FILTER_PARAMS,
+                                values: getFilterOptions(field),
+                            };
+                            break;
+                        case TERRITORY: 
+                            columnDef.filter = SET;
+                            columnDef.filterParams = {
+                                ...DEFAULT_FILTER_PARAMS,
+                                values: getFilterOptions(field),
+                            };
+                            columnDef.keyCreator = params => {
+                                const countries = params.value.map(({country}) => country);
+                                return countries;
+                            };
+                            break;
+                        case DATE:
+                        case DATE_TIME:
+                        case LOCAL_DATE:
+                            const from = filters[field] && filters[field][`${field}From`];
+                            const to = filters[field] && filters[field][`${field}To`];
+                            const initialFilters = {
+                                ...(from && {from}),
+                                ...(to && {to})
+                            };
+                            columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                            columnDef.filter = CUSTOM_DATE;
+                            columnDef.filterParams = {
+                                // TODO; check is this neccessary
+                                ...DEFAULT_FILTER_PARAMS,
+                                filterOptions: ['inRange'],
+                                //
+                                initialFilters,
+                            };
+                            break;
+                        default:
+                            columnDef.filter = TEXT;
+                            columnDef.filterParams = DEFAULT_FILTER_PARAMS;
                     }
                 }
                 return columnDef;
@@ -124,30 +173,6 @@ const withFilterableColumns = ({
             values.forEach(value => field.selectValue(value));
             // APPLY THE MODEL
             field.applyModel();
-        };
-
-        const setFilterParams = (dataType, field) => {
-            switch (dataType) {
-                case 'boolean':
-                    return {
-                        ...DEFAULT_FILTER_PARAMS,
-                        values: [false, true]
-                    };
-                case 'select':
-                case 'territoryType':
-                case 'multiselect': 
-                    return {
-                        ...DEFAULT_FILTER_PARAMS, 
-                        values: getFilterOptions(field),
-                    };
-                case 'datetime':
-                    return {
-                        ...DEFAULT_FILTER_PARAMS,
-                        filterOptions: ['inRange'],
-                    };
-                default:
-                    return DEFAULT_FILTER_PARAMS;
-            }
         };
 
         const getFilterOptions = (field) => {

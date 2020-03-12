@@ -2,7 +2,7 @@ import React from 'react';
 import {
     searchFormUpdateAdvancedSearchCriteria
 } from '../../../../stores/actions/metadata/index';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import {titleSearchHelper} from '../TitleSearchHelper';
 import {alertModal} from '../../../../components/modal/AlertModal';

@@ -4,7 +4,7 @@ import t from 'prop-types';
 import {
     updateSelectedTerritories
 } from '../../../../../stores/actions/DOP';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {getConfigApiValues} from '../../../../../common/CommonConfigService';
 import {INPUT_TIMEOUT} from '../../../../../constants/common-ui';
 import {configFields} from '../../../../../containers/metadata/service/ConfigService';

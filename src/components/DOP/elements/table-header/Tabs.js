@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {updateSelectedTerritoriesTab} from '../../../../stores/actions/DOP';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {ALL_RIGHTS, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
 import {rightServiceManager} from '../../../../containers/avail/service/RightServiceManager';
 import {tabFilter} from '../../../../constants/DOP/tabFilter';

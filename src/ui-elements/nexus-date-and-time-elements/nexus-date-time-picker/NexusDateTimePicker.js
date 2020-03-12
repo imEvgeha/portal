@@ -50,7 +50,7 @@ function NexusDateTimePicker({
 
     function DatePicker(isReadOnly) {
   return (
-      <div className="nexus-c-date-time-picker">
+      <>
           {!hideLabel && label && (
           <div className="nexus-c-date-time-picker__label">
               {label}
@@ -60,40 +60,42 @@ function NexusDateTimePicker({
                 ? getDisplayDate(value)
                 : (
                     <>
-                        <div className="nexus-c-date-time-picker__date-time">
-                            <NexusSimpleDateTimePicker
-                                id={id}
-                                onChange={(date) => {
-                                    // Don't use onChange if the component is with InlineEdit
-                                    // onConfirm will handle changes
-                                    isWithInlineEdit ? setDate(date) : onChange(date);
-                                }}
-                                value={value || ''}
-                                isSimulcast={isSimulcast}
-                                isTimestamp={isTimestamp}
-                                defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
-                                {...restProps}
-                            />
-                        </div>
-                        {!isTimestamp && ( // Timestamps are always UTC, no need for this option
-                            <div className="nexus-c-date-time-picker__type-select">
-                                <Select
-                                    defaultValue={
-                                        isSimulcast
-                                            ? {label: SIMULCAST_TIME_LABEL, value: true}
-                                            : {label: RELATIVE_TIME_LABEL, value: false}
-                                    }
-                                    options={[
-                                        {label: RELATIVE_TIME_LABEL, value: false},
-                                        {label: SIMULCAST_TIME_LABEL, value: true},
-                                    ]}
-                                    onChange={type => setIsSimulcast(type.value)}
+                        <div className="nexus-c-date-time-picker">
+                            <div className="nexus-c-date-time-picker__date-time">
+                                <NexusSimpleDateTimePicker
+                                    id={id}
+                                    onChange={(date) => {
+                                        // Don't use onChange if the component is with InlineEdit
+                                        // onConfirm will handle changes
+                                        isWithInlineEdit ? setDate(date) : onChange(date);
+                                    }}
+                                    value={value || ''}
+                                    isSimulcast={isSimulcast}
+                                    isTimestamp={isTimestamp}
+                                    defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
+                                    {...restProps}
                                 />
                             </div>
-                        )}
+                            {!isTimestamp && ( // Timestamps are always UTC, no need for this option
+                                <div className="nexus-c-date-time-picker__type-select">
+                                    <Select
+                                        defaultValue={
+                                            isSimulcast
+                                                ? {label: SIMULCAST_TIME_LABEL, value: true}
+                                                : {label: RELATIVE_TIME_LABEL, value: false}
+                                        }
+                                        options={[
+                                            {label: RELATIVE_TIME_LABEL, value: false},
+                                            {label: SIMULCAST_TIME_LABEL, value: true},
+                                        ]}
+                                        onChange={type => setIsSimulcast(type.value)}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </>
                 )}
-      </div>
+      </>
 );
 }
 

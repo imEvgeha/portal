@@ -1,7 +1,7 @@
 import React from 'react';
 import {updatePromotedRights, updatePromotedRightsFullData,} from '../../../../stores/actions/DOP';
 import t from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {rightsService} from '../../../../containers/avail/service/RightsService';
 
 import union from 'lodash.union';

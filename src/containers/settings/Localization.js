@@ -1,5 +1,5 @@
 import React from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import Select from '@atlaskit/select';
 import moment from 'moment';
 import PropTypes from 'prop-types';

@@ -1,7 +1,7 @@
 import React from 'react';
 import t from 'prop-types';
 import {searchFormUpdateTextSearch} from '../../../../stores/actions/avail/dashboard';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 
 const mapStateToProps = state => {

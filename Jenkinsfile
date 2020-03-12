@@ -15,6 +15,7 @@ pipeline {
                }
                sh 'yarn'
                sh 'yarn build:prod'
+               sh 'yarn test'
              }
          }
          stage('docker image') {

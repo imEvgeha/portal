@@ -46,7 +46,7 @@ class RightTerritoryForm extends React.Component {
                         <RightTerritoryFields
                             options={this.props.options}
                             isEdit={this.props.isEdit}
-                            existingTerritoryList={this.props.existingTerritoryList}
+                            existingTerritoryList={this.props.existingTerritoryList || this.props.data}
                             territoryIndex={this.props.territoryIndex}
                         />
                         <ModalFooter>

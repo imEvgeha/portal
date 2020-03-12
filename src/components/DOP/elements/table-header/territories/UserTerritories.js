@@ -7,7 +7,7 @@ import {colors} from '@atlaskit/theme';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import ToggleButton from 'react-toggle-button';
 import UserTerritoriesModal from './UserTerritoriesModal';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {updateSelectedTerritories, updateUseSelectedTerritories} from '../../../../../stores/actions/DOP';
 
 const IconExplorerLink = styled.a`

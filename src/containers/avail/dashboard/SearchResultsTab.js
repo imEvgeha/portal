@@ -2,7 +2,7 @@ import './DashboardContainer.scss';
 
 import React from 'react';
 import t from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {configurationService} from '../service/ConfigurationService';
 import {IfEmbedded} from '../../../util/Common';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
