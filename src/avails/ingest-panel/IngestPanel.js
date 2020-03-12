@@ -62,8 +62,9 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                 ingestClick={ingestClick}
                                 selectedAttachmentId={selectedAttachmentId}
                             />
-) : ((excelAttachments.length === 1) &&
-                            (
+                        )
+                        : ((excelAttachments.length === 1) &&
+                        (
                             <Ingest
                                 key={id}
                                 attachment={excelAttachments[0]}
@@ -78,7 +79,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                 selected={selectedIngest && (selectedIngest.id === id)}
                                 ingestId={id}
                             />
-));
+                        ));
                     })
                 }
             </div>
