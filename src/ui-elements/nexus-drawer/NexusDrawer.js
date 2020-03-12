@@ -1,9 +1,9 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import Blanket from '@atlaskit/blanket';
+import Button from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
-import {NexusOverlayContext} from '../nexus-overlay/NexusOverlay';
-import Button from '@atlaskit/button';
 
 import './NexusDrawer.scss';
 
@@ -14,34 +14,46 @@ const NexusDrawer = ({
     isOpen,
     onClose,
 }) => {
-    const {setIsOverlayActive} = useContext(NexusOverlayContext);
-
     const [isOpenClass, setIsOpenClass] = useState('');
 
-    useEffect(() => {
-        setIsOverlayActive(isOpen);
-        setIsOpenClass(isOpen ? 'nexus-c-drawer--is-open' : '');
-        }, [isOpen]
+    useEffect(
+        () => setIsOpenClass(isOpen ? 'nexus-c-drawer--is-open' : ''),
+        [isOpen]
     );
 
     return (
-        <div
-            className={`
-                nexus-c-drawer 
-                nexus-c-drawer--is-${position} 
-                nexus-c-drawer--is-${width}-width
-                ${isOpenClass} 
-            `}
-        >
-            <Button
-                appearance="subtle"
-                onClick={onClose}
-                className={`nexus-c-drawer__close-btn nexus-c-drawer__close-btn--is-${position}`}
+        <>
+            {isOpen && (
+                <Blanket
+                    isTinted={isOpen}
+                    canClickThrough={false}
+                    onBlanketClicked={() => onClose()}
+                />
+            )}
+            <div
+                className={
+                    `nexus-c-drawer 
+                    nexus-c-drawer--is-${position} 
+                    nexus-c-drawer--is-${width}-width
+                    ${isOpenClass}`
+                }
             >
-                {position === 'right' ? <ArrowRightIcon /> : <ArrowLeftIcon />}
-            </Button>
-            {children}
-        </div>
+                <Button
+                    appearance="subtle"
+                    onClick={onClose}
+                    className={
+                        `nexus-c-drawer__close-btn 
+                        nexus-c-drawer__close-btn--is-${position}`
+                    }
+                >
+                    {position === 'right'
+                        ? <ArrowRightIcon />
+                        : <ArrowLeftIcon />
+                    }
+                </Button>
+                {isOpen && children}
+            </div>
+        </>
     );
 };
 
