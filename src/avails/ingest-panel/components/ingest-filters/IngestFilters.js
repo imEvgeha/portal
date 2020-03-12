@@ -7,7 +7,7 @@ import Constants from '../../constants';
 import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
-function IngestFilters({onFiltersChange}) {
+let IngestFilters = ({onFiltersChange}) => {
     const {filterKeys: {PROVIDER, STATUS}, STATUS_LIST} = Constants;
 
     const [filters, setFilters] = useState(getInitialFilters());
@@ -84,7 +84,7 @@ function IngestFilters({onFiltersChange}) {
             </div>
         </div>
     );
-}
+};
 
 IngestFilters.propTypes = {
     onFiltersChange: PropTypes.func.isRequired,

@@ -21,7 +21,7 @@ import CandidatesList from './components/CandidatesList';
 import {createLoadingSelector} from '../../ui/loading/loadingSelectors';
 import {getRepositoryCell} from '../../avails/utils';
 
-function LegacyTitleReconciliationView({
+let LegacyTitleReconciliationView = ({
     titleMetadata,
     match,
     columnDefs,
@@ -29,7 +29,7 @@ function LegacyTitleReconciliationView({
     onDone,
     createColumnDefs,
     isMerging,
-}) {
+}) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
     const [gridApi, setGridApi] = useState();
@@ -107,7 +107,7 @@ function LegacyTitleReconciliationView({
             </div>
         </div>
     );
-}
+};
 
 LegacyTitleReconciliationView.propsTypes = {
     titleMetadata: PropTypes.object,

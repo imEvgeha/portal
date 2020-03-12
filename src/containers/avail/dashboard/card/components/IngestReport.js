@@ -3,7 +3,7 @@ import NexusTooltip from '../../../../../ui-elements/nexus-tooltip/NexusTooltip'
 import Constants from '../Constants';
 import './IngestReport.scss';
 
-function IngestReport(params) {
+let IngestReport = (params) => {
     const {valueFormatted, data: {ingestReport}} = params;
     const content = (
         <div className='nexus-c-ingest-report'>
@@ -27,6 +27,6 @@ function IngestReport(params) {
             <div>{valueFormatted}</div>
         </NexusTooltip>
     );
-}
+};
 
 export default IngestReport;

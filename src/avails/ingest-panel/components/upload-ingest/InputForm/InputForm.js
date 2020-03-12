@@ -14,7 +14,7 @@ import { RadioGroup } from '@atlaskit/radio';
 const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, STUDIO, INTERNATIONAL} } = constants;
 const US = 'US';
 
-function InputForm({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) {
+let InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
     const templates = [
         {label: 'Use International Template', value: INTERNATIONAL,
             disabled: !isEmpty(ingestData) && ingestData.ingestType === EMAIL, testId: !isEmpty(ingestData) && ingestData.ingestType === EMAIL && 'disabled'},
@@ -140,7 +140,7 @@ function InputForm({ingestData = {}, closeModal, file, browseClick, licensors, u
             </div>
         </div>
     );
-}
+};
 
 InputForm.propTypes = {
     licensors: PropTypes.array,
@@ -153,10 +153,10 @@ InputForm.propTypes = {
 
 InputForm.defaultProps = {
     licensors: [],
-    uploadIngest: function() {
+    uploadIngest: () => {
   return null;
 },
-    browseClick: function() {
+    browseClick: () => {
   return null;
 },
     file: {},

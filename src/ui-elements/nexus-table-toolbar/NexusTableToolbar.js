@@ -9,7 +9,7 @@ import {
     RIGHTS_TAB
 } from '../../avails/rights-repository/RightsRepository';
 
-function NexusTableToolbar({
+let NexusTableToolbar = ({
     title,
     totalRows,
     selectedRightsCount,
@@ -22,7 +22,7 @@ function NexusTableToolbar({
     rightColumnApi,
     selectedRightColumnApi,
     selectedRightGridApi
-}) {
+}) => {
     return (
         <div className="nexus-c-table-toolbar">
             <MoreIcon fill="#A5ADBA" />
@@ -55,7 +55,7 @@ function NexusTableToolbar({
             )}
         </div>
     );
-}
+};
 
 NexusTableToolbar.propsTypes = {
     title: PropTypes.string,

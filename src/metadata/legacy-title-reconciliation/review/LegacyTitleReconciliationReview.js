@@ -23,13 +23,13 @@ import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {URL} from '../../../util/Common';
 
-function LegacyTitleReconciliationReview({
+let LegacyTitleReconciliationReview = ({
     createColumnDefs,
     columnDefs,
     titles,
     match,
     getReconciliationTitles,
-}) {
+}) => {
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
@@ -111,7 +111,7 @@ function LegacyTitleReconciliationReview({
             )}
         </div>
     );
-}
+};
 
 LegacyTitleReconciliationReview.propsTypes = {
     createColumnDefs: PropTypes.func.isRequired,

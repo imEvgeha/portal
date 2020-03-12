@@ -7,7 +7,7 @@ import {RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../../avails/rights-repository
 const TOOLTIP_BUTTON_UNSELECTED_MSG = 'Click to view selected items';
 const TOOLTIP_BUTTON_SELECTED_MSG = 'Click to view all items';
 
-function SelectedButton({activeTab, setActiveTab, selectedRightsCount}) {
+let SelectedButton = ({activeTab, setActiveTab, selectedRightsCount}) => {
 
     const onClick = () => {
         if (activeTab !== RIGHTS_SELECTED_TAB) {
@@ -32,7 +32,7 @@ function SelectedButton({activeTab, setActiveTab, selectedRightsCount}) {
             </Button>
         </Tooltip>
     );
-}
+};
 
 SelectedButton.propTypes = {
     activeTab: PropTypes.string.isRequired,

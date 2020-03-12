@@ -10,7 +10,7 @@ import './Ingest.scss';
 import Constants from '../../../ingest-panel/constants';
 import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
 
-function Ingest({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) {
+let Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
 
     const {attachments = [{}], ingestType, provider, received, id} = ingest;
     const {link, status, ingestReport = {}} = attachment;
@@ -56,7 +56,7 @@ function Ingest({ingest, filterByStatus, attachment, deselectIngest, downloadIng
             </div>
         </div>
     ) : null;
-}
+};
 
 Ingest.propTypes = {
     ingest: PropTypes.object,
@@ -68,16 +68,16 @@ Ingest.propTypes = {
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
-    filterByStatus: function() {
+    filterByStatus: () => {
   return null;
 },
-    deselectIngest: function() {
+    deselectIngest: () => {
   return null;
 },
-    downloadIngestEmail: function() {
+    downloadIngestEmail: () => {
   return null;
 },
-    downloadIngestFile: function() {
+    downloadIngestFile: () => {
   return null;
 },
 };

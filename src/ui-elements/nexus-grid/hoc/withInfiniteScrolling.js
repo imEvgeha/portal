@@ -18,7 +18,7 @@ const withInfiniteScrolling = ({
     maxConcurrentDatasourceRequests = MAX_CONCURRENT_DATASOURCE_REQUEST,
     maxBlocksInCache = MAX_BLOCKS_IN_CACHE,
 } = {}) => WrappedComponent => {
-    function ComposedComponent(props) {
+    let ComposedComponent = (props) => {
         const hasBeenCalledRef = useRef();
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
@@ -162,7 +162,7 @@ const withInfiniteScrolling = ({
                 {...mergedProps}
             />
         );
-    }
+    };
 
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,

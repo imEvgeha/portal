@@ -22,7 +22,7 @@ import './TitleMatchView.scss';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
-function TitleMatchView({
+let TitleMatchView = ({
     match,
     fetchFocusedRight,
     createColumnDefs,
@@ -30,7 +30,7 @@ function TitleMatchView({
     focusedRight,
     columnDefs,
     searchCriteria
-}) {
+}) => {
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
     const newTitleCell = ({data}) => { // eslint-disable-line
@@ -113,7 +113,7 @@ function TitleMatchView({
             }
         </div>
     );
-}
+};
 
 TitleMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func.isRequired,

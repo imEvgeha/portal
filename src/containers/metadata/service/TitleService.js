@@ -14,7 +14,7 @@ const onViewTitleClick = (response) => {
     window.open(url, '_blank');
 };
 
-function getSyncQueryParams(syncToVZ, syncToMovida) {
+let getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if(syncToVZ || syncToMovida) {
         if(syncToVZ && syncToMovida) {
             return `${TitleSystems.VZ.toUpperCase()},${TitleSystems.MOVIDA.toUpperCase()}`;
@@ -25,7 +25,7 @@ function getSyncQueryParams(syncToVZ, syncToMovida) {
         }
     }
     return null;
-}
+};
 
 export const titleService = {
 

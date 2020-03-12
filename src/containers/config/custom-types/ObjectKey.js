@@ -10,12 +10,12 @@ import Textfield  from '@atlaskit/textfield';
 import InlineEdit from '@atlaskit/inline-edit';
 import PropTypes from 'prop-types';
 
-function createFormForItem(field,
+let createFormForItem = (field,
     item,
     targetIndex,
     key,
     fieldsForForm,
-    formChangeHandler) {
+    formChangeHandler) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
         id: `${field.id}.${key}.[${targetIndex}]`,
@@ -40,7 +40,7 @@ function createFormForItem(field,
             }}
         </FormContext.Consumer>
     );
-}
+};
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);

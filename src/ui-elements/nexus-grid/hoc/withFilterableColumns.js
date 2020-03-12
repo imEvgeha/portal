@@ -28,7 +28,7 @@ const withFilterableColumns = ({
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
     prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
-    function ComposedComponent(props) {
+    let ComposedComponent = (props) => {
         const {columnDefs, mapping, selectValues, params} = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
@@ -206,7 +206,7 @@ const withFilterableColumns = ({
                 />
             ) : null
         );
-    }
+    };
 
     const createMapStateToProps = () => {
         const availSelectValuesSelector = createAvailSelectValuesSelector();

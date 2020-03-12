@@ -7,7 +7,7 @@ import { Container } from 'reactstrap';
 import { PersonListFlag, ListText, CustomRow, CustomColumn, CustomEllipsis, ListItemText } from './CustomComponents';
 
 
-function PersonListReadOnly({ showPersonType, getFormatTypeName, person, columnName }) {
+let PersonListReadOnly = ({ showPersonType, getFormatTypeName, person, columnName }) => {
     
     return (
         <Container>
@@ -49,7 +49,7 @@ function PersonListReadOnly({ showPersonType, getFormatTypeName, person, columnN
             </CustomRow>
         </Container>
     );
-}
+};
 
 PersonListReadOnly.defaultProps = { 
     showPersonType: false,

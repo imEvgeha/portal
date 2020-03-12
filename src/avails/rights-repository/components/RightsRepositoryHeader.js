@@ -4,7 +4,7 @@ import './RightsRepositoryHeader.scss';
 import RightsIcon from '../../../assets/rights.svg';
 import MoreIcon from '../../../assets/more-icon.svg';
 
-function RightsRepositoryHeader({title}) {
+let RightsRepositoryHeader = ({title}) => {
   return (
       <div className="nexus-c-rights-repository-header">
           <div className='nexus-c-rights-repository-header__title'>
@@ -18,7 +18,7 @@ function RightsRepositoryHeader({title}) {
           />
       </div>
 );
-}
+};
 
 RightsRepositoryHeader.propsTypes = {
     title: PropTypes.string,

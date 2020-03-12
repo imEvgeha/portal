@@ -175,7 +175,7 @@ const URL = {
         return url;
     },
 
-    search: function() {
+    search: () => {
         if(window && window.location){
             return window.location.search;
         } return null;

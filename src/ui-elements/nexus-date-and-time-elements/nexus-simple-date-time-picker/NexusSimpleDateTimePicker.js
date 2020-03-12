@@ -15,7 +15,7 @@ import {
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
-function NexusSimpleDateTimePicker({
+let NexusSimpleDateTimePicker = ({
     label,
     id,
     value,
@@ -26,7 +26,7 @@ function NexusSimpleDateTimePicker({
     isTimestamp,
     allowClear,
     ...restProps
-}) {
+}) => {
     const [date, setDate] = useState(value);
 
     // Get locale provided by intl
@@ -125,7 +125,7 @@ function NexusSimpleDateTimePicker({
               )}
         </>
     );
-}
+};
 
 NexusSimpleDateTimePicker.propTypes = {
     label: PropTypes.string,

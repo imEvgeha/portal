@@ -2,7 +2,7 @@ import React from 'react';
 import TableHeader from './elements/table-header/TableHeader';
 
 export default function withSelectRightHeader(SelectRightHeaderWrappedComponent) {
-    return function(props) {
+    return (props) => {
   return (
       <SelectRightsTableHeader
           SelectRightHeaderWrappedComponent={SelectRightHeaderWrappedComponent}

@@ -8,7 +8,7 @@ import './TableColumnCustomization.scss';
 const SELECT_ALL = 'selectAll';
 const SELECT_ALL_DISPLAY_NAME = 'Select All';
 
-export default function TableColumnCustomization({availsMapping, columns, updateColumnsOrder}) {
+const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) => {
 
     const [hideShowColumns, setHideShowColumns] = useState();
     const {setModalContent, setModalActions, setModalTitle, setModalStyle, close} = useContext(NexusModalContext);
@@ -102,7 +102,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
         updateColumnsOrder(cols);
     };
 
-    function buildModalContent(config) {
+    const buildModalContent = (config) => {
         const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
         for (let key in config) {
             if (key === SELECT_ALL) continue;
@@ -110,9 +110,9 @@ export default function TableColumnCustomization({availsMapping, columns, update
         }
 
         return (<div> {options} </div>);
-    }
+    };
 
-    function buildCheckBox(key, onChange) {
+    let buildCheckBox = (key, onChange) => {
         const data = hideShowColumns[key];
         return (
             <Checkbox
@@ -124,7 +124,7 @@ export default function TableColumnCustomization({availsMapping, columns, update
                 isChecked={data.checked}
             />
 );
-    }
+    };
 
     const buildConfigAndOpenModal = () => {
         createConfigForColumnCustomization();
@@ -134,7 +134,9 @@ export default function TableColumnCustomization({availsMapping, columns, update
     };
 
     return (<div className='nexus-column-customization__icon-button' onClick={buildConfigAndOpenModal}><AppSwitcherIcon size='large' /></div>);
-}
+};
+
+export default TableColumnCustomization;
 
 TableColumnCustomization.propTypes = {
     availsMapping: PropTypes.object,

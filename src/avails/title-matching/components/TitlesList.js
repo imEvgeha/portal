@@ -26,7 +26,7 @@ const TitleRepositoriesTable = compose(
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 
-function TitlesList({columnDefs, mergeTitles, rightId, queryParams}) {
+let TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const [totalCount, setTotalCount] = useState(0);
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
 
@@ -104,7 +104,7 @@ function TitlesList({columnDefs, mergeTitles, rightId, queryParams}) {
             />
         </>
     );
-}
+};
 
 TitlesList.propTypes = {
     columnDefs: PropTypes.array,
@@ -115,7 +115,7 @@ TitlesList.propTypes = {
 
 TitlesList.defaultProps = {
     columnDefs: [],
-    mergeTitles: function() {
+    mergeTitles: () => {
   return null;
 },
     queryParams: {},

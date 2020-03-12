@@ -13,7 +13,7 @@ const SPINNER = (
     </div>
   );
 
-function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistory}) {
+let RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
 
     const [opened, setOpened] = useState(false);
 
@@ -28,7 +28,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
         }
     }, [rightsEventHistory]);
 
-    function buildContent() {
+    const buildContent = () => {
         return (
             <div>
                 {selectedAvails.map((avail, index) => (
@@ -37,7 +37,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
                 )}
             </div>
         );
-    }
+    };
 
     const openHistoryModal = () => {
         const ids = selectedAvails.map(e => e.id);
@@ -62,7 +62,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
             </a>
         )
     );
-}
+};
 
 RightHistoryView.propTypes = {
     selectedAvails: PropTypes.array.isRequired,

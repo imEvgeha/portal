@@ -28,7 +28,7 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 
-function CandidatesList({columnDefs, titleId, queryParams, onCandidatesChange}) {
+let CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const {
@@ -137,7 +137,7 @@ function CandidatesList({columnDefs, titleId, queryParams, onCandidatesChange}) 
             )}
         </div>
     );
-}
+};
 
 CandidatesList.propTypes = {
     queryParams: PropTypes.object,
@@ -149,7 +149,7 @@ CandidatesList.propTypes = {
 CandidatesList.defaultProps = {
     queryParams: {},
     columnDefs: [],
-    onCandidatesChange: function() {
+    onCandidatesChange: () => {
   return null;
 },
 };

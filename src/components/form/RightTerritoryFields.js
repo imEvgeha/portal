@@ -5,7 +5,7 @@ import Select from '@atlaskit/select/Select';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {CreatableSelect} from '@atlaskit/select';
 
-function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, options}) {
+let RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
@@ -159,7 +159,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
             </Field>
         </>
     );
-}
+};
 
 RightTerritoryFields.propTypes = {
     isEdit: PropTypes.bool,

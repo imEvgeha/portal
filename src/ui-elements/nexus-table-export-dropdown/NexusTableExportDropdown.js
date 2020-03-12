@@ -8,7 +8,7 @@ import {downloadFile} from '../../util/Common';
 import * as selectors from '../../avails/right-matching/rightMatchingSelectors';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) {
+let NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) => {
 
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -89,7 +89,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
-    function renderDropdown() {
+    let renderDropdown = () => {
   return (
       <DropdownMenu
           className="nexus-c-button"
@@ -103,7 +103,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
           </DropdownItemGroup>
       </DropdownMenu>
 );
-}
+};
 
     return (
         <div className='nexus-c-right-repository-export'>
@@ -116,7 +116,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
             ) : renderDropdown()}
         </div>
     );
-}
+};
 
 NexusTableExportDropdown.propsTypes = {
     isSelectedOptionActive: PropTypes.bool,

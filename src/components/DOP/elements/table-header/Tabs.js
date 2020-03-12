@@ -7,7 +7,7 @@ import {rightServiceManager} from '../../../../containers/avail/service/RightSer
 import {tabFilter} from '../../../../constants/DOP/tabFilter';
 import {SelectRightsTab, TabContainer} from '../../../../ui-elements/nexus-table-tab/TableTab';
 
-function Tabs(props) {
+let Tabs = (props) => {
 
     const [allRightCount, setAllRightCount] = useState();
     const [incomingCount, setIncomingCount] = useState();
@@ -47,7 +47,7 @@ function Tabs(props) {
             </SelectRightsTab>
         </TabContainer>
     );
-}
+};
 
 Tabs.propTypes = {
     selectedTerritoriesTab: PropTypes.string,

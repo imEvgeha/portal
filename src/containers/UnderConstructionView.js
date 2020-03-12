@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-function UnderConstructionView({match}) {
+let UnderConstructionView = ({match}) => {
   return (
       <div className="nexus-c-under-construction-view">
           <div> UNDER CONSTRUCTION </div>
           {match && match.path}
       </div>
 );
-}
+};
 
 UnderConstructionView.propTypes = {
     match: PropTypes.object,

@@ -15,7 +15,7 @@ const isNotEmpty = function(obj){
     return obj && safeTrim(obj);
 };
 
-function parse(value, key) {
+const parse = (value, key) => {
     if(typeof value === 'number' || typeof  value === 'boolean')
         return value;
 
@@ -37,7 +37,7 @@ function parse(value, key) {
         return parse(value.value);
 
     return null;
-}
+};
 
 const populate = function(key, value, location){
     const dotPos = key.indexOf('.');

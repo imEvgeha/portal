@@ -15,7 +15,7 @@ import {
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 
-function NexusDatePicker({
+let NexusDatePicker = ({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
@@ -29,7 +29,7 @@ function NexusDatePicker({
     isReturningTime,
     allowClear,
     ...restProps
-}) {
+}) => {
     const [date, setDate] = useState(value || '');
     const [isSimulcast, setIsSimulcast] = useState(false);
 
@@ -65,7 +65,7 @@ function NexusDatePicker({
 
     const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
-    function DatePickerComponent(isReadOnly) {
+    let DatePickerComponent = (isReadOnly) => {
   return (
       <>
           {!hideLabel && label && (
@@ -94,7 +94,7 @@ function NexusDatePicker({
               )}
       </>
 );
-}
+};
 
     return (
         <> {isWithInlineEdit && !isReadOnly
@@ -120,7 +120,7 @@ function NexusDatePicker({
                 : DatePickerComponent(isReadOnly)}
         </>
     );
-}
+};
 
 NexusDatePicker.propTypes = {
     label: PropTypes.string,
@@ -146,7 +146,7 @@ NexusDatePicker.defaultProps = {
     isTimestamp: false,
     hideLabel: false,
     isReturningTime: true,
-    onConfirm: function() {
+    onConfirm: () => {
   return null;
 },
     allowClear: false,

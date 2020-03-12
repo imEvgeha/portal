@@ -88,7 +88,7 @@ const getSecondaryColor = ({isActive, isDisabled, isSelected, ...rest }) => {
     return color(rest);
 };
 
-function NexusCheckboxSelectOption(props) {
+let NexusCheckboxSelectOption = (props) => {
     const [isActive, setIsActive] = useState(false);
     const {
         getStyles,
@@ -139,6 +139,6 @@ function NexusCheckboxSelectOption(props) {
             <div className={`nexus-c-checkbox-select__text ${props.isDisabled ? 'nexus-c-checkbox-select__text--disabled': ''}`}>{children}</div>
         </div>
     );
-}
+};
 
 export default NexusCheckboxSelectOption;

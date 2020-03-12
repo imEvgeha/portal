@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import get from 'lodash.get';
 
-function DelayedOptions({field, onChange, onFieldFocus, onFieldBlur}) {
+let DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
     const items = get(field, 'options[0].items', []);
     if(!items.includes(field.value)){
         const val = items.find(option => JSON.stringify(option.value) === JSON.stringify(field.value));
@@ -24,7 +24,7 @@ function DelayedOptions({field, onChange, onFieldFocus, onFieldBlur}) {
         }
         </div>
 );
-}
+};
 
 DelayedOptions.propTypes = {
     field: PropTypes.object.isRequired,

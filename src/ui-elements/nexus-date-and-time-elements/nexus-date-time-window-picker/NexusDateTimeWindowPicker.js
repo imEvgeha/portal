@@ -18,7 +18,7 @@ import {
 } from '../constants';
 import CustomIntlProvider from '../../../layout/CustomIntlProvider';
 
-function NexusDateTimeWindowPicker({
+let NexusDateTimeWindowPicker = ({
     label,
     labels,
     isUsingTime,
@@ -29,7 +29,7 @@ function NexusDateTimeWindowPicker({
     startDateTimePickerProps,
     endDateTimePickerProps,
     allowClear
-}) {
+}) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
 
     const [startDate, setStartDate] = useState(startDateTimePickerProps.defaultValue || '');
@@ -191,7 +191,7 @@ function NexusDateTimeWindowPicker({
             </div>
         </CustomIntlProvider>
     );
-}
+};
 
 NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
@@ -215,10 +215,10 @@ NexusDateTimeWindowPicker.defaultProps = {
     labels: [],
     isTimestamp: true,
     isReturningTime: true,
-    onChangeAny: function() {
+    onChangeAny: () => {
   return null;
 },
-    onChange: function() {
+    onChange: () => {
   return null;
 },
     allowClear: false

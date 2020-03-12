@@ -8,7 +8,7 @@ import NexusBreadcrumb from '../containers/NexusBreadcrumb';
 import DOP from '../util/DOP';
 import routes from '../routes';
 
-function AppLayout({history}) {
+let AppLayout = ({history}) => {
   return (
       <ConnectedRouter history={history}>
           <div className="nexus-c-app-layout">
@@ -25,7 +25,7 @@ function AppLayout({history}) {
           </div>
       </ConnectedRouter>
 );
-}
+};
 
 AppLayout.propTypes = {
     history: PropTypes.object,

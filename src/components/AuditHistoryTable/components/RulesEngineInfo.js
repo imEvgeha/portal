@@ -2,7 +2,7 @@ import React from 'react';
 import Constants from '../Constants';
 import './RulesEngineInfo.scss';
 
-function RulesEngineInfo(params) {
+let RulesEngineInfo = (params) => {
     const {value, rowIndex, api} = params;
     const {data: { availSource, updatedBy, createdBy } = {}} = api.getRowNode(rowIndex);
     const author = updatedBy || createdBy;
@@ -31,6 +31,6 @@ function RulesEngineInfo(params) {
           </div>
       )
   );
-}
+};
 
 export default RulesEngineInfo;

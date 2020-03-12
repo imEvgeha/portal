@@ -4,7 +4,7 @@ import moment from 'moment';
 import StatusTag from '../../../../ui-elements/nexus-status-tag/StatusTag';
 import './IngestStatus.scss';
 
-function IngestStatus({date, status}) {
+let IngestStatus = ({date, status}) => {
     const dateFormatted = date && moment(date).format('ddd, MMM D, YYYY | hh:mm:ss A');
     return (
         <div className='ingest-status'>
@@ -12,7 +12,7 @@ function IngestStatus({date, status}) {
             {status && <StatusTag status={status} />}
         </div>
     );
-}
+};
 
 IngestStatus.propTypes = {
     date: PropTypes.string,

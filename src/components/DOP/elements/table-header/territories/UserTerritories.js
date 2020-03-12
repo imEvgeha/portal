@@ -28,7 +28,7 @@ const IconExplorerLink = styled.a`
   }
 `;
 
-function UserTerritories(props) {
+let UserTerritories = (props) => {
 
     const [userTerritoriesModalOpen, setUserTerritoriesModalOpen] = useState(false);
 
@@ -72,7 +72,7 @@ function UserTerritories(props) {
 
         </div>
     );
-}
+};
 
 UserTerritories.propTypes = {
     selectedTerritories: PropTypes.array,

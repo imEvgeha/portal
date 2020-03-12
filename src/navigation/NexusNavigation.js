@@ -23,12 +23,12 @@ const customThemeMode = modeGenerator({
     },
 });
 
-function ItemComponent({dropdownItems: DropdownItems, ...itemProps}) {
+let ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     const {id} = itemProps;
     const abilityLocationName = idToAbilityNameMap[id];
 
     if (DropdownItems) {
-        function ItemWithDropdown() {
+        let ItemWithDropdown = () => {
   return (
       <GlobalItemWithDropdown
           trigger={({isOpen}) => (
@@ -37,7 +37,7 @@ function ItemComponent({dropdownItems: DropdownItems, ...itemProps}) {
           items={<DropdownItems />}
       />
 );
-}
+};
         return (
             abilityLocationName
                 ? (
@@ -57,9 +57,9 @@ function ItemComponent({dropdownItems: DropdownItems, ...itemProps}) {
             )
             : <GlobalItem {...itemProps} />
     );
-}
+};
 
-function NexusNavigation({history, profileInfo}) {
+let NexusNavigation = ({history, profileInfo}) => {
     const [selectedItem, setSelectedItem] = useState('');
 
     useEffect(() => setSelectedItem(history.location.pathname.split('/')[1]), []);
@@ -69,7 +69,7 @@ function NexusNavigation({history, profileInfo}) {
         setSelectedItem(destination);
     };
 
-    function AccountDropdownItems() {
+    let AccountDropdownItems = () => {
   return (
       <DropdownItemGroup title={profileInfo.name || 'Profile'}>
           <DropdownItem onClick={keycloak.instance.logout}>
@@ -77,7 +77,7 @@ function NexusNavigation({history, profileInfo}) {
           </DropdownItem>
       </DropdownItemGroup>
 );
-}
+};
 
     return (
         <ThemeProvider theme={theme => ({
@@ -98,7 +98,7 @@ function NexusNavigation({history, profileInfo}) {
                     },
                     {
                         // eslint-disable-next-line react/prop-types
-                        component: function({onClick}) {
+                        component: ({onClick}) => {
   return (
       <Avatar
           borderColor="transparent"
@@ -116,7 +116,7 @@ function NexusNavigation({history, profileInfo}) {
             />
         </ThemeProvider>
     );
-}
+};
 
 NexusNavigation.propTypes = {
     profileInfo: PropTypes.object,

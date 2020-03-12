@@ -9,7 +9,7 @@ import {storeTitle} from '../../../../../../metadata/metadataActions';
 import {getRepositoryName} from '../../../../../../avails/utils';
 import TitleSystems from '../../../../../../constants/metadata/systems';
 
-function ActionCellRenderer({data, storeTitle}) {
+let ActionCellRenderer = ({data, storeTitle}) => {
 
     const [isMovidaOrVz, setIsMovidaOrVz] = useState(false);
 
@@ -37,7 +37,7 @@ function ActionCellRenderer({data, storeTitle}) {
               )}
         </CustomActionsCellRenderer>
     );
-}
+};
 
 ActionCellRenderer.propTypes = {
     storeTitle: PropTypes.func.isRequired,

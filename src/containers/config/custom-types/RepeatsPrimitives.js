@@ -15,12 +15,12 @@ if (!document.body) {
 }
 document.body.appendChild(portal);
 
-function createFormForItem(field,
+let createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,
     formChangeHandler,
-    key) {
+    key) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
         id: `${field.id}[${targetIndex}]#${key}`
@@ -44,7 +44,7 @@ function createFormForItem(field,
             }}
         </FormContext.Consumer>
     );
-}
+};
 
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);

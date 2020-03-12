@@ -5,7 +5,7 @@ import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './TerritoryField.scss';
 
-function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) {
+let TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
 
     const getTerritories = () => {
         return territory.map((terr, i) => (
@@ -20,7 +20,7 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
         ));
     };
 
-    function getAddButton() {
+    let getAddButton = () => {
         return (
             <CustomFieldAddText
                 onClick={onAddClick}
@@ -29,7 +29,7 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
                 Add...
             </CustomFieldAddText>
         );
-    }
+    };
 
     return (
         <div className='nexus-c-territory-field'>
@@ -44,7 +44,7 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
           )}
         </div>
     );
-}
+};
 
 TerritoryField.propTypes = {
     territory: PropTypes.array,
@@ -59,10 +59,10 @@ TerritoryField.propTypes = {
 
 TerritoryField.defaultProps = {
     territory: [],
-    renderChildren: function() {
+    renderChildren: () => {
   return null;
 },
-    onTagClick: function() {
+    onTagClick: () => {
   return null;
 },
     mappingErrorMessage: {},

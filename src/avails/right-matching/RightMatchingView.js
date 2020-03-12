@@ -24,14 +24,14 @@ const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
 )(NexusGrid);
 
-function RightMatchingView({
+let RightMatchingView = ({
         createRightMatchingColumnDefs,
         columnDefs,
         history,
         match,
         storeRightMatchDataWithIds,
         cleanStoredRightMatchDataWithIds,
-    }) {
+    }) => {
     const [totalCount, setTotalCount] = useState();
     // DOP integration
     useDOPIntegration(totalCount, RIGHT_MATCHING_DOP_STORAGE);
@@ -89,7 +89,7 @@ function RightMatchingView({
             />
         </div>
     );
-}
+};
 
 RightMatchingView.propTypes = {
     columnDefs: PropTypes.array,

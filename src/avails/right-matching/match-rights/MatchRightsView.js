@@ -48,7 +48,7 @@ const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
 
-function MatchRightView({
+let MatchRightView = ({
     history,
     match,
     focusedRight,
@@ -62,7 +62,7 @@ function MatchRightView({
     columnDefs, 
     mapping,
     isMatching,
-}) {
+}) => {
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
@@ -284,7 +284,7 @@ function MatchRightView({
             </div>
         </div>
     );
-}
+};
 
 MatchRightView.propTypes = {
     focusedRight: PropTypes.object,

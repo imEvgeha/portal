@@ -15,7 +15,7 @@ import './DashboardLatestAvailsCard.scss';
 
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
-function DashboardLatestAvailsCard({push}) {
+let DashboardLatestAvailsCard = ({push}) => {
     let tableData = [];
     let table = null;
     let refresh = null;
@@ -40,10 +40,10 @@ function DashboardLatestAvailsCard({push}) {
         };
     });
 
-    function statusIcon(params) {
+    let statusIcon = (params) => {
         const {value, valueFormatted, data: {errorDetails}} = params;
         return <StatusIcon status={valueFormatted || value} title={errorDetails} />;
-    }
+    };
 
     const showFileNames = (params) => {
         let toReturn='';
@@ -152,14 +152,14 @@ function DashboardLatestAvailsCard({push}) {
             </div>
         </div>
     );
-}
+};
 
 DashboardLatestAvailsCard.propTypes = {
     push: PropTypes.func,
 };
 
 DashboardLatestAvailsCard.defaultProps = {
-    push: function() {
+    push: () => {
   return null;
 },
 };

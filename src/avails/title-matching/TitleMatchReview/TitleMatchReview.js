@@ -13,7 +13,7 @@ import {getRepositoryCell} from '../../utils';
 import DOP from '../../../util/DOP';
 import './TitleMatchReview.scss';
 
-function TitleMatchReview({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) {
+let TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
     const [mergedTitles, setMergedTitles] = useState([combinedTitle]);
 
@@ -175,7 +175,7 @@ function TitleMatchReview({columnDefs, matchedTitles, match, history, getColumnD
             }
         </div>
     );
-}
+};
 
 TitleMatchReview.propTypes = {
     getColumnDefs: PropTypes.func.isRequired,

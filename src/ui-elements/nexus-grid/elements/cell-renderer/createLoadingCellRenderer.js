@@ -2,7 +2,7 @@ import {getDeepValue, isObject} from '../../../../util/Common';
 import './createLoadingCellRenderer.scss';
 import loadingGif from '../../../../img/loading.gif';
 
-export default function createLoadingCellRenderer(params) {
+var createLoadingCellRenderer = (params) => {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
@@ -38,4 +38,4 @@ export default function createLoadingCellRenderer(params) {
     }
     return null;
 }
-
+export default createLoadingCellRenderer;

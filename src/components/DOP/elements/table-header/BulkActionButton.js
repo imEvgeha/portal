@@ -2,7 +2,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-export function BulkActionButton(props) {
+export let BulkActionButton = (props) => {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -25,7 +25,7 @@ export function BulkActionButton(props) {
             </DropdownMenu>
         </Dropdown>
     );
-}
+};
 
 BulkActionButton.propTypes = {
     onBulkPromote: PropTypes.func,

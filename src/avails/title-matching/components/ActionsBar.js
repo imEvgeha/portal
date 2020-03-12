@@ -15,7 +15,7 @@ import {
 import {getDomainName, URL} from '../../../util/Common';
 import {rightsService} from '../../../containers/avail/service/RightsService';
 
-function ActionsBar({matchList, mergeTitles, rightId}) {
+let ActionsBar = ({matchList, mergeTitles, rightId}) => {
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
@@ -114,7 +114,7 @@ function ActionsBar({matchList, mergeTitles, rightId}) {
             </ButtonGroup>
         </div>
     );
-}
+};
 ActionsBar.propTypes = {
     matchList: PropTypes.object,
     mergeTitles: PropTypes.func,

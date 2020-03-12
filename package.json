@@ -11,6 +11,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
     "lint": "eslint-nibble --cache src",
+    "eslint": "webpack --env test --mode development",
     "build:prod": "webpack --env prod --mode production && docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {

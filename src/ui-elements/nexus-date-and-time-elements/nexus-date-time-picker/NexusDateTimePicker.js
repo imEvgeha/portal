@@ -15,7 +15,7 @@ import {
     TIMESTAMP_FORMAT,
 } from '../constants';
 
-function NexusDateTimePicker({
+let NexusDateTimePicker = ({
     id,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
@@ -27,7 +27,7 @@ function NexusDateTimePicker({
     label,
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     ...restProps
-}) {
+}) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
     const [date, setDate] = useState(value);
 
@@ -48,7 +48,7 @@ function NexusDateTimePicker({
         return moment(date).utc(!hasUTCTag).format(dateFormat);
     };
 
-    function DatePicker(isReadOnly) {
+    let DatePicker = (isReadOnly) => {
   return (
       <>
           {!hideLabel && label && (
@@ -97,7 +97,7 @@ function NexusDateTimePicker({
                 )}
       </>
 );
-}
+};
 
     return (
         <> {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
@@ -134,7 +134,7 @@ function NexusDateTimePicker({
                 : DatePicker(isReadOnly)}
         </>
     );
-}
+};
 
 NexusDateTimePicker.propTypes = {
     label: PropTypes.string,
@@ -157,7 +157,7 @@ NexusDateTimePicker.defaultProps = {
     isViewModeDisabled: false,
     isTimestamp: false,
     hideLabel: false,
-    onConfirm: function() {
+    onConfirm: () => {
   return null;
 },
 };

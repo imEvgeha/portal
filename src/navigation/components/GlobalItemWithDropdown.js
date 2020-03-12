@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {DropdownMenuStateless} from '@atlaskit/dropdown-menu';
 import PropTypes from 'prop-types';
 
-function GlobalItemWithDropdown({items, trigger: Trigger}) {
+let GlobalItemWithDropdown = ({items, trigger: Trigger}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -16,7 +16,7 @@ function GlobalItemWithDropdown({items, trigger: Trigger}) {
             {items}
         </DropdownMenuStateless>
     );
-}
+};
 
 GlobalItemWithDropdown.propTypes = {
     items: PropTypes.object,
@@ -25,7 +25,7 @@ GlobalItemWithDropdown.propTypes = {
 
 GlobalItemWithDropdown.defaultProps = {
     items: {},
-    trigger: function() {
+    trigger: () => {
   return null;
 },
 };

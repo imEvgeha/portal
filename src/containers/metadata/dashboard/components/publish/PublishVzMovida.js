@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const {MOVIDA, VZ} = TitleSystems;
 
-function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataList, onSyncPublishClick}) {
+let PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataList, onSyncPublishClick}) => {
 
     const [vzLastUpdated, setVzLastUpdated] = useState();
     const [movidaLastUpdated, setMovidaLastUpdated] = useState();
@@ -66,7 +66,7 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
         return !!publishedAt && moment(publishedAt).isSameOrAfter(modifiedAt);
     };
 
-    function renderSyncField(name, lastUpdated, isDisabled) {
+    let renderSyncField = (name, lastUpdated, isDisabled) => {
         const buttonName = moment(lastUpdated).isValid() ? 'Sync' : 'Publish';
         const indicator = isDisabled ? 'success' : 'error';
         return (
@@ -86,7 +86,7 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
                 </AtlaskitButton>
             </div>
         );
-    }
+    };
 
     return (
         <>
@@ -94,6 +94,6 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
             {renderSyncField(MOVIDA, movidaLastUpdated, isMovidaDisabled)}
         </>
     );
-}
+};
 
 export default PublishVzMovida;

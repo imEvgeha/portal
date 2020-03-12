@@ -5,7 +5,7 @@ import './ManualRightEntryFatalView.scss';
 
 const SEVERITY_TYPE_FATAL = 'Fatal';
 
-function ManualRightEntryFatalView({attachments, hidden}) {
+let ManualRightEntryFatalView = ({attachments, hidden}) => {
 
     const [errorList, setErrorList] = useState([]);
     const [viewHeight, setViewHeight] = useState();
@@ -61,7 +61,7 @@ function ManualRightEntryFatalView({attachments, hidden}) {
           )}
         </>
     );
-}
+};
 
 ManualRightEntryFatalView.defaultProps = {
     hidden: false,

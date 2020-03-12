@@ -14,7 +14,7 @@ import './NexusMultiInstanceField.scss';
 
 const PLACEHOLDER = 'Add...';
 
-function NexusMultiInstanceField({
+let NexusMultiInstanceField = ({
     schema,
     existingItems,
     keyForTagLabel,
@@ -24,7 +24,7 @@ function NexusMultiInstanceField({
     onConfirm,
     isUsingModal,
     specialCreate
-}) {
+}) => {
     const [items, setItems] = useState(existingItems);
     const [editIndex, setEditIndex] = useState(-1);
     const [formValue, setFormValue] = useState({});
@@ -149,7 +149,7 @@ function NexusMultiInstanceField({
         }
     };
 
-    function MultiInstanceField(isReadOnly) {
+    let MultiInstanceField = (isReadOnly) => {
   return (
       <> {isReadOnly
                 ? (
@@ -193,7 +193,7 @@ function NexusMultiInstanceField({
                 )}
       </>
 );
-}
+};
 
     return (
         <>
@@ -226,7 +226,7 @@ function NexusMultiInstanceField({
             {inlineEdit}
         </>
     );
-}
+};
 
 NexusMultiInstanceField.propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -244,7 +244,7 @@ NexusMultiInstanceField.defaultProps = {
     existingItems: [],
     isWithInlineEdit: false,
     isReadOnly: false,
-    onConfirm: function() {
+    onConfirm: () => {
   return null;
 },
     isUsingModal: true,

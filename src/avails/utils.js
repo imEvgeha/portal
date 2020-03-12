@@ -56,7 +56,7 @@ export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
     };
 };
 
-export function createLinkableCellRenderer(params, location = '/metadata/detail/') {
+export const createLinkableCellRenderer = (params, location = '/metadata/detail/') => {
     const {data, colDef, valueFormatted} = params;
     if (!data && colDef !== 'actions') {
         return `<img src=${loadingGif} alt='loadingSpinner' />`;
@@ -94,7 +94,7 @@ export function createLinkableCellRenderer(params, location = '/metadata/detail/
             </a>`;
     }
     return null;
-}
+};
 
 export const createColumnSchema = (list, field) => {
     const majorityRule = (occurence, total) => occurence > (total / 2); 

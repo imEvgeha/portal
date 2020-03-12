@@ -19,7 +19,7 @@ const withRightsResultsTable = BaseComponent => {
     // const defaultMode = 'defaultMode';
     const selectRightMode = 'selectRightsMode';
 
-    function ComposedComponent(props) {
+    let ComposedComponent = (props) => {
         // Get locale provided by intl
         const intl = useIntl();
         const {locale = 'en-US'} = intl || {};
@@ -30,7 +30,7 @@ const withRightsResultsTable = BaseComponent => {
         // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
-            function formatter(column) {
+            let formatter = (column) => {
                 const {dataType, javaVariableName} = column;
                 switch (dataType) {
                     case 'localdate':
@@ -70,7 +70,7 @@ const withRightsResultsTable = BaseComponent => {
                             return;
                     default: return null;
                 }
-            }
+            };
 
             if (Array.isArray(mappings)) {
                 mappings.forEach(column => {
@@ -107,7 +107,7 @@ const withRightsResultsTable = BaseComponent => {
         };
 
         // loading renderer
-        function loadingRenderer(params) {
+        const loadingRenderer = (params) => {
             const {data, colDef, valueFormatted} = params;
             let error = null;
             if (data && data.validationErrors){
@@ -185,7 +185,7 @@ const withRightsResultsTable = BaseComponent => {
             } 
 
             return data ? '' : <img src={LoadingGif} />;
-        }
+        };
 
         // style cell
         const cellStyle = ({data, colDef, node}) => {
@@ -226,7 +226,7 @@ const withRightsResultsTable = BaseComponent => {
                 loadingRenderer={loadingRenderer}
             />
         );
-    }
+    };
 
     ComposedComponent.propTypes = {
         nav: PropTypes.object,
