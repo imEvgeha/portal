@@ -3,13 +3,6 @@ import React from 'react';
 import './DashboardCard.scss';
 
 export default class DashboardDropableCard extends React.Component {
-    static propTypes = {
-        name: t.string,
-        title: t.string,
-        action: t.func,
-        iconClass: t.string,
-        actionName: t.string,
-    };
 
     render() {
 
@@ -26,3 +19,10 @@ export default class DashboardDropableCard extends React.Component {
         );
     }
 }
+DashboardDropableCard.propTypes = {
+    name: t.string,
+    title: t.string,
+    action: t.func,
+    iconClass: t.string,
+    actionName: t.string,
+};

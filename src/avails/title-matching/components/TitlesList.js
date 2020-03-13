@@ -34,7 +34,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         const {id} = data || {};
         const repoName = getRepositoryName(id);
         return (
-            <CustomActionsCellRenderer id={id} >
+            <CustomActionsCellRenderer id={id}>
                 <Radio
                     name={repoName}
                     isChecked={matchList[repoName] && matchList[repoName].id === id}
@@ -88,7 +88,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const repository = getRepositoryCell();
 
     return (
-        <React.Fragment>
+        <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <TitleRepositoriesTable
                 onGridEvent={onGridReady}
@@ -102,7 +102,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
                 matchList={matchList}
                 mergeTitles={() => mergeTitles(matchList, duplicateList, rightId)}
             />
-        </React.Fragment>
+        </>
     );
 };
 

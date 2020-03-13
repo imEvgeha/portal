@@ -50,23 +50,6 @@ const mapDispatchToProps = {
 };
 
 class DashboardContainer extends React.Component {
-    static propTypes = {
-        searchCriteria: t.any,
-        searchFormUseAdvancedSearch: t.func,
-        resultPageLoading: t.func,
-        resultPageSort: t.func,
-        resultPageUpdate: t.func,
-        resultPageSelect: t.func,
-        searchFormShowAdvancedSearch: t.func,
-        searchFormShowSearchResults: t.func,
-        searchFormSetAdvancedSearchCriteria: t.func,
-        selected: t.array,
-        showAdvancedSearch: t.bool,
-        showSearchResults: t.bool,
-        useAdvancedSearch: t.bool,
-        location: t.object,
-    };
-
     fromHistory = false;
 
     constructor(props) {
@@ -156,7 +139,7 @@ class DashboardContainer extends React.Component {
     }
 
     cleanSelection() {
-        let titleTabPageSelection = {
+        const titleTabPageSelection = {
             selected: this.props.selected,
             selectAll: false
         };
@@ -172,12 +155,20 @@ class DashboardContainer extends React.Component {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-title'}
-                                            onSearch={this.handleTitleFreeTextSearch}/>
+                                        <FreeTextSearch
+                                            disabled={this.props.showAdvancedSearch}
+                                            containerId="dashboard-title"
+                                            onSearch={this.handleTitleFreeTextSearch}
+                                        />
                                     </td>
                                     <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
-                                        <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
-                                            id={'dashboard-title-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
+                                        <button
+                                            className="btn btn-outline-secondary advanced-search-btn"
+                                            style={{height: '40px'}}
+                                            title="Advanced search"
+                                            id="dashboard-title-advanced-search-btn"
+                                            onClick={this.toggleAdvancedSearch}
+                                        >
                                             <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
                                         </button>
                                     </td>
@@ -186,17 +177,31 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                {<AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleTitleAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
-                <DashboardTab/>
+                <AdvancedSearchPanel hide={!this.props.showAdvancedSearch} onSearch={this.handleTitleAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch} />
+                <DashboardTab />
                 <div id="dashboard-result-table">
-                    <div className={'container-fluid'}>
+                    <div className="container-fluid">
                         Title Records
-                        <TitleResultTable/>
+                        <TitleResultTable />
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+DashboardContainer.propTypes = {
+    searchCriteria: t.any,
+    searchFormUseAdvancedSearch: t.func,
+    resultPageSelect: t.func,
+    searchFormShowAdvancedSearch: t.func,
+    searchFormShowSearchResults: t.func,
+    searchFormSetAdvancedSearchCriteria: t.func,
+    selected: t.array,
+    showAdvancedSearch: t.bool,
+    showSearchResults: t.bool,
+    useAdvancedSearch: t.bool,
+    location: t.object,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

@@ -20,7 +20,8 @@ const RulesEngineInfo = (params) => {
                       Constants.RULES_ENGINE_INFO.map(rule => (
                           <div
                               key={rule.field}
-                              className="nexus-c-rules-popup__content__field">
+                              className="nexus-c-rules-popup__content__field"
+                          >
                               <label>{rule.displayName}:</label>
                               <span>{availSource[rule.field]}</span>
                           </div>

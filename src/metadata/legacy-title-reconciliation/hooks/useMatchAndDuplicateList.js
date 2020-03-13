@@ -9,9 +9,9 @@ export default function useMatchAndDuplicateList() {
         const {id} = data || {};
         if (checked) {
             const {NEXUS, VZ, MOVIDA} = TitleSystems;
-            let newMatchList = {...matchList};
+            const newMatchList = {...matchList};
             if (duplicateList[id]){
-                let list = {...duplicateList};
+                const list = {...duplicateList};
                 delete list[id];
                 setDuplicateList(list);
             }
@@ -30,7 +30,7 @@ export default function useMatchAndDuplicateList() {
         const {id} = data || {};
         if (checked) {
             if (matchList[repo] && matchList[repo].id === id) {
-                let list = {...matchList};
+                const list = {...matchList};
                 delete list[repo];
                 setMatchList(list);
             }
@@ -42,7 +42,7 @@ export default function useMatchAndDuplicateList() {
             return;
         }
 
-        let list = {...duplicateList};
+        const list = {...duplicateList};
         delete list[id];
         setDuplicateList(list);
     };

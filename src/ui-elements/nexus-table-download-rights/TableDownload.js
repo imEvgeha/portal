@@ -9,7 +9,7 @@ import {downloadFile} from '../../util/Common';
 import {FATAL} from '../../constants/avails/manualRightsEntryTabs';
 import './TableDownload.scss';
 
-export default function TableDownloadRights({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) {
+const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
 
     const [filteredColumns, setFilteredColumns] = useState([]);
 
@@ -68,9 +68,11 @@ export default function TableDownloadRights({getColumns, getSelected, allowDownl
     };
 
     return (
-        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large'/></div>
+        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large' /></div>
     );
-}
+};
+
+export default TableDownloadRights;
 
 TableDownloadRights.propTypes = {
     getColumns: PropTypes.func,

@@ -17,21 +17,10 @@ import withLocalRights, {DOP_SELECTION} from '../../../components/avails/LocalRi
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
-    static propTypes =  {
-        availsMapping: PropTypes.object,
-        fetchAvailMapping: PropTypes.func.isRequired,
-        fetchAvailConfiguration: PropTypes.func.isRequired,
-        selectedTerritoriesTab: PropTypes.string.isRequired
-    };
-
-    static defaultProps = {
-        availsMapping: null
-    };
 
     constructor(props) {
         super(props);
         this.state = {
-            isPendingSelectionHide: true,
             rightsFilteredBy: {}
         };
     }
@@ -57,12 +46,7 @@ class SelectRightsPlanning extends Component {
 
         if (selectedTerritoriesTab !== PENDING_SELECTION) {
             this.setState({
-                isPendingSelectionHide: true,
                 rightsFilteredBy: filterBy
-            });
-        } else {
-            this.setState({
-                isPendingSelectionHide: false
             });
         }
     };
@@ -90,19 +74,20 @@ class SelectRightsPlanning extends Component {
 
         return (
             <div>
-                <SelectRightsDOPConnector/>
+                <SelectRightsDOPConnector />
                 {availsMapping && (
                     <RightsResultsTable
                         availsMapping={availsMapping}
-                        mode={'selectRightsMode'}
+                        mode="selectRightsMode"
                         disableEdit={true}
                         hidden={this.props.selectedTerritoriesTab === PENDING_SELECTION}
                     />
                 )}
                 {availsMapping && (
-                    <SelectedRightsResultsTable availsMapping = {this.props.availsMapping}
-                                                hidden={this.props.selectedTerritoriesTab !== PENDING_SELECTION}
-                                                disableEdit={true}
+                    <SelectedRightsResultsTable
+                        availsMapping={this.props.availsMapping}
+                        hidden={this.props.selectedTerritoriesTab !== PENDING_SELECTION}
+                        disableEdit={true}
                     />
                 )}
             </div>
@@ -119,5 +104,16 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
     fetchAvailConfiguration: payload => dispatch(fetchAvailConfiguration(payload)),
 });
+
+SelectRightsPlanning.propTypes =  {
+    availsMapping: PropTypes.object,
+    fetchAvailMapping: PropTypes.func.isRequired,
+    fetchAvailConfiguration: PropTypes.func.isRequired,
+    selectedTerritoriesTab: PropTypes.string.isRequired
+};
+
+SelectRightsPlanning.defaultProps = {
+    availsMapping: null
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsPlanning);

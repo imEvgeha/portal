@@ -49,7 +49,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
 
         return (
             repo !== TitleSystems.NEXUS && (
-                <CustomActionsCellRenderer id={id} >
+                <CustomActionsCellRenderer id={id}>
                     <Radio
                         name={repo}
                         isChecked={matchList[repo] && matchList[repo].id === id}

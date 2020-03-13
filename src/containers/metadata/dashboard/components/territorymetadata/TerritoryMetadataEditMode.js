@@ -16,7 +16,7 @@ class TerritoryMetadataEditMode extends Component {
     };
 
     shouldComponentUpdate(nextProps) {
-        let differentData = this.props.data !== nextProps.data;
+        const differentData = this.props.data !== nextProps.data;
         return differentData;
     }
 
@@ -27,23 +27,38 @@ class TerritoryMetadataEditMode extends Component {
                     <AvForm onValidSubmit={this.props.validSubmit}>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <span>Locale</span><br />
+                                <span>Locale</span> <br />
                                 {this.props.data.locale ? <b>{this.props.getLanguageByCode(this.props.data.locale, COUNTRY)}</b> : <span style={{ color: '#999' }}>Empty</span>}
                             </Col>
                             <Col>
-                                <AvField label="Box Office" type="number" id="territoryBoxOffice" name="boxOffice" value={this.props.data.boxOffice} placeholder="Enter Box Office" onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                <AvField
+                                    label="Box Office"
+                                    type="number"
+                                    id="territoryBoxOffice"
+                                    name="boxOffice"
+                                    value={this.props.data.boxOffice}
+                                    placeholder="Enter Box Office"
+                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
                                     validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
-                                    }} />
+                                    }}
+                                />
                             </Col>
                         </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
-                                <AvField label="Release Year" name="releaseYear" type="number" value={this.props.data.releaseYear} placeholder="Enter Release Year" onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                <AvField
+                                    label="Release Year"
+                                    name="releaseYear"
+                                    type="number"
+                                    value={this.props.data.releaseYear}
+                                    placeholder="Enter Release Year"
+                                    onChange={(e) => this.props.handleChange(e, this.props.data)}
                                     validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
                                         maxLength: { value: 4 }, minLength: { value: 4 }
-                                    }} />
+                                    }}
+                                />
                             </Col>
                             <Col>
                                 <NexusDatePicker
