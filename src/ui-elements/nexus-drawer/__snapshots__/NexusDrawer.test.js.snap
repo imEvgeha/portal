@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusDrawer should match snapshot 1`] = `
+<Fragment>
+  <WithAnalyticsContext(WithAnalyticsEvents(Blanket))
+    canClickThrough={false}
+    isTinted={true}
+    onBlanketClicked={[Function]}
+  />
+  <div
+    className="nexus-c-drawer 
+                    nexus-c-drawer--is-right 
+                    nexus-c-drawer--is-narrow-width
+                    "
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="subtle"
+      className="nexus-c-drawer__close-btn 
+                        nexus-c-drawer__close-btn--is-right"
+      onClick={[Function]}
+    >
+      <ArrowRightIcon />
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+</Fragment>
+`;
