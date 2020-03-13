@@ -11,16 +11,6 @@ import UserTerritories from './territories/UserTerritories';
 
 class TableHeader extends React.Component {
 
-    static propTypes = {
-        table: t.object,
-        promotedRights: t.array,
-        promotedRightsFullData: t.array,
-        updatePromotedRights: t.func,
-        updatePromotedRightsFullData: t.func,
-        selectedTerritories: t.array,
-        useSelectedTerritories: t.bool,
-    };
-
     constructor(props) {
         super(props);
     }
@@ -35,8 +25,8 @@ class TableHeader extends React.Component {
 
     onBulkPromote = () => {
         const {promotedRights, updatePromotedRights, promotedRightsFullData, updatePromotedRightsFullData, table} = this.props;
-        let toPromote = [];
-        let toPromoteFullData = [];
+        const toPromote = [];
+        const toPromoteFullData = [];
         table.api.getSelectedNodes().forEach(node => {
             const isPromotable = this.getPromotableStatus(node);
             if (isPromotable && !this.isPromoted(node)) {
@@ -111,7 +101,7 @@ class TableHeader extends React.Component {
             <div style={{marginLeft: '20px', marginBottom: '10px', display: 'flex', paddingLeft: '10px', paddingRight: '10px',  justifyContent: 'space-between'}}>
 
                 <div style={{display: 'flex'}}>
-                    <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection}/>
+                    <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection} />
 
                     <Tabs />
                 </div>
@@ -135,6 +125,16 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     updatePromotedRights,
     updatePromotedRightsFullData
+};
+
+TableHeader.propTypes = {
+    table: t.object,
+    promotedRights: t.array,
+    promotedRightsFullData: t.array,
+    updatePromotedRights: t.func,
+    updatePromotedRightsFullData: t.func,
+    selectedTerritories: t.array,
+    useSelectedTerritories: t.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableHeader);

@@ -14,7 +14,7 @@ export const titleSearchHelper = {
 
     prepareAdvancedSearchCall: (searchCriteria) => {
         const response = {};
-        for (let key of Object.keys(searchCriteria) ) {
+        for (const key of Object.keys(searchCriteria) ) {
             const criteria = searchCriteria[key];
             if (criteria) {
                 if (!(criteria instanceof Object)) {

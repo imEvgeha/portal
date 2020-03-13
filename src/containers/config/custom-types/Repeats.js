@@ -8,13 +8,11 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';
 
-const createFormForItem = (
-    field,
+const createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,
-    formChangeHandler
-) => {
+    formChangeHandler) => {
 
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
@@ -76,7 +74,6 @@ export default class Repeats extends Component {
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
         const items = defaultValue.map(data => ({ id: uniqueId(), data }));
         this.state = {
-            value: defaultValue,
             items
         };
     }
@@ -118,7 +115,7 @@ export default class Repeats extends Component {
         );
     }
 
-    onDragEnd(result) {
+    onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -143,7 +140,7 @@ export default class Repeats extends Component {
         } = this.props;
 
         return (
-            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+            <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
                         <div

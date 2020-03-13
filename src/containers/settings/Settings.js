@@ -17,15 +17,6 @@ import * as selectors from './settingsSelectors';
 
 class Settings extends Component {
 
-    static propTypes = {
-        fetchConfigApiEndpoints: PropTypes.func.isRequired,
-        configEndpoints: PropTypes.array,
-    };
-
-    static defaultProps = {
-        configEndpoints: null,
-    };
-
     static getDerivedStateFromProps(props, state) {
         if (props.configEndpoints && props.configEndpoints.length > 0 && !state.selectedApi) {
             return {
@@ -71,66 +62,78 @@ class Settings extends Component {
                     <TextHeader>Settings</TextHeader>
                     {/*<GroupHeader>Grouping Label</GroupHeader>*/}
                     <ListParent>
-                            <ListElement className={showSettings === 'apiConfiguration' ? 'list-item' : null} onClick={() => this.showSettings('apiConfiguration')}>
-                                    API Configuration
-                            </ListElement>
-                            <ListElement className={showSettings === 'localization' ? 'list-item' : null} onClick={() => this.showSettings('localization')}>
-                                    Localization
-                            </ListElement>
+                        <ListElement className={showSettings === 'apiConfiguration' ? 'list-item' : null} onClick={() => this.showSettings('apiConfiguration')}>
+                            API Configuration
+                        </ListElement>
+                        <ListElement className={showSettings === 'localization' ? 'list-item' : null} onClick={() => this.showSettings('localization')}>
+                            Localization
+                        </ListElement>
                     </ListParent>
                 </SideMenu>
 
                 <SideMenu isScrollable className="custom-scrollbar">
-                    {showSettings === 'apiConfiguration' ? 
-                    <>
-                        <TextHeader>APIs</TextHeader>
-                        {/*<GroupHeader>Grouping Label</GroupHeader>*/}
-                        <ListParent>
-                            {configEndpoints && configEndpoints.map((endpoint, i) => (
-                                <ListElement 
-                                    className={active === i ? 'list-item' : null} 
-                                    key={i} 
-                                    onClick={() => this.onApiNavClick(endpoint, i)}
-                                >
-                                    {endpoint.displayName}
-                                </ListElement>
+                    {showSettings === 'apiConfiguration' ? (
+                        <>
+                            <TextHeader>APIs</TextHeader>
+                            {/*<GroupHeader>Grouping Label</GroupHeader>*/}
+                            <ListParent>
+                                {configEndpoints && configEndpoints.map((endpoint, i) => (
+                                    <ListElement 
+                                        className={active === i ? 'list-item' : null} 
+                                        key={i} 
+                                        onClick={() => this.onApiNavClick(endpoint, i)}
+                                    >
+                                        {endpoint.displayName}
+                                    </ListElement>
                             ))}
-                        </ListParent>
-                    </>
-                    : showSettings === 'localization' ? 
-                    <>
-                        <TextHeader>Localization</TextHeader>
-                    {/*<GroupHeader>Grouping Label</GroupHeader>*/}
-                    <ListParent>
-                            <ListElement className='list-item'>
-                                Set Localization
-                            </ListElement>
-                    </ListParent>
-                    </> : null}
+                            </ListParent>
+                        </>
+                  )
+                    : showSettings === 'localization' ? (
+                        <>
+                            <TextHeader>Localization</TextHeader>
+                            {/*<GroupHeader>Grouping Label</GroupHeader>*/}
+                            <ListParent>
+                                <ListElement className='list-item'>
+                                    Set Localization
+                                </ListElement>
+                            </ListParent>
+                        </>
+                  ) : null}
                 </SideMenu>
-                    {showSettings === 'apiConfiguration' ?                     
-                        <TabContent activeTab={selectedApi}>
-                            {configEndpoints && configEndpoints.map((endpoint, i) => (
-                                <TabPane 
-                                    key={i} 
-                                    tabId={endpoint}
-                                >
-                                    <EndpointContainer selectedApi={endpoint} visible={selectedApi === endpoint}/>
-                                </TabPane>
-                            ))}                        
-                        </TabContent>
-                        : showSettings === 'localization' ? 
-                        
-                        <TabContent activeTab={'setLocalization'}>
-                            <TabPane tabId={'setLocalization'}>
-                                <Localization />
+                {showSettings === 'apiConfiguration' ? (
+                    <TabContent activeTab={selectedApi}>
+                        {configEndpoints && configEndpoints.map((endpoint, i) => (
+                            <TabPane 
+                                key={i} 
+                                tabId={endpoint}
+                            >
+                                <EndpointContainer selectedApi={endpoint} visible={selectedApi === endpoint} />
                             </TabPane>
-                        </TabContent>
+                            ))}                        
+                    </TabContent>
+                      )
+                        : showSettings === 'localization' ? (
+                            <TabContent activeTab="setLocalization">
+                                <TabPane tabId="setLocalization">
+                                    <Localization />
+                                </TabPane>
+                            </TabContent>
+                      )
                         : null}
             </div>
         );
     }
 }
+
+Settings.propTypes = {
+    fetchConfigApiEndpoints: PropTypes.func.isRequired,
+    configEndpoints: PropTypes.array,
+};
+
+Settings.defaultProps = {
+    configEndpoints: null,
+};
 
 const createMapStateToProps = () => {
     const settingsConfigEndpointsSelector = selectors.createSettingsEndpointsSelector();

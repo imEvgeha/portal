@@ -16,13 +16,6 @@ const pageSize = 1000;
 
 class UserTerritoriesModal extends React.Component {
 
-    static propTypes = {
-        isOpen: t.bool,
-        toggle: t.func,
-        selectedTerritories: t.array,
-        updateSelectedTerritories: t.func
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -95,13 +88,15 @@ class UserTerritoriesModal extends React.Component {
     };
 
     getCheckbox = (c, index) => {
-        return (<Checkbox
-            key={index}
-            isChecked={this.isTerritoryChecked(c)}
-            value={JSON.stringify(c)}
-            label={c.countryName}
-            onChange={this.onCheckBoxClick}
-        />);
+        return (
+            <Checkbox
+                key={index}
+                isChecked={this.isTerritoryChecked(c)}
+                value={JSON.stringify(c)}
+                label={c.countryName}
+                onChange={this.onCheckBoxClick}
+            />
+);
     };
 
     toggle = () => {
@@ -143,7 +138,8 @@ class UserTerritoriesModal extends React.Component {
                             display: 'flex',
                             height: '100px',
                             overflowY: this.state.configTerritories.length > 6 ? 'scroll' : ''
-                        }}>
+                        }}
+                        >
                             <div>{this.state.configTerritories.map((c, index) => {
                                 if(index % 2 === 0) return this.getCheckbox(c, index);
                             })}
@@ -175,4 +171,10 @@ const mapDispatchToProps = {
     updateSelectedTerritories
 };
 
+UserTerritoriesModal.propTypes = {
+    isOpen: t.bool,
+    toggle: t.func,
+    selectedTerritories: t.array,
+    updateSelectedTerritories: t.func
+};
 export default connect(mapStateToProps, mapDispatchToProps)(UserTerritoriesModal);

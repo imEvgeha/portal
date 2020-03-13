@@ -8,7 +8,7 @@ import './PanelHeader.scss';
 
 const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
     return (
-        <React.Fragment>
+        <>
             <div className='ingest-header'>
                 <div className='ingest-header__title'>
                     <AvailsIcon />
@@ -17,7 +17,7 @@ const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
                 <div className='ingest-header__actions'>
                     <div onClick={toggleFilters}>
                         {
-                            showFilters ? <FilterSolidIcon/> : <FilterIcon/>
+                            showFilters ? <FilterSolidIcon /> : <FilterIcon />
                         }
                     </div>
                 </div>
@@ -25,7 +25,7 @@ const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
             {
                 showFilters && (<IngestFilters onFiltersChange={onFiltersChange} />)
             }
-        </React.Fragment>
+        </>
     );
 };
 

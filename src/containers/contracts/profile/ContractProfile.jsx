@@ -45,15 +45,15 @@ const style = {
 };
 
 class UserProfile extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: [1, 2],
+            simpleSelect: '2',
+            tags: ['Horror', 'Sci-Fi', 'Metadata']
+        };
+    }
 
-    state = {
-        checkedA: true,
-        checkedB: false,
-        checked: [1, 2],
-        simpleSelect: '2',
-        multipleSelect: [],
-        tags: ['Horror', 'Sci-Fi', 'Metadata']
-    };
 
     handleToggle(value) {
         const { checked } = this.state;
@@ -74,9 +74,6 @@ class UserProfile extends React.Component {
     handleSimple = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
-    handleMultiple = event => {
-        this.setState({ multipleSelect: event.target.value });
-    };
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
     };
@@ -87,7 +84,7 @@ class UserProfile extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className={'use-material-dashboard-pro-react'}>
+            <div className="use-material-dashboard-pro-react">
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                         <Card product className={classes.cardHover}>
@@ -98,11 +95,11 @@ class UserProfile extends React.Component {
                             </CardHeader>
                             <CardBody profile>
                                 <div className={classes.cardHoverUnder}>
-                                    <Button color="rose" simple >
+                                    <Button color="rose" simple>
                                         <ZoomIn className={classes.underChartIcons} />
                                         View
                                     </Button>
-                                    <Button color="rose" simple >
+                                    <Button color="rose" simple>
                                         <CloudDownload className={classes.underChartIcons} />
                                         Download PDF
                                     </Button>
@@ -432,10 +429,10 @@ class UserProfile extends React.Component {
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <br /><br />
-                                        <InputLabel className={classes.label}>Formats</InputLabel><br />
+                                        <br /> <br />
+                                        <InputLabel className={classes.label}>Formats</InputLabel> <br />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(1)}
@@ -453,14 +450,14 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="SD"
                                         />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(2)}
@@ -478,14 +475,14 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="HD"
                                         />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(3)}
@@ -503,14 +500,14 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="3D"
                                         />
                                         <FormControlLabel
-                                            control={
+                                            control={(
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(4)}
@@ -528,13 +525,13 @@ class UserProfile extends React.Component {
                                                         root: classes.checkRoot
                                                     }}
                                                 />
-                                            }
+                                              )}
                                             classes={{
                                                 label: classes.label
                                             }}
                                             label="4K"
                                         />
-                                        <br /><br />
+                                        <br /> <br />
                                         <InputLabel className={classes.label}>Start Date</InputLabel>
                                         <br />
                                         <FormControl fullWidth>
@@ -543,7 +540,7 @@ class UserProfile extends React.Component {
                                                 inputProps={{ placeholder: 'Date Picker Here' }}
                                             />
                                         </FormControl>
-                                        <br /><br />
+                                        <br /> <br />
                                         <InputLabel className={classes.label}>End Date</InputLabel>
                                         <br />
                                         <FormControl fullWidth>
@@ -568,7 +565,7 @@ class UserProfile extends React.Component {
                   <PermIdentity />
                 </CardIcon> */}
                                 <h4 className={classes.cardIconTitle}>
-                                    Metadata<small></small>
+                                    Metadata
                                 </h4>
                             </CardHeader>
                             <CardBody>

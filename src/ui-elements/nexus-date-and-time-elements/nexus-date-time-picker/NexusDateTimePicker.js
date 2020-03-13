@@ -48,14 +48,15 @@ const NexusDateTimePicker = ({
         return moment(date).utc(!hasUTCTag).format(dateFormat);
     };
 
-    const DatePicker = (isReadOnly) => (
-        <>
-            {!hideLabel && label &&
-                <div className="nexus-c-date-time-picker__label">
-                    {label}
-                </div>
-            }
-            {isReadOnly && !isViewModeDisabled
+    const DatePicker = (isReadOnly) => {
+  return (
+      <>
+          {!hideLabel && label && (
+          <div className="nexus-c-date-time-picker__label">
+              {label}
+          </div>
+              )}
+          {isReadOnly && !isViewModeDisabled
                 ? getDisplayDate(value)
                 : (
                     <>
@@ -93,14 +94,13 @@ const NexusDateTimePicker = ({
                             )}
                         </div>
                     </>
-                )
-            }
-        </>
-    );
+                )}
+      </>
+);
+};
 
     return (
-        <>
-            {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
+        <> {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
                 ? (
                     <InlineEdit
                         readView={() => (
@@ -108,10 +108,11 @@ const NexusDateTimePicker = ({
                                 {moment(value).isValid()
                                     ?`${getDisplayDate(value)}
                                      ${isSimulcast ? ' (UTC)' : ''}`
-                                    : <div className="read-view-container__placeholder">
-                                        {`Enter ${label}`}
-                                    </div>
-                                }
+                                    : (
+                                        <div className="read-view-container__placeholder">
+                                            {`Enter ${label}`}
+                                        </div>
+)}
                             </div>
                         )}
                         editView={() => DatePicker(false)}
@@ -130,8 +131,7 @@ const NexusDateTimePicker = ({
                         {...restProps}
                     />
                 )
-                : DatePicker(isReadOnly)
-            }
+                : DatePicker(isReadOnly)}
         </>
     );
 };

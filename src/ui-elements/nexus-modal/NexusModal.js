@@ -42,7 +42,7 @@ export const NexusModalProvider = ({children}) => {
 
     return (
         <NexusModalContext.Provider value={context}>
-            {isOpened &&
+            {isOpened && (
                 <ModalTransition>
                     <Modal
                         actions={actions.length && actions}
@@ -56,7 +56,7 @@ export const NexusModalProvider = ({children}) => {
                         </div>
                     </Modal>
                 </ModalTransition>
-            }
+              )}
             {children}
         </NexusModalContext.Provider>
     );

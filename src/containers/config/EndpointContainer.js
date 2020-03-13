@@ -92,8 +92,7 @@ export class EndpointContainer extends Component {
             searchValue: '',
             isLoading: false,
             currentRecord: null,
-            pageSize: defaultPageSize,
-            isModalOpen: false
+            pageSize: defaultPageSize
         };
 
         this.keyInputTimeout = 0;
@@ -122,9 +121,9 @@ export class EndpointContainer extends Component {
     }
 
     calculatePageSize = () => {
-        let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        let windowViewPort = (h) / 10;
-        let staticSectionVH = windowViewPort > 90 ? 5 : windowViewPort > 50 ? 20 : 30;
+        const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        const windowViewPort = (h) / 10;
+        const staticSectionVH = windowViewPort > 90 ? 5 : windowViewPort > 50 ? 20 : 30;
         let numberOfItems = Math.ceil((defaultPageSize * (windowViewPort - staticSectionVH)) / 100);
         numberOfItems = numberOfItems <= 0 ? 1 : numberOfItems;
         this.setState({
@@ -171,8 +170,8 @@ export class EndpointContainer extends Component {
         if (newVal.id) {
             configService.update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal)
                 .then(response => {
-                    let data = this.state.data.slice(0);
-                    let index = data.findIndex(item => item.id === newVal.id);
+                    const data = this.state.data.slice(0);
+                    const index = data.findIndex(item => item.id === newVal.id);
                     data[index] = response.data;
                     this.setState({ data, currentRecord: null });
                 }
@@ -180,7 +179,7 @@ export class EndpointContainer extends Component {
         } else {
             configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal)
                 .then(response => {
-                    let data = this.state.data.slice(0);
+                    const data = this.state.data.slice(0);
                     data.unshift(response.data);
                     if(cache[selectedApi.urls['CRUD']]) {     
                         cache[selectedApi.urls['CRUD']] = data;
@@ -215,31 +214,31 @@ export class EndpointContainer extends Component {
 
     render() {        
         const {selectedApi} = this.props;
-        let canUpdate = can('update', 'ConfigUI');
-        let canCreate = can('create', 'ConfigUI');
+        const canUpdate = can('update', 'ConfigUI');
+        const canCreate = can('create', 'ConfigUI');
 
         return (
             <DataContainer>
                 <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
-                    {canCreate && this.state.currentRecord === null &&
-                        <CustomButton onClick = {this.onNewRecord}>
+                    {canCreate && this.state.currentRecord === null && (
+                        <CustomButton onClick={this.onNewRecord}>
                             <FontAwesome
 
-                                    name='plus'
-                                    style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
-                                    color='#111'
-                                />
+                                name='plus'
+                                style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
+                                color='#111'
+                            />
                             Add
                         </CustomButton>
-                    }
+                      )}
 
-                <div style={{clear: 'both'}} />
+                    <div style={{clear: 'both'}} />
                 </TextHeader>
-                {this.state.currentRecord &&
+                {this.state.currentRecord && (
                     <DataBody>
-                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label = {this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label={this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
                     </DataBody>
-                }
+                  )}
                 <DataBody>
                     <CustomContainer left>
                         <QuickSearch
@@ -258,11 +257,12 @@ export class EndpointContainer extends Component {
                                     return (
                                         <ListItem key={i}>
                                             {
-                                                canUpdate ?
-                                                    <a href="#" className={'text-truncate'} onClick={() => this.onEditRecord(item)}>
+                                                canUpdate ? (
+                                                    <a href="#" className="text-truncate" onClick={() => this.onEditRecord(item)}>
                                                         {label}
                                                     </a>
-                                                : <span className={'text-truncate'}>{label}</span>
+                                                  )
+                                                : <span className="text-truncate">{label}</span>
                                             }
                                             <Can I="delete" a="ConfigUI">
                                                 <FontAwesome
@@ -293,13 +293,11 @@ export class EndpointContainer extends Component {
 }
 
 EndpointContainer.propTypes = {
-    urlBase: PropTypes.string,
     selectedApi: PropTypes.object,
     visible: PropTypes.bool,
 };
 
 EndpointContainer.defaultProps = {
-    urlBase: null,
     selectedApi: {},
     visible: false
 };

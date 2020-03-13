@@ -14,7 +14,6 @@ import './TitleResultTable.scss';
 
 import {connect} from 'react-redux';
 import {
-    resultPageLoading,
     resultPageSelect,
     resultPageSort,
     resultPageUpdate,
@@ -32,7 +31,6 @@ import get from 'lodash.get';
 import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../avails/utils';
-import {URL} from '../../../../../util/Common';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -41,45 +39,26 @@ let registeredOnSelect = false;
  * Advance Search -
  * title, studio Vod Start Date, Vod End Date
  */
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         titleTabPage: state.titleReducer.titleTabPage,
         titleTabPageSort: state.titleReducer.session.titleTabPageSort,
-        useAdvancedSearch: state.titleReducer.session.useAdvancedSearch,
         freeTextSearch: state.titleReducer.freeTextSearch,
         titleTabPageSelection: state.titleReducer.session.titleTabPageSelection,
         titleTabPageLoading: state.titleReducer.titleTabPageLoading,
-        titleMapping: state.root.titleMapping,
         columnsOrder: state.titleReducer.session.columns,
         columnsSize: state.titleReducer.session.columnsSize
     };
 };
 
-let mapDispatchToProps = {
+const mapDispatchToProps = {
     resultPageUpdate,
     resultPageSort,
     resultPageSelect,
-    resultPageLoading,
     resultPageUpdateColumnsOrder
 };
 
 class TitleResultTable extends React.Component {
-    static propTypes = {
-        titleMapping: t.any,
-        titleTabPage: t.object,
-        titleTabPageSort: t.array,
-        useAdvancedSearch: t.bool,
-        freeTextSearch: t.object,
-        titleTabPageSelection: t.object,
-        titleTabPageLoading: t.bool,
-        resultPageUpdate: t.func,
-        resultPageSort: t.func,
-        resultPageSelect: t.func,
-        resultPageLoading: t.func,
-        columnsOrder: t.array,
-        columnsSize: t.object,
-        resultPageUpdateColumnsOrder: t.func
-    };
 
     table = null;
 
@@ -87,7 +66,6 @@ class TitleResultTable extends React.Component {
         super(props);
         this.state = {
             pageSize: config.get('title.page.size'),
-            cols: [],
             defaultColDef: {
                 sortable: true,
                 resizable: true,
@@ -124,19 +102,19 @@ class TitleResultTable extends React.Component {
         window.addEventListener('resize', this.updateWindowDimensions);
 
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
-        let elem = document.querySelector('.vu-advanced-search-panel');
+        const elem = document.querySelector('.vu-advanced-search-panel');
         elem.addEventListener('transitionend', this.updateWindowDimensions);
         this.refreshColumns();
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
-        let elem = document.querySelector('.vu-advanced-search-panel');
+        const elem = document.querySelector('.vu-advanced-search-panel');
         elem.removeEventListener('transitionend', this.updateWindowDimensions);
     }
 
     updateWindowDimensions() {
-        let offsetTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        const offsetTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         this.setState({ height: (window.innerHeight - offsetTop - 40) + 'px' });
     }
 
@@ -151,12 +129,12 @@ class TitleResultTable extends React.Component {
         }
 
         if (this.props.titleTabPageSort != prevProps.titleTabPageSort) {
-            let sortModel = [];
+            const sortModel = [];
             this.props.titleTabPageSort.map(sortCriteria => {
                 sortModel.push({ colId: sortCriteria.id, sort: sortCriteria.desc ? 'desc' : 'asc' });
             });
 
-            let currentSortModel = this.table.api.getSortModel();
+            const currentSortModel = this.table.api.getSortModel();
             let toChangeSortModel = false;
 
             if (currentSortModel.length != sortModel.length) toChangeSortModel = true;
@@ -193,8 +171,8 @@ class TitleResultTable extends React.Component {
     }
 
     onSortChanged(e) {
-        let sortParams = e.api.getSortModel();
-        let newSort = [];
+        const sortParams = e.api.getSortModel();
+        const newSort = [];
         if (sortParams.length > 0) {
             sortParams.map(criteria => {
                 newSort.push({ id: e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort == 'desc' });
@@ -213,7 +191,7 @@ class TitleResultTable extends React.Component {
     onSelectionChangedProcess(e) {
         registeredOnSelect = false;
 
-        let selectedRows = e.api.getSelectedRows();
+        const selectedRows = e.api.getSelectedRows();
         let selected = [];
         selectedRows.map(row => {
             selected.push(row.id);
@@ -237,10 +215,10 @@ class TitleResultTable extends React.Component {
     }
 
     editTitle(newTitle) {
-        let copiedTitle = this.props.titleTabPage.titles.slice();
-        let title = copiedTitle.find(b => b.id === newTitle.id);
+        const copiedTitle = this.props.titleTabPage.titles.slice();
+        const title = copiedTitle.find(b => b.id === newTitle.id);
         if (title) {
-            for (let titleField in newTitle) title[titleField] = newTitle[titleField];
+            for (const titleField in newTitle) title[titleField] = newTitle[titleField];
         }
         return copiedTitle;
     }
@@ -371,7 +349,7 @@ class TitleResultTable extends React.Component {
     };
 
     addLoadedItems(data) {
-        let items = data.data.map(e => e.contentType = toPrettyContentTypeIfExist(e.contentType));
+        const items = data.data.map(e => e.contentType = toPrettyContentTypeIfExist(e.contentType));
 
         if (items.length > 0) {
             this.props.resultPageUpdate({
@@ -393,7 +371,7 @@ class TitleResultTable extends React.Component {
     }
 
     onColumnReordered(e) {
-        let cols = [];
+        const cols = [];
         e.columnApi.getAllGridColumns().map(column => {
             if(get(column, 'colDef.headerName', '') !== 'Action') cols.push(column.colDef.field);
         });
@@ -414,7 +392,7 @@ class TitleResultTable extends React.Component {
     };
 
     refreshColumns() {
-        let newCols = [];
+        const newCols = [];
         if (this.props.columnsOrder) {
             this.props.columnsOrder.map(acc => {
                 if (colDef.hasOwnProperty(acc)) {
@@ -455,7 +433,8 @@ class TitleResultTable extends React.Component {
                     <Link to={'metadata/detail/' + params.data.id}>
                         <div
                             title={error}
-                            style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}>
+                            style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}
+                        >
                             {content}
                         </div>
                     </Link>
@@ -542,13 +521,24 @@ class TitleResultTable extends React.Component {
                     suppressRowClickSelection={true}
                     headerHeight='52'
                     rowHeight='48'
-
-                >
-                </AgGridReact>
+                />
 
             </div>
         );
     }
 }
+
+TitleResultTable.propTypes = {
+    titleTabPage: t.object,
+    titleTabPageSort: t.array,
+    titleTabPageSelection: t.object,
+    titleTabPageLoading: t.bool,
+    resultPageUpdate: t.func,
+    resultPageSort: t.func,
+    resultPageSelect: t.func,
+    columnsOrder: t.array,
+    columnsSize: t.object,
+    resultPageUpdateColumnsOrder: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleResultTable);

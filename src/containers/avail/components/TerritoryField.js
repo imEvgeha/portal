@@ -5,7 +5,7 @@ import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './TerritoryField.scss';
 
-function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) {
+const TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
 
     const getTerritories = () => {
         return territory.map((terr, i) => (
@@ -36,15 +36,15 @@ function TerritoryField({name, territory, onRemoveClick, onAddClick, onTagClick,
             {isTableMode && getAddButton()}
             {territory && territory.length > 0 ? getTerritories() : !isTableMode && getAddButton()}
             {renderChildren()}
-            <br/>
-            {mappingErrorMessage[name] && mappingErrorMessage[name].text &&
+            <br />
+            {mappingErrorMessage[name] && mappingErrorMessage[name].text && (
             <small className="text-danger m-2">
                 {mappingErrorMessage[name] && mappingErrorMessage[name].text || ''}
             </small>
-            }
+          )}
         </div>
     );
-}
+};
 
 TerritoryField.propTypes = {
     territory: PropTypes.array,

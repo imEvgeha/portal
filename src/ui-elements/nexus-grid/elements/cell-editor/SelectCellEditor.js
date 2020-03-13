@@ -4,19 +4,6 @@ import Select from '@atlaskit/select';
 import './SelectCellEditor.scss';
 
 class SelectCellEditor extends Component {
-    static propTypes = {
-        options: PropTypes.array,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.bool,
-        ]),
-    }; 
-
-    static defaultProps = {
-        options: [],
-        value: null,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -60,5 +47,18 @@ class SelectCellEditor extends Component {
         );
     }
 }
+
+SelectCellEditor.propTypes = {
+    options: PropTypes.array,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+    ]),
+};
+
+SelectCellEditor.defaultProps = {
+    options: [],
+    value: null,
+};
 
 export default SelectCellEditor;

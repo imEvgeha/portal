@@ -171,11 +171,12 @@ const RightsRepository = ({
         return (
             <CustomActionsCellRenderer id={id}>
                 <div>
-                    <EditorMediaWrapLeftIcon/>
+                    <EditorMediaWrapLeftIcon />
                     <span className={`
                         nexus-c-right-to-match-view__buttons_notification
                         nexus-c-right-to-match-view__buttons_notification${notificationClass}
-                    `} />
+                    `}
+                    />
                 </div>
             </CustomActionsCellRenderer>
         );
@@ -232,7 +233,7 @@ const RightsRepository = ({
             case FILTER_CHANGED:
                 const column = filterBy(api.getFilterModel());
                 if (Object.keys(column || {}).length === 0) {
-                    let filter = {...rightsFilter};
+                    const filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
                     break;

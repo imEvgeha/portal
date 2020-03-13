@@ -49,7 +49,7 @@ export default class ResultsTable extends React.Component {
     }
 
     updateWindowDimensions() {
-        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        const offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         this.setState({ height: window.innerHeight - offsetTop - 10});
     }
 
@@ -60,7 +60,7 @@ export default class ResultsTable extends React.Component {
     render(){
         return(
             <div
-                className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
+                className={'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
                 style={{
                     height: this.state.height + 'px',
                     width: '100%' }}
@@ -68,11 +68,10 @@ export default class ResultsTable extends React.Component {
                 <AgGridReact
                     {...this.props}
                     ref={this.setTable}
-                    columnDefs = {this.props.colDef}
+                    columnDefs={this.props.colDef}
                     headerHeight='52'
                     rowHeight='48'
-                    >
-                </AgGridReact>
+                />
             </div>
         );
     }

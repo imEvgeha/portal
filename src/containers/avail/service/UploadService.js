@@ -15,7 +15,7 @@ export const uploadService = {
         if(setUploadedPercentage) {
             options.onUploadProgress = (progressEvent) => {
                 const { loaded, total } = progressEvent;
-                let percentCompleted = Math.round((loaded * 100) / total);
+                const percentCompleted = Math.round((loaded * 100) / total);
                 setUploadedPercentage(percentCompleted);
             };
         }

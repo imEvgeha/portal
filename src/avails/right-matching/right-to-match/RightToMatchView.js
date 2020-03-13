@@ -152,7 +152,7 @@ const RightToMatchView = ({
         <div className="nexus-c-right-to-match-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
                 </Link>
                 <span>{RIGHT_TO_MATCH_TITLE}</span>
             </NexusTitle>

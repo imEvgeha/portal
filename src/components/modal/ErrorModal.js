@@ -6,15 +6,6 @@ import t from 'prop-types';
 
 class ErrorModal extends React.Component{
 
-    static propTypes = {
-        description: t.string,
-        className: t.string,
-        message: t.string,
-        buttonLabel: t.string,
-        accept: t.func,
-        closable: t.bool
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -26,10 +17,6 @@ class ErrorModal extends React.Component{
         this.refresh = this.refresh.bind(this);
     }
 
-    static defaultProps = {
-        ...Component.defaultProps,
-        buttonLabel: 'Ok',
-    };
 
     toggle() {
         this.setState({
@@ -92,4 +79,17 @@ export const errorModal = {
     }
 };
 
+ErrorModal.propTypes = {
+    description: t.string,
+    className: t.string,
+    message: t.string,
+    buttonLabel: t.string,
+    accept: t.func,
+    closable: t.bool
+};
+
+ErrorModal.defaultProps = {
+    ...Component.defaultProps,
+    buttonLabel: 'Ok',
+};
 export default ErrorModal;

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
@@ -48,52 +48,52 @@ class TitleReadOnlyMode extends Component {
         });
 
         return (
-            <Fragment>
-                <Container fluid id="titleContainer">
-                    <Row style={{ marginTop: '5px' }}>
-                        <Col xs="4">
-                            <img width="700" height="350" src="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png" alt="Slide" />
-                        </Col>
-                        <Col>
+            <Container fluid id="titleContainer">
+                <Row style={{ marginTop: '5px' }}>
+                    <Col xs="4">
+                        <img width="700" height="350" src="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png" alt="Slide" />
+                    </Col>
+                    <Col>
+                        <Row>
+                            <Col>
+                                <Alert color="light" id="titleName"><h2><b>Title: </b>{title ? title : <span style={{ color: '#999' }}>Empty</span>}</h2></Alert>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                            </Col>
+                        </Row>
+                        <>
                             <Row>
+                                {seriesTitleName && (
                                 <Col>
-                                    <Alert color="light" id="titleName"><h2><b>Title: </b>{title ? title : <span style={{ color: '#999' }}>Empty</span>}</h2></Alert>
+                                    <Alert color="light" id="titleSeriesName">
+                                        <b>Series: </b> <a href={seriesLink} className="linked-data">{seriesTitleName}</a>
+                                    </Alert>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
-                                </Col>
-                            </Row>
-                            <Fragment>
-                                <Row>
-                                    {seriesTitleName && (
-                                        <Col>
-                                            <Alert color="light" id="titleSeriesName">
-                                                <b>Series: </b><a href={seriesLink} className={'linked-data'}>{seriesTitleName}</a>
-                                            </Alert>
-                                        </Col>)}
-                                    {
+)}
+                                {
                                        seasonNumber && (
-                                        <Col>
-                                            <Alert color="light" id="titleSeasonNumber">
-                                                <b>Season Number: </b><a href={seasonLink} className={'linked-data'}>{seasonNumber}</a>
-                                            </Alert>
-                                        </Col>
+                                       <Col>
+                                           <Alert color="light" id="titleSeasonNumber">
+                                               <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
+                                           </Alert>
+                                       </Col>
                                        )
                                     }
-                                    {
+                                {
                                        episodeNumber && (
-                                        <Col md={6}>
-                                            <Alert color="light" id="titleEpisodeNumber">
-                                                <b>Episode Number: </b>{episodeNumber}
-                                            </Alert>
-                                        </Col>
+                                       <Col md={6}>
+                                           <Alert color="light" id="titleEpisodeNumber">
+                                               <b>Episode Number: </b>{episodeNumber}
+                                           </Alert>
+                                       </Col>
                                        )
                                     }
-                                </Row>
-                                <Row>
-                                    {
+                            </Row>
+                            <Row>
+                                {
                                         seasonId && (
                                             <Col>
                                                 <Alert color="light" id="titleSeasonId">
@@ -102,7 +102,7 @@ class TitleReadOnlyMode extends Component {
                                             </Col>
                                         )
                                     }
-                                    {
+                                {
                                         episodeId && (
                                             <Col>
                                                 <Alert color="light" id="titleEpisodeId">
@@ -111,10 +111,10 @@ class TitleReadOnlyMode extends Component {
                                             </Col>
                                         )
                                     }
-                                </Row>
-                            </Fragment>
-                            <Row>
-                                {
+                            </Row>
+                        </>
+                        <Row>
+                            {
                                     totalNumberOfSeasons && (
                                         <Col>
                                             <Alert color="light" id="titleSeasons">
@@ -123,9 +123,9 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                            </Row>
-                            <Row>
-                                {
+                        </Row>
+                        <Row>
+                            {
                                     this.addBooleanQuotes(animated) && (
                                         <Col>
                                             <Alert color="light" id="titleAnimated">
@@ -134,7 +134,7 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                                {
+                            {
                                     countryOfOrigin && (
                                         <Col>
                                             <Alert color="light" id="titleCountryOfOrigin">
@@ -143,7 +143,7 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                                {
+                            {
                                     originalLanguage && (
                                         <Col>
                                             <Alert color="light" id="titleOriginalLanguage">
@@ -152,7 +152,7 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                                {
+                            {
                                     duration && (
                                         <Col>
                                             <Alert color="light" id="titleDuration">
@@ -161,9 +161,9 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                            </Row>
-                            <Row>
-                                {
+                        </Row>
+                        <Row>
+                            {
                                     eventType && (
                                         <Col>
                                             <Alert color="light" id="titleEventType">
@@ -172,7 +172,7 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                                {
+                            {
                                     totalNumberOfEpisodes && (
                                         <Col>
                                             <Alert color="light" id="titleEpisodes">
@@ -181,7 +181,7 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                                {
+                            {
                                     episodeCount && (
                                         <Col>
                                             <Alert color="light" id="titleEpisodeCount">
@@ -190,9 +190,9 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                            </Row>
-                            <Row>
-                                {
+                        </Row>
+                        <Row>
+                            {
                                     seasonPremiere && (
                                         <Col>
                                             <Alert color="light" id="titleSeasonPremiere">
@@ -201,7 +201,7 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                                {
+                            {
                                     seasonFinale && (
                                         <Col>
                                             <Alert color="light" id="titleSeasonFinale">
@@ -210,35 +210,35 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                            </Row>
-                            <Row>
-                                {
+                        </Row>
+                        <Row>
+                            {
                                     releaseYear && (
                                         <Col>
-                                        <Alert color="light" id="titleReleaseYear">
-                                            <b>Release Year: </b>{releaseYear}
-                                        </Alert>
-                                    </Col>
-                                    )
-                                }
-                                {
-                                    usBoxOffice && (
-                                        <Col>
-                                            <Alert color="light" id="titleBoxOffice">
-                                                <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}</Alert>
+                                            <Alert color="light" id="titleReleaseYear">
+                                                <b>Release Year: </b>{releaseYear}
+                                            </Alert>
                                         </Col>
                                     )
                                 }
-                            </Row>
-                        </Col>
-                    </Row>
-                    <CoreMetadataReadOnlyMode
-                        data={this.props.data}
-                        toggleTitleRating={this.props.toggleTitleRating}
-                        activeTab={this.props.activeTab}
-                    />
-                </Container>
-            </Fragment>
+                            {
+                                    usBoxOffice && (
+                                        <Col>
+                                            <Alert color="light" id="titleBoxOffice">
+                                                <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
+                                            </Alert>
+                                        </Col>
+                                    )
+                                }
+                        </Row>
+                    </Col>
+                </Row>
+                <CoreMetadataReadOnlyMode
+                    data={this.props.data}
+                    toggleTitleRating={this.props.toggleTitleRating}
+                    activeTab={this.props.activeTab}
+                />
+            </Container>
         );
     };
 
@@ -258,8 +258,6 @@ class TitleReadOnlyMode extends Component {
 
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
-    episodic: PropTypes.object,
-    addBooleanQuotes: PropTypes.func,
     toggleTitleRating: PropTypes.func,
     activeTab: PropTypes.any
 };

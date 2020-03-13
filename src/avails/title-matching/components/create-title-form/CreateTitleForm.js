@@ -112,13 +112,13 @@ const CreateTitleForm = ({close, focusedRight}) => {
                     <FormFragment defaultFields={NEW_TITLE_FORM_SCHEMA} />
                 </div>
             </Form>
-            {error &&
+            {error && (
                 <div className="nexus-c-create-title-form__error-message">
                     <ErrorMessage>
                         {error}
                     </ErrorMessage>
                 </div>
-            }
+              )}
             <div className="nexus-c-create-title-form__action-buttons">
                 <Button onClick={close}>
                     {NEW_TITLE_LABEL_CANCEL}

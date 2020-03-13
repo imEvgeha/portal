@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const {MOVIDA, VZ} = TitleSystems;
 
-function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataList, onSyncPublishClick}) {
+const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataList, onSyncPublishClick}) => {
 
     const [vzLastUpdated, setVzLastUpdated] = useState();
     const [movidaLastUpdated, setMovidaLastUpdated] = useState();
@@ -72,13 +72,18 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
         return (
             <div className='nexus-c-title-edit__sync-container-field'>
                 <span
-                    className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}/>
+                    className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}
+                />
                 <div className='nexus-c-title-edit__sync-container-field-description'>
                     <b>{name.substring(0, 1).toUpperCase() + name.substring(1, name.length)}</b> Last
                     updated: {lastUpdated}
                 </div>
-                <AtlaskitButton appearance='primary' isDisabled={isDisabled}
-                                onClick={() => onSyncPublishClick(name)}>{buttonName}</AtlaskitButton>
+                <AtlaskitButton
+                    appearance='primary'
+                    isDisabled={isDisabled}
+                    onClick={() => onSyncPublishClick(name)}
+                >{buttonName}
+                </AtlaskitButton>
             </div>
         );
     };
@@ -89,6 +94,6 @@ function PublishVzMovida({coreTitle, territoryMetadataList, editorialMetadataLis
             {renderSyncField(MOVIDA, movidaLastUpdated, isMovidaDisabled)}
         </>
     );
-}
+};
 
 export default PublishVzMovida;

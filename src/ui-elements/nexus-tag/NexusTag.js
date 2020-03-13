@@ -21,8 +21,8 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
                         <li className="nexus-c-tag__tooltip-prop" key={index}>
                             {key}:
                             <span className="nexus-c-tag__tooltip-prop-value">
-                                        { getValidValue(value[key]) }
-                                    </span>
+                                { getValidValue(value[key]) }
+                            </span>
                         </li>
                     )
                 );
@@ -47,7 +47,7 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
     );
 
     return (
-        <NexusTooltip content={tooltip} >
+        <NexusTooltip content={tooltip}>
             <span className={`nexus-c-tag ${(tagState && `nexus-c-tag--is-${tagState}`) || ''}`}>
                 <div
                     className={`nexus-c-tag__label ${onClick && 'nexus-c-tag__label--is-clickable'}`}
@@ -55,11 +55,11 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
                 >
                     {text}
                 </div>
-                {onRemove &&
+                {onRemove && (
                     <div className="nexus-c-tag__remove-button" onClick={onRemove}>
                         <EditorCloseIcon size="medium" />
                     </div>
-                }
+                  )}
             </span>
         </NexusTooltip>
     );

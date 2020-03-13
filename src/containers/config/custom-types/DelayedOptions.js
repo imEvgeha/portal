@@ -14,14 +14,16 @@ const DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
             field.value = val.value;
         }
     }
-    return (<div>
-        {
+    return (
+        <div>
+            {
             field.options && field.options.length > 0 ?
                 akRenderer(field, onChange, onFieldFocus, onFieldBlur)
                 :
                 'Loading...'
         }
-    </div>);
+        </div>
+);
 };
 
 DelayedOptions.propTypes = {
