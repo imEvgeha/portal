@@ -15,7 +15,7 @@ const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, ST
 const US = 'US';
 
 const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
-    const isStudio = !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.licensor)
+    const isStudio = !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.licensor);
 
     const templates = [
         {label: 'Use International Template', value: INTERNATIONAL,
