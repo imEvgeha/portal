@@ -15,14 +15,16 @@ const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, ST
 const US = 'US';
 
 const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
+    const isStudio = !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.licensor)
+
     const templates = [
         {label: 'Use International Template', value: INTERNATIONAL,
-            disabled: !isEmpty(ingestData) && ingestData.ingestType === EMAIL, testId: !isEmpty(ingestData) && ingestData.ingestType === EMAIL && 'disabled'},
+            disabled: isStudio, testId: isStudio && 'disabled'},
         {label: 'Use US Template', value: USMASTER,
-            disabled: !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.serviceRegion !== US),
-            testId: !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.serviceRegion !== US) && 'disabled'},
+            disabled: !isEmpty(ingestData) && (isStudio || ingestData.serviceRegion !== US),
+            testId: !isEmpty(ingestData) && (isStudio|| ingestData.serviceRegion !== US) && 'disabled'},
         {label: 'Use Studio Template', value: STUDIO,
-            disabled:  !isEmpty(ingestData) && ingestData.ingestType === UPLOAD, testId:  !isEmpty(ingestData) && ingestData.ingestType === UPLOAD && 'disabled'}
+            disabled: !isStudio, testId: !isStudio && 'disabled'}
     ];
 
 
