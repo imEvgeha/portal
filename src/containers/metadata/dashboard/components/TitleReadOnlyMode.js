@@ -69,7 +69,7 @@ class TitleReadOnlyMode extends Component {
                             {contentSubType && (
                                 <Row>
                                     <Col>
-                                        <Alert color="light" id="titleSeriesName">
+                                        <Alert color="light" id="titleContentSubType">
                                             <b>Content SubType: </b>{contentSubType.substring(0, 1).toUpperCase() + contentSubType.substring(1, contentSubType.length).toLowerCase()}
                                         </Alert>
                                     </Col>
