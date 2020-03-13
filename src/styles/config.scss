@@ -2,12 +2,14 @@ $app-layout: (
     content-min-width: 300px,
     content-max-width: 1370px,
     content-padding-horizontal: 20px,
-    z-index-above-overlay: 501,
-    drawer-width-extended: 95vw,
-    drawer-width-full: 100vw,
-    drawer-width-medium: 480px,
-    drawer-width-narrow: 360px,
-    drawer-width-wide: 600px,
+);
+
+$z-index: (
+    z-index-0: 0,
+    z-index-100: 100,
+    z-index-500: 500,
+    z-index-1000: 1000,
+    z-index-1500: 1500,
 );
 
 $colors: (
