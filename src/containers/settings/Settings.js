@@ -17,7 +17,7 @@ import Localization from './Localization';
 import {fetchConfigApiEndpoints} from './settingsActions';
 import * as selectors from './settingsSelectors';
 import NexusDrawer from '../../ui-elements/nexus-drawer/NexusDrawer';
-import {isLocalOrDevOrQA} from '../../util/Common';
+import {URL} from '../../util/Common';
 
 class Settings extends Component {
 
@@ -94,7 +94,7 @@ class Settings extends Component {
                         <ListElement className={showSettings === 'localization' ? 'list-item' : null} onClick={() => this.showSettings('localization')}>
                                 Localization
                         </ListElement>
-                        {isLocalOrDevOrQA() && (
+                        {URL.isLocalOrDevOrQA() && (
                             <ListElement
                                 className={showSettings === 'devLab' ? 'list-item' : null}
                                 onClick={() => this.showSettings('devLab')}
