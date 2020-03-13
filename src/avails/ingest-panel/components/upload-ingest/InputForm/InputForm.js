@@ -24,7 +24,7 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
             disabled: !isEmpty(ingestData) && (isStudio || ingestData.serviceRegion !== US),
             testId: !isEmpty(ingestData) && (isStudio|| ingestData.serviceRegion !== US) && 'disabled'},
         {label: 'Use Studio Template', value: STUDIO,
-            disabled: !isStudio, testId: !isStudio && 'disabled'}
+            disabled: !isEmpty(ingestData) && !isStudio, testId: !isEmpty(ingestData) && !isStudio && 'disabled'}
     ];
 
 
