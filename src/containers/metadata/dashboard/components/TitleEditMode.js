@@ -45,6 +45,7 @@ class TitleEditMode extends Component {
     const {
       title,
       contentType,
+      contentSubType,
       releaseYear,
       usBoxOffice,
       animated,
@@ -94,6 +95,22 @@ class TitleEditMode extends Component {
                             <Alert color='light' id='titleContentType'>
                                 <b>{toPrettyContentTypeIfExist(contentType)}</b>
                             </Alert>
+                        </Col>
+                    </Row>
+                    <Row style={{ marginTop: '10px' }}>
+                        <Col>
+                            <Label for='titleContentSubType'>Content SubType</Label>
+                            <Input
+                                type='select'
+                                name='contentSubType'
+                                id='contentSubType'
+                                onChange={e => this.props.handleOnChangeEdit(e)}
+                                defaultValue={contentSubType ? contentSubType : ''}
+                            >
+                                <option value=''>Select Content SubType</option>
+                                <option value='KIDS'>Kids</option>
+                                <option value='ADULT'>Adult</option>
+                            </Input>
                         </Col>
                     </Row>
                     {contentType !== MOVIE.apiName && contentType !== SERIES.apiName && contentType !== ADVERTISEMENT.apiName ? (
