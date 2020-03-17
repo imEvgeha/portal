@@ -46,22 +46,13 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 }
             };
         case 'string':
-            if (javaVariableName && javaVariableName.startsWith('castCrew.')) {
+            if (javaVariableName && javaVariableName.startsWith('castCrew')) {
                 return (params) => {
                     const {data = {}} = params || {};
-                    const key = javaVariableName.split('.')[1];
                     if (data && data['castCrew']) {
-                        if (key === 'director') {
-                            return data['castCrew']
-                                .filter(({personType}) => personType.toLowerCase() === DIRECTOR.toLowerCase())
-                                .map(({displayName}) => displayName)
-                                .join(', ');
-                        } else if (key === 'cast') {
-                            return data['castCrew']
-                                .filter(castCrew => isCastPersonType(castCrew, false))
-                                .map(({personType, displayName}) => `${personType}: ${displayName}`)
-                                .join('; ');
-                        }
+                        return data['castCrew']
+                            .map(({personType, displayName}) => `${personType}: ${displayName}`)
+                            .join('; ');
                     }
                 };
             } else if (javaVariableName === 'ratings') {
