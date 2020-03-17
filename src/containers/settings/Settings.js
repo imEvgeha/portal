@@ -97,34 +97,6 @@ class Settings extends Component {
                 </SideMenu>
 
                 <SideMenu isScrollable className="custom-scrollbar">
-                    {showSettings === 'apiConfiguration' ? 
-                        <>
-                            <TextHeader>APIs</TextHeader>
-                            {/*<GroupHeader>Grouping Label</GroupHeader>*/}
-                            <ListParent>
-                                {configEndpoints && configEndpoints.map((endpoint, i) => (
-                                    <ListElement
-                                        className={active === i ? 'list-item' : null}
-                                        key={i}
-                                        onClick={() => this.onApiNavClick(endpoint, i)}
-                                    >
-                                        {endpoint.displayName}
-                                    </ListElement>
-                                ))}
-                            </ListParent>
-                        </>
-                    : showSettings === 'localization' ?
-                        <>
-                            <TextHeader>Localization</TextHeader>
-                            {/*<GroupHeader>Grouping Label</GroupHeader>*/}
-                            <ListParent>
-                                <ListElement className='list-item'>
-                                    Set Localization
-                                </ListElement>
-                            </ListParent>
-                        </>
-                        : null
-                    }
                     {showSettings === 'apiConfiguration' ? (
                         <>
                             <TextHeader>APIs</TextHeader>
