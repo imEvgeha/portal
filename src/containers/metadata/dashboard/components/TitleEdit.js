@@ -12,7 +12,9 @@ import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
+import {default as AtlaskitButton} from '@atlaskit/button';
 import {AvForm} from 'availity-reactstrap-validation';
+import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
@@ -100,29 +102,30 @@ class TitleEdit extends Component {
         titleService.getTitleById(titleId).then((response) => {
             const titleForm = response.data;
             this.setState({ titleForm, editedForm: titleForm });
-            if (titleForm.parentIds) {
-                const parent = titleForm.parentIds.find((e) => e.contentType === 'SERIES');
-                if (parent) {
-                    this.loadParentTitle(parent.id);
-                }
-            }
+            this.loadParentTitle(titleForm);
         }).catch(() => {
             console.error('Unable to load Title Data');
         });
     }
 
-    loadParentTitle(parentId) {
-        titleService.getTitleById(parentId).then((response) => {
-            const parentTitleForm = response.data;
-            const newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
-            const newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
-            this.setState({
-                titleForm: newTitleForm,
-                editedForm: newTitleForm
-            });
-        }).catch(() => {
-            console.error('Unable to load Parent Title Data');
-        });
+    loadParentTitle(titleFormData) {
+        if (titleFormData.parentIds) {
+            let parent = titleFormData.parentIds.find((e) => e.contentType === 'SERIES');
+            if (parent) {
+                const parentId = parent.id;
+                titleService.getTitleById(parentId).then((response) => {
+                    const parentTitleForm = response.data;
+                    let newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
+                    let newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
+                    this.setState({
+                        titleForm: newTitleForm,
+                        editedForm: newTitleForm
+                    });
+                }).catch(() => {
+                    console.error('Unable to load Parent Title Data');
+                });
+            }
+        }
     }
 
     loadTerritoryMetadata(titleId) {
@@ -400,6 +403,9 @@ class TitleEdit extends Component {
                 editorialMetadataActiveTab: CURRENT_TAB,
                 titleRankingActiveTab: CURRENT_TAB,
             });
+
+            this.loadParentTitle(response.data);
+
         }).catch(() => {
             console.error('Unable to load Title Data');
         });
@@ -881,7 +887,7 @@ class TitleEdit extends Component {
     };
 
     removeCastCrew = removeCastCrew => {
-        const cast = this.state.editedForm.castCrew.filter(cast => {            
+        const cast = this.state.editedForm.castCrew.filter(cast => {
             return cast.id !== removeCastCrew.id;
         });
         const updateEditForm = {
