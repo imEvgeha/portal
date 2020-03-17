@@ -193,7 +193,7 @@ const URL = {
 
     isLocalOrDevOrQA: function() {
         const host = window.location.hostname;
-        return host.includes('local') || host.includes('qa') || host.includes('dev');
+        return host.includes('localhost') || host.includes('.qa.') || host.includes('.dev.');
     }
 };
 
