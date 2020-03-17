@@ -121,17 +121,17 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
 );
         }
     }
+    ComposedComponent.propTypes = {
+        autoload: PropTypes.bool,
+        autoRefresh: PropTypes.number,
+    };
 
+    ComposedComponent.defaultProps = {
+        autoload: true,
+        autoRefresh: 0,
+    };
     return withRightsResultsTable(ComposedComponent);
 };
 
-withFilteredRights.propTypes = {
-    autoload: PropTypes.bool,
-    autoRefresh: PropTypes.number,
-};
 
-withFilteredRights.defaultProps = {
-    autoload: true,
-    autoRefresh: 0,
-};
 export default withFilteredRights;
