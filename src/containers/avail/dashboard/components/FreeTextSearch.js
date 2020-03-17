@@ -16,14 +16,6 @@ const mapDispatchToProps = {
 
 class FreeTextSearch extends React.Component {
 
-    static propTypes = {
-        searchFormUpdateTextSearch: t.func,
-        onSearch: t.func,
-        containerId: t.string,
-        disabled: t.bool,
-        freeTextSearch: t.object
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -62,25 +54,39 @@ class FreeTextSearch extends React.Component {
     }
 
     render() {
-        return (<div className="input-group stylish-input-group">
-            <input type="text" className="form-control" placeholder="Search"
-                name={'text'}
-                disabled={this.props.disabled}
-                value={this.state.text}
-                onChange={this.handleInputChange}
-                id={this.props.containerId + '-freetext-search-text'}
-                onKeyPress={this._handleKeyPress}/>
-            <div className="input-group-append">
-                <button
-                    type="button"
+        return (
+            <div className="input-group stylish-input-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search"
+                    name="text"
                     disabled={this.props.disabled}
-                    onClick={this.handleSearch}
-                    id={this.props.containerId + '-freetext-search-btn'}>
-                    <i className="fas fa-search"> </i>
-                </button>
+                    value={this.state.text}
+                    onChange={this.handleInputChange}
+                    id={this.props.containerId + '-freetext-search-text'}
+                    onKeyPress={this._handleKeyPress}
+                />
+                <div className="input-group-append">
+                    <button
+                        type="button"
+                        disabled={this.props.disabled}
+                        onClick={this.handleSearch}
+                        id={this.props.containerId + '-freetext-search-btn'}
+                    >
+                        <i className="fas fa-search"> </i>
+                    </button>
+                </div>
             </div>
-        </div>);
+);
     }
 }
 
+FreeTextSearch.propTypes = {
+    searchFormUpdateTextSearch: t.func,
+    onSearch: t.func,
+    containerId: t.string,
+    disabled: t.bool,
+    freeTextSearch: t.object
+};
 export default connect(mapStateToProps, mapDispatchToProps)(FreeTextSearch);

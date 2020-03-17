@@ -90,7 +90,7 @@ const canRender = (Component, action, subject, field = undefined) => {
         }
 
         render() {
-            return can(action, subject, field) ? <Component {...this.props}/> : <div>Invalid application state</div>;
+            return can(action, subject, field) ? <Component {...this.props} /> : <div>Invalid application state</div>;
         }
 
     }

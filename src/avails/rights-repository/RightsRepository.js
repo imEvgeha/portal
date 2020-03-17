@@ -139,10 +139,18 @@ const RightsRepository = ({
     useEffect(() => {
         let rights = selectedRights;
         if (gridApi) {
-            rights = gridApi.getSelectedRows();
+            const selectedIds = selectedRights.map(({id}) => id);
+            const loadedSelectedRights = [];
+            gridApi.forEachNode((node) => {
+                const {data={}} = node;
+                if(selectedIds.includes(data.id)){
+                    loadedSelectedRights.push(data);
+                }
+            });
+            rights = loadedSelectedRights;
         }
         setSelectedRepoRights(getSelectedTabRights(rights));
-    }, [search, selectedRights, gridApi]);
+    }, [search, selectedRights, gridApi, isRepositoryDataLoading]);
 
     useEffect(()=> {
         if (selectedGridApi) {
@@ -171,18 +179,19 @@ const RightsRepository = ({
         return (
             <CustomActionsCellRenderer id={id}>
                 <div>
-                    <EditorMediaWrapLeftIcon/>
+                    <EditorMediaWrapLeftIcon />
                     <span className={`
                         nexus-c-right-to-match-view__buttons_notification
                         nexus-c-right-to-match-view__buttons_notification${notificationClass}
-                    `} />
+                    `}
+                    />
                 </div>
             </CustomActionsCellRenderer>
         );
     };
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
-        if(columnDef.cellRenderer) {
+        if (columnDef.cellRenderer) {
             columnDef.cellRenderer = handleRightRedirect;
         }
         return columnDef;
@@ -232,7 +241,7 @@ const RightsRepository = ({
             case FILTER_CHANGED:
                 const column = filterBy(api.getFilterModel());
                 if (Object.keys(column || {}).length === 0) {
-                    let filter = {...rightsFilter};
+                    const filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
                     break;
@@ -253,7 +262,7 @@ const RightsRepository = ({
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
                 const toUnselect = selectedRepoRights
                     .map(({id}) => id)
-                    .filter(selectediRepoId => !allSelectedRowsIds.includes(selectediRepoId));
+                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
                 const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
                 nodes.forEach(node => node.setSelected(false));
                 break;

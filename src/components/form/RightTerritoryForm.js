@@ -11,16 +11,9 @@ import {getProperTerritoryFormValues} from './utils';
 // TODO: write this from scratch
 // component rerender 11 times
 class RightTerritoryForm extends React.Component {
-    static propTypes = {
-        isEdit: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        isEdit: false,
-    };
 
     onSubmit = data => {
-        let properValues = getProperTerritoryFormValues(data, this.props.isEdit, this.props.existingTerritoryList, this.props.territoryIndex);
+        const properValues = getProperTerritoryFormValues(data, this.props.isEdit, this.props.existingTerritoryList, this.props.territoryIndex);
         if (properValues) {
             this.props.onSubmit(properValues);
             this.props.onClose();
@@ -37,7 +30,7 @@ class RightTerritoryForm extends React.Component {
                         onClose={this.props.onClose}
                         components={{
                             Container: ({ children, className }) => (
-                                <Form onSubmit={data => this.onSubmit(data)} >
+                                <Form onSubmit={data => this.onSubmit(data)}>
                                     {({ formProps }) => (
                                         <ModalBody>
                                             <form {...formProps} className={className}>
@@ -53,8 +46,9 @@ class RightTerritoryForm extends React.Component {
                         <RightTerritoryFields
                             options={this.props.options}
                             isEdit={this.props.isEdit}
-                            existingTerritoryList={this.props.existingTerritoryList}
-                            territoryIndex={this.props.territoryIndex} />
+                            existingTerritoryList={this.props.existingTerritoryList || this.props.data}
+                            territoryIndex={this.props.territoryIndex}
+                        />
                         <ModalFooter>
                             <Button appearance="default" onClick={this.props.onClose}>
                                 Cancel
@@ -77,6 +71,10 @@ RightTerritoryForm.propTypes = {
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
     existingTerritoryList: PropTypes.array
+};
+
+RightTerritoryForm.defaultProps = {
+    isEdit: false,
 };
 
 export default RightTerritoryForm;

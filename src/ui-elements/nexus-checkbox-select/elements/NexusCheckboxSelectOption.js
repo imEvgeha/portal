@@ -88,7 +88,7 @@ const getSecondaryColor = ({isActive, isDisabled, isSelected, ...rest }) => {
     return color(rest);
 };
 
-const NexusCheckboxSelectOption = props => {
+const NexusCheckboxSelectOption = (props) => {
     const [isActive, setIsActive] = useState(false);
     const {
         getStyles,
@@ -119,7 +119,7 @@ const NexusCheckboxSelectOption = props => {
             {...updatedProps}
         >
             <div className="nexus-c-checkbox-select__checkbox">
-            {value === '*' 
+                {value === '*' 
                 && selectProps 
                 && Array.isArray(selectProps.value) 
                 && selectProps.value.length > 0 

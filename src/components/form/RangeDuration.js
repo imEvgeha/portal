@@ -6,30 +6,11 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 
 export default class RangeDuration extends React.Component {
 
-    static defaultProps = {
-        validateRange: true
-    }
-
-    static propTypes = {
-        id: t.string,
-        value: t.object,
-        displayName: t.string,
-        disabled: t.bool,
-        onFromDurationChange: t.func,
-        onToDurationChange: t.func,
-        onInvalid: t.func,
-        handleKeyPress: t.func,
-        hideLabel: t.bool,
-        validateRange: t.bool
-    };
-
     constructor(props) {
         super(props);
         this.state = {
             invalidStartDuration: '',
             invalidEndDuration: '',
-            prevFromDuration: null,
-            prevToDuration: null,
             invalidRange: ''
         };
         this.handleChangeStartDuration = this.handleChangeStartDuration.bind(this);
@@ -97,7 +78,7 @@ export default class RangeDuration extends React.Component {
         return (
             <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
                 { !this.props.hideLabel && <label htmlFor="dashboard-rights-search-start-duration-text">{this.props.displayName}</label>}
-                <div className={'row justify-content-around'}>
+                <div className="row justify-content-around">
                     <div style={{width: '45%', paddingLeft: '8px'}}>
                         <AvForm>
                             <AvField
@@ -112,10 +93,20 @@ export default class RangeDuration extends React.Component {
                                 type="text"
                             />
                         </AvForm>
-                        {this.state.invalidStartDuration && <small className="text-danger ml-2"
-                                                               style={{position: 'absolute'}}>{this.state.invalidStartDuration}</small>}
-                        {this.state.invalidRange && <small className="text-danger ml-2"
-                                                           style={{position: 'absolute'}}>{this.state.invalidRange}</small>}
+                        {this.state.invalidStartDuration && (
+                        <small
+                            className="text-danger ml-2"
+                            style={{position: 'absolute'}}
+                        >{this.state.invalidStartDuration}
+                        </small>
+)}
+                        {this.state.invalidRange && (
+                        <small
+                            className="text-danger ml-2"
+                            style={{position: 'absolute'}}
+                        >{this.state.invalidRange}
+                        </small>
+)}
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
@@ -131,11 +122,33 @@ export default class RangeDuration extends React.Component {
                                 type="text"
                             />
                         </AvForm>
-                        {this.state.invalidEndDuration && <small className="text-danger ml-2"
-                                                             style={{position: 'absolute'}}>{this.state.invalidEndDuration}</small>}
+                        {this.state.invalidEndDuration && (
+                        <small
+                            className="text-danger ml-2"
+                            style={{position: 'absolute'}}
+                        >{this.state.invalidEndDuration}
+                        </small>
+)}
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+RangeDuration.defaultProps = {
+    validateRange: true
+};
+
+RangeDuration.propTypes = {
+    id: t.string,
+    value: t.object,
+    displayName: t.string,
+    disabled: t.bool,
+    onFromDurationChange: t.func,
+    onToDurationChange: t.func,
+    onInvalid: t.func,
+    handleKeyPress: t.func,
+    hideLabel: t.bool,
+    validateRange: t.bool
+};

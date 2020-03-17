@@ -32,15 +32,13 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                         <b>Locale: </b>
                         {locale
                             ? getLanguageByCode(locale, COUNTRY)
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                     <Col>
                         <b>Box Office: </b>
                         {boxOffice
                             ? boxOffice
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                 </Row>
                 <Row style={{padding: '15px'}}>
@@ -48,15 +46,13 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                         <b>Release Year: </b>
                         {releaseYear
                             ? releaseYear
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                     <Col>
                         <b>Original Air Date: </b>
                         {originalAirDate
                             ? parseSimulcast(originalAirDate, dateFormat, false)
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                 </Row>
                 <Row style={{padding: '15px'}}>
@@ -64,15 +60,13 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                         <b>Home Video Release Date: </b>
                         {homeVideoReleaseDate
                             ? parseSimulcast(homeVideoReleaseDate, dateFormat, false)
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                     <Col>
                         <b>Avail Announce Date: </b>
                         {availAnnounceDate
                             ? parseSimulcast(availAnnounceDate, dateFormat, false)
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                 </Row>
                 <Row style={{padding: '15px'}}>
@@ -80,15 +74,13 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                         <b>Theatrical Release Date: </b>
                         {theatricalReleaseDate
                             ? parseSimulcast(theatricalReleaseDate, dateFormat, false)
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                     <Col>
                         <b>EST Release Date: </b>
                         {estReleaseDate
                             ? parseSimulcast(estReleaseDate, dateFormat, false)
-                            : <span style={{color: '#999'}}>Empty</span>
-                        }
+                            : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
                 </Row>
             </Container>

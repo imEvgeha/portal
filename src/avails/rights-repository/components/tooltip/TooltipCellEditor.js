@@ -4,14 +4,6 @@ import './TooltipCellEditor.scss';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 
 class TooltipCellEditor extends Component {
-    static propTypes = {
-        data: PropTypes.object,
-    };
-
-    static defaultProps = {
-        data: {},
-    };
-
     isPopup = () => true;
 
     getValue = () => this.props.data;
@@ -22,7 +14,7 @@ class TooltipCellEditor extends Component {
         const {id} = this.props.data;
         switch (calculateIndicatorType(this.props.data)) {
             case INDICATOR_RED:
-                return <span>Title | No matching title <a href={`/avails/rights/${id}/title-matching`} target='_blank'><b>FIND MATCH</b></a></span>;
+                return <span>Title | No matching title <a href={`/avails/rights/${id}/title-matching`} rel='noopener noreferrer' target='_blank'><b>FIND MATCH</b></a></span>;
             case INDICATOR_SUCCESS:
                 return <span>Title | Matched title</span>;
         }
@@ -37,5 +29,12 @@ class TooltipCellEditor extends Component {
     }
 }
 
+TooltipCellEditor.propTypes = {
+    data: PropTypes.object,
+};
+
+TooltipCellEditor.defaultProps = {
+    data: {},
+};
 export default TooltipCellEditor;
 

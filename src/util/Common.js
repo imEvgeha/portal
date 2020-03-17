@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, {Fragment} from 'react';
+import React from 'react';
 import t from 'prop-types';
 
 
@@ -50,7 +50,7 @@ function isObject(item) {
 }
 
 function isObjectEmpty(obj) {
-    for(let key in obj) {
+    for(const key in obj) {
         if(obj.hasOwnProperty(key))
             return false;
     }
@@ -81,7 +81,7 @@ function prepareSortMatrixParamTitles(sortedParams) {
     return matrix;
 }
 function mergeDeep(target, source) {
-    let output = Object.assign({}, target);
+    const output = Object.assign({}, target);
     if (isObject(target) && isObject(source)) {
         Object.keys(source).forEach(key => {
             if (isObject(source[key])) {
@@ -136,9 +136,9 @@ const URL = {
     getParamIfExists: function (name, defaultValue = ''){
         let toReturn = defaultValue;
         if (this.search()){
-            let query = this.search().substring(1);
-            let params = query.split('&');
-            let param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
+            const query = this.search().substring(1);
+            const params = query.split('&');
+            const param = params.find((param) => param.split('=').length === 2 && param.split('=')[0] === name);
             if(param){
                 toReturn =  param.split('=')[1];
             }
@@ -175,7 +175,7 @@ const URL = {
         return url;
     },
 
-    search: function() {
+    search: () => {
         if(window && window.location){
             return window.location.search;
         } return null;
@@ -183,7 +183,7 @@ const URL = {
 
     updateQueryParam: values => {     //values = {date: '12/12/12'}
         const search = window.location.search.substring(1);
-        let params =  new URLSearchParams(search);
+        const params =  new URLSearchParams(search);
         Object.keys(values).forEach(key => {
             if(values[key]) params.set(key, values[key]);
             else params.delete(key);
@@ -193,33 +193,30 @@ const URL = {
 
     isLocalOrDevOrQA: function() {
         const host = window.location.hostname;
-        return host.includes('local') || host.includes('qa') || host.includes('dev');
+        return host.includes('localhost') || host.includes('.qa.') || host.includes('.dev.');
     }
 };
 
 class IfEmbedded extends React.Component {
-    static propTypes = {
-        children: t.any,
-        value:t.bool
-    }
-
-    static defaultProps = {
-        value: true
-    }
-
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <Fragment>
-                {URL.isEmbedded() === this.props.value && this.props.children}
-            </Fragment>
+            <> {URL.isEmbedded() === this.props.value && this.props.children} </>
         );
     }
 }
 
+IfEmbedded.propTypes = {
+    children: t.any,
+    value:t.bool
+};
+
+IfEmbedded.defaultProps = {
+    value: true
+};
 const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? cases[key] : defaultCase;
 
 const getDomainName = () => window && window.location.origin.toString();
@@ -259,6 +256,30 @@ const normalizeDataForStore = (data) => {
     }
 };
 
+const cleanObject = function(object) {
+    Object
+        .entries(object)
+        .forEach(([k, v]) => {
+            if (v && typeof v === 'object') {
+                cleanObject(v);
+            }
+            if (v && 
+                typeof v === 'object' && 
+                !Object.keys(v).length || 
+                v === null || 
+                v === undefined ||
+                v.length === 0
+            ) {
+                if (Array.isArray(object)) {
+                    object.splice(k, 1);
+                }
+                else if (!(v instanceof Date))
+                    delete object[k];
+                }
+            });
+    return object;
+};
+
 export {
     downloadFile, 
     momentToISO, 
@@ -281,4 +302,5 @@ export {
     parseSimulcast,
     formatNumberTwoDigits,
     normalizeDataForStore,
+    cleanObject,
 };

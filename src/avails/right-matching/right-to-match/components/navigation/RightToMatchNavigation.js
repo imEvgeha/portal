@@ -65,7 +65,7 @@ const RightToMatchNavigation = ({
         let navigationData = null;
         loop:
             for (let i = 0; i < pages.length; i++) {
-                let items = rightMatchPageData.pages[pages[i]];
+                const items = rightMatchPageData.pages[pages[i]];
                 for (let j = 0; j < items.length; j++) {
                     if (items[j] === focusedRightId) {
                         const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);
@@ -99,16 +99,15 @@ const RightToMatchNavigation = ({
         navigationData && navigationData.currentPosition ? (
             <div className='nexus-c-right-to-match-navigation'>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onPreviousRightClick}>
-                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
+                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
                 </div>
                 <span className="nexus-c-right-to-match-navigation__data">
                     {isSpinnerRunning 
                         ? <Spinner size="small" />
-                        : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`
-                    }
+                        : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`}
                 </span>
                 <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
-                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor={'#939FB5'} />
+                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
                 </div>
             </div>
         ) : null 

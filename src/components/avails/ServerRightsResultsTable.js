@@ -7,17 +7,13 @@ import {rightServiceManager} from '../../containers/avail/service/RightServiceMa
 import {getLocale} from '../../stores/selectors/localization/localeSelector';
 
 export default function withRights(WrappedComponent) {
-    return (props) => <ServerRightsResultsTableConnected WrappedComponent={WrappedComponent} {...props} />;
+    return (props) => {
+  return <ServerRightsResultsTableConnected WrappedComponent={WrappedComponent} {...props} />;
+};
 }
 
 class ServerRightsResultsTable extends RightsResultsTable {
 
-
-    static defaultProps = {
-        autoload: true,
-        autoRefresh: 0,
-        locale: 'en-us',
-    };
 
     constructor(props) {
         super(props);
@@ -34,7 +30,7 @@ class ServerRightsResultsTable extends RightsResultsTable {
             defaultColDef,
         } = this.props || {};
 
-        let originalColDef = this.parseColumnsSchema(availsMapping.mappings || [], locale);
+        const originalColDef = this.parseColumnsSchema(availsMapping.mappings || [], locale);
 
         let rowsProps = {defaultColDef: {
             ...defaultColDef,
@@ -53,7 +49,7 @@ class ServerRightsResultsTable extends RightsResultsTable {
         };
 
 
-        let colDef = {...this.props.colDef, ...originalColDef};
+        const colDef = {...this.props.colDef, ...originalColDef};
         this.state = {
             originalColDef: originalColDef,
             colDef: colDef,
@@ -65,13 +61,13 @@ class ServerRightsResultsTable extends RightsResultsTable {
     }
 
     componentDidMount() {
-        let newColDef = {...this.props.colDef, ...this.state.originalColDef};
+        const newColDef = {...this.props.colDef, ...this.state.originalColDef};
         this.refreshColumns(newColDef);
     }
 
     componentDidUpdate(prevProps) {
         if(prevProps.colDef !== this.props.colDef || prevProps.cols !== this.props.cols || prevProps.columns !== this.props.columns){
-            let newColDef = {...this.props.colDef, ...this.state.originalColDef};
+            const newColDef = {...this.props.colDef, ...this.state.originalColDef};
             this.refreshColumns(newColDef);
         }
 
@@ -133,13 +129,15 @@ class ServerRightsResultsTable extends RightsResultsTable {
 
     render(){
         const {WrappedComponent} = this.props;
-        return <WrappedComponent
-            {...this.props}
-            {...this.state.rowsProps}
-            colDef = {this.state.cols}
-            setTable={this.setTable}
-            getRowNodeId={data => data.id}
-        />;
+        return (
+            <WrappedComponent
+                {...this.props}
+                {...this.state.rowsProps}
+                colDef={this.state.cols}
+                setTable={this.setTable}
+                getRowNodeId={data => data.id}
+            />
+);
     }
 }
 
@@ -147,4 +145,9 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
 });
 
+ServerRightsResultsTable.defaultProps = {
+    autoload: true,
+    autoRefresh: 0,
+    locale: 'en-us',
+};
 const ServerRightsResultsTableConnected = connect(mapStateToProps)(ServerRightsResultsTable);

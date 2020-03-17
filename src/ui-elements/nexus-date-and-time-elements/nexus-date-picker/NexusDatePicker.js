@@ -65,14 +65,13 @@ const NexusDatePicker = ({
 
     const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
-    const DatePickerComponent = (isReadOnly) => (
-        <>
-            {!hideLabel && label &&
-                <>
-                    {label}
-                </>
-            }
-            {isReadOnly
+    const DatePickerComponent = (isReadOnly) => {
+  return (
+      <>
+          {!hideLabel && label && (
+          <> {label} </>
+              )}
+          {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)
                 : (
                     <div className='nexus-c-date-picker__date-clear-wrapper'>
@@ -85,30 +84,30 @@ const NexusDatePicker = ({
                             value={date}
                             {...restProps}
                         />
-                        {allowClear && <ClearButton onClear={() => onDateChange('')}/>}
+                        {allowClear && <ClearButton onClear={() => onDateChange('')} />}
                     </div>
-                )
-            }
-            {error &&
-                <ErrorMessage>
-                    {error}
-                </ErrorMessage>
-            }
-        </>
-    );
+                )}
+          {error && (
+          <ErrorMessage>
+              {error}
+          </ErrorMessage>
+              )}
+      </>
+);
+};
 
     return (
-        <>
-            {isWithInlineEdit && !isReadOnly
+        <> {isWithInlineEdit && !isReadOnly
                 ? (
                     <InlineEdit
                         readView={() => (
                             <div className="nexus-c-date-picker__read-view-container">
                                 {(moment(value).isValid() && parseSimulcast(value, dateFormat, false))
-                                    || <div className="read-view-container__placeholder">
+                                    || (
+                                    <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>
-                                }
+)}
                             </div>
                         )}
                         editView={() => DatePickerComponent(false)}
@@ -118,8 +117,7 @@ const NexusDatePicker = ({
                         {...restProps}
                     />
                 )
-                : DatePickerComponent(isReadOnly)
-            }
+                : DatePickerComponent(isReadOnly)}
         </>
     );
 };

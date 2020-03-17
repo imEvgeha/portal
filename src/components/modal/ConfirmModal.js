@@ -6,16 +6,6 @@ import t from 'prop-types';
 
 class Confirm extends React.Component{
 
-    static propTypes = {
-        description: t.oneOfType([t.string, t.array]),
-        className: t.string,
-        message: t.string,
-        confirmLabel: t.string,
-        abortLabel: t.string,
-        reject: t.func,
-        resolve: t.func,
-        scrollable: t.bool
-    };
 
     constructor(props) {
         super(props);
@@ -27,12 +17,6 @@ class Confirm extends React.Component{
         this.abort = this.abort.bind(this);
         this.confirm = this.confirm.bind(this);
     }
-
-    static defaultProps = {
-        ...Component.defaultProps,
-        confirmLabel: 'Yes',
-        abortLabel: 'Cancel',
-    };
 
     toggle() {
         this.setState({
@@ -53,7 +37,7 @@ class Confirm extends React.Component{
         if (this.props.description) {
             modalBody = (
                 <ModalBody
-                    style = {this.props.scrollable ? {overflowY:'scroll', height:'calc(100vh - 220px)'} : null}
+                    style={this.props.scrollable ? {overflowY:'scroll', height:'calc(100vh - 220px)'} : null}
                 >
                     {this.props.description}
                 </ModalBody>
@@ -86,7 +70,7 @@ export const confirmModal = {
             reject: () => { cleanup();onCancel();}
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
-        render(<Confirm {...props}/>, wrapper);
+        render(<Confirm {...props} />, wrapper);
         const cleanup = function() {
             unmountComponentAtNode(wrapper);
             return setTimeout(function() {
@@ -94,4 +78,21 @@ export const confirmModal = {
             });
         };
     }
+};
+
+Confirm.propTypes = {
+    description: t.oneOfType([t.string, t.array]),
+    className: t.string,
+    message: t.string,
+    confirmLabel: t.string,
+    abortLabel: t.string,
+    reject: t.func,
+    resolve: t.func,
+    scrollable: t.bool
+};
+
+Confirm.defaultProps = {
+    ...Component.defaultProps,
+    confirmLabel: 'Yes',
+    abortLabel: 'Cancel',
 };

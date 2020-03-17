@@ -131,25 +131,26 @@ const DashboardLatestAvailsCard = ({push}) => {
                     <Link to={{ pathname: '/avails/history'}}>View All</Link>
                 </span>
             </div>
-            <div className="ag-theme-balham"
+            <div
+                className="ag-theme-balham"
                 style={{
                     height: 'calc(100% - 26px)',
                     width: '100%',
                     overflow: 'hidden'}}
-                >
+            >
                 <AgGridReact
                     ref={setTable}
-                    columnDefs= {columns}
-                    headerHeight= '30'
-                    rowHeight= '23'
-                    suppressDragLeaveHidesColumns= {true}
-                    suppressHorizontalScroll= {true}
-                    suppressMovableColumns = {true}
+                    columnDefs={columns}
+                    headerHeight='30'
+                    rowHeight='23'
+                    suppressDragLeaveHidesColumns={true}
+                    suppressHorizontalScroll={true}
+                    suppressMovableColumns={true}
                     rowSelection='single'
                     onSelectionChanged={onSelectionChanged}
                 />
             </div>
-         </div>
+        </div>
     );
 };
 

@@ -4,16 +4,6 @@ import Select from '@atlaskit/select';
 import './MultiSelectCellEditor.scss';
 
 class MultiSelectCellEditor extends Component {
-    static propTypes = {
-        options: PropTypes.array,
-        value: PropTypes.array,
-    }; 
-
-    static defaultProps = {
-        options: [],
-        value: null,
-    };
-
     constructor(props) {
         super(props);
         const {value} = props;
@@ -75,6 +65,16 @@ class MultiSelectCellEditor extends Component {
         );
     }
 }
+
+MultiSelectCellEditor.propTypes = {
+    options: PropTypes.array,
+    value: PropTypes.array,
+};
+
+MultiSelectCellEditor.defaultProps = {
+    options: [],
+    value: null,
+};
 
 export default MultiSelectCellEditor;
 

@@ -15,14 +15,12 @@ if (!document.body) {
 }
 document.body.appendChild(portal);
 
-const createFormForItem = (
-    field,
+const createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,
     formChangeHandler,
-    key
-) => {
+    key) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
         id: `${field.id}[${targetIndex}]#${key}`
@@ -81,7 +79,6 @@ export default class RepeatsPrimitives extends Component {
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
         const items = defaultValue.map(data => ({ id: uniqueId(), data }));
         this.state = {
-            value: defaultValue,
             items
         };
     }
@@ -123,7 +120,7 @@ export default class RepeatsPrimitives extends Component {
         );
     }
 
-    onDragEnd(result) {
+    onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -147,7 +144,7 @@ export default class RepeatsPrimitives extends Component {
         } = this.props;
 
         return (
-            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+            <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
                         <div
