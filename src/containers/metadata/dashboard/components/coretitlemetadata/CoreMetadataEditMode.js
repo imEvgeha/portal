@@ -181,16 +181,16 @@ class CoreMetadataEditMode extends Component {
             <div id="coreMetadataEditMode">
                 <Row style={{ marginTop: '10px' }}>
                     <Col md={1}>
-                        <Label for='eidrLevel1'>EIDR Level 1 </Label>
+                        <Label for='eidrTitleId'>EIDR Title ID </Label>
                     </Col>
                     <Col>
                         <AvField
                             type='text'
                             onChange={e => this.props.handleOnExternalIds(e)}
-                            name='eidrLevel1'
-                            id='eidrLevel1'
-                            value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : ''}
-                            placeholder='EIDR Level 1'
+                            name='eidrTitleId'
+                            id='eidrTitleId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.eidrTitleId : ''}
+                            placeholder='EIDR Title ID'
                             validate={{
                   maxLength: { value: 200 }
                 }}
@@ -215,16 +215,16 @@ class CoreMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ marginTop: '10px' }}>
                     <Col md={1}>
-                        <Label for='eidrLevel2'>EIDR Level 2 </Label>
+                        <Label for='eidrEditId'>EIDR Edit ID </Label>
                     </Col>
                     <Col>
                         <AvField
                             type='text'
                             onChange={e => this.props.handleOnExternalIds(e)}
-                            name='eidrLevel2'
-                            id='eidrLevel2'
-                            value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : ''}
-                            placeholder='EIDR Level 2'
+                            name='eidrEditId'
+                            id='eidrEditId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.eidrEditId : ''}
+                            placeholder='EIDR Edit ID'
                             validate={{
                   maxLength: { value: 200 }
                 }}
@@ -249,16 +249,16 @@ class CoreMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ marginTop: '10px' }}>
                     <Col md={1}>
-                        <Label for='dmaId'>DMA ID</Label>
+                        <Label for='dmaId'>MA ID</Label>
                     </Col>
                     <Col>
                         <AvField
                             type='text'
-                            name='dmaId'
+                            name='maId'
                             onChange={e => this.props.handleOnExternalIds(e)}
-                            id='dmaId'
-                            value={this.props.data.externalIds ? this.props.data.externalIds.dmaId : ''}
-                            placeholder='DMA ID'
+                            id='maId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.maId : ''}
+                            placeholder='MA ID'
                             validate={{
                   maxLength: { value: 200 }
                 }}
