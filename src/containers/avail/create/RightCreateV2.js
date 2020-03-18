@@ -21,6 +21,7 @@ import {
     NexusDatePicker,
     NexusMultiInstanceField
 } from '../../../ui-elements';
+import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 
 const mapStateToProps = state => {
     return {
@@ -330,6 +331,8 @@ class RightCreate extends React.Component {
                     </div>
                   )}
                 </BlockUi>
+                {/* Provide clashingRights for modal open*/}
+                <RightsClashingModal />
             </div>
         );
     }

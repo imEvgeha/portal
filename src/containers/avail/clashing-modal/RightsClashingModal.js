@@ -1,49 +1,61 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {connect} from 'react-redux';
 import {NexusModalContext} from '../../../ui-elements/nexus-modal/NexusModal';
 import {NexusGrid, NexusTitle} from '../../../ui-elements';
+import './RightsClashingModal.scss';
+import {createLinkableCellRenderer} from '../../../avails/utils';
+import {createRightMatchingColumnDefsSelector} from '../../../avails/right-matching/rightMatchingSelectors';
+import {createRightMatchingColumnDefs} from '../../../avails/right-matching/rightMatchingActions';
+import cloneDeep from 'lodash.clonedeep';
 
-const getColumnDef = (id, headerName) => { return {field: id, headerName: headerName, colId: id, width: 150}; };
+const columnsToUse = ['licensor', 'licensee', 'title', 'licenseType', 'format', 'start', 'end', 'territory', 'platformCategory', 'contentType', 'availStart', 'availEnd'];
+const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
-const rightsClashingColumnsDef = [
-    getColumnDef('licensor','Licensor'),
-    getColumnDef('licensee','Licensee'),
-    getColumnDef('title','Title'),
-    getColumnDef('licenseType', 'License Type'),
-    getColumnDef('format', 'Format'),
-    getColumnDef('start','Start'),
-    getColumnDef('end','End'),
-    getColumnDef('territory','Territory'),
-    getColumnDef('platformCategory','Platform Category'),
-    getColumnDef('contentType','Content Type'),
-    getColumnDef('availStart','Avail Start'),
-    getColumnDef('availEnd','Avail End'),
-];
-
-function RightsClashingModal({clashingRights}) {
+function RightsClashingModal({clashingRights, columnDefs}) {
 
     const {setModalContent, setModalActions, setModalTitle, close} = useContext(NexusModalContext);
 
+    const [rightsClashingColumnsDef, setRightsClashingColumnsDef] = useState([]);
+
     useEffect(() => {
-        if(clashingRights && clashingRights.length > 0) {
+        if (!columnDefs.length) {
+            createRightMatchingColumnDefs();
+        } else {
+            const updatedColDef = cloneDeep(columnDefs)
+                .filter(el => columnsToUse.includes(el.field)).map(columnDef => {
+                if (columnDef.cellRenderer) {
+                    columnDef.cellRenderer = handleRightRedirect;
+                }
+                return columnDef;
+            });
+            setRightsClashingColumnsDef(updatedColDef);
+        }
+    }, [columnDefs, createRightMatchingColumnDefs]);
+
+    useEffect(() => {
+        setModalTitle('Clashing Rights');
+
+        setModalActions([{
+            text: 'Cancel',
+            onClick: close
+        }]);
+    }, []);
+
+    useEffect(() => {
+        if (clashingRights && clashingRights.length > 0) {
             setModalContent(buildContent());
         }
     }, [clashingRights]);
 
-    setModalTitle('Clashing Rights');
-
-    setModalActions([{
-        text: 'Cancel',
-        onClick: close
-    }]);
-
     const buildContent = () => {
         return (
-            <div>
-                <NexusTitle>The rights could not be saved since it is clashing whit following existing rights:</NexusTitle>
+            <div className="nexus-c-rights-clashing-modal">
+                <NexusTitle isSubTitle>The rights could not be saved since it is clashing whit following existing
+                    rights:
+                </NexusTitle>
                 <NexusGrid
                     columnDefs={rightsClashingColumnsDef}
                     rowData={clashingRights}
-                    singleClickEdit
                 />
             </div>
         );
@@ -52,4 +64,16 @@ function RightsClashingModal({clashingRights}) {
     return (<></>);
 }
 
-export default RightsClashingModal;
+const mapDispatchToProps = dispatch => ({
+    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))
+});
+
+const mapStateToProps = () => {
+    const rightMatchingColumnDefsSelector = createRightMatchingColumnDefsSelector();
+
+    return (state, props) => ({
+        columnDefs: rightMatchingColumnDefsSelector(state, props),
+    });
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RightsClashingModal);
