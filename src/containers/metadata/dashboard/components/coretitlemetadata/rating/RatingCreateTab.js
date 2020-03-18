@@ -50,12 +50,26 @@ class RatingCreateTab extends Component {
 
 
     handleRatingsChange = (newValue) => {
+        const {
+            rating,
+            ratingsForCreate,
+        } = this.state;
+
+        const {
+            ratings
+        } = this.props;
+
         let newRating = {
-            ...this.state.ratingsForCreate,
+            ...ratingsForCreate,
             rating: newValue.target.value
         };
 
-        if (this.state.rating && this.state.rating.includes(newValue.target.value)) {
+        if (
+            rating
+            && newRating.ratingSystem
+            && ratings.find(rating => newRating.ratingSystem === rating.ratingSystem)
+            && rating.includes(newValue.target.value)
+        ) {
             this.setState({
                 isRatingExist: true
             });
