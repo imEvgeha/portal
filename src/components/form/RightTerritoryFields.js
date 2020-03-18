@@ -5,7 +5,7 @@ import Select from '@atlaskit/select/Select';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {CreatableSelect} from '@atlaskit/select';
 
-function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, options}) {
+const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
@@ -18,7 +18,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
     };
 
     const removeExistingOptions = () => {
-        return existingTerritoryList ? options.filter(x => !existingTerritoryList.find(y => y.country === x.label)) : options;
+        return existingTerritoryList ? options.filter(x => !existingTerritoryList.find(y => y.country === x.value)) : options;
     };
 
     const getValidationState = (error, valid) => {
@@ -44,7 +44,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
     };
     
     return (
-        <React.Fragment>
+        <>
             <Field
                 label="COUNTRY"
                 isRequired
@@ -59,7 +59,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 }
             >
                 {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
-                    <React.Fragment>
+                    <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
@@ -75,7 +75,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                             options={removeExistingOptions()}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
-                    </React.Fragment>
+                    </>
                 )}
 
             </Field>
@@ -95,7 +95,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
 
             <Field label="DATE SELECTED" name="dateSelected" defaultValue={isEdit ? returnValidData('dateSelected') && existingTerritoryList[territoryIndex]['dateSelected'] ? existingTerritoryList[territoryIndex]['dateSelected'] : '' : ''}>
                 {({ fieldProps }) => (
-                    <DatePicker id={'datepicker'} placeholder="DD/MM/YYYY" {...fieldProps} dateFormat={'DD/MM/YYYY'} />
+                    <DatePicker id="datepicker" placeholder="DD/MM/YYYY" {...fieldProps} dateFormat="DD/MM/YYYY" />
                 )}
             </Field>
 
@@ -113,7 +113,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 }
             >
                 {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
-                    <React.Fragment>
+                    <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
@@ -142,7 +142,7 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                             ]}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
-                    </React.Fragment>
+                    </>
                 )}
             </Field>
             <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit ? returnValidData('vuContractId') && existingTerritoryList[territoryIndex]['vuContractId'].length > 0 && existingTerritoryList[territoryIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
@@ -157,9 +157,9 @@ function RightTerritoryFields({isEdit, existingTerritoryList, territoryIndex, op
                 )}
 
             </Field>
-        </React.Fragment>
+        </>
     );
-}
+};
 
 RightTerritoryFields.propTypes = {
     isEdit: PropTypes.bool,

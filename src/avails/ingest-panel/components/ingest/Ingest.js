@@ -18,17 +18,20 @@ const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId
     return (
         <div
             className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''} ${inBundle? 'nexus-c-avail-ingest--is-in-bundle' : ''} `}
-             onClick={ingestClick}>
+            onClick={ingestClick}
+        >
             <IngestTitle link={link} />
             <div className='nexus-c-avail-ingest__details'>
                 {
-                    ingestReport &&
+                    ingestReport && (
                     <span
                         className={`nexus-c-avail-ingest__chevron nexus-c-avail-ingest__chevron--is-${showReport ? 'opened' : 'closed'}`}
-                        onClick={onChevronClick}>
-                        <Chevron/>
+                        onClick={onChevronClick}
+                    >
+                        <Chevron />
                     </span>
-                }
+                  )
+}
                 <div className={`nexus-c-avail-ingest__status nexus-c-avail-ingest__status--is-${ingestReport ? 'expandable' : 'not-expandable'}`}>
                     <IngestStatus date={received} status={status} />
                 </div>

@@ -24,12 +24,12 @@ export default function withServerSorting(WrappedComponent){
 
         refreshSort(){
             if(!this.state.table) return;
-            let sortModel=[];
+            const sortModel=[];
             this.state.sort.map(sortCriteria=>{
                 sortModel.push({colId:this.props.availsMapping.mappings.find(({queryParamName}) => queryParamName === sortCriteria.id).javaVariableName, sort:sortCriteria.desc ? 'desc' : 'asc'});
             });
 
-            let currentSortModel = this.state.table.api.getSortModel();
+            const currentSortModel = this.state.table.api.getSortModel();
             let toChangeSortModel = false;
 
             if(currentSortModel.length !== sortModel.length) toChangeSortModel=true;
@@ -45,8 +45,8 @@ export default function withServerSorting(WrappedComponent){
         }
 
         onSortChanged(e) {
-            let sortParams = e.api.getSortModel();
-            let newSort = [];
+            const sortParams = e.api.getSortModel();
+            const newSort = [];
             if(sortParams.length > 0){
                 sortParams.map(criteria =>{
                     const availMapping =  this.props.availsMapping.mappings.find(({javaVariableName}) =>
@@ -75,13 +75,15 @@ export default function withServerSorting(WrappedComponent){
         }
 
         render(){
-            return <WrappedComponent
-                {...this.props}
-                defaultColDef={{...this.props.defaultColDef, sortable:true}}
-                setTable={this.setTable}
-                onSortChanged={this.onSortChanged}
-                sort={this.state.sort}
-            />;
+            return (
+                <WrappedComponent
+                    {...this.props}
+                    defaultColDef={{...this.props.defaultColDef, sortable:true}}
+                    setTable={this.setTable}
+                    onSortChanged={this.onSortChanged}
+                    sort={this.state.sort}
+                />
+);
         }
     };
 }

@@ -7,16 +7,6 @@ import {INVALID_DATE} from '../../constants/messages';
 
 class EditableDatePicker extends Component {
 
-    static propTypes = {
-        validate: t.func,
-        value: t.string,
-        displayName: t.string,
-        disabled: t.bool,
-        onChange: t.func,
-        priorityDisplay: t.any,
-        showTime: t.bool
-    };
-
     constructor(props) {
         const vodDate = props.value;
         super(props);
@@ -96,12 +86,15 @@ class EditableDatePicker extends Component {
 
     render() {
         const displayFunc = (value)=>{
-            return (<span
-                       onClick={this.handleShowDatePicker}
-                       style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
-                       className={'displayDate' + (this.props.disabled ? ' disabled' : '')}>
-                       {value}
-                   </span>);
+            return (
+                <span
+                    onClick={this.handleShowDatePicker}
+                    style={{width:'100%', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap', minHeight:'26px'}}
+                    className={'displayDate' + (this.props.disabled ? ' disabled' : '')}
+                >
+                    {value}
+                </span>
+);
         };
 
         const unfocusedRender = ()=>{
@@ -118,9 +111,10 @@ class EditableDatePicker extends Component {
                             <span
                                 className="displayDate"
                                 style={{color: '#808080', cursor: 'pointer', width:'100%'}}
-                                onClick={this.handleShowDatePicker}>
-                            {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
-                        </span>
+                                onClick={this.handleShowDatePicker}
+                            >
+                                {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
+                            </span>
                         );
                     }
                 }
@@ -130,7 +124,7 @@ class EditableDatePicker extends Component {
         return (
             <div className="editable-container">
                 {
-                    this.state.datePickerStatus ?
+                    this.state.datePickerStatus ? (
                         <div>
                             <div className="dPicker" style={{ marginBottom: '5px' }}>
                                 <NexusDatePicker
@@ -145,21 +139,25 @@ class EditableDatePicker extends Component {
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
                                     onClick={() => this.submit(this.state.date)}
-                                    color="success"><i className="fa fa-check"></i>
+                                    color="success"
+                                ><i className="fa fa-check" />
                                 </Button>
                                 <Button
                                     className="dPButton"
                                     onClick={this.handleCancelDatePicker}
-                                    color="danger"><i className="fa fa-times"></i>
+                                    color="danger"
+                                ><i className="fa fa-times" />
                                 </Button>
                             </div>
                             {
-                                this.state.errorMessage &&
-                                <small className = {'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
+                                this.state.errorMessage && (
+                                <small className="text-danger m-2" style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>
-                            }
+                              )
+}
                         </div>
+                      )
                         :
                         unfocusedRender()
                 }
@@ -167,5 +165,15 @@ class EditableDatePicker extends Component {
         );
     }
 }
+
+EditableDatePicker.propTypes = {
+    validate: t.func,
+    value: t.string,
+    displayName: t.string,
+    disabled: t.bool,
+    onChange: t.func,
+    priorityDisplay: t.any,
+    showTime: t.bool
+};
 
 export default EditableDatePicker;

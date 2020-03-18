@@ -24,16 +24,6 @@ import {Field as AkField} from '@atlaskit/form';
 
 export default class CreateEditConfigForm extends React.Component {
 
-    static propTypes = {
-        label: PropTypes.string,
-        value: PropTypes.any,
-        schema: PropTypes.array,
-        onCancel: PropTypes.func,
-        onSubmit: PropTypes.func,
-        onRemoveItem: PropTypes.func,
-        displayName: PropTypes.string
-    };
-
     constructor(props) {
         super(props);
         this.state={
@@ -81,7 +71,7 @@ export default class CreateEditConfigForm extends React.Component {
                     addButtonLabel={addButtonLabel}
                     label={label}
                     onChange={value => {
-                        let val = singleField && Array.isArray(value)?
+                        const val = singleField && Array.isArray(value)?
                             value.map((v) => isObject(v)?v[idAttribute]:v)
                             : value;
                         onChange(id, val);
@@ -117,27 +107,29 @@ export default class CreateEditConfigForm extends React.Component {
             return (
                 <AkField label={label} name={id} key={id}>
                     {
-                        () => <Form>
+                        () => (
+                            <Form>
 
-                        <NexusDateTimePicker
-                            id={id}
-                            value={value || defaultValue || ''}
-                            onChange={value => {
+                                <NexusDateTimePicker
+                                    id={id}
+                                    value={value || defaultValue || ''}
+                                    onChange={value => {
                                 onChange(id, value);
                             }}
-                            isViewModeDisabled={true}
-                            hideIcon={field.disabled}
-                            isReadOnly={field.disabled}
-                            isDisabled={field.disabled}
-                            isTimestamp={true}
-                        />
-                        </Form>
+                                    isViewModeDisabled={true}
+                                    hideIcon={field.disabled}
+                                    isReadOnly={field.disabled}
+                                    isDisabled={field.disabled}
+                                    isTimestamp={true}
+                                />
+                            </Form>
+)
                     }
                 </AkField>
             );
         case 'select':
         case 'multiselect':
-            return <DelayedOptions key={id} field={field} onChange={onChange} onFieldFocus={onFieldFocus} onFieldBlur={onFieldBlur}/>;
+            return <DelayedOptions key={id} field={field} onChange={onChange} onFieldFocus={onFieldFocus} onFieldBlur={onFieldBlur} />;
         default:
             return akRenderer(field, onChange, onFieldFocus, onFieldBlur);
         }
@@ -169,7 +161,7 @@ export default class CreateEditConfigForm extends React.Component {
     };
 
     optionsHandler(fieldId, fields) {
-        let field = fields.find(({id}) => id === fieldId);
+        const field = fields.find(({id}) => id === fieldId);
         if(field){
             if((field.type === 'select' || field.type === 'multiselect') && field.source){
                 if(cache[field.source.url] === undefined){
@@ -209,38 +201,38 @@ export default class CreateEditConfigForm extends React.Component {
 
     render() {
         return (
-                <Modal isOpen={!!this.props.value} toggle={this.props.onCancel} style={{paddingLeft: '30px'}}>
+            <Modal isOpen={!!this.props.value} toggle={this.props.onCancel} style={{paddingLeft: '30px'}}>
                 <ModalBody>
                     <p><b style={{color: '#999', fontSize: '13px'}}>{this.props.displayName}</b></p>
                     <p style={{marginTop: '-20px'}}><b>{this.props.value && this.props.label ? this.props.label : <i style={{fontSize: '20px', color: '#666'}}>New {this.props.displayName}</i>}</b></p>
                     <Can I="delete" a="ConfigUI">
-                    {Object.entries(this.props.value).length !== 0 && (
-                        <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>
-                        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                            <DropdownToggle color="light">
-                                <b>...</b>
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem onClick={() => this.handleDeleteItem(this.props.value)}>Delete</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                        </div>
+                        {Object.entries(this.props.value).length !== 0 && (
+                            <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>
+                                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                                    <DropdownToggle color="light">
+                                        <b>...</b>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem onClick={() => this.handleDeleteItem(this.props.value)}>Delete</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </div>
                     )}
                     </Can>
                     <Form
-                        renderer = {(field, onChange, onFieldFocus, onFieldBlur) => this.renderer(field, onChange, onFieldFocus, onFieldBlur)}
+                        renderer={(field, onChange, onFieldFocus, onFieldBlur) => this.renderer(field, onChange, onFieldFocus, onFieldBlur)}
                         defaultFields={this.props.schema}
                         optionsHandler={this.optionsHandler}
-                        onChange = {(value) => this.setState({value: value})}
-                        defaultValue = {this.state.value}
+                        onChange={(value) => this.setState({value: value})}
+                        defaultValue={this.state.value}
                     >
-                    <ModalFooter>
-                        <Button onClick={this.props.onCancel}>Cancel</Button>
-                        <FormButton onClick={this.props.onSubmit}/>
-                    </ModalFooter>
+                        <ModalFooter>
+                            <Button onClick={this.props.onCancel}>Cancel</Button>
+                            <FormButton onClick={this.props.onSubmit} />
+                        </ModalFooter>
                     </Form>
                 </ModalBody>
-                </Modal>
+            </Modal>
         );
     }
 }

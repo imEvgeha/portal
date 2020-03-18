@@ -11,7 +11,7 @@ export const advancedHistorySearchHelper = {
 
     prepareAdvancedHistorySearchCall: (searchCriteria) => {
         const response = {};
-        for (let key of Object.keys(searchCriteria) ) {
+        for (const key of Object.keys(searchCriteria) ) {
             const criteria = searchCriteria[key];
             if (criteria !== null && criteria !== undefined) {
                 if (!(criteria instanceof Object)) {

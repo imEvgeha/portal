@@ -2,13 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class CheckboxCellEditor extends Component {
-    static propTypes = {
-        value: PropTypes.boolean,
-    }; 
-
-    static defaultProps = {
-        value: false,
-    };
 
     constructor(props) {
         super(props);
@@ -43,6 +36,14 @@ class CheckboxCellEditor extends Component {
         );
     }
 }
+
+CheckboxCellEditor.propTypes = {
+    value: PropTypes.bool,
+};
+
+CheckboxCellEditor.defaultProps = {
+    value: false,
+};
 
 export default CheckboxCellEditor;
 

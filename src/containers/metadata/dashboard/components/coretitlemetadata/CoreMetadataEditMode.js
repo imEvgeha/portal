@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   FormGroup,
   Label,
@@ -33,10 +33,7 @@ import PersonList from './PersonList';
 
 const mapStateToProps = state => {
   return {
-    configCastAndCrew: state.titleReducer.configData.find(e => e.key === configFields.CAST_AND_CREW),
-    configRatingSystem: state.titleReducer.configData.find(e => e.key === configFields.RATING_SYSTEM),
     configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
-    configAdvisoryCode: state.titleReducer.configData.find(e => e.key === configFields.ADVISORY_CODE),
   };
 };
 
@@ -51,7 +48,7 @@ class CoreMetadataEditMode extends Component {
 
   handleRatingSystemValue = (e) => {
     const rating = e.target.value;
-    let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
+    const newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
     this.setState({
       ratings: newRatings
     });
@@ -59,12 +56,12 @@ class CoreMetadataEditMode extends Component {
   };
 
   handleMovidaLegacyIds(e) {
-    let movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
+    const movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
     this.props.handleOnLegacyIds(movidaLegacyId);
   }
 
   handleVzLegacyIds(e) {
-    let vzLegacyId = { vz: { [e.target.name]: e.target.value } };
+    const vzLegacyId = { vz: { [e.target.name]: e.target.value } };
     this.props.handleOnLegacyIds(vzLegacyId);
   }
 
@@ -85,344 +82,343 @@ class CoreMetadataEditMode extends Component {
 
   render() {
     return (
-      <Fragment>
-        <Row>
-          <Col>
-          <PersonList
-              handleAddCharacterName={this.props.handleAddCharacterName}
-              personLabel={CAST_LABEL}
-              personHtmlFor={CAST_HTML_FOR}
-              personListLabel={CAST_LIST_LABEL}
-              personHeader={CAST_HEADER}
-              type={CAST}
-              persons={getFilteredCastList(this.props.editedTitle.castCrew, false)}
-              removePerson={this.props.removeCastCrew}
-              loadOptionsPerson={this.loadOptionsPerson}
-              addPerson={this.props.addCastCrew}
-              showPersonType={true}
-              isMultiColumn={true}
-              getFormatTypeName={getFormatTypeName}
-              onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
-            />
-          </Col>
-          <Col>
-            <PersonList
-              personLabel={CREW_LABEL}
-              personHtmlFor={CREW_HTML_FOR}
-              personListLabel={CREW_LIST_LABEL}
-              personHeader={CREW_HEADER}
-              type={CREW}
-              persons={getFilteredCrewList(this.props.editedTitle.castCrew, false)}
-              removePerson={this.props.removeCastCrew}
-              loadOptionsPerson={this.loadOptionsPerson}
-              addPerson={this.props.addCastCrew}
-              getFormatTypeName={getFormatTypeName}
-              showPersonType={true}
-              isMultiColumn={false}
-              onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CREW)}
-            />
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <Rating
-            isEditMode={true}
-            ratings={this.props.ratings}
-            areRatingFieldsRequired={this.props.areRatingFieldsRequired}
-            handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
-            ratingObjectForCreate={this.props.ratingObjectForCreate}
-            filteredRatings={this.state.ratings}
-            activeTab={this.props.titleRankingActiveTab}
-            toggle={this.props.toggleTitleRating}
-            addRating={this.props.addTitleRatingTab}
-            createRatingTab={this.props.createRatingTab}
-            handleEditChange={this.props.handleRatingEditChange}
-            handleRatingCreateChange={this.props.handleRatingCreateChange}
-            handleRatingSystemValue={this.props.handleRatingSystemValue}
-          />
-        </Row>
+        <>
+            <Row>
+                <Col>
+                    <PersonList
+                        handleAddCharacterName={this.props.handleAddCharacterName}
+                        personLabel={CAST_LABEL}
+                        personHtmlFor={CAST_HTML_FOR}
+                        personListLabel={CAST_LIST_LABEL}
+                        personHeader={CAST_HEADER}
+                        type={CAST}
+                        persons={getFilteredCastList(this.props.editedTitle.castCrew, false)}
+                        removePerson={this.props.removeCastCrew}
+                        loadOptionsPerson={this.loadOptionsPerson}
+                        addPerson={this.props.addCastCrew}
+                        showPersonType={true}
+                        isMultiColumn={true}
+                        getFormatTypeName={getFormatTypeName}
+                        onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CAST)}
+                    />
+                </Col>
+                <Col>
+                    <PersonList
+                        personLabel={CREW_LABEL}
+                        personHtmlFor={CREW_HTML_FOR}
+                        personListLabel={CREW_LIST_LABEL}
+                        personHeader={CREW_HEADER}
+                        type={CREW}
+                        persons={getFilteredCrewList(this.props.editedTitle.castCrew, false)}
+                        removePerson={this.props.removeCastCrew}
+                        loadOptionsPerson={this.loadOptionsPerson}
+                        addPerson={this.props.addCastCrew}
+                        getFormatTypeName={getFormatTypeName}
+                        showPersonType={true}
+                        isMultiColumn={false}
+                        onReOrder={(newArray) => this.props.castAndCrewReorder(newArray, CREW)}
+                    />
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Rating
+                    isEditMode={true}
+                    ratings={this.props.ratings}
+                    areRatingFieldsRequired={this.props.areRatingFieldsRequired}
+                    ratingObjectForCreate={this.props.ratingObjectForCreate}
+                    filteredRatings={this.state.ratings}
+                    activeTab={this.props.titleRankingActiveTab}
+                    toggle={this.props.toggleTitleRating}
+                    addRating={this.props.addTitleRatingTab}
+                    createRatingTab={this.props.createRatingTab}
+                    handleEditChange={this.props.handleRatingEditChange}
+                    handleRatingCreateChange={this.props.handleRatingCreateChange}
+                    handleRatingSystemValue={this.props.handleRatingSystemValue}
+                />
+            </Row>
 
-        <hr />
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for='awards'>Awards</Label>
-              <AvField
-                type='text'
-                name='awards'
-                onChange={e => this.props.onChange(e)}
-                id='awards'
-                value={this.props.data.awards ? this.props.data.awards : ''}
-                placeholder='Awards'
-                validate={{
+            <hr />
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <Label for='awards'>Awards</Label>
+                        <AvField
+                            type='text'
+                            name='awards'
+                            onChange={e => this.props.onChange(e)}
+                            id='awards'
+                            value={this.props.data.awards ? this.props.data.awards : ''}
+                            placeholder='Awards'
+                            validate={{
                   maxLength: { value: 500 }
                 }}
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormGroup>
-              <Label for='imdbLink'>IMDb Link</Label>
-              <AvField
-                type='text'
-                name='imdbLink'
-                onChange={e => this.props.onChange(e)}
-                id='imdbLink'
-                value={this.props.data.imdbLink ? this.props.data.imdbLink : ''}
-                placeholder='IMDb Link'
-                validate={{
+                        />
+                    </FormGroup>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <FormGroup>
+                        <Label for='imdbLink'>IMDb Link</Label>
+                        <AvField
+                            type='text'
+                            name='imdbLink'
+                            onChange={e => this.props.onChange(e)}
+                            id='imdbLink'
+                            value={this.props.data.imdbLink ? this.props.data.imdbLink : ''}
+                            placeholder='IMDb Link'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </FormGroup>
-          </Col>
-        </Row>
+                        />
+                    </FormGroup>
+                </Col>
+            </Row>
 
-        <hr />
-        <h4>External IDS</h4>
-        <div id="coreMetadataEditMode">
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='eidrLevel1'>EIDR Level 1 </Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='eidrLevel1'
-                id='eidrLevel1'
-                value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : ''}
-                placeholder='EIDR Level 1'
-                validate={{
+            <hr />
+            <h4>External IDS</h4>
+            <div id="coreMetadataEditMode">
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='eidrLevel1'>EIDR Level 1 </Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='eidrLevel1'
+                            id='eidrLevel1'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : ''}
+                            placeholder='EIDR Level 1'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-            <Col md={1}>
-              <Label for='tmsId'>TMS ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                name='tmsId'
-                id='tmsId'
-                value={this.props.data.externalIds ? this.props.data.externalIds.tmsId : ''}
-                onChange={e => this.props.handleOnExternalIds(e)}
-                placeholder='TMS ID'
-                validate={{
+                        />
+                    </Col>
+                    <Col md={1}>
+                        <Label for='tmsId'>TMS ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            name='tmsId'
+                            id='tmsId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.tmsId : ''}
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            placeholder='TMS ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='eidrLevel2'>EIDR Level 2 </Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='eidrLevel2'
-                id='eidrLevel2'
-                value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : ''}
-                placeholder='EIDR Level 2'
-                validate={{
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='eidrLevel2'>EIDR Level 2 </Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='eidrLevel2'
+                            id='eidrLevel2'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : ''}
+                            placeholder='EIDR Level 2'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-            <Col md={1}>
-              <Label for='xfinityMovieId'>Xfinity Movie ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='xfinityMovieId'
-                id='xfinityMovieId'
-                value={this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId : ''}
-                placeholder='Xfiniy Movie ID'
-                validate={{
+                        />
+                    </Col>
+                    <Col md={1}>
+                        <Label for='xfinityMovieId'>Xfinity Movie ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='xfinityMovieId'
+                            id='xfinityMovieId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId : ''}
+                            placeholder='Xfiniy Movie ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='dmaId'>DMA ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                name='dmaId'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                id='dmaId'
-                value={this.props.data.externalIds ? this.props.data.externalIds.dmaId : ''}
-                placeholder='DMA ID'
-                validate={{
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='dmaId'>DMA ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            name='dmaId'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            id='dmaId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.dmaId : ''}
+                            placeholder='DMA ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-            <Col md={1}>
-              <Label for='licensorTitleId'>Licensor Title ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='licensorTitleId'
-                id='licensorTitleId'
-                value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : ''}
-                placeholder='Licensor Title ID'
-                validate={{
+                        />
+                    </Col>
+                    <Col md={1}>
+                        <Label for='licensorTitleId'>Licensor Title ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='licensorTitleId'
+                            id='licensorTitleId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : ''}
+                            placeholder='Licensor Title ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='isan'>ISAN</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='isan'
-                id='isan'
-                value={this.props.data.externalIds ? this.props.data.externalIds.isan : ''}
-                placeholder='ISAN'
-                validate={{
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='isan'>ISAN</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='isan'
+                            id='isan'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.isan : ''}
+                            placeholder='ISAN'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-            <Col md={1}>
-              <Label for='overrideMsvAssociationId'>
-                Override MSV Association ID
-            </Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='overrideMsvAssociationId'
-                id='overrideMsvAssociationId'
-                value={this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : ''}
-                placeholder='Override MSV Association ID'
-                validate={{
+                        />
+                    </Col>
+                    <Col md={1}>
+                        <Label for='overrideMsvAssociationId'>
+                            Override MSV Association ID
+                        </Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='overrideMsvAssociationId'
+                            id='overrideMsvAssociationId'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : ''}
+                            placeholder='Override MSV Association ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='alid'>ALID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='alid'
-                id='alid'
-                value={this.props.data.externalIds ? this.props.data.externalIds.alid : ''}
-                placeholder='ALID'
-                validate={{
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='alid'>ALID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='alid'
+                            id='alid'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.alid : ''}
+                            placeholder='ALID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-            <Col md={1}>
-              <Label for='vzId'>VZ Title ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.handleVzLegacyIds(e)}
-                name='vzTitleId'
-                id='vzTitleId'
-                value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzTitleId : ''}
-                placeholder='VZ ID'
-                validate={{
+                        />
+                    </Col>
+                    <Col md={1}>
+                        <Label for='vzId'>VZ Title ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.handleVzLegacyIds(e)}
+                            name='vzTitleId'
+                            id='vzTitleId'
+                            value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzTitleId : ''}
+                            placeholder='VZ ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='cid'>C ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='cid'
-                id='cid'
-                value={this.props.data.externalIds ? this.props.data.externalIds.cid : ''}
-                placeholder='C ID'
-                validate={{
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='cid'>C ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='cid'
+                            id='cid'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.cid : ''}
+                            placeholder='C ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-            <Col md={1}>
-              <Label for='movidaId'>Movida ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.handleMovidaLegacyIds(e)}
-                name='movidaId'
-                id='movidaId'
-                value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaId : ''}
-                placeholder='Movie ID'
-                validate={{
+                        />
+                    </Col>
+                    <Col md={1}>
+                        <Label for='movidaId'>Movida ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.handleMovidaLegacyIds(e)}
+                            name='movidaId'
+                            id='movidaId'
+                            value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaId : ''}
+                            placeholder='Movie ID'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
-          </Row>
-          <Row style={{ marginTop: '10px' }}>
-            <Col md={1}>
-              <Label for='isrc'>ISRC</Label>
-            </Col>
-            <Col>
-              <AvField
-                type='text'
-                onChange={e => this.props.handleOnExternalIds(e)}
-                name='isrc'
-                id='isrc'
-                value={this.props.data.externalIds ? this.props.data.externalIds.isrc : ''}
-                placeholder='ISRC'
-                validate={{
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
+                        <Label for='isrc'>ISRC</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='isrc'
+                            id='isrc'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.isrc : ''}
+                            placeholder='ISRC'
+                            validate={{
                   maxLength: { value: 200 }
                 }}
-              />
-            </Col>
+                        />
+                    </Col>
 
-            <Col md={1}>
-              <Label for='movidaTitleId'>Movida Title ID</Label>
-            </Col>
-            <Col>
-              <AvField
-                readOnly
-                type='text'
-                name='movidaTitleId'
-                id='movidaTitleId'
-                value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaTitleId : ''}
-                placeholder='Movida Title ID'
-              />
-            </Col>
-          </Row>
-        </div>
-      </Fragment>
+                    <Col md={1}>
+                        <Label for='movidaTitleId'>Movida Title ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            readOnly
+                            type='text'
+                            name='movidaTitleId'
+                            id='movidaTitleId'
+                            value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaTitleId : ''}
+                            placeholder='Movida Title ID'
+                        />
+                    </Col>
+                </Row>
+            </div>
+        </>
     );
   }
 }
@@ -442,21 +438,15 @@ CoreMetadataEditMode.propTypes = {
   handleOnExternalIds: PropTypes.func,
   handleOnLegacyIds: PropTypes.func,
 
-  isCrewModalOpen: PropTypes.bool,
   removeCastCrew: PropTypes.func,
   castCrew: PropTypes.array,
   addCastCrew: PropTypes.func,
 
   ratings: PropTypes.array,
 
-  configCastAndCrew: PropTypes.object,
-  configRatingSystem: PropTypes.object,
   configRatings: PropTypes.object,
-  configAdvisoryCode: PropTypes.object,
-
   handleRatingSystemValue: PropTypes.func,
   ratingObjectForCreate: PropTypes.object,
-  handleAdvisoryCodeChange: PropTypes.func,
   areRatingFieldsRequired: PropTypes.bool,
   castAndCrewReorder: PropTypes.func,
 

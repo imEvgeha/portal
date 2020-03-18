@@ -3,6 +3,7 @@ import config from 'react-global-configuration';
 import {getDomainName, prepareSortMatrixParamTitles} from '../../../util/Common';
 import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
+import uniqBy from 'lodash.uniqby';
 
 const http = Http.create();
 
@@ -30,7 +31,7 @@ export const titleService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        for (let key in searchCriteria) {
+        for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 params[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
             }
@@ -39,8 +40,6 @@ export const titleService = {
     },
 
     freeTextSearchWithGenres: (searchCriteria, page, pageSize, sortedParams) => {
-        const LANGUAGES = ['English', 'en'];
-        const LOCALE = ['US'];
         const GENRE_KEY = 'editorialGenres';
 
         return titleService.freeTextSearch(searchCriteria, page, pageSize, sortedParams).then(response => {
@@ -52,11 +51,12 @@ export const titleService = {
                 }
                 return titleService.getEditorialMetadataByTitleId(id)
                     .then(({data}) => {
-                        const itemWithGenres = data.find(({locale, language}) => {
-                            return LOCALE.includes(locale) && LANGUAGES.includes(language);
-                        });
+                        const itemWithGenres = data.filter(editorial => editorial.genres && editorial.genres.length).map(item => item.genres).flat();
+
                         if (itemWithGenres) {
-                            title[GENRE_KEY] = itemWithGenres.genres;
+                            const genres = uniqBy(itemWithGenres, 'id');
+
+                            title[GENRE_KEY] = genres;
                         }
                         return title;
                     })
@@ -78,7 +78,7 @@ export const titleService = {
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        for (let key in searchCriteria) {
+        for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 params[key] = searchCriteria[key];
             }

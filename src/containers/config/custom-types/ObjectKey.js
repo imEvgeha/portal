@@ -10,14 +10,12 @@ import Textfield  from '@atlaskit/textfield';
 import InlineEdit from '@atlaskit/inline-edit';
 import PropTypes from 'prop-types';
 
-const createFormForItem = (
-    field,
+const createFormForItem = (field,
     item,
     targetIndex,
     key,
     fieldsForForm,
-    formChangeHandler
-) => {
+    formChangeHandler) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
         id: `${field.id}.${key}.[${targetIndex}]`,
@@ -70,7 +68,6 @@ export default class ObjectKey extends Component {
         const items = keys.map(key => ({ id: uniqueId(), key, data: defaultValue[key].map(val => {return {id: uniqueId(), data: val};}) }));
         this.getForm = this.getForm.bind(this);
         this.state = {
-            value: defaultValue,
             keyName: '',
             items
         };
@@ -92,8 +89,8 @@ export default class ObjectKey extends Component {
     }
 
     addSubItem(itemId){
-        let { items } = this.state;
-        let item = items.find(({id}) => id === itemId);
+        const { items } = this.state;
+        const item = items.find(({id}) => id === itemId);
         if(item){
             item.data.push({id: uniqueId(), data: {}});
         }
@@ -109,8 +106,8 @@ export default class ObjectKey extends Component {
     }
 
     removeSubItem(itemId, subId) {
-        let { items } = this.state;
-        let item = items.find(({id}) => id === itemId);
+        const { items } = this.state;
+        const item = items.find(({id}) => id === itemId);
         if(item){
             item.data = item.data.filter(subItem => subItem.id !== subId);
         }
@@ -140,7 +137,7 @@ export default class ObjectKey extends Component {
         );
     }
 
-    onDragEnd(result) {
+    onDragEnd = (result) => {
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -181,7 +178,7 @@ export default class ObjectKey extends Component {
                 <div
                     key={`exp_${item.id}`}
                 >
-                    <i className="fas fa-times-circle" onClick={() => this.removeSubItem(parentId, item.id)} style={{float:'right'}}/>
+                    <i className="fas fa-times-circle" onClick={() => this.removeSubItem(parentId, item.id)} style={{float:'right'}} />
                     {form}
                 </div>
             );
@@ -207,7 +204,7 @@ export default class ObjectKey extends Component {
         } = this.props;
 
         return (
-            <DragDropContext onDragEnd={this.onDragEnd.bind(this)}>
+            <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
                         <div
@@ -216,18 +213,21 @@ export default class ObjectKey extends Component {
                         >
                             {items.map((item, index) => {
                                 const label = item.key;
-                                return (<Expander
+                                return (
+                                    <Expander
                                         key={`exp_${item.id}`}
-                                        label={<InlineEdit
-                                            defaultValue={label}
-                                            editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact/>}
-                                            readView={() => (label)}
-                                            onConfirm={value => this.saveKeyName(item, value)}
-                                            validate={value => this.checkKeyName(item, value)}
-                                            isRequired
-                                            isCompact
-                                            hideActionButtons
-                                        />}
+                                        label={(
+                                            <InlineEdit
+                                                defaultValue={label}
+                                                editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact />}
+                                                readView={() => (label)}
+                                                onConfirm={value => this.saveKeyName(item, value)}
+                                                validate={value => this.checkKeyName(item, value)}
+                                                isRequired
+                                                isCompact
+                                                hideActionButtons
+                                            />
+)}
                                         remove={() => {
                                             this.removeItem(item.id);
                                         }}
@@ -238,8 +238,9 @@ export default class ObjectKey extends Component {
                                                 return this.getForm(field, data, index2, fields, formChangeHandler, idAttribute, item.id, label);
                                             })
                                         }
-                                        <Button onClick={() => this.addSubItem(item.id)}>{'Add'}</Button>
-                                    </Expander>);
+                                        <Button onClick={() => this.addSubItem(item.id)}>Add</Button>
+                                    </Expander>
+);
                             })}
                             {provided.placeholder}
                         </div>
@@ -272,7 +273,8 @@ export default class ObjectKey extends Component {
                     />
                     <Button
                         isDisabled={keyName.trim().length === 0 || items.find(({key}) => key === keyName) != null}
-                        onClick={this.addItem}>{addButtonLabel}
+                        onClick={this.addItem}
+                    >{addButtonLabel}
                     </Button>
                 </div>
             </div>

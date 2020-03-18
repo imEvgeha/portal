@@ -7,7 +7,7 @@ const BundleTitle = ({provider, totalAttachments}) => {
     return (
         <div className='nexus-c-bundle-title'>
             <div className='nexus-c-bundle-title__details'>
-                <Folder className='nexus-c-bundle-title__folder'/>
+                <Folder className='nexus-c-bundle-title__folder' />
                 <span className='nexus-c-bundle-title__provider'>{provider}</span>
                 <span className='nexus-c-bundle-title__separator'>|</span>
                 <span className='nexus-c-bundle-title__total-attachments'>{totalAttachments} Files</span>

@@ -16,9 +16,9 @@ const allowedCoreCrewTypes = [DIRECTOR.toLowerCase(), WRITER.toLowerCase(), PROD
 const allowedEditorialCastTypes = [ANIMATED_CHARACTER.toLowerCase(), ACTOR.toLowerCase(), RECORDING_ARTIST.toLowerCase(), AWARD.toLowerCase(), VOICE_TALENT.toLowerCase()];
 
 export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCastType = false) => {
-    let configCastList = [];
+    const configCastList = [];
     if(isMultiCastType) {
-        let param = isConfig ? 'personTypes' : 'personType';
+        const param = isConfig ? 'personTypes' : 'personType';
         originalConfigCastList && originalConfigCastList
             .filter((f) => {
                 return f[param] && isCastEditorialPersonType(f, param, isConfig);
@@ -39,7 +39,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
     } else {
         originalConfigCastList && originalConfigCastList.filter((f) => isCastPersonType(f, isConfig))
         .forEach((e) => {
-            let newCastCrew = Object.assign({}, e);
+            const newCastCrew = Object.assign({}, e);
             newCastCrew.personType = ACTOR;
             delete newCastCrew['personTypes'];
             configCastList.push(newCastCrew);
@@ -50,7 +50,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
 
 
 export const isCastPersonType =(item, isConfig) => {
-    let param = isConfig ? 'personTypes' : 'personType';
+    const param = isConfig ? 'personTypes' : 'personType';
     if(isConfig) {
         return item[param] && item[param].filter(t => t.toLowerCase() === ACTOR.toLowerCase()).length > 0;
     } else {
@@ -84,7 +84,7 @@ const isCrewType = (personType) => {
 
 const createNewCrew = (item, type, configCrewList) => {
     if(type.toLowerCase() !== ACTOR.toLowerCase() ) {
-        let newCastCrew = Object.assign({}, item);
+        const newCastCrew = Object.assign({}, item);
         newCastCrew['personType'] = type;
         delete newCastCrew['personTypes'];
         configCrewList.push(newCastCrew);
@@ -93,7 +93,7 @@ const createNewCrew = (item, type, configCrewList) => {
 
 const createNewEditorialCast = (item, type, configCrewList) => {
     if(type.toLowerCase() !== PRODUCER.toLowerCase() && type.toLowerCase() !== DIRECTOR.toLowerCase() && type.toLowerCase() !== WRITER.toLowerCase()) {
-        let newCastCrew = Object.assign({}, item);
+        const newCastCrew = Object.assign({}, item);
         newCastCrew['personType'] = type;
         delete newCastCrew['personTypes'];
         configCrewList.push(newCastCrew);
@@ -101,8 +101,8 @@ const createNewEditorialCast = (item, type, configCrewList) => {
 };
 
 export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
-    let configCrewList = [];
-    let param = isConfig ? 'personTypes' : 'personType';
+    const configCrewList = [];
+    const param = isConfig ? 'personTypes' : 'personType';
     originalConfigCrewList && originalConfigCrewList
         .filter((f) => {
             return f[param] && isCrewPersonType(f, param, isConfig);

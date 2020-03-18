@@ -9,7 +9,7 @@ import {storeTitle} from '../../../../../../metadata/metadataActions';
 import {getRepositoryName} from '../../../../../../avails/utils';
 import TitleSystems from '../../../../../../constants/metadata/systems';
 
-function ActionCellRenderer({data, storeTitle}) {
+const ActionCellRenderer = ({data, storeTitle}) => {
 
     const [isMovidaOrVz, setIsMovidaOrVz] = useState(false);
 
@@ -20,7 +20,7 @@ function ActionCellRenderer({data, storeTitle}) {
 
     return (
         <CustomActionsCellRenderer id={`action-${data && data.id}`}>
-            {isMovidaOrVz &&
+            {isMovidaOrVz && (
                 <NexusTooltip content='Legacy title reconciliation'>
                     <div>
                         <a
@@ -28,15 +28,16 @@ function ActionCellRenderer({data, storeTitle}) {
                             href={`/metadata/detail/${data && data.id}/legacy-title-reconciliation`}
                             onClick={() => storeTitle(data)}
                             target='_blank'
+                            rel='noopener noreferrer'
                         >
                             Inspect
                         </a>
                     </div>
                 </NexusTooltip>
-            }
+              )}
         </CustomActionsCellRenderer>
     );
-}
+};
 
 ActionCellRenderer.propTypes = {
     storeTitle: PropTypes.func.isRequired,

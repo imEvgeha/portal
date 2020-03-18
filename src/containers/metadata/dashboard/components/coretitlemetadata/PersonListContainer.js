@@ -13,28 +13,28 @@ class PersonListContainer extends React.Component {
     render() {
         return (
             <Card id='cardContainer'>
-                    <CardHeader className='clearfix'>
-                        <h4 className='float-left'>{this.props.title}</h4>
-                    </CardHeader>
-                    <CardBody>
-                        <ListGroup
+                <CardHeader className='clearfix'>
+                    <h4 className='float-left'>{this.props.title}</h4>
+                </CardHeader>
+                <CardBody>
+                    <ListGroup
                         style={{
                             overflowY: 'scroll',
                             overFlowX: 'hidden',
                             maxHeight: '280px'
                         }}
                         id='listContainer'
-                        >
-                            <Label
-                                label={this.props.label}
-                                isFirstChild
-                                htmlFor={this.props.htmlFor}
-                            >  
-                                {this.props.children}                                
-                            </Label>
-                        </ListGroup>
-                    </CardBody>
-                    </Card>
+                    >
+                        <Label
+                            label={this.props.label}
+                            isFirstChild
+                            htmlFor={this.props.htmlFor}
+                        >  
+                            {this.props.children}                                
+                        </Label>
+                    </ListGroup>
+                </CardBody>
+            </Card>
         );
     }
 }

@@ -6,10 +6,6 @@ import {URL} from '../../../util/Common';
 class HistoryURL extends React.Component {
     static instance = null;
 
-    static contextTypes = {
-        router: t.object
-    }
-
     componentDidMount() {
         HistoryURL.instance = this;
     }
@@ -75,7 +71,7 @@ class HistoryURL extends React.Component {
     static saveHistoryAdvancedFilterUrl(filter){
         const searchParams = this.FilterToObj(filter);
 
-        let toReturn = '/avails/history';
+        const toReturn = '/avails/history';
 
         const params = [];
         Object.keys(searchParams).forEach(key => {
@@ -94,5 +90,9 @@ class HistoryURL extends React.Component {
         }
     }
 }
+
+HistoryURL.contextTypes = {
+    router: t.object,
+};
 
 export default HistoryURL;

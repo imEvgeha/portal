@@ -8,7 +8,7 @@ import {downloadFile} from '../../util/Common';
 import * as selectors from '../../avails/right-matching/rightMatchingSelectors';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) {
+const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) => {
 
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -75,7 +75,7 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
     };
 
     const getAllDisplayedColumns = (columnApi) => {
-        let allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
+        const allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
         mappingColumnNames.forEach(mapCol => {
             if(!allDisplayedColumns.includes(mapCol)) {
                 allDisplayedColumns.push(mapCol);
@@ -89,31 +89,34 @@ function NexusTableExportDropdown({isSelectedOptionActive, selectedRows, totalRo
         return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
-    const renderDropdown = () => (
-        <DropdownMenu
-            className="nexus-c-button"
-            trigger="Export"
-            triggerType="button"
-            triggerButtonProps={{isDisabled: isDisabled}}
-        >
-            <DropdownItemGroup>
-                <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
-                <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
-            </DropdownItemGroup>
-        </DropdownMenu>
-    );
+    const renderDropdown = () => {
+  return (
+      <DropdownMenu
+          className="nexus-c-button"
+          trigger="Export"
+          triggerType="button"
+          triggerButtonProps={{isDisabled: isDisabled}}
+      >
+          <DropdownItemGroup>
+              <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
+              <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
+          </DropdownItemGroup>
+      </DropdownMenu>
+);
+};
 
     return (
         <div className='nexus-c-right-repository-export'>
             {isDisabled ? (
                 <NexusTooltip
                     content={tooltipContent}
-                    children={renderDropdown()}
-                />
+                >
+                    {renderDropdown()}
+                </NexusTooltip>
             ) : renderDropdown()}
         </div>
     );
-}
+};
 
 NexusTableExportDropdown.propsTypes = {
     isSelectedOptionActive: PropTypes.bool,

@@ -8,7 +8,7 @@ export const historyService = {
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        for (let key in searchCriteria) {
+        for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 params[key] = searchCriteria[key];
             }

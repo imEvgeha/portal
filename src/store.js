@@ -13,7 +13,7 @@ const DELAY = 1000;
 const configureStore = (initialState = {}, history) => {
     const persistedState = loadAppState();
     const sagaMiddleware = createSagaMiddleware();
-    let middleware = [
+    const middleware = [
         routerMiddleware(history),
         sagaMiddleware,
     ];

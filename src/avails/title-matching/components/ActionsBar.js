@@ -87,34 +87,32 @@ const ActionsBar = ({matchList, mergeTitles, rightId}) => {
     };
 
     return (
-        <React.Fragment>
-            <div className="nexus-c-title-matching-custom-actions">
-                <ButtonGroup>
-                    <Button
-                        onClick={onCancel}
-                        className="nexus-c-button"
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={onMatch}
-                        isDisabled={!buttonStatus.match}
-                        className="nexus-c-button"
-                        appearance="primary"
-                    >
-                        Match
-                    </Button>
-                    <Button
-                        onClick={onMatchAndCreate}
-                        isDisabled={!buttonStatus.matchAndCreate}
-                        className="nexus-c-button"
-                        appearance="primary"
-                    >
-                        Match & Create
-                    </Button>
-                </ButtonGroup>
-            </div>
-        </React.Fragment>
+        <div className="nexus-c-title-matching-custom-actions">
+            <ButtonGroup>
+                <Button
+                    onClick={onCancel}
+                    className="nexus-c-button"
+                >
+                    Cancel
+                </Button>
+                <Button
+                    onClick={onMatch}
+                    isDisabled={!buttonStatus.match}
+                    className="nexus-c-button"
+                    appearance="primary"
+                >
+                    Match
+                </Button>
+                <Button
+                    onClick={onMatchAndCreate}
+                    isDisabled={!buttonStatus.matchAndCreate}
+                    className="nexus-c-button"
+                    appearance="primary"
+                >
+                    Match & Create
+                </Button>
+            </ButtonGroup>
+        </div>
     );
 };
 ActionsBar.propTypes = {
