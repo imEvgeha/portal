@@ -118,8 +118,8 @@ const withFilterableColumns = ({
                         case DATE:
                         case DATE_TIME:
                         case LOCAL_DATE:
-                            const from = filters[field] && filters[field][`${field}From`];
-                            const to = filters[field] && filters[field][`${field}To`];
+                            const from = filters[`${field}From`];
+                            const to = filters[`${field}To`];
                             const initialFilters = {
                                 ...(from && {from}),
                                 ...(to && {to})
