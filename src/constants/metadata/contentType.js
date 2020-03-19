@@ -30,7 +30,7 @@ export const ADVERTISEMENT = {
 const allTypes = [MOVIE, SERIES, SEASON, EPISODE, EVENT, SPORTS, ADVERTISEMENT];
 
 export const toPrettyContentTypeIfExist = (contentType) => {
-    let type = allTypes.find(t => t.apiName === contentType);
+    const type = allTypes.find(t => t.apiName === contentType);
     if(type) {
         return type.name;
     }

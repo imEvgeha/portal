@@ -6,9 +6,11 @@ class DOP extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            /* eslint-disable react/no-unused-state */
             errorCount: 0,
             data: null,
             onDOPMessage: null,
+            /* eslint-enable react/no-unused-state */
         };
     }
 

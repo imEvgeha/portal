@@ -7,28 +7,6 @@ import {NexusTag} from '../../../ui/elements/';
 
 class EditableBaseComponent extends Component {
 
-    static propTypes = {
-        helperComponent: t.object,
-        validate: t.func,
-        value: t.oneOfType([t.string, t.array, t.number]),
-        displayName: t.string,
-        disabled: t.bool,
-        onChange: t.func,
-        priorityDisplay: t.any,
-        showError: t.bool,
-        isArrayOfObject: t.bool,
-        onCancel: t.func,
-        originalFieldList: t.array
-    };
-
-    static defaultProps = {
-        value: null,
-        showError: true,
-        isArrayOfObject: false,
-        onCancel: null,
-        originalFieldList: []
-    }
-
     constructor(props) {
         super(props);
 
@@ -38,7 +16,6 @@ class EditableBaseComponent extends Component {
             editable: false,
             errorMessage: '',
             submitStatus: false,
-            arrayOfValue: []
         };
 
         this.handleShowHelperComponent = this.handleShowHelperComponent.bind(this);
@@ -146,18 +123,21 @@ class EditableBaseComponent extends Component {
 
             const valueToUse = displayName === 'Territory' ? originalFieldList : value;
 
-            return (<span
-                onClick={this.handleShowHelperComponent}
-                style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
-                className={this.props.disabled ? 'disabled' : ''}>
-                {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
-                    <NexusTag
-                        key={i}
-                        text={e.country || e.value}
-                        value={e}
-                    />
+            return (
+                <span
+                    onClick={this.handleShowHelperComponent}
+                    style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
+                    className={this.props.disabled ? 'disabled' : ''}
+                >
+                    {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
+                        <NexusTag
+                            key={i}
+                            text={e.country || e.value}
+                            value={e}
+                        />
                     )) : setSimpleArrayWithError(value) : '' : value}
-            </span>);
+                </span>
+);
         };
 
         const unfocusedRender = () => {
@@ -174,7 +154,8 @@ class EditableBaseComponent extends Component {
                             <span
                                 className="displayDate"
                                 style={{ color: '#808080', cursor: 'pointer', width: '100%' }}
-                                onClick={this.handleShowHelperComponent}>
+                                onClick={this.handleShowHelperComponent}
+                            >
                                 {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
                             </span>
                         );
@@ -186,7 +167,7 @@ class EditableBaseComponent extends Component {
         return (
             <div className="editable-container">
                 {
-                    this.state.editable ?
+                    this.state.editable ? (
                         <div style={{ width: '100%' }}>
                             <div className="dPicker" style={{ marginBottom: '5px', minWidth: '500px', width: '90%' }}>
                                 {this.props.helperComponent}
@@ -196,21 +177,25 @@ class EditableBaseComponent extends Component {
                                     className="dPButton"
                                     disabled={this.state.submitStatus}
                                     onClick={() => this.submit(this.state.value)}
-                                    color="success"><i className="fa fa-check"></i>
+                                    color="success"
+                                ><i className="fa fa-check" />
                                 </Button>
                                 <Button
                                     className="dPButton"
                                     onClick={this.handleCancelHelperComponent}
-                                    color="danger"><i className="fa fa-times"></i>
+                                    color="danger"
+                                ><i className="fa fa-times" />
                                 </Button>
                             </div>
                             {
-                                this.props.showError && this.state.errorMessage &&
-                                <small className={'text-danger m-2'} style={{ float: 'left', width: '100%' }}>
+                                this.props.showError && this.state.errorMessage && (
+                                <small className="text-danger m-2" style={{ float: 'left', width: '100%' }}>
                                     {this.state.errorMessage}
                                 </small>
-                            }
+                              )
+}
                         </div>
+                      )
                         :
                         unfocusedRender()
                 }
@@ -219,4 +204,25 @@ class EditableBaseComponent extends Component {
     }
 }
 
+EditableBaseComponent.propTypes = {
+    helperComponent: t.object,
+    validate: t.func,
+    value: t.oneOfType([t.string, t.array, t.number]),
+    displayName: t.string,
+    disabled: t.bool,
+    onChange: t.func,
+    priorityDisplay: t.any,
+    showError: t.bool,
+    isArrayOfObject: t.bool,
+    onCancel: t.func,
+    originalFieldList: t.array
+};
+
+EditableBaseComponent.defaultProps = {
+    value: null,
+    showError: true,
+    isArrayOfObject: false,
+    onCancel: null,
+    originalFieldList: []
+};
 export default EditableBaseComponent;

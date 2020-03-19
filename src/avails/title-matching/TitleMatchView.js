@@ -70,7 +70,7 @@ const TitleMatchView = ({
         }
     }, [columnDefs]);
 
-    let deepCloneRightColumnDefs = cloneDeep(rightColumns);
+    const deepCloneRightColumnDefs = cloneDeep(rightColumns);
     let updatedRightColumnDefs;
 
     if (focusedRight && focusedRight.contentType === 'Episode') {
@@ -91,7 +91,7 @@ const TitleMatchView = ({
             </div>
             {
                 !!searchCriteria.title && (
-                    <React.Fragment>
+                    <>
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
@@ -110,7 +110,7 @@ const TitleMatchView = ({
                             // TODO: Capitalized first letter of contentType value to be checed inside drop down ag grid
                             queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
                         />
-                    </React.Fragment>
+                    </>
                 )
             }
         </div>

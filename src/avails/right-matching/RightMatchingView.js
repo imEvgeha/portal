@@ -62,7 +62,7 @@ const RightMatchingView = ({
     // TODO: refactor this
     const storeData = (page, data) => {
         if (storeRightMatchDataWithIds) {
-            let pages = {};
+            const pages = {};
             pages[page] = data.data.map(e => e.id);
             const rightMatchPageData = {pages, total: data.total};
             storeRightMatchDataWithIds({rightMatchPageData});
@@ -99,7 +99,6 @@ RightMatchingView.propTypes = {
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
-    mapping: [],
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
     createRightMatchingColumnDefs: null,

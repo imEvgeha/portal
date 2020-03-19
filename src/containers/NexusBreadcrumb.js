@@ -16,11 +16,6 @@ const mapStateToProps = state => {
 
 class NexusBreadcrumb extends React.Component {
 
-    static propTypes = {
-        blocking: t.bool,
-        history: t.object,
-    };
-
     static instance = null;
     static content = [];
 
@@ -41,15 +36,20 @@ class NexusBreadcrumb extends React.Component {
             }
         };
         return (
-            !NexusBreadcrumb.empty() && !this.props.location.pathname.endsWith('/v2') &&
-                <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader/>}>
+            !NexusBreadcrumb.empty() && !this.props.location.pathname.endsWith('/v2') && (
+                <BlockUi tag="div" blocking={this.props.blocking} loader={<Loader />}>
                     <div style={{zIndex: '500', position: 'relative'}}>
                         <Breadcrumb style={{position: 'relative', background: 'white'}}>
-                            {NexusBreadcrumb.content.map((entry, index, array) => (<BreadcrumbItem
-                                key={entry.name}>{renderLink(entry, index === array.length - 1)}</BreadcrumbItem>))}
+                            {NexusBreadcrumb.content.map((entry, index, array) => (
+                                <BreadcrumbItem
+                                    key={entry.name}
+                                >{renderLink(entry, index === array.length - 1)}
+                                </BreadcrumbItem>
+))}
                         </Breadcrumb>
                     </div>
                 </BlockUi>
+              )
         );
     }
 
@@ -70,7 +70,7 @@ class NexusBreadcrumb extends React.Component {
     }
 
     static pop(){
-        let newOptions = NexusBreadcrumb.content.slice(0, -1);
+        const newOptions = NexusBreadcrumb.content.slice(0, -1);
         NexusBreadcrumb.set(newOptions);
     }
 
@@ -90,5 +90,9 @@ class NexusBreadcrumb extends React.Component {
         return NexusBreadcrumb.content.length === 0;
     }
 }
+
+NexusBreadcrumb.propTypes = {
+    blocking: t.bool,
+};
 
 export default withRouter(connect(mapStateToProps, null)(NexusBreadcrumb));

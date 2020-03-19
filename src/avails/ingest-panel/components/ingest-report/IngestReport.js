@@ -29,7 +29,8 @@ const IngestReport = ({report, showErrorMessage = true, filterClick, ingestId}) 
                             <span className='ingest-report__field--label'>{reportFields[key].label}</span>
                             <span
                                 className={`ingest-report__field--value ${(activeFilter === key) ? 'filter-active' : ''}`}
-                                onClick={() => key === 'fatal' ? window.open(RightsURL.getFatalsRightsSearchUrl(ingestId), '_blank') : FILTERABLE_KEYS.includes(key) && onFilterClick(key)  } >
+                                onClick={() => key === 'fatal' ? window.open(RightsURL.getFatalsRightsSearchUrl(ingestId), '_blank') : FILTERABLE_KEYS.includes(key) && onFilterClick(key)}
+                            >
                                 {reportValues[key] || 0}
                             </span>
                         </div>

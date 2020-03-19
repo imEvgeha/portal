@@ -19,7 +19,7 @@ import {historyServiceManager} from '../HistoryServiceManager';
 
 
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availHistoryPage: state.history.availHistoryPage,
         availHistoryLoading: state.history.availHistoryLoading,
@@ -30,22 +30,13 @@ let mapStateToProps = state => {
 
 
 
-let mapDispatchToProps = {
+const mapDispatchToProps = {
     resultPageHistoryUpdate,
     searchFormSetHistorySearchCriteria,
     searchFormUpdateAdvancedHistorySearchCriteria,
 };
 
 class AvailsIngestHistoryTable extends React.Component {
-
-    static propTypes = {
-        searchCriteria: t.object,
-        advancedSearchCriteria: t.object,
-        availHistoryLoading: t.bool,
-        resultPageHistoryUpdate: t.func,
-        searchFormSetHistorySearchCriteria: t.func,
-        searchFormUpdateAdvancedHistorySearchCriteria: t.func
-    };
 
     constructor(props) {
         super(props);
@@ -155,7 +146,7 @@ class AvailsIngestHistoryTable extends React.Component {
                 </div>
             );
         } else {
-            return <img src={LoadingGif}/>;
+            return <img src={LoadingGif} />;
         }
     }
 
@@ -171,48 +162,46 @@ class AvailsIngestHistoryTable extends React.Component {
     render() {
         return (
             <div id='avail-ingest-history-result-table'>
-                <div className={'container-fluid'} style={{paddingLeft: '0'}}>
+                <div className="container-fluid" style={{paddingLeft: '0'}}>
                     <div className="justify-content-between" style={{paddingTop: '16px'}}>
                         <div className="align-bottom" style={{marginBottom: '10px'}}>
-                            <span className="table-top-text" id={'avail-ingest-history-result-number'} style={{paddingTop: '10px', marginLeft: '20px'}}>
+                            <span className="table-top-text" id="avail-ingest-history-result-number" style={{paddingTop: '10px', marginLeft: '20px'}}>
                                 Results: {this.props.availHistoryPage.total}
                             </span>
                         </div>
                     </div>
                     <div className='tab'>
-                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === '' ? 'active' : '')} onClick={() => this.setIngestType('') }>All</button>
-                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Email' ? 'active' : '')} onClick={() => this.setIngestType('Email') }>Emailed</button>
-                      <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Upload' ? 'active' : '')} onClick={() => this.setIngestType('Upload') }>Uploaded</button>
+                        <button className={'tablinks ' + (this.props.searchCriteria.ingestType === '' ? 'active' : '')} onClick={() => this.setIngestType('')}>All</button>
+                        <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Email' ? 'active' : '')} onClick={() => this.setIngestType('Email')}>Emailed</button>
+                        <button className={'tablinks ' + (this.props.searchCriteria.ingestType === 'Upload' ? 'active' : '')} onClick={() => this.setIngestType('Upload')}>Uploaded</button>
                     </div>
                     <div
                         className='ag-theme-balham'
                         style={{
                             height: this.state.height,
                             width: this.state.width }}
-                            >
+                    >
                         <AgGridReact
                             ref={this.setTable}
                             onGridReady={params => params.api.sizeColumnsToFit()}
                             onGridSizeChanged={params => params.api.sizeColumnsToFit()}
-                            getRowNodeId= {data => data.id}
+                            getRowNodeId={data => data.id}
 
-                            columnDefs= {this.state.cols}
+                            columnDefs={this.state.cols}
 
-                            rowBuffer= '2'
-                            rowModelType= 'infinite'
-                            paginationPageSize= {this.state.pageSize}
-                            infiniteInitialRowCount= '0'
-                            cacheOverflowSize= '2'
-                            maxConcurrentDatasourceRequests= '1'
-                            datasource= {this.state.dataSource}
+                            rowBuffer='2'
+                            rowModelType='infinite'
+                            paginationPageSize={this.state.pageSize}
+                            infiniteInitialRowCount='0'
+                            cacheOverflowSize='2'
+                            maxConcurrentDatasourceRequests='1'
+                            datasource={this.state.dataSource}
 
-                            headerHeight= '0'
-                            rowHeight= '70'
+                            headerHeight='0'
+                            rowHeight='70'
 
-                            suppressHorizontalScroll= {true}
-
-                            >
-                        </AgGridReact>
+                            suppressHorizontalScroll={true}
+                        />
 
                     </div>
                 </div>
@@ -223,5 +212,14 @@ class AvailsIngestHistoryTable extends React.Component {
         );
     }
 }
+
+AvailsIngestHistoryTable.propTypes = {
+    searchCriteria: t.object,
+    advancedSearchCriteria: t.object,
+    availHistoryLoading: t.bool,
+    resultPageHistoryUpdate: t.func,
+    searchFormSetHistorySearchCriteria: t.func,
+    searchFormUpdateAdvancedHistorySearchCriteria: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailsIngestHistoryTable);

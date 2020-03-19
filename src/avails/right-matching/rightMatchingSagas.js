@@ -122,9 +122,9 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
             payload: {}
         });
 
-        let matchedRights = [];
+        const matchedRights = [];
         for(const id of payload) {
-            let response = yield call(requestMethod, id);
+            const response = yield call(requestMethod, id);
             matchedRights.push(response.data);
         }
 
@@ -219,7 +219,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
             }
             isIdFounded = ids.includes(id);
 
-            let pages = {};
+            const pages = {};
             pages[pageNumber] = ids;
             rightMatchPageData = {
                 pages: {...rightMatchPageData.pages, ...pages},

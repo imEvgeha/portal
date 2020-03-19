@@ -11,6 +11,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
     "lint": "eslint-nibble --cache src",
+    "eslint": "webpack --env test --mode development",
     "build:prod": "webpack --env prod --mode production && docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {
@@ -59,11 +60,11 @@
     "connected-react-router": "5.0.1",
     "copy-webpack-plugin": "^4.5.2",
     "eslint": "^5.7.0",
-    "eslint-config-nexus-react-app": "^1.0.4",
+    "eslint-config-nexus-react-app": "1.0.6",
     "eslint-loader": "^2.1.1",
     "eslint-nibble": "^5.1.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-react": "7.18.3",
     "eslint-plugin-react-hooks": "^2.3.0",
     "eslint-plugin-react-redux": "^2.3.0",
     "file-loader": "^2.0.0",

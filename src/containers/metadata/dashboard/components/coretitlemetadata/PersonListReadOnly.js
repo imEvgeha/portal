@@ -11,42 +11,42 @@ const PersonListReadOnly = ({ showPersonType, getFormatTypeName, person, columnN
     
     return (
         <Container>
-                <CustomRow>
-                    <CustomColumn xs={!person.characterName ? 12 : 6}>
-                        <CustomEllipsis>
+            <CustomRow>
+                <CustomColumn xs={!person.characterName ? 12 : 6}>
+                    <CustomEllipsis>
                         <img src={DefaultUserIcon} alt="Cast" style={{ width: '30px', height: '30px'}} />
                         {showPersonType && (
                             <PersonListFlag>
                                 <span style={{ marginLeft: '10px' }}>
-                                    <Lozenge appearance={'default'}>
+                                    <Lozenge appearance="default">
                                         {getFormatTypeName(person.personType)}
                                     </Lozenge>
                                 </span>
                             </PersonListFlag>
                         )}
-                            <CustomEllipsis title={person.displayName} isInline={true}>
-                                {person.displayName}
-                            </CustomEllipsis>
+                        <CustomEllipsis title={person.displayName} isInline={true}>
+                            {person.displayName}
                         </CustomEllipsis>
-                    </CustomColumn>
-                    {person.characterName ? (
-                        <CustomColumn xs={6}>  
+                    </CustomEllipsis>
+                </CustomColumn>
+                {person.characterName ? (
+                    <CustomColumn xs={6}>  
                         <CustomEllipsis style={{width: '100%'}}>
-                        <ListText style={{width: '100%'}}>
-                            <PersonListFlag>
-                            <span style={{ marginLeft: '10px' }}>
-                                <Lozenge appearance={'default'}>{columnName.toString().toUpperCase()}
-                                </Lozenge>
-                            </span>
-                            </PersonListFlag>
-                            <ListItemText title={person.characterName}>
-                                {person.characterName}
-                            </ListItemText>
-                        </ListText>
+                            <ListText style={{width: '100%'}}>
+                                <PersonListFlag>
+                                    <span style={{ marginLeft: '10px' }}>
+                                        <Lozenge appearance="default">{columnName.toString().toUpperCase()}
+                                        </Lozenge>
+                                    </span>
+                                </PersonListFlag>
+                                <ListItemText title={person.characterName}>
+                                    {person.characterName}
+                                </ListItemText>
+                            </ListText>
                         </CustomEllipsis>
                     </CustomColumn>
                     ) : null}
-                </CustomRow>
+            </CustomRow>
         </Container>
     );
 };

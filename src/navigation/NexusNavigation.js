@@ -28,14 +28,16 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     const abilityLocationName = idToAbilityNameMap[id];
 
     if (DropdownItems) {
-        const ItemWithDropdown = () => (
-            <GlobalItemWithDropdown
-                trigger={({isOpen}) => (
-                    <GlobalItem isSelected={isOpen} {...itemProps} />
+        const ItemWithDropdown = () => {
+  return (
+      <GlobalItemWithDropdown
+          trigger={({isOpen}) => (
+              <GlobalItem isSelected={isOpen} {...itemProps} />
                 )}
-                items={<DropdownItems />}
-            />
-        );
+          items={<DropdownItems />}
+      />
+);
+};
         return (
             abilityLocationName
                 ? (
@@ -67,19 +69,22 @@ const NexusNavigation = ({history, profileInfo}) => {
         setSelectedItem(destination);
     };
 
-    const AccountDropdownItems = () => (
-        <DropdownItemGroup title={profileInfo.name || 'Profile'}>
-            <DropdownItem onClick={keycloak.instance.logout}>
-                Log out
-            </DropdownItem>
-        </DropdownItemGroup>
-    );
+    const AccountDropdownItems = () => {
+  return (
+      <DropdownItemGroup title={profileInfo.name || 'Profile'}>
+          <DropdownItem onClick={keycloak.instance.logout}>
+              Log out
+          </DropdownItem>
+      </DropdownItemGroup>
+);
+};
 
     return (
         <ThemeProvider theme={theme => ({
             ...theme,
             mode: customThemeMode
-        })}>
+        })}
+        >
             <GlobalNav
                 itemComponent={ItemComponent}
                 primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
@@ -93,14 +98,16 @@ const NexusNavigation = ({history, profileInfo}) => {
                     },
                     {
                         // eslint-disable-next-line react/prop-types
-                        component: ({onClick}) => (
-                            <Avatar
-                                borderColor="transparent"
-                                size="medium"
-                                name={profileInfo.name}
-                                onClick={onClick}
-                            />
-                        ),
+                        component: ({onClick}) => {
+  return (
+      <Avatar
+          borderColor="transparent"
+          size="medium"
+          name={profileInfo.name}
+          onClick={onClick}
+      />
+);
+},
                         dropdownItems: AccountDropdownItems,
                         id: 'profile',
                         icon: null,

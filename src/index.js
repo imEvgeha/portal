@@ -22,7 +22,7 @@ axios.get('/config.json').then(response => {
     console.error(error);
     render(
         <p>
-           Problem with configuration, application cannot be started
+            Problem with configuration, application cannot be started
         </p>,
         document.querySelector('#app')
     );

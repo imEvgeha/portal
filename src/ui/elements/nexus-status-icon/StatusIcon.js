@@ -10,19 +10,25 @@ const StatusIcon = ({status, title}) => {
     if (status) {
         switch (status) {
             case COMPLETED:
-                return (<span className={className}>
-                    <i className="fas fa-check-circle"/>
-                </span>);
+                return (
+                    <span className={className}>
+                        <i className="fas fa-check-circle" />
+                    </span>
+);
             case FAILED:
-                return (<span title={title} className={className}>
-                    <i className="fas fa-exclamation-circle"/>
-                </span>);
+                return (
+                    <span title={title} className={className}>
+                        <i className="fas fa-exclamation-circle" />
+                    </span>
+);
             case MANUAL:
-                return (<span className={className}>
-                    <i className="fas fa-circle"> </i>
-                </span>);
+                return (
+                    <span className={className}>
+                        <i className="fas fa-circle"> </i>
+                    </span>
+);
             case PENDING:
-                return <img className='status-img' alt='Pending' src={LoadingEllipsis}/>;
+                return <img className='status-img' alt='Pending' src={LoadingEllipsis} />;
             default:
                 return status;
         }

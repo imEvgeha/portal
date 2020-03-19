@@ -4,21 +4,6 @@ import union from 'lodash.union';
 import {NexusCheckboxSelect} from '../../../ui/elements';
 
 class SelectPlanTerritoryEditor extends Component {
-    static propTypes = {
-        node: PropTypes.object,
-        updatePromotedRights: PropTypes.func,
-        updatePromotedRightsFullData: PropTypes.func,
-        selectedTerritories: PropTypes.array,
-        useSelectedTerritories: PropTypes.bool,
-        getPromotedRights: PropTypes.func.isRequired,
-        getPromotedRightsFullData: PropTypes.array.isRequired,
-    };
-
-    static defaultProps = {
-        node: {},
-        selectedTerritories: [],
-        useSelectedTerritories: false,
-    };
 
     constructor(props) {
         super(props);
@@ -109,4 +94,19 @@ class SelectPlanTerritoryEditor extends Component {
     }
 }
 
+SelectPlanTerritoryEditor.propTypes = {
+    node: PropTypes.object,
+    updatePromotedRights: PropTypes.func,
+    updatePromotedRightsFullData: PropTypes.func,
+    selectedTerritories: PropTypes.array,
+    useSelectedTerritories: PropTypes.bool,
+    getPromotedRights: PropTypes.func.isRequired,
+    getPromotedRightsFullData: PropTypes.array.isRequired,
+};
+
+SelectPlanTerritoryEditor.defaultProps = {
+    node: {},
+    selectedTerritories: [],
+    useSelectedTerritories: false,
+};
 export default SelectPlanTerritoryEditor;

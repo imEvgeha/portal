@@ -9,13 +9,12 @@ import {
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS,
-    VIEW_JSON
+    SUCCESS
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
-function ManualRightEntryTableTabs({
+const ManualRightEntryTableTabs = ({
     selectedTab,
     updateManualRightEntrySelectedTab,
     getCustomSearchCriteria,
@@ -24,7 +23,7 @@ function ManualRightEntryTableTabs({
     fatalCount,
     historyData,
     availHistoryId
-}) {
+}) => {
     // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
     // if component gets unmounted during call execution to prevent setting state on an unmounted component
     const ref = useRef(false);
@@ -109,12 +108,11 @@ function ManualRightEntryTableTabs({
             </ManualRightEntryTab>
         </TabContainer>
     );
-}
+};
 
 ManualRightEntryTableTabs.propTypes = {
     selectedTab: PropTypes.string,
     updateManualRightEntrySelectedTab: PropTypes.func,
-    promotedRightsCount: PropTypes.number,
     getCustomSearchCriteria: PropTypes.func.isRequired,
     fatalCount: PropTypes.number,
     createdCount: PropTypes.number,

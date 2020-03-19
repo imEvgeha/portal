@@ -11,10 +11,6 @@ const withLocalRights = (selectedType) => WrappedComponent => {
 
     class LocalRightsResultsTable extends RightsResultsTable {
 
-        static defaultProps = {
-            autoRefresh: 0
-        }
-
         constructor(props) {
             super(props);
 
@@ -30,7 +26,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
                 // this.props.parseColumnsSchema in this case comes from withSelectIgnoreMark
                 originalColDef = this.props.parseColumnsSchema(this.props.availsMapping ? this.props.availsMapping.mappings : []);
             }
-            let colDef = {...this.props.colDef, ...originalColDef};
+            const colDef = {...this.props.colDef, ...originalColDef};
 
             let rowsProps = {defaultColDef: {cellStyle: this.cellStyle}};
 
@@ -51,7 +47,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         }
 
         componentDidMount() {
-            let newColDef = {...this.props.colDef, ...this.state.originalColDef};
+            const newColDef = {...this.props.colDef, ...this.state.originalColDef};
             this.refreshColumns(newColDef);
             if(this.state.originalData.length === 0) {
                 this.table.api.showNoRowsOverlay();
@@ -63,7 +59,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
 
         componentDidUpdate(prevProps) {
             if (prevProps.colDef !== this.props.colDef || prevProps.cols !== this.props.cols || prevProps.columns !== this.props.columns) {
-                let newColDef = {...this.props.colDef, ...this.state.originalColDef};
+                const newColDef = {...this.props.colDef, ...this.state.originalColDef};
                 this.refreshColumns(newColDef);
             }
 
@@ -105,18 +101,23 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         }
 
         render() {
-            return <WrappedComponent
-                {...this.props}
-                {...this.state.rowsProps}
-                colDef={this.state.cols}
-                setTable={this.setTable}
-                getRowNodeId={data => data.id}
-                rowData={this.state.originalData}
-            />;
+            return (
+                <WrappedComponent
+                    {...this.props}
+                    {...this.state.rowsProps}
+                    colDef={this.state.cols}
+                    setTable={this.setTable}
+                    getRowNodeId={data => data.id}
+                    rowData={this.state.originalData}
+                />
+);
         }
     }
 
     return LocalRightsResultsTable;
 };
 
+withLocalRights.defaultProps = {
+    autoRefresh: 0
+};
 export default withLocalRights;

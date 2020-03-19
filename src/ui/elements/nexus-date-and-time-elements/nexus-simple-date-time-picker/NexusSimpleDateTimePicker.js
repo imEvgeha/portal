@@ -75,7 +75,7 @@ const NexusSimpleDateTimePicker = ({
 
     return (
         <>
-            {label &&
+            {label && (
                 <label
                     // TODO: To be fixed
                     // This id manipulation is necessary as per AtlasKit docs
@@ -84,7 +84,7 @@ const NexusSimpleDateTimePicker = ({
                 >
                     {label}
                 </label>
-            }
+              )}
             <TemporaryErrorBorder error={error}>
                 <div className='nexus-c-date-picker__date-clear-wrapper'>
                     <DateTimePicker
@@ -112,17 +112,17 @@ const NexusSimpleDateTimePicker = ({
                             },
                         }}
                         timeIsEditable
-                        times = {TIMES}
+                        times={TIMES}
                         {...restProps}
                     />
                     {allowClear && <ClearButton onClear={() => {setDate(''); onDateChange('');}} />}
                 </div>
             </TemporaryErrorBorder>
-            {error &&
+            {error && (
                 <ErrorMessage>
                     {error}
                 </ErrorMessage>
-            }
+              )}
         </>
     );
 };

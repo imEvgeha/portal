@@ -25,7 +25,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const getTitle = id => {
         return new Promise((resolve, reject) => {
             return titleService.getTitleById(id).then((response) => {
-                let title = response.data;
+                const title = response.data;
                 titleService.getEditorialMetadataByTitleId(id).then(({data}) => {
                     const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
                     if(founded) {
@@ -40,7 +40,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     };
 
     const setCombinedTitleParents = (merged) => {
-        let getTitles = [];
+        const getTitles = [];
         if(merged.parentIds && merged.parentIds.length){
             merged.parentIds.forEach(parent => {
                 getTitles.push(getTitle(parent.id));
@@ -52,10 +52,10 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     };
 
     const setParents = (list, merged) => {
-        let titleList = [...list];
-        let getTitles = [];
+        const titleList = [...list];
+        const getTitles = [];
         let indexTrack = 0;
-        let track = {};
+        const track = {};
         list.forEach(title => {
             if(title.parentIds && title.parentIds.length){
                 title.parentIds.forEach((parent, i) => {
@@ -145,31 +145,31 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     return (
         <div className="nexus-c-title-to-match-review">
             <BackNavigationByUrl
-                title={'Title Matching Review'}
+                title="Title Matching Review"
                 onNavigationClick={navigateToMatchPreview}
             />
             {
                 !!titles.length && (
-                    <React.Fragment>
+                    <>
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
                             columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
                             rowData={titles}
                         />
-                    </React.Fragment>
+                    </>
                 )
             }
             {
                 !!mergedTitles[0].id && (
-                    <React.Fragment>
+                    <>
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
                             columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
                             rowData={mergedTitles}
                         />
-                    </React.Fragment>
+                    </>
                 )
             }
         </div>

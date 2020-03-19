@@ -10,15 +10,6 @@ const SECOUND_DELIMETER_POSITION = 5;
 
 class NexusDatePicker extends Component {
 
-    static propTypes = {
-        date: t.any,
-        id: t.string,
-        disabled: t.bool,
-
-        onChange: t.func,
-        handleKeyPress: t.func,
-        onInvalid: t.func,
-    };
 
     prevRawInput = '';
     prevDate = null;
@@ -142,16 +133,16 @@ class NexusDatePicker extends Component {
                 ref={this.refDatePicker}
                 className={this.state.invalidDate ? 'text-danger' : ''}
                 id={this.props.id}
-                placeholderText={'Enter date'}
+                placeholderText="Enter date"
                 selected={this.props.date ? moment(this.props.date) : null}
                 showYearDropdown
                 showMonthDropdown
-                autoComplete={'off'}
+                autoComplete="off"
                 allowSameDay={true}
                 onChange={this.handleChange}
                 onChangeRaw={(event) => this.handleChangeRaw(event.target.value)}
                 onBlur={() => this.handleOnBlur(locale)}
-                todayButton={'Today'}
+                todayButton="Today"
                 disabled={this.props.disabled}
                 customInput={<input onKeyPress={this.props.handleKeyPress} />}
                 onClickOutside={this.handleClickOutside}
@@ -160,5 +151,16 @@ class NexusDatePicker extends Component {
         );
     }
 }
+
+NexusDatePicker.propTypes = {
+    date: t.any,
+    id: t.string,
+    disabled: t.bool,
+
+    onChange: t.func,
+    handleKeyPress: t.func,
+    onInvalid: t.func,
+};
+
 
 export default NexusDatePicker;

@@ -12,12 +12,6 @@ const DOP_POP_UP_TITLE = 'Select rights planning';
 const DOP_POP_UP_MESSAGE = 'No rights selected';
 
 class SelectRightsDOPConnector extends Component {
-    static propTypes = {
-        promotedRights: PropTypes.array,
-        updatePromotedRights: PropTypes.func
-    };
-
-    static contextType = NexusModalContext;
 
     constructor(props) {
         super(props);
@@ -62,11 +56,11 @@ class SelectRightsDOPConnector extends Component {
         Promise.all(promotedRights.map(right => {
             return rightsService.get(right.rightId).then(response => {
                 if(response.data.territory && Array.isArray(response.data.territory)){
-                    let availableTerritories = response.data.territory.filter(({selected}) => !selected);
-                    let toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
+                    const availableTerritories = response.data.territory.filter(({selected}) => !selected);
+                    const toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
                     if(toChangeTerritories.length > 0){
-                        let toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
-                        let newTerritories = response.data.territory.
+                        const toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
+                        const newTerritories = response.data.territory.
                         map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
                         // newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
                         return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
@@ -80,7 +74,7 @@ class SelectRightsDOPConnector extends Component {
                 return null;
             });
         })).then(result => {
-            let newDopInfo = result.filter(a => a);
+            const newDopInfo = result.filter(a => a);
             this.setState({isSendingData : false, isConfirmOpen : false});
             updatePromotedRights([]);
             updatePromotedRightsFullData([]);
@@ -130,5 +124,12 @@ const mapDispatchToProps = (dispatch) => ({
     updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
     updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload)),
 });
+
+SelectRightsDOPConnector.propTypes = {
+    promotedRights: PropTypes.array,
+    updatePromotedRights: PropTypes.func
+};
+
+SelectRightsDOPConnector.contextType = NexusModalContext;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsDOPConnector);

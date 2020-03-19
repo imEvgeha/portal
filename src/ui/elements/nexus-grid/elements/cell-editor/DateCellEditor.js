@@ -6,13 +6,6 @@ import CustomIntlProvider from '../../../../../layout/CustomIntlProvider';
 import './DateCellEditor.scss';
 
 class DateCellEditor extends Component {
-    static propTypes = {
-        value: PropTypes.string,
-    }; 
-
-    static defaultProps = {
-        value: null,
-    };
 
     constructor(props) {
         super(props);
@@ -49,5 +42,12 @@ class DateCellEditor extends Component {
     }
 }
 
+DateCellEditor.propTypes = {
+    value: PropTypes.string,
+};
+
+DateCellEditor.defaultProps = {
+    value: null,
+};
 export default DateCellEditor;
 

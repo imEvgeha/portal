@@ -40,12 +40,13 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                     filterClick={filterByStatus}
                     ingestId={id}
                 />
-                {emails.map(email =>
-                    <div key={email.id}  className='nexus-c-avails-ingest__email'>
+                {emails.map(email => (
+                    <div key={email.id} className='nexus-c-avails-ingest__email'>
                         <NexusTooltip content='Download Email'>
                             <Email key={email.id} onClick={() => downloadIngestEmail(email)} />
                         </NexusTooltip>
                     </div>
+                  )
                 )}
                 <div className='nexus-c-avails-ingest__download'>
                     <NexusTooltip content='Download Attachment'>

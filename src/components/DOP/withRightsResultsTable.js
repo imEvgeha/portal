@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
@@ -19,7 +19,7 @@ const withRightsResultsTable = BaseComponent => {
     // const defaultMode = 'defaultMode';
     const selectRightMode = 'selectRightsMode';
 
-    const ComposedComponent = props => {
+    const ComposedComponent = (props) => {
         // Get locale provided by intl
         const intl = useIntl();
         const {locale = 'en-US'} = intl || {};
@@ -107,7 +107,7 @@ const withRightsResultsTable = BaseComponent => {
         };
 
         // loading renderer
-        const loadingRenderer = params => {
+        const loadingRenderer = (params) => {
             const {data, colDef, valueFormatted} = params;
             let error = null;
             if (data && data.validationErrors){
@@ -150,20 +150,24 @@ const withRightsResultsTable = BaseComponent => {
                     if (data && data.highlightedFields) {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
-                    let cellVisualContent = <Fragment>
-                        <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                            {String(content)}
-                        </div>
-                        {highlighted && (
+                    const cellVisualContent = (
+                        <>
                             <div
-                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                                title={error}
+                                className={highlighted ? 'font-weight-bold' : ''}
+                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                            >
+                                {String(content)}
+                            </div>
+                            {highlighted && (
+                            <div
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                            >
+                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                             </div>
                         )}
-                    </Fragment>;
+                        </>
+);
                     if(props.disableEdit){
                         return (
                             <div> {cellVisualContent} </div>
@@ -180,7 +184,7 @@ const withRightsResultsTable = BaseComponent => {
                 return val;
             } 
 
-            return data ? '' : <img src={LoadingGif}/>;
+            return data ? '' : <img src={LoadingGif} />;
         };
 
         // style cell

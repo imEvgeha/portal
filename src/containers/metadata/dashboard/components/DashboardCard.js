@@ -27,7 +27,7 @@ export default class DashboardDropableCard extends React.Component {
                     {this.props.title}
                 </div>
                 {this.props.actionName && <button className="btn btn-primary dashboard-card-btn" onClick={this.toggle} id={'title-dashboard-' +  this.props.name + '-btn'}>{this.props.actionName}</button>}
-                    <TitleCreate display={this.state.modalBox} toggle={this.toggle} />
+                <TitleCreate display={this.state.modalBox} toggle={this.toggle} />
             </div>
         );
     }

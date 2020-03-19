@@ -47,7 +47,7 @@ const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
 
-function MatchRightView({
+const MatchRightView = ({
     history,
     match,
     focusedRight,
@@ -61,7 +61,7 @@ function MatchRightView({
     columnDefs, 
     mapping,
     isMatching,
-}) {
+}) => {
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
@@ -129,7 +129,7 @@ function MatchRightView({
 
     const onCombinedRightGridEvent = ({type, api}) => {
         const {CELL_VALUE_CHANGED, READY} = GRID_EVENTS;
-        let result = [];
+        const result = [];
         if (type === CELL_VALUE_CHANGED) {
             api.forEachNode(({data}) => result.push(data));
             setEditedCombinedRight(result[0]);
@@ -227,7 +227,7 @@ function MatchRightView({
         <div className="nexus-c-match-right-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
                 </Link>
                 <span>{MATCH_RIGHT_TITLE}</span>
             </NexusTitle>
@@ -283,7 +283,7 @@ function MatchRightView({
             </div>
         </div>
     );
-}
+};
 
 MatchRightView.propTypes = {
     focusedRight: PropTypes.object,

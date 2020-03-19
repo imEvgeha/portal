@@ -6,14 +6,6 @@ import NexusDateTimePicker from '../../../nexus-date-and-time-elements/nexus-dat
 import CustomIntlProvider from '../../../../../layout/CustomIntlProvider';
 
 class DateTimeCellEditor extends Component {
-    static propTypes = {
-        value: PropTypes.string,
-    }; 
-
-    static defaultProps = {
-        value: null,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -48,6 +40,14 @@ class DateTimeCellEditor extends Component {
         );
     }
 }
+
+DateTimeCellEditor.propTypes = {
+    value: PropTypes.string,
+};
+
+DateTimeCellEditor.defaultProps = {
+    value: null,
+};
 
 export default DateTimeCellEditor;
 

@@ -15,7 +15,7 @@ const isNotEmpty = function(obj){
     return obj && safeTrim(obj);
 };
 
-const parse = function(value, key){
+const parse = (value, key) => {
     if(typeof value === 'number' || typeof  value === 'boolean')
         return value;
 
@@ -78,7 +78,7 @@ const populate = function(key, value, location){
 };
 
 const prepareRight = function (right, keepNulls = false) {
-    let rightCopy = {};
+    const rightCopy = {};
     Object.keys(right).forEach(key => {
         if(keepNulls || isNotEmpty(right[key])){
             populate(key, right[key], rightCopy);

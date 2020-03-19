@@ -9,24 +9,13 @@ import {isObject} from '../../util/Common';
 import {TIMESTAMP_FORMAT} from '../../ui/elements/nexus-date-and-time-elements/constants';
 
 export default class RightsResultsTable extends React.Component {
-    static propTypes = {
-        nav: PropTypes.object,
-        columnsSize: PropTypes.object,
-        columns: PropTypes.array
-    };
-
-    static defaultProps = {
-        nav: null,
-        columnsSize: null,
-        columns: null,
-    };
 
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
         const dateFormat = getDateFormatBasedOnLocale(locale);
         const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
-        let formatter = (column) => {
+        const formatter = (column) => {
             const {
                 dataType,
                 javaVariableName,
@@ -84,6 +73,7 @@ export default class RightsResultsTable extends React.Component {
         }else{
             newCols = Object.keys(newColDef).map((key) => newColDef[key]);
         }
+        // eslint-disable-next-line react/no-unused-state
         this.setState({colDef: newColDef, cols: newCols});
     }
 
@@ -251,17 +241,19 @@ export default class RightsResultsTable extends React.Component {
                 return(
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            title={error}
+                            className={highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                        >
                             {arrayTypeFieldValue || String(content)}
                         </div>
-                        {highlighted &&
+                        {highlighted && (
                         <div
-                            style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                            <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                            style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                        >
+                            <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                         </div>
-                        }
+                      )}
                     </Link>
                 );
             }
@@ -270,7 +262,7 @@ export default class RightsResultsTable extends React.Component {
             if (params.data){
                 return '';
             }
-            return <img src={LoadingGif}/>;
+            return <img src={LoadingGif} />;
         }
     }
 
@@ -297,4 +289,14 @@ export default class RightsResultsTable extends React.Component {
         }
     }
 }
+RightsResultsTable.propTypes = {
+    nav: PropTypes.object,
+    columnsSize: PropTypes.object,
+    columns: PropTypes.array
+};
 
+RightsResultsTable.defaultProps = {
+    nav: null,
+    columnsSize: null,
+    columns: null,
+};

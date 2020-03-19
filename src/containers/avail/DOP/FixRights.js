@@ -18,7 +18,7 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import { RIGHTS_FIX } from '../../../constants/breadcrumb';
 
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
     };
@@ -28,18 +28,18 @@ const mapDispatchToProps = {
     searchFormSetAdvancedSearchCriteria,
 };
 
+FixRights.propTypes = {
+    availsMapping: t.object,
+    searchFormSetAdvancedSearchCriteria: t.func,
+    location: t.object,
+    match: t.object
+};
+
+FixRights.contextTypes = {
+    router: t.object
+};
+
 class FixRights extends React.Component {
-
-    static propTypes = {
-        availsMapping: t.object,
-        searchFormSetAdvancedSearchCriteria: t.func,
-        location: t.object,
-        match: t.object
-    };
-
-    static contextTypes = {
-        router: t.object
-    }
 
     constructor(props) {
         super(props);
@@ -77,7 +77,7 @@ class FixRights extends React.Component {
         }
         const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
         params.push('invalid=true');
-        let criteria = RightsURL.ArraytoFilter(params);
+        const criteria = RightsURL.ArraytoFilter(params);
         this.props.searchFormSetAdvancedSearchCriteria(criteria);
         rightSearchHelper.advancedSearch(criteria, false);
     }
@@ -92,13 +92,13 @@ class FixRights extends React.Component {
         const RightsResultsTable = withRedux(withColumnsReorder(withServerSorting(withRights(ResultsTable))));
         return (
             <div>
-                {this.props.availsMapping &&
+                {this.props.availsMapping && (
                 <RightsResultsTable
-                    availsMapping = {this.props.availsMapping}
-                    onDataLoaded = {this.parseLoadedData}
+                    availsMapping={this.props.availsMapping}
+                    onDataLoaded={this.parseLoadedData}
                     nav={{ back: 'fix-errors', params: { availHistoryId: this.state.availHistoryId } }}
                 />
-                }
+              )}
             </div>
         );
     }
