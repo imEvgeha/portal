@@ -50,7 +50,7 @@ function RightsClashingModal({clashingRights, columnDefs}) {
     const buildContent = () => {
         return (
             <div className="nexus-c-rights-clashing-modal">
-                <NexusTitle isSubTitle>The rights could not be saved since it is clashing whit following existing
+                <NexusTitle isSubTitle>The rights could not be saved since it is clashing with following existing
                     rights:
                 </NexusTitle>
                 <NexusGrid
