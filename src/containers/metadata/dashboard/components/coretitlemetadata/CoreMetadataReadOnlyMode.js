@@ -128,12 +128,12 @@ class CoreMetadataReadOnlyMode extends Component {
                         <div id="coreMetadataEditMode">
                             {  externalIds && (
                                 <>
-                                    { (externalIds.eidrLevel1 ||  externalIds.tmsId) && (
+                                    { (externalIds.eidrTitleId ||  externalIds.tmsId) && (
                                     <Row style={{ marginTop: '10px' }}>
                                         {
-                                                    externalIds.eidrLevel1 ? (
+                                                    externalIds.eidrTitleId ? (
                                                         <Col>
-                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Level 1: </b> {externalIds ? externalIds.eidrLevel1 : null}</Alert>
+                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Title ID: </b> {externalIds ? externalIds.eidrTitleId : null}</Alert>
                                                         </Col>
                                                       ) : null
                                                 }
@@ -146,15 +146,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                                 }
                                     </Row>
                                           )}
-                                    {(externalIds.eidrLevel2 || externalIds.xfinityMovieId) && (
+                                    {(externalIds.eidrEditId || externalIds.xfinityMovieId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.eidrLevel2 ? (
+                                                externalIds.eidrEditId ? (
                                                     <Col>
                                                         <Alert color='light'>
                                                             <b style={{color: '#000'}}>
-                                                                EIDR Level 2:
-                                                            </b> {externalIds ? externalIds.eidrLevel2 : null}
+                                                                EIDR Edit ID:
+                                                            </b> {externalIds ? externalIds.eidrEditId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -172,15 +172,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }
                                         </Row>
                                       )}
-                                    {(externalIds.dmaId || externalIds.licensorTitleId) && (
+                                    {(externalIds.maId || externalIds.licensorTitleId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.dmaId ? (
+                                                externalIds.maId ? (
                                                     <Col>
                                                         <Alert color='light'>
                                                             <b style={{color: '#000'}}>
-                                                                DMA ID:
-                                                            </b> {externalIds ? externalIds.dmaId : null}
+                                                                MA ID:
+                                                            </b> {externalIds ? externalIds.maId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
