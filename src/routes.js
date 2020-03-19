@@ -11,8 +11,8 @@ import AvailIngestHistoryContainer from './containers/avail/ingest-history/Avail
 import MetadataDashboardContainer from './containers/metadata/dashboard/DashboardContainer';
 import {canRender} from './ability';
 import TitleEdit from './containers/metadata/dashboard/components/TitleEdit';
-import ContractProfile from './containers/contracts/profile/ContractProfile.jsx';
-import Contract from './containers/contracts/search/Contract.jsx';
+import ContractProfile from './containers/contracts/profile/ContractProfile';
+import Contract from './containers/contracts/search/Contract';
 import Media from './containers/media/search/Media.js';
 import Settings from './containers/settings/Settings';
 import RightMatchingView from './avails/right-matching/RightMatchingView';
