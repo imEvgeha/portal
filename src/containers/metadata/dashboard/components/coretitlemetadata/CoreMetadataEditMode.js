@@ -417,6 +417,22 @@ class CoreMetadataEditMode extends Component {
                         />
                     </Col>
                 </Row>
+                    <Col md={1}>
+                        <Label for='vzId'>VZ Vendor ID</Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.handleVzLegacyIds(e)}
+                            name='vzId'
+                            id='vzId'
+                            value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzId : ''}
+                            placeholder='VZ ID'
+                            validate={{
+                                maxLength: { value: 200 }
+                            }}
+                        />
+                    </Col>
             </div>
         </>
     );
