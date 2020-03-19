@@ -181,6 +181,24 @@ class CoreMetadataEditMode extends Component {
             <div id="coreMetadataEditMode">
                 <Row style={{ marginTop: '10px' }}>
                     <Col md={1}>
+                        <Label for='assetName'>Asset Name </Label>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type='text'
+                            onChange={e => this.props.handleOnExternalIds(e)}
+                            name='assetName'
+                            id='assetName'
+                            value={this.props.data.externalIds ? this.props.data.externalIds.assetName : ''}
+                            placeholder='Asset Name'
+                            validate={{
+                                maxLength: { value: 200 }
+                            }}
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '10px' }}>
+                    <Col md={1}>
                         <Label for='eidrLevel1'>EIDR Level 1 </Label>
                     </Col>
                     <Col>
