@@ -8,7 +8,7 @@ import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
 import config from 'react-global-configuration';
 import {Button, Label} from 'reactstrap';
-import cloneDeep from 'lodash/cloneDeep';
+import {cloneDeep} from 'lodash';
 import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';

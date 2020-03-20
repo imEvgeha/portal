@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import cloneDeep from 'lodash.clonedeep';
-import isEqual from 'lodash.isequal';
-import isEmpty from 'lodash.isempty';
+import {isEmpty, isEqual, cloneDeep} from 'lodash';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
 import {rightsService, parseAdvancedFilterV2} from '../../containers/avail/service/RightsService';

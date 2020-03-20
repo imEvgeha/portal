@@ -1,4 +1,3 @@
-import pickBy from 'lodash.pickby';
 import {ADD_TOAST, REMOVE_TOAST} from './toastActionTypes.js';
 
 const initialState = {

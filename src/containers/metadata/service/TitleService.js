@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 import {getDomainName, prepareSortMatrixParamTitles} from '../../../util/Common';
 import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
-import uniqBy from 'lodash.uniqby';
+import {uniqby} from 'lodash';
 
 const http = Http.create();
 
@@ -54,7 +54,7 @@ export const titleService = {
                         const itemWithGenres = data.filter(editorial => editorial.genres && editorial.genres.length).map(item => item.genres).flat();
 
                         if (itemWithGenres) {
-                            const genres = uniqBy(itemWithGenres, 'id');
+                            const genres = uniqby(itemWithGenres, 'id');
 
                             title[GENRE_KEY] = genres;
                         }
