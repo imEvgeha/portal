@@ -54,8 +54,6 @@ export const store = configureStore({}, history);
 
 const persistor = configurePersistor(store);
 
-console.log(persistor, 'store');
-
 const app = (
     <Provider store={store}>
         <CustomIntlProvider>
