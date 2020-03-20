@@ -26,7 +26,7 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
+import {parseAdvancedFilterV2} from '../../../containers/avail/service/RightsService';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {
     RIGHT_TO_MATCH_TITLE,
@@ -42,7 +42,7 @@ const SECTION_MESSAGE = 'Select rights from the repository that match the focuse
 
 const RightRepositoryNexusGrid = compose(
     withSideBar(),
-    withFilterableColumns({prepareFilterParams: parseAdvancedFilter}),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 
