@@ -42,15 +42,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }}
                                             id='listContainer'
                                         >
-                                            {this.props.data.castCrew && 
-                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {                                                    
+                                            {this.props.data.castCrew &&
+                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {
                                                     return (
-                                                        <PersonListReadOnly 
+                                                        <PersonListReadOnly
                                                             key={i}
-                                                            showPersonType={true} 
-                                                            person={cast} 
+                                                            showPersonType={true}
+                                                            person={cast}
                                                             columnName={CHARACTER_NAME}
-                                                            getFormatTypeName={getFormatTypeName} 
+                                                            getFormatTypeName={getFormatTypeName}
                                                         />
                                                     );
                                                 })}
@@ -74,10 +74,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                         >
                                             {this.props.data.castCrew &&
                                                 getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
-                                                    <PersonListReadOnly 
+                                                    <PersonListReadOnly
                                                         key={i}
-                                                        showPersonType={true} 
-                                                        person={crew} 
+                                                        showPersonType={true}
+                                                        person={crew}
                                                         getFormatTypeName={getFormatTypeName}
                                                     />
                                                 ))}
@@ -306,6 +306,17 @@ class CoreMetadataReadOnlyMode extends Component {
                                     }
                                 </Row>
                               )}
+                            {((legacyIds && legacyIds.vz && legacyIds.vz.vzId )) && (
+                                <Row style={{marginTop: '10px'}}>
+                                    <Col>
+                                        <Alert color='light'>
+                                            <b style={{color: '#000'}}>
+                                                VZ Vendor ID:
+                                            </b> {legacyIds.vz.vzId}
+                                        </Alert>
+                                    </Col>
+                                </Row>
+                            )}
                         </div>
                     </>
                   )
