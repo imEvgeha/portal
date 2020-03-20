@@ -128,6 +128,15 @@ class CoreMetadataReadOnlyMode extends Component {
                         <div id="coreMetadataEditMode">
                             {  externalIds && (
                                 <>
+                                    {
+                                        externalIds.assetName && (
+                                            <Row style={{ marginTop: '10px' }}>
+                                                <Col>
+                                                    <Alert color='light'><b style={{ color: '#000' }}>Asset Name: </b>{externalIds.assetName}</Alert>
+                                                </Col>
+                                            </Row>
+                                        )
+                                    }
                                     { (externalIds.eidrTitleId ||  externalIds.tmsId) && (
                                     <Row style={{ marginTop: '10px' }}>
                                         {
