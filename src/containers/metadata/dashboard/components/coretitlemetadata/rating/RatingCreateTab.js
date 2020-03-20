@@ -51,12 +51,26 @@ class RatingCreateTab extends Component {
 
 
     handleRatingsChange = (newValue) => {
-        const newRating = {
-            ...this.state.ratingsForCreate,
+        const {
+            rating,
+            ratingsForCreate,
+        } = this.state;
+
+        const {
+            ratings
+        } = this.props;
+
+        let newRating = {
+            ...ratingsForCreate,
             rating: newValue.target.value
         };
 
-        if (this.state.rating && this.state.rating.includes(newValue.target.value)) {
+        if (
+            rating
+            && newRating.ratingSystem
+            && ratings.find(rating => newRating.ratingSystem === rating.ratingSystem)
+            && rating.includes(newValue.target.value)
+        ) {
             this.setState({
                 isRatingExist: true
             });
@@ -179,7 +193,7 @@ class RatingCreateTab extends Component {
                             name="advisoriesFreeText"
                             required={this.state.isAdvisoryRequired}
                             onChange={(e) => this.handleAdvisoriesChange(e)}
-                            errorMessage="Field cannot be empty!" 
+                            errorMessage="Field cannot be empty!"
                             validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Advisories. Max 500 symbols.' }
                                 }}

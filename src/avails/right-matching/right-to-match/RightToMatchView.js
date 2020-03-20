@@ -38,7 +38,7 @@ import RightToMatchNavigation from './components/navigation/RightToMatchNavigati
 import {URL} from '../../../util/Common';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
-import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
+import {parseAdvancedFilterV2} from '../../../containers/avail/service/RightsService';
 import {
     RIGHT_TO_MATCH_TITLE,
     NEW_BUTTON,
@@ -53,7 +53,7 @@ const SECTION_MESSAGE = 'Select rights from the repository that match the focuse
 
 const RightRepositoryNexusGrid = compose(
     withSideBar(),
-    withFilterableColumns({prepareFilterParams: parseAdvancedFilter}),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 

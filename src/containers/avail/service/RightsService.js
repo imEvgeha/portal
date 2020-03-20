@@ -128,6 +128,45 @@ const parseAdvancedFilter = function (searchCriteria) {
     return params;
 };
 
+const parseAdvancedFilterV2 = function (searchCriteria) {
+    const rootStore = store.getState().root;
+    const mappings = rootStore.availsMapping.mappings;
+    let params = {};
+    function isQuoted(value) {
+        return value[0] === '"' && value[value.length - 1] === '"';
+    }
+    for (let key in searchCriteria) {
+        if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+            let value = searchCriteria[key];
+            // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
+            if (key === 'territory') {
+                const updatedKey = `${key}Country`;
+                params[updatedKey] = value;
+                continue;
+            }
+            if (value instanceof Object) {
+                params = {
+                    ...params,
+                    ...value
+                };
+                continue;
+            }
+            const map = mappings.find(({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key);
+            let keyValue = map && map.queryParamName ? map.queryParamName : key;
+            if (map && map.searchDataType === 'string') {
+                if (isQuoted(value)) {
+                    value = value.substr(1, value.length - 2);
+                } else {
+                    keyValue += 'Match';
+                }
+            }
+            params[keyValue] = value;
+        }
+    }
+    return params;
+};
+
+
 export const rightsService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -157,4 +196,4 @@ export const rightsService = {
     },
 };
 
-export {parseAdvancedFilter};
+export {parseAdvancedFilter, parseAdvancedFilterV2};

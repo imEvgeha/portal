@@ -28,7 +28,7 @@ axios.get('/config.json').then(response => {
     );
 });
 
-import React, {Fragment} from 'react';
+import React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 

@@ -6,7 +6,7 @@ import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
-import {rightsService} from '../../containers/avail/service/RightsService';
+import {rightsService, parseAdvancedFilterV2} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import {
@@ -47,7 +47,7 @@ export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
     withSideBar(),
-    withFilterableColumns(),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
 )(NexusGrid);
 
