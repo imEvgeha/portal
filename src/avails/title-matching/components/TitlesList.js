@@ -18,9 +18,11 @@ import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../.
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
+import withColumnsResizing from '../../../ui-elements/nexus-grid/hoc/withColumnsResizing';
 import mappings from '../../../../profile/titleMatchingMappings';
 
 const TitleRepositoriesTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
@@ -91,6 +93,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <TitleRepositoriesTable
+                id='titlesList'
                 onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}

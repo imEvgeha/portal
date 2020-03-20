@@ -41,17 +41,20 @@ import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cel
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 import {URL} from '../../util/Common';
 import constants from '../constants';
+import withColumnsResizing from '../../ui-elements/nexus-grid/hoc/withColumnsResizing';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
 )(NexusGrid);
 
 const SelectedRighstRepositoryTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
 )(NexusGrid);
@@ -312,6 +315,7 @@ const RightsRepository = ({
                 selectedRightGridApi={selectedGridApi}
             />
             <SelectedRighstRepositoryTable
+                id='selectedRightsRepo'
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit
                 rowSelection="multiple"
@@ -322,6 +326,7 @@ const RightsRepository = ({
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
             />
             <RightsRepositoryTable
+                id='rightsRepo'
                 columnDefs={updatedColumnDefs}
                 rowSelection="multiple"
                 suppressRowClickSelection={true}

@@ -1,9 +1,10 @@
 import {
     BLOCK_UI,
     LOAD_PROFILE_INFO,
-    LOAD_AVAILS_MAPPING, 
-    LOAD_REPORTS, 
+    LOAD_AVAILS_MAPPING,
+    LOAD_REPORTS,
     RIGHTS__LOAD_SELECT_LISTS,
+    UPDATE_COLUMNS_SIZE,
 } from '../../constants/action-types';
 
 import {
@@ -24,6 +25,7 @@ const initialState = {
         avail: [],
         title: [],
     },
+    columnsSize: {}
 };
 
 const updateMapping = (state, payload) => {
@@ -53,6 +55,9 @@ const root = (state = initialState, action) => {
 
         case STORE_MAPPING:
             return { ...state, mapping: updateMapping(state.mapping, action.payload)};
+
+        case UPDATE_COLUMNS_SIZE:
+            return { ...state, columnsSize: {...state.columnsSize, [action.gridId]: action.payload}};
 
         default:
             return state;
