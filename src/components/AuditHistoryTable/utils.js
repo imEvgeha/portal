@@ -1,7 +1,6 @@
 import moment from 'moment';
 import Constants from './Constants';
-import isEqual from 'lodash.isequal';
-import get from 'lodash.get';
+import {get, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getDateFormatBasedOnLocale} from '../../util/Common';
 import {TIMESTAMP_FORMAT} from '../../ui/elements/nexus-date-and-time-elements/constants';

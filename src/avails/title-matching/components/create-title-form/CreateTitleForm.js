@@ -11,7 +11,7 @@ import constants from './CreateTitleFormConstants';
 import DOP from '../../../../util/DOP';
 import './CreateTitleForm.scss';
 import {URL} from '../../../../util/Common';
-import get from 'lodash.get';
+import {get} from 'lodash';
 
 const {
     NEW_TITLE_FORM_SCHEMA,

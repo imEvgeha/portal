@@ -1,6 +1,6 @@
 import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import {createColumnDefs } from '../utils';

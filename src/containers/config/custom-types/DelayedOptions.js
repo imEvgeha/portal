@@ -1,7 +1,7 @@
 import {renderer as akRenderer} from 'react-forms-processor-atlaskit';
 import PropTypes from 'prop-types';
 import React from 'react';
-import get from 'lodash.get';
+import {get} from 'lodash';
 
 const DelayedOptions = ({field, onChange, onFieldFocus, onFieldBlur}) => {
     const items = get(field, 'options[0].items', []);

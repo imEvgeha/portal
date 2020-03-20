@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
-import omit from 'lodash.omit';
-import cloneDeep from 'lodash.clonedeep';
+import {omit, isequal, clonedeep} from 'lodash';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
@@ -43,14 +41,14 @@ const withEditableColumns = ({
         const excludedColumns = props.notEditableColumns || notEditableColumns;
 
         useEffect(() => {
-            if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
+            if (!isequal(previousSelectValues, selectValues) || !isequal(previousColumnDefs, columnDefs)) {
                const updatedColumnDefs = updateColumnDefs(columnDefs);
                setEditableColumnDefs(updatedColumnDefs);
             }
         }, [columnDefs, selectValues]);
 
         const updateColumnDefs = columnDefs => {
-            const copiedColumnDefs = cloneDeep(columnDefs);
+            const copiedColumnDefs = clonedeep(columnDefs);
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
                 const {field} = columnDef || {};
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
