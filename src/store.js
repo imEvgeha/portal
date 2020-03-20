@@ -37,6 +37,7 @@ const configureStore = (initialState = {}, history) => {
     store.subscribe(throttle(() => {
         saveAppState({
             avails: store.getState().avails,
+            root: {columnsSize: store.getState().root.columnsSize},
         });
     }, DELAY));
 

@@ -13,15 +13,11 @@ const withColumnsResizing = (colDef= AG_GRID_DEF_COL_DEF) => WrappedComponent =>
         const {columnDefs, id, existingColumnsSize} = props;
         const [columnsSize, setColumnsSize] = useState({});
 
-        useEffect(() => {
-            return () => {
-                id && store.dispatch(setGridColumnsSize(id, columnsSize));
-            };
-        }, [columnsSize] );
-
         const handleColumnResized  = e => {
             if(e.finished){
-                setColumnsSize({...columnsSize, [e.column.colDef.colId] : e.column.actualWidth});
+                const updatedColumnsSize = {...columnsSize, [e.column.colDef.colId] : e.column.actualWidth};
+                setColumnsSize(updatedColumnsSize);
+                id && store.dispatch(setGridColumnsSize(id, updatedColumnsSize));
             }
         };
 
