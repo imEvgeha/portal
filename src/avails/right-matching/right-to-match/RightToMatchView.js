@@ -26,6 +26,7 @@ import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import withColumnsResizing from '../../../ui-elements/nexus-grid/hoc/withColumnsResizing';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
 import {
@@ -41,10 +42,13 @@ import {
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
 const RightRepositoryNexusGrid = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilter}),
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
+
+const IncomingRightNexusGrid =  withColumnsResizing()(NexusGrid);
 
 const RightToMatchView = ({
     match,
@@ -167,7 +171,8 @@ const RightToMatchView = ({
                 />
             </div>
             <div className="nexus-c-right-to-match-view__focused-right">
-                <NexusGrid
+                <IncomingRightNexusGrid
+                    id='incomingRightRightsMatching'
                     columnDefs={updatedFocusedRightColumnDefs}
                     rowData={updatedFocusedRight}
                     domLayout="autoHeight"
@@ -182,6 +187,7 @@ const RightToMatchView = ({
                     && fieldSearchCriteria.id === rightId 
                     && (
                         <RightRepositoryNexusGrid
+                            id='rightsMatchingRepo'
                             columnDefs={updatedColumnDefs}
                             mapping={mapping}
                             setTotalCount={setTotalCount}

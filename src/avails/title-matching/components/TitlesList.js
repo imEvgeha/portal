@@ -93,7 +93,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <TitleRepositoriesTable
-                id='titlesList'
+                id='titleMatchigRepo'
                 onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}

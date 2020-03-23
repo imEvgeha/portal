@@ -19,8 +19,11 @@ import NewTitleConstants from './components/create-title-form/CreateTitleFormCon
 import Constants from './titleMatchingConstants';
 import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
+import withColumnsResizing from '../../ui-elements/nexus-grid/hoc/withColumnsResizing';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
+
+const IncomingRightTable =  withColumnsResizing()(NexusGrid);
 
 const TitleMatchView = ({
     match,
@@ -92,7 +95,8 @@ const TitleMatchView = ({
                     <>
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
-                            <NexusGrid
+                            <IncomingRightTable
+                                id='incomingRightTitleMatching'
                                 columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
                                 rowData={[focusedRight]}
                             />
