@@ -12,7 +12,8 @@ export const configFields = {
     RATINGS: 'ratings',
     ADVISORY_CODE: 'advisories',
     REGIONS: 'regions',
-    GENRE: 'genres'
+    GENRE: 'genres',
+    CATEGORY: 'categories'
 };
 
 const http = Http.create({defaultErrorHandling: false});
