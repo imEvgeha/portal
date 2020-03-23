@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
+import {NexusGrid} from '../../ui/elements/';
 import Constants from './Constants';
 import {cellStyling, formatData, valueFormatter} from './utils';
 import RulesEngineInfo from './components/RulesEngineInfo';

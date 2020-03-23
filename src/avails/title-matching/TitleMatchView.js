@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
+import {
+    NexusGrid,
+    NexusTitle,
+} from '../../ui/elements/';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
+import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -19,7 +22,6 @@ import NewTitleConstants from './components/create-title-form/CreateTitleFormCon
 import Constants from './titleMatchingConstants';
 import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
-import withColumnsResizing from '../../ui-elements/nexus-grid/hoc/withColumnsResizing';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 

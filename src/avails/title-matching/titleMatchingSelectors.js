@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 
-const getTitleMatchingReducer = state => state.titleMatching;
+const getTitleMatchingReducer = state => state.avails.titleMatching || {};
 
 export const getFocusedRight = createSelector(
     getTitleMatchingReducer,

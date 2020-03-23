@@ -2,7 +2,7 @@ import React from 'react';
 import t from 'prop-types';
 import moment from 'moment';
 
-import LoadingElipsis from '../../../../../src/img/ajax-loader.gif';
+import LoadingElipsis from '../../../../../src/assets/img/ajax-loader.gif';
 import {Link} from 'react-router-dom';
 
 import {historyService} from '../../service/HistoryService';

@@ -16,7 +16,7 @@ import {EndpointContainer} from '../config/EndpointContainer';
 import Localization from './Localization';
 import {fetchConfigApiEndpoints} from './settingsActions';
 import * as selectors from './settingsSelectors';
-import NexusDrawer from '../../ui-elements/nexus-drawer/NexusDrawer';
+import NexusDrawer from '../../ui/elements/nexus-drawer/NexusDrawer';
 import {URL} from '../../util/Common';
 
 class Settings extends Component {

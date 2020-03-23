@@ -17,23 +17,22 @@ import {
     fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
-import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
 import {URL} from '../../../util/Common';
-import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import withColumnsResizing from '../../../ui-elements/nexus-grid/hoc/withColumnsResizing';
-import {backArrowColor} from '../../../constants/avails/constants';
-import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 import {
     defineColumn,
     defineCheckboxSelectionColumn,
     updateColumnDefs
-} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {backArrowColor} from '../../../constants/avails/constants';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
-import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 import {
     MATCH_RIGHT_TITLE,
     MATCH_BUTTON,
@@ -331,12 +330,12 @@ const createMapStateToProps = () => {
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
     const loadingSelector = createLoadingSelector([SAVE_COMBINED_RIGHT]);
 
-    return (state, props) => ({
-        focusedRight: focusedRightSelector(state, props),
-        matchedRights: matchedRightsSelector(state, props),
-        combinedRight: combinedRightSelector(state, props),
-        columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: rightMatchingMappingSelector(state, props),
+    return (state) => ({
+        focusedRight: focusedRightSelector(state),
+        matchedRights: matchedRightsSelector(state),
+        combinedRight: combinedRightSelector(state),
+        columnDefs: rightMatchingColumnDefsSelector(state),
+        mapping: rightMatchingMappingSelector(state),
         isMatching: loadingSelector(state),
     });
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import NexusTooltip from '../../../../../ui-elements/nexus-tooltip/NexusTooltip';
+import {NexusTooltip} from '../../../../../ui/elements/';
 import Constants from '../Constants';
 import './IngestReport.scss';
 

@@ -4,8 +4,10 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
 import './RightMatchingView.scss';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
+import {NexusGrid, NexusTitle} from '../../ui/elements';
+import withInfiniteScrolling from '../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {defineActionButtonColumn} from '../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
 import {
@@ -13,10 +15,7 @@ import {
     createRightMatchingColumnDefs,
     storeRightMatchDataWithIds,
 } from './rightMatchingActions';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
 import {URL} from '../../util/Common';
-import {defineActionButtonColumn} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
 import {RIGHT_MATCHING_TITLE, FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE} from './rightMatchingConstants';
 
@@ -25,13 +24,13 @@ const NexusGridWithInfiniteScrolling = compose(
 )(NexusGrid);
 
 const RightMatchingView = ({
-        createRightMatchingColumnDefs,
-        columnDefs,
-        history,
-        match,
-        storeRightMatchDataWithIds,
-        cleanStoredRightMatchDataWithIds,
-    }) => {
+    createRightMatchingColumnDefs,
+    columnDefs,
+    history,
+    match,
+    storeRightMatchDataWithIds,
+    cleanStoredRightMatchDataWithIds,
+}) => {
     const [totalCount, setTotalCount] = useState();
     // DOP integration
     useDOPIntegration(totalCount, RIGHT_MATCHING_DOP_STORAGE);
@@ -93,8 +92,6 @@ const RightMatchingView = ({
 
 RightMatchingView.propTypes = {
     columnDefs: PropTypes.array,
-    history: PropTypes.object,
-    match: PropTypes.object,
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
@@ -102,8 +99,6 @@ RightMatchingView.propTypes = {
 
 RightMatchingView.defaultProps = {
     columnDefs: [],
-    match: {},
-    history: {},
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
     createRightMatchingColumnDefs: null,

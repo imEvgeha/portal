@@ -4,7 +4,7 @@ import t from 'prop-types';
 
 import config from 'react-global-configuration';
 // image import
-import LoadingGif from '../../../../../img/loading.gif';
+import LoadingGif from '../../../../../assets/img/loading.gif';
 
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -28,7 +28,7 @@ import {titleService} from '../../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../../util/Common';
 import uniqBy from 'lodash.uniqby';
 import get from 'lodash.get';
-import {defineColumn} from '../../../../../ui-elements/nexus-grid/elements/columnDefinitions';
+import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../avails/utils';
 

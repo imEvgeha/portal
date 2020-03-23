@@ -6,7 +6,7 @@ import isEqual from 'lodash.isequal';
 import isEmpty from 'lodash.isempty';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
-import {rightsService} from '../../containers/avail/service/RightsService';
+import {rightsService, parseAdvancedFilterV2} from '../../containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import {
@@ -25,23 +25,23 @@ import {
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
-import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
+import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
     defineCheckboxSelectionColumn
-} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
-import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
-import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import {NexusGrid, NexusTableToolbar} from '../../ui-elements';
-import {filterBy} from '../../ui-elements/nexus-grid/utils';
+} from '../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withFilterableColumns from '../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSideBar from '../../ui/elements/nexus-grid/hoc/withSideBar';
+import withInfiniteScrolling from '../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import {NexusGrid, NexusTableToolbar} from '../../ui/elements';
+import {filterBy} from '../../ui/elements/nexus-grid/utils';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import usePrevious from '../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/indicator';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 import {URL} from '../../util/Common';
 import constants from '../constants';
-import withColumnsResizing from '../../ui-elements/nexus-grid/hoc/withColumnsResizing';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
@@ -49,7 +49,7 @@ export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 const RightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
-    withFilterableColumns(),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
 )(NexusGrid);
 
@@ -96,10 +96,11 @@ const RightsRepository = ({
 
     // TODO: create column defs on app loading
     useEffect(() => {
-        if (!columnDefs.length) {
+        // TODO: refactor this - unnecessary call
+        if (!columnDefs.length || !mapping) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs, createRightMatchingColumnDefs]);
+    }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
         ingestClick();

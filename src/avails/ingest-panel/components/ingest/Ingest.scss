@@ -19,6 +19,10 @@
           background: #E0ECF7;
       }
   }
+
+  .ingest-panel__list & {
+      cursor: pointer;
+  }
 }
 
 .nexus-c-avail-ingest__details {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import StatusTag from '../../../../ui-elements/nexus-status-tag/StatusTag';
+import StatusTag from '../../../../ui/elements/nexus-status-tag/StatusTag';
 import './IngestStatus.scss';
 
 const IngestStatus = ({date, status}) => {

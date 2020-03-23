@@ -7,10 +7,9 @@ import {rightsService} from '../../containers/avail/service/RightsService';
 import {URL} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
-import {
-    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, SUCCESS_ICON, SUCCESS_TITLE
-} from '../../ui-elements/nexus-toast-notification/constants';
-import { ADD_TOAST } from '../../ui-elements/nexus-toast-notification/actionTypes';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
+import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,} from '../../ui/toast/constants';
+import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {SET_LOCALE} from '../../constants/action-types';
 
 // TODO - refactor this worker saga (use select)

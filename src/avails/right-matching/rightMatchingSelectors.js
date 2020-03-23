@@ -1,44 +1,41 @@
 import {createSelector} from 'reselect';
 
-export const getColumnDefs = (state) => {
-    const {rightMatching} = state;
-    return rightMatching && rightMatching.columnDefs;
+const getRightMatching = state => state.avails.rightMatching || {};
+
+const getColumnDefs = (state) => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.columnDefs;
 };
 
 // move this to availMapping selector
-export const getAvailsMapping = (state) => {
+const getAvailsMapping = (state) => {
     const {root} = state;
     return root && root.availsMapping;
 };
 
-export const getFieldSearchCriteria = (state) => {
-    const {rightMatching} = state;
-    return rightMatching && rightMatching.fieldSearchCriteria;
+const getFieldSearchCriteria = (state) => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.fieldSearchCriteria;
 };
 
-export const getFocusedRight = (state) => {
-    const {rightMatching} = state;
-    return rightMatching && rightMatching.focusedRight;
+const getFocusedRight = (state) => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.focusedRight;
 };
 
-export const getMatchedRights = (state) => {
-    const {rightMatching} = state;
-    return rightMatching && rightMatching.matchedRights;
+const getMatchedRights = (state) => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.matchedRights;
 };
 
-export const getCombinedRight = (state) => {
-    const {rightMatching} = state;
+const getCombinedRight = (state) => {
+    const rightMatching = getRightMatching(state);
     return rightMatching && rightMatching.combinedRight;
 };
 
-export const getRightMatchPageData = (state) => {
-    const {rightMatching} = state;
+const getRightMatchPageData = (state) => {
+    const rightMatching = getRightMatching(state);
     return rightMatching && rightMatching.rightMatchPageData;
-};
-
-export const getCombinedRightSavedFlag = (state) => {
-    const {rightMatching} = state;
-    return rightMatching && rightMatching.isCombinedRightSaved;
 };
 
 export const createRightMatchingColumnDefsSelector = () => createSelector(
@@ -73,23 +70,7 @@ export const createCombinedRightSelector = () => createSelector(
     combinedRight => combinedRight
 );
 
-export const createCombinedRightSavedFlagSelector = () => createSelector(
-    getCombinedRightSavedFlag,
-    isCombinedRightSaved => isCombinedRightSaved
-);
-
 export const createRightMatchPageDataSelector = () => createSelector(
     getRightMatchPageData,
     rightMatchPageData => rightMatchPageData,
 );
-
-export const getSuccessStatus = (state) => {
-    const {rightMatching} = state;
-    return rightMatching && rightMatching.isNewRightSuccessFlagVisible;
-};
-
-export const getSuccessStatusSelector = () => createSelector(
-    getSuccessStatus,
-    isNewRightSuccessFlagVisible => isNewRightSuccessFlagVisible
-);
-

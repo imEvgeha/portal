@@ -21,7 +21,7 @@ import {
     NexusDateTimePicker,
     NexusDatePicker,
     NexusMultiInstanceField
-} from '../../../ui-elements';
+} from '../../../ui/elements';
 
 const {
     TERRITORY_TYPE,
