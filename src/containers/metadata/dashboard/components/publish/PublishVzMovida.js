@@ -23,7 +23,7 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
 
             const metadata = editorialMetadataList.concat(territoryMetadataList);
             metadata.forEach(item => {
-                const {legacyIds, vzPublishedAt, movidaPublishedAt, vzId, movidaId, modifiedAt} = getLegacyData(item);
+                const {legacyIds, vzPublishedAt, vz, movida, movidaPublishedAt, vzId, movidaId, modifiedAt} = getLegacyData(item);
                 if(!legacyIds) {
                     return;
                 }
@@ -40,10 +40,10 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
                     movidaLastUpdateCandidate = movidaPublishedAt;
                 }
 
-                if (!isVzDisabledCandidate) {
+                if (isVzDisabledCandidate && !!vz) {
                     isVzDisabledCandidate = getIsDisabled(vzPublishedAt, modifiedAt, vzId);
                 }
-                if (!isMovidaDisabledCandidate) {
+                if (isMovidaDisabledCandidate && !!movida) {
                     isMovidaDisabledCandidate = getIsDisabled(movidaPublishedAt, modifiedAt, movidaId);
                 }
             });
@@ -65,7 +65,7 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
         const {vzId} = vz || {};
         const {movidaId} = movida || {};
 
-        return {legacyIds, vzPublishedAt, movidaPublishedAt, vzId, movidaId, modifiedAt};
+        return {legacyIds, vz, movida, vzPublishedAt, movidaPublishedAt, vzId, movidaId, modifiedAt};
     };
 
     const getIsDisabled = (publishedAt, modifiedAt, legacyId) => {
