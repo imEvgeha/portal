@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 import {useIntl} from 'react-intl';
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
-import StatusIcon from '../../../../ui-elements/nexus-status-icon/StatusIcon';
+import StatusIcon from '../../../../ui/elements/nexus-status-icon/StatusIcon';
 import IngestReport from './components/IngestReport';
 import {getDateFormatBasedOnLocale} from '../../../../util/Common';
 import Constants from './Constants';

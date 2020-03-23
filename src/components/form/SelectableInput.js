@@ -7,8 +7,7 @@ import RangeDuration from './RangeDuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
-import NexusDateTimeWindowPicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-
+import NexusDateTimeWindowPicker from '../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 
 const mapStateToProps = state => {
     return {

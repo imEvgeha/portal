@@ -25,9 +25,9 @@ import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
-import NexusDatePicker from '../../../ui-elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 

@@ -20,8 +20,8 @@ import {
     resultPageUpdate
 } from '../../../stores/actions/avail/dashboard';
 import RightViewHistory from '../../../avails/right-history-view/RightHistoryView';
-import TableColumnCustomization from '../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
-import TableDownloadRights from '../../../ui-elements/nexus-table-download-rights/TableDownload';
+import TableColumnCustomization from '../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import TableDownloadRights from '../../../ui/elements/nexus-table-download-rights/TableDownload';
 import {Clear} from './ClearInternal';
 import {Selected} from './SelectedInternal';
 import {Total} from './TotalInternal';

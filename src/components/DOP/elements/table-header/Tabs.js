@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {ALL_RIGHTS, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
 import {rightServiceManager} from '../../../../containers/avail/service/RightServiceManager';
 import {tabFilter} from '../../../../constants/DOP/tabFilter';
-import {SelectRightsTab, TabContainer} from '../../../../ui-elements/nexus-table-tab/TableTab';
+import {SelectRightsTab, TabContainer} from '../../../../ui/elements/nexus-table-tab/TableTab';
 
 const Tabs = (props) => {
 

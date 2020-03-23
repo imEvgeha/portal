@@ -1,7 +1,8 @@
+import pickBy from 'lodash.pickby';
 import {ADD_TOAST, REMOVE_TOAST} from './toastActionTypes.js';
 
 const initialState = {
-    toasts: [],
+    list: [],
 };
 
 const toastReducer = (state = initialState, action) => {
@@ -11,14 +12,13 @@ const toastReducer = (state = initialState, action) => {
         case ADD_TOAST:
             return {
                 ...state,
-                toasts: [payload, ...state.toasts],
+                list: [payload, ...state.list],
             };
         case REMOVE_TOAST:
-            filteredToasts = state.toasts.slice();
-            filteredToasts.splice((payload || 0), 1);
+            const newList = state.list.filter((toast, i) => i !== (payload || 0));
             return {
                 ...state,
-                toasts: filteredToasts,
+                list: newList,
             };
         default:
             return state;

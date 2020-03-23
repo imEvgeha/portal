@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
-import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import {fetchRightsHistory} from './rightHistoryActions';
 import AuditHistoryTable from '../../components/AuditHistoryTable/AuditHistoryTable';

@@ -11,7 +11,7 @@ import './AvailsIngestHistoryTable.scss';
 import HistoryURL from '../../util/HistoryURL';
 
 // image import
-import LoadingGif from '../../../../../src/img/loading.gif';
+import LoadingGif from '../../../../../src/assets/img/loading.gif';
 
 import {connect} from 'react-redux';
 import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
@@ -85,7 +85,6 @@ class AvailsIngestHistoryTable extends React.Component {
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
                    .then(response => {
                         if(response && response.data.total > 0){
-                            //console.log(response);
                             this.addLoadedItems(response.data);
                             // if on or after the last page, work out the last row.
                             let lastRow = -1;

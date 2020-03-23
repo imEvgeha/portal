@@ -25,19 +25,19 @@ import {
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader';
-import {GRID_EVENTS} from '../../ui-elements/nexus-grid/constants';
+import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
     defineCheckboxSelectionColumn
-} from '../../ui-elements/nexus-grid/elements/columnDefinitions';
-import withFilterableColumns from '../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import withSideBar from '../../ui-elements/nexus-grid/hoc/withSideBar';
-import withInfiniteScrolling from '../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import {NexusGrid, NexusTableToolbar} from '../../ui-elements';
-import {filterBy} from '../../ui-elements/nexus-grid/utils';
+} from '../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withFilterableColumns from '../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSideBar from '../../ui/elements/nexus-grid/hoc/withSideBar';
+import withInfiniteScrolling from '../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import {NexusGrid, NexusTableToolbar} from '../../ui/elements';
+import {filterBy} from '../../ui/elements/nexus-grid/utils';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import usePrevious from '../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/indicator';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 import {URL} from '../../util/Common';
 import constants from '../constants';
@@ -93,10 +93,11 @@ const RightsRepository = ({
 
     // TODO: create column defs on app loading
     useEffect(() => {
-        if (!columnDefs.length) {
+        // TODO: refactor this - unnecessary call
+        if (!columnDefs.length || !mapping) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs, createRightMatchingColumnDefs]);
+    }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
         ingestClick();

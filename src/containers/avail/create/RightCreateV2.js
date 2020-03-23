@@ -20,7 +20,7 @@ import {
     NexusDateTimePicker,
     NexusDatePicker,
     NexusMultiInstanceField
-} from '../../../ui-elements';
+} from '../../../ui/elements';
 
 const mapStateToProps = state => {
     return {
