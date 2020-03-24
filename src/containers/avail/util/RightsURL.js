@@ -5,15 +5,12 @@ import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import t from 'prop-types';
 
-const PASS_THROUGH = ['availHistoryIds', 'invalid'];
+const PASS_THROUGH = ['availHistoryIds'];
 
 class RightsURL extends React.Component {
 
     static instance = null;
 
-    static contextTypes = {
-        router: t.object
-    }
 
     componentDidMount() {
         RightsURL.instance = this;
@@ -26,14 +23,7 @@ class RightsURL extends React.Component {
     static URLtoArray(url, matchParams={}){
         let toReturn = [];
         if(!isObjectEmpty(matchParams)){
-            Object.keys(matchParams).forEach(key => {
-                let value = matchParams[key];
-                if(key === 'valid'){
-                    toReturn.push('invalid=' + (value === 'errors'));
-                }else{
-                    toReturn.push(key + '=' + value);
-                }
-            });
+            Object.keys(matchParams).forEach(key => toReturn.push(key + '=' + matchParams[key]) );
         }
         if(url){
             const searchParams = url.substr(1).split('&');
@@ -113,7 +103,7 @@ class RightsURL extends React.Component {
 
     static isAdvancedFilter(url) {
         if(!url) return false;
-        let params = url.substring(1).split('&');
+        const params = url.substring(1).split('&');
         let isAdvanced = false;
         params.forEach(param => {
             const field = param.split('=')[0];
@@ -142,13 +132,11 @@ class RightsURL extends React.Component {
     static saveRightsAdvancedFilterUrl(filter){
         const searchParams = this.FilterToObj(filter);
         let availHistoryIds = null;
-        let invalid = null;
         const finalParams = {};
         Object.keys(searchParams).forEach(key => {
             const val = searchParams[key];
             if(PASS_THROUGH.includes(key)){
                 if(key === 'availHistoryIds') availHistoryIds = val;
-                if(key === 'invalid') invalid = (val === 'true');
             }else{
                 finalParams[key] = val;
             }
@@ -158,16 +146,8 @@ class RightsURL extends React.Component {
         let toReturn = '/avails';
         if(availHistoryIds){
             toReturn += '/history/' + availHistoryIds;
-            if(invalid === true){
-                toReturn+='/errors';
-            }else if(invalid === false){
-                finalParams.invalid = false;
-            }
         }else{
             toReturn += '/rights';
-            if(invalid !== null){
-                finalParams.invalid = invalid;
-            }
         }
 
         const params = [];
@@ -192,36 +172,42 @@ class RightsURL extends React.Component {
         return RightsURL.instance.context.router.route.match.params;
     }
 
-    static getRightsSearchUrl(availHistoryIds, invalid = null){
+    static getErrorRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'Error'));
+    }
+
+    static getFatalsRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(`history/${availHistoryIds}/manual-rights-entry`);
+    }
+
+    static getSuccessRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'ReadyNew,Ready'));
+    }
+
+    static getRightsSearchUrl(availHistoryIds){
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds));
+    }
+
+    static createRightsSearchUrl(availHistoryIds, status = null){
         let toReturn = '/avails';
         if(availHistoryIds){
             toReturn+='/history/' + availHistoryIds;
-            if(invalid === true){
-                toReturn += '/errors';
-            }
-            if(invalid === false){
-                toReturn += '?invalid=false';
+            if(status !== null) {
+                toReturn += `?status=${status}`;
             }
         }else{
             toReturn += '/rights';
-            if(invalid !== null){
-                toReturn += '?invalid=' + invalid;
-            }
         }
-        return URL.keepEmbedded(toReturn);
+        return toReturn;
     }
 
     static getRightUrl(id, nav){
         const availHistoryIds = this.matchParam.availHistoryIds;
-        const valid = this.matchParam.valid;
         const initialSearch = URL.search();
         let search;
 
         if(availHistoryIds){
             search = 'availHistoryIds=' + availHistoryIds;
-            if(valid && valid === 'errors'){
-                search += '&invalid=true';
-            }
         }
 
         if(nav && nav.back){
@@ -257,28 +243,21 @@ class RightsURL extends React.Component {
     }
 
     static get availsDashboardUrl(){
-        return URL.keepEmbedded('/avails');
+        return '/avails';
     }
 
     static get search(){
         let url = window.location.pathname;
-        let searchP = window.location.search;
-        let params=[];
+        const searchP = window.location.search;
+        const params=[];
         if(!url.startsWith('/avails')) return  URL.keepEmbedded(searchP);
         url = url.replace('/avails', '');
         if(url.startsWith('/history')){
             url = url.replace('/history', '');
             if(url.startsWith('/')){
-                let val= url.split('/')[1];
+                const val= url.split('/')[1];
                 params.push('availHistoryIds=' + val);
                 url = url.replace('/' + val, '');
-
-                if(url.startsWith('/')){
-                    let val= url.split('/')[1];
-                    if(val === 'errors'){
-                        params.push('invalid=true');
-                    }
-                }
             }
         }
         if(params.length > 0) {
@@ -288,5 +267,7 @@ class RightsURL extends React.Component {
         }
     }
 }
-
+RightsURL.contextTypes = {
+    router: t.object
+};
 export default RightsURL;

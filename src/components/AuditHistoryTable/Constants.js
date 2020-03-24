@@ -1,8 +1,8 @@
 const dataTypes = {
     DATE: 'date',
     AUDIO: 'audio',
-    FORMAT: 'format',
     RATING: 'rating',
+    METHOD: 'method'
 };
 
 export default {
@@ -16,7 +16,8 @@ export default {
         {
             field: 'method',
             headerName: 'Method',
-            noStyles: true
+            noStyles: true,
+            dataType: dataTypes.METHOD,
         },
         {
             field: 'lastUpdateReceivedAt',
@@ -58,7 +59,7 @@ export default {
         },
         {
             field: 'contentType',
-            headerName: 'Offer Type',
+            headerName: 'Content Type',
         },
         {
             colId: 'ratingSystem',
@@ -77,21 +78,8 @@ export default {
             headerName: 'License Type',
         },
         {
-            field: 'licenseCategory',
-            headerName: 'License Category',
-        },
-        {
             field: 'format',
             headerName: 'Format',
-            dataType: dataTypes.FORMAT,
-        },
-        {
-            field: 'wsp',
-            headerName: 'WSP',
-        },
-        {
-            field: 'licenseStatus',
-            headerName: 'License Status',
         },
     ],
     HEADER_ROW: {
@@ -128,7 +116,7 @@ export default {
             displayName: 'Filename',
         },
         {
-            field: 'sheetName',
+            field: 'tabName',
             displayName: 'Sheet Name',
         },
     ],
@@ -136,5 +124,12 @@ export default {
         CURRENT_VALUE: 'LightGreen',
         STALE_VALUE: 'coral',
     },
-    RATING_SUBFIELD: 'com.vubiquity.messaging.rights.Rating'
+    RATING_SUBFIELD: 'com.vubiquity.messaging.rights.Rating',
+    method: {
+        INGEST: 'Ingest',
+        MANUAL: 'Manual'
+    },
+    INGEST_ACCOUNTS: [
+        'service-account-avails-client',
+    ],
 };

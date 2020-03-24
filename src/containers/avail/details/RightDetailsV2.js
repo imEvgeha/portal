@@ -15,9 +15,13 @@ import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
-import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
 import rightConstants from './RightConstants';
+import {
+    NexusDateTimePicker,
+    NexusDatePicker,
+    NexusMultiInstanceField
+} from '../../../ui/elements';
 
 const {
     TERRITORY_TYPE,
@@ -33,25 +37,6 @@ const mapStateToProps = state => {
 
 // TODO: Way too many renders
 class RightDetails extends React.Component {
-    static propTypes = {
-        selectValues: PropTypes.object,
-        availsMapping: PropTypes.any,
-        match: PropTypes.any,
-        location: PropTypes.any,
-        blocking: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        selectValues: null,
-        availsMapping: null,
-        match: {},
-        location: {},
-        blocking: null,
-    };
-
-    static contextTypes = {
-        router: PropTypes.object,
-    };
 
     constructor(props) {
         super(props);
@@ -60,12 +45,8 @@ class RightDetails extends React.Component {
 
         this.state = {
             errorMessage: '',
-            isRightTerritoryFormOpen: false,
-            isRightTerritoryEditFormOpen: false,
             editedRight: {},
             flatRight: {},
-            territoryIndex: null,
-            isEdit: false,
         };
     }
 
@@ -131,7 +112,7 @@ class RightDetails extends React.Component {
                         const affiliates = [
                             ...affiliateList,
                             ...affiliateErrors.map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.name = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.errors = affiliateErrors[index];
                                 // obj.id = el.index;
@@ -158,22 +139,16 @@ class RightDetails extends React.Component {
                         const affiliatesExclude = [
                             ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.name = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 obj.errors = affiliateExcludeErrors[index];
                                 // obj.id = error.index;
                                 return obj;
                         })];
 
-                        const castCrews = castCrew;
-
                         this.setState({
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
-                            territory: territories,
-                            affiliates,
-                            affiliatesExclude,
-                            castCrews,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -188,7 +163,7 @@ class RightDetails extends React.Component {
     };
 
     flattenRight(right) {
-        let rightCopy = {};
+        const rightCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
@@ -226,7 +201,7 @@ class RightDetails extends React.Component {
             });
         }
 
-        let updatedRight = { [name]: value };
+        const updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
                 updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
@@ -237,7 +212,7 @@ class RightDetails extends React.Component {
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
             .then(res => {
-                let editedRight = res.data;
+                const editedRight = res.data;
                 this.setState({
                     right: res.data,
                     flatRight: this.flattenRight(res.data),
@@ -278,16 +253,18 @@ class RightDetails extends React.Component {
             // const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             // TODO: Use AtlasKit icons; Remove inline css
             return (
-                <div key={name}
+                <div
+                    key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
-                    }}>
+                    }}
+                >
                     <div className="row">
                         <div className="col-4">{displayName}
                             {required ? <span className="text-danger">*</span> : ''}
                             :
-                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
-                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {highlighted ? <span title="* fields in bold are original values provided by the studios" style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
+                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
                         </div>
                         <div className="col-8">
                             {content}
@@ -299,7 +276,7 @@ class RightDetails extends React.Component {
 
         const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             const {flatRight = {}} = this.state;
-            let selectedVal = flatRight[name] || value;
+            const selectedVal = flatRight[name] || value;
 
             // TODO: Extract when prepping data for the whole component; To be fixed on RightDetails refactor
             const prepData = (name) => {
@@ -337,8 +314,55 @@ class RightDetails extends React.Component {
                 duration: null,
                 time: null,
                 localdate: null,
-                date: null,
                 boolean: null,
+                date: renderFieldTemplate(
+                    name,
+                    displayName,
+                    value,
+                    null,
+                    readOnly,
+                    required,
+                    null,
+                    null,
+                    null,
+                    (<NexusDatePicker
+                        id={jvName}
+                        label={displayName}
+                        value={value}
+                        isWithInlineEdit={true}
+                        isTimestamp={true}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDatePicker returned: ', date);
+                        }}
+                        required={required}
+                        isReadOnly={readOnly}
+                     />)
+                ),
+                datetime: renderFieldTemplate(
+                    name,
+                    displayName,
+                    value,
+                    null,
+                    readOnly,
+                    required,
+                    null,
+                    null,
+                    null,
+                    (<NexusDateTimePicker
+                        id={jvName}
+                        label={displayName}
+                        value={value}
+                        isTimestamp={true}
+                        isWithInlineEdit={true}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDateTimePicker returned: ', date);
+                        }}
+                        required={required}
+                        isReadOnly={readOnly}
+                     />)
+                ),
                 territoryType: renderTerritoryField(
                     jvName,
                     displayName,
@@ -374,29 +398,48 @@ class RightDetails extends React.Component {
             <div style={{ position: 'relative' }}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
-                        this.state.errorMessage &&
+                        this.state.errorMessage && (
                         <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{ top: '-20px', zIndex: '1000', height: '25px' }}>
                             <Label id='right-edit-error-message'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
-                    }
+                      )
+}
                     <div className="nx-stylish row mt-3 mx-5">
-                        <div className={'nx-stylish list-group col-12'} style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
+                        <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
+                    {this.props.availsMapping && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <div className="mt-4 mx-5 px-5">
                                 <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
-                    }
+                      )}
                 </BlockUi>
             </div>
         );
     }
 }
+
+RightDetails.propTypes = {
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    match: PropTypes.any,
+    blocking: PropTypes.bool,
+};
+
+RightDetails.defaultProps = {
+    selectValues: null,
+    availsMapping: null,
+    match: {},
+    blocking: null,
+};
+
+RightDetails.contextTypes = {
+    router: PropTypes.object,
+};
 
 export default connect(mapStateToProps)(RightDetails);

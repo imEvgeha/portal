@@ -1,0 +1,66 @@
+.nexus-c-avail-ingest {
+  width: 350px;
+  padding: 12px;
+  border-bottom: 1px solid #DCDCDC;
+  background: #FFFFFF;
+
+  &--is-in-bundle {
+    padding-left: 30px;
+  }
+
+  &:hover {
+    background: #FAFAFA;
+  }
+
+  &--is-selected {
+      background: #E0ECF7;
+
+      &:hover {
+          background: #E0ECF7;
+      }
+  }
+
+  .ingest-panel__list & {
+      cursor: pointer;
+  }
+}
+
+.nexus-c-avail-ingest__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.nexus-c-avail-ingest__chevron {
+    & svg {
+        width: 15px;
+        height: 15px;
+        fill: #A5ADBA;
+        cursor: pointer;
+    }
+
+    &--is-opened {
+        & svg {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+.nexus-c-avail-ingest .ingest-report {
+  width: 100%;
+  margin-top: 15px;
+
+  &__fields {
+    justify-content: space-between;
+  }
+}
+
+.nexus-c-avail-ingest__status {
+  width: 100%;
+
+  &--is-not-expandable {
+    margin-left: 15px;
+  }
+
+}

@@ -7,10 +7,10 @@ import {rightsService} from '../../containers/avail/service/RightsService';
 import {URL} from '../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
-import {
-    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE, SUCCESS_ICON, SUCCESS_TITLE
-} from '../../ui-elements/nexus-toast-notification/constants';
-import { ADD_TOAST } from '../../ui-elements/nexus-toast-notification/actionTypes';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
+import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,} from '../../ui/toast/constants';
+import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
+import {SET_LOCALE} from '../../constants/action-types';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -122,9 +122,9 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
             payload: {}
         });
 
-        let matchedRights = [];
+        const matchedRights = [];
         for(const id of payload) {
-            let response = yield call(requestMethod, id);
+            const response = yield call(requestMethod, id);
             matchedRights.push(response.data);
         }
 
@@ -161,7 +161,7 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_ERROR,
-            payload: {combinedRight: []},
+            payload: {combinedRight: {}},
             error: true,
         });
     }
@@ -181,9 +181,11 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
             payload: {focusedRight},
         });
+
         if (redirectPath) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
+
         yield put({
             type: ADD_TOAST,
             payload: {
@@ -210,14 +212,14 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
         let isIdFounded = false;
         let isBoundaryValue = false;
         while (!isIdFounded || isBoundaryValue) {
-            const response = yield call(requestMethod, pageNumber, pageSize, searchParams);
+            const response = yield call(requestMethod, null, pageNumber, pageSize, searchParams);
             const ids = response.data.data.map(el => el.id);
             if (ids.length === 0) {
                 break;
             }
             isIdFounded = ids.includes(id);
 
-            let pages = {};
+            const pages = {};
             pages[pageNumber] = ids;
             rightMatchPageData = {
                 pages: {...rightMatchPageData.pages, ...pages},
@@ -273,6 +275,7 @@ export function* createNewRight(requestMethod, {payload}) {
 export function* rightMatchingWatcher() {
     yield all([
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
+        takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeLatest(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),

@@ -9,15 +9,14 @@ import Button from '@atlaskit/button';
 import PropTypes from 'prop-types';
 
 
-const createFormForItem = (
+const createFormForItem = (field,
     item,
     targetIndex,
     fieldsForForm,
-    formChangeHandler
-) => {
-    const mappedFields = fieldsForForm.map(field => ({
-        ...field,
-        id: `${field.id}_${targetIndex}_FIELDS`,
+    formChangeHandler) => {
+    const mappedFields = fieldsForForm.map(subfield => ({
+        ...subfield,
+        id: `${field.id}[${targetIndex}].${subfield.id}`,
         defaultValue: fieldsForForm.length > 1 ? item[field.name]:item
     }));
     return (
@@ -45,12 +44,12 @@ export default class DynamicObjectType extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue } = props;
+        let { defaultValue }  = props;
+        defaultValue = defaultValue || {};
         const keys = Object.keys(defaultValue);
         const items = keys.map(key => ({ id: uniqueId(), key, data: defaultValue[key] }));
 
         this.state = {
-            value: defaultValue,
             keyName: '',
             items
         };
@@ -112,13 +111,14 @@ export default class DynamicObjectType extends Component {
 
     getForms() {
             const { items } = this.state;
-            const { fields } = this.props;
+            const { field, fields } = this.props;
 
             return (
                 <div>
                     {items.map((item, index) => {
                         const formChangeHandler = this.createFormChangeHandler(index);
                         const form = createFormForItem(
+                            field,
                             item.data,
                             index,
                             fields,
@@ -128,21 +128,23 @@ export default class DynamicObjectType extends Component {
                         return (
                             <Expander
                                 key={`exp_${item.id}`}
-                                label={<InlineEdit
-                                    defaultValue={label}
-                                    editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact/>}
-                                    readView={() => (label)}
-                                    onConfirm={value => this.saveKeyName(item, value)}
-                                    validate={value => this.checkKeyName(item, value)}
-                                    isRequired
-                                    isCompact
-                                    hideActionButtons
-                                />}
+                                label={(
+                                    <InlineEdit
+                                        defaultValue={label}
+                                        editView={fieldProps => <Textfield {...fieldProps} autoFocus isCompact />}
+                                        readView={() => (label)}
+                                        onConfirm={value => this.saveKeyName(item, value)}
+                                        validate={value => this.checkKeyName(item, value)}
+                                        isRequired
+                                        isCompact
+                                        hideActionButtons
+                                    />
+)}
                                 remove={() => {
                                     this.removeItem(item.id);
                                 }}
                             >
-                            {form}
+                                {form}
                             </Expander>
                         );
                     })}
@@ -152,6 +154,7 @@ export default class DynamicObjectType extends Component {
 
     render() {
         const {
+            field,
             label,
             addButtonLabel,
             noItemsMessage
@@ -162,18 +165,19 @@ export default class DynamicObjectType extends Component {
 
         return(
             <div>
-                <AkField label={label} name="formBuilder">
+                <AkField label={label} name="formBuilder" isRequired={field.required}>
                     {() => <div>{items.length > 0 ? this.getForms() : noItems}</div>}
                 </AkField>
                 <div className="d-flex flex-row align-items-start">
                     <Textfield
-                       value={keyName}
-                       onChange={(e) =>  this.onKeyNameChange(e.target.value)}
-                       placeholder='Input key name...'
+                        value={keyName}
+                        onChange={(e) =>  this.onKeyNameChange(e.target.value)}
+                        placeholder='Input key name...'
                     />
                     <Button
                         isDisabled={keyName.trim().length === 0 || items.find(({key}) => key === keyName) != null}
-                        onClick={() => this.addItem()}>{addButtonLabel}
+                        onClick={() => this.addItem()}
+                    >{addButtonLabel}
                     </Button>
                 </div>
             </div>

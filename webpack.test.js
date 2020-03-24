@@ -5,7 +5,7 @@ module.exports = {
         chunkFilename: 'app/[name].[chunkhash].chunk.js'
     },
     entry: {
-        main: ["@babel/polyfill", './src/index.js']
+        main: ['@babel/polyfill', './src/index.js']
     },
     module: {
         rules: [

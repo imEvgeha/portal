@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import BlockUi from 'react-block-ui';
 import {Button, Label} from 'reactstrap';
 
@@ -15,11 +15,12 @@ import {safeTrim} from '../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 import {URL} from '../../../util/Common';
-
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusDateTimeWindowPicker from '../../../ui-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import NexusMultiInstanceField from '../../../ui-elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
+import {
+    NexusDateTimePicker,
+    NexusDatePicker,
+    NexusMultiInstanceField
+} from '../../../ui/elements';
 
 const mapStateToProps = state => {
     return {
@@ -31,17 +32,6 @@ const mapStateToProps = state => {
 
 // TODO: Way too many renders
 class RightCreate extends React.Component {
-
-    static propTypes = {
-        selectValues: PropTypes.object,
-        availsMapping: PropTypes.any,
-        blocking: PropTypes.bool,
-        match: PropTypes.object
-    };
-
-    static contextTypes = {
-        router: PropTypes.object
-    };
 
     constructor(props) {
         super(props);
@@ -86,9 +76,9 @@ class RightCreate extends React.Component {
 
     checkRight(name, value, setNewValue) {
         if(!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
-            let validationError = this.validateField(name, value, this.right);
+            const validationError = this.validateField(name, value, this.right);
 
-            let errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
+            const errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
             this.mappingErrorMessage[name] = errorMessage;
 
             if (!validationError) {
@@ -116,7 +106,7 @@ class RightCreate extends React.Component {
         }
 
         if(setNewValue){
-            let newRight = {...this.right, [name]: value};
+            const newRight = {...this.right, [name]: value};
             this.right = newRight;
             this.setState({});
         }
@@ -135,7 +125,7 @@ class RightCreate extends React.Component {
     }
 
     isAnyErrors() {
-        for (let [, value] of Object.entries(this.mappingErrorMessage)) {
+        for (const [, value] of Object.entries(this.mappingErrorMessage)) {
             if(value.date || value.range || value.text || value.inner || value.pair) {
                 return true;
             }
@@ -213,7 +203,7 @@ class RightCreate extends React.Component {
     };
 
     initMappingErrors = (mappings) => {
-        let mappingErrorMessage = {};
+        const mappingErrorMessage = {};
         mappings.map((mapping) => {
             mappingErrorMessage[mapping.javaVariableName] =  {
                 inner: '',
@@ -248,31 +238,29 @@ class RightCreate extends React.Component {
                 multiselect: null,
                 localdate: null,
                 time: null,
-                duration: (
-                    <NexusDateTimeWindowPicker
+                duration: null,
+                date: (
+                    <NexusDatePicker
+                        id={jvName}
                         label={displayName}
-                        onChange={timeWindow => {
-                            /* For testing purposes */
-                            console.warn('NexusDateTimeWindowPicker returned: ', timeWindow);
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDatePicker returned: ', date);
                         }}
-                        startDateTimePickerProps={{
-                            id: `${jvName}Start`,
-                        }}
-                        endDateTimePickerProps={{
-                            id: `${jvName}End`,
-                        }}
+                        required={required}
                     />
                 ),
-                date: <NexusDateTimePicker
-                    id={jvName}
-                    label={displayName}
-                    value={'2019-10-08T10:00:00.000Z'}
-                    onChange={date => {
-                        /* For testing proposes */
-                        console.warn('NexusSimpleDateTimePicker returned: ', date);
-                    }}
-                    required={required}
-                />,
+                datetime: (
+                    <NexusDateTimePicker
+                        id={jvName}
+                        label={displayName}
+                        onChange={date => {
+                            /* For testing proposes */
+                            console.warn('NexusDateTimePicker returned: ', date);
+                        }}
+                        required={required}
+                    />
+                ),
                 boolean: null,
                 territoryType: (
                     <NexusMultiInstanceField
@@ -298,12 +286,14 @@ class RightCreate extends React.Component {
                 }
                 const element = fieldMapping(dataType, javaVariableName, displayName, required, value);
                 const wrappedElement = (
-                    <div key={`${name}-${index}`}
-                         className="list-group-item-action"
-                         style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}>
+                    <div
+                        key={`${name}-${index}`}
+                        className="list-group-item-action"
+                        style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}
+                    >
                         <div className="row">
                             <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:
-                                {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                                {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
                             </div>
                             <div className="col-8">
                                 {element}
@@ -318,8 +308,10 @@ class RightCreate extends React.Component {
         return (
             <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
-                    <div className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
-                         style={{top:'-20px', zIndex:'1000', height:'25px'}}>
+                    <div
+                        className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
+                        style={{top:'-20px', zIndex:'1000', height:'25px'}}
+                    >
                         <Label id="right-create-error-message">
                             {this.state && this.state.errorMessage}
                         </Label>
@@ -329,18 +321,27 @@ class RightCreate extends React.Component {
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                    <div style={{display:'flex', justifyContent: 'flex-end'}} >
+                    {this.props.availsMapping && (
+                    <div style={{display:'flex', justifyContent: 'flex-end'}}>
                         <div className="mt-4 mx-5">
                             <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
                             <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                         </div>
                     </div>
-                    }
+                  )}
                 </BlockUi>
             </div>
         );
     }
 }
+RightCreate.propTypes = {
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    blocking: PropTypes.bool,
+    match: PropTypes.object
+};
 
+RightCreate.contextTypes = {
+    router: PropTypes.object
+};
 export default connect(mapStateToProps, null)(RightCreate);

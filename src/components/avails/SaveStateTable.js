@@ -1,12 +1,12 @@
 import React from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import {resultPageSelect, resultPageSort, resultPageUpdateColumnsOrder} from '../../stores/actions/avail/dashboard';
 import {store} from '../../index';
 
 export default function withRedux(WrappedComponent){
 
-    let mapStateToProps = state => {
+    const mapStateToProps = state => {
         return {
             availTabPageLoading: state.dashboard.availTabPageLoading
         };
@@ -14,29 +14,30 @@ export default function withRedux(WrappedComponent){
 
     return connect(mapStateToProps, null)(class extends React.Component {
 
-        static propTypes = {
-            availTabPageLoading: t.bool,
-        };
-
         render(){
-            return <WrappedComponent
-                {...this.props}
+            return (
+                <WrappedComponent
+                    {...this.props}
 
-                availTabPageLoading = {this.props.availTabPageLoading}
+                    availTabPageLoading={this.props.availTabPageLoading}
 
-                availsMapping = {store.getState().root.availsMapping}
+                    availsMapping={store.getState().root.availsMapping}
 
-                availTabPageSort = {store.getState().dashboard.session.availTabPageSort}
-                resultPageSort = {(sort) => store.dispatch(resultPageSort(sort))}
+                    availTabPageSort={store.getState().dashboard.session.availTabPageSort}
+                    resultPageSort={(sort) => store.dispatch(resultPageSort(sort))}
 
-                availTabPageSelection = {store.getState().dashboard.session.availTabPageSelection}
-                resultPageSelect = {(selection) => store.dispatch(resultPageSelect(selection))}
+                    availTabPageSelection={store.getState().dashboard.session.availTabPageSelection}
+                    resultPageSelect={(selection) => store.dispatch(resultPageSelect(selection))}
 
-                promotedRightsFullData = {store.getState().dopReducer.session.promotedRightsFullData}
+                    promotedRightsFullData={store.getState().dopReducer.session.promotedRightsFullData}
 
-                columnsOrder = {store.getState().dashboard.session.columns}
-                updateColumnsOrder = {(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
-            />;
+                    columnsOrder={store.getState().dashboard.session.columns}
+                    updateColumnsOrder={(columns) => store.dispatch(resultPageUpdateColumnsOrder(columns))}
+                />
+);
         }
     });
 }
+withRedux.propTypes = {
+    availTabPageLoading: t.bool,
+};

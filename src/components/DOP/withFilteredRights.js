@@ -7,15 +7,6 @@ import withRightsResultsTable from './withRightsResultsTable';
 
 const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent => {
     class ComposedComponent extends Component {
-        static propTypes = {
-            autoload: PropTypes.bool,
-            autoRefresh: PropTypes.number,
-        }
-
-        static defaultProps = {
-            autoload: true,
-            autoRefresh: 0,
-        }
 
         constructor(props) {
             super(props);
@@ -31,7 +22,6 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                 datasource: props.autoload ? {rowCount: null, getRows: this.getRows} : null,
             };
             this.state = {
-                colDef: props.colDef,
                 rowsProps,
                 cols: [],
                 pageSize: config.get('avails.page.size'),
@@ -52,7 +42,6 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
 
             if (!isEqual(prevProps.colDef, colDef) || !isEqual(prevProps.columns, columns)) {
                 this.setState({
-                    colDef, 
                     cols: refreshColumns(colDef)
                 });
             }
@@ -121,17 +110,28 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
         }
 
         render() {
-            return <WrappedComponent
-                {...this.props}
-                {...this.state.rowsProps}
-                colDef = {this.state.cols}
-                setTable={this.setTable}
-                getRowNodeId={data => data.id}
-            />;
+            return (
+                <WrappedComponent
+                    {...this.props}
+                    {...this.state.rowsProps}
+                    colDef={this.state.cols}
+                    setTable={this.setTable}
+                    getRowNodeId={data => data.id}
+                />
+);
         }
     }
+    ComposedComponent.propTypes = {
+        autoload: PropTypes.bool,
+        autoRefresh: PropTypes.number,
+    };
 
+    ComposedComponent.defaultProps = {
+        autoload: true,
+        autoRefresh: 0,
+    };
     return withRightsResultsTable(ComposedComponent);
 };
+
 
 export default withFilteredRights;

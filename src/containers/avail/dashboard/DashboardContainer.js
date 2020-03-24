@@ -1,24 +1,18 @@
-import './DashboardContainer.scss';
-
 import React from 'react';
+import t from 'prop-types';
 import {connect} from 'react-redux';
-import {IfEmbedded} from '../../../util/Common';
+import './DashboardContainer.scss';
 import FreeTextSearch from './components/FreeTextSearch';
 import AdvancedSearchPanel from './components/AdvancedSearchPanel';
 import {
-    resultPageLoading,
-    resultPageSort,
-    resultPageUpdate,
     searchFormShowSearchResults,
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
-    searchFormUpdateAdvancedSearchCriteria,
     resultPageShowSelected,
     searchFormUpdateTextSearch
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
-import t from 'prop-types';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
@@ -33,46 +27,18 @@ const mapStateToProps = state => {
         showAdvancedSearch: state.dashboard.session.showAdvancedSearch,
         showSearchResults: state.dashboard.session.showSearchResults,
         searchCriteria: state.dashboard.session.advancedSearchCriteria,
-        currentSearchCriteria: state.dashboard.session.searchCriteria,
     };
 };
 
 const mapDispatchToProps = {
-    resultPageLoading,
-    resultPageSort,
-    resultPageUpdate,
     searchFormShowAdvancedSearch,
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
     resultPageShowSelected,
-    searchFormUpdateAdvancedSearchCriteria,
     searchFormUpdateTextSearch
 };
 
 class DashboardContainer extends React.Component {
-    static propTypes = {
-        availsMapping: t.any,
-        searchCriteria: t.any,
-        currentSearchCriteria: t.any,
-        resultPageLoading: t.func,
-        resultPageSort: t.func,
-        resultPageUpdate: t.func,
-        searchFormUpdateTextSearch: t.func,
-        searchFormShowAdvancedSearch: t.func,
-        searchFormShowSearchResults: t.func,
-        searchFormSetAdvancedSearchCriteria: t.func,
-        searchFormUpdateAdvancedSearchCriteria: t.func,
-        selected: t.array,
-        showAdvancedSearch: t.bool,
-        showSearchResults: t.bool,
-        location: t.object,
-        match: t.object,
-        resultPageShowSelected: t.func
-    };
-
-    static contextTypes = {
-        router: t.object
-    }
 
     constructor(props) {
         super(props);
@@ -165,35 +131,59 @@ class DashboardContainer extends React.Component {
     render() {
         return (
             <div>
-                <RightsURL/>
-                <IfEmbedded value={false}>
-                    <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
-                        <div>
-                            <table style={{width: '100%'}}>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <FreeTextSearch disabled={this.props.showAdvancedSearch} containerId={'dashboard-avails'}
-                                                onSearch={this.handleAvailsFreeTextSearch}/>
-                                        </td>
-                                        <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
-                                            <button className="btn btn-outline-secondary advanced-search-btn" style={{height: '40px'}} title={'Advanced search'}
-                                                id={'dashboard-avails-advanced-search-btn'} onClick={this.toggleAdvancedSearch}>
-                                                <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <RightsURL />
+                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
+                    <div>
+                        <table style={{width: '100%'}}>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <FreeTextSearch
+                                            disabled={this.props.showAdvancedSearch}
+                                            containerId="dashboard-avails"
+                                            onSearch={this.handleAvailsFreeTextSearch}
+                                        />
+                                    </td>
+                                    <td style={{width: '20px', height: '30px', paddingLeft: '8px'}}>
+                                        <button
+                                            className="btn btn-outline-secondary advanced-search-btn"
+                                            style={{height: '40px'}}
+                                            title="Advanced search"
+                                            id="dashboard-avails-advanced-search-btn"
+                                            onClick={this.toggleAdvancedSearch}
+                                        >
+                                            <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    {<AdvancedSearchPanel location={this.props.location}  hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch}/>}
-                    {!this.props.showSearchResults && <DashboardTab/>}
-                </IfEmbedded>
-                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab/>}
+                </div>
+                <AdvancedSearchPanel location={this.props.location} hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch} />
+                {!this.props.showSearchResults && <DashboardTab />}
+                {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab />}
             </div>
         );
     }
 }
+
+DashboardContainer.propTypes = {
+    availsMapping: t.any,
+    searchCriteria: t.any,
+    searchFormUpdateTextSearch: t.func,
+    searchFormShowAdvancedSearch: t.func,
+    searchFormShowSearchResults: t.func,
+    searchFormSetAdvancedSearchCriteria: t.func,
+    showAdvancedSearch: t.bool,
+    showSearchResults: t.bool,
+    location: t.object,
+    match: t.object,
+    resultPageShowSelected: t.func
+};
+
+DashboardContainer.contextTypes = {
+    router: t.object
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

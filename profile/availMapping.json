@@ -600,8 +600,8 @@
 }, {
   "javaVariableName": "episodic.distributionNumber",
   "displayName": "Distribution Number",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "distributionNumber",
   "readOnly": false,
   "enableSearch": true,
@@ -610,8 +610,8 @@
 }, {
   "javaVariableName": "episodic.volumeDistributionNumber",
   "displayName": "Volume Distribution Number",
-  "dataType": "integer",
-  "searchDataType": "integer",
+  "dataType": "string",
+  "searchDataType": "string",
   "queryParamName": "volumeDistributionNumber",
   "readOnly": false,
   "enableSearch": true,
@@ -664,7 +664,7 @@
   "searchDataType": "string",
   "queryParamName": "displayName",
   "readOnly": false,
-  "enableSearch": false,
+  "enableSearch": true,
   "enableEdit": false,
   "required": false
 }, {
@@ -1063,7 +1063,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.titleId",
-  "displayName": "EIDR Title ID",
+  "displayName": "Title ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrTitleId",
@@ -1073,7 +1073,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seriesId",
-  "displayName": "EIDR Series ID",
+  "displayName": "Series ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeriesId",
@@ -1083,7 +1083,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.seasonId",
-  "displayName": "EIDR Season ID",
+  "displayName": "Season ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrSeasonId",
@@ -1093,7 +1093,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeTitleId",
-  "displayName": "EIDR Episode Title ID",
+  "displayName": "Episode Title ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEpisodeTitleId",
@@ -1103,7 +1103,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.volumeId",
-  "displayName": "EIDR Volume ID",
+  "displayName": "Volume ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrVolumeId",
@@ -1113,7 +1113,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.episodeId",
-  "displayName": "EIDR Episode ID",
+  "displayName": "Episode ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEpisodeId",
@@ -1123,7 +1123,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.editId",
-  "displayName": "EIDR Edit ID",
+  "displayName": "Edit ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEditId",
@@ -1133,7 +1133,7 @@
   "required": false
 }, {
   "javaVariableName": "eidr.encodeId",
-  "displayName": "EIDR Encode ID",
+  "displayName": "Encode ID",
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "eidrEncodeId",
@@ -1620,6 +1620,83 @@
   "searchDataType": "string",
   "queryParamName": "updatedBy",
   "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "providerId",
+  "displayName": "Provider Id",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "providerId",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "isrc",
+  "displayName": "ISRC",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "isrc",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "videoFileName",
+  "displayName": "Video FileName",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "videoFileName",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "screenGrabFileName",
+  "displayName": "Screen Grab FileName",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "screenGrabFileName",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "materialNotes",
+  "displayName": "Material Notes",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "materialNotes",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "supplierSynopsis",
+  "displayName": "Supplier Synopsis",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "supplierSynopsis",
+  "readOnly": false,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+},
+{
+  "javaVariableName": "recordingLabel",
+  "displayName": "Recording Label",
+  "dataType": "string",
+  "searchDataType": "string",
+  "queryParamName": "recordingLabel",
+  "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
   "required": false

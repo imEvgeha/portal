@@ -2,6 +2,13 @@ import { AbilityBuilder, Ability } from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
 import {withRouter} from 'react-router-dom';
 import React from 'react';
+import {AVAILS, MEDIA, METADATA} from './navigation/constants';
+
+const idToAbilityNameMap = {
+    [AVAILS]: 'Avail',
+    [METADATA]: 'Metadata',
+    [MEDIA]: 'AssetManagement',
+};
 
 const ability = new Ability([]);
 
@@ -83,7 +90,7 @@ const canRender = (Component, action, subject, field = undefined) => {
         }
 
         render() {
-            return can(action, subject, field) ? <Component {...this.props}/> : <div>Invalid application state</div>;
+            return can(action, subject, field) ? <Component {...this.props} /> : <div>Invalid application state</div>;
         }
 
     }
@@ -92,4 +99,4 @@ const canRender = (Component, action, subject, field = undefined) => {
 };
 
 
-export {ability, updateAbility, Can, can, cannot, canRender};
+export {ability, updateAbility, Can, can, cannot, canRender, idToAbilityNameMap};

@@ -1,0 +1,19 @@
+@import '../../../styles/config';
+
+.nexus-c-rights-repository-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+
+.nexus-c-rights-repository-header__title {
+    display: flex;
+    align-items: center;
+    color: map-get($colors, nexus-title-color);
+}
+
+.nexus-c-rights-repository-header__title-text {
+    margin: 0 16px;
+    font-size: 29px;
+}

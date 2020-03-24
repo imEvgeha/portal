@@ -28,7 +28,7 @@ class Rating extends Component {
 
     getAdvisoryNameByCode = (code) => {
         if (this.props.configAdvisoryCode) {
-            let found = this.props.configAdvisoryCode.value.find(e => e.code === code);
+            const found = this.props.configAdvisoryCode.value.find(e => e.code === code);
             if (found) {
                 return found.name;
             }
@@ -44,7 +44,7 @@ class Rating extends Component {
 
     handleRatingSystemValue = (e) => {
         const rating = e.target.value;
-        let newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
+        const newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
         this.setState({
             filteredRatings: newRatings
         });
@@ -55,22 +55,22 @@ class Rating extends Component {
             <Container fluid id="ratingContainer" style={{ marginTop: '30px' }}>
                 {this.props.ratings && this.props.ratings.length > 0 || this.props.isEditMode ?
                     <h4>Ratings</h4>
-                    : null
-                }
+                    : null}
                 <div className='tab'>
                     {
-                        this.props.isEditMode ?
-                            <React.Fragment>
-                                <FontAwesome className={'tablinks add-local'} name="plus-circle" id={'createRatings'} onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
-                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createRatings'} toggle={this.toggle}>
+                        this.props.isEditMode ? (
+                            <>
+                                <FontAwesome className="tablinks add-local" name="plus-circle" id="createRatings" onClick={() => this.props.addRating(this.props.createRatingTab)} key={this.props.createRatingTab} size="lg" />
+                                <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createRatings" toggle={this.toggle}>
                                     Create Rating
                                 </Tooltip>
-                            </React.Fragment>
+                            </>
+                          )
                             : null
                     }
                     {
                         this.props.ratings && this.props.ratings.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{(item.ratingSystem ? item.ratingSystem : 'Empty') + ' ' + (item.rating ? item.rating : 'Empty')}</b></span>;
+                            return <span className="tablinks" style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{(item.ratingSystem ? item.ratingSystem : 'Empty') + ' ' + (item.rating ? item.rating : 'Empty')}</b></span>;
                         })
                     }
                 </div>
@@ -85,19 +85,19 @@ class Rating extends Component {
                                                 <RatingReadTab getAdvisoryNameByCode={this.getAdvisoryNameByCode} key={i} data={item} />
                                             </Col>
                                         </Row>
-                                    </TabPane>);
+                                    </TabPane>
+);
                             }) : null
                     }
                     {
-                        this.props.isEditMode ?
-                            <Fragment>
+                        this.props.isEditMode ? (
+                            <>
                                 <TabPane tabId={this.props.createRatingTab}>
                                     <Row>
                                         <Col>
                                             <RatingCreateTab
                                                 handleRatingCreateChange={this.props.handleRatingCreateChange}
                                                 areRatingFieldsRequired={this.props.areRatingFieldsRequired}
-                                                handleAdvisoryCodeChange={this.props.handleAdvisoryCodeChange}
                                                 ratingObjectForCreate={this.props.ratingObjectForCreate}
                                                 configRatings={this.props.configRatings}
                                                 handleRatingSystemValue={this.handleRatingSystemValue}
@@ -125,13 +125,16 @@ class Rating extends Component {
                                                             advisoryCodeList={this.state.advisoryCodeList}
                                                             getAdvisoryNameByCode={this.getAdvisoryNameByCode}
                                                             key={i}
-                                                            data={item} />
+                                                            data={item}
+                                                        />
                                                     </Col>
                                                 </Row>
-                                            </TabPane>);
+                                            </TabPane>
+);
                                     })
                                 }
-                            </Fragment>
+                            </>
+                          )
                             : null
                     }
                 </TabContent>
@@ -151,7 +154,6 @@ Rating.propTypes = {
     configRatings: PropTypes.object,
     configRatingSystem: PropTypes.object,
     configAdvisoryCode: PropTypes.object,
-    handleAdvisoryCodeChange: PropTypes.func,
     ratingObjectForCreate: PropTypes.object,
     areRatingFieldsRequired: PropTypes.bool,
     handleRatingCreateChange: PropTypes.func

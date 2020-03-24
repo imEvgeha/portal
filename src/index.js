@@ -16,14 +16,14 @@ import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState
 import AppLayout from './layout/AppLayout';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
-import NexusToastNotificationProvider from './ui-elements/nexus-toast-notification/NexusToastNotificationProvider';
-import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
-import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
+import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
+import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
 import {authRefreshToken, storeAuthCredentials} from './auth/authActions';
 import {getAccessToken, getRefreshToken} from './auth/authService';
 import {loadProfileInfo} from './stores/actions';
 import KeycloakAuth from './auth/authKeycloak';
+import Toast from './ui/toast/Toast';
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -41,11 +41,12 @@ axios.get('/config.json').then(response => {
     console.error(error);
     render(
         <p>
-           Problem with configuration, application cannot be started
+            Problem with configuration, application cannot be started
         </p>,
         document.querySelector('#app')
     );
 });
+
 
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
 const history = createBrowserHistory();
@@ -57,11 +58,12 @@ const app = (
     <Provider store={store}>
         <CustomIntlProvider>
             <NexusOverlayProvider>
-                <NexusToastNotificationProvider>
-                    <NexusModalProvider>
+                <NexusModalProvider>
+                    <>
+                        <Toast />
                         <AppLayout history={history} />
-                    </NexusModalProvider>
-                </NexusToastNotificationProvider>
+                    </>
+                </NexusModalProvider>
             </NexusOverlayProvider>
         </CustomIntlProvider>
     </Provider>

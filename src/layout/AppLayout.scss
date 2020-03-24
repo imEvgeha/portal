@@ -3,13 +3,16 @@
 .nexus-c-app-layout {
     display: flex;
     margin: 0 auto;
-    flex-direction: column;
+    flex-direction: row;
     min-height: 100%;
     width: 100%;
     height: 100%;
 
-    &.nexus-navigation {
-        flex-direction: row;
+    .nexus-navbar-user{
+        .dropdown-menu{
+            right: 0;
+            left: auto;
+        }
     }
 }
 

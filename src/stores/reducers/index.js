@@ -12,12 +12,23 @@ import {
     STORE_AVAIL_CONFIGURATION_REPORTS,
 } from '../../containers/avail/availActionTypes';
 
+import {STORE_MAPPING} from './actionTypes';
+
 const initialState = {
     profileInfo: {},
     reports: null,
     availsMapping: null,
     selectValues: {},
-    blocking: false
+    blocking: false,
+    mapping: {
+        avail: [],
+        title: [],
+    },
+};
+
+const updateMapping = (state, payload) => {
+    const type = Object.keys(payload)[0];
+    return {...state, [type]: Object.values(payload)[0]};
 };
 
 const root = (state = initialState, action) => {
@@ -39,6 +50,10 @@ const root = (state = initialState, action) => {
             return { ...state, selectValues: action.payload};
         case STORE_AVAIL_CONFIGURATION_REPORTS:
             return { ...state, reports: action.payload};
+
+        case STORE_MAPPING:
+            return { ...state, mapping: updateMapping(state.mapping, action.payload)};
+
         default:
             return state;
     }

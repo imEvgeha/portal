@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
     FormGroup,
     Alert,
@@ -20,11 +20,13 @@ import PersonListReadOnly from './PersonListReadOnly';
 import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-variables';
 
 class CoreMetadataReadOnlyMode extends Component {
+
     render() {
+        const {legacyIds, externalIds} = this.props.data;
         return (
-            <Fragment>
+            <>
                 {
-                    this.props.data.castCrew && this.props.data.castCrew.length > 0 ?
+                    this.props.data.castCrew && this.props.data.castCrew.length > 0 ? (
                         <Row style={{ marginTop: '15px' }}>
                             <Col>
                                 <Card id='cardContainer'>
@@ -40,15 +42,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }}
                                             id='listContainer'
                                         >
-                                            {this.props.data.castCrew && 
-                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {                                                    
+                                            {this.props.data.castCrew &&
+                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {
                                                     return (
-                                                        <PersonListReadOnly 
+                                                        <PersonListReadOnly
                                                             key={i}
-                                                            showPersonType={true} 
-                                                            person={cast} 
+                                                            showPersonType={true}
+                                                            person={cast}
                                                             columnName={CHARACTER_NAME}
-                                                            getFormatTypeName={getFormatTypeName} 
+                                                            getFormatTypeName={getFormatTypeName}
                                                         />
                                                     );
                                                 })}
@@ -72,18 +74,19 @@ class CoreMetadataReadOnlyMode extends Component {
                                         >
                                             {this.props.data.castCrew &&
                                                 getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
-                                                    <PersonListReadOnly 
-                                                            key={i}
-                                                            showPersonType={true} 
-                                                            person={crew} 
-                                                            getFormatTypeName={getFormatTypeName} 
-                                                        />
+                                                    <PersonListReadOnly
+                                                        key={i}
+                                                        showPersonType={true}
+                                                        person={crew}
+                                                        getFormatTypeName={getFormatTypeName}
+                                                    />
                                                 ))}
                                         </ListGroup>
                                     </CardBody>
                                 </Card>
                             </Col>
                         </Row>
+                      )
                         : null
                 }
                 <Row style={{ marginTop: '10px' }}>
@@ -96,135 +99,229 @@ class CoreMetadataReadOnlyMode extends Component {
                 </Row>
                 <Row style={{ marginTop: '10px' }}>
                     {
-                        this.props.data.awards && this.props.data.awards.length > 0 ?
+                        this.props.data.awards && this.props.data.awards.length > 0 ? (
                             <Col>
                                 <FormGroup>
                                     <Alert color='light'><b>Awards: </b> {this.props.data.awards}</Alert>
                                 </FormGroup>
                             </Col>
+                          )
                             : null
                     }
                 </Row>
                 <Row style={{ marginTop: '10px' }}>
                     {
-                        this.props.data.imdbLink && this.props.data.imdbLink.length > 0 ?
+                        this.props.data.imdbLink && this.props.data.imdbLink.length > 0 ? (
                             <Col>
                                 <FormGroup>
                                     <Alert color='light' style={{wordWrap: 'break-word'}}><b>IMDb Link: </b> {this.props.data.imdbLink}</Alert>
                                 </FormGroup>
                             </Col>
+                          )
                             : null
                     }
                 </Row>
-                {
-                    this.props.data.externalIds ?
-                        <Fragment>
-                            <hr />
-                            <h4>External IDs</h4>
-                            <div id="coreMetadataEditMode">
+                {externalIds || legacyIds ? (
+                    <>
+                        <hr />
+                        <h4>External IDs</h4>
+                        <div id="coreMetadataEditMode">
+                            {  externalIds && (
+                                <>
+                                    {
+                                        externalIds.assetName && (
+                                            <Row style={{ marginTop: '10px' }}>
+                                                <Col>
+                                                    <Alert color='light'><b style={{ color: '#000' }}>Asset Name: </b>{externalIds.assetName}</Alert>
+                                                </Col>
+                                            </Row>
+                                        )
+                                    }
+                                    { (externalIds.eidrTitleId ||  externalIds.tmsId) && (
+                                    <Row style={{ marginTop: '10px' }}>
+                                        {
+                                                    externalIds.eidrTitleId ? (
+                                                        <Col>
+                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Title ID: </b> {externalIds ? externalIds.eidrTitleId : null}</Alert>
+                                                        </Col>
+                                                      ) : null
+                                                }
+                                        {
+                                                    externalIds.tmsId ? (
+                                                        <Col>
+                                                            <Alert color='light'><b style={{ color: '#000' }}>TMS ID: </b> {externalIds ? externalIds.tmsId : null}</Alert>
+                                                        </Col>
+                                                      ) : null
+                                                }
+                                    </Row>
+                                          )}
+                                    {(externalIds.eidrEditId || externalIds.xfinityMovieId) && (
+                                        <Row style={{marginTop: '10px'}}>
+                                            {
+                                                externalIds.eidrEditId ? (
+                                                    <Col>
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                EIDR Edit ID:
+                                                            </b> {externalIds ? externalIds.eidrEditId : null}
+                                                        </Alert>
+                                                    </Col>
+                                                  ) : null
+                                            }
+                                            {
+                                                externalIds.xfinityMovieId ? (
+                                                    <Col>
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                Xfinity Movie ID:
+                                                            </b> {externalIds ? externalIds.xfinityMovieId : null}
+                                                        </Alert>
+                                                    </Col>
+                                                  ) : null
+                                            }
+                                        </Row>
+                                      )}
+                                    {(externalIds.maId || externalIds.licensorTitleId) && (
+                                        <Row style={{marginTop: '10px'}}>
+                                            {
+                                                externalIds.maId ? (
+                                                    <Col>
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                MA ID:
+                                                            </b> {externalIds ? externalIds.maId : null}
+                                                        </Alert>
+                                                    </Col>
+                                                  ) : null
+                                            }
+                                            {
+                                                externalIds.licensorTitleId ? (
+                                                    <Col>
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                Licensor Title ID:
+                                                            </b> {externalIds ? externalIds.licensorTitleId : null}
+                                                        </Alert>
+                                                    </Col>
+                                                  ) : null
+                                            }
+                                        </Row>
+                                      )}
+                                    {(externalIds.isan || externalIds.overrideMsvAssociationId) && (
+                                        <Row style={{marginTop: '10px'}}>
+                                            {
+                                                externalIds.isan ? (
+                                                    <Col>
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                ISAN:
+                                                            </b> {externalIds ? externalIds.isan : null}
+                                                        </Alert>
+                                                    </Col>
+                                                  ) : null
+                                            }
+                                            {
+                                                externalIds.overrideMsvAssociationId ? (
+                                                    <Col>
+                                                        <Alert color='light'>
+                                                            <b style={{color: '#000'}}>
+                                                                Override MSV Association ID:
+                                                            </b> {externalIds ? externalIds.overrideMsvAssociationId : null}
+                                                        </Alert>
+                                                    </Col>
+                                                  ) : null
+                                            }
+                                        </Row>
+                                      )}
+                                </>
+                              )}
+                            {((externalIds && externalIds.alid) || (legacyIds && legacyIds.vz)) && (
                                 <Row style={{ marginTop: '10px' }}>
                                     {
-                                        this.props.data.externalIds.eidrLevel1 ?
+                                        externalIds && externalIds.alid ? (
                                             <Col>
-                                                <Alert color='light' ><b style={{ color: '#000' }}>EIDR Level 1: </b> {this.props.data.externalIds ? this.props.data.externalIds.eidrLevel1 : null}</Alert>
-                                            </Col> : null
+                                                <Alert color='light'><b style={{ color: '#000' }}>ALID: </b> {externalIds ? externalIds.alid : null}</Alert>
+                                            </Col>
+                                          ) : null
                                     }
                                     {
-                                        this.props.data.externalIds.tmsId ?
+                                        legacyIds && legacyIds.vz ? (
                                             <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>TMS ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.tmsId : null}</Alert>
-                                            </Col> : null
+                                                <Alert color='light'><b style={{ color: '#000' }}>VZ Title ID: </b> {legacyIds.vz.vzTitleId ? legacyIds.vz.vzTitleId : null}</Alert>
+                                            </Col>
+                                          ) : null
                                     }
                                 </Row>
-                                <Row style={{ marginTop: '10px' }}>
+                              )}
+                            {((externalIds && externalIds.cid) || (legacyIds && legacyIds.movida)) && (
+                                <Row style={{marginTop: '10px'}}>
                                     {
-                                        this.props.data.externalIds.eidrLevel2 ?
+                                        externalIds && externalIds.cid ? (
                                             <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>EIDR Level 2: </b> {this.props.data.externalIds ? this.props.data.externalIds.eidrLevel2 : null}</Alert>
-                                            </Col> : null
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        C ID:
+                                                    </b> {externalIds ? externalIds.cid : null}
+                                                </Alert>
+                                            </Col>
+                                          ) : null
                                     }
                                     {
-                                        this.props.data.externalIds.xfinityMovieId ?
+                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaId ? (
                                             <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>Xfinity Movie ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.xfinityMovieId : null}</Alert>
-                                            </Col> : null
-                                    }
-                                </Row>
-                                <Row style={{ marginTop: '10px' }}>
-                                    {
-                                        this.props.data.externalIds.dmaId ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>DMA ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.dmaId : null}</Alert>
-                                            </Col> : null
-                                    }
-                                    {
-                                        this.props.data.externalIds.licensorTitleId ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>Licensor Title ID:</b> {this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : null}</Alert>
-                                            </Col> : null
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        Movida ID:
+                                                    </b> {legacyIds.movida.movidaId ? legacyIds.movida.movidaId : null}
+                                                </Alert>
+                                            </Col>
+                                          ) : null
                                     }
                                 </Row>
-                                <Row style={{ marginTop: '10px' }}>
+                              )}
+                            {((externalIds && externalIds.isrc) || (legacyIds && legacyIds.movida)) && (
+                                <Row style={{marginTop: '10px'}}>
                                     {
-                                        this.props.data.externalIds.isan ?
+                                        externalIds && externalIds.isrc ? (
                                             <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>ISAN: </b> {this.props.data.externalIds ? this.props.data.externalIds.isan : null}</Alert>
-                                            </Col> : null
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        ISRC:
+                                                    </b>
+                                                    {externalIds ? externalIds.isrc : null}
+                                                </Alert>
+                                            </Col>
+                                          ) : null
                                     }
                                     {
-                                        this.props.data.externalIds.overrideMsvAssociationId ?
+                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaTitleId ? (
                                             <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>Override MSV Association ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : null}</Alert>
-                                            </Col> : null
-                                    }
-                                </Row>
-                                <Row style={{ marginTop: '10px' }}>
-                                    {
-                                        this.props.data.externalIds.alid ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>ALID: </b> {this.props.data.externalIds ? this.props.data.externalIds.alid : null}</Alert>
-                                            </Col> : null
-                                    }
-                                    {
-                                        this.props.data.legacyIds && this.props.data.legacyIds.vz ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>VZ Title ID: </b> {this.props.data.legacyIds.vz.vzTitleId ? this.props.data.legacyIds.vz.vzTitleId : null}</Alert>
-                                            </Col> : null
-                                    }
-                                </Row>
-                                <Row style={{ marginTop: '10px' }}>
-                                    {
-                                        this.props.data.externalIds.cid ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>C ID: </b> {this.props.data.externalIds ? this.props.data.externalIds.cid : null}</Alert>
-                                            </Col> : null
-                                    }
-                                    {
-                                        this.props.data.legacyIds && this.props.data.legacyIds.movida ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>Movida ID: </b> {this.props.data.legacyIds.movida.movidaId ? this.props.data.legacyIds.movida.movidaId : null}</Alert>
-                                            </Col> : null
+                                                <Alert color='light'>
+                                                    <b style={{color: '#000'}}>
+                                                        Movida Title ID:
+                                                    </b> {legacyIds.movida.movidaTitleId ? legacyIds.movida.movidaTitleId : null}
+                                                </Alert>
+                                            </Col>
+                                          ) : null
                                     }
                                 </Row>
-                                <Row style={{ marginTop: '10px' }}>
-                                    {
-                                        this.props.data.externalIds.isrc ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>ISRC: </b> {this.props.data.externalIds ? this.props.data.externalIds.isrc : null}</Alert>
-                                            </Col> : null
-                                    }
-                                    {
-                                        this.props.data.legacyIds && this.props.data.legacyIds.movida ?
-                                            <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>Movida Title ID: </b> {this.props.data.legacyIds.movida.movidaTitleId ? this.props.data.legacyIds.movida.movidaTitleId : null}</Alert>
-                                            </Col> : null
-                                    }
+                              )}
+                            {((legacyIds && legacyIds.vz && legacyIds.vz.vzId )) && (
+                                <Row style={{marginTop: '10px'}}>
+                                    <Col>
+                                        <Alert color='light'>
+                                            <b style={{color: '#000'}}>
+                                                VZ Vendor ID:
+                                            </b> {legacyIds.vz.vzId}
+                                        </Alert>
+                                    </Col>
                                 </Row>
-                            </div>
-                        </Fragment>
-                        : null
-                }
-            </Fragment>
+                            )}
+                        </div>
+                    </>
+                  )
+                    : null}
+            </>
         );
     }
 }

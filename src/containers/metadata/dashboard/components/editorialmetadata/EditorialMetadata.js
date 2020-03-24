@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Row, Col, Container, TabContent, TabPane, Alert, Tooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
@@ -24,7 +24,7 @@ class EditorialMetadata extends Component {
 
     getLanguageByCode = (code) => {
         if (this.props.configLanguage) {
-            let found = this.props.configLanguage.value.find(e => e.languageCode === code);
+            const found = this.props.configLanguage.value.find(e => e.languageCode === code);
             if (found) {
                 return found.languageName;
             }
@@ -49,18 +49,19 @@ class EditorialMetadata extends Component {
                 </Row>
                 <div className='tab'>
                     {
-                        this.props.isEditMode ?
-                            <React.Fragment>
-                                <FontAwesome className={'tablinks add-local'} id={'createEditorialMetadata'} name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
-                                <Tooltip placement={'top'} isOpen={this.state.tooltipOpen} target={'createEditorialMetadata'} toggle={this.toggle}>
+                        this.props.isEditMode ? (
+                            <>
+                                <FontAwesome className="tablinks add-local" id="createEditorialMetadata" name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
+                                <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createEditorialMetadata" toggle={this.toggle}>
                                     Create Editorial Metadata
                                 </Tooltip>
-                            </React.Fragment>
+                            </>
+                          )
                             : null
                     }
                     {
                         this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className={'tablinks'} style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '') + ' ' + (item.service ? item.service : '')}</b></span>;
+                            return <span className="tablinks" style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '') + ' ' + (item.service ? item.service : '')}</b></span>;
                         })
                     }
                 </div>
@@ -75,23 +76,27 @@ class EditorialMetadata extends Component {
                                                 <EditorialMetadataTab
                                                     titleContentType={this.props.titleContentType}
                                                     getLanguageByCode={this.getLanguageByCode}
-                                                    key={i} data={item} />
+                                                    key={i}
+                                                    data={item}
+                                                />
                                             </Col>
                                         </Row>
-                                    </TabPane>);
+                                    </TabPane>
+);
                             }) :
-                            !this.props.isEditMode ?
+                            !this.props.isEditMode ? (
                                 <Row>
                                     <Col>
                                         <Alert color="primary">
                                             <FontAwesome name="info" /> <b>No editorial metadata.</b>
                                         </Alert>
                                     </Col>
-                                </Row> : null
+                                </Row>
+                              ) : null
                     }
                     {
-                        this.props.isEditMode ?
-                            <Fragment>
+                        this.props.isEditMode ? (
+                            <>
                                 <TabPane tabId={this.props.createEditorialTab}>
                                     <Row>
                                         <Col>
@@ -101,11 +106,13 @@ class EditorialMetadata extends Component {
                                                 areFieldsRequired={this.props.areFieldsRequired}
                                                 handleChange={this.props.handleChange}
                                                 handleTitleChange={this.props.handleTitleChange}
+                                                handleEpisodicChange={this.props.handleEpisodicChange}
                                                 editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 handleGenreChange={this.props.handleGenreChange}
                                                 handleEditorialCastCrewCreate={this.props.handleEditorialCastCrewCreate}
-                                                titleContentType={this.props.titleContentType} />
+                                                titleContentType={this.props.titleContentType}
+                                            />
                                         </Col>
                                     </Row>
                                 </TabPane>
@@ -123,13 +130,17 @@ class EditorialMetadata extends Component {
                                                             handleEditorialCastCrew={this.props.handleEditorialCastCrew}
                                                             handleGenreEditChange={this.props.handleGenreEditChange}
                                                             updatedEditorialMetadata={this.props.updatedEditorialMetadata}
-                                                            key={i} data={item} />
+                                                            key={i}
+                                                            data={item}
+                                                        />
                                                     </Col>
                                                 </Row>
-                                            </TabPane>);
+                                            </TabPane>
+);
                                     })
                                 }
-                            </Fragment>
+                            </>
+                          )
                             : null
                     }
                 </TabContent>
@@ -143,6 +154,7 @@ EditorialMetadata.propTypes = {
     editorialMetadata: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
+    handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     areFieldsRequired: PropTypes.bool,

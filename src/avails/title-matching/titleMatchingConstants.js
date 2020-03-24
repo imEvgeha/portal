@@ -1,9 +1,4 @@
 export default {
-    repository: {
-        NEXUS: 'nexus',
-        MOVIDA: 'movida',
-        VZ: 'vz',
-    },
     ADDITIONAL_COLUMN_DEF: {
         width: 100,
         pinned: 'left',
@@ -12,6 +7,8 @@ export default {
         suppressMovable: true,
         lockPosition: true,
         sortable: false,
+        lockVisible: true,
+        lockPinned: true
     },
     searchParameters: {
         TITLE: 'title',

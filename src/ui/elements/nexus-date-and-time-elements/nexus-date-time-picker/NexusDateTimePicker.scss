@@ -1,0 +1,29 @@
+.nexus-c-date-time-picker {
+    min-width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+
+    & > * {
+        grid-row: -1;
+    }
+
+    .nexus-c-nexus-grid & {
+        display: flex;
+        flex-direction: column;
+        align-items: normal;
+    }
+}
+
+.nexus-c-date-time-picker__date-time {
+    flex-grow: 2
+}
+
+.nexus-c-date-time-picker__type-select {
+    flex-grow: 1;
+}
+
+.read-view-container__placeholder {
+    color: #808080;
+}

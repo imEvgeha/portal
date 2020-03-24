@@ -4,7 +4,7 @@ import {
     searchFormUpdateAdvancedHistorySearchCriteria,
     searchFormSetHistorySearchCriteria
 } from '../../../../stores/actions/avail/history';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
@@ -24,12 +24,6 @@ const mapDispatchToProps = {
 };
 
 class AdvancedHistorySearchPanel extends React.Component {
-    static propTypes = {
-        searchCriteria: t.object,
-        onSearch: t.func,
-        searchFormUpdateAdvancedHistorySearchCriteria: t.func,
-        searchFormSetHistorySearchCriteria : t.func
-    };
 
     _handleKeyPress = (e) => {
         if (e.key === 'Enter' && !this.state.invalidForm) {
@@ -78,7 +72,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     validateState(invalidState) {
-        for (let key of Object.keys(invalidState)) {
+        for (const key of Object.keys(invalidState)) {
             if (invalidState[key]) { return false; }
         }
         return true;
@@ -99,36 +93,43 @@ class AdvancedHistorySearchPanel extends React.Component {
 
     render() {
         const renderTextField = (name, displayName) => {
-            return (<div key={name} style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                <label htmlFor={'avail-ingest-history-search-' + name + '-text'}>{displayName}</label>
-                <input type="text" className="form-control"
-                       id={'avail-ingest-history-search-' + name + '-text'}
-                       placeholder={'Enter ' + displayName}
-                       name={name}
-                       value={this.props.searchCriteria[name] ? this.props.searchCriteria[name]: ''}
-                       onChange={this.handleInputChange}
-                       onKeyPress={this._handleKeyPress}/>
-            </div>);
+            return (
+                <div key={name} style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
+                    <label htmlFor={'avail-ingest-history-search-' + name + '-text'}>{displayName}</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id={'avail-ingest-history-search-' + name + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        name={name}
+                        value={this.props.searchCriteria[name] ? this.props.searchCriteria[name]: ''}
+                        onChange={this.handleInputChange}
+                        onKeyPress={this._handleKeyPress}
+                    />
+                </div>
+);
         };
 
         const renderRangeDatepicker = (name, displayName) => {
-            return (<RangeDatapicker
-                key={name}
-                id={'avails-ingest-history-search-' + name}
-                displayName={displayName}
-                value={this.props.searchCriteria[name] ? this.props.searchCriteria[name] : {}}
-                onFromDateChange={(value) => this.handleDateChange(name, 'from', value)}
-                onToDateChange={(value) => this.handleDateChange(name, 'to', value)}
-                onInvalid={(value) => this.handleDateInvalid(name, value)}
-                handleKeyPress={this._handleKeyPress}
-            />);
+            return (
+                <RangeDatapicker
+                    key={name}
+                    id={'avails-ingest-history-search-' + name}
+                    displayName={displayName}
+                    value={this.props.searchCriteria[name] ? this.props.searchCriteria[name] : {}}
+                    onFromDateChange={(value) => this.handleDateChange(name, 'from', value)}
+                    onToDateChange={(value) => this.handleDateChange(name, 'to', value)}
+                    onInvalid={(value) => this.handleDateInvalid(name, value)}
+                    handleKeyPress={this._handleKeyPress}
+                />
+);
         };
 
-        let searchFields = [];
+        const searchFields = [];
         searchFields.push(renderTextField('provider', 'Provider'));
         searchFields.push(renderRangeDatepicker('received', 'Avail Delivery Date'));
 
-        let options = [
+        const options = [
             { value: '', label: 'ALL' },
             { value: 'PENDING', label: 'PENDING' },
             { value: 'MANUAL', label: 'MANUAL' },
@@ -137,33 +138,54 @@ class AdvancedHistorySearchPanel extends React.Component {
         ];
 
         return (
-            <div className={'nx-stylish container-fluid vu-advanced-history-search-panel'}
-                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}>
+            <div
+                className="nx-stylish container-fluid vu-advanced-history-search-panel"
+                style={{background: 'rgba(0,0,0,0.1)', padding: '1em'}}
+            >
                 <div style={{ display:'flex', flex: 1, flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
                     {searchFields}
                     <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                        <label htmlFor={'avail-ingest-history-search-state-text'}>Status</label>
+                        <label htmlFor="avail-ingest-history-search-state-text">Status</label>
                         <Select
-                            id={'avail-ingest-history-search-state-select'}
+                            id="avail-ingest-history-search-state-select"
                             onChange={this.handleStateSelect}
                             options={options}
-                            value ={options.filter(option => option.value === this.props.searchCriteria.status)}
-                        > </Select>
+                            value={options.filter(option => option.value === this.props.searchCriteria.status)}
+                        />
                     </div>
                 </div>
                 <div>
-                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
-                         <Button outline color="secondary" id={'avail-ingest-history-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
+                    <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '8px 0px 0px'}}>
+                        <Button
+                            outline
+                            color="secondary"
+                            id="avail-ingest-history-avails-advanced-search-clear-btn"
+                            onClick={this.handleClear}
+                            style={{width: '80px', margin: '4px 7px 0'}}
+                        >clear
+                        </Button>
 
-                         <Button outline color="secondary" id={'avail-ingest-history-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                 disabled={this.state.invalidForm}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
-                     </div>
+                        <Button
+                            outline
+                            color="secondary"
+                            id="avail-ingest-history-avails-advanced-search-filter-btn"
+                            onClick={this.handleSearch}
+                            disabled={this.state.invalidForm}
+                            style={{width: '80px', margin: '4px 7px 0'}}
+                        >filter
+                        </Button>
+                    </div>
                 </div>
             </div>
         );
     }
 }
+
+AdvancedHistorySearchPanel.propTypes = {
+    searchCriteria: t.object,
+    onSearch: t.func,
+    searchFormUpdateAdvancedHistorySearchCriteria: t.func,
+    searchFormSetHistorySearchCriteria : t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedHistorySearchPanel);

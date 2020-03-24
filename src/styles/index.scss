@@ -2,6 +2,7 @@
 @import './reset';
 @import './box-sizing';
 @import './config';
+@import './utilities';
 
 // Basics
 html,
@@ -11,6 +12,6 @@ body,
     margin: 0;
     padding: 0;
     overscroll-behavior-y: contain;
-    font-family: $nexus-font;
-    overflow: auto;
+    font-family: $nexus-font!important;
+    overflow-x: hidden;
 }

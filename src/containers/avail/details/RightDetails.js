@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref 
+import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -7,32 +7,29 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replac
 import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
 import config from 'react-global-configuration';
-import {uid} from 'react-uid';
-import { Button, Label } from 'reactstrap';
+import {Button, Label} from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 import './RightDetails.scss';
 import {store} from '../../../index';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import EditableBaseComponent from '../../../components/form/editable/EditableBaseComponent';
-import { oneOfValidation, rangeValidation } from '../../../util/Validation';
-import { profileService } from '../service/ProfileService';
-import { cannot } from '../../../ability';
+import {oneOfValidation, rangeValidation} from '../../../util/Validation';
+import {profileService} from '../service/ProfileService';
+import {cannot} from '../../../ability';
 import NexusBreadcrumb from '../../NexusBreadcrumb';
-import { AVAILS_DASHBOARD } from '../../../constants/breadcrumb';
-import { AvField, AvForm } from 'availity-reactstrap-validation';
-import { equalOrIncluded, getDeepValue, safeTrim } from '../../../util/Common';
-import { momentToISO } from '../../../util/Common';
+import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import {equalOrIncluded, getDeepValue, isObject, momentToISO, safeTrim} from '../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightsURL from '../util/RightsURL';
-import { confirmModal } from '../../../components/modal/ConfirmModal';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import {CustomFieldAddText, AddButton} from '../custom-form-components/CustomFormComponents';
-import {isObject} from '../../../util/Common';
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
-import NexusDatePicker from '../../../ui-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import TerritoryField from '../components/TerritoryField';
+import {AddButton} from '../custom-form-components/CustomFormComponents';
 
 const mapStateToProps = state => {
     return {
@@ -43,26 +40,6 @@ const mapStateToProps = state => {
 };
 
 class RightDetails extends React.Component {
-    static propTypes = {
-        selectValues: PropTypes.object,
-        availsMapping: PropTypes.any,
-        match: PropTypes.any,
-        location: PropTypes.any,
-        blocking: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        selectValues: null,
-        availsMapping: null,
-        match: {},
-        location: {},
-        blocking: null,
-    };
-
-    static contextTypes = {
-        router: PropTypes.object,
-    }
-
     refresh = null;
 
     constructor(props) {
@@ -78,7 +55,6 @@ class RightDetails extends React.Component {
         this.state = {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
-            isRightTerritoryEditFormOpen: false,
             territoryIndex: null,
             isEdit: false,
             editedRight: {},
@@ -164,7 +140,7 @@ class RightDetails extends React.Component {
                         const affiliates = [
                             ...affiliateList,
                             ...affiliateErrors.map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateErrors[index];
@@ -193,7 +169,7 @@ class RightDetails extends React.Component {
                         const affiliatesExclude = [
                             ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateExcludeErrors[index];
@@ -235,7 +211,7 @@ class RightDetails extends React.Component {
                             ...languageAudioTypesErrors
                             .filter(({fieldName}) => fieldName.includes('.language'))
                             .map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = languageAudioTypesErrors[index];
@@ -249,7 +225,7 @@ class RightDetails extends React.Component {
                             ...languageAudioTypesErrors
                                 .filter(({fieldName}) => fieldName.includes('.audioType'))
                                 .map((el, index) => {
-                                let obj = {};
+                                const obj = {};
                                 obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = languageAudioTypesErrors[index];
@@ -258,7 +234,6 @@ class RightDetails extends React.Component {
                             })
                         ];
 
-                        const castCrews = castCrew;
 
                         this.setState({
                             right: res.data,
@@ -266,7 +241,6 @@ class RightDetails extends React.Component {
                             territory: territories,
                             affiliates,
                             affiliatesExclude,
-                            castCrews,
                             languageAudioTypesLanguage,
                             languageAudioTypesAudioType,
                         });
@@ -298,12 +272,19 @@ class RightDetails extends React.Component {
 
     handleEditableSubmit(name, value, cancel) {
         const schema = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === name);
-        switch (schema.dataType) {
-            case 'date': value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
-                break;
-            case 'localdate': value = value && moment(value).isValid() ? momentToISO(value) : value;
-                break;
+        if (value === ''){
+            value = null;
+        } else {
+            switch (schema.dataType) {
+                case 'date':
+                    value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
+                    break;
+                case 'localdate':
+                    value = value && moment(value).isValid() ? momentToISO(value) : value;
+                    break;
+            }
         }
+
         if (Array.isArray(value)) {
             value = value.map(el => {
                 if (el.hasOwnProperty('name')) {
@@ -330,7 +311,7 @@ class RightDetails extends React.Component {
     }
 
     flattenRight(right) {
-        let rightCopy = {};
+        const rightCopy = {};
 
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
@@ -351,7 +332,7 @@ class RightDetails extends React.Component {
             onError();
             return;
         }
-        let updatedRight = { [name]: value };
+        const updatedRight = { [name]: value };
         if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
             if (name.split('.')[1] === 'language') {
                 updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
@@ -370,6 +351,13 @@ class RightDetails extends React.Component {
                 NexusBreadcrumb.pop();
                 NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
+
+                // Clear the state for editedRight, since the change was already applied
+                this.setState((prevState) => {
+                    const {editedRight = {}} = prevState;
+                    delete editedRight[name];
+                    return {editedRight};
+                });
             })
             .catch(() => {
                 this.setState({
@@ -388,7 +376,7 @@ class RightDetails extends React.Component {
         const value = target.newValue ? target.newValue.trim() : '';
 
         for (let i = 0; i < this.props.availsMapping.mappings.length; i++) {
-            let mapping = this.props.availsMapping.mappings[i];
+            const mapping = this.props.availsMapping.mappings[i];
             if (mapping.javaVariableName === field) {
                 const isOriginRightIdRequired = field === 'originalRightId' && this.state.right.temporaryPriceReduction === true && this.state.right.status === 'Ready';
                 if (mapping.required || isOriginRightIdRequired) return this.validateNotEmpty(value);
@@ -463,31 +451,35 @@ class RightDetails extends React.Component {
         const renderFieldTemplate = (name, displayName, value, error, readOnly, required, highlighted, tooltip, ref, content) => {
             const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
             return (
-                <div key={name}
+                <div
+                    key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
                         backgroundColor: hasValidationError ? '#f2dede' : '#fff',
                         color: hasValidationError ? '#a94442' : null,
                         border: 'none',
                         position: 'relative', display: 'block', padding: '0.75rem 1.25rem', marginBottom: '-1px',
-                    }}>
+                    }}
+                >
                     <div className="row">
                         <div className="col-4">{displayName}
                             {required ? <span className="text-danger">*</span> : ''}
                             :
-                            {highlighted ? <span title={'* fields in bold are original values provided by the studios'} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
-                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle"></i></span> : ''}
+                            {highlighted ? <span title="* fields in bold are original values provided by the studios" style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
+                            {tooltip ? <span title={tooltip} style={{ color: 'grey' }}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
                         </div>
                         <div
                             onClick={this.onFieldClicked}
                             className={'editable-field col-8' + (value ? '' : ' empty') + (readOnly ? ' disabled' : '')}
-                            id={'right-detail-' + name + '-field'}>
-                            <div className="editable-field-content"
+                            id={'right-detail-' + name + '-field'}
+                        >
+                            <div
+                                className="editable-field-content"
                                 onClick={highlighted ? () => this.onEditableClick(ref) : null}
                             >
                                 {content}
                             </div>
-                            <span className="edit-icon" style={{ color: 'gray' }}><i className="fas fa-pen"></i></span>
+                            <span className="edit-icon" style={{ color: 'gray' }}><i className="fas fa-pen" /></span>
                         </div>
                     </div>
                 </div>
@@ -551,13 +543,17 @@ class RightDetails extends React.Component {
             const ref = React.createRef();
             let priorityError = null;
             if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
-            let handleValueChange = (newVal) => {
+            const handleValueChange = (newVal) => {
                 const error = validate(newVal);
                 if (error) {
                     ref.current.handleInvalid(newVal, error);
@@ -626,17 +622,19 @@ class RightDetails extends React.Component {
                     validate={validate}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, convert(value), cancel)}
                     showError={false}
-                    helperComponent={<AvForm>
-                        <AvField
-                            value={value}
-                            name={name}
-                            placeholder={'Enter ' + displayName}
-                            onChange={(e) => { handleValueChange(e.target.value); }}
-                            type="text"
-                            validate={{ ...modifiedValidation, async: innerValidate }}
-                            errorMessage={errorMessage}
-                        />
-                    </AvForm>}
+                    helperComponent={(
+                        <AvForm>
+                            <AvField
+                                value={value}
+                                name={name}
+                                placeholder={'Enter ' + displayName}
+                                onChange={(e) => { handleValueChange(e.target.value); }}
+                                type="text"
+                                validate={{ ...modifiedValidation, async: innerValidate }}
+                                errorMessage={errorMessage}
+                            />
+                        </AvForm>
+)}
                 />
             ));
         };
@@ -666,10 +664,14 @@ class RightDetails extends React.Component {
         const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let ref;
@@ -680,12 +682,12 @@ class RightDetails extends React.Component {
                 this.fields[name] = ref = React.createRef();
             }
 
-            let options = [{ server: null, value: 1, label: 'Select...', display: null },
-            { server: false, value: 2, label: 'No', display: 'No' },
-            { server: true, value: 3, label: 'Yes', display: 'Yes' }];
+            const options = [{ server: null, value: 1, label: 'Select...', display: null },
+            { server: false, value: 2, label: 'false', display: 'false' },
+            { server: true, value: 3, label: 'true', display: 'true' }];
             const val = ref.current ? options.find((opt) => opt.display === ref.current.state.value) : options.find((opt) => opt.server === value);
 
-            let handleOptionsChange = (option) => {
+            const handleOptionsChange = (option) => {
                 ref.current.handleChange(option.display);
                 setTimeout(() => {
                     this.setState({});
@@ -702,13 +704,15 @@ class RightDetails extends React.Component {
                     displayName={displayName}
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, options.find(({ display }) => display == value).server, cancel)}
-                    helperComponent={<Select
-                        name={name}
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={options}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
+                    helperComponent={(
+                        <Select
+                            name={name}
+                            placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                            options={options}
+                            value={val}
+                            onChange={handleOptionsChange}
+                        />
+)}
                 />
             ));
         };
@@ -716,10 +720,14 @@ class RightDetails extends React.Component {
         const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let ref;
@@ -737,7 +745,7 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
 
-            let onCancel = () => {
+            const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
                     this.setState({});
@@ -759,7 +767,7 @@ class RightDetails extends React.Component {
                 }
             }
 
-            let handleOptionsChange = (option) => {
+            const handleOptionsChange = (option) => {
                 ref.current.handleChange(option.value ? option.value : null);
                 setTimeout(() => {
                     this.setState({});
@@ -777,14 +785,16 @@ class RightDetails extends React.Component {
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
-                    helperComponent={<Select
-                        name={name}
-                        isSearchable
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        options={options}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
+                    helperComponent={(
+                        <Select
+                            name={name}
+                            isSearchable
+                            placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                            options={options}
+                            value={val}
+                            onChange={handleOptionsChange}
+                        />
+)}
                 />
             ));
         };
@@ -792,10 +802,14 @@ class RightDetails extends React.Component {
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
             let priorityError = null;
             if (error && !name.includes('affiliate') && !name.includes('languageAudioTypes')) {
-                priorityError = <div title={error}
-                    style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}>
-                    {error}
-                </div>;
+                priorityError = (
+                    <div
+                        title={error}
+                        style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', color: '#a94442' }}
+                    >
+                        {error}
+                    </div>
+);
             }
 
             let ref;
@@ -823,7 +837,7 @@ class RightDetails extends React.Component {
 
             //fields with enpoints (these have ids)
             const filterKeys = Object.keys(this.state.flatRight).filter((key) => this.props.availsMapping.mappings.find((x) => x.javaVariableName === key).configEndpoint);
-            let filters = filterKeys.map((key) => {
+            const filters = filterKeys.map((key) => {
                 if (this.state.flatRight[key] && this.props.selectValues[key]) {
                     const filt = (Array.isArray(this.state.flatRight[key]) ? this.state.flatRight[key] : [this.state.flatRight[key]]).map(val => {
                         const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
@@ -857,14 +871,14 @@ class RightDetails extends React.Component {
                 val = selectedVal.map(v => allOptions[0].options.filter(opt => opt.value === v)).flat();
             }
 
-            let onCancel = () => {
+            const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
             };
 
-            let handleOptionsChange = (selectedOptions) => {
+            const handleOptionsChange = (selectedOptions) => {
                 const selVal = selectedOptions.map(({ value }) => value);
                 ref.current.handleChange(selVal ? selVal : null);
                 setTimeout(() => {
@@ -883,9 +897,10 @@ class RightDetails extends React.Component {
                     validate={() => { }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
-                    helperComponent={<ReactMultiSelectCheckboxes
-                        placeholderButtonLabel={'Select ' + displayName + ' ...'}
-                        getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
+                    helperComponent={(
+                        <ReactMultiSelectCheckboxes
+                            placeholderButtonLabel={'Select ' + displayName + ' ...'}
+                            getDropdownButtonLabel={({ placeholderButtonLabel, value }) => {
                             if (value && value.length > 0) {
                                 return (
                                     <div
@@ -906,10 +921,11 @@ class RightDetails extends React.Component {
                             }
                             return placeholderButtonLabel;
                         }}
-                        options={allOptions}
-                        value={val}
-                        onChange={handleOptionsChange}
-                    />}
+                            options={allOptions}
+                            value={val}
+                            onChange={handleOptionsChange}
+                        />
+)}
                 />
             ));
         };
@@ -945,14 +961,14 @@ class RightDetails extends React.Component {
                 };
             });
 
-            let onCancel = () => {
+            const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
                     this.setState({});
                 }, 1);
             };
 
-            let addTerritory = (option) => {
+            const addTerritory = (option) => {
                 const {territoryIndex, isEdit} = this.state;
                 const item = {
                     ...option,
@@ -973,8 +989,8 @@ class RightDetails extends React.Component {
 
              };
 
-            let deleteTerritory = (territory) => {
-                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id);
+            const deleteTerritory = (territory) => {
+                const newArray = selectedVal && selectedVal.filter(e => e.id !== territory.id && e.country !== territory.country);
                 ref.current.handleChange(newArray);
                 setTimeout(() => {
                     this.setState({});
@@ -986,9 +1002,9 @@ class RightDetails extends React.Component {
                 const originalFieldNames = mappings.filter(el => el.javaVariableName.startsWith('territory.'))
                     .map(mapping => mapping.javaVariableName.split('.')[1]);
 
-                let formattedList = [];
+                const formattedList = [];
                 list.forEach(el => {
-                    let territory = Object.assign({}, el);
+                    const territory = Object.assign({}, el);
                     Object.keys(territory).forEach(key => {
                         if(originalFieldNames.findIndex(name => name === key) < 0) {
                             delete territory[key];
@@ -1002,7 +1018,7 @@ class RightDetails extends React.Component {
             const territories = removeTerritoryNotOriginalFields(selectedVal)
                 .map(territory => {
                     const {vuContractId} = territory;
-                    let mappedTerritory = Object.assign({}, territory);
+                    const mappedTerritory = Object.assign({}, territory);
                     if(Array.isArray(vuContractId) && vuContractId.length > 0) {
                         mappedTerritory.vuContractId = vuContractId.join(', ');
                     }
@@ -1022,43 +1038,40 @@ class RightDetails extends React.Component {
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
                     showError={false}
-                    helperComponent={
-                        <div style={{display: 'flex', position: 'relative', flexWrap: 'wrap', paddingRight: '60px'}}>
-                            {territories && territories.length > 0
-                                ? territories.map((e, i) => (
-                                    <NexusTag
-                                        key={uid(e)}
-                                        text={e.country || e.value}
-                                        value={e}
-                                        removeButtonText="Remove"
-                                        onClick={() => this.toggleRightTerritoryForm(i)}
-                                        onRemove={() => deleteTerritory(e)}
+                    helperComponent={(
+                        <TerritoryField
+                            territory={territories}
+                            name={name}
+                            onRemoveClick={(territory) => deleteTerritory(territory)}
+                            onAddClick={this.toggleAddRightTerritoryForm}
+                            onTagClick={(i) => this.toggleRightTerritoryForm(i)}
+                            renderChildren={() => (
+                                <>
+                                    <div style={{position: 'absolute', right: '10px'}}>
+                                        <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                                    </div>
+                                    <RightTerritoryForm
+                                        onSubmit={(e) => addTerritory(e)}
+                                        isOpen={this.state.isRightTerritoryFormOpen}
+                                        onClose={this.toggleRightTerritoryForm}
+                                        existingTerritoryList={selectedVal}
+                                        territoryIndex={this.state.territoryIndex}
+                                        isEdit={this.state.isEdit}
+                                        options={options}
                                     />
-                                ))
-                                : <CustomFieldAddText onClick={this.toggleRightTerritoryForm} id={'right-create-' + name + '-button'}>Add...</CustomFieldAddText>
-                            }
-                            <div style={{position: 'absolute', right: '10px'}}>
-                                <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
-                            </div>
-                            <RightTerritoryForm
-                                onSubmit={(e) => addTerritory(e)}
-                                isOpen={this.state.isRightTerritoryFormOpen}
-                                onClose={this.toggleRightTerritoryForm}
-                                existingTerritoryList={selectedVal}
-                                territoryIndex={this.state.territoryIndex}
-                                isEdit={this.state.isEdit}
-                                options={options} 
-                            />
-                        </div>
-                    } />
+                                </>
+                              )}
+                        />
+                      )}
+                />
 
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted, isLocalDate) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted) => {
             let ref;
 
-            const {flatRight} = this.state;
+            const {flatRight = {}, editedRight = {}} = this.state;
             const validate = (date) => {
                 if (!date && required) {
                     return 'Mandatory Field. Date cannot be empty';
@@ -1084,24 +1097,32 @@ class RightDetails extends React.Component {
 
             const props = {
                 id: displayName,
+                label: displayName,
+                hideLabel: true, // TODO: Remove after RightDetails gets refactored/redesigned
                 onChange: (date) => {
                     // Keep a separate state for edited values
                     this.setState((prevState) => ({
                         editedRight: {...prevState.editedRight, [name]: date}
                     }));
                 },
-                onConfirm: (value) => (
-                    !error && this.handleEditableSubmit(name, value, revertChanges) || revertChanges()
+                onConfirm: (date) => (
+                    !error && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
                 ),
                 defaultValue: value,
-                value,
+                value:  (
+                    editedRight[name] !== undefined
+                        ?  editedRight[name]
+                        : value
+                ),
                 error,
                 required,
                 isWithInlineEdit: true,
+                isTimestamp: true,
+                allowClear: !required
             };
 
             const component = showTime
-                ? <NexusDateTimePicker {...props} isLocalDate={isLocalDate} />
+                ? <NexusDateTimePicker {...props} />
                 : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(
@@ -1221,11 +1242,10 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
+                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                              break;
-                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
-                            break;
-                        case 'localdate': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, true));
+                        case 'localdate':
+                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
@@ -1249,32 +1269,53 @@ class RightDetails extends React.Component {
 
         return (
             <div style={{ position: 'relative' }}>
-                <ManualRightsEntryDOPConnector/>
+                <ManualRightsEntryDOPConnector />
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {
-                        this.state.errorMessage &&
+                        this.state.errorMessage && (
                         <div id='right-edit-error' className='d-inline-flex justify-content-center w-100 position-absolute alert-danger' style={{ top: '-20px', zIndex: '1000', height: '25px' }}>
                             <Label id='right-edit-error-message'>
                                 {this.state.errorMessage}
                             </Label>
                         </div>
-                    }
+                      )
+}
                     <div className="nx-stylish row mt-3 mx-5">
-                        <div className={'nx-stylish list-group col-12'} style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
+                        <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping &&
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }} >
+                    {this.props.availsMapping && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <div className="mt-4 mx-5 px-5">
                                 <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
                             </div>
                         </div>
-                    }
+                      )}
                 </BlockUi>
             </div>
         );
     }
 }
+
+RightDetails.propTypes = {
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    match: PropTypes.any,
+    location: PropTypes.any,
+    blocking: PropTypes.bool,
+};
+
+RightDetails.defaultProps = {
+    selectValues: null,
+    availsMapping: null,
+    match: {},
+    location: {},
+    blocking: null,
+};
+
+RightDetails.contextTypes = {
+    router: PropTypes.object,
+};
 
 export default connect(mapStateToProps)(RightDetails);

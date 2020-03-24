@@ -3,14 +3,13 @@ import { Form, FormContext } from 'react-forms-processor';
 import { Field as AkField } from '@atlaskit/form';
 import PropTypes from 'prop-types';
 
-const createFormForItem = (
+const createFormForItem = (field,
     item,
     fieldsForForm,
-    formChangeHandler
-) => {
-    const mappedFields = fieldsForForm.map(field => ({
-        ...field,
-        id: `${field.id}_FIELDS`
+    formChangeHandler) => {
+    const mappedFields = fieldsForForm.map(subfield => ({
+        ...subfield,
+        id: `${field.id}.${subfield.id}`
     }));
     return (
         <FormContext.Consumer>
@@ -19,7 +18,7 @@ const createFormForItem = (
                 return (
                     <Form
                         parentContext={context}
-                        key={'FIELD_0'}
+                        key="FIELD_0"
                         defaultFields={mappedFields}
                         renderer={renderer}
                         value={item}
@@ -64,10 +63,11 @@ export default class ObjectType extends Component {
     }
 
     getForms() {
-            const {fields} = this.props;
+            const {field, fields} = this.props;
             const {value} = this.state;
             const formChangeHandler = this.createFormChangeHandler();
             const form = createFormForItem(
+                field,
                 value,
                 fields,
                 formChangeHandler
@@ -80,11 +80,11 @@ export default class ObjectType extends Component {
         }
 
     render() {
-        const {label} = this.props;
+        const {label, field} = this.props;
 
         return(
             <div>
-                <AkField label={label} name="formBuilder">
+                <AkField label={label} name="formBuilder" isRequired={field.required}>
                     {() => <div>{this.getForms()}</div>}
                 </AkField>
             </div>

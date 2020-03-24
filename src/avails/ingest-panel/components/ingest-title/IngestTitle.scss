@@ -1,0 +1,36 @@
+.nexus-c-ingest-title {
+  font-size: 14px;
+  width: 300px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #A5ADBA;
+    flex-shrink: 0;
+  }
+}
+
+.nexus-c-ingest-title__filename {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.nexus-c-ingest-title__details {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.nexus-c-ingest-title__type {
+  margin-right: 12px;
+}
+
+.nexus-c-ingest-title__provider, .nexus-c-ingest-title__separator {
+  font-weight: bold;
+  margin-right: 12px;
+}

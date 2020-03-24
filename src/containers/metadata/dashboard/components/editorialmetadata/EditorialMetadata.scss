@@ -1,0 +1,16 @@
+#editorialMetadataTabs {
+  .row {
+    padding: 15px;
+  }
+  .wrap-value {
+    word-wrap: break-word;
+  }
+  #listContainer {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 280px;
+  }
+  .metadata-empty-value {
+    color:#999;
+  }
+}

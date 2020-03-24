@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Form, FormFragment} from 'react-forms-processor';
-import {renderer} from 'react-forms-processor-atlaskit';
+import {renderer as akRenderer} from 'react-forms-processor-atlaskit';
 import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import {titleService} from '../../../../containers/metadata/service/TitleService';
+import {rightsService} from '../../../../containers/avail/service/RightsService';
 import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
 import DOP from '../../../../util/DOP';
 import './CreateTitleForm.scss';
+import {URL} from '../../../../util/Common';
+import get from 'lodash.get';
 
 const {
     NEW_TITLE_FORM_SCHEMA,
@@ -56,13 +59,18 @@ const CreateTitleForm = ({close, focusedRight}) => {
 
         // Submit the title to back-end
         titleService.createTitleWithoutErrorModal(title).then(res => {
-            DOP.setErrorsCount(0);
-            DOP.setData({
-                match: {
-                    rightId: focusedId,
-                    titleId: res.data.id
-                }
-            });
+            if(URL.isEmbedded()) {
+                DOP.setErrorsCount(0);
+                DOP.setData({
+                    match: {
+                        rightId: focusedId,
+                        titleId: res.data.id
+                    }
+                });
+            } else {
+                const updatedRight = { coreTitleId: res.data.id };
+                rightsService.update(updatedRight, focusedId);
+            }
             close();
         }).catch((error) => {
             const {response: {data: {description, message} = {}} = {}}  = error;
@@ -70,24 +78,47 @@ const CreateTitleForm = ({close, focusedRight}) => {
         });
     };
 
+    const renderer = (
+        field,
+        onChange,
+        onFieldFocus,
+        onFieldBlur
+    ) => {
+        const { defaultValue, id, disable } = field;
+        if(field.hasOwnProperty('disable')) {
+            field.disabled = disable;
+        }
+
+        const currentValue = get(titleValue, id, defaultValue);
+        if(currentValue) {
+            field.defaultValue = currentValue;
+            field.value = currentValue;
+        }else{
+            delete field.defaultValue;
+            field.value = undefined;
+        }
+
+        return akRenderer(field, onChange, onFieldFocus, onFieldBlur);
+    };
+
     return (
         <div className="nexus-c-create-title-form">
             <Form
                 renderer={renderer}
-                value={titleValue}
+                defaultValue={titleValue}
                 onChange={(value, isFilled) => setTitleValue({...value, isFilled})}
             >
                 <div className="nexus-c-create-title-form__fields">
                     <FormFragment defaultFields={NEW_TITLE_FORM_SCHEMA} />
                 </div>
             </Form>
-            {error &&
+            {error && (
                 <div className="nexus-c-create-title-form__error-message">
                     <ErrorMessage>
                         {error}
                     </ErrorMessage>
                 </div>
-            }
+              )}
             <div className="nexus-c-create-title-form__action-buttons">
                 <Button onClick={close}>
                     {NEW_TITLE_LABEL_CANCEL}

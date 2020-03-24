@@ -5,7 +5,7 @@ import './ManualRightEntryFatalView.scss';
 
 const SEVERITY_TYPE_FATAL = 'Fatal';
 
-function ManualRightEntryFatalView({attachments, hidden}) {
+const ManualRightEntryFatalView = ({attachments, hidden}) => {
 
     const [errorList, setErrorList] = useState([]);
     const [viewHeight, setViewHeight] = useState();
@@ -26,10 +26,10 @@ function ManualRightEntryFatalView({attachments, hidden}) {
     }, [attachments]);
 
     const getListOfFatalErrors = () => {
-        let errorList = [];
+        const errorList = [];
         attachments.forEach(attachment => {
             const {errorReports = []} = attachment;
-            errorReports.forEach(report => {
+            errorReports && errorReports.forEach(report => {
                 const {availSource = {}, validationErrors = []} = report;
                 let message = 'System could not process row: ' + availSource.availRow + '.';
                 let areFatalErrorsAppear = false;
@@ -54,15 +54,14 @@ function ManualRightEntryFatalView({attachments, hidden}) {
     };
 
     return (
-        <React.Fragment>
-            {!hidden &&
+        <> {!hidden && (
             <div ref={containerRef} style={{height: viewHeight}} className='nexus-c-manual-rights-entry__fatal_view'>
                 {getRows()}
             </div>
-            }
-        </React.Fragment>
+          )}
+        </>
     );
-}
+};
 
 ManualRightEntryFatalView.defaultProps = {
     hidden: false,

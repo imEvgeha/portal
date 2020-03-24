@@ -1,9 +1,7 @@
 import React from 'react';
-import DashboardDropableCard from './card/components/DashboardDropableCard';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
-import {resultPageLoading, resultPageSort, resultPageUpdate} from '../../../stores/actions/avail/dashboard';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import t from 'prop-types';
 import {Can} from '../../../../src/ability';
 import './DashboardContainer.scss';
@@ -11,36 +9,10 @@ import './DashboardContainer.scss';
 const mapStateToProps = state => {
     return {
         profileInfo: state.profileInfo,
-        availsMapping: state.root.availsMapping,
     };
-};
-
-const mapDispatchToProps = {
-    resultPageLoading,
-    resultPageSort,
-    resultPageUpdate
 };
 
 class DashboardTab extends React.Component {
-    static propTypes = {
-        availsMapping: t.any,
-        resultPageLoading: t.func,
-        resultPageSort: t.func,
-        resultPageUpdate: t.func
-    };
-
-    static contextTypes = {
-        router: t.object
-    }
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            ingestedCount: '-'
-        };
-
-    }
 
     createRight = () => {
         this.context.router.history.push('/avails/rights/create');
@@ -48,24 +20,23 @@ class DashboardTab extends React.Component {
 
     render() {
         return (
-            <div className={'dashboard-tab'}>
+            <div className="dashboard-tab">
                 <div className="row">
-                    <Can I="create" a="Avail">
-                        <DashboardDropableCard/>
-                    </Can>
                     {/*<DashboardCard title="Manage Avails Errors" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-exclamation-triangle'}/>*/}
                     <Can I="create" a="Avail">
-                        <DashboardCard title="Create New Edit Version" action={this.createRight} actionName={'Create'} iconClass={'fas fa-file-alt'} name={'create-right'}/>
+                        <DashboardCard title="Create New Edit Version" action={this.createRight} actionName="Create" iconClass="fas fa-file-alt" name="create-right" />
                     </Can>
                     {/*<DashboardCard title="Avails Calendar" action={this.viewErrors} actionName={'View'} iconClass={'fas fa-calendar-alt'}/>*/}
-                    {<DashboardLatestAvailsCard push={this.context.router.history.push}/>}
+                    {<DashboardLatestAvailsCard push={this.context.router.history.push} />}
                 </div>
-                <div className="row">
-
-                </div>
+                <div className="row" />
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardTab);
+DashboardTab.contextTypes = {
+    router: t.object
+};
+
+export default connect(mapStateToProps, null)(DashboardTab);

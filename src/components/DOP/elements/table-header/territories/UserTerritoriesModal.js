@@ -4,7 +4,7 @@ import t from 'prop-types';
 import {
     updateSelectedTerritories
 } from '../../../../../stores/actions/DOP';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {getConfigApiValues} from '../../../../../common/CommonConfigService';
 import {INPUT_TIMEOUT} from '../../../../../constants/common-ui';
 import {configFields} from '../../../../../containers/metadata/service/ConfigService';
@@ -15,13 +15,6 @@ import {DeleteButton, TerritoryTag} from './TerritoryItem';
 const pageSize = 1000;
 
 class UserTerritoriesModal extends React.Component {
-
-    static propTypes = {
-        isOpen: t.bool,
-        toggle: t.func,
-        selectedTerritories: t.array,
-        updateSelectedTerritories: t.func
-    };
 
     constructor(props) {
         super(props);
@@ -95,13 +88,15 @@ class UserTerritoriesModal extends React.Component {
     };
 
     getCheckbox = (c, index) => {
-        return (<Checkbox
-            key={index}
-            isChecked={this.isTerritoryChecked(c)}
-            value={JSON.stringify(c)}
-            label={c.countryName}
-            onChange={this.onCheckBoxClick}
-        />);
+        return (
+            <Checkbox
+                key={index}
+                isChecked={this.isTerritoryChecked(c)}
+                value={JSON.stringify(c)}
+                label={c.countryName}
+                onChange={this.onCheckBoxClick}
+            />
+);
     };
 
     toggle = () => {
@@ -143,7 +138,8 @@ class UserTerritoriesModal extends React.Component {
                             display: 'flex',
                             height: '100px',
                             overflowY: this.state.configTerritories.length > 6 ? 'scroll' : ''
-                        }}>
+                        }}
+                        >
                             <div>{this.state.configTerritories.map((c, index) => {
                                 if(index % 2 === 0) return this.getCheckbox(c, index);
                             })}
@@ -175,4 +171,10 @@ const mapDispatchToProps = {
     updateSelectedTerritories
 };
 
+UserTerritoriesModal.propTypes = {
+    isOpen: t.bool,
+    toggle: t.func,
+    selectedTerritories: t.array,
+    updateSelectedTerritories: t.func
+};
 export default connect(mapStateToProps, mapDispatchToProps)(UserTerritoriesModal);

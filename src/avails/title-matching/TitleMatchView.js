@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import cloneDeep from 'lodash.clonedeep';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
-import NexusGrid from '../../ui-elements/nexus-grid/NexusGrid';
-import NexusTitle from '../../ui-elements/nexus-title/NexusTitle';
-import CustomActionsCellRenderer from '../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
+import {
+    NexusGrid,
+    NexusTitle,
+} from '../../ui/elements/';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -58,24 +60,30 @@ const TitleMatchView = ({
     useEffect(() => {
         if (match && match.params.rightId) {
             fetchFocusedRight(match.params.rightId);
+            DOP.setErrorsCount(1);
         }
-        DOP.setErrorsCount(1);
-    }, [match]);
+    }, []);
 
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
         }
     }, [columnDefs]);
-    let deepCloneRightColumnDefs = cloneDeep(rightColumns);
+
+    const deepCloneRightColumnDefs = cloneDeep(rightColumns);
     let updatedRightColumnDefs;
-    if(focusedRight && focusedRight.contentType === 'Episode') {
+
+    if (focusedRight && focusedRight.contentType === 'Episode') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
-    } else if(focusedRight && focusedRight.contentType === 'Season'){
+    } else if (focusedRight && focusedRight.contentType === 'Season') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber');
     } else {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber');
     }
+
+    // Taken from focused right to be able to filter title list table
+    const {title, contentType = '', releaseYear} = focusedRight || {};
+
     return (
         <div className="nexus-c-title-to-match">
             <div className="nexus-c-title-to-match__header">
@@ -83,7 +91,7 @@ const TitleMatchView = ({
             </div>
             {
                 !!searchCriteria.title && (
-                    <React.Fragment>
+                    <>
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <NexusGrid
@@ -94,11 +102,15 @@ const TitleMatchView = ({
                         <SectionMessage>
                             <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
                         </SectionMessage>
+                        <br />
                         <TitlesList
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
-                            mergeTitles={mergeTitles}/>
-                    </React.Fragment>
+                            mergeTitles={mergeTitles}
+                            // TODO: Capitalized first letter of contentType value to be checed inside drop down ag grid
+                            queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
+                        />
+                    </>
                 )
             }
         </div>
@@ -132,7 +144,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList) => dispatch(mergeTitles(matchList, duplicateList))
+    mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId}))
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -7,20 +7,22 @@ import {Link} from 'react-router-dom';
 import config from 'react-global-configuration';
 
 // image import
-import LoadingGif from '../../../../img/loading.gif';
+import LoadingGif from '../../../../assets/img/loading.gif';
 
 import RightsURL from '../../util/RightsURL';
+import {CheckBoxHeader} from './CheckBoxHeaderInternal';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './RightsResultTable.scss';
 
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRightsResultPageLoading, manualRightsResultPageSort, updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
-import isEqual from 'lodash.isequal';
+import {getLocale} from '../../../../stores/selectors/localization/localeSelector';
+import {TIMESTAMP_FORMAT} from '../../../../ui/elements/nexus-date-and-time-elements/constants';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -34,7 +36,7 @@ const defaultCellColor= '#ededed';
 export const defaultMode = 'defaultMode';
 export const selectRightMode = 'selectRightMode';
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
     return {
         tabPage: state.manualRightsEntry.tabPage,
         tabPageSort: state.manualRightsEntry.session.tabPageSort,
@@ -44,10 +46,11 @@ let mapStateToProps = state => {
         columnsOrder: state.manualRightsEntry.session.columns,
         columnsSize: state.manualRightsEntry.session.columnsSize,
         showSelectedAvails: state.dashboard.showSelectedAvails,
+        locale: getLocale(state),
     };
 };
 
-let mapDispatchToProps = {
+const mapDispatchToProps = {
     manualRightsResultPageUpdate,
     manualRightsResultPageSort,
     manualRightsResultPageSelect,
@@ -56,39 +59,6 @@ let mapDispatchToProps = {
 };
 
 class RightsResultTable extends React.Component {
-    static propTypes = {
-        availsMapping: PropTypes.any,
-        tabPage: PropTypes.object,
-        tabPageSort: PropTypes.array,
-        tabPageSelection: PropTypes.object,
-        tabPageLoading: PropTypes.bool,
-        manualRightsResultPageUpdate: PropTypes.func,
-        manualRightsResultPageSort: PropTypes.func,
-        manualRightsResultPageSelect: PropTypes.func,
-        manualRightsResultPageLoading: PropTypes.func,
-        columnsOrder: PropTypes.array,
-        columns: PropTypes.array,
-        columnsSize: PropTypes.object,
-        updateManualRightsEntryColumns: PropTypes.func,
-        showSelectedAvails: PropTypes.bool,
-        fromServer: PropTypes.bool,
-        hidden: PropTypes.bool,
-        nav: PropTypes.object,
-        autoRefresh: PropTypes.number,
-        mode: PropTypes.string,
-        selectedTab: PropTypes.string,
-        searchCriteria: PropTypes.object,
-        onTableLoaded: PropTypes.func,
-        historyData: PropTypes.object,
-        status: PropTypes.string
-    };
-
-    static defaultProps = {
-        autoload: true,
-        autoRefresh: 0,
-        mode: defaultMode,
-        searchCriteria: {}
-    };
 
     table = null;
 
@@ -173,7 +143,7 @@ class RightsResultTable extends React.Component {
     }
 
     updateWindowDimensions() {
-        let offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+        const offsetTop  = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
         this.setState({ height: window.innerHeight - offsetTop - 10});
     }
 
@@ -192,7 +162,7 @@ class RightsResultTable extends React.Component {
         }
 
         this.refreshSort();
-        let isNewFileUploaded = prevProps.status === 'PENDING' && this.props.status !== 'PENDING';
+        const isNewFileUploaded = prevProps.status === 'PENDING' && this.props.status !== 'PENDING';
         const isLoading = this.props.tabPageLoading !== prevProps.tabPageLoading && this.props.tabPageLoading === true;
         const isNewTab = prevProps.selectedTab !== this.props.selectedTab;
         const shouldRefetch = this.props.fromServer && this.table != null && this.props.hidden !== true && ( isLoading || isNewTab) || isNewFileUploaded;
@@ -230,36 +200,37 @@ class RightsResultTable extends React.Component {
         if(colDef.length > 0){
             return;
         }
-        let formatter = (column) => {
+        const formatter = (column) => {
             const {
                 dataType,
                 javaVariableName,
             } = column || {};
 
-            const dateFormat = `${getDateFormatBasedOnLocale('en')} HH:mm`;
+            const {locale = 'en'} = this.props;
+
+            const dateFormat = getDateFormatBasedOnLocale(locale);
+            const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
             switch (dataType) {
                 case 'localdate' :
                 case 'datetime' : return ({data = {}}) => {
                     const {[column.javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
+                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
                 };
-                case 'date' : return function({data = {}}){
-                    if((data && data[javaVariableName]) && moment(data[javaVariableName].toString().substr(0, 10)).isValid()) {
-                        return moment(data[javaVariableName].toString().substr(0, 10)).format('L');
-                    }
-                    else return undefined;
+                case 'date' : return ({data = {}}) => {
+                    const {[column.javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
                     if(data && data[javaVariableName]){
-                        let data = data[javaVariableName];
-                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
-                        return data;
+                        let dataString = '';
+                        dataString = data[javaVariableName].map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
+                        return dataString;
                     } else return undefined;
                 }; else return null;
                 case 'territoryType' : return function({data = {}}){
                     if(data && data[javaVariableName]) {
-                        let cellValue = data[javaVariableName].map(e => String(e.country)).join(', ');
+                        const cellValue = data[javaVariableName].map(e => String(e.country)).join(', ');
                         return cellValue ? cellValue : undefined;
                     }
                     else return undefined;
@@ -281,7 +252,7 @@ class RightsResultTable extends React.Component {
 
     refreshSort(){
         if(!this.table) return;
-        let sortModel=[];
+        const sortModel=[];
         this.props.tabPageSort.map(sortCriteria=>{
             const availMapping =  this.props.availsMapping.mappings.find(({sortParamName, queryParamName}) =>
                 sortCriteria.id === (sortParamName || queryParamName));
@@ -291,7 +262,7 @@ class RightsResultTable extends React.Component {
             });
         });
 
-        let currentSortModel=this.table.api.getSortModel();
+        const currentSortModel=this.table.api.getSortModel();
         let toChangeSortModel=false;
 
         if(currentSortModel.length !== sortModel.length) toChangeSortModel=true;
@@ -307,8 +278,8 @@ class RightsResultTable extends React.Component {
     }
 
     onSortChanged(e) {
-        let sortParams = e.api.getSortModel();
-        let newSort = [];
+        const sortParams = e.api.getSortModel();
+        const newSort = [];
         if(sortParams.length > 0){
             sortParams.map(criteria =>{
                 const availMapping =  this.props.availsMapping.mappings.find(({javaVariableName}) =>
@@ -373,7 +344,7 @@ class RightsResultTable extends React.Component {
                 selected = selected.concat(this.props.tabPageSelection.selected);
         }
 
-        let nodesToUpdate = selected
+        const nodesToUpdate = selected
             .filter(x => !this.props.tabPageSelection.selected.includes(x))
             .concat(this.props.tabPageSelection.selected.filter(x => !selected.includes(x)))
             .map(i => this.table.api.getRowNode(i.id));
@@ -403,10 +374,10 @@ class RightsResultTable extends React.Component {
     }
 
     editAvail(newAvail) {
-        let copiedAvails = this.props.tabPage.avails.slice();
-        let avail = copiedAvails.find(b => b.id === newAvail.id);
+        const copiedAvails = this.props.tabPage.avails.slice();
+        const avail = copiedAvails.find(b => b.id === newAvail.id);
         if (avail) {
-            for(let availField in newAvail) avail[availField] = newAvail[availField];
+            for(const availField in newAvail) avail[availField] = newAvail[availField];
         }
         return copiedAvails;
     }
@@ -476,7 +447,7 @@ class RightsResultTable extends React.Component {
     }
 
     addLoadedItems(data) {
-        let items = data.data;
+        const items = data.data;
         if (items.length > 0) {
             this.props.manualRightsResultPageUpdate({
                 pages: this.props.tabPage.pages + 1,
@@ -488,7 +459,7 @@ class RightsResultTable extends React.Component {
     }
 
     onColumnReordered(e) {
-        let cols = [];
+        const cols = [];
         e.columnApi.getAllGridColumns().map(column => {
             if(column.colDef.headerName !== '') cols.push(column.colDef.field);
         });
@@ -509,7 +480,7 @@ class RightsResultTable extends React.Component {
     };
 
     refreshColumns(){
-        let newCols=[];
+        const newCols=[];
         newCols.push({
             headerName: '',
             checkboxSelection: true,
@@ -576,17 +547,19 @@ class RightsResultTable extends React.Component {
                 return(
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
-                        title= {error}
-                        className = {highlighted ? 'font-weight-bold' : ''}
-                        style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            title={error}
+                            className={highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                        >
                             {String(content)}
                         </div>
-                        {highlighted &&
+                        {highlighted && (
                             <div
-                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                            >
+                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                             </div>
-                        }
+                          )}
                     </Link>
                 );
             }
@@ -595,7 +568,7 @@ class RightsResultTable extends React.Component {
             if(params.data){
                 return '';
             }else {
-                return <img src={LoadingGif}/>;
+                return <img src={LoadingGif} />;
             }
         }
     }
@@ -649,7 +622,7 @@ class RightsResultTable extends React.Component {
         return(
             <div>
                 <div
-                    className = {'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
+                    className={'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
                     style={{
                         height: this.state.height + 'px',
                         width: '100%'
@@ -661,11 +634,11 @@ class RightsResultTable extends React.Component {
 
                         getRowNodeId={data => data.id}
 
-                        defaultColDef = {this.state.defaultColDef}
-                        columnDefs= {this.state.cols}
-                        suppressDragLeaveHidesColumns= {true}
-                        onDragStopped = {this.onColumnReordered}
-                        onColumnResized = {this.onColumnResized}
+                        defaultColDef={this.state.defaultColDef}
+                        columnDefs={this.state.cols}
+                        suppressDragLeaveHidesColumns={true}
+                        onDragStopped={this.onColumnReordered}
+                        onColumnResized={this.onColumnResized}
 
                         onBodyScroll={this.onScroll}
 
@@ -675,69 +648,47 @@ class RightsResultTable extends React.Component {
 
                         headerHeight='52'
                         rowHeight='48'
-
-                    >
-                    </AgGridReact>
+                    />
                 </div>
             </div>
         );
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
-
-import {Component} from 'react';
-
-mapStateToProps = state => {
-    return {
-        tabPageSelection: state.manualRightsEntry.session.tabPageSelection
-    };
+RightsResultTable.propTypes = {
+    autoload: PropTypes.bool,
+    availsMapping: PropTypes.any,
+    tabPage: PropTypes.object,
+    tabPageSort: PropTypes.array,
+    tabPageSelection: PropTypes.object,
+    tabPageLoading: PropTypes.bool,
+    manualRightsResultPageUpdate: PropTypes.func,
+    manualRightsResultPageSort: PropTypes.func,
+    manualRightsResultPageSelect: PropTypes.func,
+    manualRightsResultPageLoading: PropTypes.func,
+    columnsOrder: PropTypes.array,
+    columns: PropTypes.array,
+    columnsSize: PropTypes.object,
+    updateManualRightsEntryColumns: PropTypes.func,
+    showSelectedAvails: PropTypes.bool,
+    fromServer: PropTypes.bool,
+    hidden: PropTypes.bool,
+    nav: PropTypes.object,
+    autoRefresh: PropTypes.number,
+    mode: PropTypes.string,
+    selectedTab: PropTypes.string,
+    searchCriteria: PropTypes.object,
+    onTableLoaded: PropTypes.func,
+    historyData: PropTypes.object,
+    status: PropTypes.string,
+    locale: PropTypes.string,
 };
 
-class CheckBoxHeaderInternal extends Component {
-    static propTypes = {
-        tabPageSelection: PropTypes.object,
-        api: PropTypes.object
-    };
+RightsResultTable.defaultProps = {
+    autoload: true,
+    autoRefresh: 0,
+    mode: defaultMode,
+    searchCriteria: {},
+    locale: 'en-us',
+};
+export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
 
-    constructor(props) {
-        super(props);
-        this.onCheckBoxClick = this.onCheckBoxClick.bind(this);
-    }
-
-
-    onCheckBoxClick(){
-        const visibleRange = this.props.api.getVerticalPixelRange();
-        const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.props.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
-        const visibleNodes = this.props.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
-
-        if(!this.props.tabPageSelection.selectAll) {
-            const notSelectedNodes = visibleNodes.filter(({selected}) => !selected);
-            notSelectedNodes.forEach(node => {
-                node.setSelected(true);
-            });
-        }
-        else {
-            const selectedNodes = visibleNodes.filter(({selected}) => selected);
-            selectedNodes.forEach(node => {
-                node.setSelected(false);
-            });
-        }
-    }
-
-    render() {
-        const allVisibleSelected = this.props.tabPageSelection.selectAll;
-        const atLeastOneVisibleSelected = !this.props.tabPageSelection.selectNone;
-
-        return (
-            <span className="ag-selection-checkbox" onClick = {this.onCheckBoxClick}>
-                <span className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
-                <span className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}> </span>
-                <span className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !allVisibleSelected ? '' : 'ag-hidden'}`}> </span>
-            </span>
-        );
-    }
-}
-
-let CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);

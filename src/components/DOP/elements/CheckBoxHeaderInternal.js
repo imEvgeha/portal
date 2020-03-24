@@ -2,13 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class CheckBoxHeaderInternal extends Component {
-    static propTypes = {
-        api: PropTypes.object,
-    };
-
-    static defaultProps = {
-        api: null,
-    };
 
     constructor(props) {
         super(props);
@@ -78,17 +71,25 @@ class CheckBoxHeaderInternal extends Component {
         return (
             <span className="ag-selection-checkbox" onClick={this.onCheckBoxClick}>
                 <span
-                    className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && selectAll ? '' : 'ag-hidden'}`}>
-                </span>
+                    className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && selectAll ? '' : 'ag-hidden'}`}
+                />
                 <span
-                    className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}>
-                </span>
+                    className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}
+                />
                 <span
-                    className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !selectAll ? '' : 'ag-hidden'}`}>
-                </span>
+                    className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !selectAll ? '' : 'ag-hidden'}`}
+                />
             </span>
         );
     }
 }
+
+CheckBoxHeaderInternal.propTypes = {
+    api: PropTypes.object,
+};
+
+CheckBoxHeaderInternal.defaultProps = {
+    api: null,
+};
 
 export default CheckBoxHeaderInternal;

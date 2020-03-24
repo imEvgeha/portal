@@ -1,0 +1,24 @@
+.ingest-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 325px;
+  border-right: 1px solid #DCDCDC;
+  padding: 24px 0 0;
+  margin-right: 10px;
+  color: #42526E;
+}
+
+.ingest-panel__list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 100%;
+
+    // TODO: workaround - we should have
+    // the same class for each child of this element
+    & > :first-child {
+        border-top: 1px solid #DCDCDC;
+    }
+}

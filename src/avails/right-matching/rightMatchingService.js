@@ -5,25 +5,24 @@ import Http from '../../util/Http';
 import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '../../util/Common';
 import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-} from '../../ui-elements/nexus-toast-notification/constants';
+} from '../../ui/toast/constants';
+import {store} from '../../index';
+import { setFoundFocusRightInRightsRepository } from './rightMatchingActions';
 
-const endpoint = 'rights';
 const http = Http.create();
 
-const TEMPORARY_PROP = 'excludedItems';
-
-export const getRightMatchingList = (page, size, searchCriteria = {}, sortedParams) => {
+export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = queryParams.status ? {...queryParams, page, size} : {status: 'pending', ...queryParams, page, size};
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
         {paramsSerializer: encodedSerialize, params}
     );
 };
 
 export const getCombinedRight = (rightIds) => {
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`
     );
 };
 
@@ -33,33 +32,39 @@ export const putCombinedRight = (rightIds, combinedRight) => {
             description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
         }});
     return httpReq.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/?rightIds=${rightIds}`,
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`,
         combinedRight
     );
 };
 
-export const getRightToMatchList = (page, size, searchCriteria = {}, sortedParams) => {
-    const {excludedItems} = searchCriteria;
-    const filteredSearchCriteria = Object.keys(searchCriteria)
-        .reduce((object, key) => {
-            if (key !== TEMPORARY_PROP) {
-                object[key] = searchCriteria[key];
-            }
-            return object;
-        }, {});
-    const queryParams = pickBy(filteredSearchCriteria, identity) || {};
+export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParams) => {
+    const queryParams = pickBy(searchCriteria, identity) || {};
     const params = {...queryParams, page, size};
     return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}${prepareSortMatrixParam(sortedParams)}`, 
+        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
         {paramsSerializer : encodedSerialize, params}
     ).then(response => {
-        // temporary FE handling of not equal query params
+        const {rightMatching} = store.getState().avails || {};
+        const {focusedRight} = rightMatching || {};
+        const {id} = focusedRight || {};
+        // temporary FE handling for operand 'not equal'
+        const getUpdatedData = (response, excludedId) => {
+            const {data = []} = response || {};
+            if (data && data.find(({id}) => id === excludedId)) {
+                store.dispatch(setFoundFocusRightInRightsRepository({foundFocusRightInRightsRepository: true}));
+                return data.filter(({id}) => id !== excludedId);
+            }
+            return data;
+        };
+        const updatedData = getUpdatedData(response.data, id);
+
+        const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
         const updatedResponse = {
             ...response,
             data: {
                 ...response.data,
-                data: response.data && response.data.data ? response.data.data.filter(el => Array.isArray(excludedItems) && !excludedItems.includes(el.id)) : [],
-                total: response.data.total > 0 ? response.data.total - excludedItems.length : 0,
+                data: updatedData,
+                total:  foundFocusRightInRightsRepository ? response.data.total - 1 : response.data.total,
             }
         };
         return updatedResponse;
@@ -96,7 +101,9 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
         };
 
         const parseFieldValue = (criteria, value, subFieldName) => {
-            const subsetValue = Array.isArray(value) ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',') : value;
+            const subsetValue = Array.isArray(value)
+                ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',')
+                : value;
             const fieldValues = {
                 EQ: value,
                 SUB: subsetValue,
@@ -105,22 +112,19 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
                 LT: value,
                 LTE: value,
             };
-            const parsedValue = switchCase(fieldValues)(value)(criteria);
-            return parsedValue;
+            return switchCase(fieldValues)(value)(criteria);
         };
 
-        let result = searchCriteria.reduce((query, field) => {
+        const result = searchCriteria.reduce((query, field) => {
             const {targetFieldName, fieldName, subFieldName, criteria} = field;
             const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
             const fieldValue = targetFieldName || fieldName;
             const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];
             const key = parseFieldNames(criteria, preparedName);
-            const value = parseFieldValue(criteria, preparedFieldValue, subFieldName);
-            query[key] = value;
+            query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
             return query;
         }, {});
-        // temporary solution
-        result[TEMPORARY_PROP] = [id];
+
         return {
             data: {
                 fieldSearchCriteria: {
@@ -149,6 +153,6 @@ export const createRightById = (id) => {
             description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
         }
     });
-    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/${endpoint}/${id}/match/`);
+    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`);
 };
 

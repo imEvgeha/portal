@@ -8,7 +8,7 @@ export const historyService = {
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
         const params = {};
-        for (let key in searchCriteria) {
+        for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
                 params[key] = searchCriteria[key];
             }
@@ -17,8 +17,9 @@ export const historyService = {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
-    getHistory: (id) => {
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/${id}`);
+    getHistory: (id, appendErrorReports) => {
+        const queryParam = appendErrorReports ? '?appendErrorReports=true' : '';
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/${id}${queryParam}`);
     },
 
     getAvailHistoryAttachment: (id) => {

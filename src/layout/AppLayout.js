@@ -3,39 +3,29 @@ import PropTypes from 'prop-types';
 import {ConnectedRouter} from 'connected-react-router';
 import './AppLayout.scss';
 import {IfEmbedded} from './../util/Common';
-import Navbar from '../containers/Navbar';
 import Navigation from '../navigation/NexusNavigation';
-import DOP from '../util/DOP';
 import NexusBreadcrumb from '../containers/NexusBreadcrumb';
+import DOP from '../util/DOP';
 import routes from '../routes';
 
-const AppLayout = ({history}) => (
-    <ConnectedRouter history={history} >
-        <div className={`nexus-c-app-layout ${history.location.pathname.endsWith('/v2') ? 'nexus-navigation' : ''}`}>
-            <IfEmbedded>
-                <DOP />
-            </IfEmbedded>
-            {history.location.pathname.endsWith('/v2')
-                ? (
-                    <IfEmbedded value={false}>
-                        <Navigation />
-                    </IfEmbedded>
-                )
-                : (
-                    <>
-                        <IfEmbedded value={false}>
-                            <Navbar />
-                        </IfEmbedded>
-                        <NexusBreadcrumb />
-                    </>
-                )
-            }
-            <div className="nexus-c-app-layout__main">
-                {routes}
-            </div>
-         </div>
-    </ConnectedRouter>
+const AppLayout = ({history}) => {
+  return (
+      <ConnectedRouter history={history}>
+          <div className="nexus-c-app-layout">
+              <IfEmbedded>
+                  <DOP />
+              </IfEmbedded>
+              <IfEmbedded value={false}>
+                  <Navigation />
+              </IfEmbedded>
+              <div className="nexus-c-app-layout__main">
+                  <NexusBreadcrumb />
+                  {routes}
+              </div>
+          </div>
+      </ConnectedRouter>
 );
+};
 
 AppLayout.propTypes = {
     history: PropTypes.object,

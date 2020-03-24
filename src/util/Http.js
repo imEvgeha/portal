@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {keycloak, store} from '../index';
 import {errorModal} from '../components/modal/ErrorModal';
-import {addToast, removeToast} from '../ui-elements/nexus-toast-notification/actions';
+import {addToast, removeToast} from '../ui/toast/toastActions';
 import {
     SUCCESS_ICON, SUCCESS_TITLE, ERROR_ICON, ERROR_TITLE
-} from '../ui-elements/nexus-toast-notification/constants';
+} from '../ui/elements/nexus-toast-notification/constants';
 
 /*passing errorToasts in param:
 errorToast for all status codes:
@@ -29,7 +29,7 @@ const ERROR_MODAL = {
 const Http = {
     create: param => {
         const defaults = {
-            timeout: 60000,
+            timeout: 300000,
             headers: {'Content-Type': 'application/json'}
         };
         param = {
@@ -83,7 +83,7 @@ const Http = {
                     const {response: {status, data = {}, config: {url = '', method = ''} = {}} } = error;
                     let description;
                     if(ACCESS_DENIED.codes.includes(status)){
-                        description = `Status: ${status},\nURI: ${url},\nMethod: ${method}.toUpperCase()`;
+                        description = `Status: ${status},\nURI: ${url},\nMethod: ${method.toUpperCase()}`;
                         errorModal.open(ACCESS_DENIED.title, () => {}, {description});
                     } else{
                         if(defaultErrorHandling){

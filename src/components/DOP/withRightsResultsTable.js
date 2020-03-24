@@ -1,14 +1,15 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {getDeepValue} from '../../util/Common';
+import {useIntl} from 'react-intl';
 import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
-import LoadingGif from '../../img/loading.gif';
+import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
+import LoadingGif from '../../assets/img/loading.gif';
+import {TIMESTAMP_FORMAT} from '../../ui/elements/nexus-date-and-time-elements/constants';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
-
     const errorCellColor = '#f2dede';
     const readyNewCellColor = '#FFFFFF';
     const readyCellColor = '#D3D3D3';
@@ -18,8 +19,15 @@ const withRightsResultsTable = BaseComponent => {
     // const defaultMode = 'defaultMode';
     const selectRightMode = 'selectRightsMode';
 
-    const ComposedComponent = props => {
-        // parse colums schema
+    const ComposedComponent = (props) => {
+        // Get locale provided by intl
+        const intl = useIntl();
+        const {locale = 'en-US'} = intl || {};
+
+        // Create date placeholder based on locale
+        const dateFormat = getDateFormatBasedOnLocale(locale);
+
+        // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
             const formatter = (column) => {
@@ -30,14 +38,14 @@ const withRightsResultsTable = BaseComponent => {
                         return (params) => {
                         const {data} = params;
                         if (data && data[javaVariableName]) {
-                            return `${moment(data[javaVariableName]).format('L')} ${moment(data[javaVariableName]).format('HH:mm')}`;
+                            return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
                         }
                     };
                     case 'date':
                         return (params) => {
                             const {data} = params;
                             if ((data && data[column.javaVariableName]) && moment(data[column.javaVariableName].toString().substr(0, 10)).isValid()) {
-                                return moment(data[column.javaVariableName].toString().substr(0, 10)).format('L');
+                                return moment(data[column.javaVariableName].toString().substr(0, 10)).format(dateFormat);
                             }
                         };
                     case 'territoryType':
@@ -99,7 +107,7 @@ const withRightsResultsTable = BaseComponent => {
         };
 
         // loading renderer
-        const loadingRenderer = params => {
+        const loadingRenderer = (params) => {
             const {data, colDef, valueFormatted} = params;
             let error = null;
             if (data && data.validationErrors){
@@ -142,20 +150,24 @@ const withRightsResultsTable = BaseComponent => {
                     if (data && data.highlightedFields) {
                         highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
                     }
-                    let cellVisualContent = <Fragment>
-                        <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
-                            {String(content)}
-                        </div>
-                        {highlighted && (
+                    const cellVisualContent = (
+                        <>
                             <div
-                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                                <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                                title={error}
+                                className={highlighted ? 'font-weight-bold' : ''}
+                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                            >
+                                {String(content)}
+                            </div>
+                            {highlighted && (
+                            <div
+                                style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                            >
+                                <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                             </div>
                         )}
-                    </Fragment>;
+                        </>
+);
                     if(props.disableEdit){
                         return (
                             <div> {cellVisualContent} </div>
@@ -172,7 +184,7 @@ const withRightsResultsTable = BaseComponent => {
                 return val;
             } 
 
-            return data ? '' : <img src={LoadingGif}/>;
+            return data ? '' : <img src={LoadingGif} />;
         };
 
         // style cell

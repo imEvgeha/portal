@@ -23,7 +23,6 @@ const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, toke
     const [roles, setRoles] = useState([]);
     useEffect(() => {
         const userRoles = token ? jwtDecode(token).resource_access.account.roles : [];
-        console.log(userRoles);
         setRoles(userRoles);
     }, [token]);
     const gotoAvailsDashboard = () => {
@@ -38,29 +37,29 @@ const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, toke
     };
 
     return (
-        <BlockUi tag="div" blocking={blocking} loader={<Loader/>}>
-        <nav className="navbar navbar-NEXUS navbar-expand-md">
-            <span className="navbar-brand">
-                <a className="navbar-brand Nlogo" href="#"> </a>
+        <BlockUi tag="div" blocking={blocking} loader={<Loader />}>
+            <nav className="navbar navbar-NEXUS navbar-expand-md">
+                <span className="navbar-brand">
+                    <a className="navbar-brand Nlogo" href="#"> </a>
                 </span>
                 <ul className="navbar-nav">
                     <Can I="read" a="Avail">
                         <li className="nav-item">
                             <span className="nav-link" href="#" onClick={gotoAvailsDashboard}>
-                                <NavLink activeClassName="navActive" to="/avails"  id="avail-tab">Avails</NavLink>
+                                <NavLink activeClassName="navActive" to="/avails" id="avail-tab">Avails</NavLink>
                             </span>
                         </li>
                     </Can>
                     <Can I="read" a="Metadata">
                         <li className="">
-                            <span className="nav-link" href="#" >
+                            <span className="nav-link" href="#">
                                 <NavLink activeClassName="navActive" to="/metadata" id="metadata-tab">Metadata</NavLink>
                             </span>
                         </li>
                     </Can>
                     <Can I="read" a="AssetManagement">
                         <li className="nav-item">
-                            <span className="nav-link" href="#" >
+                            <span className="nav-link" href="#">
                                 <NavLink activeClassName="navActive" to="/media" id="metadata-tab">Media Search</NavLink>
                             </span>
                         </li>
@@ -74,7 +73,7 @@ const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, toke
                         nav={true}
                     >
                         <DropdownToggle caret nav={true} id="navbar-dropdown-btn">
-                            <FontAwesome name='user-circle' style={{marginRight: '5px'}}/>
+                            <FontAwesome name='user-circle' style={{marginRight: '5px'}} />
                             {profileInfo.name}
                         </DropdownToggle>
                         <DropdownMenu>
@@ -85,7 +84,7 @@ const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, toke
                             </DropdownItem>
                             <DropdownItem>
                                 <NavLink id="settings-link" to="/settings">
-                                    <FontAwesome name='cog' style={{marginRight: '5px'}}/>
+                                    <FontAwesome name='cog' style={{marginRight: '5px'}} />
                                     settings
                                 </NavLink>
                             </DropdownItem>

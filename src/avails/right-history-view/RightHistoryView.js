@@ -2,29 +2,29 @@ import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
-import {NexusModalContext} from '../../ui-elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import {fetchRightsHistory} from './rightHistoryActions';
 import AuditHistoryTable from '../../components/AuditHistoryTable/AuditHistoryTable';
 
-const SPINNER =
+const SPINNER = (
     <div style={{textAlign: 'center'}}>
-        <Spinner size="medium"/>
-    </div>;
+        <Spinner size="medium" />
+    </div>
+  );
 
-function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistory}) {
+const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
 
     const [opened, setOpened] = useState(false);
 
-    const {setModalContent, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    useEffect(() => {
-        setModalStyle({width: '100%'});
-    }, []);
+    const TITLE = `Audit History (${selectedAvails.length})`;
 
     useEffect(() => {
         if (opened) {
-            setModalContent(buildContent());
+            setModalStyle({width: '100%'});
+            setModalContentAndTitle(buildContent(), TITLE);
         }
     }, [rightsEventHistory]);
 
@@ -32,7 +32,7 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
         return (
             <div>
                 {selectedAvails.map((avail, index) => (
-                        <AuditHistoryTable key={avail.id} focusedRight={avail} data={rightsEventHistory[index]} />
+                    <AuditHistoryTable key={avail.id} focusedRight={avail} data={rightsEventHistory[index]} />
                     )
                 )}
             </div>
@@ -49,21 +49,20 @@ function RightHistoryView({selectedAvails, rightsEventHistory, fetchRightsHistor
                 setOpened(false);
             }
         }]);
-
-        setModalContent(SPINNER);
+        setModalContentAndTitle(SPINNER, TITLE);
         setOpened(true);
     };
 
     return (
         (selectedAvails.length > 0) && (
-            <a href={'#'} onClick={openHistoryModal}>
+            <a href="#" onClick={openHistoryModal}>
                 <span className='nx-container-margin table-top-text'>
                     View History
                 </span>
             </a>
         )
     );
-}
+};
 
 RightHistoryView.propTypes = {
     selectedAvails: PropTypes.array.isRequired,

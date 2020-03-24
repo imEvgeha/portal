@@ -1,5 +1,5 @@
 import React from 'react';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import Select from '@atlaskit/select';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import './Localization.scss';
 
 import {setLocale} from '../../stores/actions/localization/setLocale';
 import { TextHeader } from '../../components/navigation/CustomNavigationElements';
-import NexusDateTimePicker from '../../ui-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 const Localization = ({changeLocale}) => {
 
@@ -50,13 +50,13 @@ const Localization = ({changeLocale}) => {
                 <div className="nexus-c-settings-localization__preview-text">
                     Preview
                 </div>
-                    <NexusDateTimePicker
-                        onChange={() => {/* Empty because it's just for preview */}}
-                        id="date"
-                        value="2018-04-30T00:00:00.000Z"
-                        isWithInlineEdit={true}
-                        onConfirm={() => {/* Empty because it's just for preview */}}
-                    />
+                <NexusDateTimePicker
+                    onChange={() => {/* Empty because it's just for preview */}}
+                    id="date"
+                    value="2018-04-30T00:00:00.000Z"
+                    isWithInlineEdit={true}
+                    onConfirm={() => {/* Empty because it's just for preview */}}
+                />
             </div>
         </div>
     );

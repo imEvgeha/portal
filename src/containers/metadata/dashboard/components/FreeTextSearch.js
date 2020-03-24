@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {searchFormUpdateTextSearch} from '../../../../stores/actions/metadata/index';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 const mapDispatchToProps = {
     searchFormUpdateTextSearch
@@ -41,24 +41,31 @@ class FreeTextSearch extends React.Component {
     }
 
     render() {
-        return (<div className="input-group stylish-input-group">
-            <input type="text" className="form-control" placeholder="Search"
-                name={'title'}
-                disabled={this.props.disabled}
-                value={this.state.title}
-                onChange={this.handleInputChange}
-                id={this.props.containerId + '-freetext-search-text'}
-                onKeyPress={this._handleKeyPress}/>
-            <div className="input-group-append">
-                <button
-                    type="button"
+        return (
+            <div className="input-group stylish-input-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search"
+                    name="title"
                     disabled={this.props.disabled}
-                    onClick={this.handleSearch}
-                    id={this.props.containerId + '-freetext-search-btn'}>
-                    <i className="fas fa-search"> </i>
-                </button>
+                    value={this.state.title}
+                    onChange={this.handleInputChange}
+                    id={this.props.containerId + '-freetext-search-text'}
+                    onKeyPress={this._handleKeyPress}
+                />
+                <div className="input-group-append">
+                    <button
+                        type="button"
+                        disabled={this.props.disabled}
+                        onClick={this.handleSearch}
+                        id={this.props.containerId + '-freetext-search-btn'}
+                    >
+                        <i className="fas fa-search"> </i>
+                    </button>
+                </div>
             </div>
-        </div>);
+);
     }
 }
 

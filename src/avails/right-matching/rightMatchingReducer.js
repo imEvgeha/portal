@@ -7,6 +7,7 @@ const initialState = {
     rightMatchPageData: {},
     matchedRights: [],
     combinedRight: {},
+    foundFocusRightInRightsRepository: false
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
@@ -18,6 +19,7 @@ const rightMatchingReducer = (state = initialState, action) => {
         rightMatchPageData,
         matchedRights,
         combinedRight,
+        foundFocusRightInRightsRepository
     } = payload || {};
 
     switch (type) {
@@ -35,6 +37,7 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 focusedRight,
+                foundFocusRightInRightsRepository: false,
             };
         case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
             return {
@@ -42,10 +45,6 @@ const rightMatchingReducer = (state = initialState, action) => {
                 matchedRights,
             };
         case actionTypes.FETCH_COMBINED_RIGHT_SUCCESS:
-            return {
-                ...state,
-                combinedRight,
-            };
         case actionTypes.FETCH_COMBINED_RIGHT_ERROR:
             return {
                 ...state,
@@ -63,6 +62,11 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 rightMatchPageData: {},
+            };
+        case actionTypes.FOUND_FOCUS_RIGHT_IN_RIGHTS_REPOSITORY:
+            return {
+                ...state,
+                foundFocusRightInRightsRepository
             };
         default:
             return state;

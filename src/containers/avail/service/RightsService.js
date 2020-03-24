@@ -3,12 +3,10 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import {store} from '../../../index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../util/Common';
+import {STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS, MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
+    ARRAY_OF_OBJECTS} from './Constants';
 
 const http = Http.create();
-
-const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = ['retailer.retailerId1', 'region', 'regionExcluded', 'genres', 'contractId', 'originalRightIds'];
-const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
-const ARRAY_OF_OBJETS = ['territory'];
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -17,7 +15,7 @@ const isNotEmpty = function(obj){
     return obj && safeTrim(obj);
 };
 
-const parse = function(value, key){
+const parse = (value, key) => {
     if(typeof value === 'number' || typeof  value === 'boolean')
         return value;
 
@@ -28,7 +26,7 @@ const parse = function(value, key){
         return momentToISO(value);
     }
 
-    if(ARRAY_OF_OBJETS.includes(key)) {
+    if(ARRAY_OF_OBJECTS.includes(key)) {
         return value;
     }
 
@@ -72,7 +70,7 @@ const populate = function(key, value, location){
             populate(restKey, value, location[firstKey]);
         }
     }else{        
-        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){            
+        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key) && value){
             value = value.split(',');
         }
         location[key] = parse(value, key);
@@ -80,7 +78,7 @@ const populate = function(key, value, location){
 };
 
 const prepareRight = function (right, keepNulls = false) {
-    let rightCopy = {};
+    const rightCopy = {};
     Object.keys(right).forEach(key => {
         if(keepNulls || isNotEmpty(right[key])){
             populate(key, right[key], rightCopy);
@@ -92,7 +90,7 @@ const prepareRight = function (right, keepNulls = false) {
 const parseAdvancedFilter = function (searchCriteria) {
     const rootStore = store.getState().root;
     const mappings = rootStore.availsMapping.mappings;
-    const params = {};
+    let params = {};
 
     function isQuoted(value) {
         return value[0] === '"' && value[value.length - 1] === '"';
@@ -100,8 +98,22 @@ const parseAdvancedFilter = function (searchCriteria) {
 
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-            const map = mappings.find(({queryParamName}) => queryParamName === key);
             let value = searchCriteria[key];
+
+            // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
+            if (key === 'territory') {
+                const updatedKey = `${key}Country`;
+                params[updatedKey] = value;
+                continue;
+            }
+            if (value instanceof Object) {
+                params = {
+                    ...params,
+                    ...value
+                };
+                continue;
+            }
+            const map = mappings.find(({queryParamName}) => queryParamName === key);
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
@@ -115,6 +127,45 @@ const parseAdvancedFilter = function (searchCriteria) {
 
     return params;
 };
+
+const parseAdvancedFilterV2 = function (searchCriteria) {
+    const rootStore = store.getState().root;
+    const mappings = rootStore.availsMapping.mappings;
+    let params = {};
+    function isQuoted(value) {
+        return value[0] === '"' && value[value.length - 1] === '"';
+    }
+    for (let key in searchCriteria) {
+        if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+            let value = searchCriteria[key];
+            // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
+            if (key === 'territory') {
+                const updatedKey = `${key}Country`;
+                params[updatedKey] = value;
+                continue;
+            }
+            if (value instanceof Object) {
+                params = {
+                    ...params,
+                    ...value
+                };
+                continue;
+            }
+            const map = mappings.find(({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key);
+            let keyValue = map && map.queryParamName ? map.queryParamName : key;
+            if (map && map.searchDataType === 'string') {
+                if (isQuoted(value)) {
+                    value = value.substr(1, value.length - 2);
+                } else {
+                    keyValue += 'Match';
+                }
+            }
+            params[keyValue] = value;
+        }
+    }
+    return params;
+};
+
 
 export const rightsService = {
 
@@ -145,4 +196,4 @@ export const rightsService = {
     },
 };
 
-export {parseAdvancedFilter};
+export {parseAdvancedFilter, parseAdvancedFilterV2};

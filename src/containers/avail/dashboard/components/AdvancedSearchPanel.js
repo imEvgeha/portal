@@ -5,7 +5,7 @@ import {
     setHistoryCache,
     resultPageSetBulkExport
 } from '../../../../stores/actions/avail/dashboard';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 import t from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
@@ -42,28 +42,10 @@ const mapDispatchToProps = {
 const ignoreForCloseable = ['invalid'];
 
 class AdvancedSearchPanel extends React.Component {
-    static propTypes = {
-        searchCriteria: t.object,
-        availTabPage: t.object,
-        availTabPageSort: t.array,
-        onSearch: t.func,
-        searchFormUpdateAdvancedSearchCriteria: t.func,
-        onToggleAdvancedSearch: t.func,
-        hide: t.bool,
-        reportName: t.string,
-        availsMapping: t.object,
-        columns: t.array,
-        historyCache: t.object,
-        setHistoryCache: t.func,
-        location: t.object,
-        bulkExportAvailable: t.bool,
-        resultPageSetBulkExport: t.func
-    };
 
     constructor(props) {
         super(props);
         this.state = {
-            reportName: '',
             selected: null,
             value: null,
             blink: null,
@@ -79,7 +61,6 @@ class AdvancedSearchPanel extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleValueChange = this.handleValueChange.bind(this);
-        this.handleInvalidChange = this.handleInvalidChange.bind(this);
         this.addSearchField = this.addSearchField.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.blink = this.blink.bind(this);
@@ -117,7 +98,7 @@ class AdvancedSearchPanel extends React.Component {
         }
         const searchCriteria = {};
 
-        let sortedFields = this.getSortedFieldsToShow();
+        const sortedFields = this.getSortedFieldsToShow();
         let position = 0;
         sortedFields.forEach((field) => {
             if (field.name !== name) {
@@ -136,12 +117,6 @@ class AdvancedSearchPanel extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: {value: value}});
-    }
-
-    handleInvalidChange(event) {
-        const value = event.target.value;
-        this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, invalid: {value: value}});
-        this.props.resultPageSetBulkExport(false);
     }
 
     addSearchField() {
@@ -173,9 +148,11 @@ class AdvancedSearchPanel extends React.Component {
         } else {
 
             const onChange = () => { this.setState({exportAll: !this.state.exportAll});};
-            const option = <div key='exportAll'>
-                                <br/><input type='checkbox' name='buck_export_all' style={{marginRight: '8px'}} onChange={onChange} />Export all Fields
-                            </div>;
+            const option = (
+                <div key='exportAll'>
+                    <br /> <input type='checkbox' name='buck_export_all' style={{marginRight: '8px'}} onChange={onChange} />Export all Fields
+                </div>
+            );
             const options = [`You have ${this.props.availTabPage.total} avails for download.`, option];
             confirmModal.open('Confirm download',
                 () => {
@@ -248,7 +225,7 @@ class AdvancedSearchPanel extends React.Component {
 
     getFieldsToShow() {
         const nonEmptyFields = [];
-        for (let key of Object.keys(this.props.searchCriteria) ) {
+        for (const key of Object.keys(this.props.searchCriteria) ) {
             const field = this.props.searchCriteria[key];
             if (field) {
                 field.name = key;
@@ -305,7 +282,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
-                        value={ ' = ' + this.props.searchCriteria[name].value }
+                        value={' = ' + this.props.searchCriteria[name].value}
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
@@ -320,7 +297,7 @@ class AdvancedSearchPanel extends React.Component {
                 <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
-                        value={ ' = ' + (this.props.searchCriteria[name].options ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ') : '')}
+                        value={' = ' + (this.props.searchCriteria[name].options ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ') : '')}
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
@@ -334,48 +311,54 @@ class AdvancedSearchPanel extends React.Component {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
             }
-            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
-                <CloseableBtn
-                    title={displayName}
-                    onClick={() => this.selectField(name)}
-                    onClose={() => this.removeField(name)}
-                    highlighted={this.state.blink === name}
-                    value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
-                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
-                />
-            </div>);
+            return (
+                <div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+);
         };
 
         const renderCloseableDateBtn = (name, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment.utc(date).format('L') : '';
             }
-            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
-                <CloseableBtn
-                    title={displayName}
-                    onClick={() => this.selectField(name)}
-                    onClose={() => this.removeField(name)}
-                    highlighted={this.state.blink === name}
-                    value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
-                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
-                />
-            </div>);
+            return (
+                <div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+);
         };
 
         const renderCloseableDurationBtn = (name, displayName) => {
             function prepareDuration(prefix, value) {
                 return value ? prefix + ' ' + value : '';
             }
-            return (<div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
-                <CloseableBtn
-                    title={displayName}
-                    onClick={() => this.selectField(name)}
-                    onClose={() => this.removeField(name)}
-                    highlighted={this.state.blink === name}
-                    value={prepareDuration(' from', this.props.searchCriteria[name].from) + ' ' + prepareDuration('to', this.props.searchCriteria[name].to)}
-                    id={'dashboard-avails-advanced-search-' + name + '-criteria'}
-                />
-            </div>);
+            return (
+                <div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                    <CloseableBtn
+                        title={displayName}
+                        onClick={() => this.selectField(name)}
+                        onClose={() => this.removeField(name)}
+                        highlighted={this.state.blink === name}
+                        value={prepareDuration(' from', this.props.searchCriteria[name].from) + ' ' + prepareDuration('to', this.props.searchCriteria[name].to)}
+                        id={'dashboard-avails-advanced-search-' + name + '-criteria'}
+                    />
+                </div>
+);
         };
 
         const renderCloseable = () => {
@@ -414,9 +397,9 @@ class AdvancedSearchPanel extends React.Component {
             let val = '';
             if(this.props.searchCriteria.availHistoryIds) {
                 val = this.props.searchCriteria.availHistoryIds.value;
-                let data = this.props.historyCache[val];
+                const data = this.props.historyCache[val];
                 if (data) {
-                    let subTitle = data.ingestType + ', ';
+                    const subTitle = data.ingestType + ', ';
                     val = subTitle;
                     if (data.ingestType === 'Email') {
                         val += (data.provider ? data.provider + ', ' : '');
@@ -435,10 +418,10 @@ class AdvancedSearchPanel extends React.Component {
                 }
             }
             return (
-                this.props.searchCriteria.availHistoryIds &&
+                this.props.searchCriteria.availHistoryIds && (
                 <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
                     <CloseableBtn
-                        title={'Avail History'}
+                        title="Avail History"
                         value={' = ' + val}
                         onClose={() => {
                             this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
@@ -446,11 +429,14 @@ class AdvancedSearchPanel extends React.Component {
                         id={'dashboard-avails-advanced-search-' + 'AvailId' + '-criteria'}
                     />
                 </div>
+              )
             );
         };
         return (
-            <div className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
-                 style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}>
+            <div
+                className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
+                style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}
+            >
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -461,7 +447,7 @@ class AdvancedSearchPanel extends React.Component {
                     value={this.state.value}
                     dataType={this.state.selected ? this.availsMap[this.state.selected.value].searchDataType : null}
                     displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
-                    id={'dashboard-avails-advanced-search-selectable'}
+                    id="dashboard-avails-advanced-search-selectable"
 
                     onChange={this.handleValueChange}
                     onSelect={this.handleSelect}
@@ -471,39 +457,72 @@ class AdvancedSearchPanel extends React.Component {
                     {renderSpecialCloseable()}
                     {renderCloseable()}
                 </div>
-                <div className="d-flex flex-row justify-content-between mt-2">
-                    <div style={{margin:'0 5px', alignSelf: 'center'}}>
-                        Show:
-                        <select className="form-control border-1 d-inline"
-                                id={'dashboard-avails-report-select'}
-                                onChange={this.handleInvalidChange}
-                                value={this.props.searchCriteria.invalid ? this.props.searchCriteria.invalid.value : ''}
-                                style={{width: '100px', background: 'initial', margin: '0 5px'}}
-                        >
-                            <option value="">All</option>
-                            <option value="false">Valid</option>
-                            <option value="true">Invalid</option>
-                        </select>
-                    </div>
-                     <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleBulkExport}
-                                 disabled={!this.props.availTabPage.total}
-                                 style={{ margin: '4px 7px 0'}}>bulk export</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleDelete}
-                                 disabled={!this.props.reportName}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>delete</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-clear-btn'} onClick={this.handleClear}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>clear</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-save-btn'} onClick={this.handleSave}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>save</Button>
-                         <Button outline color="secondary" id={'dashboard-avails-advanced-search-filter-btn'} onClick={this.handleSearch}
-                                 innerRef={this.refSearchBtn}
-                                 style={{width: '80px', margin: '4px 7px 0'}}>filter</Button>
-                     </div>
+                <div className="mt-2" style={{ textAlign: 'right', display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
+                    <Button
+                        outline
+                        color="secondary"
+                        id="dashboard-avails-advanced-search-save-btn"
+                        onClick={this.handleBulkExport}
+                        disabled={!this.props.availTabPage.total}
+                        style={{ margin: '4px 7px 0'}}
+                    >bulk export
+                    </Button>
+                    <Button
+                        outline
+                        color="secondary"
+                        id="dashboard-avails-advanced-search-save-btn"
+                        onClick={this.handleDelete}
+                        disabled={!this.props.reportName}
+                        style={{width: '80px', margin: '4px 7px 0'}}
+                    >delete
+                    </Button>
+                    <Button
+                        outline
+                        color="secondary"
+                        id="dashboard-avails-advanced-search-clear-btn"
+                        onClick={this.handleClear}
+                        style={{width: '80px', margin: '4px 7px 0'}}
+                    >clear
+                    </Button>
+                    <Button
+                        outline
+                        color="secondary"
+                        id="dashboard-avails-advanced-search-save-btn"
+                        onClick={this.handleSave}
+                        style={{width: '80px', margin: '4px 7px 0'}}
+                    >save
+                    </Button>
+                    <Button
+                        outline
+                        color="secondary"
+                        id="dashboard-avails-advanced-search-filter-btn"
+                        onClick={this.handleSearch}
+                        innerRef={this.refSearchBtn}
+                        style={{width: '80px', margin: '4px 7px 0'}}
+                    >filter
+                    </Button>
                 </div>
             </div>
         );
     }
 }
+
+AdvancedSearchPanel.propTypes = {
+    searchCriteria: t.object,
+    availTabPage: t.object,
+    availTabPageSort: t.array,
+    onSearch: t.func,
+    searchFormUpdateAdvancedSearchCriteria: t.func,
+    onToggleAdvancedSearch: t.func,
+    hide: t.bool,
+    reportName: t.string,
+    availsMapping: t.object,
+    columns: t.array,
+    historyCache: t.object,
+    setHistoryCache: t.func,
+    location: t.object,
+    bulkExportAvailable: t.bool,
+    resultPageSetBulkExport: t.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);

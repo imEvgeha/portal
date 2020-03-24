@@ -4,6 +4,14 @@ $app-layout: (
     content-padding-horizontal: 20px,
 );
 
+$z-index: (
+    z-index-0: 0,
+    z-index-100: 100,
+    z-index-500: 500,
+    z-index-1000: 1000,
+    z-index-1500: 1500,
+);
+
 $colors: (
     primary: #f2f2f2,
     nexus-primary-color: #939FB5, // TODO: refactor this
@@ -15,6 +23,9 @@ $colors: (
     nexus-tag-yellow: rgb(255, 196, 0),
     nexus-tag-default: rgb(244, 245, 247),
     nexus-white: #FFFFFF,
+    nexus-light-green: #2AC940,
+    nexus-light-grey: #a5adba,
+    warning: #DF1745,
 );
 
 $nexus-font: Arial, Helvetica, sans-serif;

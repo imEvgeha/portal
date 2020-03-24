@@ -4,27 +4,18 @@ import {Link} from 'react-router-dom';
 import moment from 'moment';
 import {getDateFormatBasedOnLocale, getDeepValue} from '../../util/Common';
 import RightsURL from '../../containers/avail/util/RightsURL';
-import LoadingGif from '../../img/loading.gif';
+import LoadingGif from '../../assets/img/loading.gif';
 import {isObject} from '../../util/Common';
+import {TIMESTAMP_FORMAT} from '../../ui/elements/nexus-date-and-time-elements/constants';
 
 export default class RightsResultsTable extends React.Component {
-    static propTypes = {
-        nav: PropTypes.object,
-        columnsSize: PropTypes.object,
-        columns: PropTypes.array
-    };
-
-    static defaultProps = {
-        nav: null,
-        columnsSize: null,
-        columns: null,
-    };
 
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
-        const dateFormat = `${getDateFormatBasedOnLocale(locale)} HH:mm`;
+        const dateFormat = getDateFormatBasedOnLocale(locale);
+        const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
-        let formatter = (column) => {
+        const formatter = (column) => {
             const {
                 dataType,
                 javaVariableName,
@@ -34,13 +25,11 @@ export default class RightsResultsTable extends React.Component {
                 case 'localdate' :
                 case 'datetime' : return ({data = {}}) => {
                     const {[javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
+                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
                 };
-                case 'date' : return function(params){
-                    if((params.data && params.data[javaVariableName]) && moment(String(params.data[javaVariableName]).substr(0, 10)).isValid()) {
-                        return moment(params.data[javaVariableName].toString().substr(0, 10)).format('L');
-                    }
-                    return;
+                case 'date' : return ({data = {}}) => {
+                    const {[javaVariableName]: date = ''} = data || {};
+                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function(params){
                     if(params.data && params.data[javaVariableName]){
@@ -84,6 +73,7 @@ export default class RightsResultsTable extends React.Component {
         }else{
             newCols = Object.keys(newColDef).map((key) => newColDef[key]);
         }
+        // eslint-disable-next-line react/no-unused-state
         this.setState({colDef: newColDef, cols: newCols});
     }
 
@@ -151,6 +141,11 @@ export default class RightsResultsTable extends React.Component {
                 return result || [];
             };
 
+            const getFormattedOriginalFieldName = ({originalFieldName}) => {
+                const complexFieldIndex = originalFieldName.indexOf('[');
+                return originalFieldName.slice(0, complexFieldIndex);
+            };
+
             const filterFieldErrors = (errors, type) => {
                 const regForEror = /\[(.*?)\]/i;
                 const result = Array.isArray(errors) && errors.filter(({fieldName}) => {
@@ -167,7 +162,7 @@ export default class RightsResultsTable extends React.Component {
                         return {
                             type: 'error',
                             value: (sourceDetails && sourceDetails.originalValue) || message,
-                            field: sourceDetails && sourceDetails.originalFieldName,
+                            field: sourceDetails && getFormattedOriginalFieldName(sourceDetails),
                             severityType,
                             id: matchObj && Number(matchObj[1]),
                             isValid: false,
@@ -246,17 +241,19 @@ export default class RightsResultsTable extends React.Component {
                 return(
                     <Link to={RightsURL.getRightUrl(params.data.id, this.props.nav)}>
                         <div
-                            title= {error}
-                            className = {highlighted ? 'font-weight-bold' : ''}
-                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}>
+                            title={error}
+                            className={highlighted ? 'font-weight-bold' : ''}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                        >
                             {arrayTypeFieldValue || String(content)}
                         </div>
-                        {highlighted &&
+                        {highlighted && (
                         <div
-                            style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}>
-                            <span title={'* fields in bold are original values provided by the studios'} style={{color: 'grey'}}><i className="far fa-question-circle"></i></span>
+                            style={{position: 'absolute', top: '0px', right: '0px', lineHeight:'1'}}
+                        >
+                            <span title="* fields in bold are original values provided by the studios" style={{color: 'grey'}}><i className="far fa-question-circle" /></span>
                         </div>
-                        }
+                      )}
                     </Link>
                 );
             }
@@ -265,7 +262,7 @@ export default class RightsResultsTable extends React.Component {
             if (params.data){
                 return '';
             }
-            return <img src={LoadingGif}/>;
+            return <img src={LoadingGif} />;
         }
     }
 
@@ -278,8 +275,8 @@ export default class RightsResultsTable extends React.Component {
                     || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
                     || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
                     || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')
-                    || (e.fieldName.includes('affiliate') && params.colDef.field === 'affiliate')
-                    || (e.fieldName.includes('affiliateExclude') && params.colDef.field === 'affiliateExclude')
+                    || (e.fieldName.includes('affiliate[') && params.colDef.field === 'affiliate')
+                    || (e.fieldName.includes('affiliateExclude[') && params.colDef.field === 'affiliateExclude')
                     || (e.fieldName.includes('castCrew') && params.colDef.field === 'castCrew')) {
                     error = e;
                 }
@@ -292,4 +289,14 @@ export default class RightsResultsTable extends React.Component {
         }
     }
 }
+RightsResultsTable.propTypes = {
+    nav: PropTypes.object,
+    columnsSize: PropTypes.object,
+    columns: PropTypes.array
+};
 
+RightsResultsTable.defaultProps = {
+    nav: null,
+    columnsSize: null,
+    columns: null,
+};

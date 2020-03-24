@@ -38,7 +38,7 @@ export default function withColumnsReorder(WrappedComponent){
 
         onColumnReordered(e) {
             const {updateColumnsOrder} = this.props;
-            let columns = [];
+            const columns = [];
             e.columnApi.getAllGridColumns().forEach(({colDef}) => {
                 if (colDef && colDef.field) {
                     columns.push(colDef.field);
@@ -77,16 +77,18 @@ export default function withColumnsReorder(WrappedComponent){
         }
 
         render(){
-            return <WrappedComponent
-                {...this.props}
-                defaultColDef={{...this.props.defaultColDef, resizable:true}}
-                setTable={this.setTable}
-                columns={this.state.columns}
-                columnsSize={this.state.columnsSize}
-                suppressDragLeaveHidesColumns= {true}
-                onDragStopped = {this.onColumnReordered}
-                onColumnResized = {this.onColumnResized}
-            />;
+            return (
+                <WrappedComponent
+                    {...this.props}
+                    defaultColDef={{...this.props.defaultColDef, resizable:true}}
+                    setTable={this.setTable}
+                    columns={this.state.columns}
+                    columnsSize={this.state.columnsSize}
+                    suppressDragLeaveHidesColumns={true}
+                    onDragStopped={this.onColumnReordered}
+                    onColumnResized={this.onColumnResized}
+                />
+);
         }
     };
 }

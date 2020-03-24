@@ -7,28 +7,53 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
 import './RightToMatchView.scss';
-import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import {createRightMatchingColumnDefs, createNewRight, fetchRightMatchingFieldSearchCriteria, fetchAndStoreFocusedRight} from '../rightMatchingActions';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {
+    defineCheckboxSelectionColumn,
+    defineActionButtonColumn
+} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withToasts from '../../../ui/toast/hoc/withToasts';
+import {
+    NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+} from '../../../ui/toast/constants';
+import {
+    WARNING_TITLE,
+    WARNING_ICON
+} from '../../../ui/elements/nexus-toast-notification/constants';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import {
+    createRightMatchingColumnDefs,
+    createNewRight,
+    fetchRightMatchingFieldSearchCriteria,
+    fetchAndStoreFocusedRight,
+    setFoundFocusRightInRightsRepository
+} from '../rightMatchingActions';
 import * as selectors from '../rightMatchingSelectors';
-import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
-import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getRightToMatchList} from '../rightMatchingService';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import {URL} from '../../../util/Common';
-import {defineCheckboxSelectionColumn, defineActionButtonColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import NexusToastNotificationContext from '../../../ui-elements/nexus-toast-notification/NexusToastNotificationContext';
-import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE, WARNING_ICON} from '../../../ui-elements/nexus-toast-notification/constants';
 import {backArrowColor} from '../../../constants/avails/constants';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
-import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
-import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
+import {parseAdvancedFilterV2} from '../../../containers/avail/service/RightsService';
+import {
+    RIGHT_TO_MATCH_TITLE,
+    NEW_BUTTON,
+    RIGHT_MATCHING_DOP_STORAGE,
+    FOCUSED_RIGHT,
+    RIGHTS_REPOSITORY,
+    CANCEL_BUTTON,
+    MATCH_BUTTON,
+} from '../rightMatchingConstants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
 const RightRepositoryNexusGrid = compose(
-    withFilterableColumns(),
     withSideBar(),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: getRightToMatchList})
 )(NexusGrid);
 
@@ -44,23 +69,26 @@ const RightToMatchView = ({
     history,
     location,
     createNewRight,
+    addToast,
+    removeToast,
+    setFoundFocusRightInRightsRepo,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
     const [selectedRows, setSelectedRows] = useState([]);
-    const {addToast, removeToast} = useContext(NexusToastNotificationContext);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {}; 
     const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
 
     // DOP Integration
-    useDOPIntegration(null, 'rightMatchingDOP');
+    useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
-        if (!columnDefs.length) {
+        // TODO: refactor this - unnecessary call
+        if (!columnDefs.length || !mapping) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
         fetchFocusedRight(rightId);
@@ -69,7 +97,7 @@ const RightToMatchView = ({
         }
     }, [rightId]);
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
 
     const onDeclareNewRight = () => {
@@ -84,7 +112,7 @@ const RightToMatchView = ({
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
             icon: WARNING_ICON,
             actions: [
-                {content:'Cancel', onClick: removeToast},
+                {content:'Cancel', onClick: () => removeToast()},
                 {content:'OK', onClick: onDeclareNewRight}
             ],
             isWithOverlay: true,
@@ -95,19 +123,26 @@ const RightToMatchView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button onClick={onNewRightClick}>New</Button>
+                <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
             </CustomActionsCellRenderer>
         );
     };
 
-    const actionNewButtonColumnDef = defineActionButtonColumn('buttons', createNewButtonCellRenderer);
+    const actionNewButtonColumnDef = defineActionButtonColumn({
+        field: 'buttons', cellRendererFramework: createNewButtonCellRenderer
+    });
     const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
-    const handleSelectionChange = api => {
-        const selectedRows = api.getSelectedRows();
-        setSelectedRows(selectedRows);
-        setIsMatchDisabled(!selectedRows.length);
+    const handleGridEvent = ({type, api}) => {
+        const {SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
+        if (type === SELECTION_CHANGED) {
+            const selectedRows = api.getSelectedRows();
+            setSelectedRows(selectedRows);
+            setIsMatchDisabled(!selectedRows.length);
+        } else if (type === FILTER_CHANGED) {
+            setFoundFocusRightInRightsRepo({foundFocusRightInRightsRepository: false});
+        }
     };
 
     const handleMatchClick = () => {
@@ -117,16 +152,27 @@ const RightToMatchView = ({
         }
     };
 
+    // temporary solution - when we enable date, datetime filter this
+    // and params from RightRepoNexusGrid could be removed
+    const rightRepoParams = fieldSearchCriteria && Object.keys(fieldSearchCriteria.params).reduce((result, key) => {
+        const ENABLED_KEYS = ['startTo', 'startFrom', 'endTo', 'endFrom'];
+        if (ENABLED_KEYS.includes(key)) {
+            result[key] = fieldSearchCriteria.params[key];
+        }
+
+        return result;
+    }, {});
+
     return (
         <div className="nexus-c-right-to-match-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(previousPageRoute)}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor}/>
+                    <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
                 </Link>
-                <span>Right to Right Matching</span>
+                <span>{RIGHT_TO_MATCH_TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-right-to-match-view__table-header">
-                <NexusTitle isSubTitle isInline>Focused Right</NexusTitle>
+                <NexusTitle isSubTitle isInline>{FOCUSED_RIGHT}</NexusTitle>
                 <RightToMatchNavigation
                     searchParams={{availHistoryIds}}
                     focusedRightId={rightId}
@@ -146,7 +192,7 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle isSubTitle>Rights Repository {`(${totalCount})`}</NexusTitle> 
+                <NexusTitle isSubTitle>{RIGHTS_REPOSITORY} {`(${totalCount})`}</NexusTitle>
                 {fieldSearchCriteria 
                     && fieldSearchCriteria.id === rightId 
                     && (
@@ -154,10 +200,11 @@ const RightToMatchView = ({
                             columnDefs={updatedColumnDefs}
                             mapping={mapping}
                             setTotalCount={setTotalCount}
-                            params={fieldSearchCriteria.params}
+                            params={rightRepoParams}
                             initialFilter={fieldSearchCriteria.params}
-                            handleSelectionChange={handleSelectionChange}
+                            onGridEvent={handleGridEvent}
                             rowSelection="multiple"
+                            suppressRowClickSelection={true}
                         />
                 )}
             </div>
@@ -167,7 +214,7 @@ const RightToMatchView = ({
                         className="nexus-c-button"
                         onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
                     >
-                        Cancel
+                        {CANCEL_BUTTON}
                     </Button>
                     <Button
                         className="nexus-c-button"
@@ -175,7 +222,7 @@ const RightToMatchView = ({
                         onClick={handleMatchClick}
                         isDisabled={isMatchDisabled}
                     >
-                        Match
+                        {MATCH_BUTTON}
                     </Button>
                 </ButtonGroup>
             </div>
@@ -184,28 +231,27 @@ const RightToMatchView = ({
 };
 
 RightToMatchView.propTypes = {
-    history: PropTypes.object,
-    match: PropTypes.object,
-    location: PropTypes.object,
     fieldSearchCriteria: PropTypes.object,
     focusedRight: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchRightMatchingFieldSearchCriteria: PropTypes.func,
     fetchFocusedRight: PropTypes.func,
     createNewRight: PropTypes.func,
+    addToast: PropTypes.func,
+    removeToast: PropTypes.func,
+    setFoundFocusRightInRightsRepo: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
 };
 
 RightToMatchView.defaultProps = {
-    match: {},
-    history: null,
-    location: {},
     fieldSearchCriteria: null,
     focusedRight: null,
     fetchRightMatchingFieldSearchCriteria: null,
     fetchFocusedRight: null,
     createNewRight: null,
+    addToast: () => null,
+    removeToast: () => null,
     columnDefs: [],
     mapping: [],
 };
@@ -216,11 +262,11 @@ const createMapStateToProps = () => {
     const fieldSearchCriteriaSelector = selectors.createFieldSearchCriteriaSelector();
     const focusedRightSelector = selectors.createFocusedRightSelector();
 
-    return (state, props) => ({
-        columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: availsMappingSelector(state, props),
-        fieldSearchCriteria: fieldSearchCriteriaSelector(state, props),
-        focusedRight: focusedRightSelector(state, props),
+    return (state) => ({
+        columnDefs: rightMatchingColumnDefsSelector(state),
+        mapping: availsMappingSelector(state),
+        fieldSearchCriteria: fieldSearchCriteriaSelector(state),
+        focusedRight: focusedRightSelector(state),
     });
 };
 
@@ -228,8 +274,12 @@ const mapDispatchToProps = (dispatch) => ({
     fetchRightMatchingFieldSearchCriteria: payload => dispatch(fetchRightMatchingFieldSearchCriteria(payload)),
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
-    createNewRight: payload => dispatch(createNewRight(payload))
+    createNewRight: payload => dispatch(createNewRight(payload)),
+    setFoundFocusRightInRightsRepo: payload => dispatch(setFoundFocusRightInRightsRepository(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchView); // eslint-disable-line
+export default compose(
+    withToasts,
+    connect(createMapStateToProps, mapDispatchToProps) // eslint-disable-line
+)(RightToMatchView);
 
