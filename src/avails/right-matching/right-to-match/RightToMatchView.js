@@ -284,5 +284,8 @@ const mapDispatchToProps = (dispatch) => ({
     setFoundFocusRightInRightsRepo: payload => dispatch(setFoundFocusRightInRightsRepository(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchView); // eslint-disable-line
+export default compose(
+    withToasts,
+    connect(createMapStateToProps, mapDispatchToProps) // eslint-disable-line
+)(RightToMatchView);
 
