@@ -3,13 +3,14 @@ import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstr
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {connect} from 'react-redux';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 import {configFields} from '../../../service/ConfigService';
-import {connect} from 'react-redux';
 import {NexusDrawer} from '../../../../../ui/elements';
 import Title from '../../../../../metadata/title/Title';
+import {URL} from '../../../../../util/common';
 
 const mapStateToProps = state => {
     return {
@@ -70,9 +71,11 @@ const EditorialMetadata = ({
                 <Col>
                     <h2>Editorial Metadata</h2>
                 </Col>
-                <Col style={{display: 'flex', justifyContent: 'end'}}>
-                    <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
-                </Col>
+                {URL.isLocalOrDevOrQA() && (
+                    <Col style={{display: 'flex', justifyContent: 'end'}}>
+                        <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
+                    </Col>
+                )}
             </Row>
             <div className='tab'>
                 {
