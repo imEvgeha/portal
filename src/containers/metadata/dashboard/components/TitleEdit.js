@@ -982,6 +982,7 @@ class TitleEdit extends Component {
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                         updatedEditorialMetadata={this.state.updatedEditorialMetadata}
                         handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
+                        titleData={this.state.titleForm}
                     />
 
                     <TerritoryMetadata

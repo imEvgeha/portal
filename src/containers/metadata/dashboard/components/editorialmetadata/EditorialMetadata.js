@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import { Row, Col, Container, TabContent, TabPane, Alert, Tooltip } from 'reactstrap';
+import React, {useState} from 'react';
+import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
-import { configFields } from '../../../service/ConfigService';
-import { connect } from 'react-redux';
+import {configFields} from '../../../service/ConfigService';
+import {connect} from 'react-redux';
+import {NexusDrawer} from '../../../../../ui/elements';
+import Title from '../../../../../metadata/title/Title';
 
 const mapStateToProps = state => {
     return {
@@ -14,17 +17,38 @@ const mapStateToProps = state => {
     };
 };
 
-class EditorialMetadata extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tooltipOpen: false
-        };
-    }
+const EditorialMetadata = ({
+    isEditMode,
+    editorialMetadata,
+    handleChange,
+    handleTitleChange,
+    handleEpisodicChange,
+    handleSynopsisChange,
+    activeTab,
+    areFieldsRequired,
+    toggle,
+    addEditorialMetadata,
+    createEditorialTab,
+    validSubmit,
+    handleEditChange,
+    titleContentType,
+    editorialMetadataForCreate,
+    updatedEditorialMetadata,
+    handleGenreChange,
+    handleGenreEditChange,
+    configLanguage,
+    handleEditorialCastCrewCreate,
+    handleEditorialCastCrew,
+    handleAddEditorialCharacterName,
+    handleAddEditorialCharacterNameEdit,
+    titleData,
+}) => {
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    getLanguageByCode = (code) => {
-        if (this.props.configLanguage) {
-            const found = this.props.configLanguage.value.find(e => e.languageCode === code);
+    const getLanguageByCode = (code) => {
+        if (configLanguage) {
+            const found = configLanguage.value.find(e => e.languageCode === code);
             if (found) {
                 return found.languageName;
             }
@@ -32,122 +56,147 @@ class EditorialMetadata extends Component {
         return code;
     };
 
-    toggle = () => {
-        this.setState({
-            tooltipOpen: !this.state.tooltipOpen
-        });
-    }
-
-    render() {
-        return (
-            <Container fluid id="titleContainer" style={{ marginTop: '30px' }}>
-
-                <Row style={{ marginTop: '5px' }}>
-                    <Col>
-                        <h2>Editorial Metadata</h2>
-                    </Col>
-                </Row>
-                <div className='tab'>
-                    {
-                        this.props.isEditMode ? (
-                            <>
-                                <FontAwesome className="tablinks add-local" id="createEditorialMetadata" name="plus-circle" onClick={() => this.props.addEditorialMetadata(this.props.createEditorialTab)} key={this.props.createEditorialTab} size="lg" />
-                                <Tooltip placement="top" isOpen={this.state.tooltipOpen} target="createEditorialMetadata" toggle={this.toggle}>
-                                    Create Editorial Metadata
-                                </Tooltip>
-                            </>
-                          )
-                            : null
-                    }
-                    {
-                        this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                            return <span className="tablinks" style={{ background: this.props.activeTab === i ? '#000' : '', color: this.props.activeTab === i ? '#FFF' : '' }} key={i} onClick={() => this.props.toggle(i)}><b>{item.locale + ' ' + this.getLanguageByCode(item.language) + ' ' + (item.format ? item.format : '') + ' ' + (item.service ? item.service : '')}</b></span>;
-                        })
-                    }
-                </div>
-                <TabContent activeTab={this.props.activeTab}>
-                    {
-                        this.props.editorialMetadata && this.props.editorialMetadata.length > 0 ?
-                            !this.props.isEditMode && this.props.editorialMetadata.map((item, i) => {
-                                return (
-                                    <TabPane key={i} tabId={i}>
-                                        <Row>
-                                            <Col>
-                                                <EditorialMetadataTab
-                                                    titleContentType={this.props.titleContentType}
-                                                    getLanguageByCode={this.getLanguageByCode}
-                                                    key={i}
-                                                    data={item}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    </TabPane>
-);
-                            }) :
-                            !this.props.isEditMode ? (
-                                <Row>
-                                    <Col>
-                                        <Alert color="primary">
-                                            <FontAwesome name="info" /> <b>No editorial metadata.</b>
-                                        </Alert>
-                                    </Col>
-                                </Row>
-                              ) : null
-                    }
-                    {
-                        this.props.isEditMode ? (
-                            <>
-                                <TabPane tabId={this.props.createEditorialTab}>
+    return (
+        <Container fluid id="titleContainer" style={{marginTop: '30px'}}>
+            <NexusDrawer
+                isOpen={isDrawerOpen}
+                onClose={() => setIsDrawerOpen(false)}
+                width="extended"
+                position="right"
+            >
+                <Title titleData={titleData} />
+            </NexusDrawer>
+            <Row style={{marginTop: '5px'}}>
+                <Col>
+                    <h2>Editorial Metadata</h2>
+                </Col>
+                <Col style={{display: 'flex', justifyContent: 'end'}}>
+                    <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
+                </Col>
+            </Row>
+            <div className='tab'>
+                {
+                    isEditMode ? (
+                        <>
+                            <FontAwesome
+                                className="tablinks add-local"
+                                id="createEditorialMetadata"
+                                name="plus-circle"
+                                onClick={() => addEditorialMetadata(createEditorialTab)}
+                                key={createEditorialTab}
+                                size="lg"
+                            />
+                            <Tooltip
+                                placement="top"
+                                isOpen={tooltipOpen}
+                                target="createEditorialMetadata"
+                                toggle={() => setTooltipOpen(!tooltipOpen)}
+                            >
+                                Create Editorial Metadata
+                            </Tooltip>
+                        </>
+                      )
+                        : null
+                }
+                {
+                    editorialMetadata && editorialMetadata.map((item, i) => {
+                        return (
+                            <span
+                                className="tablinks"
+                                style={{background: activeTab === i ? '#000' : '', color: activeTab === i ? '#FFF' : ''}}
+                                key={i}
+                                onClick={() => toggle(i)}
+                            >
+                                <b>
+                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format ? item.format : '')} ${(item.service ? item.service : '')}`}
+                                </b>
+                            </span>
+                        );
+                    })
+                }
+            </div>
+            <TabContent activeTab={activeTab}>
+                {
+                    editorialMetadata && editorialMetadata.length > 0 ?
+                        !isEditMode && editorialMetadata.map((item, i) => {
+                            return (
+                                <TabPane key={i} tabId={i}>
                                     <Row>
                                         <Col>
-                                            <EditorialMetadataCreateTab
-                                                handleAddEditorialCharacterName={this.props.handleAddEditorialCharacterName}
-                                                validSubmit={this.props.validSubmit}
-                                                areFieldsRequired={this.props.areFieldsRequired}
-                                                handleChange={this.props.handleChange}
-                                                handleTitleChange={this.props.handleTitleChange}
-                                                handleEpisodicChange={this.props.handleEpisodicChange}
-                                                editorialMetadataForCreate={this.props.editorialMetadataForCreate}
-                                                handleSynopsisChange={this.props.handleSynopsisChange}
-                                                handleGenreChange={this.props.handleGenreChange}
-                                                handleEditorialCastCrewCreate={this.props.handleEditorialCastCrewCreate}
-                                                titleContentType={this.props.titleContentType}
+                                            <EditorialMetadataTab
+                                                titleContentType={titleContentType}
+                                                getLanguageByCode={getLanguageByCode}
+                                                key={i}
+                                                data={item}
                                             />
                                         </Col>
                                     </Row>
                                 </TabPane>
-                                {
-                                    this.props.editorialMetadata && this.props.editorialMetadata.map((item, i) => {
-                                        return (
-                                            <TabPane key={i} tabId={i}>
-                                                <Row>
-                                                    <Col>
-                                                        <EditorialMetadataEditMode
-                                                            handleAddEditorialCharacterNameEdit={this.props.handleAddEditorialCharacterNameEdit}
-                                                            titleContentType={this.props.titleContentType}
-                                                            validSubmit={this.props.validSubmit}
-                                                            handleChange={this.props.handleEditChange}
-                                                            handleEditorialCastCrew={this.props.handleEditorialCastCrew}
-                                                            handleGenreEditChange={this.props.handleGenreEditChange}
-                                                            updatedEditorialMetadata={this.props.updatedEditorialMetadata}
-                                                            key={i}
-                                                            data={item}
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </TabPane>
-);
-                                    })
-                                }
-                            </>
-                          )
-                            : null
-                    }
-                </TabContent>
-            </Container>
-        );
-    }
-}
+                            );
+                        }) :
+                        !isEditMode ? (
+                            <Row>
+                                <Col>
+                                    <Alert color="primary">
+                                        <FontAwesome name="info" /> <b>No editorial metadata.</b>
+                                    </Alert>
+                                </Col>
+                            </Row>
+                          ) : null
+                }
+                {
+                    isEditMode ? (
+                        <>
+                            <TabPane tabId={createEditorialTab}>
+                                <Row>
+                                    <Col>
+                                        <EditorialMetadataCreateTab
+                                            handleAddEditorialCharacterName={handleAddEditorialCharacterName}
+                                            validSubmit={validSubmit}
+                                            areFieldsRequired={areFieldsRequired}
+                                            handleChange={handleChange}
+                                            handleTitleChange={handleTitleChange}
+                                            handleEpisodicChange={handleEpisodicChange}
+                                            editorialMetadataForCreate={editorialMetadataForCreate}
+                                            handleSynopsisChange={handleSynopsisChange}
+                                            handleGenreChange={handleGenreChange}
+                                            handleEditorialCastCrewCreate={handleEditorialCastCrewCreate}
+                                            titleContentType={titleContentType}
+                                        />
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                            {
+                                editorialMetadata && editorialMetadata.map((item, i) => {
+                                    return (
+                                        <TabPane key={i} tabId={i}>
+                                            <Row>
+                                                <Col>
+                                                    <EditorialMetadataEditMode
+                                                        handleAddEditorialCharacterNameEdit={handleAddEditorialCharacterNameEdit}
+                                                        titleContentType={titleContentType}
+                                                        validSubmit={validSubmit}
+                                                        handleChange={handleEditChange}
+                                                        handleEditorialCastCrew={handleEditorialCastCrew}
+                                                        handleGenreEditChange={handleGenreEditChange}
+                                                        updatedEditorialMetadata={updatedEditorialMetadata}
+                                                        key={i}
+                                                        data={item}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </TabPane>
+                                    );
+                                })
+                            }
+                        </>
+                      )
+                        : null
+                }
+            </TabContent>
+        </Container>
+    );
+};
 
 EditorialMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
@@ -172,9 +221,26 @@ EditorialMetadata.propTypes = {
     handleEditorialCastCrewCreate: PropTypes.func,
     handleEditorialCastCrew: PropTypes.func,
     handleAddEditorialCharacterName: PropTypes.func,
-    handleAddEditorialCharacterNameEdit: PropTypes.func
+    handleAddEditorialCharacterNameEdit: PropTypes.func,
+    titleData: PropTypes.object,
 };
 
-
+EditorialMetadata.defaultProps = {
+    editorialMetadata: [],
+    areFieldsRequired: false,
+    toggle: () => null,
+    addEditorialMetadata: () => null,
+    createEditorialTab: '',
+    handleEditChange: () => null,
+    titleContentType: '',
+    editorialMetadataForCreate: {},
+    updatedEditorialMetadata: [],
+    configLanguage: {value: []},
+    handleEditorialCastCrew: () => null,
+    handleEditorialCastCrewCreate: () => null,
+    handleAddEditorialCharacterName: () => null,
+    handleAddEditorialCharacterNameEdit: () => null,
+    titleData: {},
+};
 
 export default connect(mapStateToProps)(EditorialMetadata);
