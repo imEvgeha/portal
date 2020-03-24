@@ -192,8 +192,9 @@ class TitleEdit extends Component {
             category: category.map(e => e.value)
         };
 
-        this.setState({
-            editedForm: editedForm
+        this.setState((state) => {
+            const editedForm = {...state.editedForm, category: category.map(e => e.value)};
+            return {editedForm};
         });
     };
 

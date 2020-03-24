@@ -37,20 +37,20 @@ class TitleEditMode extends Component {
   constructor(props) {
     super(props);
 
+      super(props);
+      const {data} = this.props;
+      const propsCategory = (data || {}).category ||  [];
+
+     const category = propsCategory.map(e => {
+         return { value: e, label: e };
+     });
+
     this.state = {
       loading: false,
       isSeriesCompleted: false,
-      category: [],
+      category,
       showCategoryError: false
     };
-  }
-
-  componentDidMount() {
-        const propsData = this.props.data.category ? this.props.data.category : [];
-        const category = propsData.map(e => {
-            return { value: e, label: e };
-        });
-        this.setState({category});
   }
 
   handleCategory = (category) => {

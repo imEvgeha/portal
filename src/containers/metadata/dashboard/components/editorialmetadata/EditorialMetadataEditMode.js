@@ -47,21 +47,20 @@ const mapStateToProps = state => {
 class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            genres: [],
-            showGenreError: false,
-            category: [],
-            showCategoryError: false,
-        };
-    }
+        const {data} = this.props;
+        const genres = (data || {}).genres || [];
+        const propsCategory = (data || {}).category ||  [];
 
-    componentDidMount() {
-        const genres = this.props.data.genres ? this.props.data.genres : [];
-        const propsData = this.props.data.category ? this.props.data.category : [];
-        const category = propsData.map(e => {
+        const category = propsCategory.map(e => {
             return { value: e, label: e };
         });
-        this.setState({genres, category});
+
+        this.state = {
+            genres,
+            showGenreError: false,
+            category,
+            showCategoryError: false,
+        };
     }
 
     handleGenre = (e) => {
