@@ -14,11 +14,11 @@ import {
 import {Can} from '../ability';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
-// import {logout} from '../auth/authActions';
+import {logout} from '../auth/authActions';
 import {keycloak} from '../index';
 import {removeAccessToken, removeRefreshToken} from '../auth/authService';
 
-const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, token}) => {
+const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, token, logout}) => {
     const [isDropDownOpen, setIsDropDownOpen] = useState(false);
     const [roles, setRoles] = useState([]);
     useEffect(() => {
@@ -28,12 +28,6 @@ const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, toke
     const gotoAvailsDashboard = () => {
         searchFormShowSearchResults(false);
         NexusBreadcrumb.set(AVAILS_DASHBOARD);
-    };
-
-    const logout = () => {
-        keycloak.logout();
-        removeAccessToken();
-        removeRefreshToken();
     };
 
     return (
@@ -108,6 +102,7 @@ NavbarConnect.propTypes = {
     profileInfo: PropTypes.object,
     blocking: PropTypes.bool,
     token: PropTypes.string,
+    logout: PropTypes.func,
 };
 
 NavbarConnect.defaultProps = {
@@ -115,6 +110,7 @@ NavbarConnect.defaultProps = {
     profileInfo: {},
     blocking: false,
     token: null,
+    logout: () => null,
 };
 
 const mapStateToProps = state => {
@@ -127,6 +123,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     searchFormShowSearchResults,
+    logout,
 };
 
 const options = {pure: false};

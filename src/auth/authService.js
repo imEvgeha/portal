@@ -6,18 +6,17 @@ import {encodedSerialize} from '../util/Common';
 const ACCESS_TOKEN = 'token';
 const REFRESH_TOKEN = 'refreshToken';
 
+export const getAccessToken = () => JSON.parse(localStorage.getItem(ACCESS_TOKEN));
+
 const options = {
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
     }
 };
 
 const http = Http.create(options);
 
 const pathname = 'protocol/openid-connect/token';
-
-
-export const getAccessToken = () => JSON.parse(localStorage.getItem(ACCESS_TOKEN));
 
 export const getValidAccessToken = () => {
     const token = JSON.parse(localStorage.getItem(ACCESS_TOKEN));
@@ -31,7 +30,9 @@ export const getValidAccessToken = () => {
 };
 
 export const isTokenExpired = token => {
-    if (token.exp < (new Date().getTime() / 1000)) {
+    if (!token) {
+        return true;
+    } else if (token.exp < (new Date().getTime() / 1000)) {
         return true;
     }
     return false;

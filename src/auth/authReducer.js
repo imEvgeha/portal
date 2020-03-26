@@ -1,35 +1,50 @@
 import * as actionTypes from './authActionTypes';
+import {setAccessToken, setRefreshToken, removeAccessToken, removeRefreshToken} from './authService';
 
 const initialState = {
     refreshToken: null, 
     accessToken: null,
-    profileInfo: {},
+    userAccount: null,
+    isAuthenticated: false,
 };
 
 const authReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
     switch (type) {
-        case actionTypes.REFRESH_TOKEN_SUCCESS:
+        case actionTypes.REFRESH_TOKEN:
+            // TODO: temporary solution
+            if (payload.refreshToken) {
+                setRefreshToken(payload.refreshToken);
+                setAccessToken(payload.accessToken);
+            }
             return {
                 ...state,
                 refreshToken: payload.refreshToken,
                 accessToken: payload.accessToken,
-                profileInfo: payload.profileInfo,
+                userAccount: payload.profileInfo,
             };
-        case actionTypes.LOGOUT_SUCCESS:
-        case actionTypes.LOGOUT_ERROR:
+        case actionTypes.LOGOUT:
+            if (payload.keycloak) {
+                removeAccessToken();
+                removeRefreshToken();
+                payload.keycloak.logout();
+            }
             return {
                 ...state,
                 refreshToken: null,
                 accessToken: null,
-                profileInfo: {},
+                profileInfo: null,
             };
-        case actionTypes.STORE_AUTH_CREDENTIALS_SUCCESS:
+        case actionTypes.STORE_USER_ACCOUNT:
+            // TODO: temporary solution
+            if (payload.refreshToken) {
+                setRefreshToken(payload.refreshToken);
+                setAccessToken(payload.accessToken);
+            }
             return {
                 ...state,
-                refreshToken: payload.refreshToken,
-                accessToken: payload.accessToken,
-                profileInfo: payload.profileInfo,
+                ...payload,
+                isAuthenticated: true,
             };
         default:
             return state;

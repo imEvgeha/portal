@@ -19,11 +19,12 @@ import {updateAbility} from './ability';
 import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
-import {authRefreshToken, storeAuthCredentials} from './auth/authActions';
+import {authRefreshToken, storeAuthCredentials, injectUser} from './auth/authActions';
 import {getAccessToken, getRefreshToken} from './auth/authService';
 import {loadProfileInfo} from './stores/actions';
-import KeycloakAuth from './auth/authKeycloak';
 import Toast from './ui/toast/Toast';
+import jwtDecode from 'jwt-decode';
+import {initalizeKeycloak, refreshUserToken} from './auth/keycloak';
 
 config.set(defaultConfiguration, {freeze: false});
 
@@ -52,9 +53,8 @@ const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
 const history = createBrowserHistory();
 // temporary export -> we should not export store
 export const store = configureStore({}, history);
-export let keycloak = {};
 
-const app = (
+const appContent = (
     <Provider store={store}>
         <CustomIntlProvider>
             <NexusOverlayProvider>
@@ -68,66 +68,37 @@ const app = (
         </CustomIntlProvider>
     </Provider>
 );
-const KEYCLOAK_INIT_OPTIONS = {
-    onLoad: 'login-required',
-    promiseType: 'native',
+
+const renderApp = (keycloak) => {
+    const {realmAccess, token, refreshToken} = keycloak;
+    const {roles} = realmAccess || {};
+    store.runSaga(rootSaga);
+    store.dispatch(injectUser({accessToken: token, refreshToken}));
+    keycloak.loadUserProfile().then(userAccount => {
+        store.dispatch(injectUser({userAccount}));
+    });
+    loadDashboardState(); // TODO: to remove 
+    loadCreateRightState(); // TODO: to remove 
+    loadHistoryState(); // TODO: to remove
+    loadDopState(); // TODO: to remove
+    updateAbility(roles);
+    render(
+        appContent,
+        document.querySelector('#app')
+    );
+    refreshUserToken()
+        .then(isRefreshed => {
+            console.log(isRefreshed, 'is refreshed');
+        })
+        .catch(() => store.dispatch(logout({keycloak})));
 };
 
-
 function init() {
-    // const keycloak = new KeycloakAuth();
-    keycloak = new Keycloak(config.get('keycloak'));
     const token = getAccessToken();
     const refreshToken = getRefreshToken(); 
-    keycloak.init({...KEYCLOAK_INIT_OPTIONS, token, refreshToken}).then(authenticated => {
-        if (authenticated) {
-            const {realmAccess, token, refreshToken} = keycloak;
-            const {roles} = realmAccess || {};
-            store.runSaga(rootSaga);
-            keycloak.loadUserProfile().then(profileInfo => {
-                store.dispatch(storeAuthCredentials({token, refreshToken, profileInfo}));
-                store.dispatch(authRefreshToken());
-            });
-            loadDashboardState();
-            loadCreateRightState();
-            loadHistoryState();
-            loadDopState();
-            updateAbility(roles);
-            render(
-                app,
-                document.querySelector('#app')
-            );
-        }
+    const test = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJYLUJHaXZLMmFRVHFDdVpOUk5PM3o3dXZQWHZxcTdqTFpkaGpBWGI3bF9JIn0.eyJqdGkiOiJlZmY1NGQ5Ni1kYzkwLTQ5YjgtOWQxOC02YmQ5MjVjMjUzMzkiLCJleHAiOjE1ODUyMjI1MTMsIm5iZiI6MCwiaWF0IjoxNTg1MjE5NTEzLCJpc3MiOiJodHRwczovL2F1dGguZGV2LnZ1YmlxdWl0eS5jb20vYXV0aC9yZWFsbXMvVnViaXF1aXR5IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjAzZDkxNmEwLWYxMjQtNGUwMC1iMGM2LWIzNjFhM2U2N2VmZSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRlbXBvcnRhbGFwcC1kZXYiLCJub25jZSI6Ijg4ZTM4MTBhLTZjMmYtNGQxZS1hYmI3LTJmZDgxMjQwMDU4NiIsImF1dGhfdGltZSI6MTU4NTIxNTQxOCwic2Vzc2lvbl9zdGF0ZSI6ImRlYjhkMjU3LWVkNGEtNGZlOS1iMjgwLTliYzFjNDA0YWMxMiIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYXNzZXRfbWFuYWdlbWVudF92aWV3ZXIiLCJhdmFpbHNfdmlld2VyIiwiY29uZmlndXJhdGlvbl91c2VyIiwidnVfYXBpX3VzZXIiLCJhc3NldF9tYW5hZ2VtZW50X3VzZXIiLCJhdmFpbHNfdXNlciIsImNvbmZpZ3VyYXRpb25fdmlld2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6Ik1pbG9zIEFkemljIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibWFkemljIiwiZ2l2ZW5fbmFtZSI6Ik1pbG9zIiwiZmFtaWx5X25hbWUiOiJBZHppYyIsImVtYWlsIjoibWlsb3MuYWR6aWNAY29tcHV0ZXJyb2NrLmNvbSJ9.GUfn4sLcpwP8N5hYPXkuY_3-TyZI24H5LsxkvmGR6usbv2p9ckCDMd8bwybuZE6HHwNvhzsvdsx8XODqk1gjpsW_pnzFz2kjrE9MtDvB5X-nZ0CiU5jL_4szCFmdN3BJElPFOHJ0R0ly1tLp1Mm3LPfPn3_a7vPsuW2Fn4td7qgEM0c4CrEK9qKiePvHrMGxGhzC4pVkI7mLQvM587KxrzPNE06PUP01Ta_koWTMiBwdNaus7ReDTDtLp7_WEgMEDhp5ljrkABdvIigA5P-lxwWQPeR4balVtm8EJleyY3YrtZFHYM1GZDzCPHXsvkPGqP8SVz22vXyfSYqdp97Gdg';
+    initalizeKeycloak({token, refreshToken}).then(keycloak => {
+        renderApp(keycloak);
     });
-    // if (token) {
-    //     const roles = jwtDecode(token).realm_access.roles;
-    //     updateAbility(roles);
-    //     store.dispatch(storeAuthCredentials());
-    //     store.dispatch(authRefreshToken());
-    //     render(
-    //         app,
-    //         document.querySelector('#app')
-    //     );
-    //     return;
-    // }
-    //
-    // keycloak.setKeycloakAuth()
-    //     .then(() => {
-    //         const {realmAccess, token, refreshToken} = keycloak.keycloak;
-    //         const {roles} = realmAccess || {};
-    //         keycloak.profileInfo.then(profileInfo => {
-    //             store.dispatch(storeAuthCredentials({token, refreshToken, profileInfo}));
-    //         });
-    //         loadDashboardState();
-    //         loadCreateRightState();
-    //         loadHistoryState();
-    //         loadDopState();
-    //         updateAbility(roles);
-    //         store.dispatch(authRefreshToken());
-    //         render(
-    //             app,
-    //             document.querySelector('#app')
-    //         );
-    //     });
 }
 

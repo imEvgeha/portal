@@ -9,12 +9,14 @@ import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
-import {keycloak} from '../index';
+import {keycloak} from '../auth/keycloak';
+import {removeAccessToken, removeRefreshToken} from '../auth/authService';
 import {SETTINGS, backgroundColor} from './constants';
 import {Can, idToAbilityNameMap} from '../ability';
 import {searchFormShowSearchResults} from '../stores/actions/avail/dashboard';
 import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
 import NexusBreadcrumb from '../containers/NexusBreadcrumb';
+import {logout} from '../auth/authActions';
 
 const customThemeMode = modeGenerator({
     product: {
@@ -29,14 +31,14 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 
     if (DropdownItems) {
         const ItemWithDropdown = () => {
-  return (
-      <GlobalItemWithDropdown
-          trigger={({isOpen}) => (
-              <GlobalItem isSelected={isOpen} {...itemProps} />
+        return (
+            <GlobalItemWithDropdown
+                trigger={({isOpen}) => (
+                    <GlobalItem isSelected={isOpen} {...itemProps} />
                 )}
-          items={<DropdownItems />}
-      />
-);
+                items={<DropdownItems />}
+            />
+        );
 };
         return (
             abilityLocationName
@@ -59,10 +61,10 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     );
 };
 
-const NexusNavigation = ({history, profileInfo}) => {
+const NexusNavigation = ({history, location, profileInfo, logout}) => {
     const [selectedItem, setSelectedItem] = useState('');
 
-    useEffect(() => setSelectedItem(history.location.pathname.split('/')[1]), []);
+    useEffect(() => setSelectedItem(location.pathname.split('/')[1]), []);
 
     const handleClick = (destination) => {
         history.push(`/${destination.toLowerCase()}`);
@@ -70,14 +72,14 @@ const NexusNavigation = ({history, profileInfo}) => {
     };
 
     const AccountDropdownItems = () => {
-  return (
-      <DropdownItemGroup title={profileInfo.name || 'Profile'}>
-          <DropdownItem onClick={keycloak.instance.logout}>
-              Log out
-          </DropdownItem>
-      </DropdownItemGroup>
-);
-};
+        return (
+            <DropdownItemGroup title={profileInfo.name || 'Profile'}>
+                <DropdownItem onClick={() => logout({keycloak})}>
+                    Log out
+                </DropdownItem>
+            </DropdownItemGroup>
+        );
+    };
 
     return (
         <ThemeProvider theme={theme => ({
@@ -99,15 +101,15 @@ const NexusNavigation = ({history, profileInfo}) => {
                     {
                         // eslint-disable-next-line react/prop-types
                         component: ({onClick}) => {
-  return (
-      <Avatar
-          borderColor="transparent"
-          size="medium"
-          name={profileInfo.name}
-          onClick={onClick}
-      />
-);
-},
+                            return (
+                                <Avatar
+                                    borderColor="transparent"
+                                    size="medium"
+                                    name={profileInfo.name}
+                                    onClick={onClick}
+                                />
+                            );
+                        },
                         dropdownItems: AccountDropdownItems,
                         id: 'profile',
                         icon: null,
@@ -121,11 +123,13 @@ const NexusNavigation = ({history, profileInfo}) => {
 NexusNavigation.propTypes = {
     profileInfo: PropTypes.object,
     history: PropTypes.object,
+    logout: PropTypes.func,
 };
 
 NexusNavigation.defaultProps = {
     profileInfo: {},
     history: {location: {pathname: ''}},
+    logout: () => null,
 };
 
 const mapStateToProps = state => {
@@ -134,11 +138,13 @@ const mapStateToProps = state => {
     };
 };
 
+const mapDispatchToProps = dispatch => ({
+    logout: payload => dispatch(logout(payload)),
+});
+
 export const gotoAvailsDashboard = () => {
     store.dispatch(searchFormShowSearchResults(false));
     NexusBreadcrumb.set(AVAILS_DASHBOARD);
 };
 
-export default withRouter(connect(mapStateToProps, null)(NexusNavigation));
-
-
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NexusNavigation));
