@@ -64,7 +64,7 @@ class EditorialMetadataCreateTab extends Component {
     }
 
     handleGenreChange = (e) => {
-        if (e.length > 3) {
+        if (e.length > 10) {
             this.setState({
                 showGenreError: true
             });
@@ -278,7 +278,7 @@ class EditorialMetadataCreateTab extends Component {
                                     .map(e => { return { id: e.id, genre: e.name, value: e.name, label: e.name }; })
                                     : []}
                         />
-                        {this.state.showGenreError && <Label style={{ color: 'red' }}>Max 3 genres</Label>}
+                        {this.state.showGenreError && <Label style={{ color: 'red' }}>Max 10 genres</Label>}
                     </Col>
                 </Row>
 
