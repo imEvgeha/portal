@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstrap';
+import React, {useEffect, useState} from 'react';
+import {Alert, Col, Container, Row, TabContent, TabPane, Tooltip} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
+import Button from '@atlaskit/button';
+import Select from '@atlaskit/select';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
@@ -46,6 +47,33 @@ const EditorialMetadata = ({
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [currentFolder, setCurrentFolder] = useState({});
+    const [foldersOptions, setFoldersOptions] = useState([]);
+    const [foldersChildren, setFoldersChildren] = useState({});
+
+    useEffect(() => {
+        const foldersSet = new Set();
+
+        Object.keys(editorialMetadata).forEach((key) => {
+            const {locale, language} = editorialMetadata[key];
+            const folderName = `${locale} ${getLanguageByCode(language)}`;
+
+            foldersSet.add(folderName);
+        });
+
+        const editorialMet = {};
+
+        Array.from(foldersSet).forEach(folder => {
+            editorialMet[folder] = editorialMetadata.find(({locale, language}) => {
+                return folder === `${locale} ${getLanguageByCode(language)}`;
+            });
+        });
+        setFoldersChildren(editorialMet);
+
+        setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
+    }, [editorialMetadata]);
+    useEffect(() => setCurrentFolder(foldersOptions[0]), foldersOptions);
+
 
     const getLanguageByCode = (code) => {
         if (configLanguage) {
@@ -56,6 +84,7 @@ const EditorialMetadata = ({
         }
         return code;
     };
+
 
     return (
         <Container fluid id="titleContainer" style={{marginTop: '30px'}}>
@@ -76,6 +105,16 @@ const EditorialMetadata = ({
                         <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
                     </Col>
                 )}
+            </Row>
+            <Row>
+                <div style={{width: '200px', margin: '5px 0 15px 15px'}}>
+                    <Select
+                        options={foldersOptions}
+                        defaultValue={foldersOptions[0]}
+                        value={currentFolder || foldersOptions[0]}
+                        onChange={folder => setCurrentFolder(folder)}
+                    />
+                </div>
             </Row>
             <div className='tab'>
                 {
@@ -102,7 +141,7 @@ const EditorialMetadata = ({
                         : null
                 }
                 {
-                    editorialMetadata && editorialMetadata.map((item, i) => {
+                    foldersChildren[currentFolder] && foldersChildren[currentFolder].map((item, i) => {
                         return (
                             <span
                                 className="tablinks"
@@ -111,7 +150,7 @@ const EditorialMetadata = ({
                                 onClick={() => toggle(i)}
                             >
                                 <b>
-                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format ? item.format : '')} ${(item.service ? item.service : '')}`}
+                                    {`${(item.format || '')} ${(item.service || '')}`}
                                 </b>
                             </span>
                         );
