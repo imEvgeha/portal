@@ -32,6 +32,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                     status={status}
                     date={received}
                 />
+                <div className='nexus-c-avails-ingest__avail-id'>Avail History ID: {ingest.id}</div>
             </div>
             <div className='nexus-c-avails-ingest__stats'>
                 <IngestReport
