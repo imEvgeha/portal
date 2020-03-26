@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
@@ -36,6 +36,7 @@ const mapStateToProps = state => {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
         configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
+        configCategories: state.titleReducer.configData.find(e => e.key === configFields.CATEGORY),
     };
 };
 
@@ -43,7 +44,8 @@ class EditorialMetadataCreateTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showGenreError: false
+            showGenreError: false,
+            showCategoryError: false
         };
     }
 
@@ -77,6 +79,22 @@ class EditorialMetadataCreateTab extends Component {
             }
         }
         this.props.handleGenreChange(e);
+    };
+
+    handleCategoryChange = (category) => {
+        if (category.length > 12) {
+            this.setState({
+                showCategoryError: true
+            });
+            category.pop();
+        } else {
+            if (this.state.showCategoryError) {
+                this.setState({
+                    showCategoryError: false
+                });
+            }
+        }
+        this.props.handleCategoryChange(category);
     };
 
     loadOptionsPerson = (searchPersonText, type) => {
@@ -279,6 +297,26 @@ class EditorialMetadataCreateTab extends Component {
                                     : []}
                         />
                         {this.state.showGenreError && <Label style={{ color: 'red' }}>Max 3 genres</Label>}
+                    </Col>
+                </Row>
+
+                <Row style={{ padding: '15px' }}>
+                    <Col md={2}>
+                        <b>Categories:</b>
+                    </Col>
+                    <Col>
+                        <Select
+                            name={this.getNameWithPrefix('category')}
+                            value={this.state.category}
+                            onChange={this.handleCategoryChange}
+                            isMulti
+                            placeholder='Select Category'
+                            options={this.props.configCategories ? this.props.configCategories.value
+                                    .filter(e => e.value !== null)
+                                    .map(e => { return { value: e.value, label: e.value }; })
+                                : []}
+                        />
+                        {this.state.showCategoryError && <Label style={{ color: 'red' }}>Max 12 categories</Label>}
                     </Col>
                 </Row>
 
@@ -567,8 +605,10 @@ EditorialMetadataCreateTab.propTypes = {
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
     configGenre: PropTypes.object,
+    configCategories: PropTypes.object,
     handleEditorialCastCrewCreate: PropTypes.func,
-    handleAddEditorialCharacterName: PropTypes.func
+    handleAddEditorialCharacterName: PropTypes.func,
+    handleCategoryChange: PropTypes.func.isRequired,
 };
 
 

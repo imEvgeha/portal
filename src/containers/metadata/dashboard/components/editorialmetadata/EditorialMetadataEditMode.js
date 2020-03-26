@@ -40,23 +40,27 @@ const mapStateToProps = state => {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
         configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
         configGenre: state.titleReducer.configData.find(e => e.key === configFields.GENRE),
+        configCategories: state.titleReducer.configData.find(e => e.key === configFields.CATEGORY)
     };
 };
 
 class EditorialMetadataEditMode extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            genres: [],
-            showGenreError: false
-        };
-    }
+        const {data} = this.props;
+        const genres = (data || {}).genres || [];
+        const propsCategory = (data || {}).category ||  [];
 
-    componentDidMount() {
-        const newGenres = this.props.data.genres ? this.props.data.genres : [];
-        this.setState({
-            genres: newGenres
+        const category = propsCategory.map(e => {
+            return { value: e, label: e };
         });
+
+        this.state = {
+            genres,
+            showGenreError: false,
+            category,
+            showCategoryError: false,
+        };
     }
 
     handleGenre = (e) => {
@@ -78,6 +82,22 @@ class EditorialMetadataEditMode extends Component {
         this.props.handleGenreEditChange(this.props.data, e);
     };
 
+    handleCategory = (category) => {
+        if (category.length > 12) {
+            this.setState({
+                showCategoryError: true
+            });
+            category.pop();
+        } else {
+            if (this.state.showGenreError) {
+                this.setState({
+                    showCategoryError: false
+                });
+            }
+            this.setState({ category });
+        }
+        this.props.handleCategoryEditChange(this.props.data, category);
+    };
 
     shouldComponentUpdate(nextProps) {
         const differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
@@ -316,6 +336,26 @@ class EditorialMetadataEditMode extends Component {
                                     : []}
                         />
                         {this.state.showGenreError && <Label style={{ color: 'red' }}>Max 3 genres</Label>}
+                    </Col>
+                </Row>
+
+                <Row style={{ padding: '15px' }}>
+                    <Col md={2}>
+                        <b>Categories:</b>
+                    </Col>
+                    <Col>
+                        <Select
+                            name='category'
+                            value={this.state.category}
+                            onChange={e => this.handleCategory(e)}
+                            isMulti
+                            placeholder='Select Category'
+                            options={this.props.configCategories ? this.props.configCategories.value
+                                    .filter(e => e.value !== null)
+                                    .map(e => { return { value: e.value, label: e.value }; })
+                                : []}
+                        />
+                        {this.state.showCategoryError && <Label style={{ color: 'red' }}>Max 12 categories</Label>}
                     </Col>
                 </Row>
 
@@ -616,8 +656,10 @@ EditorialMetadataEditMode.propTypes = {
     configLanguage: PropTypes.object,
     configLocale: PropTypes.object,
     configGenre: PropTypes.object,
+    configCategories: PropTypes.object,
     handleEditorialCastCrew: PropTypes.func,
-    handleAddEditorialCharacterNameEdit: PropTypes.func
+    handleAddEditorialCharacterNameEdit: PropTypes.func,
+    handleCategoryEditChange: PropTypes.func.isRequired
 };
 
 

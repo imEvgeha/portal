@@ -23,11 +23,13 @@ import {
   toPrettyContentTypeIfExist
 } from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
+import Select from 'react-select';
 
 const mapStateToProps = state => {
   return {
     configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
     configLocale: state.titleReducer.configData.find(e => e.key === configFields.LOCALE),
+    configCategories: state.titleReducer.configData.find(e => e.key === configFields.CATEGORY)
   };
 };
 
@@ -35,11 +37,40 @@ class TitleEditMode extends Component {
   constructor(props) {
     super(props);
 
+      super(props);
+      const {data} = this.props;
+      const propsCategory = (data || {}).category ||  [];
+
+     const category = propsCategory.map(e => {
+         return { value: e, label: e };
+     });
+
     this.state = {
       loading: false,
-      isSeriesCompleted: false
+      isSeriesCompleted: false,
+      category,
+      showCategoryError: false
     };
   }
+
+  handleCategory = (category) => {
+        if (category.length > 12) {
+            this.setState({
+                showCategoryError: true
+            });
+            category.pop();
+        } else {
+            if (this.state.showCategoryError) {
+                this.setState({
+                    showCategoryError: false
+                });
+            }
+            this.setState({
+                category
+            });
+        }
+        this.props.handleCategoryOnChangeEdit(category);
+  };
 
   render() {
     const {
@@ -463,6 +494,23 @@ class TitleEditMode extends Component {
                             Updating...
                         </Progress>
               ) : null}
+                    <Row style={{ marginTop: '15px', marginBottom: '15px' }}>
+                        <Col>
+                            <Label for='category'>Categories:</Label>
+                            <Select
+                                name='category'
+                                value={this.state.category}
+                                onChange={e => this.handleCategory(e)}
+                                isMulti
+                                placeholder='Select Category'
+                                options={this.props.configCategories ? this.props.configCategories.value
+                                        .filter(e => e.value !== null)
+                                        .map(e => { return { value: e.value, label: e.value }; })
+                                    : []}
+                            />
+                            {this.state.showCategoryError && <Label style={{ color: 'red' }}>Max 12 categories</Label>}
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
             <CoreMetadataEditMode
@@ -512,11 +560,13 @@ TitleEditMode.propTypes = {
   removeCastCrew: PropTypes.func,
   configLanguage: PropTypes.object,
   configLocale: PropTypes.object,
+  configCategories: PropTypes.object,
   ratingObjectForCreate: PropTypes.object,
   areRatingFieldsRequired: PropTypes.bool,
   castAndCrewReorder: PropTypes.func,
 
-  handleAddCharacterName: PropTypes.func
+  handleAddCharacterName: PropTypes.func,
+  handleCategoryOnChangeEdit: PropTypes.func
 };
 
 export default connect(mapStateToProps)(TitleEditMode);

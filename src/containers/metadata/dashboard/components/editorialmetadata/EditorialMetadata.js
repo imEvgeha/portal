@@ -110,6 +110,7 @@ class EditorialMetadata extends Component {
                                                 editorialMetadataForCreate={this.props.editorialMetadataForCreate}
                                                 handleSynopsisChange={this.props.handleSynopsisChange}
                                                 handleGenreChange={this.props.handleGenreChange}
+                                                handleCategoryChange={this.props.handleCategoryChange}
                                                 handleEditorialCastCrewCreate={this.props.handleEditorialCastCrewCreate}
                                                 titleContentType={this.props.titleContentType}
                                             />
@@ -130,6 +131,7 @@ class EditorialMetadata extends Component {
                                                             handleEditorialCastCrew={this.props.handleEditorialCastCrew}
                                                             handleGenreEditChange={this.props.handleGenreEditChange}
                                                             updatedEditorialMetadata={this.props.updatedEditorialMetadata}
+                                                            handleCategoryEditChange={this.props.handleCategoryEditChange}
                                                             key={i}
                                                             data={item}
                                                         />
@@ -172,7 +174,9 @@ EditorialMetadata.propTypes = {
     handleEditorialCastCrewCreate: PropTypes.func,
     handleEditorialCastCrew: PropTypes.func,
     handleAddEditorialCharacterName: PropTypes.func,
-    handleAddEditorialCharacterNameEdit: PropTypes.func
+    handleAddEditorialCharacterNameEdit: PropTypes.func,
+    handleCategoryChange: PropTypes.func.isRequired,
+    handleCategoryEditChange: PropTypes.func.isRequired,
 };
 
 
