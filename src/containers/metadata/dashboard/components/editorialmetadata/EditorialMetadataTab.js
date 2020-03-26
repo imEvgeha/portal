@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { 
     Col, 
     Row,
@@ -19,7 +19,7 @@ import './EditorialMetadata.scss';
 
 const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
 
-    const { episodic, locale, language, format, service, genres, synopsis, castCrew,
+    const { episodic, locale, language, format, service, genres, category, synopsis, castCrew,
         copyright, awards, sasktelInventoryId, sasktelLineupId } = data;
     const {title, shortTitle, mediumTitle, longTitle, sortTitle} = data.title || {};
     const {seriesName, seasonNumber, episodeNumber} = episodic || {};
@@ -51,9 +51,19 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                     <b>Genres: </b> {genres && genres.length > 0 ?
                         genres.map((code, i) => (
                             genres.length === i + 1 ?
-                                <span key={i}>{code.genre}</span> : <span key={i}>{code.genre},</span>
+                                <span key={i}>{code.genre}</span> : <span key={i}>{code.genre}, </span>
                         )) :
                         emptySpan()}
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <b>Categories: </b> {category && category.length > 0 ?
+                    category.map((value, i) => (
+                        category.length === i + 1 ?
+                            <span key={i}>{value}</span> : <span key={i}>{value}, </span>
+                    )) :
+                    emptySpan()}
                 </Col>
             </Row>
             <Row>
