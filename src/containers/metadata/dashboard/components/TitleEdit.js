@@ -499,7 +499,6 @@ class TitleEdit extends Component {
     };
 
     cleanTerritoryMetadata = () => {
-        this.form && this.form.reset();
         this.setState({
             territories: emptyTerritory
         });
@@ -730,7 +729,6 @@ class TitleEdit extends Component {
     };
 
     cleanEditorialMetadata = () => {
-        this.form && this.form.reset();
         this.setState({
             editorialMetadataForCreate: emptyEditorial
         });
@@ -965,7 +963,7 @@ class TitleEdit extends Component {
         return (
             <EditPage>
 
-                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} ref={c => (this.form = c)} onKeyPress={this.onKeyPress}>
+                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
                             {
