@@ -11,7 +11,7 @@ const AG_GRID_DEF_COL_DEF = {
 const withColumnsResizing = ({colDef= AG_GRID_DEF_COL_DEF} = {}) => WrappedComponent =>{
      const ComposedComponent = (props) => {
         const {columnDefs, id, existingColumnsSize, updateGridColumnsSize} = props;
-        const existingTableColumnsSize = existingColumnsSize && id && existingColumnsSize[id] ? existingColumnsSize[id] : {};
+        const existingTableColumnsSize = existingColumnsSize[id] || {};
         let columnDefsWithSizes = columnDefs;
         if(existingTableColumnsSize) {
             columnDefsWithSizes = columnDefs.map(c => c.colId && existingTableColumnsSize[c.colId] ? {...c, width: existingTableColumnsSize[c.colId]} : c);
