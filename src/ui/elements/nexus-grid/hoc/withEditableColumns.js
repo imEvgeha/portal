@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {omit, isequal, clonedeep} from 'lodash';
+import {omit, isEqual, cloneDeep} from 'lodash';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
@@ -41,14 +41,14 @@ const withEditableColumns = ({
         const excludedColumns = props.notEditableColumns || notEditableColumns;
 
         useEffect(() => {
-            if (!isequal(previousSelectValues, selectValues) || !isequal(previousColumnDefs, columnDefs)) {
+            if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
                const updatedColumnDefs = updateColumnDefs(columnDefs);
                setEditableColumnDefs(updatedColumnDefs);
             }
         }, [columnDefs, selectValues]);
 
         const updateColumnDefs = columnDefs => {
-            const copiedColumnDefs = clonedeep(columnDefs);
+            const copiedColumnDefs = cloneDeep(columnDefs);
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
                 const {field} = columnDef || {};
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
