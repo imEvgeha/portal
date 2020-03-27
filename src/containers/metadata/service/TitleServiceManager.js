@@ -1,4 +1,4 @@
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import {store} from '../../../index';
 import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/metadata/index';
 import {titleService} from './TitleService';

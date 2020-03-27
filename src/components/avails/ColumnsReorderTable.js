@@ -1,5 +1,5 @@
 import React from 'react';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 
 export default function withColumnsReorder(WrappedComponent){
     return class extends React.Component {

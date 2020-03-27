@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import union from 'lodash.union';
+import {union} from 'lodash';
 import {NexusCheckboxSelect} from '../../../ui/elements';
 
 class SelectPlanTerritoryEditor extends Component {

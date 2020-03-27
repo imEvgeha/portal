@@ -1,5 +1,5 @@
 import React from 'react';
-import get from 'lodash.get';
+import {get} from 'lodash';
 import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
 import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';

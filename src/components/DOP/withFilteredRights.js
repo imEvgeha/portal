@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
 import withRightsResultsTable from './withRightsResultsTable';
 

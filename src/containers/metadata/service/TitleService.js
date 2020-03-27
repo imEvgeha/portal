@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 import {getDomainName, prepareSortMatrixParamTitles} from '../../../util/Common';
 import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
-import uniqBy from 'lodash.uniqby';
+import {uniqBy} from 'lodash';
 
 const http = Http.create();
 

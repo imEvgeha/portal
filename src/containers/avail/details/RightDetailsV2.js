@@ -6,7 +6,7 @@ import { Button, Label } from 'reactstrap';
 import moment from 'moment';
 import './RightDetails.scss';
 import {store} from '../../../index';
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import {profileService} from '../service/ProfileService';
