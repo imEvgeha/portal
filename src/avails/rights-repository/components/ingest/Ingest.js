@@ -20,7 +20,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
     return ingest ? (
         <div className='nexus-c-avails-ingest'>
             <div className='nexus-c-avails-ingest__cross-icon'>
-                <CrossCircle onClick={deselectIngest} />
+                <CrossCircle className='nexus-c-avails-ingest__cross-circle' onClick={deselectIngest} />
             </div>
             <div className='nexus-c-avails-ingest__details'>
                 <IngestTitle
@@ -44,14 +44,14 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                 {emails.map(email => (
                     <div key={email.id} className='nexus-c-avails-ingest__email'>
                         <NexusTooltip content='Download Email'>
-                            <Email key={email.id} onClick={() => downloadIngestEmail(email)} />
+                            <Email key={email.id} className='nexus-c-avails-ingest__email-icon' onClick={() => downloadIngestEmail(email)} />
                         </NexusTooltip>
                     </div>
                   )
                 )}
                 <div className='nexus-c-avails-ingest__download'>
                     <NexusTooltip content='Download Attachment'>
-                        <DownloadIcon onClick={() => downloadIngestFile(attachment)} />
+                        <DownloadIcon className='nexus-c-avails-ingest__download-icon' onClick={() => downloadIngestFile(attachment)} />
                     </NexusTooltip>
                 </div>
             </div>
