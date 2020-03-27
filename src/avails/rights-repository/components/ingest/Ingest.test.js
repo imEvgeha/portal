@@ -153,6 +153,6 @@ describe('Ingest', () => {
         emailIcons.at(0).simulate('click');
         expect(downloadIngestEmail).toHaveBeenCalledWith(attachments[2]);
     });
-    
+
 });
 
