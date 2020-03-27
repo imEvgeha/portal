@@ -51,28 +51,33 @@ const EditorialMetadata = ({
     const [foldersOptions, setFoldersOptions] = useState([]);
     const [foldersChildren, setFoldersChildren] = useState({});
 
+    // When editorialMetadata is received/updated, extract its items and categorize them in folders
     useEffect(() => {
+        // Will hold all unique comibnations of locale+language
         const foldersSet = new Set();
 
+        // Extract locale+language from each editorialMetadata item and add it to flodersSet set
         Object.keys(editorialMetadata).forEach((key) => {
-            const {locale, language} = editorialMetadata[key];
+            const {locale = '', language = ''} = editorialMetadata[key];
             const folderName = `${locale} ${getLanguageByCode(language)}`;
 
             foldersSet.add(folderName);
         });
 
-        const editorialMet = {};
+        const categorizedEditorialMetadata = {};
 
+        // For each folder, extract its children
         Array.from(foldersSet).forEach(folder => {
-            editorialMet[folder] = editorialMetadata.find(({locale, language}) => {
+            categorizedEditorialMetadata[folder] = editorialMetadata.filter(({locale, language}) => {
                 return folder === `${locale} ${getLanguageByCode(language)}`;
             });
         });
-        setFoldersChildren(editorialMet);
+        setFoldersChildren(categorizedEditorialMetadata);
 
+        // Create options for react-select
         setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
     }, [editorialMetadata]);
-    useEffect(() => setCurrentFolder(foldersOptions[0]), foldersOptions);
+    useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
 
 
     const getLanguageByCode = (code) => {
@@ -85,6 +90,7 @@ const EditorialMetadata = ({
         return code;
     };
 
+    const {value: currentFolderName = ''} = currentFolder || {};
 
     return (
         <Container fluid id="titleContainer" style={{marginTop: '30px'}}>
@@ -112,7 +118,10 @@ const EditorialMetadata = ({
                         options={foldersOptions}
                         defaultValue={foldersOptions[0]}
                         value={currentFolder || foldersOptions[0]}
-                        onChange={folder => setCurrentFolder(folder)}
+                        onChange={folder => {
+                            toggle(0);
+                            setCurrentFolder(folder);
+                        }}
                     />
                 </div>
             </Row>
@@ -141,7 +150,7 @@ const EditorialMetadata = ({
                         : null
                 }
                 {
-                    foldersChildren[currentFolder] && foldersChildren[currentFolder].map((item, i) => {
+                    foldersChildren[currentFolderName] && foldersChildren[currentFolderName].map((item, i) => {
                         return (
                             <span
                                 className="tablinks"
@@ -159,8 +168,8 @@ const EditorialMetadata = ({
             </div>
             <TabContent activeTab={activeTab}>
                 {
-                    editorialMetadata && editorialMetadata.length > 0 ?
-                        !isEditMode && editorialMetadata.map((item, i) => {
+                    foldersChildren && foldersChildren[currentFolderName] ?
+                        !isEditMode && foldersChildren[currentFolderName].map((item, i) => {
                             return (
                                 <TabPane key={i} tabId={i}>
                                     <Row>
