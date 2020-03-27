@@ -26,7 +26,7 @@ import {titleSearchHelper} from '../../TitleSearchHelper';
 import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
 import {titleService} from '../../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../../util/Common';
-import {get, uniqby} from 'lodash';
+import {get, uniqBy} from 'lodash';
 import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../avails/utils';
@@ -333,7 +333,7 @@ class TitleResultTable extends React.Component {
                 }
                 return {};
             });
-        return uniqby(parents, 'id');
+        return uniqBy(parents, 'id');
     };
 
     getSeriesParentId = (title) => {
