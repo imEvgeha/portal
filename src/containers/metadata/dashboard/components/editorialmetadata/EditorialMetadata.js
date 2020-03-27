@@ -44,7 +44,8 @@ const EditorialMetadata = ({
     handleAddEditorialCharacterNameEdit,
     handleCategoryChange,
     handleCategoryEditChange,
-    titleData,
+    coreTitleData,
+    editorialTitleData
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -67,7 +68,10 @@ const EditorialMetadata = ({
                 width="extended"
                 position="right"
             >
-                <Title titleData={titleData} />
+                <Title
+                    coreTitleData={coreTitleData}
+                    editorialTitleData={editorialTitleData}
+                />
             </NexusDrawer>
             <Row style={{marginTop: '5px'}}>
                 <Col>
@@ -229,7 +233,8 @@ EditorialMetadata.propTypes = {
     handleEditorialCastCrew: PropTypes.func,
     handleAddEditorialCharacterName: PropTypes.func,
     handleAddEditorialCharacterNameEdit: PropTypes.func,
-    titleData: PropTypes.object,
+    coreTitleData: PropTypes.object,
+    editorialTitleData: PropTypes.array,
     handleCategoryChange: PropTypes.func.isRequired,
     handleCategoryEditChange: PropTypes.func.isRequired,
 };
@@ -249,7 +254,8 @@ EditorialMetadata.defaultProps = {
     handleEditorialCastCrewCreate: () => null,
     handleAddEditorialCharacterName: () => null,
     handleAddEditorialCharacterNameEdit: () => null,
-    titleData: {},
+    coreTitleData: {},
+    editorialTitleData: [],
 };
 
 export default connect(mapStateToProps)(EditorialMetadata);
