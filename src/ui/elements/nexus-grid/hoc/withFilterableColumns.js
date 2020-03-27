@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import isEmpty from 'lodash.isempty';
-import omit from 'lodash.omit';
-import cloneDeep from 'lodash.clonedeep';
+import {get, omit, isEmpty, pickBy, cloneDeep} from 'lodash';
 import {createAvailSelectValuesSelector} from '../../../../containers/avail/availSelectors';
 import {isObject, switchCase} from '../../../../util/Common';
 import {
@@ -18,8 +16,6 @@ import {
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
 import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
-import get from 'lodash.get';
-import pickBy from 'lodash.pickby';
 import {fetchAvailMapping} from '../../../../containers/avail/availActions';
 
 const withFilterableColumns = ({

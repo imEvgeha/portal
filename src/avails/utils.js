@@ -1,8 +1,5 @@
 import React from 'react';
-import cloneDeep from 'lodash.clonedeep';
-import isEmpty from 'lodash.isempty';
-import isEqual from 'lodash.isequal';
-import get from 'lodash.get';
+import {get, isEqual, isEmpty, cloneDeep} from 'lodash';
 import createValueFormatter from '../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import CustomActionsCellRenderer from '../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import createLoadingCellRenderer from '../ui/elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';

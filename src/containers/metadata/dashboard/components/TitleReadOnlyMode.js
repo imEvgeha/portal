@@ -34,7 +34,8 @@ class TitleReadOnlyMode extends Component {
             contentSubType,
             originalLanguage,
             episodic,
-            parentIds
+            parentIds,
+            category
         } = data;
         const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
         let seriesLink;
@@ -240,6 +241,18 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
+                        </Row>
+                        <Row>
+                            {category && category.length > 0 && <Col>
+                                <Alert color="light" id="titleCategory">
+                                    <b>Categories: </b> {
+                                    category.map((value, i) => (
+                                        category.length === i + 1 ?
+                                            <span key={i}>{value}</span> : <span key={i}>{value}, </span>
+                                    ))}
+                                </Alert>
+                            </Col>
+                            }
                         </Row>
                     </Col>
                 </Row>

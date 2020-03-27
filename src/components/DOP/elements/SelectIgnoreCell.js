@@ -3,7 +3,7 @@ import t from 'prop-types';
 import {connect} from 'react-redux';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 import {rightsService} from '../../../containers/avail/service/RightsService';
-import union from 'lodash.union';
+import {union} from 'lodash';
 
 const defaultColor = '#606060';
 const selectedColor = '#D7D7D7';

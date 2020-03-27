@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import { Radio } from '@atlaskit/radio';
 import {NexusTitle, NexusGrid} from '../../../ui/elements/';

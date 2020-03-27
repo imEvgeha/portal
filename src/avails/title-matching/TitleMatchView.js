@@ -1,7 +1,7 @@
 import React, {useEffect, useContext} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import {
