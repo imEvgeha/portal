@@ -34,7 +34,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
-import {configurePersistor} from './persist-config';
+import {configurePersistor} from './store-persist-config';
 import rootSaga from './saga';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
 import AppLayout from './layout/AppLayout';
