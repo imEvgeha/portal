@@ -10,7 +10,7 @@ import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 import {configFields} from '../../../service/ConfigService';
 import {NexusDrawer} from '../../../../../ui/elements';
 import Title from '../../../../../metadata/title/Title';
-import {URL} from '../../../../../util/common';
+import {URL} from '../../../../../util/Common';
 
 const mapStateToProps = state => {
     return {
