@@ -3,7 +3,7 @@ import {titleService} from '../containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
 import {normalizeDataForStore} from '../util/Common';
-import get from 'lodash.get';
+import {get} from 'lodash';
 import {ADD_TOAST} from '../ui/toast/toastActionTypes';
 import {
     SUCCESS_ICON,

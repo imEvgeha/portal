@@ -5,7 +5,7 @@ import {LicenseManager} from 'ag-grid-enterprise';
 import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import debounce from 'lodash.debounce';
+import {debounce} from 'lodash';
 import './NexusGrid.scss';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
 

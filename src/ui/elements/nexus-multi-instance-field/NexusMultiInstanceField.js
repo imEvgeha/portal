@@ -3,7 +3,7 @@ import React, {useState, useContext, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {renderer, FormButton} from 'react-forms-processor-atlaskit';
 import {Form} from 'react-forms-processor';
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import {uid} from 'react-uid';
 import Button from '@atlaskit/button';
 import InlineEdit from '@atlaskit/inline-edit';

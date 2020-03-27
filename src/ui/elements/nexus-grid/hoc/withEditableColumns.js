@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
-import omit from 'lodash.omit';
-import cloneDeep from 'lodash.clonedeep';
+import {omit, isEqual, cloneDeep} from 'lodash';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';

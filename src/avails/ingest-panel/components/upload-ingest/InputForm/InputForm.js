@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
-import isEmpty from 'lodash.isempty';
+import {get, isEmpty} from 'lodash';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {getLicensors} from '../../../ingestSelectors';

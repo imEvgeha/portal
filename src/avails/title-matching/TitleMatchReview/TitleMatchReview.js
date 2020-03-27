@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import {NexusTitle, NexusGrid} from '../../../ui/elements/';
 import BackNavigationByUrl from '../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {URL} from '../../../util/Common';

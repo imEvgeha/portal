@@ -14,6 +14,7 @@ import manualRightsEntry from './stores/reducers/avail/manualRightsEntry';
 import availsReducer from './avails/availsReducer';
 import metadataReducer from './metadata/metadataReducer';
 import uiReducer from './ui/uiReducer.js';
+import {availsPersistConfig, createPersistReducer} from './store-persist-config';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
@@ -31,7 +32,7 @@ const createRootReducer = routerHistory => combineReducers({
     manualRightsEntry, // remove it
 
     // new structure
-    avails: availsReducer,
+    avails: createPersistReducer(availsPersistConfig, availsReducer),
     metadata: metadataReducer,
     ui: uiReducer,
 });

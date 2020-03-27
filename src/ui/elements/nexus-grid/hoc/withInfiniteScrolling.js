@@ -1,8 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash.isequal';
-import omit from 'lodash.omit';
-import pickBy from 'lodash.pickby';
+import {omit, isEqual} from 'lodash';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';

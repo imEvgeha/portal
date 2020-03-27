@@ -1,3 +1,4 @@
+const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -15,6 +16,14 @@ module.exports = {
     },
     entry: {
         main: ['@babel/polyfill', './src/index.js']
+    },
+    resolve: {
+        alias: {
+            'redux-persist-transform-filter': path.resolve(
+                __dirname,
+                'src/store-persist-config/packages/redux-persist-transform-filter/index.js'
+            ),
+        }
     },
     module: {
         rules: [

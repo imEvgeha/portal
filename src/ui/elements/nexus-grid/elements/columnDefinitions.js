@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import {createLinkableCellRenderer} from '../../../../avails/utils';
 
 export const defineColumn = ({

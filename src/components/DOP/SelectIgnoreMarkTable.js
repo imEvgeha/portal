@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../stores/actions/DOP';
 import {defaultSelectionColDef, SelectionTable} from '../common/SelectionTable';
 import CheckBoxHeaderInternal from './elements/CheckBoxHeaderInternal';

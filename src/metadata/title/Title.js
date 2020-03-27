@@ -19,7 +19,7 @@ import './Title.scss';
 const Title = ({
    titleData,
 }) => {
-    const [currentSection, setCurrentSection] = useState('Editorial');
+    const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
     const {title, releaseYear, type} = titleData || {};
 
     const renderSection = section => {
