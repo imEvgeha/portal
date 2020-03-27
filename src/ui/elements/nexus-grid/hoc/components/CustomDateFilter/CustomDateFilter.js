@@ -65,7 +65,7 @@ export class CustomDateFilter extends React.Component {
         const isAfterStartDate = startDate ? moment(fieldValue).isAfter(startDate) : true;
         const isBeforeEndDate = endDate ? moment(fieldValue).isBefore(endDate) : true;
         return isAfterStartDate && isBeforeEndDate;
-    }
+    };
 
     render (){
         const {colDef: {field}} = this.props;
