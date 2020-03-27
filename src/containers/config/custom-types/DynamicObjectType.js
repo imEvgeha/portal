@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import uniqueId from 'lodash/uniqueId';
+import {uniqueId} from 'lodash';
 import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';
 import { Field as AkField } from '@atlaskit/form';

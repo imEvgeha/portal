@@ -1,4 +1,4 @@
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
 
 // grid filter

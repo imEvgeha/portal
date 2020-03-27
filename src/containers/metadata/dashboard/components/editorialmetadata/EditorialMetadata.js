@@ -42,6 +42,8 @@ const EditorialMetadata = ({
     handleEditorialCastCrew,
     handleAddEditorialCharacterName,
     handleAddEditorialCharacterNameEdit,
+    handleCategoryChange,
+    handleCategoryEditChange,
     titleData,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -163,6 +165,7 @@ const EditorialMetadata = ({
                                             editorialMetadataForCreate={editorialMetadataForCreate}
                                             handleSynopsisChange={handleSynopsisChange}
                                             handleGenreChange={handleGenreChange}
+                                            handleCategoryChange={handleCategoryChange}
                                             handleEditorialCastCrewCreate={handleEditorialCastCrewCreate}
                                             titleContentType={titleContentType}
                                         />
@@ -183,6 +186,7 @@ const EditorialMetadata = ({
                                                         handleEditorialCastCrew={handleEditorialCastCrew}
                                                         handleGenreEditChange={handleGenreEditChange}
                                                         updatedEditorialMetadata={updatedEditorialMetadata}
+                                                        handleCategoryEditChange={handleCategoryEditChange}
                                                         key={i}
                                                         data={item}
                                                     />
@@ -226,6 +230,8 @@ EditorialMetadata.propTypes = {
     handleAddEditorialCharacterName: PropTypes.func,
     handleAddEditorialCharacterNameEdit: PropTypes.func,
     titleData: PropTypes.object,
+    handleCategoryChange: PropTypes.func.isRequired,
+    handleCategoryEditChange: PropTypes.func.isRequired,
 };
 
 EditorialMetadata.defaultProps = {
