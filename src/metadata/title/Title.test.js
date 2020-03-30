@@ -16,7 +16,7 @@ describe('Title', () => {
     beforeEach(() => {
         wrapper = shallow(
             <Title
-                titleData={{
+                coreTitleData={{
                     title: 'AtlasKit 101',
                     type: 'Comedy',
                     releaseYear: '2020',
