@@ -48,7 +48,6 @@ const NexusPersonsList = ({
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const notify = () => {
-        console.log('CALL onChange:', persons);
         if (typeof onChange === 'function') {
             onChange(persons);
         }
@@ -108,8 +107,7 @@ const NexusPersonsList = ({
 
     const openModal = (id) => {
         const selectedPerson = persons && persons[id];
-        console.log(1, selectedPerson, selectedPerson.characterName);
-        setModalData({ selectedPerson: selectedPerson, characterName: selectedPerson.characterName});
+        setModalData({ selectedPerson: selectedPerson, characterName: selectedPerson.characterName, displayName: selectedPerson.displayName});
         setIsModalOpen(true);
     };
 
@@ -234,6 +232,7 @@ const NexusPersonsList = ({
             (
                 <NexusCharacterNameModal
                     onSubmit={onCharacterSubmit}
+                    hint={modalData.displayName}
                     defaultVal={modalData.characterName}
                     isModalOpen={isModalOpen}
                     closeModal={closeModal}

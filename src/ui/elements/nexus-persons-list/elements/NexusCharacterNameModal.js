@@ -9,15 +9,20 @@ import Button from '@atlaskit/button';
 import React, {useEffect, useState} from 'react';
 
 const NexusCharacterNameModal = ({
+     hint,
      defaultVal,
      isModalOpen,
      closeModal,
      onSubmit,
 })=> {
 
-    const [val, setVal] = useState(defaultVal);
+    const [val, setVal] = useState(defaultVal || '');
     const [isValid, setIsValid] = useState(true);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setVal(defaultVal);
+    }, [defaultVal]);
 
     const onCancel = () => {
         setVal(defaultVal);
@@ -36,7 +41,6 @@ const NexusCharacterNameModal = ({
     };
 
     useEffect(() => {
-        console.log(2, defaultVal, val);
         if(isEmpty(val)){
             setError('Character name cannot be empty!');
             setIsValid(false);
@@ -64,10 +68,9 @@ const NexusCharacterNameModal = ({
                 <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
                 <CustomInput
                     readOnly
-                    placeholder="Display Name"
                     name="displayName"
                     disabled={true}
-                    value={defaultVal}
+                    value={hint || ''}
                 />
                 <CustomLabel isError={!isValid} htmlFor="characterName">Character Name</CustomLabel>
                 <CustomInput
@@ -75,7 +78,7 @@ const NexusCharacterNameModal = ({
                     onChange={value => handleChange(value)}
                     placeholder="Character Name"
                     name="characterName"
-                    value={val}
+                    value={val || ''}
                 />
                 {!isValid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
             </ModalBody>
@@ -95,7 +98,8 @@ NexusCharacterNameModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     isModalOpen: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    defaultVal: PropTypes.string
+    defaultVal: PropTypes.string,
+    hint: PropTypes.string
 };
 
 export default NexusCharacterNameModal;
