@@ -25,7 +25,7 @@ const MoreActions = ({selectedAvails}) => {
     };
 
     return (
-        <div className='rights-more-actions' ref={node} >
+        <div className='rights-more-actions' ref={node}>
             <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
             <div className={`rights-more-actions__menu ${menuOpened?'open':''}`}>
                 <RightViewHistory selectedAvails={selectedAvails} />
