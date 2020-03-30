@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
 import {isEqual, isEmpty} from 'lodash';
@@ -18,6 +19,7 @@ import {
 import {NexusTitle, NexusGrid} from '../../../ui/elements/';
 import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 import {
@@ -44,7 +46,12 @@ const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
 const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
-const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
+const CombinedRightNexusGrid = compose(
+    withColumnsResizing(),
+    withEditableColumns())
+(NexusGrid);
+const MatchedRightsNexusGrid =  withColumnsResizing()(NexusGrid);
+
 
 const MatchRightView = ({
     history,
@@ -233,7 +240,8 @@ const MatchRightView = ({
             <div className="nexus-c-match-right-view__matched">
                 <NexusTitle isSubTitle>{MATCHED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
-                    <NexusGrid
+                    <MatchedRightsNexusGrid
+                        id='matchedRightsRepo'
                         columnDefs={matchedRightColumnDefs}
                         rowData={matchedRightIds.split(',').length === matchedRights.length ? matchedRightRowData : []}
                         domLayout="autoHeight"
@@ -248,6 +256,7 @@ const MatchRightView = ({
                 <NexusTitle isSubTitle>{COMBINED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <CombinedRightNexusGrid
+                        id='combinedRightRepo'
                         columnDefs={combinedRightColumnDefs}
                         rowData={
                             !isEmpty(combinedRight) && matchedRights.length === matchedRightIds.split(',').length

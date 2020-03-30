@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstrap';
+import React, {useEffect, useState} from 'react';
+import {Alert, Col, Container, Row, TabContent, TabPane, Tooltip} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
+import Button from '@atlaskit/button';
+import Select from '@atlaskit/select';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
@@ -48,6 +49,38 @@ const EditorialMetadata = ({
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [currentFolder, setCurrentFolder] = useState({});
+    const [foldersOptions, setFoldersOptions] = useState([]);
+    const [foldersChildren, setFoldersChildren] = useState({});
+
+    // When editorialMetadata is received/updated, extract its items and categorize them in folders
+    useEffect(() => {
+        // Will hold all unique comibnations of locale+language
+        const foldersSet = new Set();
+
+        // Extract locale+language from each editorialMetadata item and add it to flodersSet set
+        Object.keys(editorialMetadata).forEach((key) => {
+            const {locale = '', language = ''} = editorialMetadata[key];
+            const folderName = `${locale} ${getLanguageByCode(language)}`;
+
+            foldersSet.add(folderName);
+        });
+
+        const categorizedEditorialMetadata = {};
+
+        // For each folder, extract its children
+        Array.from(foldersSet).forEach(folder => {
+            categorizedEditorialMetadata[folder] = editorialMetadata.filter(({locale, language}) => {
+                return folder === `${locale} ${getLanguageByCode(language)}`;
+            });
+        });
+        setFoldersChildren(categorizedEditorialMetadata);
+
+        // Create options for react-select
+        setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
+    }, [editorialMetadata]);
+    useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
+
 
     const getLanguageByCode = (code) => {
         if (configLanguage) {
@@ -58,6 +91,8 @@ const EditorialMetadata = ({
         }
         return code;
     };
+
+    const {value: currentFolderName = ''} = currentFolder || {};
 
     return (
         <Container fluid id="titleContainer" style={{marginTop: '30px'}}>
@@ -78,6 +113,19 @@ const EditorialMetadata = ({
                         <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
                     </Col>
                 )}
+            </Row>
+            <Row>
+                <div style={{width: '200px', margin: '5px 0 15px 15px'}}>
+                    <Select
+                        options={foldersOptions}
+                        defaultValue={foldersOptions[0]}
+                        value={currentFolder || foldersOptions[0]}
+                        onChange={folder => {
+                            toggle(0);
+                            setCurrentFolder(folder);
+                        }}
+                    />
+                </div>
             </Row>
             <div className='tab'>
                 {
@@ -104,7 +152,7 @@ const EditorialMetadata = ({
                         : null
                 }
                 {
-                    editorialMetadata && editorialMetadata.map((item, i) => {
+                    foldersChildren[currentFolderName] && foldersChildren[currentFolderName].map((item, i) => {
                         return (
                             <span
                                 className="tablinks"
@@ -113,7 +161,7 @@ const EditorialMetadata = ({
                                 onClick={() => toggle(i)}
                             >
                                 <b>
-                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format ? item.format : '')} ${(item.service ? item.service : '')}`}
+                                    {`${(item.format || '')} ${(item.service || '')}`}
                                 </b>
                             </span>
                         );
@@ -122,8 +170,8 @@ const EditorialMetadata = ({
             </div>
             <TabContent activeTab={activeTab}>
                 {
-                    editorialMetadata && editorialMetadata.length > 0 ?
-                        !isEditMode && editorialMetadata.map((item, i) => {
+                    foldersChildren && foldersChildren[currentFolderName] ?
+                        !isEditMode && foldersChildren[currentFolderName].map((item, i) => {
                             return (
                                 <TabPane key={i} tabId={i}>
                                     <Row>
@@ -229,9 +277,9 @@ EditorialMetadata.propTypes = {
     handleEditorialCastCrew: PropTypes.func,
     handleAddEditorialCharacterName: PropTypes.func,
     handleAddEditorialCharacterNameEdit: PropTypes.func,
-    titleData: PropTypes.object,
     handleCategoryChange: PropTypes.func.isRequired,
     handleCategoryEditChange: PropTypes.func.isRequired,
+    titleData: PropTypes.object,
 };
 
 EditorialMetadata.defaultProps = {
