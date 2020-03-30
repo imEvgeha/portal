@@ -1,9 +1,14 @@
 .nexus-c-ingest-title {
   font-size: 14px;
-  width: 300px;
+  max-width: 300px;
+  min-width: 300px;
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
+
+  &--header {
+    max-width: 1010px;
+  }
 
   svg {
     width: 18px;
