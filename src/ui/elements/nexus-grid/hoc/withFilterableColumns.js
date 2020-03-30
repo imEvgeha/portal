@@ -16,6 +16,7 @@ import {
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
 import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
+import {fetchAvailMapping} from '../../../../containers/avail/availActions';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -25,7 +26,7 @@ const withFilterableColumns = ({
     prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = (props) => {
-        const {columnDefs, mapping, selectValues, params} = props;
+        const {columnDefs, mapping, selectValues, params, fetchAvailMapping} = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
@@ -33,6 +34,13 @@ const withFilterableColumns = ({
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
         const previousFilters = usePrevious(filters);
+
+        // TODO: temporary solution to get select values
+        useEffect(() => {
+            if (isEmpty(selectValues)) {
+                fetchAvailMapping();
+            };
+        }, [selectValues]);
 
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
@@ -89,7 +97,7 @@ const withFilterableColumns = ({
                             break;
                         case INTEGER:
                         case DOUBLE:
-                        case YEAR: 
+                        case YEAR:
                             columnDef.filter = NUMBER;
                             break;
                         case SELECT:
@@ -100,7 +108,7 @@ const withFilterableColumns = ({
                                 values: getFilterOptions(field),
                             };
                             break;
-                        case TERRITORY: 
+                        case TERRITORY:
                             columnDef.filter = SET;
                             columnDef.filterParams = {
                                 ...DEFAULT_FILTER_PARAMS,
@@ -163,7 +171,7 @@ const withFilterableColumns = ({
 
         // TODO: create separate file for filter API methods
         const applySetFilter = (field, values = []) => {
-            // clear filter 
+            // clear filter
             field.selectNothing();
             // select values
             values.forEach(value => field.selectValue(value));
@@ -189,7 +197,7 @@ const withFilterableColumns = ({
         // TODO - HOC should be props proxy, not bloquer
         return (
             filterableColumnDefs.length ? (
-                <WrappedComponent 
+                <WrappedComponent
                     {...propsWithoutHocProps}
                     columnDefs={filterableColumnDefs}
                     floatingFilter={true}
@@ -212,7 +220,11 @@ const withFilterableColumns = ({
         });
     };
 
-    return connect(createMapStateToProps)(ComposedComponent); // eslint-disable-line
+    const mapDispatchToProps = dispatch => ({
+        fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
+    });
+
+    return connect(createMapStateToProps, mapDispatchToProps)(ComposedComponent); // eslint-disable-line
 };
 
 export default withFilterableColumns;

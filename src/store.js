@@ -3,7 +3,6 @@ import createSagaMiddleware, {END} from 'redux-saga';
 // import {createLogger} from 'redux-logger';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {routerMiddleware} from 'connected-react-router';
-import {throttle} from 'lodash';
 import createRootReducer from './reducer';
 // import {createPersistReducer, persistConfig} from './store-persist-config';
 
@@ -20,7 +19,7 @@ const configureStore = (initialState = {}, history) => {
     //     predicate: () => process.env.NODE_ENV === 'development',
     // });
     // middleware = [...middleware, loggerMiddleware];
-    
+
     // switch to root redux persist
     // const rootReducer = createPersistReducer(persistConfig, createRootReducer(history));
 
@@ -30,6 +29,7 @@ const configureStore = (initialState = {}, history) => {
             applyMiddleware(...middleware),
         ),
     );
+
     store.runSaga = sagaMiddleware.run;
 
     store.close = () => store.dispatch(END);
