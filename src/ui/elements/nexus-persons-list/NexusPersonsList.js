@@ -204,7 +204,6 @@ const NexusPersonsList = ({
                                                     showPersonType={showPersonType}
                                                     onRemove={() => removePerson(person)}
                                                     onEditCharacter={(index) => openModal(index)}
-                                                    isEdit
                                                 />
                                             );
                                         })
@@ -215,11 +214,7 @@ const NexusPersonsList = ({
                                             <NexusPersonRO
                                                 key={uid(person.id, i)}
                                                 person={person}
-                                                index={i}
-                                                hasCharacter={hasCharacter}
                                                 showPersonType={showPersonType}
-                                                onRemove={() => removePerson(person)}
-                                                onEditCharacter={(index) => openModal(index)}
                                             />
                                         );
                                     })}

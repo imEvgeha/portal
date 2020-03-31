@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusPerson should match snapshot 1`] = `
+<Connect(Draggable)
+  disableInteractiveElementBlocking={false}
+  draggableId="prs_Ac9oyaREip"
+  index={1}
+  isDragDisabled={false}
+  shouldRespectForcePress={false}
+>
+  <Component />
+</Connect(Draggable)>
+`;

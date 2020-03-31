@@ -50,6 +50,8 @@ EditorialMetadata.propTypes = {
     data: PropTypes.array,
 };
 
-// EditorialMetadata.defaultProps = {};
+EditorialMetadata.defaultProps = {
+    data: []
+};
 
 export default EditorialMetadata;

@@ -36,11 +36,7 @@ exports[`NexusPersonsList should match snapshot 1`] = `
             label={false}
           >
             <NexusPersonRO
-              hasCharacter={true}
-              index={0}
               key="val-prs_Ac9oyaREip"
-              onEditCharacter={[Function]}
-              onRemove={[Function]}
               person={
                 Object {
                   "characterName": null,
@@ -55,11 +51,7 @@ exports[`NexusPersonsList should match snapshot 1`] = `
               showPersonType={true}
             />
             <NexusPersonRO
-              hasCharacter={true}
-              index={1}
               key="idx-1"
-              onEditCharacter={[Function]}
-              onRemove={[Function]}
               person={
                 Object {
                   "characterName": null,
@@ -74,11 +66,7 @@ exports[`NexusPersonsList should match snapshot 1`] = `
               showPersonType={true}
             />
             <NexusPersonRO
-              hasCharacter={true}
-              index={2}
               key="idx-2"
-              onEditCharacter={[Function]}
-              onRemove={[Function]}
               person={
                 Object {
                   "characterName": null,
