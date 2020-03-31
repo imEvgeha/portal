@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import './CustomDateFilter.scss';
 import {NexusDateTimeWindowPicker}
-    from '../../../index';
+    from '../../../../../ui/elements';
 import {DATEPICKER_LABELS} from '../../constants';
 import './CustomDateFilter.scss';
 
