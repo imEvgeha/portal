@@ -6,7 +6,7 @@ import './IngestTitle.scss';
 const IngestTitle = ({link, className}) => {
     const fileName = link.split('/').pop();
     return (
-        <div className={className? `nexus-c-ingest-title nexus-c-ingest-title--${className}` : 'nexus-c-ingest-title'}>
+        <div className={className? `nexus-c-ingest-title nexus-c-ingest-title--is-${className}` : 'nexus-c-ingest-title'}>
             <div className='nexus-c-ingest-title__details'>
                 <File className='nexus-c-ingest-title__type' />
                 <span title={fileName} className='nexus-c-ingest-title__filename'>{fileName}</span>
