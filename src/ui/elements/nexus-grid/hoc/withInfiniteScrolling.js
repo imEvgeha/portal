@@ -60,7 +60,7 @@ const withInfiniteScrolling = ({
 
             const preparedParams = {
                 ...parsedParams,
-                ...cleanObject(filterParams),
+                ...cleanObject(filterParams, true),
             };
 
             if (typeof props.setDataLoading === 'function') {
