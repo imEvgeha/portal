@@ -23,9 +23,6 @@ class SelectRightsPlanning extends Component {
 
     constructor(props) {
         super(props);
-        // this.state = {
-        //     rightsFilteredBy: {}
-        // };
     }
 
     componentDidMount() {
@@ -34,26 +31,20 @@ class SelectRightsPlanning extends Component {
             fetchAvailMapping();
         }
         fetchAvailConfiguration();
-        this.renderTableFilter();
+        this.renderInitialTabFilter();
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.selectedTerritoriesTab !== this.props.selectedTerritoriesTab) {
-            this.renderTableFilter();
+            this.renderInitialTabFilter();
         }
     }
 
-    renderTableFilter = () => {
-        const {selectedTerritoriesTab, updateRightsFilter, tabFilter} = this.props;
+    renderInitialTabFilter = () => {
+        const {updateRightsFilter, tabFilter} = this.props;
 
-        console.log(tabFilter, initialTabFilter);
         if (!isEqual(tabFilter, initialTabFilter)) {
             updateRightsFilter(initialTabFilter);
-            console.log("updateRightsFilter");
-            //updateRightsFilter
-            // this.setState({
-            //     rightsFilteredBy: filterBy
-            // });
         }
     };
 
