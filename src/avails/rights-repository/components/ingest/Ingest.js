@@ -27,6 +27,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                     ingestType={ingestType}
                     provider={provider}
                     link={link}
+                    className='header'
                 />
                 <IngestStatus
                     status={status}

@@ -202,13 +202,14 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            {usBoxOffice && (
-                                <Col>
-                                    <Alert color="light" id="titleBoxOffice">
-                                        <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
-                                    </Alert>
-                                </Col>
-                            )}
+                            {usBoxOffice
+                                ? (<Col>
+                                        <Alert color="light" id="titleBoxOffice">
+                                            <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
+                                        </Alert>
+                                    </Col>)
+                                : null
+                            }
                         </Row>
                         <Row>
                             {category && category.length > 0 && (

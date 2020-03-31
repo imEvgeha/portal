@@ -36,6 +36,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 65vh;
+    flex: 1;
     .ingest-status {
       padding-left: 30px;
       width: 100%;
