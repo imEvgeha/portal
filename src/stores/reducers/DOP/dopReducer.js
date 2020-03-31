@@ -1,13 +1,15 @@
 import {
-    DOP_UPDATE_SELECTED_TERRITORIES_TAB,
     DOP_UPDATE_PROMOTED_RIGHTS,
+    DOP_UPDATE_PROMOTED_RIGHTS_FULL_DATA,
+    DOP_UPDATE_RIGHTS_FILTER,
     DOP_UPDATE_SELECTED_TERRITORIES,
+    DOP_UPDATE_SELECTED_TERRITORIES_TAB,
     DOP_UPDATE_USE_SELECTED_TERRITORIES,
-    LOAD_DOP_SESSION,
-    DOP_UPDATE_PROMOTED_RIGHTS_FULL_DATA
+    LOAD_DOP_SESSION
 } from '../../../constants/action-types';
 import {saveDopState} from '../../index';
-import {ALL_RIGHTS} from '../../../constants/DOP/selectedTab';
+import {ALL_RIGHTS, INCOMING, SELECTED} from '../../../constants/DOP/selectedTab';
+import {initialTabFilter} from '../../../constants/DOP/tabFilter';
 
 const initialState = {
     session: {
@@ -15,7 +17,8 @@ const initialState = {
         promotedRightsFullData: [],
         selectedTerritories: [],
         useSelectedTerritories: true,
-        selectedTerritoriesTab: ALL_RIGHTS
+        selectedTerritoriesTab: ALL_RIGHTS,
+        tabFilter: initialTabFilter
     }
 };
 
@@ -38,6 +41,8 @@ const dop = ( state = initialState, action) => {
         case DOP_UPDATE_SELECTED_TERRITORIES_TAB:
             saveDopState();
             return { ...state, session: {...state.session, selectedTerritoriesTab: action.payload}};
+        case DOP_UPDATE_RIGHTS_FILTER:
+            return { ...state, session: {...state.session, tabFilter: action.payload}};
         default:
             return state;
     }
