@@ -4,24 +4,23 @@ const getIngestReducer = state => state.avails.ingest;
 
 export const getIngests = createSelector(
     getIngestReducer,
-    ingest => ingest.ingests,
+    ingest => Object.values(ingest.list || {}),
 );
 
 export const getTotalIngests = createSelector(
     getIngestReducer,
-    ingest => ingest.totalIngests,
+    ingest => ingest.total,
 );
 
 export const getSelectedIngest = createSelector(
     getIngestReducer,
-    ingest => ingest.selectedIngest,
+    ingest => ingest.list[ingest.selectedIngestId],
 );
 
 export const getSelectedAttachmentId= createSelector(
     getIngestReducer,
     ingest => ingest.selectedAttachmentId,
 );
-
 
 export const getIngestById = createSelector(
     getIngests,
@@ -39,9 +38,4 @@ export const getSelectValues = createSelector(
 export const getLicensors = createSelector(
     getSelectValues,
     selectValues => selectValues.licensor || [],
-);
-
-export const getIsUploading = createSelector(
-    getIngestReducer,
-    ingest => ingest.isUploading,
 );

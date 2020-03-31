@@ -31,9 +31,11 @@ class TitleReadOnlyMode extends Component {
             seasonPremiere,
             seasonFinale,
             contentType,
+            contentSubType,
             originalLanguage,
             episodic,
-            parentIds
+            parentIds,
+            category
         } = data;
         const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
         let seriesLink;
@@ -64,6 +66,15 @@ class TitleReadOnlyMode extends Component {
                                 <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
                             </Col>
                         </Row>
+                        {contentSubType && (
+                            <Row>
+                                <Col>
+                                    <Alert color="light" id="titleContentSubType">
+                                        <b>Content SubType: </b>{contentSubType.substring(0, 1).toUpperCase() + contentSubType.substring(1, contentSubType.length).toLowerCase()}
+                                    </Alert>
+                                </Col>
+                            </Row>
+                        )}
                         <>
                             <Row>
                                 {seriesTitleName && (
@@ -221,15 +232,27 @@ class TitleReadOnlyMode extends Component {
                                         </Col>
                                     )
                                 }
-                            {
-                                    usBoxOffice && (
+                                {
+                                    usBoxOffice ?  (
                                         <Col>
                                             <Alert color="light" id="titleBoxOffice">
                                                 <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
                                             </Alert>
                                         </Col>
-                                    )
+                                    ) : null
                                 }
+                        </Row>
+                        <Row>
+                            {category && category.length > 0 && <Col>
+                                <Alert color="light" id="titleCategory">
+                                    <b>Categories: </b> {
+                                    category.map((value, i) => (
+                                        category.length === i + 1 ?
+                                            <span key={i}>{value}</span> : <span key={i}>{value}, </span>
+                                    ))}
+                                </Alert>
+                            </Col>
+                            }
                         </Row>
                     </Col>
                 </Row>

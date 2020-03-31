@@ -1,7 +1,7 @@
 import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
-import actionTypes from './ingestActionTypes';
-import {URL} from '../../util/Common';
+import * as actionTypes from './ingestActionTypes';
+import {URL, normalizeDataForStore} from '../../util/Common';
 import {historyService} from '../../containers/avail/service/HistoryService';
 import Constants from '../constants';
 import {getFiltersToSend} from './utils';
@@ -9,8 +9,8 @@ import FilterConstants from './constants';
 import {getIngestById} from './ingestSelectors';
 import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
 import {uploadService} from '../../containers/avail/service/UploadService';
-import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
-import { SUCCESS_ICON, SUCCESS_TITLE } from '../../ui-elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;
@@ -25,9 +25,10 @@ function* fetchIngests({payload}) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
+        const {data, total} = response.data || {};
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
-            payload: response.data,
+            payload: {data: normalizeDataForStore(data), total},
         });
     } catch (error) {
         yield put({
@@ -43,9 +44,10 @@ function* fetchNextPage() {
         const url = `${window.location.pathname}?${URL.updateQueryParam({page})}`;
         yield put(push(URL.keepEmbedded(url)));
         const response = yield call(historyService.advancedSearch, filters, page, PAGE_SIZE, sortParams);
+        const {data} = response.data || {};
         yield put({
             type: actionTypes.FETCH_NEXT_PAGE_SUCCESS,
-            payload: response.data.data,
+            payload: normalizeDataForStore(data),
         });
     } catch (error) {
         yield put({
@@ -159,11 +161,13 @@ function* uploadIngest({payload}) {
     const {file, closeModal, ...rest} = payload || {};
     try {
         yield put({
-            type: actionTypes.IS_UPLOADING,
-            payload: true,
+            type: actionTypes.UPLOAD_INGEST_REQUEST,
+            payload: {},
         });
+
         const response = yield uploadService.uploadAvail(file, null, null, {...rest});
-        if(response.status === 200) {
+
+        if (response.status === 200) {
             yield delay(6500);
             yield put({
                 type: actionTypes.FETCH_INGESTS,
@@ -181,14 +185,14 @@ function* uploadIngest({payload}) {
             });
         }
         yield put({
-            type: actionTypes.IS_UPLOADING,
-            payload: false,
+            type: actionTypes.UPLOAD_INGEST_SUCCESS,
+            payload: {},
         });
     }
     catch (e) {
         yield put({
-            type: actionTypes.IS_UPLOADING,
-            payload: false,
+            type: actionTypes.UPLOAD_INGEST_ERROR,
+            payload: {},
         });
     }
 }

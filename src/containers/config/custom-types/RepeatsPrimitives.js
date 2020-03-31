@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import uniqueId from 'lodash/uniqueId';
+import {uniqueId} from 'lodash';
 import Button from '@atlaskit/button';
 import { Form, FormContext } from 'react-forms-processor';
 import { Field as AkField } from '@atlaskit/form';

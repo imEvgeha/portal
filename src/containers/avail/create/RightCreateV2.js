@@ -20,7 +20,7 @@ import {
     NexusDateTimePicker,
     NexusDatePicker,
     NexusMultiInstanceField
-} from '../../../ui-elements';
+} from '../../../ui/elements';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 
 const mapStateToProps = state => {

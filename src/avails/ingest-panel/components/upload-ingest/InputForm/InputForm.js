@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
-import isEmpty from 'lodash.isempty';
+import {get, isEmpty} from 'lodash';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
-import {getLicensors, getIsUploading} from '../../../ingestSelectors';
+import {getLicensors} from '../../../ingestSelectors';
 import {uploadIngest} from '../../../ingestActions';
 import constants from '../../../constants';
 import './InputForm.scss';
 import { RadioGroup } from '@atlaskit/radio';
+import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 
 const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, STUDIO, INTERNATIONAL} } = constants;
 const US = 'US';
@@ -24,7 +24,7 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
             disabled: !isEmpty(ingestData) && (isStudio || ingestData.serviceRegion !== US),
             testId: !isEmpty(ingestData) && (isStudio|| ingestData.serviceRegion !== US) && 'disabled'},
         {label: 'Use Studio Template', value: STUDIO,
-            disabled: !isStudio, testId: !isStudio && 'disabled'}
+            disabled: !isEmpty(ingestData) && !isStudio, testId: !isEmpty(ingestData) && !isStudio && 'disabled'}
     ];
 
 
@@ -161,10 +161,14 @@ InputForm.defaultProps = {
     isUploading: false
 };
 
-const mapStateToProps = state => ({
-    licensors: getLicensors(state),
-    isUploading: getIsUploading(state)
-});
+const mapStateToProps = state => {
+    const loadingSelector = createLoadingSelector(['UPLOAD_INGEST_FILES']);
+
+    return {
+        licensors: getLicensors(state),
+        isUploading: loadingSelector(state),
+    };
+};
 
 const mapDispatchToProps = dispatch => ({
     uploadIngest: payload => dispatch(uploadIngest(payload)),

@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
-import isEqual from 'lodash.isequal';
-import isEmpty from 'lodash.isempty';
+import {isEqual, isEmpty} from 'lodash';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import './MatchRightsView.scss';
@@ -16,22 +16,22 @@ import {
     fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
-import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
 import {URL} from '../../../util/Common';
-import withEditableColumns from '../../../ui-elements/nexus-grid/hoc/withEditableColumns';
-import {backArrowColor} from '../../../constants/avails/constants';
-import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 import {
     defineColumn,
     defineCheckboxSelectionColumn,
     updateColumnDefs
-} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
+} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {backArrowColor} from '../../../constants/avails/constants';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
-import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 import {
     MATCH_RIGHT_TITLE,
     MATCH_BUTTON,
@@ -46,7 +46,12 @@ const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
 const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
-const CombinedRightNexusGrid = withEditableColumns()(NexusGrid);
+const CombinedRightNexusGrid = compose(
+    withColumnsResizing(),
+    withEditableColumns())
+(NexusGrid);
+const MatchedRightsNexusGrid =  withColumnsResizing()(NexusGrid);
+
 
 const MatchRightView = ({
     history,
@@ -235,7 +240,8 @@ const MatchRightView = ({
             <div className="nexus-c-match-right-view__matched">
                 <NexusTitle isSubTitle>{MATCHED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
-                    <NexusGrid
+                    <MatchedRightsNexusGrid
+                        id='matchedRightsRepo'
                         columnDefs={matchedRightColumnDefs}
                         rowData={matchedRightIds.split(',').length === matchedRights.length ? matchedRightRowData : []}
                         domLayout="autoHeight"
@@ -250,6 +256,7 @@ const MatchRightView = ({
                 <NexusTitle isSubTitle>{COMBINED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <CombinedRightNexusGrid
+                        id='combinedRightRepo'
                         columnDefs={combinedRightColumnDefs}
                         rowData={
                             !isEmpty(combinedRight) && matchedRights.length === matchedRightIds.split(',').length
@@ -322,12 +329,12 @@ const createMapStateToProps = () => {
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
     const loadingSelector = createLoadingSelector([SAVE_COMBINED_RIGHT]);
 
-    return (state, props) => ({
-        focusedRight: focusedRightSelector(state, props),
-        matchedRights: matchedRightsSelector(state, props),
-        combinedRight: combinedRightSelector(state, props),
-        columnDefs: rightMatchingColumnDefsSelector(state, props),
-        mapping: rightMatchingMappingSelector(state, props),
+    return (state) => ({
+        focusedRight: focusedRightSelector(state),
+        matchedRights: matchedRightsSelector(state),
+        combinedRight: combinedRightSelector(state),
+        columnDefs: rightMatchingColumnDefsSelector(state),
+        mapping: rightMatchingMappingSelector(state),
         isMatching: loadingSelector(state),
     });
 };

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
 import withRightsResultsTable from './withRightsResultsTable';
 
@@ -121,17 +121,17 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
 );
         }
     }
+    ComposedComponent.propTypes = {
+        autoload: PropTypes.bool,
+        autoRefresh: PropTypes.number,
+    };
 
+    ComposedComponent.defaultProps = {
+        autoload: true,
+        autoRefresh: 0,
+    };
     return withRightsResultsTable(ComposedComponent);
 };
 
-withFilteredRights.propTypes = {
-    autoload: PropTypes.bool,
-    autoRefresh: PropTypes.number,
-};
 
-withFilteredRights.defaultProps = {
-    autoload: true,
-    autoRefresh: 0,
-};
 export default withFilteredRights;

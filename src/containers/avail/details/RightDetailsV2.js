@@ -6,7 +6,7 @@ import { Button, Label } from 'reactstrap';
 import moment from 'moment';
 import './RightDetails.scss';
 import {store} from '../../../index';
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import {profileService} from '../service/ProfileService';
@@ -21,9 +21,8 @@ import {
     NexusDateTimePicker,
     NexusDatePicker,
     NexusMultiInstanceField
-} from '../../../ui-elements';
+} from '../../../ui/elements';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
-
 const {
     TERRITORY_TYPE,
 } = rightConstants;

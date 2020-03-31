@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {NexusModalContext} from '../../../ui-elements/nexus-modal/NexusModal';
-import {NexusGrid, NexusTitle} from '../../../ui-elements';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import './RightsClashingModal.scss';
 import {createLinkableCellRenderer} from '../../../avails/utils';
 import {createRightMatchingColumnDefsSelector} from '../../../avails/right-matching/rightMatchingSelectors';

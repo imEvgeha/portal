@@ -10,20 +10,20 @@ import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
-import StatusIcon from '../../../../ui-elements/nexus-status-icon/StatusIcon';
-import NexusTooltip from '../../../../ui-elements/nexus-tooltip/NexusTooltip';
+import StatusIcon from '../../../../ui/elements/nexus-status-icon/StatusIcon';
+import NexusTooltip from '../../../../ui/elements/nexus-tooltip/NexusTooltip';
+import TableColumnCustomization from '../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import TableDownloadRights from '../../../../ui/elements/nexus-table-download-rights/TableDownload';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import {FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
-import TableColumnCustomization from '../../../../ui-elements/nexus-table-column-customization/TableColumnCustomization';
 import {
     manualRightsResultPageLoading,
     updateManualRightsEntryColumns
 } from '../../../../stores/actions/avail/manualRightEntry';
-import TableDownloadRights from '../../../../ui-elements/nexus-table-download-rights/TableDownload';
 import UploadIngestButton
     from '../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
 

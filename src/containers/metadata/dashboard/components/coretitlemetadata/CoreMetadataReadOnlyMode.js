@@ -42,15 +42,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }}
                                             id='listContainer'
                                         >
-                                            {this.props.data.castCrew && 
-                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {                                                    
+                                            {this.props.data.castCrew &&
+                                                getFilteredCastList(this.props.data.castCrew, false).map((cast, i) => {
                                                     return (
-                                                        <PersonListReadOnly 
+                                                        <PersonListReadOnly
                                                             key={i}
-                                                            showPersonType={true} 
-                                                            person={cast} 
+                                                            showPersonType={true}
+                                                            person={cast}
                                                             columnName={CHARACTER_NAME}
-                                                            getFormatTypeName={getFormatTypeName} 
+                                                            getFormatTypeName={getFormatTypeName}
                                                         />
                                                     );
                                                 })}
@@ -74,10 +74,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                         >
                                             {this.props.data.castCrew &&
                                                 getFilteredCrewList(this.props.data.castCrew, false).map((crew, i) => (
-                                                    <PersonListReadOnly 
+                                                    <PersonListReadOnly
                                                         key={i}
-                                                        showPersonType={true} 
-                                                        person={crew} 
+                                                        showPersonType={true}
+                                                        person={crew}
                                                         getFormatTypeName={getFormatTypeName}
                                                     />
                                                 ))}
@@ -128,12 +128,21 @@ class CoreMetadataReadOnlyMode extends Component {
                         <div id="coreMetadataEditMode">
                             {  externalIds && (
                                 <>
-                                    { (externalIds.eidrLevel1 ||  externalIds.tmsId) && (
+                                    {
+                                        externalIds.assetName && (
+                                            <Row style={{ marginTop: '10px' }}>
+                                                <Col>
+                                                    <Alert color='light'><b style={{ color: '#000' }}>Asset Name: </b>{externalIds.assetName}</Alert>
+                                                </Col>
+                                            </Row>
+                                        )
+                                    }
+                                    { (externalIds.eidrTitleId ||  externalIds.tmsId) && (
                                     <Row style={{ marginTop: '10px' }}>
                                         {
-                                                    externalIds.eidrLevel1 ? (
+                                                    externalIds.eidrTitleId ? (
                                                         <Col>
-                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Level 1: </b> {externalIds ? externalIds.eidrLevel1 : null}</Alert>
+                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Title ID: </b> {externalIds ? externalIds.eidrTitleId : null}</Alert>
                                                         </Col>
                                                       ) : null
                                                 }
@@ -146,15 +155,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                                 }
                                     </Row>
                                           )}
-                                    {(externalIds.eidrLevel2 || externalIds.xfinityMovieId) && (
+                                    {(externalIds.eidrEditId || externalIds.xfinityMovieId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.eidrLevel2 ? (
+                                                externalIds.eidrEditId ? (
                                                     <Col>
                                                         <Alert color='light'>
                                                             <b style={{color: '#000'}}>
-                                                                EIDR Level 2:
-                                                            </b> {externalIds ? externalIds.eidrLevel2 : null}
+                                                                EIDR Edit ID:
+                                                            </b> {externalIds ? externalIds.eidrEditId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -172,15 +181,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }
                                         </Row>
                                       )}
-                                    {(externalIds.dmaId || externalIds.licensorTitleId) && (
+                                    {(externalIds.maId || externalIds.licensorTitleId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
-                                                externalIds.dmaId ? (
+                                                externalIds.maId ? (
                                                     <Col>
                                                         <Alert color='light'>
                                                             <b style={{color: '#000'}}>
-                                                                DMA ID:
-                                                            </b> {externalIds ? externalIds.dmaId : null}
+                                                                MA ID:
+                                                            </b> {externalIds ? externalIds.maId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -297,6 +306,17 @@ class CoreMetadataReadOnlyMode extends Component {
                                     }
                                 </Row>
                               )}
+                            {((legacyIds && legacyIds.vz && legacyIds.vz.vzId )) && (
+                                <Row style={{marginTop: '10px'}}>
+                                    <Col>
+                                        <Alert color='light'>
+                                            <b style={{color: '#000'}}>
+                                                VZ Vendor ID:
+                                            </b> {legacyIds.vz.vzId}
+                                        </Alert>
+                                    </Col>
+                                </Row>
+                            )}
                         </div>
                     </>
                   )

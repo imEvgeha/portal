@@ -1,25 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
 import Button from '@atlaskit/button';
 import './CandidatesList.scss';
-import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import {getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
-import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getRepositoryName, createLinkableCellRenderer} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 import TitleSystems from '../../../constants/metadata/systems';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
-import {getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
-import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import mappings from '../../../../profile/titleMatchingMappings';
 
 const NexusGridWithInfiniteScrolling = compose(

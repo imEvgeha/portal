@@ -1,6 +1,6 @@
 import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
-import isEmpty from 'lodash.isempty';
+import {isEmpty} from 'lodash';
 import * as actionTypes from './titleMatchingActionTypes';
 import {rightsService} from '../../containers/avail/service/RightsService';
 import {createColumnDefs } from '../utils';
@@ -9,14 +9,17 @@ import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FO
 import Constants from './titleMatchingConstants';
 import {URL} from '../../util/Common';
 import {titleService} from '../../containers/metadata/service/TitleService';
-import {ADD_TOAST} from '../../ui-elements/nexus-toast-notification/actionTypes';
+import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
+import {
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+} from '../../ui/toast/constants';
 import {
     ERROR_ICON,
     ERROR_TITLE,
     SUCCESS_ICON,
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-    SUCCESS_TITLE, TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE
-} from '../../ui-elements/nexus-toast-notification/constants';
+    SUCCESS_TITLE,
+} from '../../ui/elements/nexus-toast-notification/constants';
 import {createAvailSelectValuesSelector} from '../../containers/avail/availSelectors';
 import {fetchAndStoreSelectItems} from '../../containers/avail/availSagas';
 

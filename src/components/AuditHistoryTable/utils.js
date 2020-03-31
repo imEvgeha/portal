@@ -1,10 +1,9 @@
 import moment from 'moment';
 import Constants from './Constants';
-import isEqual from 'lodash.isequal';
-import get from 'lodash.get';
+import {get, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getDateFormatBasedOnLocale} from '../../util/Common';
-import {TIMESTAMP_FORMAT} from '../../ui-elements/nexus-date-and-time-elements/constants';
+import {TIMESTAMP_FORMAT} from '../../ui/elements/nexus-date-and-time-elements/constants';
 
 const { dataTypes: {DATE, AUDIO, RATING, METHOD},
     colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD,
@@ -15,7 +14,7 @@ const { dataTypes: {DATE, AUDIO, RATING, METHOD},
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
 export const valueFormatter = ({colId, field, dataType}) => {
-    const {locale} = store.getState().localeReducer;
+    const {locale} = store.getState().locale;
 
     // Create date placeholder based on locale
     const dateFormat = `${getDateFormatBasedOnLocale(locale)} ${TIMESTAMP_FORMAT}`;

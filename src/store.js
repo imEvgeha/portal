@@ -1,17 +1,13 @@
-import {createStore, applyMiddleware } from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware, {END} from 'redux-saga';
 // import {createLogger} from 'redux-logger';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {routerMiddleware} from 'connected-react-router';
-import throttle from 'lodash.throttle';
 import createRootReducer from './reducer';
-import {loadAppState, saveAppState} from './localStorage';
-
-const DELAY = 1000;
+// import {createPersistReducer, persistConfig} from './store-persist-config';
 
 // configure store
 const configureStore = (initialState = {}, history) => {
-    const persistedState = loadAppState();
     const sagaMiddleware = createSagaMiddleware();
     const middleware = [
         routerMiddleware(history),
@@ -24,21 +20,17 @@ const configureStore = (initialState = {}, history) => {
     // });
     // middleware = [...middleware, loggerMiddleware];
 
+    // switch to root redux persist
+    // const rootReducer = createPersistReducer(persistConfig, createRootReducer(history));
+
     const store = createStore(
         createRootReducer(history),
-        persistedState,
         composeWithDevTools(
             applyMiddleware(...middleware),
         ),
     );
-    store.runSaga = sagaMiddleware.run;
 
-    // subscribe
-    store.subscribe(throttle(() => {
-        saveAppState({
-            avails: store.getState().avails,
-        });
-    }, DELAY));
+    store.runSaga = sagaMiddleware.run;
 
     store.close = () => store.dispatch(END);
 

@@ -5,7 +5,8 @@ import {
     LOAD_SESSION,
     LOAD_REPORTS,
     SET_REPORT_NAME,
-    RIGHTS__LOAD_SELECT_LISTS
+    RIGHTS__LOAD_SELECT_LISTS,
+    UPDATE_COLUMNS_SIZE
 } from '../../constants/action-types';
 
 export const blockUI = block => ({type: BLOCK_UI, payload: block});
@@ -15,3 +16,4 @@ export const loadSelectLists = (field, list) => ({type: RIGHTS__LOAD_SELECT_LIST
 export const loadSession = state => ({type: LOAD_SESSION, payload: state});
 export const loadReports = reports => ({type: LOAD_REPORTS, payload: reports});
 export const setReportName = reportName => ({type: SET_REPORT_NAME, payload: reportName});
+export const setGridColumnsSize = (gridId, columnsSize) => ({type: UPDATE_COLUMNS_SIZE, gridId, payload: columnsSize});

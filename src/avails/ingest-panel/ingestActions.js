@@ -1,4 +1,4 @@
-import actionTypes from './ingestActionTypes';
+import * as actionTypes from './ingestActionTypes';
 
 export const fetchIngests = payload => ({
     type: actionTypes.FETCH_INGESTS,

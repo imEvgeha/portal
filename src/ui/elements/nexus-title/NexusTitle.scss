@@ -1,0 +1,35 @@
+@import '../../../styles/config.scss';
+
+.nexus-c-title {
+    display: flex;
+    flex-direction: row;
+    font-size: 24px;
+    color: map-get($colors, nexus-title-color);
+    font-family: $nexus-font;
+
+    &--small {
+        font-size: 20px;
+    }
+}
+
+.nexus-c-title__label {
+    display: flex;
+    margin-top: 20px;
+    color: map-get($colors, nexus-title-matching-primary-color);
+}
+
+.nexus-c-title__sub-label {
+    color: map-get($colors, nexus-title-matching-secondary-color);
+    // margin: 20px 0 -10px 0;
+    margin: 0;
+    font-size: 16px;
+}
+
+.nexus-c-title__inline-label {
+    margin: 5px 0 -10px 0;
+}
+
+.nexus-c-title__name {
+    display: flex;
+    color: #000;
+}

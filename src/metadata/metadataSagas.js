@@ -3,12 +3,12 @@ import {titleService} from '../containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
 import {normalizeDataForStore} from '../util/Common';
-import get from 'lodash.get';
-import {ADD_TOAST} from '../ui-elements/nexus-toast-notification/actionTypes';
+import {get} from 'lodash';
+import {ADD_TOAST} from '../ui/toast/toastActionTypes';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
-} from '../ui-elements/nexus-toast-notification/constants';
+} from '../ui/elements/nexus-toast-notification/constants';
 import {push} from 'connected-react-router';
 import {URL} from '../util/Common';
 

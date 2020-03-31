@@ -69,7 +69,6 @@ class Dashboard extends React.Component {
     componentDidMount = () => {
         mediaSearchService.getFilters()
             .then(res => {
-                // console.log(res);
                 if(res && res.data){
                     this.props.loadFilterResults(res.data.filters);
                 }
@@ -96,7 +95,6 @@ class Dashboard extends React.Component {
         };
         mediaSearchService.getAssets(filter)
             .then(res => {
-                // console.log(res);
                 if(res && res.data){
                     this.props.loadSearchResults(res.data.searchHits);
                 }

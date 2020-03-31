@@ -21,8 +21,8 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../ability';
 
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
-import NexusDateTimePicker from '../../../ui-elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusDatePicker from '../../../ui-elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDateTimePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDatePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';

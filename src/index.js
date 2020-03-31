@@ -30,21 +30,21 @@ axios.get('/config.json').then(response => {
 
 import React from 'react';
 import {render} from 'react-dom';
-import { Provider } from 'react-redux';
-
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 import Keycloak from './vendor/keycloak';
 import configureStore from './store';
+import {configurePersistor} from './store-persist-config';
 import rootSaga from './saga';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
-
 import AppLayout from './layout/AppLayout';
 import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
 import {updateAbility} from './ability';
-import NexusToastNotificationProvider from './ui-elements/nexus-toast-notification/NexusToastNotificationProvider';
-import {NexusModalProvider} from './ui-elements/nexus-modal/NexusModal';
-import {NexusOverlayProvider} from './ui-elements/nexus-overlay/NexusOverlay';
+import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
+import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
+import Toast from './ui/toast/Toast';
 
 export const keycloak = {instance: {}};
 const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
@@ -52,15 +52,20 @@ const history = createBrowserHistory();
 // temporary export -> we should not export store
 export const store = configureStore({}, history);
 
+const persistor = configurePersistor(store);
+
 const app = (
     <Provider store={store}>
         <CustomIntlProvider>
             <NexusOverlayProvider>
-                <NexusToastNotificationProvider>
-                    <NexusModalProvider>
-                        <AppLayout history={history} />
-                    </NexusModalProvider>
-                </NexusToastNotificationProvider>
+                <NexusModalProvider>
+                    <PersistGate loading={null} persistor={persistor}>
+                        <>
+                            <Toast />
+                            <AppLayout history={history} />
+                        </>
+                    </PersistGate>
+                </NexusModalProvider>
             </NexusOverlayProvider>
         </CustomIntlProvider>
     </Provider>

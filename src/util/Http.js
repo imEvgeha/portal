@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {keycloak, store} from '../index';
 import {errorModal} from '../components/modal/ErrorModal';
-import {addToast, removeToast} from '../ui-elements/nexus-toast-notification/actions';
+import {addToast, removeToast} from '../ui/toast/toastActions';
 import {
     SUCCESS_ICON, SUCCESS_TITLE, ERROR_ICON, ERROR_TITLE
-} from '../ui-elements/nexus-toast-notification/constants';
+} from '../ui/elements/nexus-toast-notification/constants';
 
 /*passing errorToasts in param:
 errorToast for all status codes:

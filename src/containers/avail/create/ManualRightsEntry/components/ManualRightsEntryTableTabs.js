@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import config from 'react-global-configuration';
-import {ManualRightEntryTab, TabContainer} from '../../../../../ui-elements/nexus-table-tab/TableTab';
+import {ManualRightEntryTab, TabContainer} from '../../../../../ui/elements/nexus-table-tab/TableTab';
 
 import {
     FATAL,
@@ -72,10 +72,16 @@ const ManualRightEntryTableTabs = ({
                 Total Rights ({getCustomTotalCount()})
             </ManualRightEntryTab>
             <ManualRightEntryTab isNotClickable={true}>
-                Created ({createdCount})
+                New ({createdCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab isNotClickable={true}>
                 Updated ({updatedCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === FATAL}
+                onClick={() => updateManualRightEntrySelectedTab(FATAL)}
+            >
+                Fatal ({fatalCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab
                 isActive={selectedTab === SUCCESS}
@@ -94,12 +100,6 @@ const ManualRightEntryTableTabs = ({
                 onClick={() => updateManualRightEntrySelectedTab(ERRORS)}
             >
                 Errors ({errorsCount})
-            </ManualRightEntryTab>
-            <ManualRightEntryTab
-                isActive={selectedTab === FATAL}
-                onClick={() => updateManualRightEntrySelectedTab(FATAL)}
-            >
-                Fatal ({fatalCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab
                 onClick={() => viewJSON()}

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import t from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
+import {cloneDeep} from 'lodash';
 import {isObject} from '../../../util/Common';
-import NexusTag from '../../../ui-elements/nexus-tag/NexusTag';
+import {NexusTag} from '../../../ui/elements/';
 
 class EditableBaseComponent extends Component {
 

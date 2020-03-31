@@ -1,26 +1,27 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import { Radio } from '@atlaskit/radio';
-import NexusTitle from '../../../ui-elements/nexus-title/NexusTitle';
-import NexusGrid from '../../../ui-elements/nexus-grid/NexusGrid';
-import withInfiniteScrolling from '../../../ui-elements/nexus-grid/hoc/withInfiniteScrolling';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
-import CustomActionsCellRenderer from '../../../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
 import Constants from '../titleMatchingConstants';
 import TitleSystems from '../../../constants/metadata/systems';
 import useMatchAndDuplicateList from '../../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
-import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
-import withFilterableColumns from '../../../ui-elements/nexus-grid/hoc/withFilterableColumns';
-import withSideBar from '../../../ui-elements/nexus-grid/hoc/withSideBar';
 import mappings from '../../../../profile/titleMatchingMappings';
 
 const TitleRepositoriesTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
@@ -91,6 +92,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <TitleRepositoriesTable
+                id='titleMatchigRepo'
                 onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}

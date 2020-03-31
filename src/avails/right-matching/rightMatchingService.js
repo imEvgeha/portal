@@ -1,11 +1,10 @@
 import config from 'react-global-configuration'; // config returns error for gateway
-import pickBy from 'lodash.pickby';
-import identity from 'lodash.identity';
+import {identity, pickBy} from 'lodash';
 import Http from '../../util/Http';
 import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '../../util/Common';
 import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-} from '../../ui-elements/nexus-toast-notification/constants';
+} from '../../ui/toast/constants';
 import {store} from '../../index';
 import { setFoundFocusRightInRightsRepository } from './rightMatchingActions';
 
@@ -44,7 +43,8 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
         {paramsSerializer : encodedSerialize, params}
     ).then(response => {
-        const {focusedRight} = store.getState().rightMatching;
+        const {rightMatching} = store.getState().avails || {};
+        const {focusedRight} = rightMatching || {};
         const {id} = focusedRight || {};
         // temporary FE handling for operand 'not equal'
         const getUpdatedData = (response, excludedId) => {
@@ -57,7 +57,7 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         };
         const updatedData = getUpdatedData(response.data, id);
 
-        const {foundFocusRightInRightsRepository} = store.getState().rightMatching;
+        const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
         const updatedResponse = {
             ...response,
             data: {

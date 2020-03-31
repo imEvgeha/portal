@@ -8,33 +8,31 @@ import history from './stores/reducers/history';
 import media from './stores/reducers/media/search';
 import dopReducer from './stores/reducers/DOP/dopReducer';
 import settings from './containers/settings/settingsReducer';
-import rightMatching from './avails/right-matching/rightMatchingReducer';
-import titleMatching from './avails/title-matching/titleMatchingReducer';
 import localeReducer from './stores/reducers/localization/localeReducer';
 import rightHistory from './avails/right-history-view/rightHistoryReducer';
 import manualRightsEntry from './stores/reducers/avail/manualRightsEntry';
-import toastReducer from './ui-elements/nexus-toast-notification/reducer';
 import availsReducer from './avails/availsReducer';
 import metadataReducer from './metadata/metadataReducer';
 import uiReducer from './ui/uiReducer.js';
+import {availsPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
-    root,
-    titleReducer,
-    dashboard,
+    locale: localeReducer, // check it
+
+    root:  createPersistReducer(rootPersistConfig, root), // rename it to 'config'
+    settings, 
     media,
-    history,
-    createright,
-    dopReducer,
-    settings,
-    rightMatching,
-    titleMatching,
-    localeReducer,
-    rightHistory,
-    manualRightsEntry,
-    toastReducer,
-    avails: availsReducer,
+    dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
+
+    titleReducer, // remove it
+    dashboard, // remove it
+    history, // remove it
+    createright, // remove it
+    manualRightsEntry, // remove it
+
+    // new structure
+    avails: createPersistReducer(availsPersistConfig, availsReducer),
     metadata: metadataReducer,
     ui: uiReducer,
 });

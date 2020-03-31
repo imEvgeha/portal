@@ -1,9 +1,11 @@
 import React, {useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import './LegacyTitleReconciliationReview.scss';
-import {NexusTitle, NexusGrid} from '../../../ui-elements/';
+import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import {defineEpisodeAndSeasonNumberColumn} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {
     TITLE,
     MASTER_TABLE,
@@ -19,8 +21,6 @@ import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelecto
 import {getRepositoryCell} from '../../../avails/utils';
 import * as selectors from '../../metadataSelectors';
 import {getReconciliationTitles} from '../../metadataActions';
-import {GRID_EVENTS} from '../../../ui-elements/nexus-grid/constants';
-import {defineEpisodeAndSeasonNumberColumn} from '../../../ui-elements/nexus-grid/elements/columnDefinitions';
 import {URL} from '../../../util/Common';
 
 const LegacyTitleReconciliationReview = ({

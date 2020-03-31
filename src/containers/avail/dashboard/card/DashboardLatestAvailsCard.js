@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import {AgGridReact} from 'ag-grid-react';
 import {Link} from 'react-router-dom';
 import {useIntl} from 'react-intl';
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
-import StatusIcon from '../../../../ui-elements/nexus-status-icon/StatusIcon';
+import StatusIcon from '../../../../ui/elements/nexus-status-icon/StatusIcon';
 import IngestReport from './components/IngestReport';
 import {getDateFormatBasedOnLocale} from '../../../../util/Common';
 import Constants from './Constants';

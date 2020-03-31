@@ -14,33 +14,37 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
 
     useEffect(() => {
         if (coreTitle) {
-            const coreTitleLegacyDate = getLegacyData(coreTitle);
-            let vzLastUpdateCandidate = coreTitleLegacyDate.vzPublishedAt;
-            let movidaLastUpdateCandidate = coreTitleLegacyDate.movidaPublishedAt;
+            const {vzPublishedAt, movidaPublishedAt, vzId, movidaId, modifiedAt} = getLegacyData(coreTitle);
+            let vzLastUpdateCandidate = vzPublishedAt;
+            let movidaLastUpdateCandidate = movidaPublishedAt;
 
-            let isVzDisabledCandidate = getIsDisabled(vzLastUpdateCandidate, coreTitleLegacyDate.modifiedAt);
-            let isMovidaDisabledCandidate = getIsDisabled(movidaLastUpdateCandidate, coreTitleLegacyDate.modifiedAt);
+            let isVzDisabledCandidate = getIsDisabled(vzLastUpdateCandidate, modifiedAt, vzId);
+            let isMovidaDisabledCandidate = getIsDisabled(movidaLastUpdateCandidate, modifiedAt, movidaId);
 
             const metadata = editorialMetadataList.concat(territoryMetadataList);
             metadata.forEach(item => {
-                const itemLegacyData = getLegacyData(item);
+                const {legacyIds, vzPublishedAt, vz, movida, movidaPublishedAt, vzId, movidaId, modifiedAt} = getLegacyData(item);
+                if(!legacyIds) {
+                    return;
+                }
+
                 if (!vzLastUpdateCandidate) {
-                    vzLastUpdateCandidate = itemLegacyData.vzPublishedAt;
-                } else if (itemLegacyData.vzPublishedAt && moment(itemLegacyData.vzPublishedAt).isValid() && moment(vzLastUpdateCandidate).isBefore(itemLegacyData.vzPublishedAt)) {
-                    vzLastUpdateCandidate = itemLegacyData.vzPublishedAt;
+                    vzLastUpdateCandidate = vzPublishedAt;
+                } else if (vzPublishedAt && moment(vzPublishedAt).isValid() && moment(vzLastUpdateCandidate).isBefore(vzPublishedAt)) {
+                    vzLastUpdateCandidate = vzPublishedAt;
                 }
 
                 if (!movidaLastUpdateCandidate) {
-                    movidaLastUpdateCandidate = itemLegacyData.movidaPublishedAt;
-                } else if (itemLegacyData.movidaPublishedAt && moment(itemLegacyData.movidaPublishedAt).isValid() && moment(movidaLastUpdateCandidate).isBefore(itemLegacyData.movidaPublishedAt)) {
-                    movidaLastUpdateCandidate = itemLegacyData.movidaPublishedAt;
+                    movidaLastUpdateCandidate = movidaPublishedAt;
+                } else if (movidaPublishedAt && moment(movidaPublishedAt).isValid() && moment(movidaLastUpdateCandidate).isBefore(movidaPublishedAt)) {
+                    movidaLastUpdateCandidate = movidaPublishedAt;
                 }
 
-                if (!isVzDisabledCandidate) {
-                    isVzDisabledCandidate = getIsDisabled(itemLegacyData.vzPublishedAt, itemLegacyData.modifiedAt);
+                if (isVzDisabledCandidate && !!vz) {
+                    isVzDisabledCandidate = getIsDisabled(vzPublishedAt, modifiedAt, vzId);
                 }
-                if (!isMovidaDisabledCandidate) {
-                    isMovidaDisabledCandidate = getIsDisabled(itemLegacyData.movidaPublishedAt, itemLegacyData.modifiedAt);
+                if (isMovidaDisabledCandidate && !!movida) {
+                    isMovidaDisabledCandidate = getIsDisabled(movidaPublishedAt, modifiedAt, movidaId);
                 }
             });
 
@@ -58,12 +62,14 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
         const {vz, movida} = legacyIds || {};
         const vzPublishedAt = (vz || {}).publishedAt;
         const movidaPublishedAt = (movida || {}).publishedAt;
+        const {vzId} = vz || {};
+        const {movidaId} = movida || {};
 
-        return {vzPublishedAt, movidaPublishedAt, modifiedAt};
+        return {legacyIds, vz, movida, vzPublishedAt, movidaPublishedAt, vzId, movidaId, modifiedAt};
     };
 
-    const getIsDisabled = (publishedAt, modifiedAt) => {
-        return !!publishedAt && moment(publishedAt).isSameOrAfter(modifiedAt);
+    const getIsDisabled = (publishedAt, modifiedAt, legacyId) => {
+        return !!legacyId && !!publishedAt && moment(publishedAt).isSameOrAfter(modifiedAt);
     };
 
     const renderSyncField = (name, lastUpdated, isDisabled) => {

@@ -1,15 +1,12 @@
 import React from 'react';
-import cloneDeep from 'lodash.clonedeep';
-import isEmpty from 'lodash.isempty';
-import isEqual from 'lodash.isequal';
-import get from 'lodash.get';
-import createValueFormatter from '../ui-elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import {get, isEqual, isEmpty, cloneDeep} from 'lodash';
+import createValueFormatter from '../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import CustomActionsCellRenderer from '../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import createLoadingCellRenderer from '../ui/elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 import Constants from './title-matching/titleMatchingConstants';
 import TitleSystems from '../constants/metadata/systems';
-import CustomActionsCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getDeepValue, isObject} from '../util/Common';
-import loadingGif from '../img/loading.gif';
-import createLoadingCellRenderer from '../ui-elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
+import loadingGif from '../assets/img/loading.gif';
 
 export function createColumnDefs(payload) {
     return payload.reduce((columnDefs, column) => {

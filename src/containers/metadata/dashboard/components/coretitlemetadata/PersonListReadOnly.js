@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Lozenge from '@atlaskit/lozenge';
-import DefaultUserIcon from '../../../../../img/default-user.png';
+import DefaultUserIcon from '../../../../../assets/img/default-user.png';
 import { Container } from 'reactstrap';
 import { PersonListFlag, ListText, CustomRow, CustomColumn, CustomEllipsis, ListItemText } from './CustomComponents';
 

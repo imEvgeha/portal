@@ -1,5 +1,5 @@
 import React from 'react';
-import get from 'lodash.get';
+import {get} from 'lodash';
 import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
 import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';
@@ -9,7 +9,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import RepeatingFormField from './custom-types/Repeats';
 
 import RepeatingField from './custom-types/RepeatsPrimitives';
-import NexusDateTimePicker from '../../ui-elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import {isObject, isObjectEmpty} from '../../util/Common';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import {cache} from './EndpointContainer';
