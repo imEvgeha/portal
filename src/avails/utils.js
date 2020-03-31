@@ -66,7 +66,7 @@ export const createLinkableCellRenderer = (params, location = '/metadata/detail/
         value = value.join(', ');
     }
     const content = valueFormatted || value;
-    if (content) {
+    if (content || content === false) {
         let highlighted = false;
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
