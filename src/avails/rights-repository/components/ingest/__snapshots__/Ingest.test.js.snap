@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Ingest should match snapshot 1`] = `
+<div
+  className="nexus-c-avails-ingest"
+>
+  <div
+    className="nexus-c-avails-ingest__cross-icon"
+  >
+    <[object Object]
+      className="nexus-c-avails-ingest__cross-circle"
+      onClick={[MockFunction]}
+    />
+  </div>
+  <div
+    className="nexus-c-avails-ingest__details"
+  >
+    <IngestTitle
+      ingestType="Upload"
+      link="https: //vbq-cs-qa.s3.us-west-2.amazonaws.com/avails/archive/d8fa01e1-a9b6-454d-84f8-3d13ffce6e86/INT_avails_20k_(1).xlsx"
+    />
+    <IngestStatus
+      date="2020-03-26T08: 33: 38.357Z"
+      status="COMPLETED"
+    />
+    <div
+      className="nexus-c-avails-ingest__avail-id"
+    >
+      Avail History ID: 
+      avih_Tergd
+    </div>
+  </div>
+  <div
+    className="nexus-c-avails-ingest__stats"
+  >
+    <IngestReport
+      filterClick={[Function]}
+      ingestId="avih_Tergd"
+      report={
+        Object {
+          "created": 2,
+          "errorDetails": null,
+          "errors": 0,
+          "fatal": 0,
+          "pending": 0,
+          "success": 20001,
+          "total": 20001,
+          "updated": 19999,
+        }
+      }
+      showErrorMessage={false}
+    />
+    <div
+      className="nexus-c-avails-ingest__email"
+      key="aath_c7oxd"
+    >
+      <NexusTooltip
+        content="Download Email"
+      >
+        <[object Object]
+          className="nexus-c-avails-ingest__email-icon"
+          key="aath_c7oxd"
+          onClick={[Function]}
+        />
+      </NexusTooltip>
+    </div>
+    <div
+      className="nexus-c-avails-ingest__email"
+      key="aath_c8cxd"
+    >
+      <NexusTooltip
+        content="Download Email"
+      >
+        <[object Object]
+          className="nexus-c-avails-ingest__email-icon"
+          key="aath_c8cxd"
+          onClick={[Function]}
+        />
+      </NexusTooltip>
+    </div>
+    <div
+      className="nexus-c-avails-ingest__download"
+    >
+      <NexusTooltip
+        content="Download Attachment"
+      >
+        <[object Object]
+          className="nexus-c-avails-ingest__download-icon"
+          onClick={[Function]}
+        />
+      </NexusTooltip>
+    </div>
+  </div>
+</div>
+`;

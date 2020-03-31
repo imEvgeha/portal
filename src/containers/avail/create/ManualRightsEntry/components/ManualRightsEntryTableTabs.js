@@ -72,10 +72,16 @@ const ManualRightEntryTableTabs = ({
                 Total Rights ({getCustomTotalCount()})
             </ManualRightEntryTab>
             <ManualRightEntryTab isNotClickable={true}>
-                Created ({createdCount})
+                New ({createdCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab isNotClickable={true}>
                 Updated ({updatedCount})
+            </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === FATAL}
+                onClick={() => updateManualRightEntrySelectedTab(FATAL)}
+            >
+                Fatal ({fatalCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab
                 isActive={selectedTab === SUCCESS}
@@ -94,12 +100,6 @@ const ManualRightEntryTableTabs = ({
                 onClick={() => updateManualRightEntrySelectedTab(ERRORS)}
             >
                 Errors ({errorsCount})
-            </ManualRightEntryTab>
-            <ManualRightEntryTab
-                isActive={selectedTab === FATAL}
-                onClick={() => updateManualRightEntrySelectedTab(FATAL)}
-            >
-                Fatal ({fatalCount})
             </ManualRightEntryTab>
             <ManualRightEntryTab
                 onClick={() => viewJSON()}
