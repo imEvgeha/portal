@@ -30,6 +30,7 @@ import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/component
 import NexusDatePicker from '../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
+import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 
 const mapStateToProps = state => {
     return {
@@ -1293,6 +1294,8 @@ class RightDetails extends React.Component {
                         </div>
                       )}
                 </BlockUi>
+                {/* Provide clashingRights for modal open*/}
+                <RightsClashingModal />
             </div>
         );
     }
