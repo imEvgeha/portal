@@ -152,7 +152,7 @@ const parseAdvancedFilterV2 = function (searchCriteria) {
                 continue;
             }
             const map = mappings.find(({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key);
-            let keyValue = map && map.queryParamName ? map.queryParamName : key;
+            let keyValue = (map && map.queryParamName) || key;
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
