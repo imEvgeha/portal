@@ -41,6 +41,7 @@ const mapStateToProps = state => {
         reportName: state.dashboard.session.reportName,
         availsMapping: state.root.availsMapping,
         avails: state.dashboard.availTabPage.avails,
+        selectedAvails: state.dashboard.session.availTabPageSelection.selected,
     };
 };
 
@@ -113,7 +114,7 @@ class SearchResultsTab extends React.Component {
                                 Results: <Total />
                             </span>
                             <Selected toggleShowSelected={this.toggleShowSelected} />
-                            <RightViewHistory />
+                            <RightViewHistory selectedAvails={this.props.selectedAvails} />
                             {this.props.showSelectedAvails && (
                                 <a href="#" onClick={this.toggleShowSelected}>
                                     <span
@@ -175,7 +176,8 @@ SearchResultsTab.propTypes = {
     resultPageUpdateColumnsOrder: t.func,
     resultPageShowSelected: t.func,
     showSelectedAvails: t.bool,
-    avails: t.array
+    avails: t.array,
+    selectedAvails: t.array
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 import {compose} from 'redux';

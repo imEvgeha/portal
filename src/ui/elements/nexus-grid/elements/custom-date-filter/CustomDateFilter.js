@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import './CustomDateFilter.scss';
-import NexusDateTimeWindowPicker
-    from '../../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import {DATEPICKER_LABELS} from '../../../constants';
+import {NexusDateTimeWindowPicker}
+    from '../../../../../ui/elements';
+import {DATEPICKER_LABELS} from '../../constants';
 import './CustomDateFilter.scss';
 
 export class CustomDateFilter extends React.Component {
@@ -55,7 +55,7 @@ export class CustomDateFilter extends React.Component {
 
     isFilterActive = () => {
         const {startDate, endDate} = this.state.dates;
-        return startDate || endDate;
+        return !!(startDate || endDate);
     };
 
     doesFilterPass = (params) => {
@@ -65,7 +65,7 @@ export class CustomDateFilter extends React.Component {
         const isAfterStartDate = startDate ? moment(fieldValue).isAfter(startDate) : true;
         const isBeforeEndDate = endDate ? moment(fieldValue).isBefore(endDate) : true;
         return isAfterStartDate && isBeforeEndDate;
-    }
+    };
 
     render (){
         const {colDef: {field}} = this.props;

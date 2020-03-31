@@ -22,7 +22,7 @@ import {
     selectIngest
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
-import RightsRepositoryHeader from './components/RightsRepositoryHeader';
+import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
@@ -31,6 +31,7 @@ import {
 import withFilterableColumns from '../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusGrid, NexusTableToolbar} from '../../ui/elements';
 import {filterBy} from '../../ui/elements/nexus-grid/utils';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -44,12 +45,14 @@ export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
 )(NexusGrid);
 
 const SelectedRighstRepositoryTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
 )(NexusGrid);
@@ -309,8 +312,10 @@ const RightsRepository = ({
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
+                selectedRepoRights={selectedRepoRights}
             />
             <SelectedRighstRepositoryTable
+                id='selectedRightsRepo'
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit
                 rowSelection="multiple"
@@ -321,6 +326,7 @@ const RightsRepository = ({
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
             />
             <RightsRepositoryTable
+                id='rightsRepo'
                 columnDefs={updatedColumnDefs}
                 rowSelection="multiple"
                 suppressRowClickSelection={true}

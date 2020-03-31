@@ -84,162 +84,131 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
 )}
-                                {
-                                       seasonNumber && (
+                                {seasonNumber && (
                                        <Col>
                                            <Alert color="light" id="titleSeasonNumber">
                                                <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
                                            </Alert>
                                        </Col>
-                                       )
-                                    }
-                                {
-                                       episodeNumber && (
+                                )}
+                                {episodeNumber && (
                                        <Col md={6}>
                                            <Alert color="light" id="titleEpisodeNumber">
                                                <b>Episode Number: </b>{episodeNumber}
                                            </Alert>
                                        </Col>
-                                       )
-                                    }
+                                )}
                             </Row>
                             <Row>
-                                {
-                                        seasonId && (
+                                {seasonId && (
                                             <Col>
                                                 <Alert color="light" id="titleSeasonId">
                                                     <b>Season ID: </b>{seasonId}
                                                 </Alert>
                                             </Col>
-                                        )
-                                    }
-                                {
-                                        episodeId && (
+                                )}
+                                {episodeId && (
                                             <Col>
                                                 <Alert color="light" id="titleEpisodeId">
                                                     <b>Episode ID: </b>{episodeId}
                                                 </Alert>
                                             </Col>
-                                        )
-                                    }
+                                )}
                             </Row>
                         </>
                         <Row>
-                            {
-                                    totalNumberOfSeasons && (
+                            {totalNumberOfSeasons && (
                                         <Col>
                                             <Alert color="light" id="titleSeasons">
                                                 <b>Seasons: </b>{totalNumberOfSeasons}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
+                            )}
                         </Row>
                         <Row>
-                            {
-                                    this.addBooleanQuotes(animated) && (
+                            {this.addBooleanQuotes(animated) && (
                                         <Col>
                                             <Alert color="light" id="titleAnimated">
                                                 <b>Animated: </b>{this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    countryOfOrigin && (
+                            )}
+                            {countryOfOrigin && (
                                         <Col>
                                             <Alert color="light" id="titleCountryOfOrigin">
                                                 <b>Country of Origin: </b>{countryOfOrigin}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    originalLanguage && (
+                            )}
+                            {originalLanguage && (
                                         <Col>
                                             <Alert color="light" id="titleOriginalLanguage">
                                                 <b>Original Language: </b>{originalLanguage}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    duration && (
+                            )}
+                            {duration && (
                                         <Col>
                                             <Alert color="light" id="titleDuration">
                                                 <b>Duration: </b>{duration}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
+                            )}
                         </Row>
                         <Row>
-                            {
-                                    eventType && (
+                            {eventType && (
                                         <Col>
                                             <Alert color="light" id="titleEventType">
                                                 <b>Event Type: </b>{eventType}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    totalNumberOfEpisodes && (
+                            )}
+                            {totalNumberOfEpisodes && (
                                         <Col>
                                             <Alert color="light" id="titleEpisodes">
                                                 <b>Episodes: </b>{totalNumberOfEpisodes}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    episodeCount && (
+                            )}
+                            {episodeCount && (
                                         <Col>
                                             <Alert color="light" id="titleEpisodeCount">
                                                 <b>Episode Count: </b>{episodeCount}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
+                            )}
                         </Row>
                         <Row>
-                            {
-                                    seasonPremiere && (
+                            {seasonPremiere && (
                                         <Col>
                                             <Alert color="light" id="titleSeasonPremiere">
                                                 <b>Season Premiere: </b>{this.addBooleanQuotes(seasonPremiere) === 'true' ? 'Y' : 'N'}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    seasonFinale && (
+                            )}
+                            {seasonFinale && (
                                         <Col>
                                             <Alert color="light" id="titleSeasonFinale">
                                                 <b>Season Finale: </b>{this.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
+                            )}
                         </Row>
                         <Row>
-                            {
-                                    releaseYear && (
+                            {releaseYear && (
                                         <Col>
                                             <Alert color="light" id="titleReleaseYear">
                                                 <b>Release Year: </b>{releaseYear}
                                             </Alert>
                                         </Col>
-                                    )
-                                }
-                            {
-                                    usBoxOffice && (
-                                        <Col>
+                            )}
+                            {usBoxOffice
+                                ? (<Col>
                                             <Alert color="light" id="titleBoxOffice">
                                                 <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
                                             </Alert>
-                                        </Col>
-                                    )
+                                    </Col>)
+                                : null
                                 }
                         </Row>
                         <Row>
@@ -247,8 +216,8 @@ class TitleReadOnlyMode extends Component {
                             (
                                 <Col>
                                     <Alert color="light" id="titleCategory">
-                                        <b>Categories: </b> {
-                                        category.map((value, i) => (
+                                        <b>Categories: </b>
+                                        {category.map((value, i) => (
                                             category.length === i + 1 ?
                                                 <span key={i}>{value}</span> : <span key={i}>{value}, </span>
                                         ))

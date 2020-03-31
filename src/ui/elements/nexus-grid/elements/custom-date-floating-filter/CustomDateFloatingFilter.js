@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {store} from '../../../../../../index';
-import {getDateFormatBasedOnLocale} from '../../../../../../util/Common';
+import {store} from '../../../../../index';
+import {getDateFormatBasedOnLocale} from '../../../../../util/Common';
 import moment from 'moment';
 import './CustomDateFloatingFilter.scss';
 
