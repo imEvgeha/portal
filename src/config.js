@@ -1,3 +1,7 @@
+import {isObject, mergeDeep} from './util/Common';
+import axios from 'axios';
+import config from 'react-global-configuration';
+
 export const defaultConfiguration = {
     gateway: {
         url: 'https://availsapi.dev.vubiquity.com',
@@ -50,3 +54,29 @@ export const defaultConfiguration = {
         'confidential-port': 0
     }
 };
+
+// temporary solution - replace it with env variables
+export async function setEnvConfiguration (env) {
+    const getConfigFile = (env) => {
+        switch (env) {
+            case 'dev':
+                return '/config.json';
+            case 'qa':
+                return './configQA.json';
+            default: 
+                return '/config.json';
+        }
+    };
+    try {
+        config.set(defaultConfiguration, {freeze: false});
+        const configFile = getConfigFile(env);
+        const {data} = await axios.get(configFile);
+        if (isObject(data)) {
+            config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: true});
+            return true;
+        }
+        return JSON.parse(data);
+    } catch(error) {
+        throw error;
+    }
+}

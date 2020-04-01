@@ -1,7 +1,7 @@
 import React, {useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import './LegacyTitleReconciliationReview.scss';
 import {NexusTitle, NexusGrid} from '../../../ui/elements/';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';

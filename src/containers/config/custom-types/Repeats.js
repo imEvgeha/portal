@@ -1,8 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import uniqueId from 'lodash/uniqueId';
-import get from 'lodash/get';
+import {get, uniqueId} from 'lodash';
 import Button from '@atlaskit/button';
 import { Form, FormContext } from 'react-forms-processor';
 import { Expander } from 'react-forms-processor-atlaskit';

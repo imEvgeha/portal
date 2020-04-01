@@ -1,2 +1,0 @@
-export const STORE_USER_PROFILE = 'STORE_USER_PROFILE';
-

@@ -15,8 +15,6 @@ import {Can} from '../ability';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
 import {logout} from '../auth/authActions';
-import {keycloak} from '../index';
-import {removeAccessToken, removeRefreshToken} from '../auth/authService';
 
 const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, token, logout}) => {
     const [isDropDownOpen, setIsDropDownOpen] = useState(false);

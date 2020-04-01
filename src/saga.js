@@ -4,7 +4,6 @@ import {settingsWatcher} from './containers/settings/settingsSagas';
 import {rightMatchingWatcher} from './avails/right-matching/rightMatchingSagas';
 import {titleMatchingWatcher} from './avails/title-matching/titleMatchingSagas';
 import rightHistoryWatcher from './avails/right-history-view/rightHistorySagas';
-import {authWatcher} from './auth/authSagas';
 import availsWatcher from './avails/availsSagas';
 import {metadataWatcher} from './metadata/metadataSagas';
 
@@ -15,7 +14,6 @@ export default function* rootSaga() {
         fork(rightMatchingWatcher),
         fork(titleMatchingWatcher),
         fork(rightHistoryWatcher),
-        fork(authWatcher),
         fork(availsWatcher),
         fork(metadataWatcher),
     ]);

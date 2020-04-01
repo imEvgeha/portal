@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import { Radio } from '@atlaskit/radio';
 import {NexusTitle, NexusGrid} from '../../../ui/elements/';
@@ -11,6 +11,7 @@ import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../.
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
 import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
@@ -20,6 +21,7 @@ import useMatchAndDuplicateList from '../../../metadata/legacy-title-reconciliat
 import mappings from '../../../../profile/titleMatchingMappings';
 
 const TitleRepositoriesTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
@@ -90,6 +92,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <TitleRepositoriesTable
+                id='titleMatchigRepo'
                 onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}

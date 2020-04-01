@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import './TerritoryCellEditor.scss';
 import TerritoryField from '../../../../../containers/avail/components/TerritoryField';
 import RightTerritoryFields from '../../../../../components/form/RightTerritoryFields';

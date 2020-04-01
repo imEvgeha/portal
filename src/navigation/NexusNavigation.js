@@ -9,8 +9,6 @@ import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
-import {keycloak} from '../auth/keycloak';
-import {removeAccessToken, removeRefreshToken} from '../auth/authService';
 import {SETTINGS, backgroundColor} from './constants';
 import {Can, idToAbilityNameMap} from '../ability';
 import {searchFormShowSearchResults} from '../stores/actions/avail/dashboard';
@@ -74,7 +72,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
     const AccountDropdownItems = () => {
         return (
             <DropdownItemGroup title={profileInfo.name || 'Profile'}>
-                <DropdownItem onClick={() => logout({keycloak})}>
+                <DropdownItem onClick={logout}>
                     Log out
                 </DropdownItem>
             </DropdownItemGroup>

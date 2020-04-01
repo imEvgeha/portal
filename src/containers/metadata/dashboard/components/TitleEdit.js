@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import t from 'prop-types';
 import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
@@ -12,9 +12,7 @@ import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
 import {Button, Col, Row} from 'reactstrap';
-import {default as AtlaskitButton} from '@atlaskit/button';
 import {AvForm} from 'availity-reactstrap-validation';
-import moment from 'moment';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
@@ -188,6 +186,18 @@ class TitleEdit extends Component {
         });
     };
 
+    handleCategoryOnChangeEdit = (category) => {
+        const editedForm = {
+            ...this.state.editedForm,
+            category: category.map(e => e.value)
+        };
+
+        this.setState((state) => {
+            const editedForm = {...state.editedForm, category: category.map(e => e.value)};
+            return {editedForm};
+        });
+    };
+
     handleChangeSeries = (e) => {
         const newEpisodic = {
             ...this.state.editedForm.episodic,
@@ -358,6 +368,7 @@ class TitleEdit extends Component {
 
                 ratings={this.state.editedForm.ratings}
                 handleOnChangeEdit={this.handleOnChangeEdit}
+                handleCategoryOnChangeEdit={this.handleCategoryOnChangeEdit}
             />
 );
     };
@@ -488,7 +499,6 @@ class TitleEdit extends Component {
     };
 
     cleanTerritoryMetadata = () => {
-        this.form && this.form.reset();
         this.setState({
             territories: emptyTerritory
         });
@@ -615,6 +625,17 @@ class TitleEdit extends Component {
         this.updateEditedEditorialMetadata(edited, data.id);
     };
 
+    handleEditorialMetadataCategoryEditChange = (data, category) => {
+        let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
+        if (!edited) {
+            edited = JSON.parse(JSON.stringify(data));
+        }
+
+        edited.category = category.map(e => e.value);
+
+        this.updateEditedEditorialMetadata(edited, data.id);
+    };
+
     updateEditedEditorialMetadata = (edited, id) => {
         const newOne = this.state.updatedEditorialMetadata.filter((el) => el.id !== id);
         newOne.push(edited);
@@ -647,6 +668,17 @@ class TitleEdit extends Component {
         const newEditorialMetadataForCreate = {
             ...this.state.editorialMetadataForCreate,
             genres: e.map(i => { return { id: i.id, genre: i.genre }; })
+        };
+
+        this.setState({
+            editorialMetadataForCreate: newEditorialMetadataForCreate
+        });
+    };
+
+    handleEditorialMetadataCategoryChange = (category) => {
+        const newEditorialMetadataForCreate = {
+            ...this.state.editorialMetadataForCreate,
+            category: category.map(e => e.value)
         };
 
         this.setState({
@@ -697,7 +729,6 @@ class TitleEdit extends Component {
     };
 
     cleanEditorialMetadata = () => {
-        this.form && this.form.reset();
         this.setState({
             editorialMetadataForCreate: emptyEditorial
         });
@@ -932,7 +963,7 @@ class TitleEdit extends Component {
         return (
             <EditPage>
 
-                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} ref={c => (this.form = c)} onKeyPress={this.onKeyPress}>
+                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
                             {
@@ -982,6 +1013,9 @@ class TitleEdit extends Component {
                         editorialMetadataForCreate={this.state.editorialMetadataForCreate}
                         updatedEditorialMetadata={this.state.updatedEditorialMetadata}
                         handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
+                        handleCategoryChange={this.handleEditorialMetadataCategoryChange}
+                        handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
+                        titleData={this.state.titleForm}
                     />
 
                     <TerritoryMetadata

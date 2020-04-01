@@ -15,12 +15,13 @@ import authReducer from './auth/authReducer';
 import availsReducer from './avails/availsReducer';
 import metadataReducer from './metadata/metadataReducer';
 import uiReducer from './ui/uiReducer.js';
+import {availsPersistConfig, authPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
     locale: localeReducer, // check it
 
-    root, // rename it to 'config'
+    root: createPersistReducer(rootPersistConfig, root), // rename it to 'config'
     settings, 
     media,
     dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
@@ -32,10 +33,10 @@ const createRootReducer = routerHistory => combineReducers({
     manualRightsEntry, // remove it
 
     // new structure
-    avails: availsReducer,
+    avails: createPersistReducer(availsPersistConfig, availsReducer),
     metadata: metadataReducer,
     ui: uiReducer,
-    auth: authReducer,
+    auth: createPersistReducer(authPersistConfig, authReducer),
 });
 
 export default createRootReducer;

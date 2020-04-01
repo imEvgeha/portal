@@ -17,18 +17,18 @@ const ability = new Ability([]);
  * @param keycloak
  */
 
-const updateAbility = (roles) => {
+const updateAbility = (roles = []) => {
     const { can, rules, cannot } = AbilityBuilder.extract();
 
     // ******** Avail *************
     const edit_only_admin = ['createdAt', 'updatedAt', 'originallyReceivedAt', 'lastUpdateReceivedAt'];
-    if (roles.includes('avails_viewer')) {
+    if (roles && roles.includes('avails_viewer')) {
         can('read', 'Avail');
     }
-    if (roles.includes('avails_user')) {
+    if (roles && roles.includes('avails_user')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
     }
-    if (roles.includes('avails_admin')) {
+    if (roles && roles.includes('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
         cannot('create', 'Avail', edit_only_admin);
     }else{
@@ -36,24 +36,24 @@ const updateAbility = (roles) => {
     }
 
     // ******** Asset Management *************
-    if (roles.includes('asset_management_viewer')) {
+    if (roles && roles.includes('asset_management_viewer')) {
         can('read', 'AssetManagement');
     }
-    if (roles.includes('asset_management_user')) {
+    if (roles && roles.includes('asset_management_user')) {
         can(['create', 'read', 'update', 'delete'], 'AssetManagement');
     }
-    if (roles.includes('asset_management_admin')) {
+    if (roles && roles.includes('asset_management_admin')) {
         can(['create', 'read', 'update', 'delete'], 'AssetManagement');
     }
 
     // ******** Config UI  *************
-    if (roles.includes('configuration_viewer')) {
+    if (roles && roles.includes('configuration_viewer')) {
         can('read', 'ConfigUI');
     }
-    if (roles.includes('configuration_user')) {        
+    if (roles && roles.includes('configuration_user')) {        
         can(['create', 'read', 'update'], 'ConfigUI');
     }
-    if (roles.includes('configuration_admin')) {        
+    if (roles && roles.includes('configuration_admin')) {        
         can(['create', 'read', 'update', 'delete'], 'ConfigUI');
     }
 

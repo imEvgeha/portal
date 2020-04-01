@@ -12,16 +12,22 @@ export const isTokenExpired = token => {
     return false;
 };
 
-export const isTokenValid = token => {
-    if (!token || isTokenExpired(token)) {
+export const isTokenValid = (token, url) => {
+    if (!token || isTokenExpired(token) || (url && token.iss && !token.iss.includes(url))) {
         return false;
     }
     return true;
 };
 
-export const getValidToken = token => {
+export const getValidToken = (token, url) => {
     const decodedToken = token && jwtDecode(token);
-    if (isTokenValid(decodedToken)) {
+    if (isTokenValid(decodedToken, url)) {
         return token;
     }
 };
+
+export async function wait(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+}

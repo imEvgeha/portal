@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import cloneDeep from 'lodash.clonedeep';
-import isEqual from 'lodash.isequal';
-import isEmpty from 'lodash.isempty';
+import {isEmpty, isEqual, cloneDeep} from 'lodash';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
 import {rightsService, parseAdvancedFilterV2} from '../../containers/avail/service/RightsService';
@@ -33,6 +31,7 @@ import {
 import withFilterableColumns from '../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusGrid, NexusTableToolbar} from '../../ui/elements';
 import {filterBy} from '../../ui/elements/nexus-grid/utils';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -46,12 +45,14 @@ export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
 )(NexusGrid);
 
 const SelectedRighstRepositoryTable = compose(
+    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
 )(NexusGrid);
@@ -313,6 +314,7 @@ const RightsRepository = ({
                 selectedRightGridApi={selectedGridApi}
             />
             <SelectedRighstRepositoryTable
+                id='selectedRightsRepo'
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit
                 rowSelection="multiple"
@@ -323,6 +325,7 @@ const RightsRepository = ({
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
             />
             <RightsRepositoryTable
+                id='rightsRepo'
                 columnDefs={updatedColumnDefs}
                 rowSelection="multiple"
                 suppressRowClickSelection={true}

@@ -4,7 +4,7 @@ import t from 'prop-types';
 import {connect} from 'react-redux';
 import {rightsService} from '../../../../containers/avail/service/RightsService';
 
-import union from 'lodash.union';
+import {union} from 'lodash';
 import {BulkActionButton} from './BulkActionButton';
 import Tabs from './Tabs';
 import UserTerritories from './territories/UserTerritories';

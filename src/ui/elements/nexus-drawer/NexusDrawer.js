@@ -46,9 +46,10 @@ const NexusDrawer = ({
                         nexus-c-drawer__close-btn--is-${position}`
                     }
                 >
-                    {position === 'right'
-                        ? <ArrowRightIcon />
-                        : <ArrowLeftIcon />
+                    {
+                        position === 'right'
+                            ? <ArrowRightIcon />
+                            : <ArrowLeftIcon />
                     }
                 </Button>
                 {isOpen && children}

@@ -1,7 +1,7 @@
 import React, {useEffect, useContext} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import {cloneDeep} from 'lodash';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../ui/elements/';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
+import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -23,6 +24,8 @@ import DOP from '../../util/DOP';
 import './TitleMatchView.scss';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
+
+const IncomingRightTable =  withColumnsResizing()(NexusGrid);
 
 const TitleMatchView = ({
     match,
@@ -94,7 +97,8 @@ const TitleMatchView = ({
                     <>
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
-                            <NexusGrid
+                            <IncomingRightTable
+                                id='incomingRightTitleMatching'
                                 columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
                                 rowData={[focusedRight]}
                             />

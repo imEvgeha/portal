@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
 import {AgGridReact} from 'ag-grid-react';
 import {Link} from 'react-router-dom';
 import {useIntl} from 'react-intl';
