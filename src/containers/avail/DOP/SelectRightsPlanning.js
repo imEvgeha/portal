@@ -61,7 +61,6 @@ class SelectRightsPlanning extends Component {
     };
 
     render() {
-        console.log({initialTabFilter})
         const {availsMapping, tabFilter, selectedTerritoriesTab} = this.props;
 
         const RightsResultsTable = compose(
