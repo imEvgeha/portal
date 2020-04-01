@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import jwtDecode from 'jwt-decode';
 import config from 'react-global-configuration';
 import {store} from '../index';
@@ -19,7 +19,7 @@ import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
 const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS}) => {
  // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
-    useEffect(() => {
+    useLayoutEffect(() => {
         let cancel = false;
         const runEffect = async () => {
             try {
@@ -88,6 +88,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS}) => {
     if (!isAuthenticatedUser) {
         return <Loading />;
     }
+
     return children;
 };
 

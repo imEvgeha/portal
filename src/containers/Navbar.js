@@ -15,6 +15,7 @@ import {Can} from '../ability';
 import NexusBreadcrumb from './NexusBreadcrumb';
 import {AVAILS_DASHBOARD} from '../constants/breadcrumb';
 import {logout} from '../auth/authActions';
+import {keycloak} from '../auth.keycloak';
 
 const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, token, logout}) => {
     const [isDropDownOpen, setIsDropDownOpen] = useState(false);
@@ -66,7 +67,7 @@ const NavbarConnect = ({searchFormShowSearchResults, profileInfo, blocking, toke
                     >
                         <DropdownToggle caret nav={true} id="navbar-dropdown-btn">
                             <FontAwesome name='user-circle' style={{marginRight: '5px'}} />
-                            {profileInfo.name}
+                            {profileInfo.username}
                         </DropdownToggle>
                         <DropdownMenu>
                             <DropdownItem header>
