@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import t from 'prop-types';
 import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
@@ -959,7 +959,7 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
-        const {id} = titleForm || {};
+        const {id = ''} = titleForm || {};
         return (
             <EditPage>
 
@@ -976,10 +976,19 @@ class TitleEdit extends Component {
                                     : (
                                         <Col>
                                             <div className='nexus-c-title-edit__sync-container'>
-                                                {id && getRepositoryName(id) === TitleSystems.NEXUS && <PublishVzMovida coreTitle={titleForm} editorialMetadataList={editorialMetadata} territoryMetadataList={territory} onSyncPublishClick={this.onSyncPublishClick} />}
-                                                <Can I="update" a="Metadata">
-                                                    <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
-                                                </Can>
+                                                {getRepositoryName(id) === TitleSystems.NEXUS && (
+                                                    <>
+                                                        <PublishVzMovida
+                                                            coreTitle={titleForm}
+                                                            editorialMetadataList={editorialMetadata}
+                                                            territoryMetadataList={territory}
+                                                            onSyncPublishClick={this.onSyncPublishClick}
+                                                        />
+                                                        <Can I="update" a="Metadata">
+                                                            <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
+                                                        </Can>
+                                                    </>
+                                                )}
                                             </div>
                                         </Col>
                                   )
