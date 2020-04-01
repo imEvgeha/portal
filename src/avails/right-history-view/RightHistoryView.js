@@ -74,7 +74,6 @@ const mapStateToProps = () => {
     const rightsEventHistorySelector = getRightsEventHistorySelector();
 
     return (state, props) => ({
-        selectedAvails: state.dashboard.session.availTabPageSelection.selected,
         rightsEventHistory: rightsEventHistorySelector(state, props)
     });
 };

@@ -270,4 +270,6 @@ class RightsURL extends React.Component {
 RightsURL.contextTypes = {
     router: t.object
 };
+export const search = RightsURL.search;
+
 export default RightsURL;

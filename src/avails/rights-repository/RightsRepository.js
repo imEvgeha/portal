@@ -22,7 +22,7 @@ import {
     selectIngest
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
-import RightsRepositoryHeader from './components/RightsRepositoryHeader';
+import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
@@ -312,6 +312,7 @@ const RightsRepository = ({
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
+                selectedRepoRights={selectedRepoRights}
             />
             <SelectedRighstRepositoryTable
                 id='selectedRightsRepo'

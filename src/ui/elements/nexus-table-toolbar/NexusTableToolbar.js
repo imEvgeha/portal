@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
-import MoreIcon from '../../../assets/more-icon.svg';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import SelectedButton from './components/SelectedButton';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB
 } from '../../../avails/rights-repository/RightsRepository';
+import MoreActions from '../../../avails/right-history-view/components/MoreActions/MoreActions';
 
 const NexusTableToolbar = ({
     title,
@@ -21,11 +21,12 @@ const NexusTableToolbar = ({
     rightsFilter,
     rightColumnApi,
     selectedRightColumnApi,
-    selectedRightGridApi
+    selectedRightGridApi,
+    selectedRepoRights
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
-            <MoreIcon fill="#A5ADBA" />
+            <MoreActions selectedAvails={selectedRepoRights} />
             <div
                 className={`
                     nexus-c-table-toolbar__title 
@@ -66,7 +67,8 @@ NexusTableToolbar.propsTypes = {
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightGridApi: PropTypes.object.isRequired,
-    selectedRightsCount: PropTypes.number
+    selectedRightsCount: PropTypes.number,
+    selectedRepoRights: PropTypes.array,
 };
 
 NexusTableToolbar.defaultProps = {
@@ -75,6 +77,7 @@ NexusTableToolbar.defaultProps = {
     hasSelectedTab: true,
     hasDownloadButton: true,
     getAllColumns: () => [],
+    selectedRepoRights: []
 };
 
 export default NexusTableToolbar;

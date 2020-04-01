@@ -14,8 +14,8 @@ import {
     AG_GRID_COLUMN_FILTER,
 } from '../constants';
 import usePrevious from '../../../../util/hooks/usePrevious';
-import CustomDateFilter from './components/CustomDateFilter/CustomDateFilter';
-import CustomDateFloatingFilter from './components/CustomDateFloatingFilter/CustomDateFloatingFilter';
+import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
+import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
 import {fetchAvailMapping} from '../../../../containers/avail/availActions';
 
 const withFilterableColumns = ({

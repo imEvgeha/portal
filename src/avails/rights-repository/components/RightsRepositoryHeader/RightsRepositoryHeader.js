@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './RightsRepositoryHeader.scss';
-import RightsIcon from '../../../assets/rights.svg';
-import MoreIcon from '../../../assets/more-icon.svg';
+import RightsIcon from '../../../../assets/rights.svg';
+import MoreIcon from '../../../../assets/more-icon.svg';
 
 const RightsRepositoryHeader = ({title}) => {
   return (
