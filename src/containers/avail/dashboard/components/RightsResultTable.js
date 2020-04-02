@@ -23,6 +23,7 @@ import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../util/Common';
 import {getLocale} from '../../../../stores/selectors/localization/localeSelector';
 import {TIMESTAMP_FORMAT} from '../../../../ui/elements/nexus-date-and-time-elements/constants';
+import getContextMenuItems from '../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -648,6 +649,7 @@ class RightsResultTable extends React.Component {
 
                         headerHeight='52'
                         rowHeight='48'
+                        getContextMenuItems={getContextMenuItems}
                     />
                 </div>
             </div>
