@@ -17,10 +17,11 @@ import {
 import './Title.scss';
 
 const Title = ({
-   titleData,
+   coreTitleData,
+   editorialTitleData
 }) => {
     const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
-    const {title, releaseYear, type} = titleData || {};
+    const {title, releaseYear, type} = coreTitleData || {};
 
     const renderSection = section => {
         switch (section) {
@@ -33,7 +34,11 @@ const Title = ({
             case METADATA_TITLE_EXTERNAL_IDS_SECTION:
                 return null;
             case METADATA_TITLE_EDITORIAL_SECTION:
-                return <EditorialMetadata />;
+                return (
+                    <EditorialMetadata
+                        data={editorialTitleData}
+                    />
+                );
             case METADATA_TITLE_TERRITORIAL_SECTION:
                 return null;
             case METADATA_TITLE_RIGHTS_SECTION:
@@ -74,7 +79,8 @@ const Title = ({
 };
 
 Title.propTypes = {
-    titleData: PropTypes.object.isRequired,
+    coreTitleData: PropTypes.object.isRequired,
+    editorialTitleData: PropTypes.array.isRequired,
 };
 
 Title.defaultProps = {};

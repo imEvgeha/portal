@@ -78,25 +78,25 @@ class TitleReadOnlyMode extends Component {
                         <>
                             <Row>
                                 {seriesTitleName && (
-                                <Col>
-                                    <Alert color="light" id="titleSeriesName">
-                                        <b>Series: </b> <a href={seriesLink} className="linked-data">{seriesTitleName}</a>
-                                    </Alert>
-                                </Col>
+                                    <Col>
+                                        <Alert color="light" id="titleSeriesName">
+                                            <b>Series: </b> <a href={seriesLink} className="linked-data">{seriesTitleName}</a>
+                                        </Alert>
+                                    </Col>
                                 )}
                                 {seasonNumber && (
-                                <Col>
-                                    <Alert color="light" id="titleSeasonNumber">
-                                        <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
-                                    </Alert>
-                                </Col>
+                                    <Col>
+                                        <Alert color="light" id="titleSeasonNumber">
+                                            <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
+                                        </Alert>
+                                    </Col>
                                 )}
                                 {episodeNumber && (
-                                <Col md={6}>
-                                    <Alert color="light" id="titleEpisodeNumber">
-                                        <b>Episode Number: </b>{episodeNumber}
-                                    </Alert>
-                                </Col>
+                                    <Col md={6}>
+                                        <Alert color="light" id="titleEpisodeNumber">
+                                            <b>Episode Number: </b>{episodeNumber}
+                                        </Alert>
+                                    </Col>
                                 )}
                             </Row>
                             <Row>
@@ -202,17 +202,17 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            {usBoxOffice
-                                ? (
-                                    <Col>
-                                        <Alert color="light" id="titleBoxOffice">
-                                            <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
-                                        </Alert>
-                                    </Col>
-                                ) : null}
+                            {usBoxOffice ? (
+                                <Col>
+                                    <Alert color="light" id="titleBoxOffice">
+                                        <b>US Box Office: </b> {`$${usBoxOffice.toLocaleString()}`}
+                                    </Alert>
+                                </Col>
+                            ) : null}
                         </Row>
                         <Row>
-                            {category && category.length > 0 && (
+                            {category && category.length > 0 &&
+                            (
                                 <Col>
                                     <Alert color="light" id="titleCategory">
                                         <b>Categories: </b>
