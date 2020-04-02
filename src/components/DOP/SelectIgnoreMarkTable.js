@@ -52,7 +52,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
             const {updatePromotedRights, updatePromotedRightsFullData, parseColumnsSchema, availsMapping, selectedTerritories, useSelectedTerritories} = this.props;
             const originalColDef = parseColumnsSchema((availsMapping && availsMapping.mappings) || []);
             const colDef = {
-                checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal},
+                checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal, lockVisible: true},
                 select_ignore_sel: {
                     headerName: '',
                     field: SELECT_IGNORE_HEADER,
@@ -63,7 +63,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     suppressMovable: true,
                     lockPosition: true,
                     cellRenderer: 'selectIgnoreMarkCell',
-                    sortable: false
+                    sortable: false,
+                    lockVisible: true
                 },
                 plan_territory: {
                     headerName: 'Plan Territory',
