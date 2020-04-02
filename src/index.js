@@ -24,8 +24,8 @@ import {keycloak, createKeycloakInstance} from './auth/keycloak';
 import {configurePersistor} from './store-persist-config';
 import AuthProvider from './auth/AuthProvider';
 
-// setEnvConfiguration('qa')
-setEnvConfiguration('dev')
+setEnvConfiguration('qa')
+// setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         console.error(error, 'error');

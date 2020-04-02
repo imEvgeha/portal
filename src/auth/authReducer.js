@@ -3,7 +3,7 @@ import * as actionTypes from './authActionTypes';
 const initialState = {
     refreshToken: null, 
     token: null,
-    userAccount: null,
+    userAccount: {},
     isAuthenticated: false,
 };
 

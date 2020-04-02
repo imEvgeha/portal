@@ -16,6 +16,9 @@ import {getValidToken, getTokenDuration, wait} from './utils';
 import Loading from '../static-pages/Loading';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
 
+const MIN_VALIDITY_SEC = 30;
+const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;
+
 const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS}) => {
  // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
@@ -75,11 +78,22 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS}) => {
                 store.dispatch(logout());
             }
             const tokenDuration = getTokenDuration(jwtDecode(token));
-            await wait(tokenDuration); 
-            const isRefreshed = keycloak.updateToken(30);
-            store.dispatch(injectUser({token: keycloak.token, refreshToken: keycloak.refreshToken}));
+
+            // timeout
+            if (tokenDuration > BEFORE_TOKEN_EXP) {
+                const DELAY = tokenDuration - BEFORE_TOKEN_EXP;
+                await wait(DELAY);
+            }
+
+            // update token; store new tokens
+            const isRefreshed = await keycloak.updateToken(MIN_VALIDITY_SEC);
+            if (isRefreshed) {
+                store.dispatch(injectUser({token: keycloak.token, refreshToken: keycloak.refreshToken}));
+            }
+
+            // recursion
             updateUserToken(keycloak.token);
-            return isRefreshed;
+
         } catch (error) {
             store.dispatch(logout());
         }

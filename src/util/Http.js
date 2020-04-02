@@ -53,7 +53,6 @@ const Http = {
 
         http.interceptors.request.use(
             function (config) {
-                // const {auth} = store.getState();
                 const token = keycloak && keycloak.token;
                 if (token) config.headers.Authorization = `Bearer ${token}`;
                 return config;

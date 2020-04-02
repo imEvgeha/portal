@@ -71,7 +71,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
 
     const AccountDropdownItems = () => {
         return (
-            <DropdownItemGroup title={profileInfo.name || 'Profile'}>
+            <DropdownItemGroup title={profileInfo.username || 'Profile'}>
                 <DropdownItem onClick={logout}>
                     Log out
                 </DropdownItem>
@@ -103,7 +103,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                                 <Avatar
                                     borderColor="transparent"
                                     size="medium"
-                                    name={profileInfo.name}
+                                    name={profileInfo.username}
                                     onClick={onClick}
                                 />
                             );
@@ -130,9 +130,10 @@ NexusNavigation.defaultProps = {
     logout: () => null,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({auth}) => {
+    const {userAccount} = auth || {};
     return {
-        profileInfo: state.root.profileInfo
+        profileInfo: userAccount
     };
 };
 
