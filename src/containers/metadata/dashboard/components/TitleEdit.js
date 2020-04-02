@@ -1015,7 +1015,8 @@ class TitleEdit extends Component {
                         handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
                         handleCategoryChange={this.handleEditorialMetadataCategoryChange}
                         handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
-                        titleData={this.state.titleForm}
+                        coreTitleData={this.state.titleForm}
+                        editorialTitleData={this.state.editorialMetadata}
                     />
 
                     <TerritoryMetadata
