@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {isEqual} from 'lodash';
 import './TerritoryCellEditor.scss';
-import TerritoryField from '../../../../../containers/avail/components/TerritoryField';
-import RightTerritoryFields from '../../../../../components/form/RightTerritoryFields';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import Form from '@atlaskit/form';
-import {getProperTerritoryFormValues} from '../../../../../components/form/utils';
 import {connect} from 'react-redux';
-import RightTerritoryFormSchema from '../../../../../components/form/RightTerritoryFormSchema';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
+import {getProperTerritoryFormValues} from '../../../../../pages/legacy/components/form/utils';
+import TerritoryField from '../../../../../pages/legacy/containers/avail/components/TerritoryField';
+import RightTerritoryFields from '../../../../../pages/legacy/components/form/RightTerritoryFields';
+import RightTerritoryFormSchema from '../../../../../pages/legacy/components/form/RightTerritoryFormSchema';
 
 class TerritoryCellEditor extends Component {
 

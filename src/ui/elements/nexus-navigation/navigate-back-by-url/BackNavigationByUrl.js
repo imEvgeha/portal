@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import './BackNavigationByUrl.scss';
 import NexusTitle from '../../nexus-title/NexusTitle';
-import {backArrowColor} from '../../../../constants/avails/constants';
+import {backArrowColor} from '../../../../pages/legacy/constants/avails/constants';
 
 const BackNavigationByUrl = ({title, onNavigationClick}) => {
   return (

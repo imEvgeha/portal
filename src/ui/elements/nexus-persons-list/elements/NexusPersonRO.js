@@ -1,14 +1,14 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+import Lozenge from '@atlaskit/lozenge';
+import {Container, Row} from 'reactstrap';
+import './NexusPersonRO.scss';
 import {
     CustomColumn, CustomEllipsis, CustomRow,
     ListItemText, ListText, PersonListFlag
-} from '../../../../containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
-import {Container, Row} from 'reactstrap';
+} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
 import DefaultUserIcon from '../../../../assets/img/default-user.png';
-import Lozenge from '@atlaskit/lozenge';
-import {getFormatTypeName} from '../../../../constants/metadata/configAPI';
-import React from 'react';
-import './NexusPersonRO.scss';
 
 const NexusPersonRO = ({
      person,

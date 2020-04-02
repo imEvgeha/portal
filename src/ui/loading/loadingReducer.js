@@ -1,6 +1,6 @@
-import {TITLES_RECONCILE} from '../../metadata/metadataActionTypes';
-import {SAVE_COMBINED_RIGHT} from '../../avails/right-matching/rightMatchingActionTypes';
-import {UPLOAD_INGEST} from '../../avails/ingest-panel/ingestActionTypes';
+import {TITLES_RECONCILE} from '../../pages/metadata/metadataActionTypes';
+import {SAVE_COMBINED_RIGHT} from '../../pages/avails/right-matching/rightMatchingActionTypes';
+import {UPLOAD_INGEST} from '../../pages/avails/ingest-panel/ingestActionTypes';
 
 const WHITELIST = [TITLES_RECONCILE, SAVE_COMBINED_RIGHT, UPLOAD_INGEST];
 const ACTION_STATES = ['REQUEST', 'SUCCESS', 'FAILURE', 'ERROR'];

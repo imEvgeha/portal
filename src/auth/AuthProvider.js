@@ -8,12 +8,12 @@ import {
     loadCreateRightState,
     loadDopState,
     loadManualRightEntryState
-} from '../stores/index';
-import {loadProfileInfo} from '../stores/actions';
+} from '../pages/legacy/stores/index';
+import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import {updateAbility} from '../ability';
 import {injectUser, logout} from './authActions';
 import {getValidToken, getTokenDuration, wait} from './utils';
-import Loading from '../static-pages/Loading';
+import Loading from '../pages/static/Loading';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
 
 const MIN_VALIDITY_SEC = 30;

@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
 import './NexusTableExportDropdown.scss';
-import {exportService} from '../../../containers/avail/service/ExportService';
 import {downloadFile} from '../../../util/Common';
-import * as selectors from '../../../avails/right-matching/rightMatchingSelectors';
+import * as selectors from '../../../pages/avails/right-matching/rightMatchingSelectors';
+import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
 const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) => {

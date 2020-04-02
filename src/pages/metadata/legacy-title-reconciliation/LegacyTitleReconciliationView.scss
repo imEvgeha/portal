@@ -1,0 +1,41 @@
+@import '../../../styles/config.scss';
+
+.nexus-c-legacy-title-reconciliation-view {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.nexus-c-legacy-title-reconciliation-view__focused-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.nexus-c-legacy-title-reconciliation-view__section-message {
+    color: map-get($colors, nexus-secondary-color);
+    font-weight: 500;
+    font-family: $nexus-font;
+    margin: 0;
+    padding: 0;
+}
+
+.nexus-c-legacy-title-reconciliation-view__buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+// add this to ui-elements
+.nexus-c-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .nexus-c-legacy-title-reconciliation-view__buttons & {
+        width: 100px;
+        font-size: 14px;
+    }
+}
+
+

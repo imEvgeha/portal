@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
 import {
     ListGroup,
@@ -6,28 +7,21 @@ import {
     CardHeader,
     CardBody
 } from 'reactstrap';
-import PropTypes from 'prop-types';
-
 import UserPicker from '@atlaskit/user-picker';
-import { Label } from '@atlaskit/field-base';
-
+import {Label} from '@atlaskit/field-base';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
-
 import {
     CAST,
     getFilteredCastList,
     getFilteredCrewList,
     PERSONS_PER_REQUEST
-} from '../../../constants/metadata/configAPI';
-import {searchPerson} from '../../../containers/metadata/service/ConfigService';
-
+} from '../../../pages/legacy/constants/metadata/configAPI';
+import {searchPerson} from '../../../pages/legacy/containers/metadata/service/ConfigService';
 import {
     DroppableContent
-} from '../../../containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
-
+} from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 import NexusPerson from './elements/NexusPerson';
 import NexusPersonRO from './elements/NexusPersonRO';
-
 import './NexusPersonsList.scss';
 import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
 import {CAST_CONFIG} from './constants';

@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import {createLinkableCellRenderer} from '../../../../avails/utils';
+import {createLinkableCellRenderer} from '../../../../pages/avails/utils';
 
 export const defineColumn = ({
     field = '',

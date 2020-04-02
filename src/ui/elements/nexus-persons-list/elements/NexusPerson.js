@@ -1,16 +1,16 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+import Lozenge from '@atlaskit/lozenge';
+import {Draggable} from 'react-beautiful-dnd';
+import {Row} from 'reactstrap'; // ?
+import './NexusPerson.scss';
 import {
     CustomAddButton,
     CustomColumn, CustomDeleteButton, CustomDragButton, CustomEllipsis,
     DraggableContent, ListItemText, ListText, PersonListFlag
-} from '../../../../containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
-import {Row} from 'reactstrap';
+} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
 import DefaultUserIcon from '../../../../assets/img/default-user.png';
-import Lozenge from '@atlaskit/lozenge';
-import {getFormatTypeName} from '../../../../constants/metadata/configAPI';
-import {Draggable} from 'react-beautiful-dnd';
-import React from 'react';
-import './NexusPerson.scss';
 
 const NexusPerson = ({
     person,
