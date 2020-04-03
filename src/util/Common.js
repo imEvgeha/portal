@@ -66,7 +66,7 @@ function prepareSortMatrixParam(sortedParams) {
     let matrix = '';
     if(sortedParams){
         sortedParams.forEach((entry) => {
-            matrix += ';' + entry.id + '=' + (entry.desc ? 'DESC' : 'ASC');
+            matrix += `;${entry.id || entry.colId}=${entry.sort || (entry.desc ? 'DESC' : 'ASC')}`;
         });
     }
     return matrix;
