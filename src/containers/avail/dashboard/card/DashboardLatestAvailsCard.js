@@ -12,6 +12,7 @@ import IngestReport from './components/IngestReport';
 import {getDateFormatBasedOnLocale} from '../../../../util/Common';
 import Constants from './Constants';
 import './DashboardLatestAvailsCard.scss';
+import getContextMenuItems from '../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
@@ -148,6 +149,7 @@ const DashboardLatestAvailsCard = ({push}) => {
                     suppressMovableColumns={true}
                     rowSelection='single'
                     onSelectionChanged={onSelectionChanged}
+                    getContextMenuItems={getContextMenuItems}
                 />
             </div>
         </div>
