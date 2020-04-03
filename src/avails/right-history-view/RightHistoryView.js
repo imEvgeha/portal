@@ -6,6 +6,7 @@ import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import {fetchRightsHistory} from './rightHistoryActions';
 import AuditHistoryTable from '../../components/AuditHistoryTable/AuditHistoryTable';
+import './RightHistoryView.scss';
 
 const SPINNER = (
     <div style={{textAlign: 'center'}}>
@@ -54,13 +55,11 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
     };
 
     return (
-        (selectedAvails.length > 0) && (
-            <a href="#" onClick={openHistoryModal}>
-                <span className='nx-container-margin table-top-text'>
-                    View History
-                </span>
-            </a>
-        )
+        <span
+            onClick={openHistoryModal}
+            className={`nx-container-margin table-top-text view-history-link ${selectedAvails.length > 0 ? 'active-link' :''}`}>
+            View Audit History
+        </span>
     );
 };
 
