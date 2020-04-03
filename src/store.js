@@ -5,6 +5,9 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {routerMiddleware} from 'connected-react-router';
 import createRootReducer from './reducer';
 // import {createPersistReducer, persistConfig} from './store-persist-config';
+import {LOGOUT} from './auth/authActionTypes';
+import storage from 'redux-persist/lib/storage';
+import {keycloak} from './auth/keycloak';
 
 // configure store
 const configureStore = (initialState = {}, history) => {
@@ -22,9 +25,21 @@ const configureStore = (initialState = {}, history) => {
 
     // switch to root redux persist
     // const rootReducer = createPersistReducer(persistConfig, createRootReducer(history));
+    const appReducer = createRootReducer(history);
+    const rootReducer = (state, action) => {
+        if (action.type === LOGOUT) {
+            // remove persist storage
+            storage.removeItem('portal-persist:avails');
+            storage.removeItem('portal-persist:root');
+            storage.removeItem('portal-persist:auth');
+            keycloak.logout();
+            return undefined;
+        }
+        return appReducer(state, action);
+    };
 
     const store = createStore(
-        createRootReducer(history),
+        rootReducer,
         composeWithDevTools(
             applyMiddleware(...middleware),
         ),

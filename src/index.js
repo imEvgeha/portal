@@ -1,69 +1,55 @@
-import axios from 'axios';
-import config from 'react-global-configuration';
-import {createBrowserHistory} from 'history';
-import {defaultConfiguration} from './config';
-import './styles/index.scss';
-import './bootstrap.scss'; // TODO: remove this
-import './WeAre138.scss'; // TODO: file name ???
-import './global.scss'; // TODO; refactor this
-
-config.set(defaultConfiguration, {freeze: false});
-
-// axios.get('/configQA.json').then(response => {
-axios.get('/config.json').then(response => {
-    if (isObject(response.data)) {
-        config.set(mergeDeep(JSON.parse(config.serialize()), response.data), {freeze: true});
-    } else {
-        JSON.parse(response.data);
-    }
-    init();
-}).catch((error) => {
-    console.warn('Cannot load environment configuration');
-    console.error(error);
-    render(
-        <p>
-            Problem with configuration, application cannot be started
-        </p>,
-        document.querySelector('#app')
-    );
-});
-
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import Keycloak from './vendor/keycloak';
+import Keycloak from 'keycloak-js';
+import {createBrowserHistory} from 'history';
+import {defaultConfiguration, setEnvConfiguration} from './config';
+import './styles/index.scss';
+import './bootstrap.scss'; // TODO: remove this
+import './WeAre138.scss'; // TODO: file name ???
+import './global.scss'; // TODO; refactor this
 import configureStore from './store';
-import {configurePersistor} from './store-persist-config';
 import rootSaga from './saga';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
 import AppLayout from './layout/AppLayout';
-import {loadProfileInfo} from './stores/actions';
 import {isObject, mergeDeep} from './util/Common';
-import {updateAbility} from './ability';
 import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
 import CustomIntlProvider from './layout/CustomIntlProvider';
+import {login, authRefreshToken, storeAuthCredentials, injectUser} from './auth/authActions';
+import {loadProfileInfo} from './stores/actions';
 import Toast from './ui/toast/Toast';
+import {keycloak, createKeycloakInstance} from './auth/keycloak';
+import {configurePersistor} from './store-persist-config';
+import AuthProvider from './auth/AuthProvider';
 
-export const keycloak = {instance: {}};
-const TEMP_AUTH_UPDATE_TOKEN_INTERVAL = 10000;
+// setEnvConfiguration('qa')
+setEnvConfiguration()
+    .then(() => renderApp())
+    .catch(error => {
+        console.error(error, 'error');
+        render(
+            <p>Problem with configuration, application cannot be started</p>,
+            document.querySelector('#app')
+        );
+    });
+
 const history = createBrowserHistory();
 // temporary export -> we should not export store
 export const store = configureStore({}, history);
-
 const persistor = configurePersistor(store);
 
-const app = (
+const appContent = (
     <Provider store={store}>
         <CustomIntlProvider>
             <NexusOverlayProvider>
                 <NexusModalProvider>
                     <PersistGate loading={null} persistor={persistor}>
-                        <>
+                        <AuthProvider>
                             <Toast />
                             <AppLayout history={history} />
-                        </>
+                        </AuthProvider>
                     </PersistGate>
                 </NexusModalProvider>
             </NexusOverlayProvider>
@@ -71,32 +57,11 @@ const app = (
     </Provider>
 );
 
-function init() {
-    keycloak.instance = Keycloak(config.get('keycloak'));
-    keycloak.instance.init({onLoad: 'check-sso'}).success(authenticated => {
-        if (authenticated) {
-            setInterval(() => {
-                keycloak.instance.updateToken(10).error(() => keycloak.instance.logout());
-            }, TEMP_AUTH_UPDATE_TOKEN_INTERVAL);
-
-            keycloak.instance.loadUserInfo().success(profileInfo => {
-                store.runSaga(rootSaga);
-                store.dispatch(loadProfileInfo(profileInfo));
-                loadDashboardState();
-                loadCreateRightState();
-                loadHistoryState();
-                loadDopState();
-                loadManualRightEntryState();
-
-                render(
-                    app,
-                    document.querySelector('#app')
-                );
-            });
-            updateAbility(keycloak.instance);
-
-            return;
-        } 
-        keycloak.instance.login();
-    });
-}
+function renderApp () {
+    createKeycloakInstance();
+    store.runSaga(rootSaga);
+    render(
+        appContent,
+        document.querySelector('#app')
+    );
+};

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {keycloak, store} from '../index';
+import {store} from '../index';
+import {keycloak} from '../auth/keycloak';
 import {errorModal} from '../components/modal/ErrorModal';
 import {addToast, removeToast} from '../ui/toast/toastActions';
 import {
@@ -52,7 +53,7 @@ const Http = {
 
         http.interceptors.request.use(
             function (config) {
-                const token = keycloak.instance.token;
+                const token = keycloak && keycloak.token;
                 if (token) config.headers.Authorization = `Bearer ${token}`;
                 return config;
             },

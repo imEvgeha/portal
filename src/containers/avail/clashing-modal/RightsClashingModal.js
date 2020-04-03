@@ -11,7 +11,7 @@ import cloneDeep from 'lodash.clonedeep';
 const columnsToUse = ['licensor', 'licensee', 'title', 'licenseType', 'format', 'start', 'end', 'territory', 'platformCategory', 'contentType', 'availStart', 'availEnd'];
 const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
-function RightsClashingModal({clashingRights, columnDefs}) {
+const RightsClashingModal = ({clashingRights, columnDefs}) => {
 
     const {setModalContent, setModalActions, setModalTitle, close} = useContext(NexusModalContext);
 
@@ -62,7 +62,7 @@ function RightsClashingModal({clashingRights, columnDefs}) {
     };
 
     return (<></>);
-}
+};
 
 const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload))

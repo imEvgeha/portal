@@ -1,0 +1,4 @@
+export const REFRESH_TOKEN = 'REFRESH_TOKEN';
+export const LOGOUT = 'LOGOUT';
+export const STORE_USER_ACCOUNT = 'STORE_USER_ACCOUNT';
+export const STORE_TOKENS = 'STORE_TOKENS';

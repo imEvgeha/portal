@@ -38,7 +38,7 @@
     "@atlaskit/radio": "^3.1.4",
     "@atlaskit/section-message": "^4.1.1",
     "@atlaskit/select": "^10.0.0",
-    "@atlaskit/spinner": "^12.0.9",
+    "@atlaskit/spinner": "^12.1.6",
     "@atlaskit/tag": "^9.0.10",
     "@atlaskit/tag-group": "^9.0.5",
     "@atlaskit/textfield": "^2.0.4",
@@ -70,6 +70,8 @@
     "file-loader": "^2.0.0",
     "image-webpack-loader": "^4.3.1",
     "js-yaml": "^3.12.0",
+    "jwt-decode": "^2.2.0",
+    "keycloak-js": "^9.0.2",
     "lodash": "^4.17.15",
     "material-dashboard-pro-react": "1.5.1",
     "material-dashboard-react": "1.5.0",
@@ -103,7 +105,8 @@
     "redux-saga": "^1.0.5",
     "reselect": "^4.0.0",
     "sass-loader": "^7.1.0",
-    "styled-components": "^3.2.6"
+    "styled-components": "^3.2.6",
+    "url-search-params-polyfill": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
@@ -126,7 +129,6 @@
     "jest-environment-jsdom": "^25.1.0",
     "jest-transform-stub": "^2.0.0",
     "jquery": "^3.3.1",
-    "keycloak-js": "^4.1.0",
     "node-sass": "^4.11.0",
     "nwb": "0.21.x",
     "popper.js": "^1.14.3",
