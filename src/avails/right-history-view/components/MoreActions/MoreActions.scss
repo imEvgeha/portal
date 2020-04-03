@@ -9,16 +9,16 @@
     border: 1px solid #A5ADBA;
     background: #FFFFFF;
     z-index: 1;
-    width: 150px;
     padding: 10px;
     display: none;
     &.open {
       display: block;
     }
   }
-  a {
-    display: inline-block;
+  .view-history-link {
     font-size: 14px;
-    padding-bottom: 5px;
+    white-space: nowrap;
+    display: inline-block;
+    top: 0;
   }
 }
