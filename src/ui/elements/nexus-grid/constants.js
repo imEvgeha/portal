@@ -66,7 +66,7 @@ const DATEPICKER_LABELS = ['From', 'To'];
 
 const EXCLUDED_INITIAL_FILTER_VALUES = [null, '', undefined];
 
-const DEFAULT_SORT = {colId: 'updateAt', sort: 'desc'};
+const DEFAULT_SORT = {colId: 'updatedAt', sort: 'desc'};
 const DEFAULT_SORT_ORDER = ['asc', 'desc', null];
 
 export {

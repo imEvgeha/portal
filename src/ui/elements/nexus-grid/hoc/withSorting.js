@@ -24,7 +24,7 @@ const withSorting = () => WrappedComponent => {
             if (type === GRID_EVENTS.READY) {
                 const {getSortModel, setSortModel} = api || {};
 
-                const sortModel = getSortModel ? getSortModel(): [];
+                const sortModel = getSortModel ? getSortModel() : [];
                 setSortModel && setSortModel([
                     ...sortModel,
                     DEFAULT_SORT,
