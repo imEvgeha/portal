@@ -20,6 +20,7 @@ import {NexusTitle, NexusGrid} from '../../../ui/elements/';
 import {URL} from '../../../util/Common';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {createLoadingSelector} from '../../../ui/loading/loadingSelectors';
 import {
@@ -48,8 +49,9 @@ const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = compose(
     withColumnsResizing(),
-    withEditableColumns())
-(NexusGrid);
+    withEditableColumns(),
+    withSorting(),
+)(NexusGrid);
 const MatchedRightsNexusGrid =  withColumnsResizing()(NexusGrid);
 
 

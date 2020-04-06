@@ -11,6 +11,7 @@ import {getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/co
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {titleServiceManager} from '../../../containers/metadata/service/TitleServiceManager';
@@ -24,7 +25,8 @@ import mappings from '../../../../profile/titleMatchingMappings';
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
+    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
+    withSorting(),
 )(NexusGrid);
 
 const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {

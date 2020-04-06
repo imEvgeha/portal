@@ -32,6 +32,7 @@ import withFilterableColumns from '../../ui/elements/nexus-grid/hoc/withFilterab
 import withSideBar from '../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../ui/elements/nexus-grid/hoc/withSorting';
 import {NexusGrid, NexusTableToolbar} from '../../ui/elements';
 import {filterBy} from '../../ui/elements/nexus-grid/utils';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -49,12 +50,14 @@ const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
+    withSorting(),
 )(NexusGrid);
 
-const SelectedRighstRepositoryTable = compose(
+const SelectedRightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
+    withSorting(),
 )(NexusGrid);
 
 const RightsRepository = ({
@@ -314,7 +317,7 @@ const RightsRepository = ({
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
             />
-            <SelectedRighstRepositoryTable
+            <SelectedRightsRepositoryTable
                 id='selectedRightsRepo'
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit

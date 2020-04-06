@@ -26,6 +26,7 @@ import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {
     createRightMatchingColumnDefs,
     createNewRight,
@@ -56,7 +57,8 @@ const RightRepositoryNexusGrid = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
-    withInfiniteScrolling({fetchData: getRightToMatchList})
+    withInfiniteScrolling({fetchData: getRightToMatchList}),
+    withSorting(),
 )(NexusGrid);
 
 const IncomingRightNexusGrid =  withColumnsResizing()(NexusGrid);

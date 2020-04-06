@@ -1,5 +1,6 @@
 import React, {useEffect, useContext} from 'react';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import SectionMessage from '@atlaskit/section-message';
@@ -11,6 +12,7 @@ import {
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import withColumnsResizing from '../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../ui/elements/nexus-grid/hoc/withSorting';
 import TitlesList from './components/TitlesList';
 import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
 import { getSearchCriteria } from '../../stores/selectors/metadata/titleSelectors';
@@ -25,7 +27,10 @@ import './TitleMatchView.scss';
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
-const IncomingRightTable =  withColumnsResizing()(NexusGrid);
+const IncomingRightTable =  compose(
+    withColumnsResizing(),
+    withSorting(),
+)(NexusGrid);
 
 const TitleMatchView = ({
     match,
