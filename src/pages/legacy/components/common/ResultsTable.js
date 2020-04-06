@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import getContextMenuItems from '../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 export default class ResultsTable extends React.Component {
 
@@ -71,6 +72,7 @@ export default class ResultsTable extends React.Component {
                     columnDefs={this.props.colDef}
                     headerHeight='52'
                     rowHeight='48'
+                    getContextMenuItems={getContextMenuItems}
                 />
             </div>
         );

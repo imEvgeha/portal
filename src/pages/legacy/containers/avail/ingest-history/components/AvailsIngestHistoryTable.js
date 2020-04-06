@@ -16,7 +16,7 @@ import LoadingGif from '../../../../../../assets/img/loading.gif';
 import {connect} from 'react-redux';
 import {resultPageHistoryUpdate, searchFormSetHistorySearchCriteria, searchFormUpdateAdvancedHistorySearchCriteria} from '../../../../stores/actions/avail/history';
 import {historyServiceManager} from '../HistoryServiceManager';
-
+import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 
 const mapStateToProps = state => {
@@ -201,6 +201,7 @@ class AvailsIngestHistoryTable extends React.Component {
                             rowHeight='70'
 
                             suppressHorizontalScroll={true}
+                            getContextMenuItems={getContextMenuItems}
                         />
 
                     </div>

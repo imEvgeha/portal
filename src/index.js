@@ -12,7 +12,7 @@ import './styles/legacy/global.scss'; // TODO; refactor
 import configureStore from './store';
 import rootSaga from './saga';
 import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
-import CustomIntlProvider from './layout/CustomIntlProvider';
+import CustomIntlProvider from './ui/elements/nexus-layout/CustomIntlProvider';
 import {isObject, mergeDeep} from './util/Common';
 import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
@@ -30,8 +30,8 @@ import {
 } from './pages/legacy/stores/index'; // TODO: remove 
 import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
 
-setEnvConfiguration('qa')
-// setEnvConfiguration()
+// setEnvConfiguration('qa')
+setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         console.error(error, 'error');

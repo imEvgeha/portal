@@ -26,6 +26,7 @@ import {formatNumberTwoDigits} from '../../../../../../../util/Common';
 import {defineColumn} from '../../../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import { getRepositoryCell} from '../../../../../../avails/utils';
+import getContextMenuItems from '../../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -516,6 +517,7 @@ class TitleResultTable extends React.Component {
                     suppressRowClickSelection={true}
                     headerHeight='52'
                     rowHeight='48'
+                    getContextMenuItems={getContextMenuItems}
                 />
 
             </div>
