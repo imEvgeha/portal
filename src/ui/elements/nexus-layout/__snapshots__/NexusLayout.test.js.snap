@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AppLayout should match snapshot 1`] = `
-<Connect(ConnectedRouter)
-  history={null}
->
+exports[`NexusLayout should match snapshot 1`] = `
+<Connect(ConnectedRouter)>
   <div
     className="nexus-c-app-layout"
   >

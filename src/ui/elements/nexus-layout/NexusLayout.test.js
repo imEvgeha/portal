@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 
 import NexusLayout from './NexusLayout';
 
-describe('AppLayout', () => {
+describe('NexusLayout', () => {
     let wrapper;
     beforeAll(() => {
         wrapper = shallow(<NexusLayout />);
