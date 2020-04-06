@@ -8,6 +8,8 @@ import { getSortedData } from '../../../util/Common';
 const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';
 const COUNTRIES = '/countries';
+const REGION = '/regions';
+const GENRES = '/genres';
 const SORT_TYPE = 'label';
 
 const http = Http.create({ defaultErrorHandling: false });
@@ -35,6 +37,16 @@ export const profileService = {
                                 getSelectValues(rec.configEndpoint).then((response) => {
                                     let options = response.data.data;
                                     switch (rec.configEndpoint) {
+                                        case GENRES:
+                                            options = options.map(code => ({value: code.name, label: code.name}));
+                                            options = getSortedData(options, SORT_TYPE, true);
+                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                            break;
+                                        case REGION:
+                                            options = options.map(code => ({value: code.regionCode, label: code.regionName}));
+                                            options = getSortedData(options, SORT_TYPE, true);
+                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                            break;
                                         case PRODUCTION_STUDIOS:
                                             options.forEach((option) => option.value = option.name);
                                             store.dispatch(loadSelectLists(rec.javaVariableName, options));
