@@ -6,23 +6,29 @@ import Keycloak from 'keycloak-js';
 import {createBrowserHistory} from 'history';
 import {defaultConfiguration, setEnvConfiguration} from './config';
 import './styles/index.scss';
-import './bootstrap.scss'; // TODO: remove this
-import './WeAre138.scss'; // TODO: file name ???
-import './global.scss'; // TODO; refactor this
+import './styles/legacy/bootstrap.scss'; // TODO: remove
+import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
+import './styles/legacy/global.scss'; // TODO; refactor
 import configureStore from './store';
 import rootSaga from './saga';
-import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState, loadManualRightEntryState} from './stores/index';
-import AppLayout from './layout/AppLayout';
+import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
+import CustomIntlProvider from './ui/elements/nexus-layout/CustomIntlProvider';
 import {isObject, mergeDeep} from './util/Common';
 import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
-import CustomIntlProvider from './layout/CustomIntlProvider';
 import {login, authRefreshToken, storeAuthCredentials, injectUser} from './auth/authActions';
-import {loadProfileInfo} from './stores/actions';
 import Toast from './ui/toast/Toast';
 import {keycloak, createKeycloakInstance} from './auth/keycloak';
 import {configurePersistor} from './store-persist-config';
 import AuthProvider from './auth/AuthProvider';
+import {
+    loadDashboardState,
+    loadHistoryState,
+    loadCreateRightState,
+    loadDopState,
+    loadManualRightEntryState
+} from './pages/legacy/stores/index'; // TODO: remove 
+import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
 
 // setEnvConfiguration('qa')
 setEnvConfiguration()
@@ -48,7 +54,7 @@ const appContent = (
                     <PersistGate loading={null} persistor={persistor}>
                         <AuthProvider>
                             <Toast />
-                            <AppLayout history={history} />
+                            <NexusLayout history={history} />
                         </AuthProvider>
                     </PersistGate>
                 </NexusModalProvider>

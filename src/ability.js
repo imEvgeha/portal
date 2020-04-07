@@ -2,7 +2,7 @@ import { AbilityBuilder, Ability } from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
 import {withRouter} from 'react-router-dom';
 import React from 'react';
-import {AVAILS, MEDIA, METADATA} from './navigation/constants';
+import {AVAILS, MEDIA, METADATA} from './ui/elements/nexus-navigation/constants';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',

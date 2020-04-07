@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
-import {alertModal} from '../../../components/modal/AlertModal';
-import {confirmModal} from '../../../components/modal/ConfirmModal';
-import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
-import {exportService} from '../../../containers/avail/service/ExportService';
-import {downloadFile} from '../../../util/Common';
-import {FATAL} from '../../../constants/avails/manualRightsEntryTabs';
 import './TableDownload.scss';
+import {alertModal} from '../../../pages/legacy/components/modal/AlertModal';
+import {confirmModal} from '../../../pages/legacy/components/modal/ConfirmModal';
+import {CUSTOM_HEADER_LIST} from '../../../pages/legacy/constants/customColumnHeaders';
+import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';
+import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
+import {downloadFile} from '../../../util/Common';
 
 const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
 

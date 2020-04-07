@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {get, omit, isEmpty, pickBy, cloneDeep} from 'lodash';
-import {createAvailSelectValuesSelector} from '../../../../containers/avail/availSelectors';
+import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
+import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {isObject, switchCase} from '../../../../util/Common';
 import {
     GRID_EVENTS,
@@ -16,7 +17,6 @@ import {
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
-import {fetchAvailMapping} from '../../../../containers/avail/availActions';
 
 const withFilterableColumns = ({
     hocProps = [],

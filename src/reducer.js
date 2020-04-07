@@ -1,20 +1,20 @@
 import {combineReducers} from 'redux';
 import {connectRouter} from 'connected-react-router';
-import root from './stores/reducers/index';
-import titleReducer from './stores/reducers/metadata/titleReducer';
-import dashboard from './stores/reducers/avail/dashboard';
-import createright from './stores/reducers/avail/createright';
-import history from './stores/reducers/history';
-import media from './stores/reducers/media/search';
-import dopReducer from './stores/reducers/DOP/dopReducer';
-import settings from './containers/settings/settingsReducer';
-import localeReducer from './stores/reducers/localization/localeReducer';
-import rightHistory from './avails/right-history-view/rightHistoryReducer';
-import manualRightsEntry from './stores/reducers/avail/manualRightsEntry';
-import authReducer from './auth/authReducer';
-import availsReducer from './avails/availsReducer';
-import metadataReducer from './metadata/metadataReducer';
+import root from './pages/legacy/stores/reducers/index';
+import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
+import dashboard from './pages/legacy/stores/reducers/avail/dashboard';
+import createright from './pages/legacy/stores/reducers/avail/createright';
+import history from './pages/legacy/stores/reducers/history';
+import media from './pages/legacy/stores/reducers/media/search';
+import dopReducer from './pages/legacy/stores/reducers/DOP/dopReducer';
+import localeReducer from './pages/legacy/stores/reducers/localization/localeReducer';
+import manualRightsEntry from './pages/legacy/stores/reducers/avail/manualRightsEntry';
+import settings from './pages/legacy/containers/settings/settingsReducer';
+import rightHistory from './pages/avails/right-history-view/rightHistoryReducer';
+import availsReducer from './pages/avails/availsReducer';
+import metadataReducer from './pages/metadata/metadataReducer';
 import uiReducer from './ui/uiReducer.js';
+import authReducer from './auth/authReducer';
 import {availsPersistConfig, authPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
 
 const createRootReducer = routerHistory => combineReducers({
