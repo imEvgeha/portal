@@ -1,5 +1,5 @@
 import {isEmpty} from 'lodash';
-import {parseAdvancedFilter} from '../../../containers/avail/service/RightsService';
+import {parseAdvancedFilter} from '../../../pages/legacy/containers/avail/service/RightsService';
 
 // grid filter
 export const filterBy = (filterObject, prepareFilter = (params) => params) => {

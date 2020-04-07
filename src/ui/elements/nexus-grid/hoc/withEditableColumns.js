@@ -5,10 +5,10 @@ import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
 import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
-import {isObject} from '../../../../util/Common';
-import {createAvailSelectValuesSelector} from '../../../../containers/avail/availSelectors';
-import usePrevious from '../../../../util/hooks/usePrevious';
 import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
+import {isObject} from '../../../../util/Common';
+import usePrevious from '../../../../util/hooks/usePrevious';
+import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',

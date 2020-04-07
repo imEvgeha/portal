@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 
 function downloadFile(data) {
@@ -197,25 +197,19 @@ const URL = {
     }
 };
 
-class IfEmbedded extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <> {URL.isEmbedded() === this.props.value && this.props.children} </>
-        );
-    }
-}
+// TODO: transform this to simple helper function - no need for React Component
+const IfEmbedded = ({value, children}) => (
+    <> 
+        {URL.isEmbedded() === value && children}
+    </>
+);
 
 IfEmbedded.propTypes = {
-    children: t.any,
-    value:t.bool
+    value: PropTypes.bool,
 };
 
 IfEmbedded.defaultProps = {
-    value: true
+    value: true,
 };
 const switchCase = cases => defaultCase => key => cases.hasOwnProperty(key) ? cases[key] : defaultCase;
 

@@ -1,0 +1,87 @@
+@import '../../../../../styles/config.scss';
+
+.nexus-c-avails-ingest {
+  position:relative;
+  display: flex;
+  background-color: #FFFFFF;
+  justify-content: space-between;
+  border: 1px solid #A5ADBA;
+  padding: 10px;
+  margin-bottom: 20px;
+  &__avail-id{
+    padding-left: 30px;
+    font-size: 11px;
+    color: #737E91;
+  }
+  &:hover {
+    .nexus-c-avails-ingest__cross-icon {
+      display: block;
+    }
+  }
+  &__cross-icon {
+    display: none;
+    position: absolute;
+    right: -13px;
+    top: -15px;
+      svg {
+        height: 25px;
+        width: 25px;
+        fill: map-get($colors, nexus-secondary-color);
+        cursor: pointer;
+        background: #FFFFFF;
+        border-radius: 50%;
+      }
+  }
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 65vh;
+    flex: 1;
+    .ingest-status {
+      padding-left: 30px;
+      width: 100%;
+    }
+  }
+  &__stats {
+    display: flex;
+    align-items: center;
+    .ingest-report {
+      border-right: 1px solid #A5ADBA;
+      padding-right: 15px;
+      &__field {
+        width: 50px;
+        &--value {
+          cursor: pointer;
+          background: #A5ADBA;
+          &:hover {
+            background: #737E91;
+            color: #000000;
+          }
+          &.filter-active{
+            background: #42526E;
+            color: #FFFFFF;
+            &:hover {
+              background: #42526E;
+              color: #FFFFFF;
+            }
+          }
+        }
+      }
+    }
+  }
+  &__email {
+    margin-left: 20px;
+  }
+  &__download {
+    margin: 0 20px;
+  }
+  &__download, &__email {
+    svg {
+      height: 30px;
+      width: 30px;
+      fill: #A5ADBA;
+      cursor: pointer;
+    }
+  }
+}

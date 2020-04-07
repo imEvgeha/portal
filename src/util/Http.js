@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {store} from '../index';
 import {keycloak} from '../auth/keycloak';
-import {errorModal} from '../components/modal/ErrorModal';
+import {errorModal} from '../pages/legacy/components/modal/ErrorModal';
 import {addToast, removeToast} from '../ui/toast/toastActions';
 import {
     SUCCESS_ICON, SUCCESS_TITLE, ERROR_ICON, ERROR_TITLE
