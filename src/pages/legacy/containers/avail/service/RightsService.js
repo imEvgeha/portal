@@ -178,7 +178,11 @@ export const rightsService = {
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const params = parseAdvancedFilter(searchCriteria);
+        const params = parseAdvancedFilterV2(searchCriteria);
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+    },
+
+    advancedSearchV2: (params, page, pageSize, sortedParams) => {
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
