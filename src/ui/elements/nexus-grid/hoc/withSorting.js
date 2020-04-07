@@ -22,13 +22,8 @@ const withSorting = () => WrappedComponent => {
 
             // When table is loaded, set default sortModel
             if (type === GRID_EVENTS.READY) {
-                const {getSortModel, setSortModel} = api || {};
-
-                // TODO: Issue when applying initial sort, getSortModel and setSortModel are
-                //       valid methods from gridApi, but when called they throw an error which breaks
-                //       the whole table.
-                const sortModel = getSortModel ? getSortModel() : [];
-                setSortModel && setSortModel([
+                const sortModel = api.getSortModel ? api.getSortModel() : [];
+                api.setSortModel && api.setSortModel([
                     ...sortModel,
                     DEFAULT_SORT,
                 ]);
@@ -46,7 +41,7 @@ const withSorting = () => WrappedComponent => {
                 }}
                 sortingOrder={DEFAULT_SORT_ORDER}
                 onColumnVisible={onColumnVisible}
-                // onGridReady={onGridEvent}
+                onGridEvent={onGridEvent}
             />
         );
     };
