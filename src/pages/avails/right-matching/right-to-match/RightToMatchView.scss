@@ -1,0 +1,78 @@
+@import '../../../../styles/config.scss';
+
+.nexus-c-right-to-match-view {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.nexus-c-right-to-match-view__header {
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.nexus-c-right-to-match-view__header-title {
+    color: map-get($colors, nexus-title-color);
+    font-size: 30px;
+}
+
+.nexus-c-right-to-match-view__table-header {
+    display: flex;
+    padding-top: 20px;
+}
+
+.nexus-c-right-to-match-view__rights-to-match {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    padding-top: 20px;
+}
+
+.nexus-c-right-to-match-view__buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+// add this to ui-elements
+.nexus-c-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .nexus-c-right-to-match-view__buttons & {
+        width: 100px;
+        font-size: 14px;
+    }
+}
+
+.nexus-c-right-to-match-view__buttons_notification {
+    position: absolute;
+    bottom: 4px;
+    right: 9px;
+    padding: 3px;
+    border-radius: 50%;
+    color: white;
+    &--error {
+        background: red;
+    }
+    &--success {
+        background: map-get($colors, nexus-light-green);
+    }
+}
+
+.nexus-c-right-to-match-view__new-button {
+    font-family: $nexus-font;
+}
+
+.nexus-c-right-to-match-view__section-message {
+    color: map-get($colors, nexus-secondary-color);
+    font-weight: 500;
+    font-family: $nexus-font;
+    margin: 0;
+    padding: 0;
+}

@@ -1,8 +1,8 @@
 import moment from 'moment';
-import {DIRECTOR, isCastPersonType} from '../../../../../constants/metadata/configAPI';
 import {TIMESTAMP_FORMAT} from '../../../nexus-date-and-time-elements/constants';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../util/Common';
 import {store} from '../../../../../index';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../util/Common';
+import {DIRECTOR, isCastPersonType} from '../../../../../pages/legacy/constants/metadata/configAPI';
 
 const createValueFormatter = ({dataType, javaVariableName}) => {
     const {locale} = store.getState().locale;

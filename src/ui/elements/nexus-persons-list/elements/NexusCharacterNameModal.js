@@ -1,12 +1,12 @@
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {ErrorMessage} from '@atlaskit/form';
+import Button from '@atlaskit/button';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import {
     CustomInput,
     CustomLabel
-} from '../../../../containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
-import {ErrorMessage} from '@atlaskit/form';
-import Button from '@atlaskit/button';
-import React, {useEffect, useState} from 'react';
+} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
 const NexusCharacterNameModal = ({
      hint,

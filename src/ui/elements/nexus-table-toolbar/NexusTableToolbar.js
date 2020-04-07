@@ -6,8 +6,8 @@ import SelectedButton from './components/SelectedButton';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB
-} from '../../../avails/rights-repository/RightsRepository';
-import MoreActions from '../../../avails/right-history-view/components/MoreActions/MoreActions';
+} from '../../../pages/avails/rights-repository/RightsRepository';
+import MoreActions from '../../../pages/avails/right-history-view/components/MoreActions/MoreActions';
 
 const NexusTableToolbar = ({
     title,
