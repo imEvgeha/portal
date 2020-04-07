@@ -1,7 +1,8 @@
 import React from 'react';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
+import {validateAllFields} from 'react-forms-processor/dist/utilities/validation';
 import {renderer as akRenderer, FormButton} from 'react-forms-processor-atlaskit';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
@@ -225,6 +226,35 @@ export default class CreateEditConfigForm extends React.Component {
                         optionsHandler={this.optionsHandler}
                         onChange={(value) => this.setState({value: value})}
                         defaultValue={this.state.value}
+                        validationHandler={(field, fields, parentContext) => {
+                            //if regular array of objects
+                            if(field.type === 'array' && field.misc.fields.length > 1 && !field.dynamic) {
+                                //get the array
+                                const currentValue = get(this.state.value, field.name, []) || get(this.state.value, field.id, []);
+                                let isValid = true;
+                                let index = 0;
+                                //for each element of the array
+                                while(isValid && index < currentValue.length){
+                                    //create a virtual form (list of fields with schema props and values)
+                                    let toValidate = cloneDeep(field.misc);
+                                    toValidate.showValidationBeforeTouched = true;
+                                    //populate all fields with current values
+                                    for(let j = 0; j < toValidate.fields.length; j++){
+                                        toValidate.fields[j].visible = true;
+                                        const fieldValue = currentValue[index][toValidate.fields[j].id];
+                                        if(fieldValue || fieldValue === 0 || fieldValue  === false) {
+                                            toValidate.fields[j].value = fieldValue;
+                                        }
+                                    }
+                                    //validate the virtual form
+                                    //if valid check the next object in array
+                                    //until one invalid found or all checked
+                                    isValid = !validateAllFields(toValidate).find(({isValid}) => !isValid);
+                                    index++;
+                                }
+                                return isValid ? '' : 'Invalid';
+                            }
+                        }}
                     >
                         <ModalFooter>
                             <Button onClick={this.props.onCancel}>Cancel</Button>
