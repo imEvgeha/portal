@@ -65,8 +65,8 @@ const encodedSerialize = function(params){
 function prepareSortMatrixParam(sortedParams) {
     let matrix = '';
     if(sortedParams){
-        sortedParams.forEach((entry) => {
-            matrix += `;${entry.id || entry.colId}=${entry.sort || (entry.desc ? 'DESC' : 'ASC')}`;
+        sortedParams.forEach(({id, colId, sort, desc}) => {
+            matrix += `;${id || colId}=${sort || (desc ? 'DESC' : 'ASC')}`;
         });
     }
     return matrix;
@@ -74,8 +74,8 @@ function prepareSortMatrixParam(sortedParams) {
 function prepareSortMatrixParamTitles(sortedParams) {
     let matrix = '';
         if(sortedParams){
-            sortedParams.forEach((entry) => {
-                matrix += '?sort=' + entry.id + ',' + (entry.desc ? 'DESC' : 'ASC');
+            sortedParams.forEach(({id, colId, sort, desc}) => {
+                matrix += `?sort=${id || colId},${sort || (desc ? 'DESC' : 'ASC')}`;
             });
         }
     return matrix;
