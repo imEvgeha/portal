@@ -3,4 +3,5 @@ export default {
   sortParams: [{id: 'received', desc: 'true'}],
   AVAIL_HISTORY_ID: 'availHistoryIds',
   INGEST_HISTORY_ATTACHMENT_IDS: 'ingestHistoryAttachmentId',
+  INITIAL_SORT: {colId: 'updatedAt', sort: 'desc'},
 };

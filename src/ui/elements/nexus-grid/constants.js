@@ -66,7 +66,6 @@ const DATEPICKER_LABELS = ['From', 'To'];
 
 const EXCLUDED_INITIAL_FILTER_VALUES = [null, '', undefined];
 
-const DEFAULT_SORT = {colId: 'updatedAt', sort: 'desc'};
 const DEFAULT_SORT_ORDER = ['asc', 'desc', null];
 
 export {
@@ -85,7 +84,6 @@ export {
     ROW_MODEL_TYPE,
     EXCLUDED_INITIAL_FILTER_VALUES,
     AG_GRID_COLUMN_FILTER,
-    DEFAULT_SORT,
     DEFAULT_SORT_ORDER,
 };
 
