@@ -281,11 +281,11 @@ const RightsRepository = ({
     };
 
     const getSelectedTabRights = (selectedRights) => {
-        const ingestHistoryAttachmentIdParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
-        if (ingestHistoryAttachmentIdParam) {
+        const ingestHistoryAttachmentIdsParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
+        if (ingestHistoryAttachmentIdsParam) {
             return selectedRights.filter(el => {
-                const {ingestHistoryAttachmentId} = el;
-                return ingestHistoryAttachmentId === ingestHistoryAttachmentIdParam;
+                const {ingestHistoryAttachmentIds} = el;
+                return ingestHistoryAttachmentIds === ingestHistoryAttachmentIdsParam;
             });
         }
         return selectedRights;

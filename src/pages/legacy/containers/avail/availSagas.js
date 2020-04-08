@@ -7,6 +7,8 @@ import {getSortedData} from '../../../../util/Common';
 
 const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';
+const REGION = '/regions';
+const GENRES = '/genres';
 const SORT_TYPE = 'label';
 
 export function* fetchAvailMapping(requestMethod) {
@@ -84,6 +86,18 @@ export function* fetchAndStoreSelectItems(payload, type) {
             case LANGUAGES:
                 options = value.map(code => {
                     return {value: code.languageCode, label: code.languageName};
+                });
+                options = getSortedData(options, SORT_TYPE, true);
+                break;
+            case REGION:
+                options = value.map(code => {
+                    return {value: code.regionCode, label: code.regionName};
+                });
+                options = getSortedData(options, SORT_TYPE, true);
+                break;
+            case GENRES:
+                options = value.map(code => {
+                    return {value: code.name, label: code.name};
                 });
                 options = getSortedData(options, SORT_TYPE, true);
                 break;
