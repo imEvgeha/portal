@@ -23,7 +23,7 @@ import {
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
-import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import {DEFAULT_SORT, GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
     defineCheckboxSelectionColumn
@@ -50,7 +50,7 @@ const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
-    withSorting(),
+    withSorting(DEFAULT_SORT),
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(

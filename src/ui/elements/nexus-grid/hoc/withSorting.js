@@ -1,7 +1,9 @@
 import React from 'react';
-import {DEFAULT_SORT, DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
+import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
 
-const withSorting = () => WrappedComponent => {
+const withSorting = (
+    initialSort = null,
+) => WrappedComponent => {
     return (props) => {
         const onColumnVisible = ({column = {}}) => {
             const {gridApi, colId} = column || {};
@@ -21,11 +23,11 @@ const withSorting = () => WrappedComponent => {
             const {onGridEvent} = props;
 
             // When table is loaded, set default sortModel
-            if (type === GRID_EVENTS.READY) {
+            if (type === GRID_EVENTS.READY && initialSort) {
                 const sortModel = api.getSortModel ? api.getSortModel() : [];
                 api.setSortModel && api.setSortModel([
                     ...sortModel,
-                    DEFAULT_SORT,
+                    initialSort,
                 ]);
             }
 

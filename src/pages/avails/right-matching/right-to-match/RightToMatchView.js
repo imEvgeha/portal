@@ -22,7 +22,7 @@ import {
     WARNING_TITLE,
     WARNING_ICON
 } from '../../../../ui/elements/nexus-toast-notification/constants';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
+import {DEFAULT_SORT, GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -58,7 +58,7 @@ const RightRepositoryNexusGrid = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: getRightToMatchList}),
-    withSorting(),
+    withSorting(DEFAULT_SORT),
 )(NexusGrid);
 
 const IncomingRightNexusGrid =  withColumnsResizing()(NexusGrid);
