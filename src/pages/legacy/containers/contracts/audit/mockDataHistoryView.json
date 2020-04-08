@@ -20,7 +20,7 @@
       "availHistoryIds": [
         "avih_Ac9Ec"
       ],
-      "ingestHistoryAttachmentId": null,
+      "ingestHistoryAttachmentIds": null,
       "licensee": "Vubiquity",
       "storeLanguage": "en",
       "ALID": "SomeNew",
@@ -261,7 +261,7 @@
       "availHistoryIds": [
         "avih_Ac9Ec"
       ],
-      "ingestHistoryAttachmentId": null,
+      "ingestHistoryAttachmentIds": null,
       "licensee": "Vubiquity",
       "storeLanguage": "en",
       "ALID": "Some",
@@ -502,7 +502,7 @@
       "availHistoryIds": [
         "avih_Ac9Ec"
       ],
-      "ingestHistoryAttachmentId": null,
+      "ingestHistoryAttachmentIds": null,
       "licensee": "Vubiquity",
       "storeLanguage": "en",
       "ALID": "Some",
@@ -743,7 +743,7 @@
       "availHistoryIds": [
         "avih_Ac9Ec"
       ],
-      "ingestHistoryAttachmentId": null,
+      "ingestHistoryAttachmentIds": null,
       "licensee": "Vubiquity",
       "storeLanguage": "en",
       "ALID": "Some",
@@ -1055,7 +1055,7 @@
       },
       {
         "op": "add",
-        "path": "/ingestHistoryAttachmentId",
+        "path": "/ingestHistoryAttachmentIds",
         "value": null
       },
       {
