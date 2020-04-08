@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
 import Button from '@atlaskit/button';
@@ -18,7 +17,7 @@ import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
 import mappings from '../../../../../profile/titleMatchingMappings';
-import {getRepositoryName, createLinkableCellRenderer} from '../../../avails/utils';
+import {getRepositoryName} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(

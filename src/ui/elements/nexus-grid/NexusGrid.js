@@ -8,6 +8,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import {debounce} from 'lodash';
 import './NexusGrid.scss';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
+import CreateLoadingCellRenderer from './elements/cell-renderer/CreateLoadingCellRenderer';
 
 const SELECTION_DELAY = 5;
 
@@ -22,6 +23,7 @@ const NexusGrid = ({
     // rowHeight,
     onGridEvent,
     isGridHidden,
+    frameworkComponents,
     ...restProps
 }) => {
 
@@ -58,6 +60,10 @@ const NexusGrid = ({
                 onRowDataChanged={handleGridEvent}
                 onFilterChanged={handleGridEvent}
                 {...restProps}
+                frameworkComponents={{
+                    ...frameworkComponents,
+                    createLoadingCellRenderer: CreateLoadingCellRenderer
+                }}
             /> 
         </div> 
     );

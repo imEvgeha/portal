@@ -4,12 +4,10 @@ import {cloneDeep} from 'lodash';
 import './RightsClashingModal.scss';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import {NexusGrid, NexusTitle} from '../../../../../ui/elements';
-import {createLinkableCellRenderer} from '../../../../avails/utils';
 import {createRightMatchingColumnDefsSelector} from '../../../../avails/right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../../../../avails/right-matching/rightMatchingActions';
 
 const columnsToUse = ['licensor', 'licensee', 'title', 'licenseType', 'format', 'start', 'end', 'territory', 'platformCategory', 'contentType', 'availStart', 'availEnd'];
-const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
 const RightsClashingModal = ({clashingRights, columnDefs}) => {
 
@@ -24,7 +22,9 @@ const RightsClashingModal = ({clashingRights, columnDefs}) => {
             const updatedColDef = cloneDeep(columnDefs)
                 .filter(el => columnsToUse.includes(el.field)).map(columnDef => {
                 if (columnDef.cellRenderer) {
-                    columnDef.cellRenderer = handleRightRedirect;
+                    columnDef.cellRendererParams = {
+                        link: '/avails/rights/'
+                    };
                 }
                 return columnDef;
             });

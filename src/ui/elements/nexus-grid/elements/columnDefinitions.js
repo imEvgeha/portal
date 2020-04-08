@@ -1,5 +1,4 @@
 import {cloneDeep} from 'lodash';
-import {createLinkableCellRenderer} from '../../../../pages/avails/utils';
 
 export const defineColumn = ({
     field = '',
@@ -122,14 +121,13 @@ export const defineEpisodeAndSeasonNumberColumn = ({
 };
 
 export const getLinkableColumnDefs = (columnDefs, location) => {
-    const handleRedirect = params => createLinkableCellRenderer(params, location);
-    const linkableColumnDefs = cloneDeep(columnDefs)
+    return cloneDeep(columnDefs)
         .map(e => {
             if (e.cellRenderer) {
-                e.cellRenderer = handleRedirect;
+                e.cellRendererParams = {
+                    link: location
+                };
             }
             return e;
         });
-
-    return linkableColumnDefs;
 };
