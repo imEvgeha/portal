@@ -1,9 +1,9 @@
-.nexus-c-create-loading-cell-renderer {
+.nexus-c-loading-cell-renderer {
     display: flex;
     justify-content: space-between;
 }
 
-.nexus-c-create-loading-cell-renderer__value {
+.nexus-c-loading-cell-renderer__value {
     text-overflow: ellipsis; 
     overflow: hidden;
     white-space: pre;
@@ -14,11 +14,11 @@
     width: 100%;
 }
 
-.nexus-c-create-loading-cell-renderer__highlighted {
+.nexus-c-loading-cell-renderer__highlighted {
     display: flex;
     color: grey; // should use from config.scss colors
 }
 
-.nexus-c-create-loading-cell-renderer__icon {
+.nexus-c-loading-cell-renderer__icon {
     align-self: flex-start;
 }

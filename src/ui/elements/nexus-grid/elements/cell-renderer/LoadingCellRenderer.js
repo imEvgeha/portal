@@ -1,9 +1,9 @@
 import React from 'react';
 import {getDeepValue, isObject} from '../../../../../util/Common';
-import './CreateLoadingCellRenderer.scss';
+import './LoadingCellRenderer.scss';
 import loadingGif from '../../../../../assets/img/loading.gif';
 
-const CreateLoadingCellRenderer = (params) => {
+const LoadingCellRenderer = (params) => {
     const {data, colDef, valueFormatted, link = null} = params;
     if (!data && colDef !== 'actions') {
         return (<img src={loadingGif} alt='loadingSpinner' />);
@@ -22,17 +22,17 @@ const CreateLoadingCellRenderer = (params) => {
             highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
         }
         const displayValue = (
-            <div className="nexus-c-create-loading-cell-renderer">
-                <div className={`nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}`}>
+            <div className="nexus-c-loading-cell-renderer">
+                <div className={`nexus-c-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}`}>
                     {String(content)}
                 </div>
                 {
                     highlighted ? (
                         <span
                             title='* fields in bold are original values provided by the studios'
-                            className="nexus-c-create-loading-cell-renderer__highlighted"
+                            className="nexus-c-loading-cell-renderer__highlighted"
                         >
-                            <i className="far fa-question-circle nexus-c-create-loading-cell-renderer__icon"></i>
+                            <i className="far fa-question-circle nexus-c-loading-cell-renderer__icon"></i>
                         </span>
                     ) : ''
                 }
@@ -48,4 +48,4 @@ const CreateLoadingCellRenderer = (params) => {
     }
     return null;
 };
-export default CreateLoadingCellRenderer;
+export default LoadingCellRenderer;

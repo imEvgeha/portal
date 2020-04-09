@@ -14,7 +14,7 @@ export function createColumnDefs(payload) {
             field: javaVariableName,
             headerName: displayName,
             colId: javaVariableName,
-            cellRenderer: 'createLoadingCellRenderer',
+            cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
             width: (dataType === 'datetime') ? 235 : 150,
         };

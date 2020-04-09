@@ -8,7 +8,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import {debounce} from 'lodash';
 import './NexusGrid.scss';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
-import CreateLoadingCellRenderer from './elements/cell-renderer/CreateLoadingCellRenderer';
+import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
 
 const SELECTION_DELAY = 5;
 
@@ -62,7 +62,7 @@ const NexusGrid = ({
                 {...restProps}
                 frameworkComponents={{
                     ...frameworkComponents,
-                    createLoadingCellRenderer: CreateLoadingCellRenderer
+                    loadingCellRenderer: LoadingCellRenderer
                 }}
             /> 
         </div> 
