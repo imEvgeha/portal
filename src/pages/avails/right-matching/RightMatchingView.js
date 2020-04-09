@@ -8,6 +8,7 @@ import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineActionButtonColumn} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {getRightMatchingList} from './rightMatchingService';
 import * as selectors from './rightMatchingSelectors';
 import {
@@ -21,6 +22,7 @@ import {RIGHT_MATCHING_TITLE, FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE} from './
 
 const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
+    withSorting(),
 )(NexusGrid);
 
 const RightMatchingView = ({

@@ -12,6 +12,7 @@ import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import ActionsBar from './ActionsBar.js';
 import {getRepositoryName, getRepositoryCell} from '../../utils';
@@ -24,7 +25,8 @@ const TitleRepositoriesTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
+    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
+    withSorting(),
 )(NexusGrid);
 
 const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
