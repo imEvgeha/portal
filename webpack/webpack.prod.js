@@ -1,39 +1,28 @@
 const path = require('path');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const {CleanWebpackPlugin} = require('clean-webpack-plugin'); 
+const TerserPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     mode: 'production',
-    output: {
-        path: path.resolve(__dirname, '../', 'dist'),
-        filename: 'app/[name].bundle.js',
-        chunkFilename: 'app/[name].[chunkhash].chunk.js',
-        publicPath: '/'
-    },
+    devtool: shouldUseSourceMap ? 'source-map' : false,
+    bail: true,
     module: {
         rules: [
             {
-                test: /\.s(a|c)ss$/,
-                loader: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            sourceMap: isDevelopment
-                        }
-                    },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: isDevelopment
-                        }
-                    }
-                ]
-            },
+            test: /\.(scss|css)/,
+            loader: [
+                MiniCssExtractPlugin.loader,
+                require.resolve('css-loader'),
+                require.resolve('sass-loader'),
+            ]
+        },
         ]
     },
-    devtool: 'eval-source-map',
     optimization: {
         splitChunks: {
             cacheGroups: {
@@ -50,15 +39,60 @@ module.exports = {
                     priority: 5
                 }
             }
-        }
+        },
+        minimizer: [
+            new TerserPlugin({
+                sourceMap: shouldUseSourceMap,
+                terserOptions: {
+                    compress: {
+                        warnings: false,
+                        comparisons: false,
+                    },
+                    mangle: {
+                        safari10: true,
+                    },
+                    output: {
+                        comments: false,
+                        ascii_only:true,
+                    }
+                },
+            }),
+            new OptimizeCSSAssetsPlugin(), 
+        ]
     },
     plugins: [
+        new CleanWebpackPlugin({
+            root: path.join(__dirname, '../dist')
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: './index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+            }
+        }),
         new Dotenv({
             path: path.resolve(__dirname, '../') + '/.env.production',
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-            chunkFilename: '[id].[hash].css'
+            filename: 'css/[name].[contenthash].css',
+            chunkFilename: 'css/[id].[contenthash].chunk.css'
         }),
     ],
+    output: {
+        path: path.resolve(__dirname, '../dist'),
+        filename: 'js/[name].bundle.js',
+        chunkFilename: 'js/[name].[chunkhash].chunk.js',
+        publicPath: '/'
+    },
 };

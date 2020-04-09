@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: [
+        require.resolve('@babel/polyfill'),
+        './src/index.js',
+    ],
     module: {
         rules: [
             {
@@ -13,6 +16,7 @@ module.exports = {
             },
             {
                 test: /\.(js|jsx)$/,
+                include: path.resolve(__dirname, '../', 'src'),
                 exclude: /node_modules/,
                 use: ['babel-loader', 'eslint-loader'],
             },
@@ -32,7 +36,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx'],
+        extensions: ['*', '.js', '.jsx', '.json'],
         alias: {
             'redux-persist-transform-filter': path.resolve(
                 __dirname,
@@ -42,11 +46,6 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            title: 'Nexus Portal',
-            template: './src/index.html',
-            filename: './index.html'
-        }),
         new CopyWebpackPlugin([
             // relative path is from src
             { from: 'src/assets/favicon.ico' }, // <- your path to favicon
@@ -57,7 +56,7 @@ module.exports = {
             { from: 'profile/titleMatchingRightMappings.json'},
         ]),
     ],
-    devServer: {
-        contentBase: './dist',
-    },
+    // devServer: {
+    //     contentBase: './dist',
+    // },
 };

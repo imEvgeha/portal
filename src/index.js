@@ -30,8 +30,8 @@ import {
 } from './pages/legacy/stores/index'; // TODO: remove 
 import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
 
-// setEnvConfiguration('qa')
-setEnvConfiguration()
+setEnvConfiguration('qa')
+// setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         console.error(error, 'error');

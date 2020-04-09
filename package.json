@@ -8,7 +8,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --env.env=dev --hot --inline --open --progress --client-log-level info",
+    "start": "webpack-dev-server --env.env=dev --hot --inline --progress --open --client-log-level info",
     "build": "webpack --env.env=dev",
     "build:test": "webpack --env.env=test",
     "test": "jest",
@@ -16,7 +16,7 @@
     "test:coverage": "jest --coverage --colors",
     "lint": "eslint-nibble --cache src",
     "eslint": "webpack --env test --mode development",
-    "build:prod": "webpack --env.env=prod --mode production && docker build . -t nexus/vehicle-ui"
+    "build:prod": "webpack --env.env=prod && sudo docker build . -t nexus/vehicle-ui"
   },
   "dependencies": {
     "@atlaskit/avatar": "^16.0.8",
@@ -142,7 +142,9 @@
     "jest-transform-stub": "^2.0.0",
     "node-sass": "^4.11.0",
     "nwb": "0.21.x",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "sass-loader": "^7.1.0",
+    "terser-webpack-plugin": "^2.3.5",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.9",
