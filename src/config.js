@@ -72,7 +72,7 @@ export async function setEnvConfiguration (env) {
         const configFile = getConfigFile(env);
         const {data} = await axios.get(configFile);
         if (isObject(data)) {
-            config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: true});
+            config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: false});
             return true;
         }
         return JSON.parse(data);

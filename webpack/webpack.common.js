@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: [
+        // require.resolve('react-hot-loader/patch'),
         require.resolve('@babel/polyfill'),
         './src/index.js',
     ],
@@ -19,6 +20,11 @@ module.exports = {
                 include: path.resolve(__dirname, '../', 'src'),
                 exclude: /node_modules/,
                 use: ['babel-loader', 'eslint-loader'],
+            },
+            {
+                test: /\.(js|jsx)$/,
+                use: 'react-hot-loader/webpack',
+                include: /node_modules/
             },
             {
                 test: /\.(gif|png|jpe?g)$/i,
@@ -42,6 +48,7 @@ module.exports = {
                 __dirname,
                 'src/store-persist-config/packages/redux-persist-transform-filter/index.js'
             ),
+            'react-dom': '@hot-loader/react-dom',
         }
     },
     plugins: [
