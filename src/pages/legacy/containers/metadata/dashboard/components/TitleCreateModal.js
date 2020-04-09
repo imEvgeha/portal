@@ -2,10 +2,10 @@ import React from 'react';
 import { ModalFooter, ModalHeader, Modal, Button, ModalBody, Alert, Row, Col, Label, Container, Progress, FormGroup } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import '../Title.scss';
 import { titleService } from '../../service/TitleService';
-import {connect} from 'react-redux';
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
 
@@ -15,9 +15,6 @@ class TitleCreate extends React.Component {
         super(props);
         this.state = {
             errorMessage: '',
-
-            isFailed: false,
-            loading: false,
             seasonChecked: true,
             episodeChecked: true,
             seriesChecked: true,
@@ -27,7 +24,6 @@ class TitleCreate extends React.Component {
             isEpisodeNumberRequired: false,
             isSyncVZ: false,
             isSyncMovida: false,
-
             titleForm: {
                 title: '',
                 contentType: '',
@@ -112,20 +108,15 @@ class TitleCreate extends React.Component {
     };
 
     onSubmit = () => {
-        this.setState({ loading: true, errorMessage: '' });
-
+        this.setState({ errorMessage: '' });
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
         titleService.createTitle(title, isSyncVZ, isSyncMovida).then(() => {
             this.form && this.form.reset();
             this.cleanFields();
-            this.setState({ loading: false, errorMessage: 'Title created successfully.', isFailed: false });
-            
-            setTimeout(() => {
-                this.toggle();
-            }, 2000);
-        }).catch(() => {
-            this.setState({ loading: false, errorMessage: 'Title creation failed!', isFailed: true });
+            this.toggle();
+        }).catch(e => {
+            this.setState({ errorMessage: get(e, 'response.data.description', 'Title creation failed!') });
         });
     };
 
@@ -175,11 +166,10 @@ class TitleCreate extends React.Component {
             seasonChecked: true,
             episodeChecked: true,
             seriesChecked: true,
-            loading: false,
-            isFailed: false,
             isReleaseYearRequired: true,
             isSeriesCompleted: false,
             isEpisodeNumberRequired: false,
+            errorMessage: ''
         });
     };
 
@@ -465,11 +455,6 @@ class TitleCreate extends React.Component {
                                         </Row>
 ) : null}
                                     { this.renderSyncCheckBoxes() }
-                                    {
-                                        this.state.loading ?
-                                            <Progress striped color="success" value="100">Creating...</Progress>
-                                            : null
-                                    }
                                 </Container>
                             </Col>
                         </Row>
@@ -478,7 +463,7 @@ class TitleCreate extends React.Component {
                         {
                             this.state.errorMessage && (
                             <div className="nx-stylish list-group">
-                                <h5 style={{ marginTop: '25px' }}><Alert color={this.state.isFailed ? 'danger' : 'success'}>{this.state.errorMessage}</Alert></h5>
+                                <Alert color='danger'>{this.state.errorMessage}</Alert>
                             </div>
                           )
 }
@@ -499,4 +484,4 @@ TitleCreate.propTypes = {
 };
 
 
-export default connect(null, null)(TitleCreate);
+export default TitleCreate;
