@@ -8,15 +8,15 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --env.env=dev --hot --inline --progress --open --client-log-level info",
-    "build": "webpack --env.env=dev",
-    "build:test": "webpack --env.env=test",
+    "start": "webpack-dev-server --config webpack/webpack.config.js --env.env=dev --hot --inline --progress --open --client-log-level info",
+    "build": "webpack --config webpack/webpack.config.js --env.env=dev", 
+    "build:analyze-dev": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
+    "build:analyze-prod": "webpack --config webpack/webpack.config.js --env.env=prod --env.addon=bundleanalyze --env.addon=bundlevisualizer",
+    "build:prod": "webpack --config webpack/webpack.config.js --env.env=prod && sudo docker build . -t nexus/vehicle-ui",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
-    "lint": "eslint-nibble --cache src",
-    "eslint": "webpack --env test --mode development",
-    "build:prod": "webpack --env.env=prod && sudo docker build . -t nexus/vehicle-ui"
+    "lint": "eslint-nibble --cache src"
   },
   "dependencies": {
     "@atlaskit/avatar": "^16.0.8",
