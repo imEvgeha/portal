@@ -76,7 +76,7 @@ const DashboardLatestAvailsCard = ({push}) => {
                 }
             },
             width:120},
-        {headerName: 'Provider', field: 'provider', width:90},
+        {headerName: 'Licensor', field: 'licensor', width:90},
         {headerName: 'Status', field: 'status', cellRendererFramework: statusIcon, width:55},
         {headerName: 'Ingest Method', field: 'ingestType', width:105},
         {
