@@ -12,7 +12,6 @@ import {
     createRightMatchingColumnDefsSelector
 } from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
-import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
 import {
     deselectIngest,
@@ -175,7 +174,6 @@ const RightsRepository = ({
     }, [selectedRepoRights]);
 
     const columnDefsClone = cloneDeep(columnDefs);
-    const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -197,7 +195,9 @@ const RightsRepository = ({
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
         if (columnDef.cellRenderer) {
-            columnDef.cellRenderer = handleRightRedirect;
+            columnDef.cellRendererParams = {
+                link: '/avails/rights/'
+            };
         }
         return columnDef;
     });

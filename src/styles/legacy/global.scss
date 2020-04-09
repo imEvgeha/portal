@@ -2,6 +2,7 @@
   background-color: rgba(255,255,255,0.4);
   border-radius: 28px;
   border: 1px solid #ccc;
+  white-space: pre;
 }
 
 .nx-stylish option {
@@ -50,7 +51,8 @@
 }
 
 .editable-container a{
-    width: 100%;
+  width: 100%;
+  white-space: pre;
 }
 
 .editable-container .btn {
@@ -122,5 +124,9 @@ input[disabled] {
 // }
 
 .ag-cell-wrapper {
-    justify-content: center;
+  justify-content: center;
+}
+
+.ag-cell.ag-cell-value {
+  white-space: pre;
 }

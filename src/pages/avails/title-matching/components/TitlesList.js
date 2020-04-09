@@ -15,7 +15,7 @@ import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColu
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import ActionsBar from './ActionsBar.js';
-import {getRepositoryName, getRepositoryCell, createLinkableCellRenderer} from '../../utils';
+import {getRepositoryName, getRepositoryCell} from '../../utils';
 import Constants from '../titleMatchingConstants';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import useMatchAndDuplicateList from '../../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
