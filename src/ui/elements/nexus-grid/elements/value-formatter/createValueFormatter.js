@@ -19,8 +19,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                 const isUTC = typeof date === 'string' && date.endsWith('Z');
 
                 return moment(date).isValid()
-                    ? `${moment(date).utc(!isUTC).format(dateFormat)} 
-                       ${moment(date).utc(!isUTC).format(TIMESTAMP_FORMAT)}`
+                    ? `${moment(date).utc(!isUTC).format(dateFormat)} ${moment(date).utc(!isUTC).format(TIMESTAMP_FORMAT)}`
                     : '';
             };
         case 'date':
