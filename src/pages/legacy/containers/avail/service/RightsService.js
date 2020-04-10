@@ -178,7 +178,7 @@ export const rightsService = {
     },
 
     advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const params = parseAdvancedFilterV2(searchCriteria);
+        const params = parseAdvancedFilter(searchCriteria);
         return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
     },
 
