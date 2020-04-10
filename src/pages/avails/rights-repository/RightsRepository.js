@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {isEmpty, isEqual, cloneDeep} from 'lodash';
+import {cloneDeep, isEmpty, isEqual} from 'lodash';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
-import {rightsService, parseAdvancedFilterV2} from '../../legacy/containers/avail/service/RightsService';
+import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import {
@@ -34,9 +34,10 @@ import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfin
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
-import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import CustomActionsCellRenderer
+    from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import usePrevious from '../../../util/hooks/usePrevious';
-import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from './util/indicator';
+import {calculateIndicatorType, INDICATOR_RED} from './util/indicator';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
 import {URL} from '../../../util/Common';
 import constants from '../constants';
@@ -143,16 +144,20 @@ const RightsRepository = ({
         if (gridApi) {
             const selectedIds = selectedRights.map(({id}) => id);
             const loadedSelectedRights = [];
-            gridApi.forEachNode((node) => {
-                const {data={}} = node;
-                if(selectedIds.includes(data.id)){
-                    loadedSelectedRights.push(data);
-                }
-            });
-            rights = loadedSelectedRights;
+
+            // Filter selected rights only for ingests
+            if (selectedIngest) {
+                gridApi.forEachNode((node) => {
+                    const {data={}} = node;
+                    if(selectedIds.includes(data.id)){
+                        loadedSelectedRights.push(data);
+                    }
+                });
+                rights = loadedSelectedRights;
+            }
         }
-        setSelectedRepoRights(getSelectedTabRights(rights));
-    }, [search, selectedRights, gridApi, isRepositoryDataLoading]);
+        setSelectedRepoRights(getSelectedRightsFromIngest(rights, selectedIngest));
+    }, [search, selectedRights, selectedIngest, gridApi, isRepositoryDataLoading]);
 
     useEffect(()=> {
         if (selectedGridApi) {
@@ -261,12 +266,26 @@ const RightsRepository = ({
                 setSelectedColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED:
+                // Get IDs from all selected rights from selectedRights ag-grid table
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
+
+                // Get ID of a right to be unselected
                 const toUnselect = selectedRepoRights
                     .map(({id}) => id)
                     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
+
+                // Get all selected rights from main ag-grid table that should be unselected
                 const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
-                nodes.forEach(node => node.setSelected(false));
+
+                // Since getSelectedNodes() from gridApi returns only visible rights and toUnselect right could
+                // be outside of that range, this check is added to manually remove it from the store.
+                // Otherwise it proceeds with normal flow through ag-grid's api and it gets removed from the state
+                // in main table's event handler.
+                if (toUnselect.length !== nodes.length) {
+                    setSelectedRights(selectedRepoRights.filter(({id}) => !toUnselect.includes(id)));
+                } else {
+                    nodes.forEach(node => node.setSelected(false));
+                }
                 break;
             case ROW_DATA_CHANGED:
                 api.setFilterModel(selectedFilter);
@@ -277,6 +296,7 @@ const RightsRepository = ({
         }
     };
 
+    // TODO
     const getSelectedTabRights = (selectedRights) => {
         const ingestHistoryAttachmentIdsParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
         if (ingestHistoryAttachmentIdsParam) {
@@ -286,6 +306,17 @@ const RightsRepository = ({
             });
         }
         return selectedRights;
+    };
+
+    // Returns only selected rights that are also included in the selected ingest
+    const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
+        const {id} = selectedIngest || {};
+
+        // If an ingest is selected, provide only selected rights that also belong to the ingest.
+        // Otherwise return all selected rights.
+        return selectedRights.filter(({availHistoryId}) => (
+            id ? availHistoryId === id : true
+        ));
     };
 
     return (
