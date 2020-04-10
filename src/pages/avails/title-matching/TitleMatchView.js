@@ -25,7 +25,7 @@ import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSel
 
 const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
 
-const IncomingRightTable =  withColumnsResizing()(NexusGrid);
+const IncomingRightTable = withColumnsResizing()(NexusGrid);
 
 const TitleMatchView = ({
     match,

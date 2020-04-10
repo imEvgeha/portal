@@ -26,6 +26,7 @@ import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {
     createRightMatchingColumnDefs,
     createNewRight,
@@ -49,6 +50,7 @@ import {
     CANCEL_BUTTON,
     MATCH_BUTTON,
 } from '../rightMatchingConstants';
+import constants from '../../constants';
 
 const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
 
@@ -56,7 +58,8 @@ const RightRepositoryNexusGrid = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
-    withInfiniteScrolling({fetchData: getRightToMatchList})
+    withInfiniteScrolling({fetchData: getRightToMatchList}),
+    withSorting(constants.INITIAL_SORT),
 )(NexusGrid);
 
 const IncomingRightNexusGrid =  withColumnsResizing()(NexusGrid);

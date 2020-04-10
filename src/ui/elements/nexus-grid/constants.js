@@ -66,6 +66,8 @@ const DATEPICKER_LABELS = ['From', 'To'];
 
 const EXCLUDED_INITIAL_FILTER_VALUES = [null, '', undefined];
 
+const DEFAULT_SORT_ORDER = ['asc', 'desc', null];
+
 export {
     GRID_EVENTS,
     DEFAULT_FILTER_PARAMS,
@@ -82,6 +84,7 @@ export {
     ROW_MODEL_TYPE,
     EXCLUDED_INITIAL_FILTER_VALUES,
     AG_GRID_COLUMN_FILTER,
+    DEFAULT_SORT_ORDER,
 };
 
 

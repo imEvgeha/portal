@@ -7,7 +7,7 @@ import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
 
 
-const Bundle = ({id, ingestType, received, provider, attachments, selectedAttachmentId, ingestClick}) => {
+const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick}) => {
     const [showIngests, setShowIngests] = useState(false);
 
     const onBundleClick = () => setShowIngests(!showIngests);
@@ -15,7 +15,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
     return (
         <div className='nexus-c-avail-bundle'>
             <div className='nexus-c-avail-bundle__cell' onClick={onBundleClick}>
-                <BundleTitle provider={provider} totalAttachments={attachments.length} />
+                <BundleTitle licensor={licensor} totalAttachments={attachments.length} />
                 <div className='nexus-c-avail-bundle__details'>
                     <span
                         className={`nexus-c-avail-bundle__chevron nexus-c-avail-bundle__chevron--is-${showIngests ? 'opened' : 'closed' }`}
@@ -35,7 +35,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
                                 key={attachment.id}
                                 attachment={attachment}
                                 received={received}
-                                provider={provider}
+                                licensor={licensor}
                                 ingestType={ingestType}
                                 ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
                                 selected={selectedAttachmentId === attachment.id}
@@ -54,7 +54,7 @@ const Bundle = ({id, ingestType, received, provider, attachments, selectedAttach
 Bundle.propTypes = {
     ingestType: PropTypes.string,
     received: PropTypes.string,
-    provider: PropTypes.string,
+    licensor: PropTypes.string,
     attachments: PropTypes.array,
     selectedAttachmentId: PropTypes.string,
     ingestClick: PropTypes.func,
@@ -63,7 +63,7 @@ Bundle.propTypes = {
 Bundle.defaultProps = {
     ingestType: '',
     received: '',
-    provider: '',
+    licensor: '',
     attachments: [],
     selectedAttachmentId: ''
 };
