@@ -49,7 +49,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                 ref={panelRef}
             >
                 {
-                    ingests.map(({id, attachments, received, provider, ingestType}) => {
+                    ingests.map(({id, attachments, received, licensor, ingestType}) => {
                         const excelAttachments = attachments.filter(a => a.attachmentType && a.attachmentType === EXCEL);
                         return (excelAttachments.length > 1) ? (
                             <Bundle
@@ -57,7 +57,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                 id={id}
                                 attachments={excelAttachments}
                                 received={received}
-                                provider={provider}
+                                licensor={licensor}
                                 ingestType={ingestType}
                                 ingestClick={ingestClick}
                                 selectedAttachmentId={selectedAttachmentId}
@@ -69,7 +69,7 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
                                 key={id}
                                 attachment={excelAttachments[0]}
                                 received={received}
-                                provider={provider}
+                                licensor={licensor}
                                 ingestType={ingestType}
                                 ingestClick={() => ingestClick({
                                          availHistoryId: id,

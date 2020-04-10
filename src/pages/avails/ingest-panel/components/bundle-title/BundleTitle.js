@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Folder from '../../../../../assets/folder.svg';
 import './BundleTitle.scss';
 
-const BundleTitle = ({provider, totalAttachments}) => (
+const BundleTitle = ({licensor, totalAttachments}) => (
     <div className='nexus-c-bundle-title'>
         <div className='nexus-c-bundle-title__details'>
             <Folder className='nexus-c-bundle-title__folder' />
-            <span className='nexus-c-bundle-title__provider'>{provider}</span>
+            <span className='nexus-c-bundle-title__licensor'>{licensor}</span>
             <span className='nexus-c-bundle-title__separator'>|</span>
             <span className='nexus-c-bundle-title__total-attachments'>{totalAttachments} Files</span>
         </div>
@@ -15,12 +15,12 @@ const BundleTitle = ({provider, totalAttachments}) => (
 );
 
 BundleTitle.propTypes = {
-    provider: PropTypes.string,
+    licensor: PropTypes.string,
     totalAttachments: PropTypes.number
 };
 
 BundleTitle.defaultProps = {
-    provider: '',
+    licensor: '',
     totalAttachments: 0
 };
 

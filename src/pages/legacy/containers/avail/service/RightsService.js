@@ -187,6 +187,10 @@ export const rightsService = {
         );
     },
 
+    advancedSearchV2: (params, page, pageSize, sortedParams) => {
+        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+    },
+
     create: (right) => {
         return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights', prepareRight(right));
     },
