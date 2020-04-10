@@ -143,7 +143,7 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
 }
 
 export function* fetchCombinedRight(requestMethod, {payload}) {
-    const {rightIds} = payload || {};
+    const {rightIds, mapping} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
@@ -151,8 +151,19 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
         });
 
         const response = yield call(requestMethod, rightIds);
-        const combinedRight = response.data;
+        let combinedRight = response.data;
 
+        // fix fields that are null but include subfields
+        mapping.forEach(({javaVariableName}) => {
+            let dotIndex = javaVariableName.indexOf('.');
+            // has subfield
+            if(dotIndex >= 0) {
+                let field = javaVariableName.substring(0, dotIndex);
+                if(combinedRight[field] === null){
+                    combinedRight[field] = {};
+                }
+            }
+        });
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_SUCCESS,
             payload: {combinedRight},
