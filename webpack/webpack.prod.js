@@ -1,15 +1,13 @@
-const path = require('path');
-const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 const {CleanWebpackPlugin} = require('clean-webpack-plugin'); 
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const paths = require('./paths');
 
-module.exports = {
+module.exports = envFile => ({
     mode: 'production',
-    devtool: shouldUseSourceMap ? 'source-map' : false,
+    devtool: (envFile && envFile.SOURCE_MAP) || false,
     bail: true,
     module: {
         rules: [
@@ -42,7 +40,7 @@ module.exports = {
         },
         minimizer: [
             new TerserPlugin({
-                sourceMap: shouldUseSourceMap,
+                sourceMap: (envFile && envFile.SOURCE_MAP) || false,
                 terserOptions: {
                     compress: {
                         warnings: false,
@@ -60,13 +58,17 @@ module.exports = {
             new OptimizeCSSAssetsPlugin(), 
         ]
     },
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    },
     plugins: [
         new CleanWebpackPlugin({
-            root: path.join(__dirname, '../dist')
+            root: paths.appBuild
         }),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: './index.html',
+            template: paths.appHtml,
             inject: true,
             minify: {
                 removeComments: true,
@@ -81,18 +83,15 @@ module.exports = {
                 minifyURLs: true,
             }
         }),
-        new Dotenv({
-            path: path.resolve(__dirname, '../') + '/.env.production',
-        }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash].css',
             chunkFilename: 'css/[id].[contenthash].chunk.css'
         }),
     ],
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: paths.appBuild,
         filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/'
     },
-};
+});

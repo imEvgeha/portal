@@ -333,7 +333,7 @@ class RightDetails extends React.Component {
                         isTimestamp={true}
                         onChange={date => {
                             /* For testing proposes */
-                            console.warn('NexusDatePicker returned: ', date);
+                            console.warn('NexusDatePicker returned: ', date); // eslint-disable-line
                         }}
                         required={required}
                         isReadOnly={readOnly}
@@ -357,7 +357,7 @@ class RightDetails extends React.Component {
                         isWithInlineEdit={true}
                         onChange={date => {
                             /* For testing proposes */
-                            console.warn('NexusDateTimePicker returned: ', date);
+                            console.warn('NexusDateTimePicker returned: ', date); // eslint-disable-line
                         }}
                         required={required}
                         isReadOnly={readOnly}

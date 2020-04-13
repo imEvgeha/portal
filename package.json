@@ -8,7 +8,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack/webpack.config.js --env.env=dev --progress",
+    "start": "webpack-dev-server --config webpack/webpack.config.js --env.env=dev --progress --color",
     "build": "webpack --config webpack/webpack.config.js --env.env=dev",
     "build:analyze-dev": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
     "build:analyze-prod": "webpack --config webpack/webpack.config.js --env.env=prod --env.addon=bundleanalyze --env.addon=bundlevisualizer",
@@ -123,7 +123,6 @@
     "browser-sync-webpack-plugin": "^2.2.2",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^4.5.2",
-    "dotenv-webpack": "^1.7.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",

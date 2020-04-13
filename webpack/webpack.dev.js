@@ -1,14 +1,13 @@
-const path = require('path');
 const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const paths = require('./paths');
 
-module.exports = {
+module.exports = (envFile) => ({
     mode: 'development',
-    devtool: 'cheap-module-eval-source-map',
+    devtool: (envFile && envFile.SOURCE_MAP) || 'cheap-module-eval-source-map',
     module: {
         rules: [
             {
@@ -23,12 +22,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: './index.html',
+            template: paths.appHtml,
             inject: true,
-        }),
-        new Dotenv({
-            path: path.resolve(__dirname, '../') + '/.env.development',
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
@@ -39,7 +34,7 @@ module.exports = {
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), 
     ],
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: paths.appBuild,
         filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[id].chunk.js',
         publicPath: '/',
@@ -48,24 +43,26 @@ module.exports = {
         hotUpdateMainFilename: 'hot/[hash].hot-update.json',
     },
     devServer: {
-        port: 3000,
+        port: (envFile && envFile.PORT) || 3000,
         historyApiFallback: true,
         watchOptions: {
             ignored: /node_modules/
         },
         clientLogLevel: 'info',
         hot: true,
-        // lazy: true,
-        // inline: true,
+        inline: true,
         open: true,
-        stats: 'minimal',
-        // quiet: true,
-        // noInfo: true,
+        stats: (envFile && envFile['BUILD_STATS']) || 'normal',
     },
     optimization: {
         namedModules: true,
     },
     performance: {
-        hints: false, 
+        // hints: false, 
     },
-};
+    optimization: {
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false,
+    },
+});

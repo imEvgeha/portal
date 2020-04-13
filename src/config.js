@@ -80,3 +80,14 @@ export async function setEnvConfiguration (env) {
         throw error;
     }
 }
+
+// App config
+export const appConfig = {
+    // General
+    VERSION: process.env.VERSION,
+    BUILD: process.env.BUILD,
+    ENVIRONMENT: process.env.NODE_ENV,
+    ROOT: '/',
+    BASE_URL: process.env.BASE_URI,
+    LOCALE: process.env.LOCALE || 'en',
+};

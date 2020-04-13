@@ -380,11 +380,11 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'localdate' : return renderCloseableLocalDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
                                 default:
-                                    console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);
+                                    console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName); // eslint-disable-line
                             }
                         } else {
                             if(key !== 'availHistoryIds') {
-                                console.warn('Cannot determine schema for field: ' + key);
+                                console.warn('Cannot determine schema for field: ' + key); // eslint-disable-line
                             }
                         }
                     }

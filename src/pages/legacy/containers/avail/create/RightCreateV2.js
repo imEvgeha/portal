@@ -245,7 +245,7 @@ class RightCreate extends React.Component {
                         label={displayName}
                         onChange={date => {
                             /* For testing proposes */
-                            console.warn('NexusDatePicker returned: ', date);
+                            console.warn('NexusDatePicker returned: ', date); // eslint-disable-line
                         }}
                         required={required}
                     />

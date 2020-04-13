@@ -1,15 +1,17 @@
 const path = require('path');
+const webpack = require('webpack');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const appPaths = require('./paths');
 
-module.exports = {
+module.exports = (envKeys) => ({
     entry: [
-        // require.resolve('react-hot-loader/patch'),
         require.resolve('@babel/polyfill'),
-        './src/index.js',
+        appPaths.appIndexJs,
     ],
     module: {
+        strictExportPresence: true,
         rules: [
             {
                 test: /\.svg$/,
@@ -17,14 +19,9 @@ module.exports = {
             },
             {
                 test: /\.(js|jsx)$/,
-                include: path.resolve(__dirname, '../', 'src'),
+                include: appPaths.appSrc,
                 exclude: /node_modules/,
                 use: ['babel-loader', 'eslint-loader'],
-            },
-            {
-                test: /\.(js|jsx)$/,
-                use: 'react-hot-loader/webpack',
-                include: /node_modules/
             },
             {
                 test: /\.(gif|png|jpe?g)$/i,
@@ -42,7 +39,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx', '.json'],
         alias: {
             'redux-persist-transform-filter': path.resolve(
                 __dirname,
@@ -52,10 +49,10 @@ module.exports = {
         }
     },
     plugins: [
+        new webpack.DefinePlugin(envKeys),
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
-            // relative path is from src
-            { from: 'src/assets/favicon.ico' }, // <- your path to favicon
+            { from: 'public/favicon.ico' },
             { from: 'profile/config.json' },
             { from: 'profile/configQA.json' },
             { from: 'profile/availMapping.json' },
@@ -63,7 +60,4 @@ module.exports = {
             { from: 'profile/titleMatchingRightMappings.json'},
         ]),
     ],
-    // devServer: {
-    //     contentBase: './dist',
-    // },
-};
+});

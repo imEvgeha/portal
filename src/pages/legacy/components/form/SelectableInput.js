@@ -373,7 +373,7 @@ class SelectableInput extends Component {
                 case 'localdate' : return renderRangeDatepicker(selected, displayName, true);
                 case 'boolean' : return renderBooleanField(selected, displayName);
                 default:
-                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
+                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName); // eslint-disable-line
             }
 
         };

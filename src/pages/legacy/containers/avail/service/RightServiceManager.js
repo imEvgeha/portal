@@ -36,8 +36,8 @@ export const rightServiceManager = {
             }
             ).catch((error) => {
                 store.dispatch(resultPageLoading(false));
-                console.warn('Unexpected error');
-                console.error(error);
+                console.warn('unexpected error'); // eslint-disable-line
+                console.error(error); // eslint-disable-line
             });
     },
 
@@ -47,8 +47,8 @@ export const rightServiceManager = {
                 return response;
             }).catch((error) => {
                  store.dispatch(resultPageLoading(false));
-                 console.warn('Unexpected error');
-                 console.error(error);
+                 console.warn('unexpected error'); // eslint-disable-line
+                 console.error(error); // eslint-disable-line
              });
 
     }

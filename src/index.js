@@ -31,10 +31,12 @@ import {
     loadManualRightEntryState
 } from './pages/legacy/stores/index'; // TODO: remove 
 import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
-import routes from './routes';
+import routes from './routes/routes';
+// import routes from './routes';
+import Router from './Router';
 
-// setEnvConfiguration('qa')
-setEnvConfiguration()
+setEnvConfiguration('qa')
+// setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         console.error(error, 'error');
@@ -60,11 +62,11 @@ const App = () => (
                     <NexusModalProvider>
                         <PersistGate loading={null} persistor={persistor}>
                             <AuthProvider>
+                                <Toast />
                                 <ConnectedRouter history={history}>
                                     <>
-                                        <Toast />
                                         <NexusLayout>
-                                            {routes}
+                                            <Router routes={routes} />
                                         </NexusLayout>
                                     </>
                                 </ConnectedRouter>
@@ -91,7 +93,8 @@ if (module.hot) {
     module.hot.accept(
          ([
             './ui/elements/nexus-layout/NexusLayout', 
-            './routes', 
+            './Router',
+            './routes/routes', 
             './saga',
         ])
         , () => {

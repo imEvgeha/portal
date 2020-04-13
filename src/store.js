@@ -8,20 +8,21 @@ import createRootReducer from './reducer';
 import {LOGOUT} from './auth/authActionTypes';
 import storage from 'redux-persist/lib/storage';
 import {keycloak} from './auth/keycloak';
+import {appConfig} from './config';
 
 // configure store
 const configureStore = (initialState = {}, history) => {
+    console.log(appConfig, 'con'); // eslint-disable-line
     const sagaMiddleware = createSagaMiddleware();
     let middleware = [
         routerMiddleware(history),
         sagaMiddleware,
     ];
-    // TODO - activate logger middleware when webpack config is set 
-    // so we can access to environment variables via process.env
-    const loggerMiddleware = createLogger({
-        predicate: () => process.env.NODE_ENV === 'development',
-    });
-    middleware = [...middleware, loggerMiddleware];
+    
+    // log redux actions 
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undfined') {
+        middleware = [...middleware, createLogger()];
+    }
 
     // switch to root redux persist
     // const rootReducer = createPersistReducer(persistConfig, createRootReducer(history));

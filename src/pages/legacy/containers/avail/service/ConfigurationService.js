@@ -65,7 +65,7 @@ const loadConfiguration = (configuration) => {
         store.dispatch(loadReports(configuration.avails.reports));
     } else {
         store.dispatch(loadReports([]));
-        console.warn('No reports in configuration, init empty list');
+        console.warn('No reports in configuration, init empty list'); // eslint-disable-line
     }
 };
 

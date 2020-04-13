@@ -39,6 +39,8 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
             actionTypes.FETCH_AVAIL_MAPPING_SUCCESS,
             actionTypes.FETCH_AVAIL_MAPPING_ERROR,
         ]);
+        console.warn(fetchMappingResult, 'mapp') // eslint-disable-line
+        debugger;
         if (!fetchMappingResult.error) {
             const {payload} = fetchMappingResult;
             const mappings = (payload.mappings && payload.mappings.filter(el => el.dataType).filter(el => el.displayName)) || [];
