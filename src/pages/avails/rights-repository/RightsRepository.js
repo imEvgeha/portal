@@ -272,7 +272,7 @@ const RightsRepository = ({
                 api.forEachNode((node) => {
                     const {data = {}} = node;
 
-                    const wasSelected = clonedSelectedRights.find(el => el.id === data.id) !== undefined;
+                    const wasSelected = clonedSelectedRights.find(right => right.id === data.id) !== undefined;
 
                     // If it was selected and currently is not, then add it to the list of values to be deselected
                     // otherwise add it to selected rights
@@ -284,7 +284,7 @@ const RightsRepository = ({
                 });
 
                 // Filter out rights that were deselected
-                const updatedSelectedRights = clonedSelectedRights.filter(el => !idsToRemove.includes(el.id));
+                const updatedSelectedRights = clonedSelectedRights.filter(right => !idsToRemove.includes(right.id));
 
                 // Pack the new selected rights into a payload for the store update; converts array of objects
                 // to object of objects where the keys are object(right) ids.
