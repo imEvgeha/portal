@@ -12,7 +12,6 @@ import {
     createRightMatchingColumnDefsSelector
 } from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
-import {createLinkableCellRenderer} from '../utils';
 import Ingest from './components/ingest/Ingest';
 import {
     deselectIngest,
@@ -32,6 +31,7 @@ import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilte
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
 import CustomActionsCellRenderer
@@ -47,13 +47,15 @@ const RightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
-    withInfiniteScrolling({fetchData: rightsService.advancedSearch}),
+    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2}),
+    withSorting(constants.INITIAL_SORT),
 )(NexusGrid);
 
-const SelectedRighstRepositoryTable = compose(
+const SelectedRightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
+    withSorting(),
 )(NexusGrid);
 
 const RightsRepository = ({
@@ -176,7 +178,6 @@ const RightsRepository = ({
     }, [selectedRepoRights, selectedGridApi]);
 
     const columnDefsClone = cloneDeep(columnDefs);
-    const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
 
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -198,7 +199,9 @@ const RightsRepository = ({
 
     const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
         if (columnDef.cellRenderer) {
-            columnDef.cellRenderer = handleRightRedirect;
+            columnDef.cellRendererParams = {
+                link: '/avails/rights/'
+            };
         }
         return columnDef;
     });
@@ -376,7 +379,7 @@ const RightsRepository = ({
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
             />
-            <SelectedRighstRepositoryTable
+            <SelectedRightsRepositoryTable
                 id='selectedRightsRepo'
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit

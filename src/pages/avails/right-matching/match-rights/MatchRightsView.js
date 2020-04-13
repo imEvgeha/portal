@@ -48,8 +48,8 @@ const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = compose(
     withColumnsResizing(),
-    withEditableColumns())
-(NexusGrid);
+    withEditableColumns(),
+)(NexusGrid);
 const MatchedRightsNexusGrid =  withColumnsResizing()(NexusGrid);
 
 

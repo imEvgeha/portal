@@ -2,7 +2,6 @@ import React from 'react';
 import {get, isEqual, isEmpty, cloneDeep} from 'lodash';
 import createValueFormatter from '../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import createLoadingCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/createLoadingCellRenderer';
 import Constants from './title-matching/titleMatchingConstants';
 import TitleSystems from '../legacy/constants/metadata/systems';
 import {getDeepValue, isObject} from '../../util/Common';
@@ -15,7 +14,7 @@ export function createColumnDefs(payload) {
             field: javaVariableName,
             headerName: displayName,
             colId: javaVariableName,
-            cellRenderer: createLoadingCellRenderer,
+            cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
             width: (dataType === 'datetime') ? 235 : 150,
         };
@@ -51,46 +50,6 @@ export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
         width: 150,
         cellRendererFramework: repositoryCell
     };
-};
-
-export const createLinkableCellRenderer = (params, location = '/metadata/detail/') => {
-    const {data, colDef, valueFormatted} = params;
-    if (!data && colDef !== 'actions') {
-        return `<img src=${loadingGif} alt='loadingSpinner' />`;
-    }
-    let value = getDeepValue(data, colDef.field);
-    if (isObject(value)) {
-        value = JSON.stringify(value);
-    }
-    if (Array.isArray(value) && value.length > 1){
-        value = value.join(', ');
-    }
-    const content = valueFormatted || value;
-    if (content || content === false) {
-        let highlighted = false;
-        if (data && data.highlightedFields) {
-            highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
-        }
-        const displayValue = `
-        <div class="nexus-c-create-loading-cell-renderer">
-            <div class="nexus-c-create-loading-cell-renderer__value ${highlighted ? 'font-weight-bold' : ''}">
-                ${String(content)}
-            </div>
-            ${highlighted ? `
-                <span 
-                    title='* fields in bold are original values provided by the studios'
-                    class="nexus-c-create-loading-cell-renderer__highlighted"
-                >
-                    <i class="far fa-question-circle nexus-c-cerate-loading-cell-renderer__icon"></i>
-                </span>
-            ` : ''}
-        </div>`;
-        return `
-            <a href=${location + data.id} target="_blank" />
-                ${displayValue}
-            </a>`;
-    }
-    return null;
 };
 
 export const createColumnSchema = (list, field) => {
