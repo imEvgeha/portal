@@ -78,6 +78,16 @@ const CreateTitleForm = ({close, focusedRight}) => {
         });
     };
 
+    const changeHandler = (value, isFilled) => {
+        const values = {};
+        Object.keys(value).forEach(field => {
+            if(value[field] !== undefined){
+                values[field] = value[field];
+            }
+        });
+        setTitleValue({...titleValue, ...values, isFilled});
+    };
+
     const renderer = (
         field,
         onChange,
@@ -106,7 +116,7 @@ const CreateTitleForm = ({close, focusedRight}) => {
             <Form
                 renderer={renderer}
                 defaultValue={titleValue}
-                onChange={(value, isFilled) => setTitleValue({...value, isFilled})}
+                onChange={changeHandler}
             >
                 <div className="nexus-c-create-title-form__fields">
                     <FormFragment defaultFields={NEW_TITLE_FORM_SCHEMA} />
