@@ -39,8 +39,6 @@ import CustomActionsCellRenderer
 import usePrevious from '../../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_RED} from './util/indicator';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
-import {URL} from '../../../util/Common';
-import constants from '../constants';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
@@ -140,23 +138,24 @@ const RightsRepository = ({
     }, [rightsFilter, mapping]);
 
     useEffect(() => {
-        let rights = selectedRights;
+        let newSelectedRepoRights = cloneDeep(selectedRights);
+
         if (gridApi) {
-            const selectedIds = selectedRights.map(({id}) => id);
+            const selectedIds = newSelectedRepoRights.map(({id}) => id);
             const loadedSelectedRights = [];
 
-            // Filter selected rights only for ingests
+            // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.forEachNode((node) => {
-                    const {data={}} = node;
-                    if(selectedIds.includes(data.id)){
-                        loadedSelectedRights.push(data);
+                gridApi.getSelectedRows().forEach((row) => {
+                    if (selectedIds.includes(row.id)){
+                        loadedSelectedRights.push(row);
                     }
                 });
-                rights = loadedSelectedRights;
+                newSelectedRepoRights = loadedSelectedRights;
             }
         }
-        setSelectedRepoRights(getSelectedRightsFromIngest(rights, selectedIngest));
+
+        setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
     }, [search, selectedRights, selectedIngest, gridApi, isRepositoryDataLoading]);
 
     useEffect(()=> {
@@ -174,7 +173,7 @@ const RightsRepository = ({
         if (selectedGridApi && selectedRepoRights.length > 0) {
             selectedGridApi.selectAll();
         }
-    }, [selectedRepoRights]);
+    }, [selectedRepoRights, selectedGridApi]);
 
     const columnDefsClone = cloneDeep(columnDefs);
     const handleRightRedirect = params => createLinkableCellRenderer(params, '/avails/rights/');
@@ -230,19 +229,62 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED:
-                const newSelectedRights = cloneDeep(selectedRights);
+                const clonedSelectedRights = cloneDeep(selectedRights);
+
+                // Get selected rows from both tables
+                const rightsTableSelectedRows = api.getSelectedRows() || [];
+                const selectedTableSelectedRows = selectedGridApi.getSelectedRows() || [];
+
+                // Extract IDs of selected rights in main table
+                const allSelectedRowsIds = rightsTableSelectedRows.map(({id}) => id);
+
                 const idsToRemove = [];
+
+                // This was added to prevent having to double click on rights from ingests when viewing
+                // all selected rights. It's a dirty fix to check if there is a difference between selected Rights
+                // and selected rows in ag-grid. If there are less in the table, then find the difference and remove it.
+                //
+                // N.B. This happens only when showing all selected rights.
+                //      Checking if both tables have equal amount of selected rows is necessary because when page
+                //      is freshly loaded and we have selected rights from the store, while they appear in the table
+                //      and appear selected, they are not selected from the main table's perspective, so this would
+                //      cause loss of data without the check, as rights from ingest would have been removed.
+                if(!selectedIngest
+                    && rightsTableSelectedRows.length === selectedTableSelectedRows.length
+                    && clonedSelectedRights.length > rightsTableSelectedRows.length
+                ) {
+                    // Filter out the selected rights whose rows are not selected. Basically finding the row
+                    // that was just deselected.
+                    const updatedSelectedRights = clonedSelectedRights.filter(right => allSelectedRowsIds.includes(right.id));
+
+                    // Pack the new selected rights into a payload for the store update; converts array of objects
+                    // to object of objects where the keys are object(right) ids.
+                    const payload = updatedSelectedRights.reduce((o, curr) => (o[curr.id] = curr, o), {});
+                    setSelectedRights(payload);
+                    break;
+                }
+
+                // Select/deselect process
                 api.forEachNode((node) => {
-                   const {data = {}} = node;
-                   const wasSelected = selectedRights.find(el => el.id === data.id) !== undefined;
-                   if (wasSelected && !node.isSelected()) {
-                       idsToRemove.push(data.id);
-                   } else if (!wasSelected && node.isSelected()) {
-                       newSelectedRights.push(data);
-                   }
+                    const {data = {}} = node;
+
+                    const wasSelected = clonedSelectedRights.find(el => el.id === data.id) !== undefined;
+
+                    // If it was selected and currently is not, then add it to the list of values to be deselected
+                    // otherwise add it to selected rights
+                    if (wasSelected && !node.isSelected()) {
+                        idsToRemove.push(data.id);
+                    } else if (!wasSelected && node.isSelected()) {
+                        clonedSelectedRights.push(data);
+                    }
                 });
-                const allSelectedRows = newSelectedRights.filter(el => !idsToRemove.includes(el.id));
-                const payload = allSelectedRows.reduce((o, curr) => (o[curr.id] = curr, o), {});
+
+                // Filter out rights that were deselected
+                const updatedSelectedRights = clonedSelectedRights.filter(el => !idsToRemove.includes(el.id));
+
+                // Pack the new selected rights into a payload for the store update; converts array of objects
+                // to object of objects where the keys are object(right) ids.
+                const payload = updatedSelectedRights.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
             case FILTER_CHANGED:
@@ -269,22 +311,21 @@ const RightsRepository = ({
                 // Get IDs from all selected rights from selectedRights ag-grid table
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
 
-                // Get ID of a right to be unselected
-                const toUnselect = selectedRepoRights
+                // Get ID of a right to be deselected
+                const toDeselectIds = selectedRepoRights
                     .map(({id}) => id)
                     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
 
-                // Get all selected rights from main ag-grid table that should be unselected
-                const nodes = gridApi.getSelectedNodes().filter(({data}) => toUnselect.includes(data.id));
+                // Get all selected nodes from main ag-grid table and filter only ones to deselect
+                const nodesToDeselect = gridApi.getSelectedNodes().filter(({data = {}}) => toDeselectIds.includes(data.id));
 
-                // Since getSelectedNodes() from gridApi returns only visible rights and toUnselect right could
-                // be outside of that range, this check is added to manually remove it from the store.
-                // Otherwise it proceeds with normal flow through ag-grid's api and it gets removed from the state
-                // in main table's event handler.
-                if (toUnselect.length !== nodes.length) {
-                    setSelectedRights(selectedRepoRights.filter(({id}) => !toUnselect.includes(id)));
+                // If row was unselected but it was not found via gridApi, then manually deselect it and
+                // update the store. Otherwise proceed with normal flow via gridApi and update the store via
+                // onRightsRepositoryGridEvent handler
+                if (!nodesToDeselect.length && api.getSelectedRows().length < selectedRepoRights.length) {
+                    setSelectedRights(selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)));
                 } else {
-                    nodes.forEach(node => node.setSelected(false));
+                    nodesToDeselect.forEach(node => node.setSelected(false));
                 }
                 break;
             case ROW_DATA_CHANGED:
@@ -296,27 +337,17 @@ const RightsRepository = ({
         }
     };
 
-    // TODO
-    const getSelectedTabRights = (selectedRights) => {
-        const ingestHistoryAttachmentIdsParam = URL.getParamIfExists(constants.INGEST_HISTORY_ATTACHMENT_IDS);
-        if (ingestHistoryAttachmentIdsParam) {
-            return selectedRights.filter(el => {
-                const {ingestHistoryAttachmentIds} = el;
-                return ingestHistoryAttachmentIds === ingestHistoryAttachmentIdsParam;
-            });
-        }
-        return selectedRights;
-    };
-
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
         const {id} = selectedIngest || {};
 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
-        return selectedRights.filter(({availHistoryId}) => (
-            id ? availHistoryId === id : true
-        ));
+        return (
+            id
+                ? selectedRights.filter(({availHistoryId}) => (availHistoryId === id))
+                : selectedRights
+        );
     };
 
     return (
