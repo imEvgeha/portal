@@ -39,6 +39,7 @@ import CustomActionsCellRenderer
 import usePrevious from '../../../util/hooks/usePrevious';
 import {calculateIndicatorType, INDICATOR_RED} from './util/indicator';
 import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
+import constants from '../constants';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
