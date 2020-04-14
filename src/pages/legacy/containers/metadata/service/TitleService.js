@@ -26,7 +26,13 @@ const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     }
     return null;
 };
-
+const httpNoErrorModal = Http.create({
+    defaultErrorHandling: false,
+    successToast: {
+        description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+        actions: [{ content: 'View title', onClick: onViewTitleClick }]
+    }
+});
 export const titleService = {
 
     freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
@@ -90,17 +96,10 @@ export const titleService = {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
 
-        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
+        return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
     },
 
     createTitleWithoutErrorModal: (title) => {
-        const httpNoErrorModal = Http.create({
-            defaultErrorHandling: false,
-            successToast: {
-                description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                actions: [{ content: 'View title', onClick: onViewTitleClick }]
-            }
-        });
         return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
     },
 

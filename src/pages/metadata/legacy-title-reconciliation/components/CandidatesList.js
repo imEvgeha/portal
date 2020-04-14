@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
 import Button from '@atlaskit/button';
@@ -11,6 +10,7 @@ import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
@@ -18,13 +18,14 @@ import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
 import mappings from '../../../../../profile/titleMatchingMappings';
-import {getRepositoryName, createLinkableCellRenderer} from '../../../avails/utils';
+import {getRepositoryName} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
+    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
+    withSorting(),
 )(NexusGrid);
 
 const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {

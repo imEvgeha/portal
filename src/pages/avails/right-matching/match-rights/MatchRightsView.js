@@ -48,8 +48,8 @@ const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = compose(
     withColumnsResizing(),
-    withEditableColumns())
-(NexusGrid);
+    withEditableColumns(),
+)(NexusGrid);
 const MatchedRightsNexusGrid =  withColumnsResizing()(NexusGrid);
 
 
@@ -104,7 +104,7 @@ const MatchRightView = ({
                 .filter(right => selectedMatchedRightIds.some(id => id === right.id));
             const schemas = createSchemaForColoring(selectedMatchRights, columnDefs);
             setCellColoringSchema(schemas);
-            fetchCombinedRight(selectedMatchedRightIds);
+            fetchCombinedRight(selectedMatchedRightIds, mapping);
         }
     }, [matchedRights, selectedMatchedRightIds]);
 
@@ -342,7 +342,7 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRights(payload)),
-    fetchCombinedRight: (focusedRightId, matchedRightIds) => dispatch(fetchCombinedRight(focusedRightId, matchedRightIds)),
+    fetchCombinedRight: (focusedRightId, matchedRightIds, mapping) => dispatch(fetchCombinedRight(focusedRightId, matchedRightIds, mapping)),
     saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
 });
