@@ -152,7 +152,7 @@ module.exports = {
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   'testPathIgnorePatterns': [
-      '<rootDir>/webpack.test.js',
+      '<rootDir>/webpack/webpack.test.js',
     '\\\\node_modules\\\\'
   ],
 
