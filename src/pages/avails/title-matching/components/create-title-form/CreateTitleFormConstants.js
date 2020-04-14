@@ -7,7 +7,7 @@ const NEW_TITLE_LABEL_CANCEL = 'Cancel';
 const NEW_TITLE_LABEL_SUBMIT = 'Match & Create';
 const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
 const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
-const NEW_TITLE_FORM_SCHEMA = [
+const getTitleFormSchema = (currentValue) => ([
     {
         name: 'title',
         id: 'title',
@@ -23,6 +23,7 @@ const NEW_TITLE_FORM_SCHEMA = [
                 message: `Title must have less than ${MetadataConstants.MAX_TITLE_LENGTH} characters`
             },
         },
+        defaultValue: currentValue.title
     },
     {
         name: 'contentType',
@@ -31,13 +32,10 @@ const NEW_TITLE_FORM_SCHEMA = [
         type: 'select',
         shouldFitContainer: true,
         omitWhenHidden: true,
+        defaultValue: currentValue.contentType,
         placeholder: 'Select content type',
         required: true,
-        disabledWhen: [
-            {
-              field: 'contentType'
-            }
-        ],
+        defaultDisabled: true,
         options: [
             {
                 items: [
@@ -54,12 +52,13 @@ const NEW_TITLE_FORM_SCHEMA = [
     },
     {
         name: 'seriesTitleName',
-        id: 'titleSeriesName',
+        id: 'seriesTitleName',
         label: 'Series Title Name',
         type: 'text',
         placeholder: 'Enter Series Name',
         shouldFitContainer: true,
         omitWhenHidden: true,
+        defaultValue: '',
         requiredWhen: [
             {
                 field: 'contentType',
@@ -83,8 +82,9 @@ const NEW_TITLE_FORM_SCHEMA = [
     },
     {
         name: 'seasonNumber',
-        id: 'titleSeasonNumber',
+        id: 'seasonNumber',
         label: 'Season',
+        defaultValue: '',
         placeholder: 'Enter Season Number',
         type: 'text',
         shouldFitContainer: true,
@@ -122,9 +122,10 @@ const NEW_TITLE_FORM_SCHEMA = [
     },
     {
         name: 'episodeNumber',
-        id: 'titleEpisodeNumber',
+        id: 'episodeNumber',
         label: 'Episode',
         type: 'text',
+        defaultValue: '',
         placeholder: 'Enter Episode Number',
         shouldFitContainer: true,
         omitWhenHidden: true,
@@ -165,6 +166,7 @@ const NEW_TITLE_FORM_SCHEMA = [
         placeholder: 'Enter Release Year',
         shouldFitContainer: true,
         omitWhenHidden: true,
+        defaultValue: currentValue.releaseYear,
         requiredWhen: [
             {
                 field: 'contentType',
@@ -192,13 +194,13 @@ const NEW_TITLE_FORM_SCHEMA = [
             },
         },
     },
-];
+]);
 export default {
     NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-    NEW_TITLE_FORM_SCHEMA,
     NEW_TITLE_MODAL_TITLE,
     NEW_TITLE_LABEL_CANCEL,
     NEW_TITLE_LABEL_SUBMIT,
     NEW_TITLE_ERROR_ALREADY_EXISTS,
     NEW_TITLE_ERROR_EMPTY_FIELDS,
+    getTitleFormSchema,
 };
