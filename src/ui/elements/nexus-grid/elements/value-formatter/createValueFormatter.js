@@ -1,33 +1,14 @@
-import moment from 'moment';
-import {TIMESTAMP_FORMAT} from '../../../nexus-date-and-time-elements/constants';
-import {store} from '../../../../../index';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../util/Common';
-import {DIRECTOR, isCastPersonType} from '../../../../../pages/legacy/constants/metadata/configAPI';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../../util/DateTimeUtils';
 
 const createValueFormatter = ({dataType, javaVariableName}) => {
-    const {locale} = store.getState().locale;
-
-    // Create date placeholder based on locale
-    const dateFormat = getDateFormatBasedOnLocale(locale);
-
     switch (dataType) {
-        case 'localdate':
-        case 'datetime':
+        case DATETIME_FIELDS.TIMESTAMP:
+        case DATETIME_FIELDS.BUSINESS_DATETIME:
+        case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
             return (params) => {
                 const {data = {}} = params || {};
                 const {[javaVariableName]: date = ''} = data || {};
-                const isUTC = typeof date === 'string' && date.endsWith('Z');
-
-                return moment(date).isValid()
-                    ? `${moment(date).utc(!isUTC).format(dateFormat)} 
-                       ${moment(date).utc(!isUTC).format(TIMESTAMP_FORMAT)}`
-                    : '';
-            };
-        case 'date':
-            return (params) => {
-                const {data = {}} = params || {};
-                const {[javaVariableName]: date} = data || {};
-                return parseSimulcast(date, dateFormat, false);
+                return ISODateToView(date, dataType);
             };
         case 'select':
             if (javaVariableName === 'contentType') {

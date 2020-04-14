@@ -1,5 +1,6 @@
 import moment from 'moment';
-import {getDateFormatBasedOnLocale} from './Common';
+import {getDateFormatBasedOnLocale} from './DateTimeUtils';
+
 const datePattern = new RegExp('[0-9]{2}[\\/][0-9]{2}[\\/][0-9]{4}');
 
 function validateDate(date, locale='en') {

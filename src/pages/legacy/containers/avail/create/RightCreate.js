@@ -25,6 +25,7 @@ import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elem
 import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
+import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
 
 
 const mapStateToProps = state => {
@@ -164,7 +165,7 @@ class RightCreate extends React.Component {
     handleDatepickerChange(name, displayName, date) {
         const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
         let val = date;
-        if(date && mapping.dataType === 'date') {
+        if(date && mapping.dataType === DATETIME_FIELDS.REGIONAL_MIDNIGHT) {
             val = momentToISO(moment(date).utcOffset(0, true));
         }
         this.checkRight(name, val, true);
@@ -750,11 +751,11 @@ class RightCreate extends React.Component {
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'localdate' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
                             break;
-                        case 'date' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
                              break;
-                        case 'datetime' : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true));
+                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true));
                             break;
                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;

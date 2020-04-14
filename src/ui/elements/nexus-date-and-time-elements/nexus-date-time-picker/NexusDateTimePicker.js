@@ -6,7 +6,6 @@ import {useIntl} from 'react-intl';
 import Select from '@atlaskit/select';
 import InlineEdit from '@atlaskit/inline-edit';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
-import {getDateFormatBasedOnLocale} from '../../../../util/Common';
 import './NexusDateTimePicker.scss';
 import {
     RELATIVE_TIME_LABEL,
@@ -14,6 +13,7 @@ import {
     TIME_FORMAT,
     TIMESTAMP_FORMAT,
 } from '../constants';
+import {getDateFormatBasedOnLocale} from '../../../../util/DateTimeUtils';
 
 const NexusDateTimePicker = ({
     id,

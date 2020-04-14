@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import {useIntl} from 'react-intl';
 import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
-import {getDateFormatBasedOnLocale, getDeepValue} from '../../../../util/Common';
+import {getDeepValue} from '../../../../util/Common';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../util/DateTimeUtils';
 import LoadingGif from '../../../../assets/img/loading.gif';
-import {TIMESTAMP_FORMAT} from '../../../../ui/elements/nexus-date-and-time-elements/constants';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {
@@ -20,34 +18,21 @@ const withRightsResultsTable = BaseComponent => {
     const selectRightMode = 'selectRightsMode';
 
     const ComposedComponent = (props) => {
-        // Get locale provided by intl
-        const intl = useIntl();
-        const {locale = 'en-US'} = intl || {};
-
-        // Create date placeholder based on locale
-        const dateFormat = getDateFormatBasedOnLocale(locale);
-
         // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
             const formatter = (column) => {
                 const {dataType, javaVariableName} = column;
                 switch (dataType) {
-                    case 'localdate':
-                    case 'datetime':
+                    case DATETIME_FIELDS.TIMESTAMP:
+                    case DATETIME_FIELDS.BUSINESS_DATETIME:
+                    case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                         return (params) => {
                         const {data} = params;
                         if (data && data[javaVariableName]) {
-                            return `${moment(data[javaVariableName]).format(dateFormat)} ${moment(data[javaVariableName]).format(TIMESTAMP_FORMAT)}`;
+                            return ISODateToView(data[javaVariableName], dataType);
                         }
                     };
-                    case 'date':
-                        return (params) => {
-                            const {data} = params;
-                            if ((data && data[column.javaVariableName]) && moment(data[column.javaVariableName].toString().substr(0, 10)).isValid()) {
-                                return moment(data[column.javaVariableName].toString().substr(0, 10)).format(dateFormat);
-                            }
-                        };
                     case 'territoryType':
                         return (params) => {
                             const {data} = params;

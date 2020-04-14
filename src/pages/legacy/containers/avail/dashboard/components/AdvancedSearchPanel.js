@@ -19,6 +19,7 @@ import {exportService} from '../../service/ExportService';
 import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
+import {DATETIME_FIELDS} from '../../../../../../util/DateTimeUtils';
 
 const mapStateToProps = state => {
     return {
@@ -307,7 +308,7 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableLocalDateBtn = (name, displayName) => {
+        const renderCloseableDateTimeBtn = (name, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
             }
@@ -375,9 +376,9 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
                                 case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
-                                case 'date' : return renderCloseableDateBtn(key, schema.displayName);
-                                case 'datetime' : return renderCloseableDateBtn(key, schema.displayName);
-                                case 'localdate' : return renderCloseableLocalDateBtn(key, schema.displayName);
+                                case DATETIME_FIELDS.TIMESTAMP : return renderCloseableDateTimeBtn(key, schema.displayName);
+                                case DATETIME_FIELDS.BUSINESS_DATETIME : return renderCloseableDateTimeBtn(key, schema.displayName);
+                                case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderCloseableDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
                                 default:
                                     console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName);

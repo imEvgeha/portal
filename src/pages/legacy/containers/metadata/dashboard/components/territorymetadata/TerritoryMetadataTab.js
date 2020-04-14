@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {Row, Col, Container} from 'reactstrap';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../../../util/Common';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../../../util/DateTimeUtils';
 
 const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
     const {

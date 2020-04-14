@@ -8,6 +8,7 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
+import {DATETIME_FIELDS, dateToISO} from '../../../../util/DateTimeUtils';
 
 const mapStateToProps = state => {
     return {
@@ -54,11 +55,8 @@ class SelectableInput extends Component {
 
     handleChange(key, value) {
         if(value) {
-            if (this.props.dataType === 'date') {
-                value = moment(value).startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
-            }
-            if (this.props.dataType === 'localdate') {
-                value = moment(value).startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            if ([DATETIME_FIELDS.TIMESTAMP, DATETIME_FIELDS.BUSINESS_DATETIME, DATETIME_FIELDS.REGIONAL_MIDNIGHT].includes(this.props.dataType)) {
+                value = dateToISO(moment(value).startOf('day'), this.props.dataType);
             }
         }
         this.props.onChange({...this.props.value, [key]: value});
@@ -258,8 +256,8 @@ class SelectableInput extends Component {
                 to = ''
             } = value || {};
 
-            from = dataType === 'localdate' ? from.slice(0, -1) : from;
-            to = dataType === 'localdate' ? to.slice(0, -1) : to;
+            from = dataType === DATETIME_FIELDS.TIMESTAMP ? from.slice(0, -1) : from;
+            to = dataType === DATETIME_FIELDS.TIMESTAMP ? to.slice(0, -1) : to;
 
             return (
                 <NexusDateTimeWindowPicker
@@ -368,9 +366,9 @@ class SelectableInput extends Component {
                 case 'multiselect' : return renderSelect(selected, displayName);
                 case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
-                case 'date' : return renderRangeDatepicker(selected, displayName, false);
-                case 'datetime' : return renderRangeDatepicker(selected, displayName, true);
-                case 'localdate' : return renderRangeDatepicker(selected, displayName, true);
+                case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderRangeDatepicker(selected, displayName, false);
+                case DATETIME_FIELDS.BUSINESS_DATETIME : return renderRangeDatepicker(selected, displayName, true);
+                case DATETIME_FIELDS.TIMESTAMP : return renderRangeDatepicker(selected, displayName, true);
                 case 'boolean' : return renderBooleanField(selected, displayName);
                 default:
                     console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);

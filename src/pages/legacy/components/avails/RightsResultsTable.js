@@ -1,19 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import moment from 'moment';
-import {getDateFormatBasedOnLocale, getDeepValue} from '../../../../util/Common';
+import {getDeepValue} from '../../../../util/Common';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../util/DateTimeUtils';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import LoadingGif from '../../../../assets/img/loading.gif';
 import {isObject} from '../../../../util/Common';
-import {TIMESTAMP_FORMAT} from '../../../../ui/elements/nexus-date-and-time-elements/constants';
 
 export default class RightsResultsTable extends React.Component {
 
     parseColumnsSchema(mappings, locale = 'en-us'){
         const colDef = {};
-        const dateFormat = getDateFormatBasedOnLocale(locale);
-        const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
 
         const formatter = (column) => {
             const {
@@ -22,15 +19,14 @@ export default class RightsResultsTable extends React.Component {
             } = column || {};
 
             switch (dataType) {
-                case 'localdate' :
-                case 'datetime' : return ({data = {}}) => {
-                    const {[javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
-                };
-                case 'date' : return ({data = {}}) => {
-                    const {[javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
-                };
+                case DATETIME_FIELDS.TIMESTAMP:
+                case DATETIME_FIELDS.BUSINESS_DATETIME:
+                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                    return (params) => {
+                        const {data = {}} = params || {};
+                        const {[javaVariableName]: date = ''} = data || {};
+                        return ISODateToView(date, dataType);
+                    };
                 case 'string' : if(javaVariableName === 'castCrew') return function(params){
                     if(params.data && params.data[javaVariableName]){
                         let data = params.data[javaVariableName];
