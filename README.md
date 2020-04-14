@@ -1,5 +1,5 @@
 # Portal
-Nexus Portal project is a Vubiquity (an Amdocs company) front end project 
+Nexus Portal is a new project that will be build inside Amdocs and will replace the systems that already being used in Vubiquity.
 
 ## Environment requirements
 - install node
