@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import t from 'prop-types';
 import {AvForm} from 'availity-reactstrap-validation';
-import {Button, Col, Row} from 'reactstrap';
+import {Col, Row} from 'reactstrap';
+import Button from '@atlaskit/button';
 import {
     BREADCRUMB_METADATA_DASHBOARD_PATH,
     BREADCRUMB_METADATA_SEARCH_RESULTS_PATH,
@@ -62,6 +63,7 @@ class TitleEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             isEditMode: false,
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
@@ -969,8 +971,8 @@ class TitleEdit extends Component {
                             {
                                 this.state.isEditMode ? (
                                     <>
-                                        <Button className="float-right" id="btnSave" color="primary" style={{ marginRight: '10px' }}>Save</Button>
-                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
+                                        <Button className="float-right" id="btnSave"  isLoading={this.state.isLoading} onClick={this.handleOnSave} appearance="primary" >Save</Button>
+                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} appearance="danger" >Cancel</Button>
                                     </>
                                   )
                                     : (
