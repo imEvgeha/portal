@@ -35,11 +35,11 @@ import routes from './routes/routes';
 // import routes from './routes';
 import Router from './Router';
 
-setEnvConfiguration('qa')
-// setEnvConfiguration()
+// setEnvConfiguration('qa')
+setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
-        console.error(error, 'error');
+        console.error(error); // eslint-disable-line
         render(
             <p>Problem with configuration, application cannot be started</p>,
             document.querySelector('#app')

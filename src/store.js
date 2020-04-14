@@ -8,11 +8,9 @@ import createRootReducer from './reducer';
 import {LOGOUT} from './auth/authActionTypes';
 import storage from 'redux-persist/lib/storage';
 import {keycloak} from './auth/keycloak';
-import {appConfig} from './config';
 
 // configure store
 const configureStore = (initialState = {}, history) => {
-    console.log(appConfig, 'con'); // eslint-disable-line
     const sagaMiddleware = createSagaMiddleware();
     let middleware = [
         routerMiddleware(history),
