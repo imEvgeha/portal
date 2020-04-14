@@ -28,7 +28,7 @@ const routes = [
     },
     {
         path: `${BASE_PATH}/rights`,
-        component: canRender(RightDashboardContainer, 'read', 'avail'),
+        component: canRender(RightDashboardContainer, 'read', 'Avail'),
     },
     {
         path: `${BASE_PATH}/rights/`,
