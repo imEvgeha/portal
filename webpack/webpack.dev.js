@@ -30,8 +30,6 @@ module.exports = (envFile) => ({
             chunkFilename: '[id].css',
         }),
         new webpack.HotModuleReplacementPlugin(),
-        // ignore modules that cause large bundles
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), 
     ],
     output: {
         path: paths.appBuild,

@@ -31,8 +31,7 @@ import {
     loadManualRightEntryState
 } from './pages/legacy/stores/index'; // TODO: remove 
 import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
-import routes from './routes/routes';
-// import routes from './routes';
+import routes from './routes';
 import Router from './Router';
 
 // setEnvConfiguration('qa')
@@ -94,7 +93,7 @@ if (module.hot) {
          ([
             './ui/elements/nexus-layout/NexusLayout', 
             './Router',
-            './routes/routes', 
+            './routes',
             './saga',
         ])
         , () => {
