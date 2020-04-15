@@ -48,7 +48,7 @@ class HistoryURL extends React.Component {
                     name = name.substring(0, name.length - 2);
                 }
                 switch (name) {
-                    case 'provider':
+                    case 'licensor':
                         filter[name] = val;
                         break;
                     case 'received':
