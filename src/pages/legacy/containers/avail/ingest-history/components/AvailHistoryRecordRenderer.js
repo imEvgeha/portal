@@ -70,7 +70,7 @@ class AvailHistoryRecordRenderer extends React.Component {
             <div style={{display: 'flex', alignItems: 'center'}}>
                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft:'10px', lineHeight: '30px', minWidth:'400px', width:'25%'}}>
                     {data.ingestType === 'Email' ?
-                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Provider:</b> &nbsp; {data.provider} </div>)
+                        (<div style={{display: 'flex', maxWidth:'100%'}}><b>Licensor:</b> &nbsp; {data.licensor} </div>)
                         :
                         (<div style={{display: 'flex', maxWidth:'100%'}}><b>Document Name:</b> &nbsp; <div style={{textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}} title={firstName}>{firstName}</div> </div>)}
                     <div style={{display: 'flex'}}><b>Received:</b> &nbsp; {data.received ? moment(data.received).format('llll'):''} </div>

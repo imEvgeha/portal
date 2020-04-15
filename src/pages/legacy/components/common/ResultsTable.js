@@ -4,6 +4,7 @@ import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import getContextMenuItems from '../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import './ResultsTable.scss';
 
 export default class ResultsTable extends React.Component {
 
@@ -61,7 +62,7 @@ export default class ResultsTable extends React.Component {
     render(){
         return(
             <div
-                className={'ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
+                className={'rights-results-table ag-theme-balham ' + (this.props.hidden ? 'd-none' : '')}
                 style={{
                     height: this.state.height + 'px',
                     width: '100%' }}

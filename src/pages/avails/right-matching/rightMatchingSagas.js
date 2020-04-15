@@ -11,6 +11,7 @@ import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-noti
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
+import {NULL_TO_OBJECT, NULL_TO_ARRAY} from '../../legacy/containers/avail/service/Constants';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -143,7 +144,7 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
 }
 
 export function* fetchCombinedRight(requestMethod, {payload}) {
-    const {rightIds} = payload || {};
+    const {rightIds, mapping} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
@@ -151,8 +152,22 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
         });
 
         const response = yield call(requestMethod, rightIds);
-        const combinedRight = response.data;
+        let combinedRight = response.data;
 
+        // fix fields that are null but include subfields
+        mapping.forEach(({javaVariableName}) => {
+            let dotIndex = javaVariableName.indexOf('.');
+            // has subfield
+            if(dotIndex >= 0) {
+                let field = javaVariableName.substring(0, dotIndex);
+                if(combinedRight[field] === null && NULL_TO_OBJECT.includes(field)){
+                    combinedRight[field] = {};
+                }
+                if(combinedRight[field] === null && NULL_TO_ARRAY.includes(field)){
+                    combinedRight[field] = [];
+                }
+            }
+        });
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_SUCCESS,
             payload: {combinedRight},

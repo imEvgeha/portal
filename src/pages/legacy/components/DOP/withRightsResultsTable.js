@@ -140,7 +140,7 @@ const withRightsResultsTable = BaseComponent => {
                             <div
                                 title={error}
                                 className={highlighted ? 'font-weight-bold' : ''}
-                                style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
+                                style={{whiteSpace: 'pre', textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
                             >
                                 {String(content)}
                             </div>
