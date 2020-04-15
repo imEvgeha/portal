@@ -6,7 +6,6 @@ import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/Common';
 import './NexusDatePicker.scss';
 import {
     RELATIVE_DATE_FORMAT,
@@ -14,6 +13,7 @@ import {
     RELATIVE_DATE_FORMAT_WITHOUT_TIME,
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/DateTimeUtils';
 
 const NexusDatePicker = ({
     id,

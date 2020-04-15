@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {store} from '../../../../../index';
-import {getDateFormatBasedOnLocale} from '../../../../../util/Common';
-import moment from 'moment';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../../util/DateTimeUtils';
 import './CustomDateFloatingFilter.scss';
 
 class CustomDateFloatingFilter extends React.Component {
@@ -26,15 +23,11 @@ class CustomDateFloatingFilter extends React.Component {
 
     render() {
         const {from, to} = this.state;
-        const {locale} = store.getState().locale;
-
-        // Create date placeholder based on locale
-        const dateFormat = getDateFormatBasedOnLocale(locale);
 
         return (
             <div className='nexus-c-date-range-floating-filter'>
-                { from && <span>From: {moment(from).format(dateFormat)}</span>}
-                { to && <span>To: {moment(to).format(dateFormat)}</span>}
+                { from && <span>From: {ISODateToView(from, DATETIME_FIELDS.REGIONAL_MIDNIGHT)}</span>}
+                { to && <span>To: {ISODateToView(to, DATETIME_FIELDS.REGIONAL_MIDNIGHT)}</span>}
             </div>
         );
     }

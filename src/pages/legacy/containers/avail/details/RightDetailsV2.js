@@ -313,9 +313,9 @@ class RightDetails extends React.Component {
                 multiselect: null,
                 duration: null,
                 time: null,
-                localdate: null,
+                timestamp: null,
                 boolean: null,
-                date: renderFieldTemplate(
+                regionalMidnight: renderFieldTemplate(
                     name,
                     displayName,
                     value,
@@ -339,7 +339,7 @@ class RightDetails extends React.Component {
                         isReadOnly={readOnly}
                      />)
                 ),
-                datetime: renderFieldTemplate(
+                businessDateTime: renderFieldTemplate(
                     name,
                     displayName,
                     value,

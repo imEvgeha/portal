@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {get, omit, isEmpty, pickBy, cloneDeep} from 'lodash';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
-import {isObject, switchCase} from '../../../../util/Common';
+import {isObject} from '../../../../util/Common';
 import {
     GRID_EVENTS,
     DEFAULT_HOC_PROPS,
@@ -85,7 +85,7 @@ const withFilterableColumns = ({
 
                 if (isFilterable) {
                     const {TEXT, NUMBER, SET, CUSTOM_DATE} = AG_GRID_COLUMN_FILTER;
-                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, SELECT, MULTISELECT, TERRITORY, DATE, LOCAL_DATE, DATE_TIME} = FILTER_TYPE;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, SELECT, MULTISELECT, TERRITORY, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
 
                     switch (dataType) {
                         case BOOLEAN:
@@ -119,9 +119,9 @@ const withFilterableColumns = ({
                                 return countries;
                             };
                             break;
-                        case DATE:
-                        case DATE_TIME:
-                        case LOCAL_DATE:
+                        case REGIONAL_MIDNIGHT:
+                        case TIMESTAMP:
+                        case BUSINESS_DATETIME:
                             const from = filters[`${field}From`];
                             const to = filters[`${field}To`];
                             const initialFilters = {

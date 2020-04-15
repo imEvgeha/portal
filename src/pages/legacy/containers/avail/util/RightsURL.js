@@ -4,6 +4,7 @@ import {URL} from '../../../../../util/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import t from 'prop-types';
+import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
 
 const PASS_THROUGH = ['availHistoryIds'];
 
@@ -60,7 +61,7 @@ class RightsURL extends React.Component {
                     }
                     if (subkey) {
                         map = mappings.find(({queryParamName}) => queryParamName === name);
-                        if (map && !['date', 'localdate', 'duration'].includes(map.dataType)) map = null;
+                        if (map && ![DATETIME_FIELDS.TIMESTAMP, DATETIME_FIELDS.BUSINESS_DATETIME, DATETIME_FIELDS.REGIONAL_MIDNIGHT, 'duration'].includes(map.dataType)) map = null;
                     }
                     if (map) {
                         if (!filter[name]) found++;

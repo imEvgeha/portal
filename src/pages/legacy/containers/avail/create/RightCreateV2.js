@@ -236,10 +236,10 @@ class RightCreate extends React.Component {
                 double: null,
                 select: null,
                 multiselect: null,
-                localdate: null,
+                timestamp: null,
                 time: null,
                 duration: null,
-                date: (
+                regionalMidnight: (
                     <NexusDatePicker
                         id={jvName}
                         label={displayName}
@@ -250,7 +250,7 @@ class RightCreate extends React.Component {
                         required={required}
                     />
                 ),
-                datetime: (
+                businessDateTime: (
                     <NexusDateTimePicker
                         id={jvName}
                         label={displayName}

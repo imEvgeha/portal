@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import {Link} from 'react-router-dom';
 
 import config from 'react-global-configuration';
@@ -20,10 +19,12 @@ import './RightsResultTable.scss';
 import {connect} from 'react-redux';
 import {manualRightsResultPageSelect, manualRightsResultPageUpdate, manualRightsResultPageLoading, manualRightsResultPageSort, updateManualRightsEntryColumns} from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
-import {getDeepValue, equalOrIncluded, getDateFormatBasedOnLocale} from '../../../../../../util/Common';
-import {getLocale} from '../../../../stores/selectors/localization/localeSelector';
-import {TIMESTAMP_FORMAT} from '../../../../../../ui/elements/nexus-date-and-time-elements/constants';
+import {
+    getDeepValue,
+    equalOrIncluded
+} from '../../../../../../util/Common';
 import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../../../util/DateTimeUtils';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -46,8 +47,7 @@ const mapStateToProps = state => {
         availsMapping: state.root.availsMapping,
         columnsOrder: state.manualRightsEntry.session.columns,
         columnsSize: state.manualRightsEntry.session.columnsSize,
-        showSelectedAvails: state.dashboard.showSelectedAvails,
-        locale: getLocale(state),
+        showSelectedAvails: state.dashboard.showSelectedAvails
     };
 };
 
@@ -207,20 +207,13 @@ class RightsResultTable extends React.Component {
                 javaVariableName,
             } = column || {};
 
-            const {locale = 'en'} = this.props;
-
-            const dateFormat = getDateFormatBasedOnLocale(locale);
-            const timestampDateFormat = `${dateFormat} ${TIMESTAMP_FORMAT}`;
-
             switch (dataType) {
-                case 'localdate' :
-                case 'datetime' : return ({data = {}}) => {
+                case DATETIME_FIELDS.TIMESTAMP:
+                case DATETIME_FIELDS.BUSINESS_DATETIME:
+                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                    return ({data = {}}) => {
                     const {[column.javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(timestampDateFormat) : undefined);
-                };
-                case 'date' : return ({data = {}}) => {
-                    const {[column.javaVariableName]: date = ''} = data || {};
-                    return (moment(date).isValid() ? moment(date).format(dateFormat) : undefined);
+                    return ISODateToView(date[javaVariableName], dataType);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
                     if(data && data[javaVariableName]){
@@ -681,16 +674,14 @@ RightsResultTable.propTypes = {
     searchCriteria: PropTypes.object,
     onTableLoaded: PropTypes.func,
     historyData: PropTypes.object,
-    status: PropTypes.string,
-    locale: PropTypes.string,
+    status: PropTypes.string
 };
 
 RightsResultTable.defaultProps = {
     autoload: true,
     autoRefresh: 0,
     mode: defaultMode,
-    searchCriteria: {},
-    locale: 'en-us',
+    searchCriteria: {}
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RightsResultTable);
 

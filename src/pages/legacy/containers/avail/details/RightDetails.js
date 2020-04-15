@@ -31,6 +31,7 @@ import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elem
 import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
+import {DATETIME_FIELDS, dateToISO} from '../../../../../util/DateTimeUtils';
 
 const mapStateToProps = state => {
     return {
@@ -277,12 +278,10 @@ class RightDetails extends React.Component {
             value = null;
         } else {
             switch (schema.dataType) {
-                case 'date':
-                    value = value && moment(value).isValid() ? moment(value).format('YYYY-MM-DD') + 'T00:00:00.000Z' : value;
-                    break;
-                case 'localdate':
-                    value = value && moment(value).isValid() ? momentToISO(value) : value;
-                    break;
+                case DATETIME_FIELDS.TIMESTAMP:
+                case DATETIME_FIELDS.BUSINESS_DATETIME:
+                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                    value = dateToISO(value, schema.dataType);
             }
         }
 
@@ -1243,10 +1242,10 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case 'date': renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT: renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                              break;
-                        case 'localdate':
-                        case 'datetime': renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
+                        case DATETIME_FIELDS.TIMESTAMP:
+                        case DATETIME_FIELDS.BUSINESS_DATETIME: renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;

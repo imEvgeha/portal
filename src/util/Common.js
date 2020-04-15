@@ -131,7 +131,6 @@ function nextFrame(f){
     setTimeout(f, 1);
 }
 
-
 const URL = {
     getParamIfExists: function (name, defaultValue = ''){
         let toReturn = defaultValue;
@@ -217,17 +216,6 @@ const getDomainName = () => window && window.location.origin.toString();
 
 const minTwoDigits = n => `${n < 10 ? '0' : ''}${n}`;
 
-// Create date format based on locale
-const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
-
-// Attach (UTC) to date, if it is simulcast
-const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
-    const isUTC = date && date.endsWith('Z');
-    return moment(date).isValid()
-        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC && isTimeVisible? ' (UTC)' : ''}`
-        : 'Invalid Date';
-};
-
 const formatNumberTwoDigits = (number) => {
     const n = parseInt(number);
     if(n) {
@@ -286,14 +274,12 @@ export {
     prepareSortMatrixParamTitles, 
     isObjectEmpty, 
     encodedSerialize, 
-    nextFrame, 
-    URL, 
+    nextFrame,
+    URL,
     IfEmbedded,
     switchCase,
     getDomainName,
     minTwoDigits,
-    getDateFormatBasedOnLocale,
-    parseSimulcast,
     formatNumberTwoDigits,
     normalizeDataForStore,
     cleanObject,

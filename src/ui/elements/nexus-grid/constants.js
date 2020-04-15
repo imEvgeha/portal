@@ -20,6 +20,7 @@ const DEFAULT_HOC_PROPS = [
     'mapping',
     'selectValues'
 ];
+import {DATETIME_FIELDS} from '../../../util/DateTimeUtils';
 const FILTERABLE_DATA_TYPES = [
     'string',
     'integer',
@@ -30,9 +31,9 @@ const FILTERABLE_DATA_TYPES = [
     'territoryType',
     'year',
     'duration',
-    'date',
-    'datetime',
-    'localdate'
+    DATETIME_FIELDS.TIMESTAMP,
+    DATETIME_FIELDS.BUSINESS_DATETIME,
+    DATETIME_FIELDS.REGIONAL_MIDNIGHT
 ];
 const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {
@@ -50,9 +51,9 @@ const FILTER_TYPE = {
     SELECT: 'select',
     MULTISELECT: 'multiselect',
     TERRITORY: 'territoryType',
-    DATE: 'date',
-    LOCAL_DATE: 'localdate',
-    DATE_TIME: 'datetime',
+    TIMESTAMP: DATETIME_FIELDS.TIMESTAMP,
+    BUSINESS_DATETIME: DATETIME_FIELDS.BUSINESS_DATETIME,
+    REGIONAL_MIDNIGHT: DATETIME_FIELDS.REGIONAL_MIDNIGHT
 };
 
 const AG_GRID_COLUMN_FILTER = {

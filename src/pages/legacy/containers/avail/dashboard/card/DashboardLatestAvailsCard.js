@@ -1,18 +1,16 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import {isEqual} from 'lodash';
 import {AgGridReact} from 'ag-grid-react';
 import {Link} from 'react-router-dom';
-import {useIntl} from 'react-intl';
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
 import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
 import IngestReport from './components/IngestReport';
-import {getDateFormatBasedOnLocale} from '../../../../../../util/Common';
 import Constants from './Constants';
 import './DashboardLatestAvailsCard.scss';
 import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../../../util/DateTimeUtils';
 
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 
@@ -20,13 +18,6 @@ const DashboardLatestAvailsCard = ({push}) => {
     let tableData = [];
     let table = null;
     let refresh = null;
-
-    // Get locale provided by intl
-    const intl = useIntl();
-    const {locale = 'en-US'} = intl || {};
-
-    // Create date placeholder based on locale
-    const dateFormat = `${getDateFormatBasedOnLocale(locale)} HH:mm`;
 
     useEffect(() => {
         getData();
@@ -65,11 +56,11 @@ const DashboardLatestAvailsCard = ({push}) => {
 
     const columns = [
         {
-            headerName: 'Date',
+            headerName: 'Date (UTC)',
             field: 'received',
             valueFormatter: (params) => {
                 if (params.data && params.data.received) {
-                    return `${moment(params.data.received).format(dateFormat)}`;
+                    return `${ISODateToView(params.data.received, DATETIME_FIELDS.BUSINESS_DATETIME)}`;
                 }
                 else {
                     return '';

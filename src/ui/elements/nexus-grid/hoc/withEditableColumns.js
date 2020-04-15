@@ -9,7 +9,7 @@ import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 import {isObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
-
+import {DATETIME_FIELDS} from '../../../../util/DateTimeUtils';
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',
     'mapping',
@@ -21,9 +21,9 @@ const DEFAULT_EDITABLE_DATA_TYPES = [
     'boolean',
     'select',
     'multiselect',
-    'date',
-    'datetime',
-    'localdate',
+    DATETIME_FIELDS.TIMESTAMP,
+    DATETIME_FIELDS.BUSINESS_DATETIME,
+    DATETIME_FIELDS.REGIONAL_MIDNIGHT,
     'territoryType'
 ];
 const DEFAULT_NOT_EDITABLE_COLUMNS = ['id'];
@@ -79,15 +79,15 @@ const withEditableColumns = ({
                             // TODO: doesn't work try to find solution
                             // columnDef.cellEditorFramework = CheckboxCellEditor;
                             break;
-                        case 'date':
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                             columnDef.cellEditorFramework = DateCellEditor;
                             // Keep Ag-Grid away from Enter key event due to AtlasKit's & Ag-Grid's
                             // mutual incompatibility where Ag-Grid kept intercepting Enter key and not passing
                             // it down to AtlasKit who requires it to set the actual value. Check PORT-1393
                             columnDef.suppressKeyboardEvent = params => params.event.key === 'Enter';
                             break;
-                        case 'datetime':
-                        case 'localdate':
+                        case DATETIME_FIELDS.TIMESTAMP:
+                        case DATETIME_FIELDS.BUSINESS_DATETIME:
                             columnDef.cellEditorFramework = DateTimeCellEditor;
                             // Check the comment above for 'date' field and PORT-1393
                             columnDef.suppressKeyboardEvent = params => params.event.key === 'Enter';

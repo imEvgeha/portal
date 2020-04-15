@@ -13,6 +13,7 @@ import SelectableInput from '../../../../components/form/SelectableInput';
 import { titleMapping } from '../../service/Profile';
 import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
+import {DATETIME_FIELDS} from '../../../../../../util/DateTimeUtils';
 
 const mapStateToProps = state => {
     return {
@@ -216,7 +217,7 @@ class AdvancedSearchPanel extends React.Component {
                     const schema = this.titleMap[key];
                     if (ignoreForCloseable.indexOf(key) === -1) {
                         if (schema) {
-                            if (schema.dataType === 'date') {
+                            if (schema.dataType === DATETIME_FIELDS.REGIONAL_MIDNIGHT) {
                                 return renderCloseableDateBtn(key, schema.displayName);
                             } else {
                                 return renderCloseableBtn(key, schema.displayName);
