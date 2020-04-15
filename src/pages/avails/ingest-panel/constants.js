@@ -27,13 +27,13 @@ export default {
         RECEIVED_FROM: 'receivedFrom',
         RECEIVED_TO: 'receivedTo',
         STATUS: 'status',
-        PROVIDER: 'provider'
+        LICENSOR: 'licensor'
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
         receivedTo: 'igReceivedTo',
         status: 'igStatus',
-        provider: 'igProvider'
+        licensor: 'igLicensor'
     },
     SERVICE_REGIONS: [
         {label: 'US', value: 'US'},

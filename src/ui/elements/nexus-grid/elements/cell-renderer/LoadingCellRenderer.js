@@ -32,7 +32,7 @@ const LoadingCellRenderer = (params) => {
                             title='* fields in bold are original values provided by the studios'
                             className="nexus-c-loading-cell-renderer__highlighted"
                         >
-                            <i className="far fa-question-circle nexus-c-loading-cell-renderer__icon"></i>
+                            <i className="far fa-question-circle nexus-c-loading-cell-renderer__icon" />
                         </span>
                     ) : ''
                 }
@@ -40,6 +40,7 @@ const LoadingCellRenderer = (params) => {
         );
         return (
             link ? (
+                // eslint-disable-next-line react/jsx-no-target-blank
                 <a href={`${link}${data.id}`} target="_blank">
                     {displayValue}
                 </a>

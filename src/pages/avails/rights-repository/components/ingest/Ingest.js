@@ -12,7 +12,7 @@ import {NexusTooltip} from '../../../../../ui/elements/';
 
 const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
 
-    const {attachments = [{}], ingestType, provider, received, id} = ingest;
+    const {attachments = [{}], ingestType, received, id} = ingest;
     const {link, status, ingestReport = {}} = attachment;
     const {attachmentTypes: {EMAIL}} = Constants;
     const emails = attachments.filter(a => a.attachmentType && a.attachmentType === EMAIL);
@@ -25,7 +25,6 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
             <div className='nexus-c-avails-ingest__details'>
                 <IngestTitle
                     ingestType={ingestType}
-                    provider={provider}
                     link={link}
                     className='header'
                 />
