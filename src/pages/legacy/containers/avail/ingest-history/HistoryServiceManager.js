@@ -32,8 +32,8 @@ export const historyServiceManager = {
             }
             ).catch((error) => {
                 store.dispatch(resultHistoryPageLoading(false));
-                console.warn('Unexpected error');
-                console.error(error);
+                console.warn('Unexpected error'); // eslint-disable-line
+                console.error(error); // eslint-disable-line
             });
     }
 };

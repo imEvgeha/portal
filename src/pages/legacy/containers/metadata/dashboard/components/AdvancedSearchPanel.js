@@ -222,7 +222,7 @@ class AdvancedSearchPanel extends React.Component {
                                 return renderCloseableBtn(key, schema.displayName);
                             }
                         } else {
-                            console.warn('Cannot determine schema for field: ' + key);
+                            console.warn('Cannot determine schema for field: ' + key); // eslint-disable-line
                         }
                     }
                 });

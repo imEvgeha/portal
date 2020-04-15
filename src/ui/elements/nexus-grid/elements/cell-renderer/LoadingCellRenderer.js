@@ -38,6 +38,7 @@ const LoadingCellRenderer = (params) => {
                 }
             </div>
         );
+
         return (
             link ? (
                 // eslint-disable-next-line react/jsx-no-target-blank
@@ -47,6 +48,7 @@ const LoadingCellRenderer = (params) => {
             ) : (displayValue)
         );
     }
+
     return null;
 };
 export default LoadingCellRenderer;
