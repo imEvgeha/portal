@@ -35,7 +35,7 @@ const ISODateToView = (date, type) => {
         }
     }
     return  '';
-}
+};
 
 const dateToISO = (date, type) => {
     switch (type) {
@@ -50,7 +50,7 @@ const dateToISO = (date, type) => {
         default:
             return null;
     }
-}
+};
 
 export {
     DATETIME_FIELDS,
@@ -58,4 +58,4 @@ export {
     parseSimulcast,
     ISODateToView,
     dateToISO
-}
+};
