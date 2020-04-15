@@ -80,12 +80,12 @@ class AdvancedHistorySearchPanel extends React.Component {
 
     handleClear() {
         advancedHistorySearchHelper.clearAdvancedHistorySearchForm();
-        this.handleSearch(null,{...this.props.searchCriteria, received: null, provider: '', status: ''});
+        this.handleSearch(null,{...this.props.searchCriteria, received: null, licensor: '', status: ''});
     }
 
     handleSearch(e, advCriteria = null) {
         const criteria = advCriteria || {...this.props.searchCriteria};
-        criteria.provider = safeTrim(criteria.provider);
+        criteria.licensor = safeTrim(criteria.licensor);
         this.props.searchFormUpdateAdvancedHistorySearchCriteria(criteria);
         this.props.searchFormSetHistorySearchCriteria(criteria);
         this.props.onSearch(criteria);
@@ -126,7 +126,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         };
 
         const searchFields = [];
-        searchFields.push(renderTextField('provider', 'Provider'));
+        searchFields.push(renderTextField('licensor', 'Licensor'));
         searchFields.push(renderRangeDatepicker('received', 'Avail Delivery Date'));
 
         const options = [

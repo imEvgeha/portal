@@ -28,8 +28,6 @@ const configureStore = (initialState = {}, history) => {
     const rootReducer = (state, action) => {
         if (action.type === LOGOUT) {
             // remove persist storage
-            storage.removeItem('portal-persist:avails');
-            storage.removeItem('portal-persist:root');
             storage.removeItem('portal-persist:auth');
             keycloak.logout();
             return undefined;

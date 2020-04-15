@@ -66,6 +66,18 @@ const getTitleFormSchema = (currentValue) => ([
                     SEASON.apiName,
                     EPISODE.apiName,
                 ]
+            },
+            {
+                field: 'seasonNumber',
+                isNot: [
+                    ''
+                ]
+            },
+            {
+                field: 'episodeNumber',
+                isNot: [
+                    ''
+                ]
             }
         ],
         visibleWhen: [
@@ -95,6 +107,18 @@ const getTitleFormSchema = (currentValue) => ([
                 is: [
                     SEASON.apiName,
                     EPISODE.apiName,
+                ]
+            },
+            {
+                field: 'seriesTitleName',
+                isNot: [
+                    ''
+                ]
+            },
+            {
+                field: 'episodeNumber',
+                isNot: [
+                    ''
                 ]
             }
         ],
@@ -134,6 +158,18 @@ const getTitleFormSchema = (currentValue) => ([
                 field: 'contentType',
                 is: [
                     EPISODE.apiName,
+                ]
+            },
+            {
+                field: 'seriesTitleName',
+                isNot: [
+                    ''
+                ]
+            },
+            {
+                field: 'seasonNumber',
+                isNot: [
+                    ''
                 ]
             }
         ],
