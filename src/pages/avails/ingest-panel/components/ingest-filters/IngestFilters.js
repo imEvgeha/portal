@@ -8,7 +8,7 @@ import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
 const IngestFilters = ({onFiltersChange}) => {
-    const {filterKeys: {PROVIDER, STATUS}, STATUS_LIST} = Constants;
+    const {filterKeys: {LICENSOR, STATUS}, STATUS_LIST} = Constants;
 
     const [filters, setFilters] = useState(getInitialFilters());
     const [isApplyActive, setIsApplyActive] = useState(false);
@@ -26,7 +26,7 @@ const IngestFilters = ({onFiltersChange}) => {
     const clearFilters = () => {
         setFilters({
             status: STATUS_LIST[0],
-            provider: '',
+            licensor: '',
             startDate: '',
             endDate: ''
         });
@@ -42,12 +42,12 @@ const IngestFilters = ({onFiltersChange}) => {
         <div className='ingest-filters'>
             <div className='ingest-filters__row1'>
                 <div className='ingest-filters__section'>
-                    Provider
+                    Licensor
                     {' '}
                     <input
-                        placeholder='Enter Provider'
-                        value={filters.provider}
-                        onChange={e => onFilterChange(PROVIDER, e.target.value)}
+                        placeholder='Enter Licensor'
+                        value={filters.licensor}
+                        onChange={e => onFilterChange(LICENSOR, e.target.value)}
                     />
                 </div>
                 <div className='ingest-filters__section'>
