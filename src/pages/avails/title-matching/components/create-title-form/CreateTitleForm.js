@@ -46,11 +46,16 @@ const CreateTitleForm = ({close, focusedRight}) => {
 
         if (episodicTypes.includes(contentType)) {
             const {seasonNumber, episodeNumber, seriesTitleName} = title || {};
-            title.episodic = {
-                seasonNumber,
-                episodeNumber,
-                seriesTitleName
-            };
+            if(seasonNumber || episodeNumber || seriesTitleName) {
+                title.episodic = {
+                    seasonNumber,
+                    episodeNumber,
+                    seriesTitleName
+                };
+            } else {
+                title.episodic = null;
+            }
+
 
             delete title.seasonNumber;
             delete title.episodeNumber;
