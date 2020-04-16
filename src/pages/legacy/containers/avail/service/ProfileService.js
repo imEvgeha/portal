@@ -6,6 +6,7 @@ import { errorModal } from '../../../components/modal/ErrorModal';
 import { getSortedData } from '../../../../../util/Common';
 
 const PRODUCTION_STUDIOS = '/production-studios';
+const AUDIO_TYPES = '/audio-types';
 const LANGUAGES = '/languages';
 const COUNTRIES = '/countries';
 const REGION = '/regions';
@@ -58,6 +59,11 @@ export const profileService = {
                                             break;
                                         case COUNTRIES:
                                             options = options.map(code => ({value: code.countryCode, label: code.countryName}));
+                                            options = getSortedData(options, SORT_TYPE, true);
+                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                            break;
+                                        case AUDIO_TYPES:
+                                            options = options.map(code => ({value: code.value, label: code.value}));
                                             options = getSortedData(options, SORT_TYPE, true);
                                             store.dispatch(loadSelectLists(rec.javaVariableName, options));
                                             break;

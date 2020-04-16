@@ -26,4 +26,22 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
     }
 };
 
-export {getProperTerritoryFormValues};
+const getProperAudioLanguageFormValues = (data, isEdit, existingAudioLanguageList, audioLanguageIndex) => {
+    if (data.language) {
+        const newObject = {
+            language: data.language['value'] ? data.language['value'] !== '' && data.language['value'] : existingAudioLanguageList[audioLanguageIndex]['language'] ? existingAudioLanguageList[audioLanguageIndex]['language'] : '',
+            audioType: data.audioType['value'] ? data.audioType['value'] !== '' && data.audioType['value'] : existingAudioLanguageList[audioLanguageIndex]['audioType'] ? existingAudioLanguageList[audioLanguageIndex]['audioType'] : '',
+        };
+        const updatedObject = {};
+        for (const objectField in newObject) {
+            if (newObject[objectField]) {
+                updatedObject[objectField] = newObject[objectField];
+            } else {
+                updatedObject[objectField] = null;
+            }
+        }
+        return updatedObject;
+    }
+};
+
+export {getProperTerritoryFormValues, getProperAudioLanguageFormValues};

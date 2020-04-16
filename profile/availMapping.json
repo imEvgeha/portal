@@ -403,6 +403,17 @@
   "enableEdit": true,
   "required": false
 }, {
+  "javaVariableName": "languageAudioTypes",
+  "displayName": "Audio Language Types",
+  "dataType": "audioLanguageType",
+  "searchDataType": "multiselect",
+  "configEndpoint": "/languages",
+  "queryParamName": "audioTypeLanguage",
+  "readOnly": false,
+  "enableSearch": false,
+  "enableEdit": true,
+  "required": false
+},{
   "javaVariableName": "languageAudioTypes.language",
   "displayName": "Audio Language",
   "dataType": "multiselect",
@@ -418,8 +429,8 @@
   "displayName": "Audio Type",
   "dataType": "string",
   "searchDataType": "multiselect",
+  "configEndpoint": "/audio-types",
   "queryParamName": "audioType",
-  "options": ["Stereo", "Dolby 5.1"],
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
