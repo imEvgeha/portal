@@ -62,7 +62,7 @@ export async function setEnvConfiguration (env) {
             case 'dev':
                 return '/config.json';
             case 'qa':
-                return './configQA.json';
+                return '/configQA.json';
             default: 
                 return '/config.json';
         }
