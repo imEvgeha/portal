@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {store} from '../index';
-import {TIME_FORMAT, TIMESTAMP_FORMAT} from '../ui/elements/nexus-date-and-time-elements/constants';
+import {BUSINESS_DATE_TIME_FORMAT, TIMESTAMP_FORMAT} from '../ui/elements/nexus-date-and-time-elements/constants';
 
 const DATETIME_FIELDS = {
     TIMESTAMP: 'timestamp',
@@ -10,14 +10,14 @@ const DATETIME_FIELDS = {
     REGIONAL_MIDNIGHT: 'regionalMidnight'
 };
 
-
 // Create date format based on locale
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
+
 // Attach (UTC) to date, if it is simulcast
 const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
     const isUTC = date && date.endsWith('Z');
     return moment(date).isValid()
-        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC && isTimeVisible ? ' (UTC)' : ''}`
+        ? `${moment(date).utc(!isUTC).format(dateFormat)}${(isUTC && isTimeVisible) ? ' (UTC)' : ''}`
         : 'Invalid Date';
 };
 
@@ -29,7 +29,7 @@ const ISODateToView = (date, type) => {
             case DATETIME_FIELDS.TIMESTAMP:
                 return `${moment(date).format(dateFormat)} ${moment(date).format(TIMESTAMP_FORMAT)}`;
             case DATETIME_FIELDS.BUSINESS_DATETIME:
-                return `${moment(date).format(dateFormat)} ${moment(date).format(TIME_FORMAT)}`;
+                return `${moment(date).format(dateFormat)} ${moment(date).format(BUSINESS_DATE_TIME_FORMAT)}`;
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return `${moment(date).format(dateFormat)}`;
         }
