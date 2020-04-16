@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {store} from '../index';
-import {BUSINESS_DATE_TIME_FORMAT, TIMESTAMP_FORMAT} from '../ui/elements/nexus-date-and-time-elements/constants';
+import {BUSINESS_TIME_FORMAT, TIMESTAMP_TIME_FORMAT} from '../ui/elements/nexus-date-and-time-elements/constants';
 
 const DATETIME_FIELDS = {
     TIMESTAMP: 'timestamp',
@@ -27,9 +27,9 @@ const ISODateToView = (date, type) => {
         const dateFormat = getDateFormatBasedOnLocale(locale);
         switch (type) {
             case DATETIME_FIELDS.TIMESTAMP:
-                return `${moment(date).format(dateFormat)} ${moment(date).format(TIMESTAMP_FORMAT)}`;
+                return `${moment(date).format(dateFormat)} ${moment(date).format(TIMESTAMP_TIME_FORMAT)}`;
             case DATETIME_FIELDS.BUSINESS_DATETIME:
-                return `${moment(date).format(dateFormat)} ${moment(date).format(BUSINESS_DATE_TIME_FORMAT)}`;
+                return `${moment(date).format(dateFormat)} ${moment(date).format(BUSINESS_TIME_FORMAT)}`;
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return `${moment(date).format(dateFormat)}`;
         }
