@@ -11,7 +11,7 @@ import {
     RELATIVE_TIME_LABEL,
     SIMULCAST_TIME_LABEL,
     BUSINESS_DATE_TIME_FORMAT,
-    TIMESTAMP_FORMAT,
+    TIMESTAMP_FORMAT, REGIONAL_DATE_TIME_FORMAT,
 } from '../constants';
 import {getDateFormatBasedOnLocale} from '../../../../util/DateTimeUtils';
 
@@ -38,10 +38,16 @@ const NexusDateTimePicker = ({
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
 
+    const timeFormat = isTimestamp
+        ? TIMESTAMP_FORMAT
+        : isSimulcast
+            ? BUSINESS_DATE_TIME_FORMAT
+            : REGIONAL_DATE_TIME_FORMAT;
+
     // Create date format based on locale
     const dateFormat = getDateFormatBasedOnLocale(locale)
         .toUpperCase()
-        .concat(isTimestamp ? TIMESTAMP_FORMAT : BUSINESS_DATE_TIME_FORMAT); // Decide whether to include milliseconds based on type
+        .concat(timeFormat);
 
     const getDisplayDate = (date) => {
         const hasUTCTag = date && date.endsWith('Z');
