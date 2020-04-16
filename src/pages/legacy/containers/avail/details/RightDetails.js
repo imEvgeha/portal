@@ -17,8 +17,6 @@ import EditableBaseComponent from '../../../components/form/editable/EditableBas
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../../../ability';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {equalOrIncluded, getDeepValue, isObject, momentToISO, safeTrim} from '../../../../../util/Common';
 import BlockUi from 'react-block-ui';
@@ -64,8 +62,6 @@ class RightDetails extends React.Component {
     }
 
     componentDidMount() {
-        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-        NexusBreadcrumb.push({ name: '', path: '/avails/' });
         profileService.initAvailsMapping();
         this.getRightData();
         if (this.refresh === null) {
@@ -78,7 +74,6 @@ class RightDetails extends React.Component {
             clearInterval(this.refresh);
             this.refresh = null;
         }
-        NexusBreadcrumb.pop();
     }
 
     getRightData() {
@@ -246,8 +241,6 @@ class RightDetails extends React.Component {
                             languageAudioTypesLanguage,
                             languageAudioTypesAudioType,
                         });
-                        NexusBreadcrumb.pop();
-                        NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
                     }
                 })
                 .catch(() => {
@@ -348,8 +341,6 @@ class RightDetails extends React.Component {
                     flatRight: this.flattenRight(editedRight),
                     errorMessage: ''
                 });
-                NexusBreadcrumb.pop();
-                NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
 
                 // Clear the state for editedRight, since the change was already applied

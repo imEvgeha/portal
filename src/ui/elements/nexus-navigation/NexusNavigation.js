@@ -12,8 +12,6 @@ import {navigationPrimaryItems} from './components/NavigationItems';
 import {SETTINGS, backgroundColor} from './constants';
 import {Can, idToAbilityNameMap} from '../../../ability';
 import {searchFormShowSearchResults} from '../../../pages/legacy/stores/actions/avail/dashboard';
-import {AVAILS_DASHBOARD} from '../../../pages/legacy/constants/breadcrumb';
-import NexusBreadcrumb from '../../../pages/legacy/containers/NexusBreadcrumb';
 import {logout} from '../../../auth/authActions';
 
 const customThemeMode = modeGenerator({
@@ -143,7 +141,7 @@ const mapDispatchToProps = dispatch => ({
 
 export const gotoAvailsDashboard = () => {
     store.dispatch(searchFormShowSearchResults(false));
-    NexusBreadcrumb.set(AVAILS_DASHBOARD);
+    store.dispatch(searchFormShowSearchResults(false));
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NexusNavigation));

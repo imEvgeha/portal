@@ -10,8 +10,6 @@ import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -55,9 +53,6 @@ class RightCreate extends React.Component {
     }
 
     componentDidMount() {
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-
-        NexusBreadcrumb.push(RIGHT_CREATE);
         this.right = {};
 
         if(this.props.availsMapping){
@@ -67,9 +62,6 @@ class RightCreate extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
-    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping) {
