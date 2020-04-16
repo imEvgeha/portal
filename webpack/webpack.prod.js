@@ -38,6 +38,9 @@ module.exports = envFile => ({
                 }
             }
         },
+        runtimeChunk: {
+            name: 'runtime', 
+        },
         minimizer: [
             new TerserPlugin({
                 sourceMap: (envFile && envFile.SOURCE_MAP) || false,

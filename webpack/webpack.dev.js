@@ -52,13 +52,11 @@ module.exports = (envFile) => ({
         open: true,
         stats: (envFile && envFile['BUILD_STATS']) || 'normal',
     },
-    optimization: {
-        namedModules: true,
-    },
     performance: {
         // hints: false, 
     },
     optimization: {
+        namedModules: true,
         removeAvailableModules: false,
         removeEmptyChunks: false,
         splitChunks: false,

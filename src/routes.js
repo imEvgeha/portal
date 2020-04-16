@@ -6,7 +6,6 @@ import ContractProfile from './pages/legacy/containers/contracts/profile/Contrac
 import Contract from './pages/legacy/containers/contracts/search/Contract';
 import Media from './pages/legacy/containers/media/search/Media.js';
 import Settings from './pages/legacy/containers/settings/Settings';
-import NotFound from './pages/static/NotFound';
 
 // TODO: on relevant page refactoring remove in to corresponding page folder
 const restRoutes = [

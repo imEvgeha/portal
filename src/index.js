@@ -34,8 +34,8 @@ import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
 import routes from './routes';
 import Router from './Router';
 
-// setEnvConfiguration('qa')
-setEnvConfiguration()
+setEnvConfiguration('qa')
+// setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         console.error(error); // eslint-disable-line
