@@ -406,7 +406,7 @@ class TitleEdit extends Component {
     }
 
     titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
-        titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
+        return titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
             this.setState({
                 titleForm: response.data,
                 editedForm: response.data,
@@ -785,7 +785,7 @@ class TitleEdit extends Component {
                     this.setState({
                         editorialMetadata: [response.data, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
-                    })
+                    });
                 }).catch(() => {
                     console.error('Unable to add Editorial Metadata');
                 })
@@ -893,12 +893,12 @@ class TitleEdit extends Component {
         this.setState({
             isLoading: true
         });
-        // Promise.all([this.handleTitleOnSave(), this.handleTerritoryMetadataOnSave().flat(),  this.handleEditorialMetadataOnSave().flat()])
+
         let promises = [];
         promises.push(this.handleTitleOnSave());
         promises.push( this.handleTerritoryMetadataOnSave());
         promises.push(this.handleEditorialMetadataOnSave());
-        promises = promises.filter(item => item).flat()
+        promises = promises.filter(item => item).flat();
 
         Promise.all(promises)
             .then(responses => {
@@ -991,8 +991,8 @@ class TitleEdit extends Component {
                             {
                                 this.state.isEditMode ? (
                                     <>
-                                        <Button className="float-right" id="btnSave"  isLoading={this.state.isLoading} onClick={this.handleOnSave} appearance="primary" >Save</Button>
-                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} appearance="danger" >Cancel</Button>
+                                        <Button className="float-right" id="btnSave" isLoading={this.state.isLoading} onClick={this.handleOnSave} appearance="primary">Save</Button>
+                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} appearance="danger">Cancel</Button>
                                     </>
                                   )
                                     : (
