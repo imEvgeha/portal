@@ -44,7 +44,7 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
     return (
         <>
             <Field
-                label="LANGUAGE"
+                label="Language"
                 isRequired
                 name="language"
                 validate={validate}
@@ -78,7 +78,7 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
 
             </Field>
             <Field
-                label="AUDIO TYPE"
+                label="Audio Type"
                 isRequired
                 name="audioType"
                 validate={validate}

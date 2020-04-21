@@ -422,7 +422,7 @@
   "queryParamName": "audioTypeLanguage",
   "readOnly": false,
   "enableSearch": true,
-  "enableEdit": true,
+  "enableEdit": false,
   "required": false
 }, {
   "javaVariableName": "languageAudioTypes.audioType",
@@ -433,7 +433,7 @@
   "queryParamName": "audioType",
   "readOnly": false,
   "enableSearch": true,
-  "enableEdit": true,
+  "enableEdit": false,
   "required": false
 }, {
   "javaVariableName": "localizationType",

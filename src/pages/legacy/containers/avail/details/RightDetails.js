@@ -208,64 +208,6 @@ class RightDetails extends React.Component {
                                 return obj;
                         })];
 
-                        const languageAudioTypesLang = (Array.isArray(languageAudioTypes) && languageAudioTypes.map(el => el && el.language)) || []; 
-                        const languageAudioTypesAudio = (Array.isArray(languageAudioTypes) && languageAudioTypes.map(el => el && el.audioType)) || []; 
-                        const languageAudioTypesErrors = (Array.isArray(validationErrors) && validationErrors.filter(({fieldName}) => {
-                            return fieldName && fieldName.includes('languageAudioTypes');
-                        })
-                            .map(error => {
-                                const matchObj = error.fieldName.match(regForEror);
-                                if (matchObj) {
-                                    error.index = Number(matchObj[1]); 
-                                }
-                                return error;
-                            })) || [];
-
-                            const languageAudioTypesList = (languageAudioTypesLang.filter(Boolean).map((el, i) => {
-                            return {
-                                isValid: true,
-                                value: el,
-                                id: i,
-                            };
-                        })) || [];
-
-                        const languageAudioTypesAudioTypeList = (languageAudioTypesAudio.filter(Boolean).map((el, i) => {
-                            return {
-                                isValid: true,
-                                value: el,
-                                id: i,
-                            };
-                        })) || [];
-
-                        const languageAudioTypesLanguage = [
-                            ...languageAudioTypesList,
-                            ...languageAudioTypesErrors
-                            .filter(({fieldName}) => fieldName.includes('.language'))
-                            .map((el, index) => {
-                                const obj = {};
-                                obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
-                                obj.isValid = false;
-                                obj.errors = languageAudioTypesErrors[index];
-                                obj.id = el.index;
-                                return obj;
-                            })
-                        ];
-
-                        const languageAudioTypesAudioType = [
-                            ...languageAudioTypesAudioTypeList,
-                            ...languageAudioTypesErrors
-                                .filter(({fieldName}) => fieldName.includes('.audioType'))
-                                .map((el, index) => {
-                                const obj = {};
-                                obj.value = `${el.message} ${el.sourceDetails && el.sourceDetails.originalValue}`;
-                                obj.isValid = false;
-                                obj.errors = languageAudioTypesErrors[index];
-                                obj.id = el.index;
-                                return obj;
-                            })
-                        ];
-
-
                         this.setState({
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
@@ -273,8 +215,6 @@ class RightDetails extends React.Component {
                             audioLanguage: audioLanguages,
                             affiliates,
                             affiliatesExclude,
-                            languageAudioTypesLanguage,
-                            languageAudioTypesAudioType,
                         });
                         NexusBreadcrumb.pop();
                         NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
@@ -363,13 +303,6 @@ class RightDetails extends React.Component {
             return;
         }
         const updatedRight = { [name]: value };
-        if (name.indexOf('.') > 0 && name.split('.')[0] === 'languageAudioTypes') {
-            if (name.split('.')[1] === 'language') {
-                updatedRight['languageAudioTypes.audioType'] = this.state.flatRight['languageAudioTypes.audioType'];
-            } else {
-                updatedRight['languageAudioTypes.language'] = this.state.flatRight['languageAudioTypes.language'];
-            }
-        }
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
             .then(({data: editedRight = {}})=> {
@@ -532,26 +465,8 @@ class RightDetails extends React.Component {
         };
         const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
             const ref = React.createRef();
-            let copiedValue = [];
-            if (Array.isArray(value) && name === 'languageAudioTypes.audioType') {
-                copiedValue = [...value];
-                value = value.length && value.filter(el => el.isValid).map(({value}) => value);
-            }
-
-            const handleAudioType = (audioTypes, value) => {
-                const result = (Array.isArray(audioTypes) && audioTypes.length > 0 && audioTypes.map(({isValid, value}, index, arr) => {
-                    return (
-                        <span key={index + 1} style={!isValid ? {color: 'rgb(169, 68, 66)'} : {}}>
-                            {`${value} ${index < arr.length - 1 ? ', ' : ''}`}
-                        </span>
-                    ); 
-                })) || value;
-                return result;
-            };
             const displayFunc = (val) => {
-                if (name === 'languageAudioTypes.audioType') {
-                    return handleAudioType(copiedValue, val);
-                } else if (error) {
+                if (error) {
                     return (
                         <div 
                             title={error}
@@ -846,7 +761,7 @@ class RightDetails extends React.Component {
 
         const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
             let priorityError = null;
-            if (error && !name.includes('affiliate') && !name.includes('languageAudioTypes')) {
+            if (error && !name.includes('affiliate')) {
                 priorityError = (
                     <div
                         title={error}
@@ -867,14 +782,6 @@ class RightDetails extends React.Component {
 
             let options = [];
             let selectedVal = ref.current ? ref.current.state.value : value;
-            if (name === 'languageAudioTypes.language' 
-                && Array.isArray(selectedVal) 
-                && selectedVal.length > 0 
-                && isObject(selectedVal[0])
-                && selectedVal[0].hasOwnProperty('isValid')
-            ) {
-                selectedVal = selectedVal.filter(el => el.isValid).map(el => el.value);
-            }
             let val;
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
@@ -1319,7 +1226,7 @@ class RightDetails extends React.Component {
                     // TODO: write this from scratch
                     if (this.state.right && this.state.right.validationErrors) {
                         this.state.right.validationErrors.forEach(e => {
-                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName) && !e.fieldName.includes('languageAudioTypes')) {
+                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
                                 error = e.message;
                                 if (e.sourceDetails) {
                                     if (e.sourceDetails.originalValue) error += ', original value:  \'' + e.sourceDetails.originalValue + '\'';
@@ -1349,19 +1256,7 @@ class RightDetails extends React.Component {
                     const {validationErrors} = right || {};
 
                     switch (mapping.dataType) {
-                        case 'string': 
-                            if (mapping.javaVariableName === 'languageAudioTypes.audioType') {
-                                renderFields.push(renderTextField(
-                                    mapping.javaVariableName, 
-                                    mapping.displayName, 
-                                    this.state.languageAudioTypesAudioType,
-                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.audioType')), 
-                                    readOnly, 
-                                    required, 
-                                    highlighted,
-                                ));
-                                break;
-                            }
+                        case 'string':
                             renderFields.push(renderTextField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
                         case 'integer': renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
@@ -1393,17 +1288,6 @@ class RightDetails extends React.Component {
                                     readOnly, 
                                     required, 
                                     highlighted
-                                ));
-                                break;
-                            } else if (mapping.javaVariableName === 'languageAudioTypes.language') {
-                                renderFields.push(renderMultiSelectField(
-                                    mapping.javaVariableName, 
-                                    mapping.displayName, 
-                                    this.state.languageAudioTypesLanguage,
-                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('.language') && el.fieldName.includes('languageAudioTypes')), 
-                                    readOnly, 
-                                    required, 
-                                    highlighted,
                                 ));
                                 break;
                             }
