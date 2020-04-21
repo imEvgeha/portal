@@ -24,16 +24,13 @@ module.exports = (envFile) => ({
         new HtmlWebpackPlugin({
             template: paths.appHtml,
             inject: true,
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
+            favicon: 'public/favicon.ico',
         }),
         new webpack.HotModuleReplacementPlugin(),
     ],
     output: {
         path: paths.appBuild,
-        filename: 'js/[name].bundle.js',
+        filename: 'js/index.js',
         chunkFilename: 'js/[id].chunk.js',
         publicPath: '/',
         pathinfo: false,
@@ -53,12 +50,9 @@ module.exports = (envFile) => ({
         stats: (envFile && envFile['BUILD_STATS']) || 'normal',
     },
     performance: {
-        // hints: false, 
+        hints: false,
     },
     optimization: {
         namedModules: true,
-        removeAvailableModules: false,
-        removeEmptyChunks: false,
-        splitChunks: false,
     },
 });

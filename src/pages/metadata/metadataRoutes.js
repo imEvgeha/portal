@@ -1,8 +1,11 @@
+import React from 'react';
 import {canRender} from '../../ability';
-import MetadataDashboardContainer from '../legacy/containers/metadata/dashboard/DashboardContainer';
-import TitleEdit from '../legacy/containers/metadata/dashboard/components/TitleEdit';
-import LegacyTitleReconciliationView from './legacy-title-reconciliation/LegacyTitleReconciliationView';
-import LegacyTitleReconciliationReview from './legacy-title-reconciliation/review/LegacyTitleReconciliationReview';
+const MetadataDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "MetadataDashboardContainer" */ '../legacy/containers/metadata/dashboard/DashboardContainer'));
+const TitleEdit = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "TitleEdit" */ '../legacy/containers/metadata/dashboard/components/TitleEdit'));
+const LegacyTitleReconciliationViewImport = import(/* webpackChunkName: "LegacyTitleReconciliationView" */ './legacy-title-reconciliation/LegacyTitleReconciliationView');
+const LegacyTitleReconciliationView = React.lazy(() => LegacyTitleReconciliationViewImport);
+const LegacyTitleReconciliationReviewImport = import(/* webpackChunkName: "LegacyTitleReconciliationReview" */ './legacy-title-reconciliation/review/LegacyTitleReconciliationReview');
+const LegacyTitleReconciliationReview = React.lazy(() => LegacyTitleReconciliationReview);
 
 const BASE_PATH = '/metadata';
 

@@ -10,7 +10,6 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack/webpack.config.js --env.env=dev --progress --color",
     "build": "webpack --config webpack/webpack.config.js --env.env=dev",
-    "build:analyze-dev": "yarn build -- --env.addon=bundleanalyze --env.addon=bundlevisualizer",
     "build:analyze-prod": "webpack --config webpack/webpack.config.js --env.env=prod --env.addon=bundleanalyze --env.addon=bundlevisualizer",
     "build:prod": "webpack --config webpack/webpack.config.js --env.env=prod && docker build . -t nexus/vehicle-ui",
     "test": "jest",

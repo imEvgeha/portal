@@ -52,7 +52,6 @@ module.exports = (envKeys) => ({
         new webpack.DefinePlugin(envKeys),
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
-            { from: 'public/favicon.ico' },
             { from: 'profile/config.json' },
             { from: 'profile/configQA.json' },
             { from: 'profile/availMapping.json' },

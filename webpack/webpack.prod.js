@@ -48,6 +48,7 @@ module.exports = envFile => ({
                     compress: {
                         warnings: false,
                         comparisons: false,
+                        drop_console: true,
                     },
                     mangle: {
                         safari10: true,
@@ -73,6 +74,7 @@ module.exports = envFile => ({
         new HtmlWebpackPlugin({
             template: paths.appHtml,
             inject: true,
+            favicon: 'public/favicon.ico',
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
@@ -96,5 +98,13 @@ module.exports = envFile => ({
         filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/'
+    },
+    // tell Webpack to provide empty mocks for imported Node modules not use
+    node: {
+        dgram: 'empty',
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        child_process: 'empty',
     },
 });

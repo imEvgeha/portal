@@ -33,9 +33,10 @@ import {
 import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
 import routes from './routes';
 import Router from './Router';
+import AppProviders from './AppProviders';
 
-setEnvConfiguration('qa')
-// setEnvConfiguration()
+// setEnvConfiguration('qa')
+setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         console.error(error); // eslint-disable-line
@@ -56,24 +57,16 @@ delete window.__PRELOADED_STATE__; // eslint-disable-line
 const App = () => (
     <AppContainer>
         <Provider store={store}>
-            <CustomIntlProvider>
-                <NexusOverlayProvider>
-                    <NexusModalProvider>
-                        <PersistGate loading={null} persistor={persistor}>
-                            <AuthProvider>
-                                <Toast />
-                                <ConnectedRouter history={history}>
-                                    <>
-                                        <NexusLayout>
-                                            <Router routes={routes} />
-                                        </NexusLayout>
-                                    </>
-                                </ConnectedRouter>
-                            </AuthProvider>
-                        </PersistGate>
-                    </NexusModalProvider>
-                </NexusOverlayProvider>
-            </CustomIntlProvider>
+            <AppProviders persistor={persistor}>
+                <ConnectedRouter history={history}>
+                    <>
+                        <Toast />
+                        <NexusLayout>
+                            <Router routes={routes} />
+                        </NexusLayout>
+                    </>
+                </ConnectedRouter>
+            </AppProviders>
         </Provider>
     </AppContainer>
 );
@@ -91,6 +84,7 @@ function renderApp () {
 if (module.hot) {
     module.hot.accept(
          ([
+            // TODO: we should enable AppProviders too
             './ui/elements/nexus-layout/NexusLayout', 
             './Router',
             './routes',
