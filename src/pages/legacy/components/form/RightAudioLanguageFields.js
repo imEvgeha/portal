@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
+import {get} from 'lodash';
 
 const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLanguageIndex, languageOptions, audioTypesOptions}) => {
 
@@ -38,7 +39,7 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
 
 
     const returnValidData = data => {
-        return existingAudioLanguageList && existingAudioLanguageList[audioLanguageIndex] && existingAudioLanguageList[audioLanguageIndex][data] && existingAudioLanguageList[audioLanguageIndex][data] !== null;
+        return get(existingAudioLanguageList, [audioLanguageIndex, data]) !== null;
     };
 
     return (

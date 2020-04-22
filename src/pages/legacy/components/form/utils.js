@@ -1,5 +1,6 @@
 import {momentToISO} from '../../../../util/Common';
 import moment from 'moment';
+import {get} from 'lodash';
 
 const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, territoryIndex) => {
     if (data.country && data.rightContractStatus) {
@@ -29,8 +30,8 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
 const getProperAudioLanguageFormValues = (data, isEdit, existingAudioLanguageList, audioLanguageIndex) => {
     if (data.language) {
         const newObject = {
-            language: data.language['value'] ? data.language['value'] !== '' && data.language['value'] : existingAudioLanguageList[audioLanguageIndex]['language'] ? existingAudioLanguageList[audioLanguageIndex]['language'] : '',
-            audioType: data.audioType['value'] ? data.audioType['value'] !== '' && data.audioType['value'] : existingAudioLanguageList[audioLanguageIndex]['audioType'] ? existingAudioLanguageList[audioLanguageIndex]['audioType'] : '',
+            language: get(data, 'language.value', get(existingAudioLanguageList, [audioLanguageIndex, 'language'], '')),
+            audioType: get(data, 'audioType.value', get(existingAudioLanguageList, [audioLanguageIndex, 'audioType'], '')),
         };
         const updatedObject = {};
         for (const objectField in newObject) {

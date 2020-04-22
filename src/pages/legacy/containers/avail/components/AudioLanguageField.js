@@ -39,7 +39,7 @@ const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, on
             <br />
             {mappingErrorMessage[name] && mappingErrorMessage[name].text && (
                 <small className="text-danger m-2">
-                    {mappingErrorMessage[name] && mappingErrorMessage[name].text || ''}
+                    {get(mappingErrorMessage, [name, 'text'], '')}
                 </small>
             )}
         </div>
