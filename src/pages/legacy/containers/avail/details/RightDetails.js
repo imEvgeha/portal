@@ -46,7 +46,6 @@ class RightDetails extends React.Component {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.cancel = this.cancel.bind(this);
         this.getRightData = this.getRightData.bind(this);
 
         this.emptyValueText = 'Enter';
@@ -392,10 +391,6 @@ class RightDetails extends React.Component {
         }
     }
 
-    cancel() {
-        this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
-    }
-
     onFieldClicked(e) {
         const node = ReactDOM.findDOMNode(e.currentTarget);
         if (e.target.tagName === 'A' || e.target.tagName === 'SPAN') {
@@ -446,7 +441,7 @@ class RightDetails extends React.Component {
                     key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
-                        backgroundColor: hasValidationError ? '#f2dede' : '#fff',
+                        backgroundColor: hasValidationError ? '#f2dede' : '',
                         color: hasValidationError ? '#a94442' : null,
                         border: 'none',
                         position: 'relative', display: 'block', padding: '0.75rem 1.25rem', marginBottom: '-1px',
@@ -1271,18 +1266,11 @@ class RightDetails extends React.Component {
                         </div>
                       )
 }
-                    <div className="nx-stylish row mt-3 mx-5">
-                        <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
+                    <div className="nx-stylish row my-3 mx-5">
+                        <div className="nx-stylish list-group col-12">
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping && (
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <div className="mt-4 mx-5 px-5">
-                                <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
-                            </div>
-                        </div>
-                      )}
                 </BlockUi>
                 {/* Provide clashingRights for modal open*/}
                 <RightsClashingModal />
