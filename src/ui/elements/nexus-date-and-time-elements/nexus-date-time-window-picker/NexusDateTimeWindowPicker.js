@@ -17,6 +17,7 @@ import {
     RELATIVE_DATE_FORMAT,
 } from '../constants';
 import CustomIntlProvider from '../../nexus-layout/CustomIntlProvider';
+import {isUtc} from '../../../../util/DateTimeUtils';
 
 const NexusDateTimeWindowPicker = ({
     label,
@@ -38,10 +39,10 @@ const NexusDateTimeWindowPicker = ({
     const [endDate, setEndDate] = useState(endDateTimePickerProps.defaultValue || '');
     const [endDateError, setEndDateError] = useState('');
 
-    // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
+    // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
     useEffect(() => {
         const {defaultValue} = startDateTimePickerProps || {};
-        typeof defaultValue === 'string' && setIsSimulcast(defaultValue.endsWith('Z'));
+        typeof defaultValue === 'string' && setIsSimulcast(isUtc(value));
     }, []);
 
     // When date changes, validate and trigger change

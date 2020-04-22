@@ -14,7 +14,7 @@ import {
     TIMESTAMP_TIME_FORMAT,
     RELATIVE_TIME_FORMAT,
 } from '../constants';
-import {getDateFormatBasedOnLocale} from '../../../../util/DateTimeUtils';
+import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/DateTimeUtils';
 
 const NexusDateTimePicker = ({
     id,
@@ -32,8 +32,8 @@ const NexusDateTimePicker = ({
     const [isSimulcast, setIsSimulcast] = useState(false);
     const [date, setDate] = useState(value);
 
-    // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
-    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, [value]);
+    // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
+    useEffect(() => {typeof value === 'string' && setIsSimulcast(isUtc(value));}, [value]);
 
     // Get locale provided by intl
     const intl = useIntl();
@@ -51,8 +51,7 @@ const NexusDateTimePicker = ({
         .concat(timeFormat);
 
     const getDisplayDate = (date) => {
-        const hasUTCTag = date && date.endsWith('Z');
-        return moment(date).utc(!hasUTCTag).format(dateFormat);
+        return moment(date).utc(!isUtc(date)).format(dateFormat);
     };
 
     const DatePicker = (isReadOnly) => {
